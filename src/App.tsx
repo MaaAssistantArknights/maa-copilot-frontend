@@ -1,6 +1,7 @@
 import { Button, Card } from "@blueprintjs/core";
 import { CardTitle } from "components/CardTitle";
 import { Operations } from "components/Operations";
+import { AccountManager } from "src/components/AccountManager";
 import { GlobalErrorBoundary } from "src/components/GlobalErrorBoundary";
 
 function App() {
@@ -13,14 +14,12 @@ function App() {
 
         <div className="flex-1"></div>
 
-        <Button className="ml-auto" icon="user">
-          登录 / 注册
-        </Button>
+        <AccountManager />
       </nav>
       <div className="h-[1px] w-full bg-gray-200"></div>
 
       <GlobalErrorBoundary>
-        <div className="flex px-8 mt-8">
+        <div className="flex px-8 mt-8 pb-16">
           <div className="w-2/3 mr-8">
             <Operations />
           </div>

@@ -4,7 +4,7 @@ import { PaginatedResponse } from "../models/operation";
 
 const useOperationsGetKey = (pageIndex, previousPageData) => {
   if (previousPageData && !previousPageData.length) return null; // reached the end
-  return `/query?desc=true&page=${pageIndex + 1}&limit=50`; // SWR key
+  return `/copilot/query?desc=true&page=${pageIndex + 1}&limit=50`; // SWR key
 };
 
 export const useOperations = () => {

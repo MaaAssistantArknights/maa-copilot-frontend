@@ -1,14 +1,14 @@
 import { Button, NonIdealState } from "@blueprintjs/core";
 import { ErrorBoundary } from "@sentry/react";
-import { FCC } from '../types';
+import { FCC } from "../types";
 export const GlobalErrorBoundary: FCC = ({ children }) => {
   return (
     <ErrorBoundary
       fallback={
         <NonIdealState
           icon="issue"
-          title="发生了致命错误"
-          description="页面渲染出现了致命错误；请尝试"
+          title="エラー発生"
+          description="页面渲染出现错误；请尝试"
           action={
             <Button
               intent="primary"
@@ -24,4 +24,11 @@ export const GlobalErrorBoundary: FCC = ({ children }) => {
       {children}
     </ErrorBoundary>
   );
-}
+};
+
+export const withGlobalErrorBoundary = (Component: FCC) => () =>
+  (
+    <GlobalErrorBoundary>
+      <Component />
+    </GlobalErrorBoundary>
+  );
