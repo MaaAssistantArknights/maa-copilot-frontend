@@ -15,6 +15,7 @@
     "@sentry/tracing": "^7.4.1",
     "camelcase-keys": "^8.0.1",
     "dayjs": "^1.11.3",
+    "jotai": "^1.7.3",
     "normalize.css": "^8.0.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

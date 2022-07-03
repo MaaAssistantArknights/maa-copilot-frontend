@@ -1,0 +1,229 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "https://maa.plus/schemas/copilot/v1",
+  "type": "object",
+  "title": "MAA Copilot 战斗协议 v1",
+  "description": "MAA Copilot 战斗协议 v1",
+  "required": [
+    "stage_name",
+    "actions",
+    "minimum_required"
+  ],
+  "properties": {
+    "stage_name": {
+      "type": "string",
+      "title": "关卡名",
+      "description": "必填。除危机合约外，均为关卡中文名"
+    },
+    "opers": {
+      "$ref": "#/$defs/operator",
+      "title": "指定干员"
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "opers": {
+            "$ref": "#/$defs/operator"
+          }
+        }
+      }
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "Deploy",
+              "Skill",
+              "Retreat",
+              "SpeedUp",
+              "BulletTime",
+              "SkillUsage",
+              "Output",
+              "SkillDaemon"
+            ],
+            "default": "Deploy"
+          },
+          "kills": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          "cost_changes": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          "name": {
+            "type": "string"
+          },
+          "location": {
+            "type": "array",
+            "prefixItems": [
+              {
+                "type": "integer",
+                "minimum": 0
+              },
+              {
+                "type": "integer",
+                "minimum": 0
+              }
+            ]
+          },
+          "direction": {
+            "type": "string",
+            "enum": [
+              "Left",
+              "Right",
+              "Up",
+              "Down",
+              "None"
+            ]
+          },
+          "skill_usage": {
+            "$ref": "#/$defs/skill_usage"
+          },
+          "pre_delay": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          "rear_delay": {
+            "type": "integer",
+            "minimum": 0,
+            "default": 0
+          },
+          "doc": {
+            "type": "string"
+          },
+          "doc_color": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "minimum_required": {
+      "type": "string"
+    },
+    "doc": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "title_color": {
+          "type": "string"
+        },
+        "details": {
+          "type": "string"
+        },
+        "details_color": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "$defs": {
+    "skill_usage": {
+      "type": "integer",
+      "enum": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "default": 0
+    },
+    "operator": {
+      "type": "array",
+      "title": "Operator",
+      "items": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "干员名",
+            "description": "必填"
+          },
+          "skill": {
+            "type": "integer",
+            "title": "技能序号",
+            "description": "可选，默认 1，取值范围 [1, 3]",
+            "anyOf": [
+              {
+                "const": 1,
+                "title": "一技能"
+              },
+              {
+                "const": 2,
+                "title": "二技能"
+              },
+              {
+                "const": 3,
+                "title": "三技能"
+              }
+            ],
+            "default": 1
+          },
+          "skill_usage": {
+            "$ref": "#/$defs/skill_usage"
+          },
+          "requirements": {
+            "type": "object",
+            "properties": {
+              "elite": {
+                "type": "integer",
+                "enum": [
+                  0,
+                  1,
+                  2
+                ],
+                "default": 0
+              },
+              "level": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 90,
+                "default": 0
+              },
+              "skill_level": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10,
+                "default": 0
+              },
+              "module": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0
+              },
+              "potentiality": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 5,
+                "default": 0
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

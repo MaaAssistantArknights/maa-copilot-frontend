@@ -14,27 +14,38 @@ export class NetworkError extends Error {
   }
 }
 
-export const request = <T,>(input: RequestInfo | URL, init?: RequestInit): Promise<T> =>
+export const request = <T>(
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Promise<T> =>
   fetch("https://api.prts.plus" + input, init)
     .then(async (res) => {
       return {
         response: res,
-        data: camelcaseKeys(await res.json(), { deep: true })
-      }
+        data: camelcaseKeys(await res.json(), { deep: true }),
+      };
     })
     .then((res) => {
-      if ((res.data.statusCode && res.data.statusCode < 200) || res.data.statusCode >= 300) {
+      if (
+        (res.data.statusCode &&
+          (res.data.statusCode < 200 || res.data.statusCode >= 300)) ||
+        res.response.status < 200 ||
+        res.response.status >= 300
+      ) {
         console.error("Fetcher: got error response", res);
-        return Promise.reject(new NetworkError(res.response, res.data.message));
+        return Promise.reject(new NetworkError(res.response, res.data?.message || res.data?.title || JSON.stringify(res.data)));
       }
       return res.data;
     });
 
 export type JsonRequestInit = RequestInit & {
   json?: any;
-}
+};
 
-export const jsonRequest = <T>(input: RequestInfo | URL, init?: JsonRequestInit): Promise<T> => {
+export const jsonRequest = <T>(
+  input: RequestInfo | URL,
+  init?: JsonRequestInit
+): Promise<T> => {
   return request<T>(input, {
     ...init,
     headers: {
@@ -43,4 +54,4 @@ export const jsonRequest = <T>(input: RequestInfo | URL, init?: JsonRequestInit)
     },
     body: JSON.stringify(init?.json),
   });
-}
+};

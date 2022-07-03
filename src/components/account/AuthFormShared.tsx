@@ -1,7 +1,7 @@
 import { InputGroup } from "@blueprintjs/core";
 import { FormField, FormFieldProps } from "components/FormField";
 import { UseControllerProps } from "react-hook-form";
-import { REGEX_EMAIL } from '../../utils/regexes';
+import { REGEX_EMAIL } from 'utils/regexes';
 
 export type RuleKeys = 'email' | 'password' | 'username';
 
@@ -24,11 +24,16 @@ export const rule: Record<RuleKeys, UseControllerProps["rules"]> = {
 
 // --- **Opinioned** AuthForm Field Components ---
 
+export type AuthFormFieldProps<T> = Pick<FormFieldProps<T>, "control" | "error" | "field"> & {
+  register?: boolean
+};
+
 export const AuthFormEmailField = <T extends {}>({
   control,
   error,
   field,
-}: Pick<FormFieldProps<T>, "control" | "error" | "field">) => {
+  register
+}: AuthFormFieldProps<T>) => {
   return (
     <FormField
       label="邮箱"
@@ -37,17 +42,20 @@ export const AuthFormEmailField = <T extends {}>({
       error={error}
       ControllerProps={{
         rules: rule.email,
-        render: ({ field }) => (
+        render: ({ field: binding }) => (
           <InputGroup
-            id="email"
+            id={field}
             placeholder="user@example.com"
             autoFocus
             autoCorrect="none"
             autoCapitalize="none"
             autoComplete="email"
-            {...field}
+            {...binding}
           />
         ),
+      }}
+      FormGroupProps={{
+        helperText: register && "邮箱将需要链接确认",
       }}
     />
   );
@@ -57,7 +65,7 @@ export const AuthFormPasswordField = <T extends {}>({
   control,
   error,
   field,
-}: Pick<FormFieldProps<T>, "control" | "error" | "field">) => {
+}: AuthFormFieldProps<T>) => {
   return (
     <FormField
       label="密码"
@@ -66,7 +74,7 @@ export const AuthFormPasswordField = <T extends {}>({
       error={error}
       ControllerProps={{
         rules: rule.password,
-        render: ({ field: fieldBinding }) => (
+        render: ({ field: binding }) => (
           <InputGroup
             id={field}
             placeholder="· · · · · ·"
@@ -74,7 +82,7 @@ export const AuthFormPasswordField = <T extends {}>({
             autoCorrect="none"
             autoCapitalize="none"
             autoComplete="current-password"
-            {...fieldBinding}
+            {...binding}
           />
         ),
       }}
@@ -86,7 +94,7 @@ export const AuthFormUsernameField = <T extends {}>({
   control,
   error,
   field,
-}: Pick<FormFieldProps<T>, "control" | "error" | "field">) => {
+}: AuthFormFieldProps<T>) => {
   return (
     <FormField
       label="用户名"
@@ -94,15 +102,15 @@ export const AuthFormUsernameField = <T extends {}>({
       control={control}
       error={error}
       ControllerProps={{
-        rules: rule.password,
-        render: ({ field: fieldBinding }) => (
+        rules: rule.username,
+        render: ({ field: binding }) => (
           <InputGroup
             id={field}
             placeholder="Pallas-Bot"
             autoCorrect="none"
             autoCapitalize="none"
             autoComplete="username"
-            {...fieldBinding}
+            {...binding}
           />
         ),
       }}
