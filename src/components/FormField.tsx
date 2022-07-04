@@ -94,7 +94,7 @@ export const FormField2 = <T,>({
           <span>{label}</span>
           {description && (
             <Tooltip2
-              className="!inline-block"
+              className="!inline-block !mt-0"
               interactionKind={Popover2InteractionKind.HOVER}
               content={
                 typeof description === "string" ? (

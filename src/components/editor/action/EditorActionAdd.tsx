@@ -1,44 +1,36 @@
 import { Alert, Button, Card, H4 } from "@blueprintjs/core";
 import { DevTool } from "@hookform/devtools";
 import { CardTitle } from "components/CardTitle";
-import { copilotSchemaValidator } from "models/copilot.schema.validator";
-import { FC, useEffect, useState } from "react";
-import { useForm, UseFormReset } from "react-hook-form";
+import { useState } from "react";
+import { SubmitHandler, UseFieldArrayAppend, useForm, UseFormReset } from "react-hook-form";
 import {
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills
 } from "src/components/editor/action/EditorActionExecPredicate";
-import { EditorActionLocation } from "src/components/editor/action/EditorActionLocation";
+import { EditorActionOperatorDirection } from "src/components/editor/action/EditorActionOperatorDirection";
+import { EditorActionOperatorLocation } from "src/components/editor/action/EditorActionOperatorLocation";
 import { EditorActionTypeSelect } from "src/components/editor/action/EditorActionTypeSelect";
 import { FormField2 } from "../../FormField";
 
-export const EditorActionAdd: FC = () => {
+export interface EditorActionAddProps {
+  // control: Control<T>;
+  append: UseFieldArrayAppend<CopilotDocV1.Action>;
+}
+
+export const EditorActionAdd = ({
+  append,
+}: EditorActionAddProps) => {
   const {
     control,
-    watch,
-    handleSubmit,
     reset,
     getValues,
+    handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm<CopilotDocV1.Action>();
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) => {
-      console.log(value, name, type);
-
-      const validate = copilotSchemaValidator.getSchema(
-        "copilot#/properties/actions/items"
-      );
-      if (!validate) return;
-
-      const valid = validate(value);
-      console.log("validation", valid, validate.errors);
-    });
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
-  const onSubmit = async (val: CopilotDocV1.Action) => {
-    console.log(val);
+  const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
+    append(values);
+    reset()
   };
 
   return (
@@ -105,10 +97,24 @@ export const EditorActionAdd: FC = () => {
             field="location"
             error={errors.location}
             description="填完关卡名后开一局，会在目录下 map 文件夹中生成地图坐标图片"
+            className="mr-4"
           >
-            <EditorActionLocation<CopilotDocV1.Action>
+            <EditorActionOperatorLocation<CopilotDocV1.Action>
               control={control}
               name="location"
+              getValues={getValues}
+            />
+          </FormField2>
+
+          <FormField2
+            label="干员朝向"
+            field="direction"
+            error={errors.direction}
+            description="部署干员的干员朝向"
+          >
+            <EditorActionOperatorDirection<CopilotDocV1.Action>
+              control={control}
+              name="direction"
               getValues={getValues}
             />
           </FormField2>

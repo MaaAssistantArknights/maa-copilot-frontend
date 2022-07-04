@@ -21,15 +21,14 @@ import {
   useSensors
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { FC, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { FC } from "react";
+import { Control, useFieldArray, useForm } from 'react-hook-form';
 import { FormField } from "src/components/FormField";
 import { formatRelativeTime } from "utils/times";
 import { EditorActionAdd } from "./action/EditorActionAdd";
@@ -37,16 +36,9 @@ import { EditorActionAdd } from "./action/EditorActionAdd";
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation;
 }> = ({ operation }) => {
-  const { control, watch } = useForm<CopilotDocV1.Operation>({
+  const { control } = useForm<CopilotDocV1.Operation>({
     defaultValues: operation,
   });
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(name, type, value)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
 
   return (
     <section className="py-4 px-8 flex flex-col overflow-auto relative">
@@ -141,17 +133,24 @@ export const OperationEditor: FC<{
             <span className="mx-0.5">·</span>
             <span>右键以展开上下文菜单</span>
           </div>
-          <EditorActions />
+          <EditorActions control={control} />
         </div>
       </div>
     </section>
   );
 };
 
-export const EditorActions: FC = () => {
-  const [cards, setCards] = useState<UniqueIdentifier[]>(
-    Array.from({ length: 0 }, (_, i) => i.toString())
-  );
+export interface EditorActionsProps {
+  control: Control<CopilotDocV1.Operation>;
+}
+
+export const EditorActions = ({
+  control
+}: EditorActionsProps) => {
+  const { fields, append, move } = useFieldArray({
+    name: "actions",
+    control,
+  })
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -163,36 +162,31 @@ export const EditorActions: FC = () => {
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (over && active.id !== over.id) {
-      setCards((items) => {
-        const oldIndex = items.indexOf(active.id);
-        const newIndex = items.indexOf(over.id);
-
-        return arrayMove(items, oldIndex, newIndex);
-      });
+      const oldIndex = fields.findIndex((el) => el.id === active.id)
+      const newIndex = fields.findIndex((el) => el.id === over.id)
+      if (oldIndex && newIndex) move(oldIndex, newIndex)
     }
   };
-
-  console.log(cards);
 
   return (
     <div className="flex flex-col h-full">
       <div className="h-full overflow-auto p-2 -mx-2 relative">
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <SortableContext items={cards} strategy={verticalListSortingStrategy}>
-            {cards.map((cardId) => (
+          <SortableContext items={fields} strategy={verticalListSortingStrategy}>
+            {fields.map((field) => (
               <EditorActionItem
-                key={cardId}
-                id={cardId}
-                title={cardId as string}
+                key={field.id}
+                id={field.id}
+                title={JSON.stringify(field) as string}
               />
             ))}
           </SortableContext>
         </DndContext>
 
-        {cards.length === 0 && <NonIdealState title="暂无动作" icon="inbox" />}
+        {fields.length === 0 && <NonIdealState title="暂无动作" icon="inbox" />}
       </div>
 
-      <EditorActionAdd />
+      <EditorActionAdd append={append} />
     </div>
   );
 };

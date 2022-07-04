@@ -30,7 +30,6 @@ export const LoginPanel: FC<{
       (e: NetworkError) => `登录失败：${e.responseMessage}`,
       requestLogin(val.email, val.password)
     );
-    console.log(res);
     const username = res.data.userInfo.userName
     setAuthState({
       token: res.data.token,

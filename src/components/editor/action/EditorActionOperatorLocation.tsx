@@ -2,15 +2,15 @@ import { InputGroup } from "@blueprintjs/core";
 import { useController, UseFormGetValues } from "react-hook-form";
 import { EditorActionFieldProps } from "./EditorActionField";
 
-interface EditorActionLocationProps<T> extends EditorActionFieldProps<T> {
+interface EditorActionOperatorLocationProps<T> extends EditorActionFieldProps<T> {
   getValues: UseFormGetValues<T>;
 }
 
-export const EditorActionLocation = <T extends { type?: string }>({
+export const EditorActionOperatorLocation = <T extends { type?: string }>({
   name,
   control,
   getValues,
-}: EditorActionLocationProps<T>) => {
+}: EditorActionOperatorLocationProps<T>) => {
   const {
     field: { onChange, value },
   } = useController({
@@ -31,7 +31,7 @@ export const EditorActionLocation = <T extends { type?: string }>({
                 !Number.isFinite(v)
             ))
         )
-          return "部署动作下位置必填";
+          return "部署动作下必须填写位置";
         return true;
       },
     },
