@@ -40,9 +40,6 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "name"
-        ],
         "properties": {
           "type": {
             "type": "string",
@@ -73,16 +70,16 @@
           },
           "location": {
             "type": "array",
-            "prefixItems": [
+            "items": [
               {
-                "type": "integer",
-                "minimum": 0
+                "type": "integer"
               },
               {
-                "type": "integer",
-                "minimum": 0
+                "type": "integer"
               }
-            ]
+            ],
+            "minItems": 2,
+            "maxItems": 2
           },
           "direction": {
             "type": "string",

@@ -60,7 +60,7 @@ namespace CopilotDocV1 {
   }
 
   export interface Operator {
-    /**
+    /**w
      * 必填
      */
     name: string;

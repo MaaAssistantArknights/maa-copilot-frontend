@@ -8,7 +8,9 @@ export const useOperations = () => {
     Response<PaginatedResponse<Operation>>
   >((pageIndex, previousPageData) => {
     if (previousPageData && !previousPageData?.data.hasNext) return null; // reached the end
-    return `/copilot/query?desc=true&page=${(previousPageData?.data?.page || 0) + 1}&limit=50`; // SWR key
+    return `/copilot/query?order_by=rating&desc=true&page=${
+      (previousPageData?.data?.page || 0) + 1
+    }&limit=50`; // SWR key
   });
 
   const operations = data

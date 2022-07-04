@@ -47,8 +47,6 @@ export const AuthFormEmailField = <T extends {}>({
             id={field}
             placeholder="user@example.com"
             autoFocus
-            autoCorrect="none"
-            autoCapitalize="none"
             autoComplete="email"
             {...binding}
           />
@@ -79,8 +77,6 @@ export const AuthFormPasswordField = <T extends {}>({
             id={field}
             placeholder="· · · · · ·"
             type="password"
-            autoCorrect="none"
-            autoCapitalize="none"
             autoComplete="current-password"
             {...binding}
           />
@@ -107,8 +103,6 @@ export const AuthFormUsernameField = <T extends {}>({
           <InputGroup
             id={field}
             placeholder="Pallas-Bot"
-            autoCorrect="none"
-            autoCapitalize="none"
             autoComplete="username"
             {...binding}
           />

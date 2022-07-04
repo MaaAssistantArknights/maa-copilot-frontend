@@ -1,17 +1,15 @@
 import { H4, Icon, IconName } from "@blueprintjs/core";
-import { ReactNode } from "react";
+import clsx from "clsx";
+import { FCC } from "../types";
 
-export function CardTitle({
-  children,
-  icon,
-}: {
-  children: ReactNode;
+export const CardTitle: FCC<{
   icon?: IconName;
-}) {
+  className?: string;
+}> = ({ icon, className, children }) => {
   return (
-    <H4 className="mb-4 text-gray-700 flex items-center">
+    <H4 className={clsx("text-gray-700 flex items-center", className)}>
       {icon && <Icon icon={icon} className="mr-2" size={16} />}
       {children}
     </H4>
   );
-}
+};

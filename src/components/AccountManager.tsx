@@ -23,7 +23,7 @@ import {
 import { AppToaster } from "./Toaster";
 
 const AccountMenu: FC = () => {
-  const [authState, setAuthState] = useAtom(authAtom);
+  const [, setAuthState] = useAtom(authAtom);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
 
   const handleLogout = () => {

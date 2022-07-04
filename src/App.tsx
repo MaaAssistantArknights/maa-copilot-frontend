@@ -1,17 +1,21 @@
-import { Card } from "@blueprintjs/core";
+import { Card, Tag } from "@blueprintjs/core";
 import { CardTitle } from "components/CardTitle";
 import { Operations } from "components/Operations";
 import { AccountManager } from "src/components/AccountManager";
 import { GlobalErrorBoundary } from "src/components/GlobalErrorBoundary";
-import { OperationEditorLauncher } from './components/editor/OperationEditorLauncher';
+import { OperationEditorLauncher } from "./components/editor/OperationEditorLauncher";
 
 function App() {
   return (
     <div className="flex flex-col h-full w-full bg-zinc-50">
       <nav className="flex w-full px-8 py-2 items-center bg-zinc-100 shadow">
-        <div className="select-none text-lg font-bold leading-none mr-6">
+        <div className="select-none text-lg font-bold leading-none">
           MAA Copilot
         </div>
+
+        <Tag minimal className="ml-1" intent="warning">
+          Beta
+        </Tag>
 
         <div className="flex-1"></div>
 
@@ -26,7 +30,9 @@ function App() {
           </div>
           <div className="md:w-1/3 order-1 md:order-2">
             <Card className="flex flex-col mb-4">
-              <CardTitle icon="add">创建新作业</CardTitle>
+              <CardTitle icon="add" className="mb-4">
+                创建新作业
+              </CardTitle>
 
               <OperationEditorLauncher />
             </Card>
