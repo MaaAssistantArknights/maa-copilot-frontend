@@ -1,37 +1,15 @@
 import {
   Button,
-  Card,
-  Elevation,
-  H4,
+  Card, H4,
   Icon,
-  InputGroup,
-  Menu,
-  MenuItem,
-  NonIdealState,
-  TextArea
+  InputGroup, TextArea
 } from "@blueprintjs/core";
-import { ContextMenu2 } from "@blueprintjs/popover2";
-import {
-  DndContext,
-  DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  UniqueIdentifier,
-  useSensor,
-  useSensors
-} from "@dnd-kit/core";
-import {
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
 import { FC } from "react";
-import { Control, useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { FormField } from "src/components/FormField";
+import { HelperText } from "src/components/HelperText";
 import { formatRelativeTime } from "utils/times";
-import { EditorActionAdd } from "./action/EditorActionAdd";
+import { EditorActions } from './action/EditorActions';
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation;
@@ -123,107 +101,20 @@ export const OperationEditor: FC<{
       <div className="flex h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
         <div className="w-1/3 mr-8 flex flex-col">
           <H4>干员与干员组</H4>
+          <HelperText className="mb-4">
+            <span>右键以展开上下文菜单</span>
+          </HelperText>
           <Card className="h-[30rem]"></Card>
         </div>
         <div className="w-2/3">
           <H4>动作序列</H4>
-          <div className="flex text-gray-600 text-xs items-center mb-2">
-            <Icon icon="help" size={12} className="mr-1.5" />
+          <HelperText className="mb-4">
             <span>拖拽以重新排序</span>
-            <span className="mx-0.5">·</span>
             <span>右键以展开上下文菜单</span>
-          </div>
+          </HelperText>
           <EditorActions control={control} />
         </div>
       </div>
     </section>
-  );
-};
-
-export interface EditorActionsProps {
-  control: Control<CopilotDocV1.Operation>;
-}
-
-export const EditorActions = ({
-  control
-}: EditorActionsProps) => {
-  const { fields, append, move } = useFieldArray({
-    name: "actions",
-    control,
-  })
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-    if (over && active.id !== over.id) {
-      const oldIndex = fields.findIndex((el) => el.id === active.id)
-      const newIndex = fields.findIndex((el) => el.id === over.id)
-      if (oldIndex && newIndex) move(oldIndex, newIndex)
-    }
-  };
-
-  return (
-    <div className="flex flex-col h-full">
-      <div className="h-full overflow-auto p-2 -mx-2 relative">
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-          <SortableContext items={fields} strategy={verticalListSortingStrategy}>
-            {fields.map((field) => (
-              <EditorActionItem
-                key={field.id}
-                id={field.id}
-                title={JSON.stringify(field) as string}
-              />
-            ))}
-          </SortableContext>
-        </DndContext>
-
-        {fields.length === 0 && <NonIdealState title="暂无动作" icon="inbox" />}
-      </div>
-
-      <EditorActionAdd append={append} />
-    </div>
-  );
-};
-
-export const EditorActionItem: FC<{
-  id: UniqueIdentifier;
-  title: string;
-}> = ({ id, title }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
-
-  return (
-    <ContextMenu2
-      className="mb-2 last:mb-0"
-      content={
-        <Menu>
-          <MenuItem text="编辑动作" icon="edit" />
-          <MenuItem intent="danger" text="删除动作..." icon="delete" />
-        </Menu>
-      }
-    >
-      <div style={style} ref={setNodeRef}>
-        <Card elevation={Elevation.TWO}>
-          <Icon
-            className="cursor-grab active:cursor-grabbing py-1 px-0.5 -my-1 -mx-0.5 rounded-[1px]"
-            icon="drag-handle-vertical"
-            {...attributes}
-            {...listeners}
-          />
-          <span className="ml-4">{id}</span>
-        </Card>
-      </div>
-    </ContextMenu2>
   );
 };

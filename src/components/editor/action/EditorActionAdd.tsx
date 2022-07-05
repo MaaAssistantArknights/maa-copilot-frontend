@@ -1,19 +1,18 @@
 import { Alert, Button, Card, H4 } from "@blueprintjs/core";
 import { DevTool } from "@hookform/devtools";
 import { CardTitle } from "components/CardTitle";
-import { useState } from "react";
-import { SubmitHandler, UseFieldArrayAppend, useForm, UseFormReset } from "react-hook-form";
 import {
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills
-} from "src/components/editor/action/EditorActionExecPredicate";
-import { EditorActionOperatorDirection } from "src/components/editor/action/EditorActionOperatorDirection";
-import { EditorActionOperatorLocation } from "src/components/editor/action/EditorActionOperatorLocation";
-import { EditorActionTypeSelect } from "src/components/editor/action/EditorActionTypeSelect";
-import { FormField2 } from "../../FormField";
+} from "components/editor/action/EditorActionExecPredicate";
+import { EditorActionOperatorDirection } from "components/editor/action/EditorActionOperatorDirection";
+import { EditorActionOperatorLocation } from "components/editor/action/EditorActionOperatorLocation";
+import { EditorActionTypeSelect } from "components/editor/action/EditorActionTypeSelect";
+import { FormField2 } from "components/FormField";
+import { useState } from "react";
+import { SubmitHandler, UseFieldArrayAppend, useForm, UseFormReset } from "react-hook-form";
 
 export interface EditorActionAddProps {
-  // control: Control<T>;
   append: UseFieldArrayAppend<CopilotDocV1.Action>;
 }
 
@@ -35,7 +34,7 @@ export const EditorActionAdd = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card className="mt-4 mb-8">
+      <Card className="mb-8">
         <div className="flex items-center mb-4">
           <CardTitle className="mb-0" icon="add">
             <span>添加动作</span>
@@ -43,7 +42,7 @@ export const EditorActionAdd = ({
 
           <div className="flex-1" />
 
-          <EditorResetButton reset={reset} />
+          <EditorResetButton<CopilotDocV1.Action> reset={reset} entityName="动作" />
         </div>
 
         <DevTool control={control} />
@@ -135,8 +134,10 @@ export const EditorActionAdd = ({
 
 const EditorResetButton = <T,>({
   reset,
+  entityName,
 }: {
-  reset: UseFormReset<CopilotDocV1.Action>;
+  reset: UseFormReset<T>;
+  entityName: string;
 }) => {
   const [resetDialogOpen, setResetDialogOpen] = useState(false);
 
@@ -155,8 +156,8 @@ const EditorResetButton = <T,>({
           setResetDialogOpen(false);
         }}
       >
-        <H4>重置动作</H4>
-        <p>确定要重置动作吗？</p>
+        <H4>重置{entityName}</H4>
+        <p>确定要重置{entityName}吗？</p>
       </Alert>
 
       <Button
