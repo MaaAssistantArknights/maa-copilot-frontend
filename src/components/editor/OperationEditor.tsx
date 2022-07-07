@@ -1,6 +1,5 @@
 import {
-  Button,
-  Card, H4,
+  Button, H4,
   Icon,
   InputGroup, TextArea
 } from "@blueprintjs/core";
@@ -10,6 +9,7 @@ import { FormField } from "src/components/FormField";
 import { HelperText } from "src/components/HelperText";
 import { formatRelativeTime } from "utils/times";
 import { EditorActions } from './action/EditorActions';
+import { EditorPerformerAdd } from './operator/EditorOperators';
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation;
@@ -104,7 +104,7 @@ export const OperationEditor: FC<{
           <HelperText className="mb-4">
             <span>右键以展开上下文菜单</span>
           </HelperText>
-          <Card className="h-[30rem]"></Card>
+          <EditorPerformerAdd />
         </div>
         <div className="w-2/3">
           <H4>动作序列</H4>

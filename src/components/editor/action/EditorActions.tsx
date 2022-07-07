@@ -80,7 +80,13 @@ export const EditorActionItem: FC<{
   action: CopilotDocV1.Action;
 }> = ({ id, action }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id });
+    useSortable({
+      id,
+      transition: {
+        duration: 250, // milliseconds
+        easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+      },
+    });
 
   const style = {
     transform: CSS.Transform.toString(transform),

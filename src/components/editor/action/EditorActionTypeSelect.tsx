@@ -4,12 +4,12 @@ import {
 import { DetailedSelect, DetailedSelectChoice, DetailedSelectItem } from 'components/editor/DetailedSelect';
 import { useMemo } from 'react';
 import { useController } from "react-hook-form";
-import { EditorActionFieldProps } from './EditorActionField';
+import { EditorFieldProps } from '../EditorFieldProps';
 
 export const EditorActionTypeSelect = <T,>({
   name,
   control,
-}: EditorActionFieldProps<T>) => {
+}: EditorFieldProps<T>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
@@ -93,6 +93,7 @@ export const EditorActionTypeSelect = <T,>({
       onItemSelect={(item) => {
         onChange(item.value);
       }}
+      activeItem={selectedAction}
     >
       <Button
         large

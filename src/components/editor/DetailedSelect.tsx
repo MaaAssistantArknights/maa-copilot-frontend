@@ -9,8 +9,9 @@ export interface DetailedSelectChoice {
   type: "choice";
   icon?: IconName;
   title: string;
-  value: string;
+  value: string | number;
   description: string;
+  disabled?: boolean;
 }
 
 const DetailedSelect2 = Select2.ofType<DetailedSelectItem>();
@@ -43,14 +44,13 @@ export const DetailedSelect: FCC<
             onClick={handleClick}
             onFocus={handleFocus}
             multiline
+            disabled={action.disabled}
             text={
               <div className="flex items-start">
-                <Icon icon={action.icon} className="pt-0.5" />
-                <div className="flex flex-col ml-2">
+                {action.icon && <Icon icon={action.icon} className="pt-0.5 mr-2" />}
+                <div className="flex flex-col">
                   <div className="flex-1">{action.title}</div>
-                  <div className="text-xs text-gray-600">
-                    {action.description}
-                  </div>
+                  <div className="text-xs opacity-75">{action.description}</div>
                 </div>
               </div>
             }

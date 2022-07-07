@@ -1,8 +1,8 @@
 import { NumericInput, NumericInputProps } from "@blueprintjs/core";
 import { useController } from "react-hook-form";
-import { EditorActionFieldProps } from './EditorActionField';
+import { EditorFieldProps } from '../EditorFieldProps';
 
-interface EditorActionExecPredicateProps<T> extends EditorActionFieldProps<T> {
+interface EditorActionExecPredicateProps<T> extends EditorFieldProps<T> {
   NumericInputProps?: Omit<
     EditorActionIntegerInputProps<T>["NumericInputProps"],
     "placeholder"
@@ -33,7 +33,7 @@ export const EditorActionExecPredicateCostChange = <T,>({
   />
 );
 
-interface EditorActionIntegerInputProps<T> extends EditorActionFieldProps<T> {
+interface EditorActionIntegerInputProps<T> extends EditorFieldProps<T> {
   NumericInputProps: Omit<
     NumericInputProps,
     "name" | "inputRef" | "onValueChange" | "onBlur"
