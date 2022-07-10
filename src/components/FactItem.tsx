@@ -1,14 +1,25 @@
 import { Icon, IconName } from '@blueprintjs/core'
+import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { FCC } from 'types'
 
 export const FactItem: FCC<{
   icon?: IconName
   title?: ReactNode
-}> = ({ icon, title, children }) => (
-  <div className="flex items-center mb-4 last:mb-0">
-    {icon && <Icon icon={icon} className="mr-2 text-zinc-600" />}
-    <div className="text-sm mr-2">{title}</div>
+  dense?: boolean
+  relaxed?: boolean
+  className?: string
+}> = ({ icon, title, dense, className, relaxed, children }) => (
+  <div
+    className={clsx(
+      'flex last:mb-0',
+      !dense && 'mb-4',
+      !relaxed && 'items-center',
+      className,
+    )}
+  >
+    {icon && <Icon icon={icon} className="mr-2 text-zinc-500" />}
+    <div className="text-sm mr-2 text-zinc-500">{title}</div>
     {children}
   </div>
 )

@@ -1,19 +1,24 @@
 import {
   Button,
   ButtonGroup,
+  Card,
+  Elevation,
   H3,
   H4,
+  H5,
   Icon,
   IconSize,
+  NonIdealState,
   Tag,
 } from '@blueprintjs/core'
 import { useAtom } from 'jotai'
 import { merge } from 'lodash-es'
 import { Operation, Response } from 'models/operation'
-import { ComponentType } from 'react'
+import { ComponentType, FC, useMemo } from 'react'
 import Rating from 'react-rating'
 import { FactItem } from 'src/components/FactItem'
 import { RelativeTime } from 'src/components/RelativeTime'
+import { ViewerActions } from 'src/components/viewer/ViewerActions'
 import { authAtom } from 'store/auth'
 import { useOperation } from '../../apis/query'
 import { apiPostRating } from '../../apis/rating'
@@ -48,7 +53,7 @@ export const OperationViewer: ComponentType<{
     navigator.clipboard.writeText(shortCode)
 
     AppToaster.show({
-      message: '已复制神秘代码，前往 MAA 粘贴即可使用！',
+      message: '已复制神秘代码，前往 MAA 粘贴即可使用~',
       intent: 'success',
     })
   }
@@ -74,7 +79,7 @@ export const OperationViewer: ComponentType<{
     URL.revokeObjectURL(url)
 
     AppToaster.show({
-      message: '已下载作业 JSON 文件，前往 MAA 选择即可使用！',
+      message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
       intent: 'success',
     })
   }
@@ -83,8 +88,6 @@ export const OperationViewer: ComponentType<{
     const optimisticData: Response<Operation> = merge(data, {
       data: { ...operation, ratingType: decision },
     })
-
-    console.log('optimisticData', optimisticData)
 
     mutate(
       async (val) => {
@@ -101,6 +104,10 @@ export const OperationViewer: ComponentType<{
       { optimisticData, rollbackOnError: true },
     )
   }
+
+  const operationDoc = useMemo(() => {
+    return JSON.parse(operation.content) as CopilotDocV1.Operation
+  }, [operation])
 
   return (
     <OperationDrawer
@@ -146,33 +153,36 @@ export const OperationViewer: ComponentType<{
               </Tag>
             </FactItem>
 
-            <FactItem title="作业评分">
-              <Rating
-                className="mr-2"
-                initialRating={(operation?.ratingRatio || 0) * 5}
-                fullSymbol={
-                  <Icon
-                    size={IconSize.LARGE}
-                    icon="star"
-                    className="text-yellow-500"
-                  />
-                }
-                placeholderSymbol={
-                  <Icon
-                    size={IconSize.LARGE}
-                    icon="star"
-                    className="text-yellow-500"
-                  />
-                }
-                emptySymbol={
-                  <Icon
-                    size={IconSize.LARGE}
-                    icon="star-empty"
-                    className="text-zinc-600"
-                  />
-                }
-                readonly
-              />
+            <FactItem relaxed className="items-start" title="作业评分">
+              <div className="flex flex-col">
+                <Rating
+                  className="mr-2"
+                  initialRating={operation.ratingRatio * 5}
+                  fullSymbol={
+                    <Icon
+                      size={IconSize.LARGE}
+                      icon="star"
+                      className="text-yellow-500"
+                    />
+                  }
+                  placeholderSymbol={
+                    <Icon
+                      size={IconSize.LARGE}
+                      icon="star"
+                      className="text-yellow-500"
+                    />
+                  }
+                  emptySymbol={
+                    <Icon
+                      size={IconSize.LARGE}
+                      icon="star-empty"
+                      className="text-zinc-600"
+                    />
+                  }
+                  readonly
+                />
+                <div>{(operation.ratingRatio * 5).toFixed(1)} / 5.0</div>
+              </div>
 
               {/* only show like or dislike if the user is authed. otherwise, hide it */}
               {authed && (
@@ -227,16 +237,80 @@ export const OperationViewer: ComponentType<{
         <div className="grid grid-rows-1 grid-cols-3 h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)] gap-8">
           <div className="flex flex-col">
             <H4 className="mb-4">干员与干员组</H4>
-            {JSON.stringify(operation?.operators, null, 2)}
-            {JSON.stringify(operation?.groups, null, 2)}
+            <H5 className="mb-4 text-slate-600">干员</H5>
+            <div className="flex flex-col mb-4">
+              {operation.operators.map((operator) => (
+                <OperatorCard operator={operator} />
+              ))}
+              {operation.operators.length === 0 && (
+                <EmptyOperator description="作业并未添加干员" />
+              )}
+            </div>
+
+            <H5 className="mb-4 text-slate-600">干员组</H5>
+            <div className="flex flex-col">
+              {operation.groups.map((el) => (
+                <Card elevation={Elevation.ONE} className="mb-4">
+                  <div className="flex flex-col">
+                    <H5 className="text-gray-800 font-bold">{el.name}</H5>
+
+                    <div className="flex flex-col">
+                      {el.operators.filter(Boolean).map((operator) => (
+                        <OperatorCard operator={operator} />
+                      ))}
+
+                      {el.operators.filter(Boolean).length === 0 && (
+                        <EmptyOperator description="干员组中并未添加干员" />
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+
+              {operation.groups.length === 0 && (
+                <EmptyOperator
+                  title="暂无干员组"
+                  description="作业并未添加干员组"
+                />
+              )}
+            </div>
           </div>
 
           <div className="col-span-2">
             <H4 className="mb-4">动作序列</H4>
-            {JSON.stringify(operation, null, 2)}
+
+            <ViewerActions actions={operationDoc.actions} />
           </div>
         </div>
       </div>
     </OperationDrawer>
   )
 })
+
+const OperatorCard: FC<{
+  operator: string
+}> = ({ operator }) => {
+  const [name, skill] = operator.split('::')
+  return (
+    <Card elevation={Elevation.ONE} className="mb-2 last:mb-0 flex">
+      <div className="flex items-center font-bold">{name}</div>
+      <div className="flex-1"></div>
+      <div className="flex items-center tabular-nums">
+        技能<span className="font-bold ml-1">{skill}</span>
+      </div>
+    </Card>
+  )
+}
+
+const EmptyOperator: FC<{
+  title?: string
+  description?: string
+}> = ({ title = '暂无干员', description }) => (
+  <NonIdealState
+    className="my-2"
+    title={title}
+    description={description}
+    icon="slash"
+    layout="horizontal"
+  />
+)

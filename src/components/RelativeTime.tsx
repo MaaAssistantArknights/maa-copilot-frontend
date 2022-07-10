@@ -1,5 +1,5 @@
 import { Tooltip2, Tooltip2Props } from '@blueprintjs/popover2'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, memo, useEffect, useMemo, useState } from 'react'
 import { formatDateTime, formatRelativeTime } from 'utils/times'
 import { DayjsInput } from '../utils/times'
 
@@ -8,7 +8,7 @@ export const RelativeTime: FC<{
   className?: string
   detailTooltip?: boolean
   Tooltip2Props?: Omit<Tooltip2Props, 'content'>
-}> = ({ moment, className, detailTooltip = true, Tooltip2Props }) => {
+}> = memo(({ moment, className, detailTooltip = true, Tooltip2Props }) => {
   const [formatted, setFormatted] = useState(formatRelativeTime(moment))
 
   useEffect(() => {
@@ -35,4 +35,4 @@ export const RelativeTime: FC<{
   ) : (
     child
   )
-}
+})
