@@ -24,7 +24,7 @@ const atomWithLocalStorage = <T, W>(
     return initialValue
   }
   const baseAtom = atom(getInitialValue())
-  const derivedAtom = atom(
+  return atom(
     (get) => get(baseAtom),
     (get, set, update) => {
       const nextValue =
@@ -33,15 +33,16 @@ const atomWithLocalStorage = <T, W>(
       localStorage.setItem(key, JSON.stringify(nextValue))
     },
   )
-  return derivedAtom
 }
 
-const authCoreAtom = atomWithLocalStorage<AuthState, AuthState>('authCore', {})
+const authCoreAtom = atomWithLocalStorage<AuthState, AuthState>(
+  'maa-copilot-auth',
+  {},
+)
 
 export const authAtom = atom(
   (get) => get(authCoreAtom),
   (get, set, value: AuthState) => {
     set(authCoreAtom, value)
-    localStorage.setItem('maa-copilot-auth', JSON.stringify(value))
   },
 )

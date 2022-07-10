@@ -9,13 +9,17 @@ import {
   Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
-import camelcaseKeys from 'camelcase-keys'
-import { FC, memo, useState } from 'react'
-import { formatDateTime, formatRelativeTime } from 'utils/times'
-import { Operation } from '../models/operation'
+import { useState } from 'react'
+import { RelativeTime } from 'src/components/RelativeTime'
+import { OperationListItem } from '../models/operation'
+import { Paragraphs } from './Paragraphs'
 import { OperationViewer } from './viewer/OperationViewer'
 
-export const OperationCard = ({ operation }: { operation: Operation }) => {
+export const OperationCard = ({
+  operation,
+}: {
+  operation: OperationListItem
+}) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   return (
     <>
@@ -24,11 +28,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       >
-        <OperationViewer
-          operation={
-            camelcaseKeys(operation) as unknown as CopilotDocV1.Operation
-          }
-        />
+        <OperationViewer operationId={operation.id} />
       </Drawer>
 
       <Card
@@ -55,15 +55,13 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
                 </div>
               </Tooltip2>
 
-              <Tooltip2
-                placement="top"
-                content={`上传于 ${formatDateTime(operation.uploadTime)}`}
-              >
-                <div>
-                  <Icon icon="time" className="mr-1.5" />
-                  <span>{formatRelativeTime(operation.uploadTime)}</span>
-                </div>
-              </Tooltip2>
+              <div>
+                <Icon icon="time" className="mr-1.5" />
+                <RelativeTime
+                  Tooltip2Props={{ placement: 'top' }}
+                  moment={operation.uploadTime}
+                />
+              </div>
             </div>
 
             <div className="w-full flex justify-end text-zinc-500 mt-1.5">
@@ -108,14 +106,3 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
     </>
   )
 }
-
-const Paragraphs: FC<{ content: string }> = memo(({ content }) => {
-  const paragraphs = content.split('\n').map((el) => el.trim())
-  return (
-    <>
-      {paragraphs.map((paragraph, index) => (
-        <p key={index}>{paragraph}</p>
-      ))}
-    </>
-  )
-})

@@ -1,9 +1,16 @@
-import { Button, H4, Icon, InputGroup, TextArea } from '@blueprintjs/core'
+import {
+  Button,
+  H4,
+  Icon,
+  InputGroup,
+  NonIdealState,
+  Overlay,
+  TextArea,
+} from '@blueprintjs/core'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { FormField } from 'src/components/FormField'
 import { HelperText } from 'src/components/HelperText'
-import { formatRelativeTime } from 'utils/times'
 import { OperationDrawer } from '../drawer/OperationDrawer'
 import { EditorActions } from './action/EditorActions'
 import { EditorPerformerAdd } from './operator/EditorOperators'
@@ -23,10 +30,10 @@ export const OperationEditor: FC<{
         <>
           <Icon icon="document" />
           <span className="ml-2 mr-4">MAA Copilot 作业编辑器</span>
-          <Icon icon="saved" size={14} className="text-gray-600 font-normal" />
+          {/* <Icon icon="saved" size={14} className="text-gray-600 font-normal" />
           <span className="ml-1 text-sm text-gray-600 font-normal">
             {formatRelativeTime(Date.now())} 已自动保存
-          </span>
+          </span> */}
 
           <div className="flex-1"></div>
 
@@ -34,7 +41,20 @@ export const OperationEditor: FC<{
         </>
       }
     >
-      <div className="h-full overflow-auto py-4 px-8 pt-8">
+      <Overlay
+        isOpen
+        hasBackdrop={false}
+        usePortal={false}
+        className="z-20 absolute top-0 left-0 w-full h-full bg-white/60 flex flex-col items-center justify-center select-none"
+      >
+        <NonIdealState
+          title="作业编辑器锐意施工中"
+          description="太多了做不完了QAQ"
+          icon="cog"
+        />
+      </Overlay>
+
+      <div className="h-full overflow-auto py-4 px-8 pt-8" tabIndex={-1}>
         <H4>作业元信息</H4>
         <div className="flex">
           <div className="w-1/4 mr-8">

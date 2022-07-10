@@ -1,5 +1,6 @@
-import { Operation, Response } from 'models/operation'
+import { Operation, OperationListItem, Response } from 'models/operation'
 import { useEffect } from 'react'
+import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 import { PaginatedResponse } from '../models/operation'
 
@@ -7,9 +8,8 @@ export type OrderBy = 'views' | 'rating' | 'id'
 
 export const useOperations = (orderBy: OrderBy) => {
   const { data, ...rest } = useSWRInfinite<
-    Response<PaginatedResponse<Operation>>
+    Response<PaginatedResponse<OperationListItem>>
   >((_pageIndex, previousPageData) => {
-    console.log('previousPageData', previousPageData)
     if (previousPageData && !previousPageData?.data.hasNext) {
       console.info('useOperations: No more pages')
       return null // reached the end
@@ -20,7 +20,7 @@ export const useOperations = (orderBy: OrderBy) => {
   })
 
   const operations = data
-    ? ([] as Operation[]).concat(...data.map((el) => el.data.data))
+    ? ([] as OperationListItem[]).concat(...data.map((el) => el.data.data))
     : []
 
   useEffect(() => {
@@ -28,4 +28,8 @@ export const useOperations = (orderBy: OrderBy) => {
   }, [orderBy])
 
   return { operations, ...rest }
+}
+
+export const useOperation = (id: string) => {
+  return useSWR<Response<Operation>>(`/copilot/get/${id}`)
 }

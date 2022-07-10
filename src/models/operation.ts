@@ -1,7 +1,7 @@
 export interface Response<T> {
   statusCode: number
   message: string
-  traceID: string
+  traceId: string
   data: T
 }
 
@@ -14,8 +14,9 @@ export interface PaginatedResponse<T> {
 
 export interface Operation {
   id: string
+  content: string
   stageName: string
-  minimumRequired: MinimumRequired
+  minimumRequired: string
   uploadTime: string
   title: string
   detail: string
@@ -24,8 +25,16 @@ export interface Operation {
   groups: OperationGroup[]
   views: number
   ratingRatio: number
-  // ratingType: null;
+  ratingType: OpRating
 }
+
+export enum OpRating {
+  Like = 'Like',
+  Dislike = 'Dislike',
+  None = 'None',
+}
+
+export type OperationListItem = Omit<Operation, 'content'>
 
 export interface OperationGroup {
   name: string

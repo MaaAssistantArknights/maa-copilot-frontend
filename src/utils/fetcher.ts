@@ -1,4 +1,5 @@
 import camelcaseKeys from 'camelcase-keys'
+import { merge } from 'lodash-es'
 import unfetch from 'unfetch'
 import { envvarBoolean } from './envvar'
 
@@ -19,11 +20,27 @@ const baseURL = envvarBoolean('USE_PRODUCTION_API')
   ? 'https://api.prts.plus'
   : 'http://localhost:5259'
 
+export const FETCHER_CONFIG: {
+  apiToken?: string
+} = {
+  apiToken: undefined,
+}
+
 export const request = <T>(
   input: RequestInfo | URL,
   init?: RequestInit,
 ): Promise<T> =>
-  fetch(baseURL + input, init)
+  fetch(
+    baseURL + input,
+    merge(
+      init,
+      FETCHER_CONFIG.apiToken && {
+        headers: {
+          Authorization: `Bearer ${FETCHER_CONFIG.apiToken}`,
+        },
+      },
+    ),
+  )
     .then(async (res) => {
       return {
         response: res,
@@ -56,12 +73,13 @@ export const jsonRequest = <T>(
   input: RequestInfo | URL,
   init?: JsonRequestInit,
 ): Promise<T> => {
-  return request<T>(input, {
-    ...init,
-    headers: {
-      ...init?.headers,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(init?.json),
-  })
+  return request<T>(
+    input,
+    merge(init, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(init?.json),
+    }),
+  )
 }
