@@ -3,12 +3,11 @@ import { FC } from "react";
 import { useForm } from "react-hook-form";
 import { FormField } from "src/components/FormField";
 import { HelperText } from "src/components/HelperText";
-import { formatRelativeTime } from "utils/times";
 import { OperationDrawer } from "../drawer/OperationDrawer";
-import { EditorActions } from "./action/EditorActions";
-import { EditorPerformerAdd } from "./operator/EditorOperators";
+import { EditorActions } from "../editor/action/EditorActions";
+import { EditorPerformerAdd } from "../editor/operator/EditorOperators";
 
-export const OperationEditor: FC<{
+export const OperationViewer: FC<{
   operation?: CopilotDocV1.Operation;
 }> = ({ operation }) => {
   const { control } = useForm<CopilotDocV1.Operation>({
@@ -22,20 +21,23 @@ export const OperationEditor: FC<{
       title={
         <>
           <Icon icon="document" />
-          <span className="ml-2 mr-4">MAA Copilot 作业编辑器</span>
-          <Icon icon="saved" size={14} className="text-gray-600 font-normal" />
-          <span className="ml-1 text-sm text-gray-600 font-normal">
-            {formatRelativeTime(Date.now())} 已自动保存
-          </span>
+          <span className="ml-2">MAA Copilot 作业</span>
 
           <div className="flex-1"></div>
 
-          <Button intent="primary" className="ml-4" icon="upload" text="发布" />
+          <Button className="ml-4" icon="clipboard" text="复制神秘代码" />
+
+          <Button
+            intent="primary"
+            className="ml-4"
+            icon="download"
+            text="下载 JSON"
+          />
         </>
       }
     >
       <div className="h-full overflow-auto py-4 px-8 pt-8">
-        <H4>作业元信息</H4>
+        <H4>作业信息</H4>
         <div className="flex">
           <div className="w-1/4 mr-8">
             <FormField
@@ -44,10 +46,12 @@ export const OperationEditor: FC<{
               control={control}
               FormGroupProps={{
                 helperText: "除危机合约外，均请填写关卡中文名",
+                disabled: true,
               }}
               ControllerProps={{
                 render: ({ field }) => (
                   <InputGroup
+                    readOnly
                     large
                     id="stageName"
                     placeholder="如：暴君 / 不要恐慌"

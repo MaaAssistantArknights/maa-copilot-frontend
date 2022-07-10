@@ -1,155 +1,18 @@
-import { Card, Drawer, Elevation, H4, H5, Icon, Tag } from "@blueprintjs/core";
+import { Card, Drawer, DrawerSize, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core';
 import { Tooltip2 } from "@blueprintjs/popover2";
 import camelcaseKeys from 'camelcase-keys';
 import { FC, memo, useState } from 'react';
 import { formatDateTime, formatRelativeTime } from "utils/times";
 import { Operation } from "../models/operation";
-import { OperationEditor } from './editor/OperationEditor';
-
-const doc = {
-  minimum_required: "v4.0",
-  opers: [
-    {
-      name: "令",
-      skill: 3,
-      skill_usage: 0,
-    },
-  ],
-  actions: [
-    {
-      type: "部署",
-      name: "令",
-      location: [6, 2],
-      direction: "右",
-    },
-    {
-      type: "部署",
-      name: "“弦惊”",
-      location: [4, 2],
-      direction: "上",
-    },
-    {
-      type: "部署",
-      name: "“弦惊”",
-      location: [2, 6],
-      direction: "左",
-    },
-    {
-      type: "二倍速",
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "二倍速",
-      kills: 2,
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "技能",
-      cost_changes: 3,
-      name: "令",
-      location: [null, null],
-    },
-    {
-      type: "二倍速",
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "部署",
-      name: "“弦惊”",
-      location: [4, 3],
-      direction: "上",
-    },
-    {
-      type: "部署",
-      name: "“弦惊”",
-      location: [7, 2],
-      direction: "右",
-    },
-    {
-      type: "二倍速",
-      kills: 17,
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "技能",
-      cost_changes: 3,
-      name: "令",
-      location: [null, null],
-    },
-    {
-      type: "二倍速",
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "二倍速",
-      kills: 20,
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "撤退",
-      name: "",
-      location: [2, 6],
-    },
-    {
-      type: "部署",
-      name: "“弦惊”",
-      location: [2, 6],
-      direction: "左",
-    },
-    {
-      type: "二倍速",
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "二倍速",
-      kills: 35,
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "技能",
-      name: "令",
-      location: [null, null],
-    },
-    {
-      type: "部署",
-      name: "“弦惊”",
-      location: [4, 5],
-      direction: "下",
-    },
-    {
-      type: "二倍速",
-      name: "",
-      location: [null, null],
-    },
-    {
-      type: "摆完挂机",
-      name: "",
-      location: [null, null],
-    },
-  ],
-  doc: {
-    title: "令单人9-11",
-    details: "推荐练度：令-2903一级模组无潜能\n\n没抄作业，自己摸的轴",
-  },
-  groups: [],
-  stage_name: "拉锯",
-};
+import { OperationViewer } from './viewer/OperationViewer';
 
 export const OperationCard = ({ operation }: { operation: Operation }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
-      <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}>
-        <OperationEditor
-          operation={camelcaseKeys(doc) as CopilotDocV1.Operation}
+      <Drawer size={DrawerSize.LARGE} isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <OperationViewer
+          operation={camelcaseKeys(operation) as unknown as CopilotDocV1.Operation}
         />
       </Drawer>
 

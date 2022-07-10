@@ -37,7 +37,6 @@ export const EditorActionOperatorLocation = <T extends { type?: string }>({
     },
   });
 
-  console.log(value);
   const converted = value ?? [0, 0];
 
   const transform = {

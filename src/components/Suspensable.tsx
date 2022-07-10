@@ -1,11 +1,13 @@
 import { Button, NonIdealState, Spinner } from "@blueprintjs/core";
 import { ErrorBoundary } from "@sentry/react";
-import { Suspense } from "react";
+import { ComponentType, Suspense } from "react";
 import { FCC } from "../types";
 
-export const Suspensable: FCC<{
+interface SuspensableProps {
   fetcher?: () => void;
-}> = ({ children, fetcher }) => {
+}
+
+export const Suspensable: FCC<SuspensableProps> = ({ children, fetcher }) => {
   return (
     <ErrorBoundary
       fallback={
@@ -30,11 +32,29 @@ export const Suspensable: FCC<{
   );
 };
 
-export const withSuspensable = (Component: FCC<{
-  fetcher?: () => void;
-}>) => (props: any) => (
-  <Suspensable fetcher={props.fetcher}>
-    <Component {...props} />
-  </Suspensable>
-);
+// export const withSuspensable = (Component: FCC<{
+//   fetcher?: () => void;
+// }>) => (props: any) => (
+//   <Suspensable fetcher={props.fetcher}>
+//     <Component {...props} />
+//   </Suspensable>
+// );
 
+export function withSuspensable<P>(
+  Component: ComponentType<P>,
+  suspensableProps?: SuspensableProps
+): ComponentType<P> {
+  const Wrapped: ComponentType<P> = (props) => {
+    return (
+      <Suspensable {...suspensableProps}>
+        <Component {...props} />
+      </Suspensable>
+    );
+  };
+
+  // Format for display in DevTools
+  const name = Component.displayName || Component.name || "Unknown";
+  Wrapped.displayName = `withSuspensable(${name})`;
+
+  return Wrapped;
+}
