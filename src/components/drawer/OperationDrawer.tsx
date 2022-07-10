@@ -1,4 +1,4 @@
-import { FCC } from 'types';
+import { FCC } from "types";
 
 export const OperationDrawer: FCC<{
   title: JSX.Element;

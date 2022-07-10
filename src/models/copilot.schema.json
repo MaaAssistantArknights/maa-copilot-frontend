@@ -4,11 +4,7 @@
   "type": "object",
   "title": "MAA Copilot 战斗协议 v1",
   "description": "MAA Copilot 战斗协议 v1",
-  "required": [
-    "stage_name",
-    "actions",
-    "minimum_required"
-  ],
+  "required": ["stage_name", "actions", "minimum_required"],
   "properties": {
     "stage_name": {
       "type": "string",
@@ -23,9 +19,7 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string"
@@ -83,13 +77,7 @@
           },
           "direction": {
             "type": "string",
-            "enum": [
-              "Left",
-              "Right",
-              "Up",
-              "Down",
-              "None"
-            ]
+            "enum": ["Left", "Right", "Up", "Down", "None"]
           },
           "skill_usage": {
             "$ref": "#/$defs/skill_usage"
@@ -137,12 +125,7 @@
   "$defs": {
     "skill_usage": {
       "type": "integer",
-      "enum": [
-        0,
-        1,
-        2,
-        3
-      ],
+      "enum": [0, 1, 2, 3],
       "default": 0
     },
     "operator": {
@@ -150,9 +133,7 @@
       "title": "Operator",
       "items": {
         "type": "object",
-        "required": [
-          "name"
-        ],
+        "required": ["name"],
         "properties": {
           "name": {
             "type": "string",
@@ -187,11 +168,7 @@
             "properties": {
               "elite": {
                 "type": "integer",
-                "enum": [
-                  0,
-                  1,
-                  2
-                ],
+                "enum": [0, 1, 2],
                 "default": 0
               },
               "level": {

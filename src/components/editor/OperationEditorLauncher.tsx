@@ -7,7 +7,11 @@ export const OperationEditorLauncher: FC = () => {
 
   return (
     <>
-      <Drawer size={DrawerSize.LARGE} isOpen={editorActive} onClose={() => setEditorActive(false)}>
+      <Drawer
+        size={DrawerSize.LARGE}
+        isOpen={editorActive}
+        onClose={() => setEditorActive(false)}
+      >
         <OperationEditor />
       </Drawer>
 

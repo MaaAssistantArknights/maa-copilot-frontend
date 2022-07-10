@@ -4,11 +4,12 @@ import {
   Dialog,
   H4,
   Icon,
-  Menu, MenuItem,
+  Menu,
+  MenuItem,
   Position,
   Tab,
   TabId,
-  Tabs
+  Tabs,
 } from "@blueprintjs/core";
 import { Popover2 } from "@blueprintjs/popover2";
 import { LoginPanel } from "components/account/LoginPanel";
@@ -18,7 +19,7 @@ import { authAtom } from "../store/auth";
 import { RegisterPanel } from "./account/RegisterPanel";
 import {
   GlobalErrorBoundary,
-  withGlobalErrorBoundary
+  withGlobalErrorBoundary,
 } from "./GlobalErrorBoundary";
 import { AppToaster } from "./Toaster";
 

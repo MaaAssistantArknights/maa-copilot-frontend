@@ -1,8 +1,6 @@
 import { Alert, Button, H4 } from "@blueprintjs/core";
 import { useState } from "react";
-import {
-  UseFormReset
-} from "react-hook-form";
+import { UseFormReset } from "react-hook-form";
 
 export const EditorResetButton = <T,>({
   reset,

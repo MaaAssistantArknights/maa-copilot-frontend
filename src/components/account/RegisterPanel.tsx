@@ -1,11 +1,15 @@
 import { Button } from "@blueprintjs/core";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import { requestRegister } from '../../apis/auth';
-import { NetworkError } from '../../utils/fetcher';
-import { wrapErrorMessage } from '../../utils/wrapErrorMessage';
-import { AppToaster } from '../Toaster';
-import { AuthFormEmailField, AuthFormPasswordField, AuthFormUsernameField } from './AuthFormShared';
+import { requestRegister } from "../../apis/auth";
+import { NetworkError } from "../../utils/fetcher";
+import { wrapErrorMessage } from "../../utils/wrapErrorMessage";
+import { AppToaster } from "../Toaster";
+import {
+  AuthFormEmailField,
+  AuthFormPasswordField,
+  AuthFormUsernameField,
+} from "./AuthFormShared";
 
 export interface RegisterFormValues {
   email: string;

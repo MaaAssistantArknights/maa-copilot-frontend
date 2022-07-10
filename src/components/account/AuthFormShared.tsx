@@ -1,9 +1,9 @@
 import { InputGroup } from "@blueprintjs/core";
 import { FormField, FormFieldProps } from "components/FormField";
 import { UseControllerProps } from "react-hook-form";
-import { REGEX_EMAIL } from 'utils/regexes';
+import { REGEX_EMAIL } from "utils/regexes";
 
-export type RuleKeys = 'email' | 'password' | 'username';
+export type RuleKeys = "email" | "password" | "username";
 
 export const rule: Record<RuleKeys, UseControllerProps["rules"]> = {
   email: {
@@ -19,20 +19,23 @@ export const rule: Record<RuleKeys, UseControllerProps["rules"]> = {
     required: "用户名为必填项",
     minLength: { value: 4, message: "用户名长度不能小于 4 位" },
     maxLength: { value: 24, message: "用户名长度不能大于 24 位" },
-  }
+  },
 };
 
 // --- **Opinioned** AuthForm Field Components ---
 
-export type AuthFormFieldProps<T> = Pick<FormFieldProps<T>, "control" | "error" | "field"> & {
-  register?: boolean
+export type AuthFormFieldProps<T> = Pick<
+  FormFieldProps<T>,
+  "control" | "error" | "field"
+> & {
+  register?: boolean;
 };
 
 export const AuthFormEmailField = <T extends {}>({
   control,
   error,
   field,
-  register
+  register,
 }: AuthFormFieldProps<T>) => {
   return (
     <FormField

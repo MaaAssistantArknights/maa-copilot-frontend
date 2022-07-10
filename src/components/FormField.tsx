@@ -2,7 +2,7 @@ import { FormGroup, FormGroupProps, Icon, Tag } from "@blueprintjs/core";
 import {
   Popover2InteractionKind,
   Tooltip2,
-  Tooltip2Props
+  Tooltip2Props,
 } from "@blueprintjs/popover2";
 import { ReactNode } from "react";
 import {
@@ -10,7 +10,7 @@ import {
   Controller,
   ControllerProps,
   FieldError,
-  Path
+  Path,
 } from "react-hook-form";
 import { WithChildren } from "../types";
 
@@ -107,9 +107,7 @@ export const FormField2 = <T,>({
               <Icon className="ml-1 text-slate-600" icon="help" />
             </Tooltip2>
           )}
-          {asterisk && (
-            <span className="ml-1 text-slate-600">*</span>
-          )}
+          {asterisk && <span className="ml-1 text-slate-600">*</span>}
           {error && (
             <Tag minimal intent="danger" className="float-right">
               {error.message}

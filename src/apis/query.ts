@@ -1,8 +1,7 @@
 import { Operation, Response } from "models/operation";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import useSWRInfinite from "swr/infinite";
 import { PaginatedResponse } from "../models/operation";
-
 
 export type OrderBy = "views" | "rating" | "id";
 

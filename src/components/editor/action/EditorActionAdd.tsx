@@ -3,22 +3,20 @@ import { DevTool } from "@hookform/devtools";
 import { CardTitle } from "components/CardTitle";
 import {
   EditorActionExecPredicateCostChange,
-  EditorActionExecPredicateKills
+  EditorActionExecPredicateKills,
 } from "components/editor/action/EditorActionExecPredicate";
 import { EditorActionOperatorDirection } from "components/editor/action/EditorActionOperatorDirection";
 import { EditorActionOperatorLocation } from "components/editor/action/EditorActionOperatorLocation";
 import { EditorActionTypeSelect } from "components/editor/action/EditorActionTypeSelect";
 import { FormField2 } from "components/FormField";
 import { SubmitHandler, UseFieldArrayAppend, useForm } from "react-hook-form";
-import { EditorResetButton } from '../EditorResetButton';
+import { EditorResetButton } from "../EditorResetButton";
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>;
 }
 
-export const EditorActionAdd = ({
-  append,
-}: EditorActionAddProps) => {
+export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
   const {
     control,
     reset,
@@ -29,7 +27,7 @@ export const EditorActionAdd = ({
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
     append(values);
-    reset()
+    reset();
   };
 
   return (
@@ -42,7 +40,10 @@ export const EditorActionAdd = ({
 
           <div className="flex-1" />
 
-          <EditorResetButton<CopilotDocV1.Action> reset={reset} entityName="动作" />
+          <EditorResetButton<CopilotDocV1.Action>
+            reset={reset}
+            entityName="动作"
+          />
         </div>
 
         <DevTool control={control} />

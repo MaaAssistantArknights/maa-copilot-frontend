@@ -12,8 +12,7 @@ interface EditorActionOperatorDirectionChoice {
 const EditorActionOperatorDirectionSelect =
   Select2.ofType<EditorActionOperatorDirectionChoice>();
 
-interface EditorActionOperatorDirectionProps<T>
-  extends EditorFieldProps<T> {
+interface EditorActionOperatorDirectionProps<T> extends EditorFieldProps<T> {
   getValues: UseFormGetValues<T>;
 }
 

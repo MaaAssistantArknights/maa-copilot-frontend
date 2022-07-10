@@ -1,12 +1,12 @@
 import { Button } from "@blueprintjs/core";
-import { requestLogin } from 'apis/auth';
+import { requestLogin } from "apis/auth";
 import { useAtom } from "jotai";
 import { FC } from "react";
 import { useForm } from "react-hook-form";
-import { authAtom } from 'store/auth';
-import { NetworkError } from 'utils/fetcher';
+import { authAtom } from "store/auth";
+import { NetworkError } from "utils/fetcher";
 import { wrapErrorMessage } from "utils/wrapErrorMessage";
-import { AppToaster } from '../Toaster';
+import { AppToaster } from "../Toaster";
 import { AuthFormEmailField, AuthFormPasswordField } from "./AuthFormShared";
 
 export interface LoginFormValues {
@@ -30,7 +30,7 @@ export const LoginPanel: FC<{
       (e: NetworkError) => `登录失败：${e.responseMessage}`,
       requestLogin(val.email, val.password)
     );
-    const username = res.data.userInfo.userName
+    const username = res.data.userInfo.userName;
     setAuthState({
       token: res.data.token,
       username,
@@ -38,7 +38,7 @@ export const LoginPanel: FC<{
     AppToaster.show({
       intent: "success",
       message: `登录成功。欢迎回来，${username}`,
-    })
+    });
     onComplete();
   };
 

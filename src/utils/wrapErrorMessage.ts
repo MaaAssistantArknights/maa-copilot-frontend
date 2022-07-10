@@ -7,7 +7,7 @@ const defaultMessageProps: Partial<IToastProps> = {
   intent: "danger",
 };
 
-export const wrapErrorMessage = <T,>(
+export const wrapErrorMessage = <T>(
   options: string | MessageFormatter | Omit<IToastProps, "intent">,
   promise: Promise<T>
 ): Promise<T> => {

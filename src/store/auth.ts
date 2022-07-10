@@ -5,14 +5,20 @@ interface AuthState {
   username?: string;
 }
 
-const atomWithLocalStorage = <T, W>(key: string, initialValue: T): WritableAtom<T, W> => {
+const atomWithLocalStorage = <T, W>(
+  key: string,
+  initialValue: T
+): WritableAtom<T, W> => {
   const getInitialValue = () => {
     const item = localStorage.getItem(key);
     if (item !== null) {
       try {
         return JSON.parse(item);
       } catch (e) {
-        console.error("Failed to parse stored auth state. Using initialState", e);
+        console.error(
+          "Failed to parse stored auth state. Using initialState",
+          e
+        );
       }
     }
     return initialValue;

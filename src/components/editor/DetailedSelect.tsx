@@ -47,7 +47,9 @@ export const DetailedSelect: FCC<
             disabled={action.disabled}
             text={
               <div className="flex items-start">
-                {action.icon && <Icon icon={action.icon} className="pt-0.5 mr-2" />}
+                {action.icon && (
+                  <Icon icon={action.icon} className="pt-0.5 mr-2" />
+                )}
                 <div className="flex flex-col">
                   <div className="flex-1">{action.title}</div>
                   <div className="text-xs opacity-75">{action.description}</div>

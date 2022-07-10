@@ -1,5 +1,5 @@
-import { jsonRequest } from 'utils/fetcher';
-import { Response } from 'models/operation';
+import { jsonRequest } from "utils/fetcher";
+import { Response } from "models/operation";
 
 export interface LoginResponse {
   token: string;
@@ -26,9 +26,13 @@ export const requestLogin = (email: string, password: string) => {
       password,
     },
   });
-}
+};
 
-export const requestRegister = (email: string, username: string, password: string) => {
+export const requestRegister = (
+  email: string,
+  username: string,
+  password: string
+) => {
   return jsonRequest<Response<RegisterResponse>>("/user/register", {
     method: "POST",
     json: {
@@ -37,4 +41,4 @@ export const requestRegister = (email: string, username: string, password: strin
       password,
     },
   });
-}
+};

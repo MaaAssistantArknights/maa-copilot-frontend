@@ -1,11 +1,11 @@
 import { Button } from "@blueprintjs/core";
-import { OrderBy, useOperations } from 'apis/query';
-import { ComponentType } from 'react';
+import { OrderBy, useOperations } from "apis/query";
+import { ComponentType } from "react";
 import { OperationCard } from "./OperationCard";
 import { withSuspensable } from "./Suspensable";
 
 export const OperationList: ComponentType<{
-  orderBy: OrderBy
+  orderBy: OrderBy;
 }> = withSuspensable(({ orderBy }) => {
   const { operations, size, setSize, isValidating } = useOperations(orderBy);
   return (

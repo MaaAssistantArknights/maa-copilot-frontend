@@ -1,7 +1,7 @@
 import { Icon } from "@blueprintjs/core";
-import clsx from 'clsx';
+import clsx from "clsx";
 import { Fragment } from "react";
-import { FCC } from '../types';
+import { FCC } from "../types";
 
 export const HelperText: FCC<{
   className?: string;

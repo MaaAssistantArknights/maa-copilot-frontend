@@ -1,6 +1,6 @@
 import camelcaseKeys from "camelcase-keys";
 import unfetch from "unfetch";
-import { envvarBoolean } from './envvar';
+import { envvarBoolean } from "./envvar";
 
 const fetch = window.fetch || unfetch;
 
@@ -19,7 +19,10 @@ const baseURL = envvarBoolean("USE_PRODUCTION_API")
   ? "https://api.prts.plus"
   : "http://localhost:5259";
 
-export const request = <T>(input: RequestInfo | URL, init?: RequestInit): Promise<T> =>
+export const request = <T>(
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Promise<T> =>
   fetch(baseURL + input, init)
     .then(async (res) => {
       return {

@@ -1,10 +1,12 @@
+import { Button } from "@blueprintjs/core";
 import {
-  Button
-} from "@blueprintjs/core";
-import { DetailedSelect, DetailedSelectChoice, DetailedSelectItem } from 'components/editor/DetailedSelect';
-import { useMemo } from 'react';
+  DetailedSelect,
+  DetailedSelectChoice,
+  DetailedSelectItem,
+} from "components/editor/DetailedSelect";
+import { useMemo } from "react";
 import { useController } from "react-hook-form";
-import { EditorFieldProps } from '../EditorFieldProps';
+import { EditorFieldProps } from "../EditorFieldProps";
 
 export const EditorActionTypeSelect = <T,>({
   name,

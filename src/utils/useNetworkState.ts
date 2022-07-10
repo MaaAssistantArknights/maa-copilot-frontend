@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 export interface NetworkState {
   loading: boolean;
   error: Error | null;
@@ -21,4 +21,4 @@ export const useNetworkState = (initialLoading?: boolean) => {
     start,
     finish,
   };
-}
+};

@@ -1,18 +1,33 @@
-import { Card, Drawer, DrawerSize, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core';
+import {
+  Card,
+  Drawer,
+  DrawerSize,
+  Elevation,
+  H4,
+  H5,
+  Icon,
+  Tag,
+} from "@blueprintjs/core";
 import { Tooltip2 } from "@blueprintjs/popover2";
-import camelcaseKeys from 'camelcase-keys';
-import { FC, memo, useState } from 'react';
+import camelcaseKeys from "camelcase-keys";
+import { FC, memo, useState } from "react";
 import { formatDateTime, formatRelativeTime } from "utils/times";
 import { Operation } from "../models/operation";
-import { OperationViewer } from './viewer/OperationViewer';
+import { OperationViewer } from "./viewer/OperationViewer";
 
 export const OperationCard = ({ operation }: { operation: Operation }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   return (
     <>
-      <Drawer size={DrawerSize.LARGE} isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}>
+      <Drawer
+        size={DrawerSize.LARGE}
+        isOpen={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+      >
         <OperationViewer
-          operation={camelcaseKeys(operation) as unknown as CopilotDocV1.Operation}
+          operation={
+            camelcaseKeys(operation) as unknown as CopilotDocV1.Operation
+          }
         />
       </Drawer>
 

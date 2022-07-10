@@ -1,18 +1,18 @@
 import { Button, Card, HTMLSelect } from "@blueprintjs/core";
-import { Suggest2 } from '@blueprintjs/select';
+import { Suggest2 } from "@blueprintjs/select";
 import { CardTitle } from "components/CardTitle";
 import { FC, useMemo, useState } from "react";
 import {
   SubmitHandler,
   useController,
   UseFieldArrayAppend,
-  useForm
+  useForm,
 } from "react-hook-form";
 import { FormField2 } from "src/components/FormField";
 import {
   DetailedSelect,
   DetailedSelectChoice,
-  DetailedSelectItem
+  DetailedSelectItem,
 } from "../DetailedSelect";
 import { EditorFieldProps } from "../EditorFieldProps";
 import { EditorResetButton } from "../EditorResetButton";

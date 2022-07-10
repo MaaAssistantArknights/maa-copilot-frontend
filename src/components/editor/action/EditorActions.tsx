@@ -4,7 +4,7 @@ import {
   Icon,
   Menu,
   MenuItem,
-  NonIdealState
+  NonIdealState,
 } from "@blueprintjs/core";
 import { ContextMenu2 } from "@blueprintjs/popover2";
 import {
@@ -14,13 +14,13 @@ import {
   PointerSensor,
   UniqueIdentifier,
   useSensor,
-  useSensors
+  useSensors,
 } from "@dnd-kit/core";
 import {
   SortableContext,
   sortableKeyboardCoordinates,
   useSortable,
-  verticalListSortingStrategy
+  verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { FC } from "react";
