@@ -11,6 +11,7 @@ import {
   NonIdealState,
   Tag,
 } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 import { useAtom } from 'jotai'
 import { merge } from 'lodash-es'
 import { Operation, Response } from 'models/operation'
@@ -181,33 +182,42 @@ export const OperationViewer: ComponentType<{
                   }
                   readonly
                 />
-                <div>{(operation.ratingRatio * 5).toFixed(1)} / 5.0</div>
+                <div className="text-zinc-500">
+                  {operation.ratingRatio === -1
+                    ? '—'
+                    : (operation.ratingRatio * 5).toFixed(1)}{' '}
+                  / 5.0
+                </div>
               </div>
 
               {/* only show like or dislike if the user is authed. otherwise, hide it */}
               {authed && (
                 <ButtonGroup className="flex items-center ml-2">
-                  <Button
-                    icon="thumbs-up"
-                    intent={
-                      operation?.ratingType === OpRating.Like
-                        ? 'success'
-                        : 'none'
-                    }
-                    className="mr-2"
-                    active={operation?.ratingType === OpRating.Like}
-                    onClick={() => handleRating(OpRating.Like)}
-                  />
-                  <Button
-                    icon="thumbs-down"
-                    intent={
-                      operation?.ratingType === OpRating.Dislike
-                        ? 'danger'
-                        : 'none'
-                    }
-                    active={operation?.ratingType === OpRating.Dislike}
-                    onClick={() => handleRating(OpRating.Dislike)}
-                  />
+                  <Tooltip2 content="o(*≧▽≦)ツ" placement="bottom">
+                    <Button
+                      icon="thumbs-up"
+                      intent={
+                        operation?.ratingType === OpRating.Like
+                          ? 'success'
+                          : 'none'
+                      }
+                      className="mr-2"
+                      active={operation?.ratingType === OpRating.Like}
+                      onClick={() => handleRating(OpRating.Like)}
+                    />
+                  </Tooltip2>
+                  <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
+                    <Button
+                      icon="thumbs-down"
+                      intent={
+                        operation?.ratingType === OpRating.Dislike
+                          ? 'danger'
+                          : 'none'
+                      }
+                      active={operation?.ratingType === OpRating.Dislike}
+                      onClick={() => handleRating(OpRating.Dislike)}
+                    />
+                  </Tooltip2>
                 </ButtonGroup>
               )}
             </FactItem>

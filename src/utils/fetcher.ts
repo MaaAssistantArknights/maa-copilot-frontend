@@ -1,7 +1,7 @@
 import camelcaseKeys from 'camelcase-keys'
 import { merge } from 'lodash-es'
 import unfetch from 'unfetch'
-import { envvarBoolean } from './envvar'
+import { envUseProductionApi } from './envvar'
 
 const fetch = window.fetch || unfetch
 
@@ -16,7 +16,7 @@ export class NetworkError extends Error {
   }
 }
 
-const baseURL = envvarBoolean('USE_PRODUCTION_API')
+const baseURL = envUseProductionApi
   ? 'https://api.prts.plus'
   : 'http://localhost:5259'
 

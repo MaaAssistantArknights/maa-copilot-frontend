@@ -1,13 +1,23 @@
-import { Button, ButtonGroup, Card, FormGroup, Tag } from '@blueprintjs/core'
-import { Suggest2 } from '@blueprintjs/select'
+import {
+  Button,
+  ButtonGroup,
+  Card,
+  FormGroup,
+  InputGroup,
+  Tag,
+} from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
-import { FC, useState } from 'react'
+import { ComponentType, useMemo, useState } from 'react'
 import { OrderBy } from '../apis/query'
 import { withSuspensable } from './Suspensable'
 
-export const Operations: FC = withSuspensable(() => {
+import { debounce } from 'lodash-es'
+
+export const Operations: ComponentType = withSuspensable(() => {
+  const [query, setQuery] = useState('')
   const [orderBy, setOrderBy] = useState<OrderBy>('rating')
+  const debouncedSetQuery = useMemo(() => debounce(setQuery, 250), [])
 
   return (
     <>
@@ -15,26 +25,23 @@ export const Operations: FC = withSuspensable(() => {
         <CardTitle className="mb-4" icon="properties">
           查找作业
         </CardTitle>
-        <FormGroup label="搜索" helperText="键入关卡名" className="mt-2">
-          <Suggest2
+        <FormGroup
+          label="搜索"
+          helperText="键入关卡名、干员名、干员组名、标题或描述以搜索"
+          className="mt-2"
+        >
+          <InputGroup
             className="w-1/3"
-            inputProps={{
-              placeholder: '搜索...',
-              leftIcon: 'search',
-              size: 64,
-              large: true,
-              enterKeyHint: 'search',
-              // rightElement: <Spinner size={18} />,
-            }}
-            items={[]}
+            placeholder="搜索..."
+            leftIcon="search"
+            size={64}
+            large
+            enterKeyHint="search"
+            onChange={(e) => debouncedSetQuery(e.target.value)}
           />
         </FormGroup>
         <FormGroup label="排序">
-          <ButtonGroup
-            on={(e) => {
-              setOrderBy(e as OrderBy)
-            }}
-          >
+          <ButtonGroup>
             <Button
               icon="thumbs-up"
               active={orderBy === 'rating'}
@@ -62,7 +69,7 @@ export const Operations: FC = withSuspensable(() => {
         </FormGroup>
       </Card>
 
-      <OperationList orderBy={orderBy} />
+      <OperationList orderBy={orderBy} query={query} />
     </>
   )
 })

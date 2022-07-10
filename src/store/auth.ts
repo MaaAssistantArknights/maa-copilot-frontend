@@ -2,6 +2,10 @@ import { atom, WritableAtom } from 'jotai'
 
 interface AuthState {
   token?: string
+
+  activated?: boolean
+  role?: string
+  userId?: string
   username?: string
 }
 

@@ -1,11 +1,11 @@
-export const envvar = (name: string): string | undefined => {
-  return import.meta.env[name]
-}
-
-export const envvarBoolean = (name: string): boolean => {
-  const value = envvar(name)
+const envvarBoolean = (value: string): boolean => {
+  console.log('envvarBoolean', value)
   if (value === undefined) {
     return false
   }
   return value === 'true'
 }
+
+export const envUseProductionApi = envvarBoolean(
+  import.meta.env.VITE_USE_PRODUCTION_API,
+)

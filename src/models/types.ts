@@ -11,15 +11,15 @@ interface ActionType {
 }
 
 const accent = {
-  red: 'border-red-600',
-  amber: 'border-amber-600',
-  lime: 'border-lime-600',
-  emerald: 'border-emerald-600',
-  cyan: 'border-cyan-600',
-  blue: 'border-blue-600',
-  violet: 'border-violet-600',
-  fuchsia: 'border-fuchsia-600',
-  zinc: 'border-zinc-600',
+  red: 'border-red-700',
+  amber: 'border-amber-700',
+  lime: 'border-lime-700',
+  emerald: 'border-emerald-700',
+  cyan: 'border-cyan-700',
+  blue: 'border-blue-700',
+  violet: 'border-violet-700',
+  fuchsia: 'border-fuchsia-700',
+  zinc: 'border-zinc-700',
 }
 
 export const ACTION_TYPES: ActionType[] = [

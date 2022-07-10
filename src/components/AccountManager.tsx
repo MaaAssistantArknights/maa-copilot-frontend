@@ -4,7 +4,9 @@ import {
   Dialog,
   H4,
   Icon,
+  InputGroup,
   Menu,
+  MenuDivider,
   MenuItem,
   Position,
   Tab,
@@ -14,18 +16,134 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 import { LoginPanel } from 'components/account/LoginPanel'
 import { useAtom } from 'jotai'
-import { FC, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
+import { useController, useForm } from 'react-hook-form'
+import { EditorFieldProps } from 'src/components/editor/EditorFieldProps'
+import { NetworkError } from 'utils/fetcher'
+import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+import { requestActivation, requestActivationCode } from '../apis/auth'
 import { authAtom } from '../store/auth'
+import { useNetworkState } from '../utils/useNetworkState'
 import { RegisterPanel } from './account/RegisterPanel'
+import { FormField2 } from './FormField'
 import {
   GlobalErrorBoundary,
   withGlobalErrorBoundary,
 } from './GlobalErrorBoundary'
 import { AppToaster } from './Toaster'
 
+interface ActivationFormValues {
+  code: string
+}
+
+const ActivationDialog: FC<{
+  isOpen?: boolean
+  onClose: () => void
+}> = ({ isOpen, onClose }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isValid, isDirty, isSubmitting },
+  } = useForm<ActivationFormValues>()
+
+  const onSubmit = async ({ code }) => {
+    await wrapErrorMessage(
+      (e: NetworkError) => `激活失败：${e.responseMessage}`,
+      requestActivation(code),
+    )
+
+    AppToaster.show({
+      message: '激活成功',
+      intent: 'success',
+    })
+
+    onClose()
+  }
+
+  return (
+    <Dialog
+      className="w-full max-w-xl"
+      isOpen={isOpen}
+      title="激活 MAA Copilot 账户"
+      icon="key"
+      onClose={onClose}
+    >
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col px-4 pt-4">
+          <FormField2
+            field="code"
+            label="激活码"
+            description="激活码可在您注册时使用的邮箱中找到"
+            error={errors.code}
+          >
+            <ActivationInputGroup name="code" control={control} />
+          </FormField2>
+
+          <Button
+            disabled={(!isValid && !isDirty) || isSubmitting}
+            intent="primary"
+            loading={isSubmitting}
+            type="submit"
+            icon="envelope"
+            large
+          >
+            激活
+          </Button>
+        </div>
+      </form>
+    </Dialog>
+  )
+}
+
+const ActivationInputGroup = <T,>({ name, control }: EditorFieldProps<T>) => {
+  const {
+    field: { onChange, onBlur, ref },
+  } = useController({
+    name,
+    control,
+    rules: { required: '请输入激活码' },
+  })
+
+  return (
+    <InputGroup
+      large
+      rightElement={<ActivationCodeRequestButton />}
+      leftIcon="lock"
+      onChange={onChange}
+      onBlur={onBlur}
+      placeholder="请输入您的激活码"
+      ref={ref}
+      className="font-mono"
+      autoComplete="off"
+      autoFocus
+    />
+  )
+}
+
+const ActivationCodeRequestButton: FC = () => {
+  const { networkState, start, finish } = useNetworkState()
+
+  const handleClick = () => {
+    start()
+    wrapErrorMessage(
+      (e: NetworkError) => `获取激活码失败：${e.responseMessage}`,
+      requestActivationCode(),
+    )
+      .then(() => finish(null))
+      .catch((e) => finish(e))
+  }
+
+  return (
+    <Button icon="reset" onClick={handleClick} loading={networkState.loading}>
+      重新发送
+    </Button>
+  )
+}
+
 const AccountMenu: FC = () => {
-  const [, setAuthState] = useAtom(authAtom)
+  const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
+  const [activationDialogOpen, setActivationDialogOpen] = useState(false)
 
   const handleLogout = () => {
     setAuthState({})
@@ -34,6 +152,21 @@ const AccountMenu: FC = () => {
       message: '已退出登录',
     })
   }
+
+  const menuItems = useMemo(() => {
+    const items: JSX.Element[] = []
+    if (!authState.activated) {
+      items.push(
+        <MenuItem
+          shouldDismissPopover={false}
+          icon="key"
+          text="激活账户..."
+          onClick={() => setActivationDialogOpen(true)}
+        />,
+      )
+    }
+    return items
+  }, [authState])
 
   return (
     <>
@@ -51,10 +184,19 @@ const AccountMenu: FC = () => {
         <p>确定要退出登录吗？</p>
       </Alert>
 
+      <ActivationDialog
+        isOpen={activationDialogOpen}
+        onClose={() => setActivationDialogOpen(false)}
+      />
+
       <Menu>
         {/* <MenuItem icon="edit" text="修改用户名" />
         <MenuItem icon="key" text="修改密码" />
         <MenuDivider /> */}
+        {menuItems}
+
+        {menuItems.length > 0 && <MenuDivider />}
+
         <MenuItem
           shouldDismissPopover={false}
           intent="danger"

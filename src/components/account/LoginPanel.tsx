@@ -33,6 +33,9 @@ export const LoginPanel: FC<{
     const username = res.data.userInfo.userName
     setAuthState({
       token: res.data.token,
+      activated: res.data.userInfo.activated,
+      role: res.data.userInfo.role,
+      userId: res.data.userInfo.id,
       username,
     })
     AppToaster.show({

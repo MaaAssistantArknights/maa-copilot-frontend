@@ -1,5 +1,5 @@
-import { jsonRequest } from 'utils/fetcher'
 import { Response } from 'models/operation'
+import { jsonRequest } from 'utils/fetcher'
 
 export interface LoginResponse {
   token: string
@@ -16,8 +16,6 @@ export interface UserInfo {
   uploadCount: number
 }
 
-export interface RegisterResponse {}
-
 export const requestLogin = (email: string, password: string) => {
   return jsonRequest<Response<LoginResponse>>('/user/login', {
     method: 'POST',
@@ -27,6 +25,31 @@ export const requestLogin = (email: string, password: string) => {
     },
   })
 }
+
+export interface ActivationResponse {}
+
+export const requestActivation = (code: string) => {
+  return jsonRequest<Response<ActivationResponse>>('/user/activate', {
+    method: 'POST',
+    json: {
+      token: code,
+    },
+  })
+}
+
+export interface ActivationCodeResponse {}
+
+export const requestActivationCode = () => {
+  return jsonRequest<Response<ActivationCodeResponse>>(
+    '/user/activate/request',
+    {
+      method: 'POST',
+      json: {},
+    },
+  )
+}
+
+export interface RegisterResponse {}
 
 export const requestRegister = (
   email: string,

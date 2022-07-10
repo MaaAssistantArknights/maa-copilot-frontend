@@ -99,6 +99,9 @@ export const OperationCard = ({
                   {operator}
                 </Tag>
               ))}
+              {operation.operators.length === 0 && (
+                <span className="text-gray-500">无记录</span>
+              )}
             </div>
           </div>
         </div>

@@ -6,7 +6,13 @@ import { PaginatedResponse } from '../models/operation'
 
 export type OrderBy = 'views' | 'rating' | 'id'
 
-export const useOperations = (orderBy: OrderBy) => {
+export const useOperations = ({
+  orderBy,
+  query,
+}: {
+  orderBy: OrderBy
+  query: string
+}) => {
   const { data, ...rest } = useSWRInfinite<
     Response<PaginatedResponse<OperationListItem>>
   >((_pageIndex, previousPageData) => {
@@ -14,10 +20,20 @@ export const useOperations = (orderBy: OrderBy) => {
       console.info('useOperations: No more pages')
       return null // reached the end
     }
-    return `/copilot/query?order_by=${orderBy}&desc=true&page=${
-      (previousPageData?.data?.page || 0) + 1
-    }&limit=50` // SWR key
+    const searchParams = new URLSearchParams('?desc=true&limit=50')
+    searchParams.set(
+      'page',
+      ((previousPageData?.data?.page || 0) + 1).toString(),
+    )
+    searchParams.set('order_by', orderBy)
+    if (query) {
+      searchParams.set('content', query)
+    }
+
+    return `/copilot/query?${searchParams.toString()}`
   })
+
+  const isReachingEnd = data?.some((el) => !el.data.hasNext)
 
   const operations = data
     ? ([] as OperationListItem[]).concat(...data.map((el) => el.data.data))
@@ -25,9 +41,9 @@ export const useOperations = (orderBy: OrderBy) => {
 
   useEffect(() => {
     rest.setSize(1)
-  }, [orderBy])
+  }, [orderBy, query])
 
-  return { operations, ...rest }
+  return { operations, isReachingEnd, ...rest }
 }
 
 export const useOperation = (id: string) => {
