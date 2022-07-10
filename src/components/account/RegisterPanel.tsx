@@ -1,42 +1,42 @@
-import { Button } from "@blueprintjs/core";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import { requestRegister } from "../../apis/auth";
-import { NetworkError } from "../../utils/fetcher";
-import { wrapErrorMessage } from "../../utils/wrapErrorMessage";
-import { AppToaster } from "../Toaster";
+import { Button } from '@blueprintjs/core'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
+import { requestRegister } from '../../apis/auth'
+import { NetworkError } from '../../utils/fetcher'
+import { wrapErrorMessage } from '../../utils/wrapErrorMessage'
+import { AppToaster } from '../Toaster'
 import {
   AuthFormEmailField,
   AuthFormPasswordField,
   AuthFormUsernameField,
-} from "./AuthFormShared";
+} from './AuthFormShared'
 
 export interface RegisterFormValues {
-  email: string;
-  password: string;
-  username: string;
+  email: string
+  password: string
+  username: string
 }
 
 export const RegisterPanel: FC<{
-  onComplete: () => void;
+  onComplete: () => void
 }> = ({ onComplete }) => {
   const {
     control,
     handleSubmit,
     formState: { errors, isValid, isDirty, isSubmitting },
-  } = useForm<RegisterFormValues>();
+  } = useForm<RegisterFormValues>()
 
   const onSubmit = async (val: RegisterFormValues) => {
     await wrapErrorMessage(
       (e: NetworkError) => `注册失败：${e.responseMessage}`,
-      requestRegister(val.email, val.username, val.password)
-    );
+      requestRegister(val.email, val.username, val.password),
+    )
     AppToaster.show({
-      intent: "success",
+      intent: 'success',
       message: `已向注册邮箱发送验证邮件，请使用邮件内的验证链接进行验证`,
-    });
-    onComplete();
-  };
+    })
+    onComplete()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,5 +71,5 @@ export const RegisterPanel: FC<{
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}

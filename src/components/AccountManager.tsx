@@ -10,30 +10,30 @@ import {
   Tab,
   TabId,
   Tabs,
-} from "@blueprintjs/core";
-import { Popover2 } from "@blueprintjs/popover2";
-import { LoginPanel } from "components/account/LoginPanel";
-import { useAtom } from "jotai";
-import { FC, useState } from "react";
-import { authAtom } from "../store/auth";
-import { RegisterPanel } from "./account/RegisterPanel";
+} from '@blueprintjs/core'
+import { Popover2 } from '@blueprintjs/popover2'
+import { LoginPanel } from 'components/account/LoginPanel'
+import { useAtom } from 'jotai'
+import { FC, useState } from 'react'
+import { authAtom } from '../store/auth'
+import { RegisterPanel } from './account/RegisterPanel'
 import {
   GlobalErrorBoundary,
   withGlobalErrorBoundary,
-} from "./GlobalErrorBoundary";
-import { AppToaster } from "./Toaster";
+} from './GlobalErrorBoundary'
+import { AppToaster } from './Toaster'
 
 const AccountMenu: FC = () => {
-  const [, setAuthState] = useAtom(authAtom);
-  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
+  const [, setAuthState] = useAtom(authAtom)
+  const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
 
   const handleLogout = () => {
-    setAuthState({});
+    setAuthState({})
     AppToaster.show({
-      intent: "success",
-      message: "已退出登录",
-    });
-  };
+      intent: 'success',
+      message: '已退出登录',
+    })
+  }
 
   return (
     <>
@@ -64,13 +64,13 @@ const AccountMenu: FC = () => {
         />
       </Menu>
     </>
-  );
-};
+  )
+}
 
 export const AccountManager: FC = withGlobalErrorBoundary(() => {
-  const [open, setOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<TabId>("login");
-  const [authState] = useAtom(authAtom);
+  const [open, setOpen] = useState(false)
+  const [activeTab, setActiveTab] = useState<TabId>('login')
+  const [authState] = useAtom(authAtom)
 
   return (
     <>
@@ -87,7 +87,7 @@ export const AccountManager: FC = withGlobalErrorBoundary(() => {
               renderActiveTabPanelOnly={true}
               id="account-manager-tabs"
               onChange={(tab) => {
-                setActiveTab(tab);
+                setActiveTab(tab)
               }}
               selectedTabId={activeTab}
             >
@@ -101,7 +101,7 @@ export const AccountManager: FC = withGlobalErrorBoundary(() => {
                 }
                 panel={
                   <LoginPanel
-                    onNavigateRegisterPanel={() => setActiveTab("register")}
+                    onNavigateRegisterPanel={() => setActiveTab('register')}
                     onComplete={() => setOpen(false)}
                   />
                 }
@@ -115,7 +115,7 @@ export const AccountManager: FC = withGlobalErrorBoundary(() => {
                   </div>
                 }
                 panel={
-                  <RegisterPanel onComplete={() => setActiveTab("login")} />
+                  <RegisterPanel onComplete={() => setActiveTab('login')} />
                 }
               />
             </Tabs>
@@ -136,5 +136,5 @@ export const AccountManager: FC = withGlobalErrorBoundary(() => {
         </Button>
       )}
     </>
-  );
-});
+  )
+})

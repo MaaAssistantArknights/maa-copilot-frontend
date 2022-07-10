@@ -1,19 +1,19 @@
-import { Button, Card } from "@blueprintjs/core";
-import { DevTool } from "@hookform/devtools";
-import { CardTitle } from "components/CardTitle";
+import { Button, Card } from '@blueprintjs/core'
+import { DevTool } from '@hookform/devtools'
+import { CardTitle } from 'components/CardTitle'
 import {
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills,
-} from "components/editor/action/EditorActionExecPredicate";
-import { EditorActionOperatorDirection } from "components/editor/action/EditorActionOperatorDirection";
-import { EditorActionOperatorLocation } from "components/editor/action/EditorActionOperatorLocation";
-import { EditorActionTypeSelect } from "components/editor/action/EditorActionTypeSelect";
-import { FormField2 } from "components/FormField";
-import { SubmitHandler, UseFieldArrayAppend, useForm } from "react-hook-form";
-import { EditorResetButton } from "../EditorResetButton";
+} from 'components/editor/action/EditorActionExecPredicate'
+import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
+import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
+import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
+import { FormField2 } from 'components/FormField'
+import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form'
+import { EditorResetButton } from '../EditorResetButton'
 
 export interface EditorActionAddProps {
-  append: UseFieldArrayAppend<CopilotDocV1.Action>;
+  append: UseFieldArrayAppend<CopilotDocV1.Action>
 }
 
 export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
@@ -23,12 +23,12 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
     getValues,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<CopilotDocV1.Action>();
+  } = useForm<CopilotDocV1.Action>()
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
-    append(values);
-    reset();
-  };
+    append(values)
+    reset()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -130,5 +130,5 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
         </Button>
       </Card>
     </form>
-  );
-};
+  )
+}

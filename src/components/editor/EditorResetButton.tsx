@@ -1,15 +1,15 @@
-import { Alert, Button, H4 } from "@blueprintjs/core";
-import { useState } from "react";
-import { UseFormReset } from "react-hook-form";
+import { Alert, Button, H4 } from '@blueprintjs/core'
+import { useState } from 'react'
+import { UseFormReset } from 'react-hook-form'
 
 export const EditorResetButton = <T,>({
   reset,
   entityName,
 }: {
-  reset: UseFormReset<T>;
-  entityName: string;
+  reset: UseFormReset<T>
+  entityName: string
 }) => {
-  const [resetDialogOpen, setResetDialogOpen] = useState(false);
+  const [resetDialogOpen, setResetDialogOpen] = useState(false)
 
   return (
     <>
@@ -22,8 +22,8 @@ export const EditorResetButton = <T,>({
         canOutsideClickCancel
         onCancel={() => setResetDialogOpen(false)}
         onConfirm={() => {
-          reset();
-          setResetDialogOpen(false);
+          reset()
+          setResetDialogOpen(false)
         }}
       >
         <H4>重置{entityName}</H4>
@@ -40,5 +40,5 @@ export const EditorResetButton = <T,>({
         重置...
       </Button>
     </>
-  );
-};
+  )
+}

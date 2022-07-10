@@ -1,19 +1,19 @@
-import { Button, IconName, MenuItem } from "@blueprintjs/core";
-import { Select2 } from "@blueprintjs/select";
-import { useMemo } from "react";
-import { useController, UseFormGetValues } from "react-hook-form";
-import { EditorFieldProps } from "../EditorFieldProps";
+import { Button, IconName, MenuItem } from '@blueprintjs/core'
+import { Select2 } from '@blueprintjs/select'
+import { useMemo } from 'react'
+import { useController, UseFormGetValues } from 'react-hook-form'
+import { EditorFieldProps } from '../EditorFieldProps'
 
 interface EditorActionOperatorDirectionChoice {
-  icon?: IconName;
-  title: string;
-  value: string | null;
+  icon?: IconName
+  title: string
+  value: string | null
 }
 const EditorActionOperatorDirectionSelect =
-  Select2.ofType<EditorActionOperatorDirectionChoice>();
+  Select2.ofType<EditorActionOperatorDirectionChoice>()
 
 interface EditorActionOperatorDirectionProps<T> extends EditorFieldProps<T> {
-  getValues: UseFormGetValues<T>;
+  getValues: UseFormGetValues<T>
 }
 
 export const EditorActionOperatorDirection = <T extends { type?: string }>({
@@ -28,45 +28,44 @@ export const EditorActionOperatorDirection = <T extends { type?: string }>({
     control,
     rules: {
       validate: (v) => {
-        if (getValues().type === "Deploy" && !v)
-          return "部署动作下必须选择朝向";
-        return true;
+        if (getValues().type === 'Deploy' && !v) return '部署动作下必须选择朝向'
+        return true
       },
     },
-  });
+  })
 
   const items = useMemo<EditorActionOperatorDirectionChoice[]>(
     () => [
       {
-        icon: "slash",
-        title: "选择朝向",
+        icon: 'slash',
+        title: '选择朝向',
         value: null,
       },
       {
-        icon: "arrow-up",
-        title: "上",
-        value: "Up",
+        icon: 'arrow-up',
+        title: '上',
+        value: 'Up',
       },
       {
-        icon: "arrow-down",
-        title: "下",
-        value: "Down",
+        icon: 'arrow-down',
+        title: '下',
+        value: 'Down',
       },
       {
-        icon: "arrow-left",
-        title: "左",
-        value: "Left",
+        icon: 'arrow-left',
+        title: '左',
+        value: 'Left',
       },
       {
-        icon: "arrow-right",
-        title: "右",
-        value: "Right",
+        icon: 'arrow-right',
+        title: '右',
+        value: 'Right',
       },
     ],
-    []
-  );
+    [],
+  )
 
-  const selected = items.find((item) => item.value === (value ?? null));
+  const selected = items.find((item) => item.value === (value ?? null))
 
   return (
     <EditorActionOperatorDirectionSelect
@@ -83,7 +82,7 @@ export const EditorActionOperatorDirection = <T extends { type?: string }>({
         />
       )}
       onItemSelect={(item) => {
-        onChange(item.value);
+        onChange(item.value)
       }}
     >
       <Button
@@ -94,5 +93,5 @@ export const EditorActionOperatorDirection = <T extends { type?: string }>({
         ref={ref}
       />
     </EditorActionOperatorDirectionSelect>
-  );
-};
+  )
+}

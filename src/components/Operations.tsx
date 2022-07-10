@@ -1,13 +1,13 @@
-import { Button, ButtonGroup, Card, FormGroup, Tag } from "@blueprintjs/core";
-import { Suggest2 } from "@blueprintjs/select";
-import { CardTitle } from "components/CardTitle";
-import { OperationList } from "components/OperationList";
-import { FC, useState } from "react";
-import { OrderBy } from "../apis/query";
-import { withSuspensable } from "./Suspensable";
+import { Button, ButtonGroup, Card, FormGroup, Tag } from '@blueprintjs/core'
+import { Suggest2 } from '@blueprintjs/select'
+import { CardTitle } from 'components/CardTitle'
+import { OperationList } from 'components/OperationList'
+import { FC, useState } from 'react'
+import { OrderBy } from '../apis/query'
+import { withSuspensable } from './Suspensable'
 
 export const Operations: FC = withSuspensable(() => {
-  const [orderBy, setOrderBy] = useState<OrderBy>("rating");
+  const [orderBy, setOrderBy] = useState<OrderBy>('rating')
 
   return (
     <>
@@ -19,11 +19,11 @@ export const Operations: FC = withSuspensable(() => {
           <Suggest2
             className="w-1/3"
             inputProps={{
-              placeholder: "搜索...",
-              leftIcon: "search",
+              placeholder: '搜索...',
+              leftIcon: 'search',
               size: 64,
               large: true,
-              enterKeyHint: "search",
+              enterKeyHint: 'search',
               // rightElement: <Spinner size={18} />,
             }}
             items={[]}
@@ -32,14 +32,14 @@ export const Operations: FC = withSuspensable(() => {
         <FormGroup label="排序">
           <ButtonGroup
             on={(e) => {
-              setOrderBy(e as OrderBy);
+              setOrderBy(e as OrderBy)
             }}
           >
             <Button
               icon="thumbs-up"
-              active={orderBy === "rating"}
+              active={orderBy === 'rating'}
               onClick={() => {
-                setOrderBy("rating");
+                setOrderBy('rating')
               }}
             >
               <span className="flex items-center">
@@ -51,9 +51,9 @@ export const Operations: FC = withSuspensable(() => {
             </Button>
             <Button
               icon="eye-open"
-              active={orderBy === "views"}
+              active={orderBy === 'views'}
               onClick={() => {
-                setOrderBy("views");
+                setOrderBy('views')
               }}
             >
               访问量
@@ -64,5 +64,5 @@ export const Operations: FC = withSuspensable(() => {
 
       <OperationList orderBy={orderBy} />
     </>
-  );
-});
+  )
+})

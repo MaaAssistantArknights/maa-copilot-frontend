@@ -7,16 +7,16 @@ import {
   H5,
   Icon,
   Tag,
-} from "@blueprintjs/core";
-import { Tooltip2 } from "@blueprintjs/popover2";
-import camelcaseKeys from "camelcase-keys";
-import { FC, memo, useState } from "react";
-import { formatDateTime, formatRelativeTime } from "utils/times";
-import { Operation } from "../models/operation";
-import { OperationViewer } from "./viewer/OperationViewer";
+} from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
+import camelcaseKeys from 'camelcase-keys'
+import { FC, memo, useState } from 'react'
+import { formatDateTime, formatRelativeTime } from 'utils/times'
+import { Operation } from '../models/operation'
+import { OperationViewer } from './viewer/OperationViewer'
 
 export const OperationCard = ({ operation }: { operation: Operation }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false)
   return (
     <>
       <Drawer
@@ -106,16 +106,16 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
         </div>
       </Card>
     </>
-  );
-};
+  )
+}
 
 const Paragraphs: FC<{ content: string }> = memo(({ content }) => {
-  const paragraphs = content.split("\n").map((el) => el.trim());
+  const paragraphs = content.split('\n').map((el) => el.trim())
   return (
     <>
       {paragraphs.map((paragraph, index) => (
         <p key={index}>{paragraph}</p>
       ))}
     </>
-  );
-});
+  )
+})

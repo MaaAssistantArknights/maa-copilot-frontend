@@ -1,46 +1,46 @@
-import { Button } from "@blueprintjs/core";
-import { requestLogin } from "apis/auth";
-import { useAtom } from "jotai";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import { authAtom } from "store/auth";
-import { NetworkError } from "utils/fetcher";
-import { wrapErrorMessage } from "utils/wrapErrorMessage";
-import { AppToaster } from "../Toaster";
-import { AuthFormEmailField, AuthFormPasswordField } from "./AuthFormShared";
+import { Button } from '@blueprintjs/core'
+import { requestLogin } from 'apis/auth'
+import { useAtom } from 'jotai'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
+import { authAtom } from 'store/auth'
+import { NetworkError } from 'utils/fetcher'
+import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+import { AppToaster } from '../Toaster'
+import { AuthFormEmailField, AuthFormPasswordField } from './AuthFormShared'
 
 export interface LoginFormValues {
-  email: string;
-  password: string;
+  email: string
+  password: string
 }
 
 export const LoginPanel: FC<{
-  onNavigateRegisterPanel: () => void;
-  onComplete: () => void;
+  onNavigateRegisterPanel: () => void
+  onComplete: () => void
 }> = ({ onNavigateRegisterPanel, onComplete }) => {
   const {
     control,
     handleSubmit,
     formState: { errors, isValid, isDirty, isSubmitting },
-  } = useForm<LoginFormValues>();
-  const [, setAuthState] = useAtom(authAtom);
+  } = useForm<LoginFormValues>()
+  const [, setAuthState] = useAtom(authAtom)
 
   const onSubmit = async (val: LoginFormValues) => {
     const res = await wrapErrorMessage(
       (e: NetworkError) => `登录失败：${e.responseMessage}`,
-      requestLogin(val.email, val.password)
-    );
-    const username = res.data.userInfo.userName;
+      requestLogin(val.email, val.password),
+    )
+    const username = res.data.userInfo.userName
     setAuthState({
       token: res.data.token,
       username,
-    });
+    })
     AppToaster.show({
-      intent: "success",
+      intent: 'success',
       message: `登录成功。欢迎回来，${username}`,
-    });
-    onComplete();
-  };
+    })
+    onComplete()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,5 +75,5 @@ export const LoginPanel: FC<{
         </Button>
       </div>
     </form>
-  );
-};
+  )
+}

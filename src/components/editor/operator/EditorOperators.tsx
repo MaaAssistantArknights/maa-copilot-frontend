@@ -1,29 +1,29 @@
-import { Button, Card, HTMLSelect } from "@blueprintjs/core";
-import { Suggest2 } from "@blueprintjs/select";
-import { CardTitle } from "components/CardTitle";
-import { FC, useMemo, useState } from "react";
+import { Button, Card, HTMLSelect } from '@blueprintjs/core'
+import { Suggest2 } from '@blueprintjs/select'
+import { CardTitle } from 'components/CardTitle'
+import { FC, useMemo, useState } from 'react'
 import {
   SubmitHandler,
   useController,
   UseFieldArrayAppend,
   useForm,
-} from "react-hook-form";
-import { FormField2 } from "src/components/FormField";
+} from 'react-hook-form'
+import { FormField2 } from 'src/components/FormField'
 import {
   DetailedSelect,
   DetailedSelectChoice,
   DetailedSelectItem,
-} from "../DetailedSelect";
-import { EditorFieldProps } from "../EditorFieldProps";
-import { EditorResetButton } from "../EditorResetButton";
-import { EditorOperatorSkill } from "./EditorOperatorSkill";
+} from '../DetailedSelect'
+import { EditorFieldProps } from '../EditorFieldProps'
+import { EditorResetButton } from '../EditorResetButton'
+import { EditorOperatorSkill } from './EditorOperatorSkill'
 
 export interface EditorPerformerAddProps {
-  append: UseFieldArrayAppend<CopilotDocV1.Operator | CopilotDocV1.Group>;
+  append: UseFieldArrayAppend<CopilotDocV1.Operator | CopilotDocV1.Group>
 }
 
 export const EditorPerformerAdd = ({ append }: EditorPerformerAddProps) => {
-  const [mode, setMode] = useState<"operator" | "group">("operator");
+  const [mode, setMode] = useState<'operator' | 'group'>('operator')
 
   // const entityName = mode === "operator" ? "干员" : "干员组";
 
@@ -33,8 +33,8 @@ export const EditorPerformerAdd = ({ append }: EditorPerformerAddProps) => {
       <HTMLSelect
         className="ml-1"
         onChange={(e) => {
-          console.log("selected", e.target.value);
-          setMode(e.target.value as "operator" | "group");
+          console.log('selected', e.target.value)
+          setMode(e.target.value as 'operator' | 'group')
         }}
         value={mode}
       >
@@ -42,32 +42,32 @@ export const EditorPerformerAdd = ({ append }: EditorPerformerAddProps) => {
         <option value="group">干员组</option>
       </HTMLSelect>
     </>
-  );
+  )
 
   const child = useMemo(() => {
-    return mode === "operator" ? (
+    return mode === 'operator' ? (
       <EditorPerformerOperator
         submit={(values) => {
-          append(values);
+          append(values)
         }}
         categorySelector={selector}
       />
     ) : (
       <EditorPerformerGroup
         submit={(values) => {
-          append(values);
+          append(values)
         }}
         categorySelector={selector}
       />
-    );
-  }, [mode]);
+    )
+  }, [mode])
 
-  return <Card className="mb-8">{child}</Card>;
-};
+  return <Card className="mb-8">{child}</Card>
+}
 
 export interface EditorPerformerProps {
-  submit: (action: CopilotDocV1.Action) => void;
-  categorySelector: JSX.Element;
+  submit: (action: CopilotDocV1.Action) => void
+  categorySelector: JSX.Element
 }
 
 const EditorPerformerOperator = ({
@@ -79,12 +79,12 @@ const EditorPerformerOperator = ({
     reset,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<CopilotDocV1.Group>();
+  } = useForm<CopilotDocV1.Group>()
 
   const onSubmit: SubmitHandler<CopilotDocV1.Group> = (values) => {
-    submit(values);
-    reset();
-  };
+    submit(values)
+    reset()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -112,8 +112,8 @@ const EditorPerformerOperator = ({
         添加
       </Button>
     </form>
-  );
-};
+  )
+}
 
 const EditorPerformerGroup = ({
   submit,
@@ -124,12 +124,12 @@ const EditorPerformerGroup = ({
     reset,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<CopilotDocV1.Group>();
+  } = useForm<CopilotDocV1.Group>()
 
   const onSubmit: SubmitHandler<CopilotDocV1.Group> = (values) => {
-    submit(values);
-    reset();
-  };
+    submit(values)
+    reset()
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -162,8 +162,8 @@ const EditorPerformerGroup = ({
         添加
       </Button>
     </form>
-  );
-};
+  )
+}
 
 const EditorOperatorSelect = <T,>({ name, control }: EditorFieldProps<T>) => {
   const {
@@ -171,97 +171,97 @@ const EditorOperatorSelect = <T,>({ name, control }: EditorFieldProps<T>) => {
   } = useController({
     name,
     control,
-    rules: { required: "请选择干员" },
-  });
+    rules: { required: '请选择干员' },
+  })
 
   const menuItems = useMemo<DetailedSelectItem[]>(
     () => [
-      { type: "header", header: "干员上/退场" },
+      { type: 'header', header: '干员上/退场' },
       {
-        type: "choice",
-        icon: "new-object",
-        title: "部署",
-        value: "Deploy",
+        type: 'choice',
+        icon: 'new-object',
+        title: '部署',
+        value: 'Deploy',
         description: `部署干员至指定位置。当费用不够时，会一直等待到费用够（除非 timeout）`,
       },
       {
-        type: "choice",
-        icon: "graph-remove",
-        title: "撤退",
-        value: "Retreat",
-        description: "将干员从作战中撤出",
+        type: 'choice',
+        icon: 'graph-remove',
+        title: '撤退',
+        value: 'Retreat',
+        description: '将干员从作战中撤出',
       },
-      { type: "header", header: "干员技能" },
+      { type: 'header', header: '干员技能' },
       {
-        type: "choice",
-        icon: "target",
-        title: "使用技能",
-        value: "Skill",
+        type: 'choice',
+        icon: 'target',
+        title: '使用技能',
+        value: 'Skill',
         description: `当技能 CD 没转好时，一直等待到技能 CD 好（除非 timeout）`,
       },
       {
-        type: "choice",
-        icon: "swap-horizontal",
-        title: "切换技能用法",
-        value: "SkillUsage",
+        type: 'choice',
+        icon: 'swap-horizontal',
+        title: '切换技能用法',
+        value: 'SkillUsage',
         description: `切换干员技能用法。例如，刚下桃金娘、需要她帮忙打几个怪，但此时不能自动开技能否则会漏怪，等中后期平稳了才需要她自动开技能，则可以在对应时刻后，将桃金娘的技能用法从「不自动使用」改为「好了就用」。`,
       },
-      { type: "header", header: "作战控制" },
+      { type: 'header', header: '作战控制' },
       {
-        type: "choice",
-        icon: "fast-forward",
-        title: "切换二倍速",
-        value: "SpeedUp",
+        type: 'choice',
+        icon: 'fast-forward',
+        title: '切换二倍速',
+        value: 'SpeedUp',
         description: `执行后切换至二倍速，再次执行切换至一倍速`,
       },
       {
-        type: "choice",
-        icon: "fast-backward",
-        title: "进入子弹时间",
-        value: "BulletTime",
+        type: 'choice',
+        icon: 'fast-backward',
+        title: '进入子弹时间',
+        value: 'BulletTime',
         description: `执行后将点击任意干员，进入 1/5 速度状态；再进行任意动作会恢复正常速度`,
       },
       {
-        type: "choice",
-        icon: "antenna",
-        title: "开始挂机",
-        value: "SkillDaemon",
+        type: 'choice',
+        icon: 'antenna',
+        title: '开始挂机',
+        value: 'SkillDaemon',
         description: `进入挂机模式。仅使用 “好了就用” 的技能，其他什么都不做，直到战斗结束`,
       },
-      { type: "header", header: "杂项" },
+      { type: 'header', header: '杂项' },
       {
-        type: "choice",
-        icon: "paragraph",
-        title: "打印描述内容",
-        value: "Ouput",
+        type: 'choice',
+        icon: 'paragraph',
+        title: '打印描述内容',
+        value: 'Ouput',
         description: `对作战没有实际作用，仅用于输出描述内容（用来做字幕之类的）`,
       },
     ],
-    []
-  );
+    [],
+  )
   const selectedAction = menuItems.find(
-    (action) => action.type === "choice" && action.value === value
-  ) as DetailedSelectChoice | undefined;
+    (action) => action.type === 'choice' && action.value === value,
+  ) as DetailedSelectChoice | undefined
 
   return (
     <DetailedSelect
       items={menuItems}
       onItemSelect={(item) => {
-        onChange(item.value);
+        onChange(item.value)
       }}
       activeItem={selectedAction}
     >
       <Button
         large
-        icon={selectedAction?.icon || "slash"}
-        text={selectedAction ? selectedAction.title : "选择干员"}
+        icon={selectedAction?.icon || 'slash'}
+        text={selectedAction ? selectedAction.title : '选择干员'}
         rightIcon="double-caret-vertical"
         onBlur={onBlur}
         ref={ref}
       />
     </DetailedSelect>
-  );
-};
+  )
+}
 
 const EditorOperator: FC = () => {
   const {
@@ -269,7 +269,7 @@ const EditorOperator: FC = () => {
     reset,
     handleSubmit,
     formState: { errors },
-  } = useForm<CopilotDocV1.Operator>();
+  } = useForm<CopilotDocV1.Operator>()
 
   return (
     <>
@@ -305,8 +305,8 @@ const EditorOperator: FC = () => {
         </FormField2>
       </div>
     </>
-  );
-};
+  )
+}
 
 const EditorOperatorName = <T,>({ name, control }: EditorFieldProps<T>) => {
   const {
@@ -314,8 +314,8 @@ const EditorOperatorName = <T,>({ name, control }: EditorFieldProps<T>) => {
   } = useController({
     name,
     control,
-    rules: { required: "请输入干员名" },
-  });
+    rules: { required: '请输入干员名' },
+  })
 
   return (
     <Suggest2
@@ -326,8 +326,8 @@ const EditorOperatorName = <T,>({ name, control }: EditorFieldProps<T>) => {
       // ref={ref}
       // placeholder="请输入干员名"
     />
-  );
-};
+  )
+}
 
 const EditorOperatorSkillUsage = <T,>({
   name,
@@ -338,63 +338,63 @@ const EditorOperatorSkillUsage = <T,>({
   } = useController({
     name,
     control,
-  });
+  })
 
   const menuItems = useMemo<DetailedSelectItem[]>(
     () => [
       {
-        type: "choice",
-        icon: "disable",
-        title: "不自动使用",
+        type: 'choice',
+        icon: 'disable',
+        title: '不自动使用',
         value: 0,
         description:
-          "不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作",
+          '不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作',
       },
       {
-        type: "choice",
-        icon: "automatic-updates",
-        title: "好了就用，有多少次用多少次",
+        type: 'choice',
+        icon: 'automatic-updates',
+        title: '好了就用，有多少次用多少次',
         value: 1,
-        description: "例如：棘刺 3 技能、桃金娘 1 技能等",
+        description: '例如：棘刺 3 技能、桃金娘 1 技能等',
       },
       {
-        type: "choice",
-        icon: "circle",
-        title: "好了就用，仅使用一次",
+        type: 'choice',
+        icon: 'circle',
+        title: '好了就用，仅使用一次',
         value: 2,
-        description: "例如：山 2 技能",
+        description: '例如：山 2 技能',
       },
       {
-        type: "choice",
-        icon: "predictive-analysis",
-        title: "自动判断使用时机",
+        type: 'choice',
+        icon: 'predictive-analysis',
+        title: '自动判断使用时机',
         value: 3,
-        description: "(锐意开发中) 画饼.jpg",
+        description: '(锐意开发中) 画饼.jpg',
         disabled: true,
       },
     ],
-    []
-  );
+    [],
+  )
 
   const selectedAction = menuItems.find(
-    (action) => action.type === "choice" && action.value === (value ?? 0)
-  ) as DetailedSelectChoice | undefined;
+    (action) => action.type === 'choice' && action.value === (value ?? 0),
+  ) as DetailedSelectChoice | undefined
 
   return (
     <DetailedSelect
       items={menuItems}
       onItemSelect={(item) => {
-        onChange(item.value);
+        onChange(item.value)
       }}
       activeItem={selectedAction}
     >
       <Button
-        icon={selectedAction?.icon || "slash"}
-        text={selectedAction ? selectedAction.title : "选择技能用法"}
+        icon={selectedAction?.icon || 'slash'}
+        text={selectedAction ? selectedAction.title : '选择技能用法'}
         rightIcon="double-caret-vertical"
         onBlur={onBlur}
         ref={ref}
       />
     </DetailedSelect>
-  );
-};
+  )
+}

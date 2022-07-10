@@ -1,35 +1,35 @@
-import { InputGroup } from "@blueprintjs/core";
-import { FormField, FormFieldProps } from "components/FormField";
-import { UseControllerProps } from "react-hook-form";
-import { REGEX_EMAIL } from "utils/regexes";
+import { InputGroup } from '@blueprintjs/core'
+import { FormField, FormFieldProps } from 'components/FormField'
+import { UseControllerProps } from 'react-hook-form'
+import { REGEX_EMAIL } from 'utils/regexes'
 
-export type RuleKeys = "email" | "password" | "username";
+export type RuleKeys = 'email' | 'password' | 'username'
 
-export const rule: Record<RuleKeys, UseControllerProps["rules"]> = {
+export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
   email: {
-    required: "邮箱为必填项",
-    pattern: { value: REGEX_EMAIL, message: "不合法的邮箱" },
+    required: '邮箱为必填项',
+    pattern: { value: REGEX_EMAIL, message: '不合法的邮箱' },
   },
   password: {
-    required: "密码为必填项",
-    minLength: { value: 8, message: "密码长度不能小于 8 位" },
-    maxLength: { value: 32, message: "密码长度不能大于 32 位" },
+    required: '密码为必填项',
+    minLength: { value: 8, message: '密码长度不能小于 8 位' },
+    maxLength: { value: 32, message: '密码长度不能大于 32 位' },
   },
   username: {
-    required: "用户名为必填项",
-    minLength: { value: 4, message: "用户名长度不能小于 4 位" },
-    maxLength: { value: 24, message: "用户名长度不能大于 24 位" },
+    required: '用户名为必填项',
+    minLength: { value: 4, message: '用户名长度不能小于 4 位' },
+    maxLength: { value: 24, message: '用户名长度不能大于 24 位' },
   },
-};
+}
 
 // --- **Opinioned** AuthForm Field Components ---
 
 export type AuthFormFieldProps<T> = Pick<
   FormFieldProps<T>,
-  "control" | "error" | "field"
+  'control' | 'error' | 'field'
 > & {
-  register?: boolean;
-};
+  register?: boolean
+}
 
 export const AuthFormEmailField = <T extends {}>({
   control,
@@ -56,11 +56,11 @@ export const AuthFormEmailField = <T extends {}>({
         ),
       }}
       FormGroupProps={{
-        helperText: register && "邮箱将需要链接确认",
+        helperText: register && '邮箱将需要链接确认',
       }}
     />
-  );
-};
+  )
+}
 
 export const AuthFormPasswordField = <T extends {}>({
   control,
@@ -86,8 +86,8 @@ export const AuthFormPasswordField = <T extends {}>({
         ),
       }}
     />
-  );
-};
+  )
+}
 
 export const AuthFormUsernameField = <T extends {}>({
   control,
@@ -112,5 +112,5 @@ export const AuthFormUsernameField = <T extends {}>({
         ),
       }}
     />
-  );
-};
+  )
+}

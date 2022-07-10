@@ -1,33 +1,33 @@
-import { FormGroup, FormGroupProps, Icon, Tag } from "@blueprintjs/core";
+import { FormGroup, FormGroupProps, Icon, Tag } from '@blueprintjs/core'
 import {
   Popover2InteractionKind,
   Tooltip2,
   Tooltip2Props,
-} from "@blueprintjs/popover2";
-import { ReactNode } from "react";
+} from '@blueprintjs/popover2'
+import { ReactNode } from 'react'
 import {
   Control,
   Controller,
   ControllerProps,
   FieldError,
   Path,
-} from "react-hook-form";
-import { WithChildren } from "../types";
+} from 'react-hook-form'
+import { WithChildren } from '../types'
 
 export interface FormFieldRenderProps<T> {
-  name: Path<T>;
-  control: Control<T>;
-  props?: Omit<ControllerProps<T>, "name" | "render">;
+  name: Path<T>
+  control: Control<T>
+  props?: Omit<ControllerProps<T>, 'name' | 'render'>
 }
 
 export interface FormFieldProps<T> {
-  FormGroupProps?: Omit<FormGroupProps, "label" | "labelFor">;
-  control: Control<T>;
-  error?: FieldError;
-  label: ReactNode;
-  field: Path<T>;
-  ControllerProps?: Omit<ControllerProps<T>, "name">;
-  render?: (props: FormFieldRenderProps<T>) => ReactNode;
+  FormGroupProps?: Omit<FormGroupProps, 'label' | 'labelFor'>
+  control: Control<T>
+  error?: FieldError
+  label: ReactNode
+  field: Path<T>
+  ControllerProps?: Omit<ControllerProps<T>, 'name'>
+  render?: (props: FormFieldRenderProps<T>) => ReactNode
 }
 
 export const FormField = <T,>({
@@ -53,7 +53,7 @@ export const FormField = <T,>({
       }
       labelFor={field}
       labelInfo={
-        FormGroupProps?.labelInfo || (ControllerProps?.rules?.required && "*")
+        FormGroupProps?.labelInfo || (ControllerProps?.rules?.required && '*')
       }
       {...FormGroupProps}
     >
@@ -63,17 +63,17 @@ export const FormField = <T,>({
         <Controller control={control} name={field} {...ControllerProps!} />
       )}
     </FormGroup>
-  );
-};
+  )
+}
 
 export interface FormField2Props<T> {
-  FormGroupProps?: Omit<FormGroupProps, "label" | "labelFor">;
-  className?: string;
-  error?: any;
-  label: ReactNode;
-  field: Path<T>;
-  asterisk?: boolean;
-  description?: Tooltip2Props["content"];
+  FormGroupProps?: Omit<FormGroupProps, 'label' | 'labelFor'>
+  className?: string
+  error?: any
+  label: ReactNode
+  field: Path<T>
+  asterisk?: boolean
+  description?: Tooltip2Props['content']
 }
 
 export const FormField2 = <T,>({
@@ -97,7 +97,7 @@ export const FormField2 = <T,>({
               className="!inline-block !mt-0"
               interactionKind={Popover2InteractionKind.HOVER}
               content={
-                typeof description === "string" ? (
+                typeof description === 'string' ? (
                   <div className="max-w-sm">{description}</div>
                 ) : (
                   description
@@ -120,5 +120,5 @@ export const FormField2 = <T,>({
     >
       {children}
     </FormGroup>
-  );
-};
+  )
+}

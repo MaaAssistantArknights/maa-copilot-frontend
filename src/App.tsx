@@ -1,9 +1,9 @@
-import { Card, Tag } from "@blueprintjs/core";
-import { CardTitle } from "components/CardTitle";
-import { Operations } from "components/Operations";
-import { AccountManager } from "src/components/AccountManager";
-import { GlobalErrorBoundary } from "src/components/GlobalErrorBoundary";
-import { OperationEditorLauncher } from "./components/editor/OperationEditorLauncher";
+import { Card, Tag } from '@blueprintjs/core'
+import { CardTitle } from 'components/CardTitle'
+import { Operations } from 'components/Operations'
+import { AccountManager } from 'src/components/AccountManager'
+import { GlobalErrorBoundary } from 'src/components/GlobalErrorBoundary'
+import { OperationEditorLauncher } from './components/editor/OperationEditorLauncher'
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
         </div>
       </GlobalErrorBoundary>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

@@ -1,9 +1,9 @@
-import { Button, Drawer, DrawerSize } from "@blueprintjs/core";
-import { OperationEditor } from "components/editor/OperationEditor";
-import { FC, useState } from "react";
+import { Button, Drawer, DrawerSize } from '@blueprintjs/core'
+import { OperationEditor } from 'components/editor/OperationEditor'
+import { FC, useState } from 'react'
 
 export const OperationEditorLauncher: FC = () => {
-  const [editorActive, setEditorActive] = useState(false);
+  const [editorActive, setEditorActive] = useState(false)
 
   return (
     <>
@@ -24,5 +24,5 @@ export const OperationEditorLauncher: FC = () => {
         启动作业编辑器
       </Button>
     </>
-  );
-};
+  )
+}

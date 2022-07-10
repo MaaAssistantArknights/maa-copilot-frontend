@@ -1,20 +1,20 @@
-import { Button, H4, Icon, InputGroup, TextArea } from "@blueprintjs/core";
-import { FC } from "react";
-import { useForm } from "react-hook-form";
-import { FormField } from "src/components/FormField";
-import { HelperText } from "src/components/HelperText";
-import { OperationDrawer } from "../drawer/OperationDrawer";
-import { EditorActions } from "../editor/action/EditorActions";
-import { EditorPerformerAdd } from "../editor/operator/EditorOperators";
+import { Button, H4, Icon, InputGroup, TextArea } from '@blueprintjs/core'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
+import { FormField } from 'src/components/FormField'
+import { HelperText } from 'src/components/HelperText'
+import { OperationDrawer } from '../drawer/OperationDrawer'
+import { EditorActions } from '../editor/action/EditorActions'
+import { EditorPerformerAdd } from '../editor/operator/EditorOperators'
 
 export const OperationViewer: FC<{
-  operation?: CopilotDocV1.Operation;
+  operation?: CopilotDocV1.Operation
 }> = ({ operation }) => {
   const { control } = useForm<CopilotDocV1.Operation>({
     defaultValues: operation,
-  });
+  })
 
-  console.info("operation", operation);
+  console.info('operation', operation)
 
   return (
     <OperationDrawer
@@ -45,7 +45,7 @@ export const OperationViewer: FC<{
               field="stageName"
               control={control}
               FormGroupProps={{
-                helperText: "除危机合约外，均请填写关卡中文名",
+                helperText: '除危机合约外，均请填写关卡中文名',
                 disabled: true,
               }}
               ControllerProps={{
@@ -125,5 +125,5 @@ export const OperationViewer: FC<{
         </div>
       </div>
     </OperationDrawer>
-  );
-};
+  )
+}

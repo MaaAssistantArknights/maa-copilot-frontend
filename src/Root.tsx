@@ -1,7 +1,7 @@
-import { SWRConfig } from "swr";
-import { GlobalErrorBoundary } from "./components/GlobalErrorBoundary";
-import { FCC } from "./types";
-import { request } from "./utils/fetcher";
+import { SWRConfig } from 'swr'
+import { GlobalErrorBoundary } from './components/GlobalErrorBoundary'
+import { FCC } from './types'
+import { request } from './utils/fetcher'
 
 export const Root: FCC = ({ children }) => {
   return (
@@ -16,5 +16,5 @@ export const Root: FCC = ({ children }) => {
     >
       <GlobalErrorBoundary>{children}</GlobalErrorBoundary>
     </SWRConfig>
-  );
-};
+  )
+}
