@@ -1,6 +1,6 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
-import { FCC } from '../types'
+import { FCC } from 'types'
 export const GlobalErrorBoundary: FCC = ({ children }) => {
   return (
     <ErrorBoundary

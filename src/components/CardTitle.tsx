@@ -1,6 +1,6 @@
 import { H4, Icon, IconName } from '@blueprintjs/core'
 import clsx from 'clsx'
-import { FCC } from '../types'
+import { FCC } from 'types'
 
 export const CardTitle: FCC<{
   icon?: IconName

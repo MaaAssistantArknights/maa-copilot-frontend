@@ -2,7 +2,7 @@ import { Button, IconName, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 import { useMemo } from 'react'
 import { useController, UseFormGetValues } from 'react-hook-form'
-import { EditorFieldProps } from '../EditorFieldProps'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 interface EditorActionOperatorDirectionChoice {
   icon?: IconName

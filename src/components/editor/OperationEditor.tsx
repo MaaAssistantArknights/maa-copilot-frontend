@@ -9,9 +9,9 @@ import {
 } from '@blueprintjs/core'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { FormField } from 'src/components/FormField'
-import { HelperText } from 'src/components/HelperText'
-import { OperationDrawer } from '../drawer/OperationDrawer'
+import { FormField } from 'components/FormField'
+import { HelperText } from 'components/HelperText'
+import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { EditorActions } from './action/EditorActions'
 import { EditorPerformerAdd } from './operator/EditorOperators'
 

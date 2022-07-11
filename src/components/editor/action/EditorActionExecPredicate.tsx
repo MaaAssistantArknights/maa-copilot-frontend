@@ -1,6 +1,6 @@
 import { NumericInput, NumericInputProps } from '@blueprintjs/core'
 import { useController } from 'react-hook-form'
-import { EditorFieldProps } from '../EditorFieldProps'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 interface EditorActionExecPredicateProps<T> extends EditorFieldProps<T> {
   NumericInputProps?: Omit<

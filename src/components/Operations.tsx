@@ -9,7 +9,7 @@ import {
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 import { ComponentType, useMemo, useState } from 'react'
-import { OrderBy } from '../apis/query'
+import { OrderBy } from 'apis/query'
 import { withSuspensable } from './Suspensable'
 
 import { debounce } from 'lodash-es'

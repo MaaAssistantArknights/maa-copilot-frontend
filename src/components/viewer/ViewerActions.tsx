@@ -1,11 +1,11 @@
 import { Card, Elevation, NonIdealState } from '@blueprintjs/core'
 import clsx from 'clsx'
 import { FC } from 'react'
-import { CardTitle } from 'src/components/CardTitle'
-import { FactItem } from 'src/components/FactItem'
+import { CardTitle } from 'components/CardTitle'
+import { FactItem } from 'components/FactItem'
 import { FCC } from 'types'
-import { findActionType } from '../../models/types'
-import { formatDuration } from '../../utils/times'
+import { findActionType } from 'models/types'
+import { formatDuration } from 'utils/times'
 
 const actionKey = (action: CopilotDocV1.Action) =>
   `${action.type}_${action.kills}_${action.costChanges}_${action.preDelay}_${action.rearDelay}_${action.direction}`

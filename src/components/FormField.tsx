@@ -12,7 +12,7 @@ import {
   FieldError,
   Path,
 } from 'react-hook-form'
-import { WithChildren } from '../types'
+import { WithChildren } from 'types'
 
 export interface FormFieldRenderProps<T> {
   name: Path<T>

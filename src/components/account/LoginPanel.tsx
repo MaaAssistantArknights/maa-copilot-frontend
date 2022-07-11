@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { AppToaster } from '../Toaster'
+import { AppToaster } from 'components/Toaster'
 import { AuthFormEmailField, AuthFormPasswordField } from './AuthFormShared'
 
 export interface LoginFormValues {

@@ -3,7 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { NonIdealState } from '@blueprintjs/core'
 import { useAtom } from 'jotai'
 import { authAtom } from 'store/auth'
-import { AccountActivator } from '../../components/account/AccountActivator'
+import { AccountActivator } from 'components/account/AccountActivator'
 
 export const AccountActivatePage: FC = () => {
   const [auth] = useAtom(authAtom)

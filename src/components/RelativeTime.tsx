@@ -1,7 +1,7 @@
 import { Tooltip2, Tooltip2Props } from '@blueprintjs/popover2'
 import { FC, memo, useEffect, useMemo, useState } from 'react'
 import { formatDateTime, formatRelativeTime } from 'utils/times'
-import { DayjsInput } from '../utils/times'
+import { DayjsInput } from 'utils/times'
 
 export const RelativeTime: FC<{
   moment: DayjsInput

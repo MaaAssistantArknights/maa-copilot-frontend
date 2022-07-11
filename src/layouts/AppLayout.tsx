@@ -1,5 +1,5 @@
 import { Tag } from '@blueprintjs/core'
-import { AccountManager } from 'src/components/AccountManager'
+import { AccountManager } from 'components/AccountManager'
 import { FCC } from 'types'
 
 export const AppLayout: FCC = ({ children }) => (

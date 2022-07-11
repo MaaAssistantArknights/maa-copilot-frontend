@@ -2,7 +2,7 @@ import { Operation, OperationListItem, Response } from 'models/operation'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { PaginatedResponse } from '../models/operation'
+import { PaginatedResponse } from 'models/operation'
 
 export type OrderBy = 'views' | 'rating' | 'id'
 

@@ -10,8 +10,8 @@ import {
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 import { useState } from 'react'
-import { RelativeTime } from 'src/components/RelativeTime'
-import { OperationListItem } from '../models/operation'
+import { RelativeTime } from 'components/RelativeTime'
+import { OperationListItem } from 'models/operation'
 import { Paragraphs } from './Paragraphs'
 import { OperationViewer } from './viewer/OperationViewer'
 

@@ -10,7 +10,7 @@ import { EditorActionOperatorLocation } from 'components/editor/action/EditorAct
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
 import { FormField2 } from 'components/FormField'
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form'
-import { EditorResetButton } from '../EditorResetButton'
+import { EditorResetButton } from 'components/editor/EditorResetButton'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>

@@ -6,7 +6,7 @@ import {
 } from 'components/editor/DetailedSelect'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
-import { EditorFieldProps } from '../EditorFieldProps'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 export const EditorActionTypeSelect = <T,>({
   name,

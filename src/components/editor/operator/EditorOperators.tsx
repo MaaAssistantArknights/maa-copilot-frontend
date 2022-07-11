@@ -8,14 +8,14 @@ import {
   UseFieldArrayAppend,
   useForm,
 } from 'react-hook-form'
-import { FormField2 } from 'src/components/FormField'
+import { FormField2 } from 'components/FormField'
 import {
   DetailedSelect,
   DetailedSelectChoice,
   DetailedSelectItem,
-} from '../DetailedSelect'
-import { EditorFieldProps } from '../EditorFieldProps'
-import { EditorResetButton } from '../EditorResetButton'
+} from 'components/editor/DetailedSelect'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { EditorOperatorSkill } from './EditorOperatorSkill'
 
 export interface EditorPerformerAddProps {

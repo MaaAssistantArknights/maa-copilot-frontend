@@ -1,7 +1,7 @@
 import { Button, NonIdealState, Spinner } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
 import { ComponentType, Suspense } from 'react'
-import { FCC } from '../types'
+import { FCC } from 'types'
 
 interface SuspensableProps {
   fetcher?: () => void
