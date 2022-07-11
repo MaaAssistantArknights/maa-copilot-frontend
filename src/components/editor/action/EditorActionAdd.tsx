@@ -46,7 +46,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           />
         </div>
 
-        <DevTool control={control} />
+        {import.meta.env.DEV && <DevTool control={control} />}
 
         <div className="flex flex-col lg:flex-row">
           <div className="flex flex-1">
