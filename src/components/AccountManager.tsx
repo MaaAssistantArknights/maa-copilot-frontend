@@ -129,7 +129,13 @@ const ActivationCodeRequestButton: FC = () => {
       (e: NetworkError) => `获取激活码失败：${e.responseMessage}`,
       requestActivationCode(),
     )
-      .then(() => finish(null))
+      .then(() => {
+        finish(null)
+        AppToaster.show({
+          message: '激活码已发送至您的邮箱',
+          intent: 'success',
+        })
+      })
       .catch((e) => finish(e))
   }
 

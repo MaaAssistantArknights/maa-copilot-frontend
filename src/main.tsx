@@ -7,8 +7,12 @@ import { BrowserTracing } from '@sentry/tracing'
 import 'normalize.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App'
-import { Root } from './Root'
+import { Route, Routes } from 'react-router-dom'
+import { App } from './App'
+import { AppLayout } from './layouts/AppLayout'
+import { NotFoundPage } from './pages/404'
+import { AccountActivatePage } from './pages/account/activate'
+import { IndexPage } from './pages/index'
 import './styles/index.css'
 
 Sentry.init({
@@ -24,8 +28,14 @@ Sentry.init({
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <Root>
-      <App />
-    </Root>
+    <App>
+      <AppLayout>
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+          <Route path="/account/activate" element={<AccountActivatePage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </AppLayout>
+    </App>
   </React.StrictMode>,
 )
