@@ -32,14 +32,6 @@ export const Suspensable: FCC<SuspensableProps> = ({ children, fetcher }) => {
   )
 }
 
-// export const withSuspensable = (Component: FCC<{
-//   fetcher?: () => void;
-// }>) => (props: any) => (
-//   <Suspensable fetcher={props.fetcher}>
-//     <Component {...props} />
-//   </Suspensable>
-// );
-
 export function withSuspensable<P>(
   Component: ComponentType<P>,
   suspensableProps?: SuspensableProps,
@@ -47,7 +39,7 @@ export function withSuspensable<P>(
   const Wrapped: ComponentType<P> = (props) => {
     return (
       <Suspensable {...suspensableProps}>
-        <Component {...props} />
+        <Component<P> {...props} />
       </Suspensable>
     )
   }
