@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "build:skiptsc": "vite build",
+    "build:azure": "yarn build:skiptsc",
     "preview": "vite preview",
     "lint": "prettier --write src*",
     "scripts:update-operators": "yarn install && esno scripts/update-operators.ts"
