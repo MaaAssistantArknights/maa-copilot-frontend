@@ -32,7 +32,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AppLayout>
         <Routes>
           <Route path="/" element={<IndexPage />} />
-          <Route path="/account/activate" element={<AccountActivatePage />} />
+          <Route path="/account/activation" element={<AccountActivatePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppLayout>
