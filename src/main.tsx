@@ -19,7 +19,7 @@ Sentry.init({
   dsn: 'https://0a2bb44996194bb7aff8d0e32dcacb55@o1299554.ingest.sentry.io/6545242',
   integrations: [new BrowserTracing()],
   tracesSampleRate: 0.05,
-  // enabled: import.meta.env.PROD,
+  enabled: import.meta.env.PROD,
   beforeSend: (event, hint) => {
     if (import.meta.env.DEV) return null
     return event

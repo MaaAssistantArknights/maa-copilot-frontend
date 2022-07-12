@@ -7,11 +7,11 @@ import {
   Overlay,
   TextArea,
 } from '@blueprintjs/core'
-import { FC } from 'react'
-import { useForm } from 'react-hook-form'
+import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { FormField } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { FC } from 'react'
+import { useForm } from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
 import { EditorPerformerAdd } from './operator/EditorOperators'
 
@@ -41,20 +41,22 @@ export const OperationEditor: FC<{
         </>
       }
     >
-      <Overlay
-        isOpen
-        hasBackdrop={false}
-        usePortal={false}
-        className="z-20 absolute top-0 left-0 w-full h-full bg-white/60 flex flex-col items-center justify-center select-none"
-      >
-        <NonIdealState
-          title="作业编辑器锐意施工中"
-          description="太多了做不完了QAQ"
-          icon="cog"
-        />
-      </Overlay>
+      {import.meta.env.PROD && (
+        <Overlay
+          isOpen
+          hasBackdrop={false}
+          usePortal={false}
+          className="z-20 absolute top-0 left-0 w-full h-full bg-white/60 flex flex-col items-center justify-center select-none"
+        >
+          <NonIdealState
+            title="作业编辑器锐意施工中"
+            description="太多了做不完了QAQ"
+            icon="cog"
+          />
+        </Overlay>
+      )}
 
-      <div className="h-full overflow-auto py-4 px-8 pt-8" tabIndex={-1}>
+      <div className="h-full overflow-auto py-4 px-8 pt-8">
         <H4>作业元信息</H4>
         <div className="flex">
           <div className="w-1/4 mr-8">
