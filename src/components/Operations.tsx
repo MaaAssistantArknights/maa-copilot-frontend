@@ -6,17 +6,17 @@ import {
   InputGroup,
   Tag,
 } from '@blueprintjs/core'
+import { OrderBy } from 'apis/query'
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 import { ComponentType, useMemo, useState } from 'react'
-import { OrderBy } from 'apis/query'
 import { withSuspensable } from './Suspensable'
 
 import { debounce } from 'lodash-es'
 
 export const Operations: ComponentType = withSuspensable(() => {
   const [query, setQuery] = useState('')
-  const [orderBy, setOrderBy] = useState<OrderBy>('rating')
+  const [orderBy, setOrderBy] = useState<OrderBy>('hot')
   const debouncedSetQuery = useMemo(() => debounce(setQuery, 250), [])
 
   return (
@@ -43,14 +43,14 @@ export const Operations: ComponentType = withSuspensable(() => {
         <FormGroup label="排序">
           <ButtonGroup>
             <Button
-              icon="thumbs-up"
-              active={orderBy === 'rating'}
+              icon="flame"
+              active={orderBy === 'hot'}
               onClick={() => {
-                setOrderBy('rating')
+                setOrderBy('hot')
               }}
             >
               <span className="flex items-center">
-                好评率
+                热度
                 <Tag minimal className="ml-1">
                   默认
                 </Tag>

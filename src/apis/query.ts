@@ -1,10 +1,14 @@
-import { Operation, OperationListItem, Response } from 'models/operation'
+import {
+  Operation,
+  OperationListItem,
+  PaginatedResponse,
+  Response,
+} from 'models/operation'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
-import { PaginatedResponse } from 'models/operation'
 
-export type OrderBy = 'views' | 'rating' | 'id'
+export type OrderBy = 'views' | 'hot' | 'id'
 
 export const useOperations = ({
   orderBy,
