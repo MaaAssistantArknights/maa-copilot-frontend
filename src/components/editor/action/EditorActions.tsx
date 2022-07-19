@@ -10,7 +10,6 @@ import { ContextMenu2 } from '@blueprintjs/popover2'
 import {
   DndContext,
   DragEndEvent,
-  KeyboardSensor,
   PointerSensor,
   UniqueIdentifier,
   useSensor,
@@ -18,7 +17,6 @@ import {
 } from '@dnd-kit/core'
 import {
   SortableContext,
-  sortableKeyboardCoordinates,
   useSortable,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
@@ -37,19 +35,14 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
     control,
   })
 
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    }),
-  )
+  const sensors = useSensors(useSensor(PointerSensor))
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event
     if (over && active.id !== over.id) {
       const oldIndex = fields.findIndex((el) => el.id === active.id)
       const newIndex = fields.findIndex((el) => el.id === over.id)
-      if (oldIndex && newIndex) move(oldIndex, newIndex)
+      if (oldIndex !== -1 && newIndex !== -1) move(oldIndex, newIndex)
     }
   }
 

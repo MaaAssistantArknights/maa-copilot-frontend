@@ -1,11 +1,11 @@
-import { FC, useEffect } from 'react'
-import { useNetworkState } from 'utils/useNetworkState'
+import { NonIdealState, Spinner } from '@blueprintjs/core'
 import { requestActivation } from 'apis/auth'
 import { AppToaster } from 'components/Toaster'
+import { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 import { NetworkError } from 'utils/fetcher'
-import { NonIdealState, Spinner } from '@blueprintjs/core'
+import { useNetworkState } from 'utils/useNetworkState'
+import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 export const AccountActivator: FC<{
   code: string
@@ -32,14 +32,14 @@ export const AccountActivator: FC<{
           message: '返回首页中...',
         })
 
-        navigate('/')
+        navigate('/', { replace: true })
       })
       .catch((error) => finish(error))
   }, [])
 
-  return networkState.loading ? (
-    <NonIdealState icon={<Spinner />} title="正在激活账号中..." />
-  ) : (
-    <NonIdealState icon="tick" title="激活成功" />
-  )
+  if (networkState.loading)
+    return <NonIdealState icon={<Spinner />} title="正在激活账号中..." />
+  if (networkState.error)
+    return <NonIdealState icon="error" title="激活账号失败" />
+  return <NonIdealState icon="tick" title="激活成功" />
 }

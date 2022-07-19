@@ -4,11 +4,11 @@ import {
   DetailedSelectChoice,
   DetailedSelectItem,
 } from 'components/editor/DetailedSelect'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
-export const EditorActionTypeSelect = <T,>({
+export const EditorOperatorSelect = <T,>({
   name,
   control,
 }: EditorFieldProps<T>) => {
@@ -17,7 +17,7 @@ export const EditorActionTypeSelect = <T,>({
   } = useController({
     name,
     control,
-    rules: { required: '请选择动作类型' },
+    rules: { required: '请选择干员' },
   })
 
   const menuItems = useMemo<DetailedSelectItem[]>(
@@ -79,7 +79,7 @@ export const EditorActionTypeSelect = <T,>({
         type: 'choice',
         icon: 'paragraph',
         title: '打印描述内容',
-        value: 'Output',
+        value: 'Ouput',
         description: `对作战没有实际作用，仅用于输出描述内容（用来做字幕之类的）`,
       },
     ],
@@ -100,7 +100,7 @@ export const EditorActionTypeSelect = <T,>({
       <Button
         large
         icon={selectedAction?.icon || 'slash'}
-        text={selectedAction ? selectedAction.title : '选择动作'}
+        text={selectedAction ? selectedAction.title : '选择干员'}
         rightIcon="double-caret-vertical"
         onBlur={onBlur}
         ref={ref}

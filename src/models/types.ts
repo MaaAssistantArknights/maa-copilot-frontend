@@ -98,7 +98,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'paragraph',
     accent: accent.fuchsia,
     title: '打印描述内容',
-    value: 'Ouput',
+    value: 'Output',
     alternativeValue: '打印',
     description: `对作战没有实际作用，仅用于输出描述内容（用来做字幕之类的）`,
     group: '杂项',
