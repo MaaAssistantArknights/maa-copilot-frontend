@@ -1100,7 +1100,7 @@ convert-source-map@^1.5.0, convert-source-map@^1.7.0:
 
 copy-anything@^2.0.1:
   version "2.0.6"
-  resolved "https://npm.cethik.com/copy-anything/download/copy-anything-2.0.6.tgz#092454ea9584a7b7ad5573062b2a87f5900fc480"
+  resolved "https://registry.yarnpkg.com/copy-anything/download/copy-anything-2.0.6.tgz#092454ea9584a7b7ad5573062b2a87f5900fc480"
   integrity sha1-CSRU6pWEp7etVXMGKyqH9ZAPxIA=
   dependencies:
     is-what "^3.14.1"
@@ -1145,7 +1145,7 @@ debug@4, debug@^4.1.0, debug@^4.1.1:
 
 debug@^3.2.6:
   version "3.2.7"
-  resolved "https://npm.cethik.com/debug/download/debug-3.2.7.tgz#72580b7e9145fb39b6676f9c5e5fb100b934179a"
+  resolved "https://registry.yarnpkg.com/debug/download/debug-3.2.7.tgz#72580b7e9145fb39b6676f9c5e5fb100b934179a"
   integrity sha1-clgLfpFF+zm2Z2+cXl+xALk0F5o=
   dependencies:
     ms "^2.1.1"
@@ -1237,7 +1237,7 @@ emoji-regex@^8.0.0:
 
 errno@^0.1.1:
   version "0.1.8"
-  resolved "https://npm.cethik.com/errno/download/errno-0.1.8.tgz#8bb3e9c7d463be4976ff888f76b4809ebc2e811f"
+  resolved "https://registry.yarnpkg.com/errno/download/errno-0.1.8.tgz#8bb3e9c7d463be4976ff888f76b4809ebc2e811f"
   integrity sha1-i7Ppx9Rjvkl2/4iPdrSAnrwugR8=
   dependencies:
     prr "~1.0.1"
@@ -1566,7 +1566,7 @@ globrex@^0.1.2:
 
 graceful-fs@^4.1.2:
   version "4.2.10"
-  resolved "https://npm.cethik.com/graceful-fs/download/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
+  resolved "https://registry.yarnpkg.com/graceful-fs/download/graceful-fs-4.2.10.tgz#147d3a006da4ca3ce14728c7aefc287c367d7a6c"
   integrity sha1-FH06AG2kyjzhRyjHrvwofDZ9emw=
 
 gud@^1.0.0:
@@ -1642,14 +1642,14 @@ https-proxy-agent@^5.0.0:
 
 iconv-lite@^0.4.4:
   version "0.4.24"
-  resolved "https://npm.cethik.com/iconv-lite/download/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
+  resolved "https://registry.yarnpkg.com/iconv-lite/download/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
   integrity sha1-ICK0sl+93CHS9SSXSkdKr+czkIs=
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
 image-size@~0.5.0:
   version "0.5.5"
-  resolved "https://npm.cethik.com/image-size/download/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
+  resolved "https://registry.yarnpkg.com/image-size/download/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
   integrity sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=
 
 import-fresh@^3.1.0:
@@ -1739,7 +1739,7 @@ is-regex@^1.0.4:
 
 is-what@^3.14.1:
   version "3.14.1"
-  resolved "https://npm.cethik.com/is-what/download/is-what-3.14.1.tgz#e1222f46ddda85dead0fd1c9df131760e77755c1"
+  resolved "https://registry.yarnpkg.com/is-what/download/is-what-3.14.1.tgz#e1222f46ddda85dead0fd1c9df131760e77755c1"
   integrity sha1-4SIvRt3ahd6tD9HJ3xMXYOd3VcE=
 
 jotai@^1.7.3:
@@ -1779,7 +1779,7 @@ keypress@0.1.x:
 
 less@^4.1.2:
   version "4.1.2"
-  resolved "https://npm.cethik.com/less/download/less-4.1.2.tgz#6099ee584999750c2624b65f80145f8674e4b4b0"
+  resolved "https://registry.yarnpkg.com/less/download/less-4.1.2.tgz#6099ee584999750c2624b65f80145f8674e4b4b0"
   integrity sha1-YJnuWEmZdQwmJLZfgBRfhnTktLA=
   dependencies:
     copy-anything "^2.0.1"
@@ -1842,7 +1842,7 @@ lru-cache@^6.0.0:
 
 make-dir@^2.1.0:
   version "2.1.0"
-  resolved "https://npm.cethik.com/make-dir/download/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
+  resolved "https://registry.yarnpkg.com/make-dir/download/make-dir-2.1.0.tgz#5f0310e18b8be898cc07009295a30ae41e91e6f5"
   integrity sha1-XwMQ4YuL6JjMBwCSlaMK5B6R5vU=
   dependencies:
     pify "^4.0.1"
@@ -1875,7 +1875,7 @@ micromatch@^4.0.4:
 
 mime@^1.4.1:
   version "1.6.0"
-  resolved "https://npm.cethik.com/mime/download/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
+  resolved "https://registry.yarnpkg.com/mime/download/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
   integrity sha1-Ms2eXGRVO9WNGaVor0Uqz/BJgbE=
 
 minimatch@^3.1.1:
@@ -1917,7 +1917,7 @@ ms@2.1.2:
 
 ms@^2.1.1:
   version "2.1.3"
-  resolved "https://npm.cethik.com/ms/download/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
+  resolved "https://registry.yarnpkg.com/ms/download/ms-2.1.3.tgz#574c8138ce1d2b5861f0b44579dbadd60c6615b2"
   integrity sha1-V0yBOM4dK1hh8LRFedut1gxmFbI=
 
 nanoid@^3.3.4:
@@ -1927,7 +1927,7 @@ nanoid@^3.3.4:
 
 needle@^2.5.2:
   version "2.9.1"
-  resolved "https://npm.cethik.com/needle/download/needle-2.9.1.tgz#22d1dffbe3490c2b83e301f7709b6736cd8f2684"
+  resolved "https://registry.yarnpkg.com/needle/download/needle-2.9.1.tgz#22d1dffbe3490c2b83e301f7709b6736cd8f2684"
   integrity sha1-ItHf++NJDCuD4wH3cJtnNs2PJoQ=
   dependencies:
     debug "^3.2.6"
@@ -2070,7 +2070,7 @@ parse-json@^5.0.0:
 
 parse-node-version@^1.0.1:
   version "1.0.1"
-  resolved "https://npm.cethik.com/parse-node-version/download/parse-node-version-1.0.1.tgz#e2b5dbede00e7fa9bc363607f53327e8b073189b"
+  resolved "https://registry.yarnpkg.com/parse-node-version/download/parse-node-version-1.0.1.tgz#e2b5dbede00e7fa9bc363607f53327e8b073189b"
   integrity sha1-4rXb7eAOf6m8NjYH9TMn6LBzGJs=
 
 pascal-case@^3.1.2:
@@ -2121,7 +2121,7 @@ pify@^2.3.0:
 
 pify@^4.0.1:
   version "4.0.1"
-  resolved "https://npm.cethik.com/pify/download/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
+  resolved "https://registry.yarnpkg.com/pify/download/pify-4.0.1.tgz#4b2cd25c50d598735c50292224fd8c6df41e3231"
   integrity sha1-SyzSXFDVmHNcUCkiJP2MbfQeMjE=
 
 pinyin@^2.11.2:
@@ -2203,7 +2203,7 @@ prop-types@^15.6.1, prop-types@^15.6.2:
 
 prr@~1.0.1:
   version "1.0.1"
-  resolved "https://npm.cethik.com/prr/download/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
+  resolved "https://registry.yarnpkg.com/prr/download/prr-1.0.1.tgz#d3fc114ba06995a45ec6893f484ceb1d78f5f476"
   integrity sha1-0/wRS6BplaRexok/SEzrHXj19HY=
 
 punycode@^2.1.0:
@@ -2436,12 +2436,12 @@ safe-buffer@~5.2.0:
 
 "safer-buffer@>= 2.1.2 < 3":
   version "2.1.2"
-  resolved "https://npm.cethik.com/safer-buffer/download/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
+  resolved "https://registry.yarnpkg.com/safer-buffer/download/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha1-RPoWGwGHuVSd2Eu5GAL5vYOFzWo=
 
 sax@^1.2.4:
   version "1.2.4"
-  resolved "https://npm.cethik.com/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
+  resolved "https://registry.yarnpkg.com/sax/download/sax-1.2.4.tgz#2816234e2378bddc4e5354fab5caa895df7100d9"
   integrity sha1-KBYjTiN4vdxOU1T6tcqold9xANk=
 
 scheduler@^0.23.0:
@@ -2453,7 +2453,7 @@ scheduler@^0.23.0:
 
 semver@^5.6.0:
   version "5.7.1"
-  resolved "https://npm.cethik.com/semver/download/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
+  resolved "https://registry.yarnpkg.com/semver/download/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha1-qVT5Ma66UI0we78Gnv8MAclhFvc=
 
 semver@^6.0.0, semver@^6.3.0:
