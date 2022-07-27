@@ -1,0 +1,80 @@
+@import './tailwind.css';
+
+// 加上最外层的id，保证自定义css优先级
+body {
+  .bp4-input {
+    @apply placeholder:italic placeholder:text-slate-400;
+    @apply block w-full py-2 pl-3 pr-3;
+    @apply bg-white shadow-sm border border-slate-400 rounded-md border-solid;
+    @apply focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1;
+  }
+
+  .bp4-input-group {
+    .bp4-icon {
+      @apply absolute inset-y-0 left-0 flex items-center m-0;
+
+      span {
+        @apply h-5 w-5;
+      }
+    }
+
+    .bp4-icon+.bp4-input {
+      @apply pl-8;
+    }
+  }
+
+  .bp4-button {
+    @apply block py-2 px-4;
+    @apply border-0 rounded-md font-semibold;
+    @apply text-sm text-center;
+    @apply transition-colors;
+    @apply focus:outline-none;
+
+    &:not([class*=bp4-intent-]) {
+      @apply text-slate-900 shadow-none;
+      @apply border border-solid border-slate-400;
+      @apply hover:shadow-none;
+    }
+
+    &.bp4-intent-primary {
+      @apply bg-blue-500 enabled:hover:bg-blue-600;
+
+      &.bp4-minimal {
+        @apply bg-transparent enabled:hover:bg-blue-100;
+      }
+    }
+
+    &.bp4-intent-danger {
+      @apply bg-rose-500 enabled:hover:bg-rose-600;
+
+      &.bp4-minimal {
+        @apply bg-transparent enabled:hover:bg-rose-100;
+      }
+    }
+
+    .bp4-icon {
+      @apply mr-2;
+    }
+
+    .bp4-icon:first-child:last-child {
+      @apply mx-0 mb-1; // button内仅有一个图标的时候对齐
+    }
+  }
+
+  .bp4-html-select select {
+    @apply block py-2 px-4;
+    @apply border border-solid border-slate-400 rounded-md font-semibold;
+    @apply text-sm shadow-none text-center;
+    @apply transition-colors;
+    @apply focus:outline-none;
+  }
+
+
+  .bp4-popover2 {
+    @apply rounded-lg;
+    .bp4-popover2-content {
+      @apply p-4;
+    }
+  }
+
+}

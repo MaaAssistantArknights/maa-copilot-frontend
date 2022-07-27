@@ -13,6 +13,7 @@ import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
 import { AccountActivatePage } from './pages/account/activate'
 import { IndexPage } from './pages/index'
+import './styles/blueprint.less'
 import './styles/index.css'
 
 Sentry.init({
