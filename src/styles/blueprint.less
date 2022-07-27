@@ -1,12 +1,21 @@
 @import './tailwind.css';
 
+@primary-color: theme('colors.violet.500');
+@info-color: theme('colors.sky.500');
+@danger-color: theme('colors.red.500');
+@success-color: theme('colors.emerald.500');
+@warning-color: theme('colors.amber.500');
+
 // 加上最外层的id，保证自定义css优先级
 body {
   .bp4-input {
     @apply placeholder:italic placeholder:text-slate-400;
     @apply block w-full py-2 pl-3 pr-3;
     @apply bg-white shadow-sm border border-slate-400 rounded-md border-solid;
-    @apply focus:outline-none focus:border-sky-500 focus:ring-sky-500 focus:ring-1;
+    @apply focus:border-violet-500;
+    &:focus {
+      box-shadow: 0 0 5px @primary-color;
+    }
   }
 
   .bp4-input-group {
@@ -18,63 +27,106 @@ body {
       }
     }
 
-    .bp4-icon+.bp4-input {
+    .bp4-button .bp4-icon {
+      @apply relative;
+    }
+
+    .bp4-icon + .bp4-input {
       @apply pl-8;
     }
   }
 
   .bp4-button {
-    @apply block py-2 px-4;
+    @apply flex py-2 px-4;
     @apply border-0 rounded-md font-semibold;
-    @apply text-sm text-center;
+    @apply text-sm;
     @apply transition-colors;
-    @apply focus:outline-none;
+    @apply justify-center items-center;
 
-    &:not([class*=bp4-intent-]) {
+    &:not([class*='bp4-intent-']) {
       @apply text-slate-900 shadow-none;
       @apply border border-solid border-slate-400;
       @apply hover:shadow-none;
     }
 
-    &.bp4-intent-primary {
-      @apply bg-blue-500 enabled:hover:bg-blue-600;
+    &.bp4-disabled {
+      @apply opacity-50;
+    }
 
+    &.bp4-intent-primary {
+      &,
+      &.bp4-disabled {
+        @apply bg-violet-500 enabled:hover:bg-violet-600;
+      }
       &.bp4-minimal {
-        @apply bg-transparent enabled:hover:bg-blue-100;
+        @apply bg-transparent enabled:hover:bg-violet-100;
+      }
+    }
+
+    &.bp4-intent-success {
+      &,
+      &.bp4-disabled {
+        @apply bg-emerald-500 enabled:hover:bg-emerald-600;
+      }
+      &.bp4-minimal {
+        @apply bg-transparent enabled:hover:bg-emerald-100;
+      }
+    }
+
+    &.bp4-intent-warning {
+      &,
+      &.bp4-disabled {
+        @apply bg-amber-500 enabled:hover:bg-amber-600;
+      }
+      &.bp4-minimal {
+        @apply bg-transparent enabled:hover:bg-amber-100;
       }
     }
 
     &.bp4-intent-danger {
-      @apply bg-rose-500 enabled:hover:bg-rose-600;
-
+      &,
+      &.bp4-disabled {
+        @apply bg-red-500 enabled:hover:bg-red-600;
+      }
       &.bp4-minimal {
-        @apply bg-transparent enabled:hover:bg-rose-100;
+        @apply bg-transparent enabled:hover:bg-red-100;
       }
     }
 
     .bp4-icon {
       @apply mr-2;
     }
-
-    .bp4-icon:first-child:last-child {
-      @apply mx-0 mb-1; // button内仅有一个图标的时候对齐
-    }
   }
 
-  .bp4-html-select select {
-    @apply block py-2 px-4;
-    @apply border border-solid border-slate-400 rounded-md font-semibold;
-    @apply text-sm shadow-none text-center;
-    @apply transition-colors;
-    @apply focus:outline-none;
-  }
-
+  // TODO: 请把select换成组件库的select
+  // .bp4-html-select select {
+  //   @apply block py-2 px-4;
+  //   @apply border border-solid border-slate-400 rounded-md font-semibold;
+  //   @apply text-sm shadow-none text-center;
+  //   @apply transition-colors;
+  //   @apply focus:outline-none;
+  // }
 
   .bp4-popover2 {
     @apply rounded-lg;
     .bp4-popover2-content {
-      @apply p-4;
+      @apply p-3 rounded-lg;
     }
   }
 
+  .bp4-toast {
+    @apply rounded border-none;
+    &.bp4-intent-success {
+      @apply bg-emerald-500;
+    }
+    &.bp4-intent-warning {
+      @apply bg-amber-500;
+    }
+    &.bp4-intent-danger {
+      @apply bg-red-500;
+    }
+    .bp4-button {
+      @apply border-none p-0;
+    }
+  }
 }

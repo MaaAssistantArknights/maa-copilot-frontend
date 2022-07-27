@@ -41,6 +41,7 @@ export const LoginPanel: FC<{
     AppToaster.show({
       intent: 'success',
       message: `登录成功。欢迎回来，${username}`,
+      timeout: 0
     })
     onComplete()
   }

@@ -56,7 +56,7 @@ export const OperationEditor: FC<{
         </Overlay>
       )}
 
-      <div className="h-full overflow-auto py-4 px-8 pt-8">
+      <div className="h-full overflow-auto py-4 px-8 pt-8 mr-0.5">
         <H4>作业元信息</H4>
         <div className="flex">
           <div className="w-1/4 mr-8">

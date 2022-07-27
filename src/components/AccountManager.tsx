@@ -271,7 +271,8 @@ export const AccountManager: FC = withGlobalErrorBoundary(() => {
         </div>
       </Dialog>
       {authState.token ? (
-        <Popover2 content={<AccountMenu />} position={Position.BOTTOM}>
+        // BUTTOM_RIGHT设置防止弹出框撑大body超过100vw
+        <Popover2 content={<AccountMenu />} position={Position.BOTTOM_RIGHT}>
           <Button
             icon="user"
             text={authState.username}

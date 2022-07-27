@@ -49,12 +49,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                 setOrderBy('hot')
               }}
             >
-              <span className="flex items-center">
-                热度
-                <Tag minimal className="ml-1">
-                  默认
-                </Tag>
-              </span>
+              热度
             </Button>
             <Button
               icon="eye-open"
