@@ -1,12 +1,11 @@
 import { Button } from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
-import { FormField2 } from 'components/FormField'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { EditorOperator } from './EditorOperator'
 import { EditorPerformerChildProps } from './EditorPerformer'
-import { EditorOperatorSelect } from './EditorOperatorSelect'
 
-export const EditorPerformerGroup = ({
+export const EditorPerformerOperator = ({
   submit,
   categorySelector,
 }: EditorPerformerChildProps) => {
@@ -15,9 +14,9 @@ export const EditorPerformerGroup = ({
     reset,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<CopilotDocV1.Group>()
+  } = useForm<CopilotDocV1.Operator>()
 
-  const onSubmit: SubmitHandler<CopilotDocV1.Group> = (values) => {
+  const onSubmit: SubmitHandler<CopilotDocV1.Operator> = (values) => {
     submit(values)
     reset()
   }
@@ -31,18 +30,13 @@ export const EditorPerformerGroup = ({
 
         <div className="flex-1" />
 
-        <EditorResetButton<CopilotDocV1.Action>
+        <EditorResetButton<CopilotDocV1.Operator>
           reset={reset}
-          entityName="干员组"
+          entityName="干员"
         />
       </div>
 
-      <FormField2 label="干员组名" field="name" error={errors.name} asterisk>
-        <EditorOperatorSelect<CopilotDocV1.Group>
-          control={control}
-          name="name"
-        />
-      </FormField2>
+      <EditorOperator control={control} errors={errors} />
 
       <Button
         disabled={!isValid && !isDirty}

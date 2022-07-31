@@ -1,10 +1,10 @@
 import { Button } from '@blueprintjs/core'
+import { requestRegister } from 'apis/auth'
+import { AppToaster } from 'components/Toaster'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
-import { requestRegister } from 'apis/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { AppToaster } from 'components/Toaster'
 import {
   AuthFormEmailField,
   AuthFormPasswordField,
@@ -66,6 +66,7 @@ export const RegisterPanel: FC<{
           loading={isSubmitting}
           type="submit"
           icon="envelope"
+          className="self-stretch"
         >
           注册
         </Button>

@@ -13,7 +13,7 @@ import { HelperText } from 'components/HelperText'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
-import { EditorPerformerAdd } from './operator/EditorOperators'
+import { EditorPerformer } from './operator/EditorPerformer'
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
@@ -130,7 +130,7 @@ export const OperationEditor: FC<{
             <HelperText className="mb-4">
               <span>右键以展开上下文菜单</span>
             </HelperText>
-            <EditorPerformerAdd />
+            <EditorPerformer control={control} />
           </div>
           <div className="w-2/3">
             <H4>动作序列</H4>

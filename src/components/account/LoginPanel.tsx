@@ -1,12 +1,12 @@
 import { Button } from '@blueprintjs/core'
 import { requestLogin } from 'apis/auth'
+import { AppToaster } from 'components/Toaster'
 import { useAtom } from 'jotai'
 import { FC } from 'react'
 import { useForm } from 'react-hook-form'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { AppToaster } from 'components/Toaster'
 import { AuthFormEmailField, AuthFormPasswordField } from './AuthFormShared'
 
 export interface LoginFormValues {
@@ -41,7 +41,7 @@ export const LoginPanel: FC<{
     AppToaster.show({
       intent: 'success',
       message: `登录成功。欢迎回来，${username}`,
-      timeout: 0
+      timeout: 0,
     })
     onComplete()
   }
@@ -61,7 +61,7 @@ export const LoginPanel: FC<{
       />
 
       <div className="mt-6 flex items-center">
-        <span className="text-zinc-500 -mr-1">还没有账号？</span>
+        <span className="text-zinc-500">还没有账号？</span>
         <Button minimal onClick={onNavigateRegisterPanel}>
           前往注册
         </Button>
@@ -74,6 +74,7 @@ export const LoginPanel: FC<{
           loading={isSubmitting}
           type="submit"
           icon="log-in"
+          className="self-stretch"
         >
           登录
         </Button>

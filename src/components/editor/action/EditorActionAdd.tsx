@@ -8,9 +8,9 @@ import {
 import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
 import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
+import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { FormField2 } from 'components/FormField'
 import { SubmitHandler, UseFieldArrayAppend, useForm } from 'react-hook-form'
-import { EditorResetButton } from 'components/editor/EditorResetButton'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>
@@ -32,7 +32,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card className="mb-8">
+      <Card className="mb-8 pt-4">
         <div className="flex items-center mb-4">
           <CardTitle className="mb-0" icon="add">
             <span>添加动作</span>
