@@ -8,11 +8,16 @@
 
 // 加上最外层的id，保证自定义css优先级
 body {
+  .bp4-card {
+    @apply rounded-lg;
+  }
+
   .bp4-input {
     @apply placeholder:italic placeholder:text-slate-400;
     @apply block w-full py-2 pl-3 pr-3;
     @apply bg-white shadow-sm border border-slate-400 rounded-md border-solid;
     @apply focus:border-violet-500;
+
     &:focus {
       box-shadow: 0 0 5px @primary-color;
     }
@@ -37,11 +42,15 @@ body {
   }
 
   .bp4-button {
-    @apply flex py-2 px-4;
+    @apply flex;
     @apply border-0 rounded-md font-semibold;
     @apply text-sm;
     @apply transition-colors;
     @apply justify-center items-center;
+
+    &:not(.bp4-small) {
+      @apply py-2 px-4;
+    }
 
     &:not([class*='bp4-intent-']) {
       @apply text-slate-900 shadow-none;
@@ -110,8 +119,28 @@ body {
   .bp4-popover2 {
     @apply rounded-lg;
     .bp4-popover2-content {
-      @apply p-3 rounded-lg;
+      @apply rounded-lg p-2;
     }
+    ul li {
+      .bp4-menu-item {
+        @apply rounded-md;
+      }
+
+      &:not(:last-child) {
+        @apply mb-1;
+      }
+    }
+  }
+
+  .bp4-dialog {
+    @apply rounded-lg;
+    & .bp4-dialog-header {
+      @apply rounded-t-lg;
+    }
+  }
+
+  .bp4-popover2 .bp4-heading {
+    @apply opacity-80;
   }
 
   .bp4-toast {
@@ -127,6 +156,28 @@ body {
     }
     .bp4-button {
       @apply border-none p-0;
+    }
+  }
+
+  .bp4-numeric-input {
+    & .bp4-input-group {
+      @apply !mr-0;
+
+      & input {
+        @apply rounded-r-none border-r-0;
+      }
+    }
+
+    & .bp4-button-group {
+      & button {
+        @apply !rounded-l-none;
+      }
+      & button:first-of-type {
+        @apply !rounded-tr-lg;
+      }
+      & button:last-of-type {
+        @apply !rounded-br-lg;
+      }
     }
   }
 }
