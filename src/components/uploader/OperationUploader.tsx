@@ -1,11 +1,18 @@
-import { H4, Callout, Icon, FileInput, Button } from '@blueprintjs/core'
+import {
+  Button,
+  Callout,
+  FileInput,
+  FormGroup,
+  H4,
+  Icon,
+} from '@blueprintjs/core'
+import { requestCopilotUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { AppToaster } from 'components/Toaster'
+import { STAGES } from 'models/generated/stages'
 import { FC, useState } from 'react'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { requestCopilotUpload } from 'apis/copilotOperation'
-import { AppToaster } from 'components/Toaster'
-import { STAGES } from 'models/generated/stages'
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
 // and copilot backend server need to use draft-6
@@ -34,6 +41,18 @@ const operationPatch = (operation: object): object => {
     operation['minimum_required'] = 'v4.0.0'
   }
 
+  // title
+  if (!operation['doc']['title']) {
+    operation['doc'] = operation['doc'] ?? {}
+    operation['doc']['title'] = operation['stage_name']
+  }
+
+  // description
+  if (!operation['doc']['details']) {
+    operation['doc'] = operation['doc'] ?? {}
+    operation['doc']['details'] = `作业 ${operation['stage_name']}`
+  }
+
   // i18n compatibility of level id
   if (!(operation['stage_name'] as string).match('^[a-z/_0-9-]$')) {
     const matchStages = STAGES.filter((stage) => {
@@ -46,7 +65,7 @@ const operationPatch = (operation: object): object => {
       operation['stage_name'] = matchStages[0].levelId
     } else {
       AppToaster.show({
-        message: `已找到${matchStages.length}个关卡，跳过自动修正`,
+        message: `已找到 ${matchStages.length} 个关卡，跳过自动修正`,
         intent: 'warning',
       })
     }
@@ -70,12 +89,18 @@ export const OperationUploader: FC = () => {
     const file = event.currentTarget.files?.[0]
     if (file) {
       setFilename(file.name)
+      if (file.type !== 'application/json') {
+        setErrors(['请选择 JSON 文件'])
+        return
+      }
+
       const fileText = await file.text()
       let operationObject: object
       try {
         operationObject = JSON.parse(fileText)
-      } catch (error) {
-        setErrors(['请上传正确的JSON文件'])
+      } catch (e) {
+        const err = e as Error
+        setErrors(['请选择合法的 JSON 文件：JSON 解析失败：' + err.message])
         return
       }
 
@@ -93,12 +118,12 @@ export const OperationUploader: FC = () => {
   const handleOperationSubmit = async () => {
     setIsUploading(true)
     await wrapErrorMessage(
-      (e: NetworkError) => `MAA作业上传失败：${e.responseMessage}`,
+      (e: NetworkError) => `作业上传失败：${e.responseMessage}`,
       requestCopilotUpload(JSON.stringify(operation)),
     )
     AppToaster.show({
       intent: 'success',
-      message: 'MAA作业上传成功',
+      message: '作业上传成功',
     })
     setIsUploading(false)
   }
@@ -107,22 +132,31 @@ export const OperationUploader: FC = () => {
     <OperationDrawer
       title={
         <>
-          <Icon icon="document" />
-          <span className="ml-2 mr-4">MAA Copilot 上传已有作业</span>
+          <Icon icon="cloud-upload" />
+          <span className="ml-2 mr-4">上传已有作业</span>
         </>
       }
     >
-      <div className="h-full overflow-auto py-4 px-8 pt-8 mr-0.5">
-        <H4>上传文件</H4>
+      <div className="h-full overflow-auto py-4 px-8 pt-8 mr-0.5 leading-relaxed">
+        <H4>上传已有作业</H4>
 
-        <p>本功能仅限于上传已有的MAA作业。</p>
+        <p>本功能仅限于上传已有的作业文件。</p>
 
-        <p>如果您想创建新的MAA作业，请使用作业编辑器。</p>
+        <p>若需要创建新的作业，还请期待作业编辑器完工。</p>
 
-        <FileInput
-          text={filename ?? '选择文件'}
-          onInputChange={handleFileUpload}
-        />
+        <FormGroup
+          className="mt-4"
+          label={<span className="font-bold">选择作业文件</span>}
+          labelFor="file-input"
+          labelInfo="仅支持 .json 文件"
+        >
+          <FileInput
+            large
+            fill
+            text={filename ?? '选择文件...'}
+            onInputChange={handleFileUpload}
+          />
+        </FormGroup>
 
         {error && (
           <Callout className="mt-4" intent="danger" icon="error" title="错误">

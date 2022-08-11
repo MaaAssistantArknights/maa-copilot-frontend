@@ -7,27 +7,24 @@ import {
   H4,
   H5,
   Icon,
-  IconSize,
   NonIdealState,
   Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
-import { useAtom } from 'jotai'
-import { merge } from 'lodash-es'
-import { Operation, Response } from 'models/operation'
-import { ComponentType, FC, useMemo } from 'react'
-import Rating from 'react-rating'
-import { FactItem } from 'components/FactItem'
-import { RelativeTime } from 'components/RelativeTime'
-import { ViewerActions } from 'components/viewer/ViewerActions'
-import { authAtom } from 'store/auth'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
-import { OpRating } from 'models/operation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
+import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
+import { ViewerActions } from 'components/viewer/ViewerActions'
+import { useAtom } from 'jotai'
+import { merge } from 'lodash-es'
+import { Operation, OpRating, Response } from 'models/operation'
+import { ComponentType, FC, useMemo } from 'react'
+import { authAtom } from 'store/auth'
 
 export const OperationViewer: ComponentType<{
   operationId: string
@@ -155,10 +152,10 @@ export const OperationViewer: ComponentType<{
             </FactItem>
 
             <FactItem relaxed className="items-start" title="作业评分">
-              <div className="flex flex-col">
-                <Rating
+              <div className="flex flex-col font-bold">
+                {/* <Rating
                   className="mr-2"
-                  initialRating={operation.ratingRatio * 5}
+                  initialRating={operation.ratingLevel * 5}
                   fullSymbol={
                     <Icon
                       size={IconSize.LARGE}
@@ -187,7 +184,8 @@ export const OperationViewer: ComponentType<{
                     ? '—'
                     : (operation.ratingRatio * 5).toFixed(1)}{' '}
                   / 5.0
-                </div>
+                </div> */}
+                {operation.ratingLevel}
               </div>
 
               {/* only show like or dislike if the user is authed. otherwise, hide it */}

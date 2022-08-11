@@ -24,7 +24,7 @@ export interface Operation {
   operators: string[]
   groups: OperationGroup[]
   views: number
-  ratingRatio: number
+  ratingLevel: string
   ratingType: OpRating
 }
 

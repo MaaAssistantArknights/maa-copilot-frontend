@@ -23,6 +23,21 @@ body {
     }
   }
 
+  .bp4-file-upload-input {
+    @apply placeholder:italic placeholder:text-slate-400;
+    @apply block w-full;
+    @apply bg-white shadow-sm border border-slate-400 rounded-md border-solid;
+    @apply focus:border-violet-500;
+  }
+
+  .bp4-large .bp4-file-upload-input::after {
+    @apply m-1;
+  }
+
+  .bp4-callout {
+    @apply rounded-md;
+  }
+
   .bp4-input-group {
     .bp4-icon {
       @apply absolute inset-y-0 left-0 flex items-center m-0;

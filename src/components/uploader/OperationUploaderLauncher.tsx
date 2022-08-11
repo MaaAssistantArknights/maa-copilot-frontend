@@ -1,4 +1,4 @@
-import { Button, Drawer, DrawerSize } from '@blueprintjs/core'
+import { Button, Drawer } from '@blueprintjs/core'
 import { OperationUploader } from 'components/uploader/OperationUploader'
 import { FC, useState } from 'react'
 
@@ -8,7 +8,7 @@ export const OperationUploaderLauncher: FC = () => {
   return (
     <>
       <Drawer
-        size={DrawerSize.LARGE}
+        size="560px"
         isOpen={uploaderActive}
         onClose={() => setUploaderActive(false)}
       >
