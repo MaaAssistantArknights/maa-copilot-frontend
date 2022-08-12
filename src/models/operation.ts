@@ -15,7 +15,6 @@ export interface PaginatedResponse<T> {
 export interface Operation {
   id: string
   content: string
-  stageName: string
   minimumRequired: string
   uploadTime: string
   title: string
@@ -24,14 +23,54 @@ export interface Operation {
   operators: string[]
   groups: OperationGroup[]
   views: number
-  ratingLevel: string
-  ratingType: OpRating
+  hotScore: number
+  level: Level
+  available: boolean
+  ratingLevel: OpRatingLevel
+  ratingRatio: number
+  ratingType: OpRatingType
+  isNotEnoughRating: boolean
+  difficulty: OpDifficulty
 }
 
-export enum OpRating {
+export interface Level {
+  catOne: string
+  catTwo: string
+  catThree: string
+  name: string
+  levelId: string
+  width: number
+  height: number
+}
+
+export enum OpRatingLevel {
+  OverwhelminglyPositive = 'OverwhelminglyPositive',
+  VeryPositive = 'VeryPositive',
+  Positive = 'Positive',
+  MostlyPositive = 'MostlyPositive',
+  Mixed = 'Mixed',
+  MostlyNegative = 'MostlyNegative',
+  Negative = 'Negative',
+  VeryNegative = 'VeryNegative',
+  OverwhelminglyNegative = 'OverwhelminglyNegative',
+}
+
+export enum OpRatingType {
   Like = 'Like',
   Dislike = 'Dislike',
   None = 'None',
+}
+
+export enum OpDifficulty {
+  UNKNOWN = 0,
+  REGULAR = 1,
+  HARD = 2,
+  REGULAR_HARD = 1 | 2,
+}
+
+export enum OpDifficultyBitFlag {
+  REGULAR = 1,
+  HARD = 2,
 }
 
 export type OperationListItem = Omit<Operation, 'content'>

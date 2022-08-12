@@ -117,15 +117,18 @@ export const OperationUploader: FC = () => {
 
   const handleOperationSubmit = async () => {
     setIsUploading(true)
-    await wrapErrorMessage(
-      (e: NetworkError) => `作业上传失败：${e.responseMessage}`,
-      requestCopilotUpload(JSON.stringify(operation)),
-    )
+    try {
+      await wrapErrorMessage(
+        (e: NetworkError) => `作业上传失败：${e.responseMessage}`,
+        requestCopilotUpload(JSON.stringify(operation)),
+      )
+    } finally {
+      setIsUploading(false)
+    }
     AppToaster.show({
       intent: 'success',
       message: '作业上传成功',
     })
-    setIsUploading(false)
   }
 
   return (
@@ -171,6 +174,7 @@ export const OperationUploader: FC = () => {
           large
           fill
           disabled={operation === null || isUploading}
+          loading={isUploading}
           icon="form"
           onClick={handleOperationSubmit}
         >

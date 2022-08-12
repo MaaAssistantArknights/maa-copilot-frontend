@@ -1,8 +1,7 @@
-import { Operation, Response } from 'models/operation'
+import { Operation, OpRatingType, Response } from 'models/operation'
 import { jsonRequest } from 'utils/fetcher'
-import { OpRating } from 'models/operation'
 
-export const apiPostRating = (id: string, rating: OpRating) => {
+export const apiPostRating = (id: string, rating: OpRatingType) => {
   return jsonRequest<
     Response<
       Pick<Operation, 'id' | 'ratingRatio'> & {
