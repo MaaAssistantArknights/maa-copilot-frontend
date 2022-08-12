@@ -70,7 +70,7 @@ export const OperationViewer: ComponentType<{
       return
     }
 
-    const blob = new Blob([JSON.stringify(content)], {
+    const blob = new Blob([content], {
       type: 'application/json',
     })
     const url = URL.createObjectURL(blob)
