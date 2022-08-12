@@ -17,22 +17,6 @@ import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 // ajv can work properly with http://json-schema.org/draft-07/schema
 // and copilot backend server need to use draft-6
 
-// import { copilotSchemaValidator } from 'models/copilot.schema.validator'
-// import type { ErrorObject } from 'ajv'
-
-// const tryFixOperationSchemaErrors = (
-//   jsonObject: object,
-//   erros: ErrorObject[],
-// ): object => {
-//   // This is hard coded and do not gaurentee that correctness
-//   for (const error of erros) {
-//     if (error.instancePath === '/minimum_required') {
-//       jsonObject['minimum_required'] = 'v4.0.0'
-//     }
-//   }
-//   return jsonObject
-// }
-
 const operationPatch = (operation: object): object => {
   // this part is quite dirty, do not use in other parts
 

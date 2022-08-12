@@ -24,11 +24,11 @@ export const EditorActionOperatorLocation = <T extends { type?: string }>({
             !Array.isArray(v) ||
             v.length !== 2 ||
             v.some(
-              (v) =>
-                typeof v !== 'number' ||
-                Number.isNaN(v) ||
-                v < 0 ||
-                !Number.isFinite(v),
+              (i) =>
+                typeof i !== 'number' ||
+                Number.isNaN(i) ||
+                i < 0 ||
+                !Number.isFinite(i),
             ))
         )
           return '部署动作下必须填写位置'

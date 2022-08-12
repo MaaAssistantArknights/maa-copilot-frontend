@@ -39,7 +39,7 @@ export function withSuspensable<P>(
   const Wrapped: ComponentType<P> = (props) => {
     return (
       <Suspensable {...suspensableProps}>
-        <Component<P> {...props} />
+        <Component {...props} />
       </Suspensable>
     )
   }

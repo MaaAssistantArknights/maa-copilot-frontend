@@ -46,7 +46,7 @@ const authCoreAtom = atomWithLocalStorage<AuthState, AuthState>(
 
 export const authAtom = atom(
   (get) => get(authCoreAtom),
-  (get, set, value: AuthState) => {
+  (_get, set, value: AuthState) => {
     set(authCoreAtom, value)
   },
 )
