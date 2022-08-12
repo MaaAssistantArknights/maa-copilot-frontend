@@ -1,9 +1,9 @@
 import { Card } from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
-import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { Operations } from 'components/Operations'
+import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
 import { ComponentType } from 'react'
 
 export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {

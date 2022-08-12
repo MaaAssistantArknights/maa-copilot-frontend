@@ -4,9 +4,9 @@ import {
   DetailedSelectChoice,
   DetailedSelectItem,
 } from 'components/editor/DetailedSelect'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 export const EditorActionTypeSelect = <T,>({
   name,

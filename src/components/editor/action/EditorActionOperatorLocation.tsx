@@ -1,6 +1,6 @@
 import { InputGroup } from '@blueprintjs/core'
-import { useController, UseFormGetValues } from 'react-hook-form'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+import { useController, UseFormGetValues } from 'react-hook-form'
 
 interface EditorActionOperatorLocationProps<T> extends EditorFieldProps<T> {
   getValues: UseFormGetValues<T>

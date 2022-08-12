@@ -3,8 +3,8 @@ import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { FormField2 } from 'components/FormField'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { EditorPerformerChildProps } from './EditorPerformer'
 import { EditorOperatorSelect } from './EditorOperatorSelect'
+import { EditorPerformerChildProps } from './EditorPerformer'
 
 export const EditorPerformerGroup = ({
   submit,
