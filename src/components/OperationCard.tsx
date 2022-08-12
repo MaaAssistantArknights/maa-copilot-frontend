@@ -9,9 +9,10 @@ import {
   Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
-import { useState } from 'react'
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationListItem } from 'models/operation'
+import { useState } from 'react'
+import { EDifficultyLevel } from './entity/ELevel'
 import { Paragraphs } from './Paragraphs'
 import { OperationViewer } from './viewer/OperationViewer'
 
@@ -47,7 +48,7 @@ export const OperationCard = ({
               <Tooltip2
                 className="mr-4"
                 placement="top"
-                content={`访问量：${operation.views} 次`}
+                content={`访问量：${operation.views}`}
               >
                 <div>
                   <Icon icon="eye-open" className="mr-1.5" />
@@ -65,10 +66,7 @@ export const OperationCard = ({
             </div>
 
             <div className="w-full flex justify-end text-zinc-500 mt-1.5">
-              <Tooltip2
-                placement="top"
-                content={`访问量：${operation.views} 次`}
-              >
+              <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
                 <div>
                   <Icon icon="user" className="mr-1.5" />
                   <span>{operation.uploader}</span>
@@ -83,7 +81,10 @@ export const OperationCard = ({
             className="bg-slate-100 text-slate-900 border border-slate-300 border-solid"
             large
           >
-            {operation.stageName}
+            <EDifficultyLevel
+              level={operation.level}
+              difficulty={operation.difficulty}
+            />
           </Tag>
         </H5>
         <div className="flex">

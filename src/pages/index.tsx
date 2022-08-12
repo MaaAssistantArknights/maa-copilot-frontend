@@ -3,6 +3,7 @@ import { CardTitle } from 'components/CardTitle'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { Operations } from 'components/Operations'
+import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
 import { ComponentType } from 'react'
 
 export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
@@ -12,12 +13,14 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
         <Operations />
       </div>
       <div className="md:w-1/3 order-1 md:order-2">
-        <Card className="flex flex-col mb-4">
+        <Card className="flex flex-col mb-4 space-y-2">
           <CardTitle icon="add" className="mb-4">
             创建新作业
           </CardTitle>
 
           <OperationEditorLauncher />
+
+          <OperationUploaderLauncher />
         </Card>
       </div>
     </div>

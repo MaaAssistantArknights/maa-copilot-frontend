@@ -12,22 +12,23 @@ import {
   Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
-import { useAtom } from 'jotai'
-import { merge } from 'lodash-es'
-import { Operation, Response } from 'models/operation'
-import { ComponentType, FC, useMemo } from 'react'
-import Rating from 'react-rating'
-import { FactItem } from 'components/FactItem'
-import { RelativeTime } from 'components/RelativeTime'
-import { ViewerActions } from 'components/viewer/ViewerActions'
-import { authAtom } from 'store/auth'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
-import { OpRating } from 'models/operation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
+import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
+import { ViewerActions } from 'components/viewer/ViewerActions'
+import { useAtom } from 'jotai'
+import { merge } from 'lodash-es'
+import { Operation, OpRatingType, Response } from 'models/operation'
+import { ComponentType, FC, useMemo } from 'react'
+import Rating from 'react-rating'
+import { EDifficultyLevel } from 'src/components/entity/ELevel'
+import { OpRatingLevelString } from 'src/models/enums'
+import { authAtom } from 'store/auth'
 
 export const OperationViewer: ComponentType<{
   operationId: string
@@ -85,7 +86,7 @@ export const OperationViewer: ComponentType<{
     })
   }
 
-  const handleRating = async (decision: OpRating) => {
+  const handleRating = async (decision: OpRatingType) => {
     const optimisticData: Response<Operation> = merge(data, {
       data: { ...operation, ratingType: decision },
     })
@@ -150,7 +151,10 @@ export const OperationViewer: ComponentType<{
                 className="bg-slate-100 text-slate-900 border border-slate-300 border-solid"
                 large
               >
-                {operation?.stageName}
+                <EDifficultyLevel
+                  level={operation.level}
+                  difficulty={operation.difficulty}
+                />
               </Tag>
             </FactItem>
 
@@ -158,7 +162,7 @@ export const OperationViewer: ComponentType<{
               <div className="flex flex-col">
                 <Rating
                   className="mr-2"
-                  initialRating={operation.ratingRatio * 5}
+                  initialRating={operation.ratingRatio * 5 || 2.5}
                   fullSymbol={
                     <Icon
                       size={IconSize.LARGE}
@@ -183,10 +187,7 @@ export const OperationViewer: ComponentType<{
                   readonly
                 />
                 <div className="text-zinc-500">
-                  {operation.ratingRatio === -1
-                    ? '—'
-                    : (operation.ratingRatio * 5).toFixed(1)}{' '}
-                  / 5.0
+                  {OpRatingLevelString[operation.ratingLevel]}
                 </div>
               </div>
 
@@ -197,25 +198,25 @@ export const OperationViewer: ComponentType<{
                     <Button
                       icon="thumbs-up"
                       intent={
-                        operation?.ratingType === OpRating.Like
+                        operation?.ratingType === OpRatingType.Like
                           ? 'success'
                           : 'none'
                       }
                       className="mr-2"
-                      active={operation?.ratingType === OpRating.Like}
-                      onClick={() => handleRating(OpRating.Like)}
+                      active={operation?.ratingType === OpRatingType.Like}
+                      onClick={() => handleRating(OpRatingType.Like)}
                     />
                   </Tooltip2>
                   <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
                     <Button
                       icon="thumbs-down"
                       intent={
-                        operation?.ratingType === OpRating.Dislike
+                        operation?.ratingType === OpRatingType.Dislike
                           ? 'danger'
                           : 'none'
                       }
-                      active={operation?.ratingType === OpRating.Dislike}
-                      onClick={() => handleRating(OpRating.Dislike)}
+                      active={operation?.ratingType === OpRatingType.Dislike}
+                      onClick={() => handleRating(OpRatingType.Dislike)}
                     />
                   </Tooltip2>
                 </ButtonGroup>
@@ -234,7 +235,7 @@ export const OperationViewer: ComponentType<{
               </span>
             </FactItem>
 
-            <FactItem title="上传者" icon="user">
+            <FactItem title="作者" icon="user">
               <span className="text-gray-800 font-bold">
                 {operation.uploader}
               </span>

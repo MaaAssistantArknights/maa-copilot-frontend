@@ -1,10 +1,10 @@
 import { Card, Elevation, NonIdealState } from '@blueprintjs/core'
 import clsx from 'clsx'
-import { FC } from 'react'
 import { CardTitle } from 'components/CardTitle'
 import { FactItem } from 'components/FactItem'
-import { FCC } from 'types'
 import { findActionType } from 'models/types'
+import { FC } from 'react'
+import { FCC } from 'types'
 import { formatDuration } from 'utils/times'
 
 const actionKey = (action: CopilotDocV1.Action) =>
@@ -51,7 +51,7 @@ export const ViewerActions: FC<{
                 </InlinePrecondition>
               </div>
             </CardTitle>
-            <div className="grid grid-flow-row grid-cols-4 gap-2 [&>*]:mt-4 ml-[25%] w-full">
+            <div className="grid grid-flow-row grid-cols-4 gap-2 [&>*]:mt-4 w-full">
               {action.name && (
                 <FactItem dense title="干员/干员组" icon="mugshot">
                   {action.name}
@@ -67,7 +67,7 @@ export const ViewerActions: FC<{
               {!!action.location?.filter(Boolean).length && (
                 <FactItem dense title="部署坐标" icon="map-marker">
                   <span className="font-mono">
-                    ({action.location?.[0]}, {action.location?.[1]})
+                    {action.location?.[0]}, {action.location?.[1]}
                   </span>
                 </FactItem>
               )}

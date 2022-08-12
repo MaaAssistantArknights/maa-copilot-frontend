@@ -9,7 +9,8 @@
     "build:azure": "yarn build:skiptsc && node post-build.mjs",
     "preview": "vite preview",
     "lint": "prettier --write src*",
-    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts"
+    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts",
+    "scripts:update-stages": "yarn install && esno scripts/update-stages.ts"
   },
   "dependencies": {
     "@blueprintjs/core": "^4.5.1",

@@ -21,7 +21,7 @@ Sentry.init({
   integrations: [new BrowserTracing()],
   tracesSampleRate: 0.05,
   enabled: import.meta.env.PROD,
-  beforeSend: (event, hint) => {
+  beforeSend: (event) => {
     if (import.meta.env.DEV) return null
     return event
   },

@@ -8,11 +8,11 @@ const fetch = window.fetch || unfetch
 export class NetworkError extends Error {
   responseMessage: string
 
-  constructor(response: Response, errorMessage: string) {
-    const message = `Request failed for ${response.url}: ${errorMessage} (http status: ${response.status})`
+  constructor(response?: Response, errorMessage?: string) {
+    const message = `Request failed for ${response?.url}: ${errorMessage} (http status: ${response?.status})`
     super(message)
     this.name = 'NetworkError'
-    this.responseMessage = errorMessage
+    this.responseMessage = errorMessage || 'Unknown error'
   }
 }
 
@@ -58,11 +58,20 @@ export const request = <T>(
         return Promise.reject(
           new NetworkError(
             res.response,
-            res.data?.message || res.data?.title || JSON.stringify(res.data),
+            res.data?.message ||
+              res.data?.title ||
+              JSON.stringify(res.data) ||
+              'Unknown error',
           ),
         )
       }
       return res.data
+    })
+    .catch((err) => {
+      console.error('Fetcher: got error', err)
+      return Promise.reject(
+        new NetworkError(err.response, '网络错误，请检查网络连接并稍后重试'),
+      )
     })
 
 export type JsonRequestInit = RequestInit & {
