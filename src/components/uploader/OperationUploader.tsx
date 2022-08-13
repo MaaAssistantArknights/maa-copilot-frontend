@@ -21,7 +21,7 @@ const operationPatch = (operation: object): object => {
   // this part is quite dirty, do not use in other parts
 
   // backend compatibility of minimum_required
-  if (operation['minimum_required'] == 'v4.0') {
+  if (!operation['minimum_required'] || operation['minimum_required'] == 'v4.0') {
     operation['minimum_required'] = 'v4.0.0'
   }
 
@@ -38,7 +38,7 @@ const operationPatch = (operation: object): object => {
   }
 
   // i18n compatibility of level id
-  if (!(operation['stage_name'] as string).match('^[a-z/_0-9-]$')) {
+  if (!(operation['stage_name'] as string).match('^[a-z\/_0-9-]*$')) {
     const matchStages = STAGES.filter((stage) => {
       return (
         stage.name === operation['stage_name'] ||
