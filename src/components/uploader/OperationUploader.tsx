@@ -22,7 +22,7 @@ const operationPatch = (operation: object): object => {
   // backend compatibility of minimum_required
   if (
     !operation['minimum_required'] ||
-    operation['minimum_required'] == 'v4.0'
+    operation['minimum_required'] === 'v4.0'
   ) {
     operation['minimum_required'] = 'v4.0.0'
   }
@@ -44,7 +44,7 @@ const operationPatch = (operation: object): object => {
   // i18n compatibility of level id
   if (
     !(operation['stage_name'] as string).match('^[a-z/_0-9-]*$') ||
-    (operation['stage_name'] as string).indexOf('/') == -1
+    (operation['stage_name'] as string).indexOf('/') === -1
   ) {
     const matchStages = STAGES.filter((stage) => {
       return (
@@ -52,7 +52,7 @@ const operationPatch = (operation: object): object => {
         stage.code === operation['stage_name']
       )
     })
-    if (matchStages.length == 1) {
+    if (matchStages.length === 1) {
       operation['stage_name'] = matchStages[0].levelId
     } else {
       AppToaster.show({
