@@ -13,7 +13,7 @@ module.exports = {
     'plugin:jsx-a11y/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'plugin:storybook/recommended',
+    'plugin:react/jsx-runtime',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -29,8 +29,12 @@ module.exports = {
     'react/prop-types': 'off',
     'react/jsx-key': 'off',
     'no-unused-vars': 'warn',
+    eqeqeq: 'error',
   },
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
       node: {
         paths: ['src'],
