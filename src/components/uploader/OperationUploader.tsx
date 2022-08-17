@@ -19,33 +19,40 @@ import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 const operationPatch = (operation: object): object => {
   // this part is quite dirty, do not use in other parts
-
   // backend compatibility of minimum_required
-  if (!operation['minimum_required'] || operation['minimum_required'] == 'v4.0') {
+  if (
+    !operation['minimum_required'] ||
+    operation['minimum_required'] === 'v4.0'
+  ) {
     operation['minimum_required'] = 'v4.0.0'
   }
 
-  // title
-  if (!operation['doc']['title']) {
+  if (!operation['doc']) {
     operation['doc'] = operation['doc'] ?? {}
-    operation['doc']['title'] = operation['stage_name']
-  }
 
-  // description
-  if (!operation['doc']['details']) {
-    operation['doc'] = operation['doc'] ?? {}
-    operation['doc']['details'] = `作业 ${operation['stage_name']}`
+    // title
+    if (!operation['doc']['title']) {
+      operation['doc']['title'] = operation['stage_name']
+    }
+
+    // description
+    if (!operation['doc']['details']) {
+      operation['doc']['details'] = `作业 ${operation['stage_name']}`
+    }
   }
 
   // i18n compatibility of level id
-  if (!(operation['stage_name'] as string).match('^[a-z\/_0-9-]*$')) {
+  if (
+    !(operation['stage_name'] as string).match('^[a-z/_0-9-]*$') ||
+    (operation['stage_name'] as string).indexOf('/') === -1
+  ) {
     const matchStages = STAGES.filter((stage) => {
       return (
         stage.name === operation['stage_name'] ||
         stage.code === operation['stage_name']
       )
     })
-    if (matchStages.length == 1) {
+    if (matchStages.length === 1) {
       operation['stage_name'] = matchStages[0].levelId
     } else {
       AppToaster.show({
@@ -94,8 +101,9 @@ export const OperationUploader: FC = () => {
       //   operationObject,
       // )
       // console.log(jsonSchemaValidation, copilotSchemaValidator.errors)
-
-      setOperation(operationPatch(operationObject))
+      const patchedOperation = operationPatch(operationObject)
+      console.log('patchedOperation', patchedOperation)
+      setOperation(patchedOperation)
     }
   }
 
