@@ -1,10 +1,3 @@
-export interface Response<T> {
-  statusCode: number
-  message: string
-  traceId: string
-  data: T
-}
-
 export interface PaginatedResponse<T> {
   hasNext: boolean
   page: number

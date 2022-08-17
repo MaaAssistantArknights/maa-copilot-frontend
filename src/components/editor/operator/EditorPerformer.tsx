@@ -38,7 +38,7 @@ export const EditorPerformerAdd = ({ append }) => {
         className="ml-1"
         onItemSelect={(e) => {
           console.log('selected', e.value)
-          setMode(e.value as 'operator' | 'group')
+          setMode(e.value)
         }}
         itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
           <MenuItem

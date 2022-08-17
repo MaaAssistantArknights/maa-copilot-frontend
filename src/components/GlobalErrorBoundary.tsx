@@ -1,5 +1,6 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
+import { ComponentType } from 'react'
 import { FCC } from 'types'
 export const GlobalErrorBoundary: FCC = ({ children }) => {
   return (
@@ -26,9 +27,20 @@ export const GlobalErrorBoundary: FCC = ({ children }) => {
   )
 }
 
-export const withGlobalErrorBoundary = (Component: FCC) => () =>
-  (
-    <GlobalErrorBoundary>
-      <Component />
-    </GlobalErrorBoundary>
-  )
+export function withGlobalErrorBoundary<P extends {}>(
+  Component: ComponentType<P>,
+): ComponentType<P> {
+  const Wrapped: ComponentType<P> = (props) => {
+    return (
+      <GlobalErrorBoundary>
+        <Component {...props} />
+      </GlobalErrorBoundary>
+    )
+  }
+
+  // Format for display in DevTools
+  const name = Component.displayName || Component.name || 'Unknown'
+  Wrapped.displayName = `withGlobalErrorBoundary(${name})`
+
+  return Wrapped
+}

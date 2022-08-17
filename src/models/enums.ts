@@ -1,4 +1,4 @@
-import { OpRatingLevel } from './operation'
+import { OpRatingLevel } from 'models/operation'
 
 export const OpRatingLevelString: Record<OpRatingLevel, string> = {
   [OpRatingLevel.OverwhelminglyPositive]: '好评如潮',

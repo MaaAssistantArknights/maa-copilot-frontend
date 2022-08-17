@@ -18,7 +18,7 @@ import { requestActivation, requestActivationCode } from 'apis/auth'
 import { LoginPanel } from 'components/account/LoginPanel'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useAtom } from 'jotai'
-import { FC, useMemo, useState } from 'react'
+import { ComponentType, FC, useMemo, useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
@@ -115,6 +115,7 @@ const ActivationInputGroup = <T,>({ name, control }: EditorFieldProps<T>) => {
       ref={ref}
       className="font-mono"
       autoComplete="off"
+      // eslint-disable-next-line jsx-a11y/no-autofocus
       autoFocus
     />
   )
@@ -215,7 +216,7 @@ const AccountMenu: FC = () => {
   )
 }
 
-export const AccountManager: FC = withGlobalErrorBoundary(() => {
+export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
   const [open, setOpen] = useState(false)
   const [activeTab, setActiveTab] = useState<TabId>('login')
   const [authState] = useAtom(authAtom)

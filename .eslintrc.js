@@ -8,12 +8,13 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
+    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:prettier/recommended',
     'prettier',
     'plugin:jsx-a11y/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'plugin:storybook/recommended',
+    'plugin:react/jsx-runtime',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -22,19 +23,27 @@ module.exports = {
     },
     ecmaVersion: 'latest',
     sourceType: 'module',
+
+    project: './tsconfig.json',
+    tsconfigRootDir: './',
   },
-  plugins: ['react', '@typescript-eslint', 'prettier'],
+  plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   rules: {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/jsx-key': 'off',
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'off',
+    eqeqeq: 'error',
   },
   settings: {
+    react: {
+      version: 'detect',
+    },
     'import/resolver': {
       node: {
         paths: ['src'],
       },
+      typescript: {},
     },
   },
 }

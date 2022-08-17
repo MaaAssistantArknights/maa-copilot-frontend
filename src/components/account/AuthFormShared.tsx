@@ -49,6 +49,7 @@ export const AuthFormEmailField = <T extends {}>({
           <InputGroup
             id={field}
             placeholder="user@example.com"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
             autoComplete="email"
             {...binding}
