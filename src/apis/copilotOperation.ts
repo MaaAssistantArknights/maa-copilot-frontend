@@ -1,4 +1,4 @@
-import { Response } from 'models/operation'
+import { Response } from 'models/network'
 import { jsonRequest } from 'utils/fetcher'
 
 export interface OperationUploadResponse {

@@ -1,14 +1,17 @@
 import camelcaseKeys from 'camelcase-keys'
 import { merge } from 'lodash-es'
+import { Response } from 'models/network'
 import unfetch from 'unfetch'
 import { envUseProductionApi } from './envvar'
 
 const fetch = window.fetch || unfetch
 
+type FetchResponse = globalThis.Response
+
 export class NetworkError extends Error {
   responseMessage: string
 
-  constructor(response?: Response, errorMessage?: string) {
+  constructor(response?: FetchResponse, errorMessage?: string) {
     const message = `Request failed for ${response?.url}: ${errorMessage} (http status: ${response?.status})`
     super(message)
     this.name = 'NetworkError'
@@ -26,8 +29,8 @@ export const FETCHER_CONFIG: {
   apiToken: undefined,
 }
 
-export const request = <T>(
-  input: RequestInfo | URL,
+export const request = <T extends Response<unknown>>(
+  input: string,
   init?: RequestInit,
 ): Promise<T> =>
   fetch(
@@ -44,7 +47,7 @@ export const request = <T>(
     .then(async (res) => {
       return {
         response: res,
-        data: camelcaseKeys(await res.json(), { deep: true }),
+        data: camelcaseKeys(await res.json(), { deep: true }) as T,
       }
     })
     .then((res) => {
@@ -58,10 +61,7 @@ export const request = <T>(
         return Promise.reject(
           new NetworkError(
             res.response,
-            res.data?.message ||
-              res.data?.title ||
-              JSON.stringify(res.data) ||
-              'Unknown error',
+            res.data?.message || JSON.stringify(res.data) || 'Unknown error',
           ),
         )
       }
@@ -78,11 +78,11 @@ export type JsonRequestInit = RequestInit & {
   json?: any
 }
 
-export const jsonRequest = <T>(
-  input: RequestInfo | URL,
+export const jsonRequest = <T extends Response<unknown>>(
+  input: string,
   init?: JsonRequestInit,
-): Promise<T> => {
-  return request<T>(
+): Promise<T> =>
+  request<T>(
     input,
     merge(init, {
       headers: {
@@ -91,4 +91,3 @@ export const jsonRequest = <T>(
       body: JSON.stringify(init?.json),
     }),
   )
-}

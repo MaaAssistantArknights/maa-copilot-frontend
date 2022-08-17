@@ -1,4 +1,5 @@
-import { Operation, OpRatingType, Response } from 'models/operation'
+import { Response } from 'models/network'
+import { Operation, OpRatingType } from 'models/operation'
 import { jsonRequest } from 'utils/fetcher'
 
 export const apiPostRating = (id: string, rating: OpRatingType) => {
