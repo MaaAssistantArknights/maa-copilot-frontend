@@ -1,9 +1,9 @@
-import {
+import type {
   Operation,
   OperationListItem,
   PaginatedResponse,
-  Response,
 } from 'models/operation'
+import type { Response } from 'models/network'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
