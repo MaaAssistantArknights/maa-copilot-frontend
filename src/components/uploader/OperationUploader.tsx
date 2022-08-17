@@ -6,7 +6,7 @@ import {
   H4,
   Icon,
 } from '@blueprintjs/core'
-import { requestCopilotUpload } from 'apis/copilotOperation'
+import { requestOperationUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { AppToaster } from 'components/Toaster'
 import { STAGES } from 'models/generated/stages'
@@ -104,7 +104,7 @@ export const OperationUploader: FC = () => {
     try {
       await wrapErrorMessage(
         (e: NetworkError) => `作业上传失败：${e.responseMessage}`,
-        requestCopilotUpload(JSON.stringify(operation)),
+        requestOperationUpload(JSON.stringify(operation)),
       )
     } finally {
       setIsUploading(false)

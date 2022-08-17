@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   ButtonGroup,
   Card,
@@ -8,13 +9,17 @@ import {
   H5,
   Icon,
   IconSize,
+  Menu,
+  MenuItem,
   NonIdealState,
   Tag,
 } from '@blueprintjs/core'
-import { Tooltip2 } from '@blueprintjs/popover2'
+import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
+import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { EDifficultyLevel } from 'components/entity/ELevel'
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
 import { RelativeTime } from 'components/RelativeTime'
@@ -23,17 +28,76 @@ import { AppToaster } from 'components/Toaster'
 import { ViewerActions } from 'components/viewer/ViewerActions'
 import { useAtom } from 'jotai'
 import { merge } from 'lodash-es'
-import { Operation, OpRatingType, Response } from 'models/operation'
-import { ComponentType, FC, useMemo } from 'react'
+import { opRatingLevelString } from 'models/enums'
+import { Operation, OpRatingType } from 'models/operation'
+import { ComponentType, FC, useMemo, useState } from 'react'
 import Rating from 'react-rating'
-import { EDifficultyLevel } from 'src/components/entity/ELevel'
-import { OpRatingLevelString } from 'src/models/enums'
 import { authAtom } from 'store/auth'
+import { NetworkError } from 'utils/fetcher'
+import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+import { useNetworkState } from '../../utils/useNetworkState'
+
+const ManageMenu: FC<{
+  operation: Operation
+  onUpdate: () => void
+}> = ({ operation, onUpdate }) => {
+  const [loading, setLoading] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+
+  const handleDelete = async () => {
+    setLoading(true)
+    try {
+      await wrapErrorMessage(
+        (e: NetworkError) => `删除失败：${e.responseMessage}`,
+        requestDeleteOperation(operation.id),
+      )
+    } finally {
+      setLoading(false)
+    }
+    AppToaster.show({
+      intent: 'success',
+      message: `删除成功`,
+    })
+    setDeleteDialogOpen(false)
+    onUpdate()
+  }
+
+  return (
+    <>
+      <Alert
+        isOpen={deleteDialogOpen}
+        cancelButtonText="取消"
+        confirmButtonText="删除"
+        icon="log-out"
+        intent="danger"
+        canOutsideClickCancel
+        loading={loading}
+        onCancel={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDelete}
+      >
+        <H4>删除作业</H4>
+        <p>确定要删除作业吗？</p>
+      </Alert>
+
+      <Menu>
+        <MenuItem icon="edit" text="修改作业" disabled />
+        <MenuItem
+          icon="delete"
+          intent="danger"
+          text="删除作业..."
+          shouldDismissPopover={false}
+          onClick={() => setDeleteDialogOpen(true)}
+        />
+      </Menu>
+    </>
+  )
+}
 
 export const OperationViewer: ComponentType<{
   operationId: string
-}> = withSuspensable(({ operationId }) => {
-  const { data, mutate } = useOperation(operationId)
+  onCloseDrawer: () => void
+}> = withSuspensable(({ operationId, onCloseDrawer }) => {
+  const { data, error, mutate } = useOperation(operationId)
   const operation = data?.data
 
   const [auth] = useAtom(authAtom)
@@ -41,6 +105,12 @@ export const OperationViewer: ComponentType<{
 
   // make eslint happy: we got Suspense out there
   if (!operation) return null
+
+  if (error) {
+    return (
+      <NonIdealState icon="error" title="获取作业失败" description={error} />
+    )
+  }
 
   const handleCopyShortCode = () => {
     if (!operation?.id) {
@@ -87,23 +157,19 @@ export const OperationViewer: ComponentType<{
   }
 
   const handleRating = async (decision: OpRatingType) => {
-    const optimisticData: Response<Operation> = merge(data, {
-      data: { ...operation, ratingType: decision },
-    })
-
     mutate(
       async (val) => {
-        const { data } = await apiPostRating(operationId, decision)
-        const { rating, ...restData } = data
+        const response = await apiPostRating(operationId, decision)
 
-        return merge(val, {
-          data: {
-            ...restData,
-            ratingType: rating,
-          },
-        })
+        return merge(val, response)
       },
-      { optimisticData, rollbackOnError: true },
+      {
+        // optimisticData: (current) =>
+        //   merge(current, {
+        //     data: { ...operation, ratingType: decision },
+        //   }),
+        rollbackOnError: true,
+      },
     )
   }
 
@@ -119,6 +185,24 @@ export const OperationViewer: ComponentType<{
           <span className="ml-2">MAA Copilot 作业</span>
 
           <div className="flex-1"></div>
+
+          {operation.uploader === auth.username && (
+            <Popover2
+              content={
+                <ManageMenu
+                  operation={operation}
+                  onUpdate={() => onCloseDrawer()}
+                />
+              }
+            >
+              <Button
+                className="ml-4"
+                icon="wrench"
+                text="管理"
+                rightIcon="caret-down"
+              />
+            </Popover2>
+          )}
 
           <Button
             className="ml-4"
@@ -142,7 +226,7 @@ export const OperationViewer: ComponentType<{
 
         <div className="grid grid-rows-1 grid-cols-3 gap-8">
           <div className="flex flex-col">
-            <Paragraphs content={operation?.detail} />
+            <Paragraphs content={operation?.detail} linkify />
           </div>
 
           <div className="flex flex-col">
@@ -159,35 +243,36 @@ export const OperationViewer: ComponentType<{
             </FactItem>
 
             <FactItem relaxed className="items-start" title="作业评分">
-              <div className="flex flex-col">
-                <Rating
-                  className="mr-2"
-                  initialRating={operation.ratingRatio * 5 || 2.5}
-                  fullSymbol={
-                    <Icon
-                      size={IconSize.LARGE}
-                      icon="star"
-                      className="text-yellow-500"
-                    />
-                  }
-                  placeholderSymbol={
-                    <Icon
-                      size={IconSize.LARGE}
-                      icon="star"
-                      className="text-yellow-500"
-                    />
-                  }
-                  emptySymbol={
-                    <Icon
-                      size={IconSize.LARGE}
-                      icon="star-empty"
-                      className="text-zinc-600"
-                    />
-                  }
-                  readonly
-                />
-                <div className="text-zinc-500">
-                  {OpRatingLevelString[operation.ratingLevel]}
+              <div className="flex flex-col mr-2">
+                {!operation.isNotEnoughRating && (
+                  <Rating
+                    initialRating={operation.ratingRatio * 5}
+                    fullSymbol={
+                      <Icon
+                        size={IconSize.LARGE}
+                        icon="star"
+                        className="text-yellow-500"
+                      />
+                    }
+                    placeholderSymbol={
+                      <Icon
+                        size={IconSize.LARGE}
+                        icon="star"
+                        className="text-yellow-500"
+                      />
+                    }
+                    emptySymbol={
+                      <Icon
+                        size={IconSize.LARGE}
+                        icon="star-empty"
+                        className="text-zinc-600"
+                      />
+                    }
+                    readonly
+                  />
+                )}
+                <div className="text-sm text-zinc-500">
+                  {opRatingLevelString(operation)}
                 </div>
               </div>
 

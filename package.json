@@ -27,6 +27,8 @@
     "dayjs": "^1.11.3",
     "fuse.js": "^6.6.2",
     "jotai": "^1.7.3",
+    "linkify-react": "^3.0.4",
+    "linkifyjs": "^3.0.5",
     "lodash-es": "^4.17.21",
     "normalize.css": "^8.0.1",
     "react": "^18.0.0",

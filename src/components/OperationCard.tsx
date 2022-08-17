@@ -16,6 +16,11 @@ import { EDifficultyLevel } from './entity/ELevel'
 import { Paragraphs } from './Paragraphs'
 import { OperationViewer } from './viewer/OperationViewer'
 
+const formatOperatorTag = (operator: string) => {
+  const splitted = operator.split('::')
+  return splitted.length > 1 ? `${splitted[0]} ${splitted[1]}` : operator
+}
+
 export const OperationCard = ({
   operation,
 }: {
@@ -29,7 +34,10 @@ export const OperationCard = ({
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       >
-        <OperationViewer operationId={operation.id} />
+        <OperationViewer
+          operationId={operation.id}
+          onCloseDrawer={() => setDrawerOpen(false)}
+        />
       </Drawer>
 
       <Card
@@ -90,14 +98,16 @@ export const OperationCard = ({
         <div className="flex">
           <div className="text-gray-700 leading-normal w-1/2">
             <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div>
-            <Paragraphs content={operation.detail} />
+            <Paragraphs content={operation.detail} linkify />
           </div>
           <div className="w-1/2">
-            <div className="text-sm text-zinc-600 mb-2 font-bold">使用干员</div>
+            <div className="text-sm text-zinc-600 mb-2 font-bold">
+              使用干员与技能
+            </div>
             <div>
               {operation.operators.map((operator, index) => (
                 <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
-                  {operator}
+                  {formatOperatorTag(operator)}
                 </Tag>
               ))}
               {operation.operators.length === 0 && (
