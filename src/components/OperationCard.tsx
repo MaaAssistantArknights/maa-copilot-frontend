@@ -12,6 +12,7 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationListItem } from 'models/operation'
 import { useState } from 'react'
+import { OperationRating } from 'src/components/viewer/OperationRating'
 import { EDifficultyLevel } from './entity/ELevel'
 import { Paragraphs } from './Paragraphs'
 import { OperationViewer } from './viewer/OperationViewer'
@@ -53,6 +54,15 @@ export const OperationCard = ({
           <div className="flex-1"></div>
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
+              <div className="flex items-center mr-4">
+                <Icon icon="star" className="mr-1.5" />
+                <OperationRating
+                  className="text-sm"
+                  operation={operation}
+                  layout="horizontal"
+                />
+              </div>
+
               <Tooltip2
                 className="mr-4"
                 placement="top"

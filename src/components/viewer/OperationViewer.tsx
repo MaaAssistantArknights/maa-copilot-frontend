@@ -8,7 +8,6 @@ import {
   H4,
   H5,
   Icon,
-  IconSize,
   Menu,
   MenuItem,
   NonIdealState,
@@ -28,14 +27,12 @@ import { AppToaster } from 'components/Toaster'
 import { ViewerActions } from 'components/viewer/ViewerActions'
 import { useAtom } from 'jotai'
 import { merge } from 'lodash-es'
-import { opRatingLevelString } from 'models/enums'
 import { Operation, OpRatingType } from 'models/operation'
 import { ComponentType, FC, useMemo, useState } from 'react'
-import Rating from 'react-rating'
+import { OperationRating } from 'src/components/viewer/OperationRating'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { useNetworkState } from '../../utils/useNetworkState'
 
 const ManageMenu: FC<{
   operation: Operation
@@ -243,38 +240,7 @@ export const OperationViewer: ComponentType<{
             </FactItem>
 
             <FactItem relaxed className="items-start" title="作业评分">
-              <div className="flex flex-col mr-2">
-                {!operation.isNotEnoughRating && (
-                  <Rating
-                    initialRating={operation.ratingRatio * 5}
-                    fullSymbol={
-                      <Icon
-                        size={IconSize.LARGE}
-                        icon="star"
-                        className="text-yellow-500"
-                      />
-                    }
-                    placeholderSymbol={
-                      <Icon
-                        size={IconSize.LARGE}
-                        icon="star"
-                        className="text-yellow-500"
-                      />
-                    }
-                    emptySymbol={
-                      <Icon
-                        size={IconSize.LARGE}
-                        icon="star-empty"
-                        className="text-zinc-600"
-                      />
-                    }
-                    readonly
-                  />
-                )}
-                <div className="text-sm text-zinc-500">
-                  {opRatingLevelString(operation)}
-                </div>
-              </div>
+              <OperationRating operation={operation} className="mr-2" />
 
               {/* only show like or dislike if the user is authed. otherwise, hide it */}
               {authed && (
