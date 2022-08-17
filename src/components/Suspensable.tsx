@@ -32,7 +32,7 @@ export const Suspensable: FCC<SuspensableProps> = ({ children, fetcher }) => {
   )
 }
 
-export function withSuspensable<P>(
+export function withSuspensable<P extends {}>(
   Component: ComponentType<P>,
   suspensableProps?: SuspensableProps,
 ): ComponentType<P> {

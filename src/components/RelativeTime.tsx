@@ -35,3 +35,5 @@ export const RelativeTime: FC<{
     child
   )
 })
+
+RelativeTime.displayName = 'RelativeTime'

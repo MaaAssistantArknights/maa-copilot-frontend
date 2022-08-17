@@ -33,3 +33,5 @@ export const Paragraphs: FC<{ content?: string; linkify?: boolean }> = memo(
     )
   },
 )
+
+Paragraphs.displayName = 'Paragraphs'
