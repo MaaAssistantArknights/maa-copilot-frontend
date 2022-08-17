@@ -18,7 +18,7 @@ export const OperationRating: FC<{
       className={clsx(
         'flex',
         layout === 'horizontal' && 'flex-row-reverse',
-        layout == 'vertical' && 'flex-col',
+        layout === 'vertical' && 'flex-col',
         className,
       )}
     >
