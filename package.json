@@ -24,6 +24,8 @@
     "@dnd-kit/core": "^6.0.5",
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
+    "@iconify/icons-simple-icons": "^1.2.22",
+    "@iconify/react": "^3.2.2",
     "@sentry/react": "^7.4.1",
     "@sentry/tracing": "^7.4.1",
     "@typescript-eslint/eslint-plugin": "^5.33.1",

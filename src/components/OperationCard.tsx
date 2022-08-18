@@ -110,7 +110,7 @@ export const OperationCard = ({
             <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div>
             <Paragraphs content={operation.detail} linkify />
           </div>
-          <div className="w-1/2">
+          <div className="w-1/2 ml-4">
             <div className="text-sm text-zinc-600 mb-2 font-bold">
               使用干员与技能
             </div>

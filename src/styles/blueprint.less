@@ -67,7 +67,7 @@ body {
       @apply py-2 px-4;
     }
 
-    &:not([class*='bp4-intent-']) {
+    &:not([class*='bp4-intent-']):not(.bp4-minimal) {
       @apply text-slate-900 shadow-none;
       @apply border border-solid border-slate-400;
       @apply hover:shadow-none;
@@ -194,5 +194,9 @@ body {
         @apply !rounded-br-lg;
       }
     }
+  }
+
+  .bp4-skeleton {
+    @apply rounded-md;
   }
 }

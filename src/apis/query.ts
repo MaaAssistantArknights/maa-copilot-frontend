@@ -1,8 +1,8 @@
+import { Response } from 'models/network'
 import {
   Operation,
   OperationListItem,
   PaginatedResponse,
-  Response,
 } from 'models/operation'
 import { useEffect } from 'react'
 import useSWR from 'swr'
