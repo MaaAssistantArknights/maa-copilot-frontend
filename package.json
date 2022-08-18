@@ -14,8 +14,7 @@
     "lint:fix": "npm-run-all --parallel lint:fix:eslint lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix src*",
     "lint:fix:prettier": "prettier --write src*",
-    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts",
-    "scripts:update-stages": "yarn install && esno scripts/update-stages.ts"
+    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts"
   },
   "dependencies": {
     "@blueprintjs/core": "^4.5.1",

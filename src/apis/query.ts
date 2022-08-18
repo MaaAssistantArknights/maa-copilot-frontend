@@ -1,9 +1,10 @@
 import { Response } from 'models/network'
-import {
+import type {
   Operation,
   OperationListItem,
   PaginatedResponse,
 } from 'models/operation'
+import type { Response } from 'models/network'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
