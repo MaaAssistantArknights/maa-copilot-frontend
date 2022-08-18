@@ -1,26 +1,24 @@
-import useSWRImmutable from 'swr/immutable'
-
+import type { Operator, Version } from 'models/arknights'
 import type { Response } from 'models/network'
-import type { Version, Operator } from 'models/arknights'
-import type { Level } from 'src/models/operation'
-import { jsonRequest } from 'utils/fetcher'
+import type { Level } from 'models/operation'
+import useSWR from 'swr'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 
 export const useVersion = () => {
-  return useSWRImmutable<Response<Version>>('/arknights/version', jsonRequest, {
-    refreshInterval: ONE_DAY,
+  return useSWR<Response<Version>>('/arknights/version', {
+    focusThrottleInterval: ONE_DAY,
   })
 }
 
 export const useLevels = () => {
-  return useSWRImmutable<Response<Level[]>>('/arknights/level', jsonRequest, {
-    // since there is no Cache-Control header present
-    // this is a force refresh to reduce api calls
-    refreshInterval: ONE_DAY,
+  return useSWR<Response<Level[]>>('/arknights/level', {
+    focusThrottleInterval: ONE_DAY,
   })
 }
 
 export const useOperators = () => {
-  return useSWRImmutable<Response<Operator[]>>('/arknights/operator')
+  return useSWR<Response<Operator[]>>('/arknights/operator', {
+    focusThrottleInterval: ONE_DAY,
+  })
 }

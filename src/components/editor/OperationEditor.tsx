@@ -9,7 +9,7 @@ import {
   TextArea,
 } from '@blueprintjs/core'
 import { Suggest2 } from '@blueprintjs/select'
-import { useStages } from 'apis/arkData'
+import { useLevels } from 'apis/arknights'
 import clsx from 'clsx'
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
@@ -32,7 +32,7 @@ export const StageNameInput: FC<{
     rules: { required: '请输入干员名' },
   })
 
-  const { data, isValidating } = useStages()
+  const { data, isValidating } = useLevels()
   const loading = isValidating && !data
 
   const levels = data?.data || []
