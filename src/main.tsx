@@ -12,6 +12,7 @@ import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
 import { AccountActivatePage } from './pages/account/activate'
+import { CreatePage } from './pages/create'
 import { IndexPage } from './pages/index'
 import './styles/blueprint.less'
 import './styles/index.css'
@@ -33,6 +34,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AppLayout>
         <Routes>
           <Route path="/" element={<IndexPage />} />
+          <Route path="/create" element={<CreatePage />} />
           <Route path="/account/activation" element={<AccountActivatePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

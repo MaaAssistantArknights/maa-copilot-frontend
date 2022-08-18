@@ -17,7 +17,7 @@ export const EditorOperator: FC<{
     <>
       <FormField2
         label="干员名"
-        description="选择干员或直接使用搜索内容创建干员 "
+        description="选择干员或直接使用搜索内容创建干员"
         field="name"
         error={errors.name}
         asterisk

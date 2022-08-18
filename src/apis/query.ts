@@ -1,3 +1,4 @@
+import { Response } from 'models/network'
 import type {
   Operation,
   OperationListItem,
