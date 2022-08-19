@@ -33,16 +33,16 @@ const operationPatch = (operation: object, levels: Level[]): object => {
 
   if (!operation['doc']) {
     operation['doc'] = operation['doc'] ?? {}
+  }
 
-    // title
-    if (!operation['doc']['title']) {
-      operation['doc']['title'] = operation['stage_name']
-    }
+  // title
+  if (!operation['doc']['title'] || operation['doc']['title'] === '') {
+    operation['doc']['title'] = operation['stage_name']
+  }
 
-    // description
-    if (!operation['doc']['details']) {
-      operation['doc']['details'] = `作业 ${operation['stage_name']}`
-    }
+  // description
+  if (!operation['doc']['details'] || operation['doc']['details'] === '') {
+    operation['doc']['details'] = `作业 ${operation['stage_name']}`
   }
 
   // i18n compatibility of level id
