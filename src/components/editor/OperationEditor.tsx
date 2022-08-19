@@ -3,17 +3,119 @@ import {
   H4,
   Icon,
   InputGroup,
+  MenuItem,
   NonIdealState,
   Overlay,
   TextArea,
 } from '@blueprintjs/core'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
-import { FormField } from 'components/FormField'
+import { Suggest2 } from '@blueprintjs/select'
+import { useLevels } from 'apis/arknights'
+import clsx from 'clsx'
+import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
-import { FC } from 'react'
-import { useForm } from 'react-hook-form'
+import Fuse from 'fuse.js'
+import { Level } from 'models/operation'
+import { FC, useMemo } from 'react'
+import { Control, useController, useForm } from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
 import { EditorPerformer } from './operator/EditorPerformer'
+
+export const StageNameInput: FC<{
+  control: Control<CopilotDocV1.Operation, object>
+}> = ({ control }) => {
+  const {
+    field: { onChange, onBlur, value, ref },
+    fieldState: { error },
+  } = useController<CopilotDocV1.Operation>({
+    name: 'stageName',
+    control,
+    rules: { required: '请输入干员名' },
+  })
+
+  const { data, isValidating } = useLevels()
+  const loading = isValidating && !data
+
+  const levels = data?.data || []
+
+  const fuse = useMemo(
+    () =>
+      new Fuse(levels, {
+        keys: ['name', 'catOne', 'catTwo', 'catThree'],
+        threshold: 0.3,
+      }),
+    [],
+  )
+
+  return (
+    <>
+      <FormField2
+        label="关卡"
+        field="stageName"
+        error={error?.message}
+        asterisk
+        FormGroupProps={{
+          helperText: (
+            <>
+              <p>键入以搜索</p>
+              <p>对于主线、活动关卡：键入关卡代号、关卡中文名或活动名称</p>
+              <p>对于悖论模拟关卡：键入关卡名或干员名</p>
+            </>
+          ),
+        }}
+      >
+        <Suggest2<Level>
+          className={clsx(loading && 'bp4-skeleton')}
+          disabled={loading}
+          items={levels}
+          itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
+            <MenuItem
+              key={item.levelId}
+              text={`${item.catThree} ${item.name}`}
+              onClick={handleClick}
+              onFocus={handleFocus}
+              selected={modifiers.active}
+              disabled={modifiers.disabled}
+            />
+          )}
+          itemPredicate={(query, item) => {
+            return item.name === query
+          }}
+          itemListPredicate={(query) => {
+            return fuse.search(query).map((el) => el.item)
+          }}
+          onItemSelect={(item) => {
+            onChange(item.levelId)
+          }}
+          // selectedItem={createArbitraryOperator(value as string)}
+          inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
+          ref={ref}
+          // createNewItemFromQuery={(query) => createArbitraryOperator(query)}
+          // createNewItemRenderer={(query, active, handleClick) => (
+          //   <MenuItem
+          //     key="create-new-item"
+          //     text={`使用自定义干员名 "${query}"`}
+          //     icon="text-highlight"
+          //     onClick={handleClick}
+          //     selected={active}
+          //   />
+          // )}
+          popoverContentProps={{
+            className: 'max-h-64 overflow-auto',
+          }}
+          noResults={<MenuItem disabled text="没有匹配的关卡" />}
+          inputProps={{
+            placeholder: '关卡',
+            large: true,
+            onBlur,
+          }}
+          popoverProps={{
+            placement: 'bottom-start',
+          }}
+        />
+      </FormField2>
+    </>
+  )
+}
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
@@ -25,22 +127,20 @@ export const OperationEditor: FC<{
   console.info('operation', operation)
 
   return (
-    <OperationDrawer
-      title={
-        <>
-          <Icon icon="document" />
-          <span className="ml-2 mr-4">MAA Copilot 作业编辑器</span>
-          {/* <Icon icon="saved" size={14} className="text-gray-600 font-normal" />
+    <section className="flex flex-col relative h-full pt-4">
+      <div className="px-8 text-lg font-medium flex items-center w-full h-12">
+        <Icon icon="document" />
+        <span className="ml-2 mr-4">作业编辑器</span>
+        {/* <Icon icon="saved" size={14} className="text-gray-600 font-normal" />
           <span className="ml-1 text-sm text-gray-600 font-normal">
             {formatRelativeTime(Date.now())} 已自动保存
           </span> */}
 
-          <div className="flex-1"></div>
+        <div className="flex-1"></div>
 
-          <Button intent="primary" className="ml-4" icon="upload" text="发布" />
-        </>
-      }
-    >
+        <Button intent="primary" className="ml-4" icon="upload" text="发布" />
+      </div>
+
       {import.meta.env.PROD && (
         <Overlay
           isOpen
@@ -56,28 +156,11 @@ export const OperationEditor: FC<{
         </Overlay>
       )}
 
-      <div className="h-full overflow-auto py-4 px-8 pt-8 mr-0.5">
+      <div className="py-4 px-8 mr-0.5">
         <H4>作业元信息</H4>
         <div className="flex">
           <div className="w-1/4 mr-8">
-            <FormField
-              label="关卡名"
-              field="stageName"
-              control={control}
-              FormGroupProps={{
-                helperText: '除危机合约外，均请填写关卡中文名',
-              }}
-              ControllerProps={{
-                render: ({ field }) => (
-                  <InputGroup
-                    large
-                    id="stageName"
-                    placeholder="如：暴君 / 不要恐慌"
-                    {...field}
-                  />
-                ),
-              }}
-            />
+            <StageNameInput control={control} />
           </div>
           <div className="w-3/4">
             <FormField
@@ -142,6 +225,6 @@ export const OperationEditor: FC<{
           </div>
         </div>
       </div>
-    </OperationDrawer>
+    </section>
   )
 }

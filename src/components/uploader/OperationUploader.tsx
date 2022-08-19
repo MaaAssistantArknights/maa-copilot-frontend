@@ -1,3 +1,4 @@
+import { ComponentType, useState } from 'react'
 import {
   Button,
   Callout,
@@ -6,18 +7,21 @@ import {
   H4,
   Icon,
 } from '@blueprintjs/core'
+
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { AppToaster } from 'components/Toaster'
-import { STAGES } from 'models/generated/stages'
-import { FC, useState } from 'react'
+import { useLevels } from 'src/apis/arknights'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+import { withSuspensable } from 'components/Suspensable'
+import type { Level } from 'src/models/operation'
+
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
 // and copilot backend server need to use draft-6
 
-const operationPatch = (operation: object): object => {
+const operationPatch = (operation: object, levels: Level[]): object => {
   // this part is quite dirty, do not use in other parts
   // backend compatibility of minimum_required
   if (
@@ -46,10 +50,11 @@ const operationPatch = (operation: object): object => {
     !(operation['stage_name'] as string).match('^[a-z/_0-9-]*$') ||
     (operation['stage_name'] as string).indexOf('/') === -1
   ) {
-    const matchStages = STAGES.filter((stage) => {
+    const matchStages = levels.filter((stage) => {
       return (
         stage.name === operation['stage_name'] ||
-        stage.code === operation['stage_name']
+        // catThree contains the stage code, e.g. 1-7
+        stage.catThree === operation['stage_name']
       )
     })
     if (matchStages.length === 1) {
@@ -67,11 +72,21 @@ const operationPatch = (operation: object): object => {
   return operation
 }
 
-export const OperationUploader: FC = () => {
+export const OperationUploader: ComponentType = withSuspensable(() => {
   const [filename, setFilename] = useState(null as string | null)
   const [error, setErrors] = useState(null as string[] | null)
   const [operation, setOperation] = useState(null as object | null)
   const [isUploading, setIsUploading] = useState(false)
+
+  const { data: levelsData, error: levelError } = useLevels()
+  const levels = levelsData?.data
+
+  // make eslint happy: we got Suspense out there
+  if (!levels) return null
+
+  if (levelError) {
+    setErrors([levelError.message])
+  }
 
   const handleFileUpload = async (event: React.FormEvent<HTMLInputElement>) => {
     setErrors(null)
@@ -101,7 +116,7 @@ export const OperationUploader: FC = () => {
       //   operationObject,
       // )
       // console.log(jsonSchemaValidation, copilotSchemaValidator.errors)
-      const patchedOperation = operationPatch(operationObject)
+      const patchedOperation = operationPatch(operationObject, levels)
       console.log('patchedOperation', patchedOperation)
       setOperation(patchedOperation)
     }
@@ -175,4 +190,4 @@ export const OperationUploader: FC = () => {
       </div>
     </OperationDrawer>
   )
-}
+})

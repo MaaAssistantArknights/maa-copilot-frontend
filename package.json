@@ -14,8 +14,7 @@
     "lint:fix": "npm-run-all --parallel lint:fix:eslint lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix src*",
     "lint:fix:prettier": "prettier --write src*",
-    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts",
-    "scripts:update-stages": "yarn install && esno scripts/update-stages.ts"
+    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts"
   },
   "dependencies": {
     "@blueprintjs/core": "^4.5.1",
@@ -24,6 +23,8 @@
     "@dnd-kit/core": "^6.0.5",
     "@dnd-kit/sortable": "^7.0.1",
     "@dnd-kit/utilities": "^3.2.0",
+    "@iconify/icons-simple-icons": "^1.2.22",
+    "@iconify/react": "^3.2.2",
     "@sentry/react": "^7.4.1",
     "@sentry/tracing": "^7.4.1",
     "@typescript-eslint/eslint-plugin": "^5.33.1",
