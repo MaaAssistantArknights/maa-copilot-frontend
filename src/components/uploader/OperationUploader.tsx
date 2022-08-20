@@ -16,6 +16,7 @@ import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 import { withSuspensable } from 'components/Suspensable'
 import type { Level } from 'src/models/operation'
+import { copilotSchemaValidator } from 'src/models/copilot.schema.validator'
 
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
@@ -110,14 +111,28 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
         return
       }
 
-      // bypass jsonschema validation according to mist
-      // const jsonSchemaValidation = copilotSchemaValidator.validate(
-      //   'copilot',
-      //   operationObject,
-      // )
-      // console.log(jsonSchemaValidation, copilotSchemaValidator.errors)
       const patchedOperation = operationPatch(operationObject, levels)
       console.log('patchedOperation', patchedOperation)
+
+      const jsonSchemaValidation = copilotSchemaValidator.validate(
+        'copilot',
+        operationObject,
+      )
+      console.log(
+        'jsonSchemaValidationResult',
+        jsonSchemaValidation,
+        'errors',
+        copilotSchemaValidator.errors,
+      )
+
+      if (!jsonSchemaValidation && copilotSchemaValidator.errors) {
+        setErrors(
+          copilotSchemaValidator.errors.map(
+            (error) =>
+              `Path: ${error.instancePath}, Error: ${error.message}` ?? '',
+          ),
+        )
+      }
       setOperation(patchedOperation)
     }
   }
