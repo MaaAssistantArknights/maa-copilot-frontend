@@ -132,6 +132,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
               `Path: ${error.instancePath}, Error: ${error.message}` ?? '',
           ),
         )
+        return
       }
       setOperation(patchedOperation)
     }
@@ -195,7 +196,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
           className="mt-4"
           large
           fill
-          disabled={operation === null || isUploading}
+          disabled={operation === null || error !== null || isUploading}
           loading={isUploading}
           icon="form"
           onClick={handleOperationSubmit}
