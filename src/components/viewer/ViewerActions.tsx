@@ -7,8 +7,8 @@ import { FC } from 'react'
 import { FCC } from 'types'
 import { formatDuration } from 'utils/times'
 
-const actionKey = (action: CopilotDocV1.Action) =>
-  `${action.type}_${action.kills}_${action.costChanges}_${action.preDelay}_${action.rearDelay}_${action.direction}`
+const actionKey = (action: CopilotDocV1.Action, index?: number) =>
+  `${action.type}_${action.name}_${action.kills}_${action.costChanges}_${action.preDelay}_${action.rearDelay}_${action.direction}_${index}`
 
 export const ViewerActions: FC<{
   className?: string
@@ -18,7 +18,7 @@ export const ViewerActions: FC<{
 
   return (
     <div className="flex flex-col pb-8">
-      {actions.map((action) => {
+      {actions.map((action, i) => {
         const type = findActionType(action.type)
         return (
           <Card
@@ -28,7 +28,7 @@ export const ViewerActions: FC<{
               type.accent,
               className,
             )}
-            key={actionKey(action)}
+            key={actionKey(action, i)}
           >
             <CardTitle large className="mb-0" icon={type.icon}>
               <span className="text-xl">{type.title}</span>

@@ -37,6 +37,7 @@ export const AppLayout: FCC = ({ children }) => (
 
       {LINKS.map((link) => (
         <NavLink
+          key={link.to}
           to={link.to}
           className="text-sm text-zinc-600 !no-underline ml-2"
         >

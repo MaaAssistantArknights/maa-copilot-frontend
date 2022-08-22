@@ -24,12 +24,12 @@ import { Paragraphs } from 'components/Paragraphs'
 import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
+import { OperationRating } from 'components/viewer/OperationRating'
 import { ViewerActions } from 'components/viewer/ViewerActions'
 import { useAtom } from 'jotai'
 import { merge } from 'lodash-es'
 import { Operation, OpRatingType } from 'models/operation'
 import { ComponentType, FC, useMemo, useState } from 'react'
-import { OperationRating } from 'src/components/viewer/OperationRating'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
@@ -45,7 +45,7 @@ const ManageMenu: FC<{
     setLoading(true)
     try {
       await wrapErrorMessage(
-        (e: NetworkError) => `删除失败：${e.responseMessage}`,
+        (e: NetworkError) => `删除失败：${e.message}`,
         requestDeleteOperation(operation.id),
       )
     } finally {
@@ -302,7 +302,7 @@ export const OperationViewer: ComponentType<{
             <H5 className="mb-4 text-slate-600">干员</H5>
             <div className="flex flex-col mb-4">
               {operation.operators.map((operator) => (
-                <OperatorCard operator={operator} />
+                <OperatorCard key={operator} operator={operator} />
               ))}
               {operation.operators.length === 0 && (
                 <EmptyOperator description="作业并未添加干员" />
@@ -318,7 +318,7 @@ export const OperationViewer: ComponentType<{
 
                     <div className="flex flex-col">
                       {el.operators.filter(Boolean).map((operator) => (
-                        <OperatorCard operator={operator} />
+                        <OperatorCard key={operator} operator={operator} />
                       ))}
 
                       {el.operators.filter(Boolean).length === 0 && (

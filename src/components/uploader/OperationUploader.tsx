@@ -1,4 +1,3 @@
-import { ComponentType, useState } from 'react'
 import {
   Button,
   Callout,
@@ -7,15 +6,18 @@ import {
   H4,
   Icon,
 } from '@blueprintjs/core'
+import ajvLocalizeZh from 'ajv-i18n/localize/zh'
+import { ComponentType, useState } from 'react'
 
+import { useLevels } from 'apis/arknights'
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
-import { useLevels } from 'src/apis/arknights'
+import { copilotSchemaValidator } from 'models/copilot.schema.validator'
+import type { Level } from 'models/operation'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { withSuspensable } from 'components/Suspensable'
-import type { Level } from 'src/models/operation'
 
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
@@ -110,14 +112,27 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
         return
       }
 
-      // bypass jsonschema validation according to mist
-      // const jsonSchemaValidation = copilotSchemaValidator.validate(
-      //   'copilot',
-      //   operationObject,
-      // )
-      // console.log(jsonSchemaValidation, copilotSchemaValidator.errors)
       const patchedOperation = operationPatch(operationObject, levels)
       console.log('patchedOperation', patchedOperation)
+
+      const jsonSchemaValidation = copilotSchemaValidator.validate(
+        'copilot',
+        operationObject,
+      )
+      console.log(
+        'jsonSchemaValidationResult',
+        jsonSchemaValidation,
+        'errors',
+        copilotSchemaValidator.errors,
+      )
+
+      if (!jsonSchemaValidation && copilotSchemaValidator.errors) {
+        ajvLocalizeZh(copilotSchemaValidator.errors)
+        setErrors([
+          copilotSchemaValidator.errorsText(copilotSchemaValidator.errors),
+        ])
+        return
+      }
       setOperation(patchedOperation)
     }
   }
@@ -126,7 +141,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
     setIsUploading(true)
     try {
       await wrapErrorMessage(
-        (e: NetworkError) => `作业上传失败：${e.responseMessage}`,
+        (e: NetworkError) => `作业上传失败：${e.message}`,
         requestOperationUpload(JSON.stringify(operation)),
       )
     } finally {
@@ -180,7 +195,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
           className="mt-4"
           large
           fill
-          disabled={operation === null || isUploading}
+          disabled={operation === null || error !== null || isUploading}
           loading={isUploading}
           icon="form"
           onClick={handleOperationSubmit}

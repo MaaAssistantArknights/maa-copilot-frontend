@@ -6,18 +6,7 @@ import { envUseProductionApi } from './envvar'
 
 const fetch = window.fetch || unfetch
 
-type FetchResponse = globalThis.Response
-
-export class NetworkError extends Error {
-  responseMessage: string
-
-  constructor(response?: FetchResponse, errorMessage?: string) {
-    const message = `Request failed for ${response?.url}: ${errorMessage} (http status: ${response?.status})`
-    super(message)
-    this.name = 'NetworkError'
-    this.responseMessage = errorMessage || 'Unknown error'
-  }
-}
+export class NetworkError extends Error {}
 
 const baseURL = envUseProductionApi
   ? 'https://api.prts.plus'
@@ -50,6 +39,10 @@ export const request = <T extends Response<unknown>>(
         data: camelcaseKeys(await res.json(), { deep: true }) as T,
       }
     })
+    .catch((err) => {
+      console.error('Fetcher: got error', err)
+      return Promise.reject(new Error('网络错误，请检查网络连接并稍后重试'))
+    })
     .then((res) => {
       if (
         (res.data.statusCode &&
@@ -59,19 +52,16 @@ export const request = <T extends Response<unknown>>(
       ) {
         console.error('Fetcher: got error response', res)
         return Promise.reject(
-          new NetworkError(
-            res.response,
-            res.data?.message || JSON.stringify(res.data) || 'Unknown error',
+          new Error(
+            res.data?.message ||
+              JSON.stringify(res.data) ||
+              `Unknown error (${
+                res.data.statusCode || res.response.status || 'unknown'
+              })`,
           ),
         )
       }
       return res.data
-    })
-    .catch((err) => {
-      console.error('Fetcher: got error', err)
-      return Promise.reject(
-        new NetworkError(err.response, '网络错误，请检查网络连接并稍后重试'),
-      )
     })
 
 export type JsonRequestInit = RequestInit & {

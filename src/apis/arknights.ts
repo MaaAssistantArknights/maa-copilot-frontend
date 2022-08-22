@@ -11,9 +11,10 @@ export const useVersion = () => {
   })
 }
 
-export const useLevels = () => {
+export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
   return useSWR<Response<Level[]>>('/arknights/level', {
     focusThrottleInterval: ONE_DAY,
+    suspense,
   })
 }
 

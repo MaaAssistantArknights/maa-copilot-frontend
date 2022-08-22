@@ -42,6 +42,7 @@ export const EditorPerformerAdd = ({ append }) => {
         }}
         itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
           <MenuItem
+            key={action.value}
             selected={modifiers.active}
             onClick={handleClick}
             onFocus={handleFocus}

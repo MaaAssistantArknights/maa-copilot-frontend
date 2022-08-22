@@ -16,7 +16,7 @@ export const AccountActivator: FC<{
   useEffect(() => {
     start()
     wrapErrorMessage(
-      (e: NetworkError) => `激活账号失败：${e.responseMessage}`,
+      (e: NetworkError) => `激活账号失败：${e.message}`,
       requestActivation(code),
     )
       .then(() => {

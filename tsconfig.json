@@ -28,17 +28,23 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "paths": {
-      "src/*": [
-        "*"
-      ]
-    }
+    // "paths": {
+    //   "src/*": [
+    //     "*"
+    //   ]
+    // }
   },
-  "include": ["src"],
+  // "include": [
+  //   "src"
+  // ],
   "exclude": [
     "node_modules",
     "build",
     "public"
   ],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

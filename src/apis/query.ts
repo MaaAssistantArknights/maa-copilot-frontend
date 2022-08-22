@@ -4,7 +4,6 @@ import type {
   OperationListItem,
   PaginatedResponse,
 } from 'models/operation'
-import type { Response } from 'models/network'
 import { useEffect } from 'react'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
@@ -32,7 +31,7 @@ export const useOperations = ({
     )
     searchParams.set('order_by', orderBy)
     if (query) {
-      searchParams.set('content', query)
+      searchParams.set('level_name', query)
     }
 
     return `/copilot/query?${searchParams.toString()}`

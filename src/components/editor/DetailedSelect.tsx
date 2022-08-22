@@ -31,7 +31,7 @@ export const DetailedSelect: FCC<
 
         if (action.type === 'header') {
           return (
-            <li className={Classes.MENU_HEADER}>
+            <li key={'header_' + action.header} className={Classes.MENU_HEADER}>
               <H6>{action.header}</H6>
             </li>
           )

@@ -1,201 +1,268 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema",
-  "$id": "https://maa.plus/schemas/copilot/v1",
-  "type": "object",
-  "title": "MAA Copilot 战斗协议 v1",
-  "description": "MAA Copilot 战斗协议 v1",
-  "required": ["stage_name", "actions", "minimum_required"],
+  "title": "Maa Copilot Operation",
   "properties": {
     "stage_name": {
-      "type": "string",
-      "title": "关卡名",
-      "description": "必填。除危机合约外，均为关卡中文名"
+      "$ref": "#/definitions/stage_name"
+    },
+    "minimum_required": {
+      "$ref": "#/definitions/minimum_required"
+    },
+    "doc": {
+      "$ref": "#/definitions/doc"
     },
     "opers": {
-      "$ref": "#/$defs/operator",
-      "title": "指定干员"
+      "type": "array",
+      "description": "Operator list.",
+      "items": {
+        "$ref": "#/definitions/operator"
+      }
     },
     "groups": {
       "type": "array",
+      "description": "Group list.",
       "items": {
-        "type": "object",
-        "required": ["name"],
-        "properties": {
-          "name": {
-            "type": "string"
-          },
-          "opers": {
-            "$ref": "#/$defs/operator"
-          }
-        }
+        "$ref": "#/definitions/group"
       }
     },
     "actions": {
       "type": "array",
+      "description": "Actions in order, required. Will be executed sequentially.",
       "items": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": [
-              "Deploy",
-              "Skill",
-              "Retreat",
-              "SpeedUp",
-              "BulletTime",
-              "SkillUsage",
-              "Output",
-              "SkillDaemon"
-            ],
-            "default": "Deploy"
-          },
-          "kills": {
-            "type": "integer",
-            "minimum": 0,
-            "default": 0
-          },
-          "cost_changes": {
-            "type": "integer",
-            "minimum": 0,
-            "default": 0
-          },
-          "name": {
-            "type": "string"
-          },
-          "location": {
-            "type": "array",
-            "items": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "integer"
-              }
-            ],
-            "minItems": 2,
-            "maxItems": 2
-          },
-          "direction": {
-            "type": "string",
-            "enum": ["Left", "Right", "Up", "Down", "None"]
-          },
-          "skill_usage": {
-            "$ref": "#/$defs/skill_usage"
-          },
-          "pre_delay": {
-            "type": "integer",
-            "minimum": 0,
-            "default": 0
-          },
-          "rear_delay": {
-            "type": "integer",
-            "minimum": 0,
-            "default": 0
-          },
-          "doc": {
-            "type": "string"
-          },
-          "doc_color": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "minimum_required": {
-      "type": "string"
-    },
-    "doc": {
-      "type": "object",
-      "properties": {
-        "title": {
-          "type": "string"
-        },
-        "title_color": {
-          "type": "string"
-        },
-        "details": {
-          "type": "string"
-        },
-        "details_color": {
-          "type": "string"
-        }
+        "$ref": "#/definitions/action"
       }
     }
   },
-  "$defs": {
-    "skill_usage": {
-      "type": "integer",
-      "enum": [0, 1, 2, 3],
-      "default": 0
+  "required": [
+    "stage_name",
+    "minimum_required",
+    "doc"
+  ],
+  "definitions": {
+    "stage_name": {
+      "type": "string",
+      "description": "Arknights level id like obt/main/level_main_00-01"
+    },
+    "minimum_required": {
+      "type": "string",
+      "description": "Minimum required MAA version, need to match semantic version schema, required, reserved field, not implemented.",
+      "default": "v4.0.0",
+      "pattern": "^v((0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?)$"
+    },
+    "doc": {
+      "type": "object",
+      "description": "The title and detail description for this operation",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Operation title",
+          "minLength": 1
+        },
+        "details": {
+          "type": "string",
+          "description": "Operation description",
+          "minLength": 1
+        },
+        "title_color": {
+          "type": "string",
+          "description": "The color of title text displayed in Maa"
+        },
+        "details_color": {
+          "type": "string",
+          "description": "The color of details text displayed in Maa"
+        }
+      },
+      "required": [
+        "title",
+        "details"
+      ]
     },
     "operator": {
-      "type": "array",
-      "title": "Operator",
-      "items": {
-        "type": "object",
-        "required": ["name"],
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "干员名",
-            "description": "必填"
-          },
-          "skill": {
-            "type": "integer",
-            "title": "技能序号",
-            "description": "可选，默认 1，取值范围 [1, 3]",
-            "anyOf": [
-              {
-                "const": 1,
-                "title": "一技能"
-              },
-              {
-                "const": 2,
-                "title": "二技能"
-              },
-              {
-                "const": 3,
-                "title": "三技能"
-              }
-            ],
-            "default": 1
-          },
-          "skill_usage": {
-            "$ref": "#/$defs/skill_usage"
-          },
-          "requirements": {
-            "type": "object",
-            "properties": {
-              "elite": {
-                "type": "integer",
-                "enum": [0, 1, 2],
-                "default": 0
-              },
-              "level": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 90,
-                "default": 0
-              },
-              "skill_level": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 10,
-                "default": 0
-              },
-              "module": {
-                "type": "integer",
-                "minimum": 0,
-                "default": 0
-              },
-              "potentiality": {
-                "type": "integer",
-                "minimum": 0,
-                "maximum": 5,
-                "default": 0
-              }
-            }
+      "type": "object",
+      "title": "Operator definition",
+      "description": "Arknights operator info",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The official full name of the operator in your language. If this operation has been uploaded to the server, it will be replaced by the name in the request language. If you use an operator that is not available in other servers, it will fallback to operator name in Chinese and be tagged as not available for your region.",
+          "minLength": 1
+        },
+        "skill": {
+          "type": "integer",
+          "description": "The skill of the operator to use in the operation.",
+          "minimum": 1,
+          "maximum": 3,
+          "default": 1
+        },
+        "skill_usage": {
+          "type": "integer",
+          "description": "0 - Used on actions (Default); 1 - Used when ready (e.g. Thorns: Destreza, Myrtle: Support Beta); 2 - Used when ready, only once (e.g. Mountain: Sweeping Stance); 3 - Auto-decision (not implemented); 0 for auto skills;",
+          "minimum": 0,
+          "maximum": 3,
+          "default": 0
+        },
+        "requirements": {
+          "$ref": "#/definitions/operator_requirements"
+        }
+      },
+      "required": [
+        "name"
+      ]
+    },
+    "operator_requirements": {
+      "type": "object",
+      "description": "Operator requirements, empty by default.",
+      "properties": {
+        "elite": {
+          "type": "integer",
+          "description": "Elite requirement, optional, 0 by default",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0
+        },
+        "level": {
+          "type": "integer",
+          "description": "Level requirement, optional, 0 by default",
+          "minimum": 0,
+          "maximum": 90,
+          "default": 0
+        },
+        "skill_level": {
+          "type": "integer",
+          "description": "Skill level requirement, optional, 0 by default",
+          "minimum": 0,
+          "maximum": 10,
+          "default": 0
+        },
+        "module": {
+          "type": "integer",
+          "description": "Module requirement, optional, 0 by default",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0
+        },
+        "potentiality": {
+          "type": "integer",
+          "description": "Potential requirement, optional, 0 by default",
+          "minimum": 0,
+          "maximum": 6,
+          "default": 0
+        }
+      }
+    },
+    "group": {
+      "type": "object",
+      "description": "Operator group",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Any name is accepted as long as it matches the `name` field in `deploy` below.",
+          "minLength": 1
+        },
+        "opers": {
+          "type": "array",
+          "description": "Operators to be chosen randomly. Operators with higher levels have higher priority.",
+          "items": {
+            "$ref": "#/definitions/operator"
           }
+        }
+      },
+      "required": [
+        "name",
+        "opers"
+      ]
+    },
+    "action": {
+      "type": "object",
+      "description": "One action to be executed.",
+      "properties": {
+        "type": {
+          "type": "string",
+          "description": "Action type, \"Deploy (部署)\" by default. \"Deploy (部署)\" will wait until the cost is enough (unless timeout). \"Skill (技能)\" will wait until the skill is ready (unless timeout). \"SpeedUp (二倍速)\" is switchable, i.e. after using it will become 2x speed, and using it again will make it back to normal speed. \"BulletTime (子弹时间)\" is the 1/5 speed after clicking any operator. Proceeding with any other action will make it back to normal speed. \"Output\" will just print anything in doc on the UI. \"SkillDaemon\" will only use \"Use when Prepared\" skill, and do nothing until battle finished.",
+          "enum": [
+            "部署",
+            "技能",
+            "撤退",
+            "二倍速",
+            "子弹时间",
+            "技能用法",
+            "打印",
+            "摆完挂机",
+            "Deploy",
+            "Skill",
+            "Retreat",
+            "SpeedUp",
+            "BulletTime",
+            "SkillUsage",
+            "Output",
+            "SkillDaemon"
+          ]
+        },
+        "kills": {
+          "type": "integer",
+          "description": "Waiting until the number of kills required is reached, optional, 0 by default.",
+          "minimum": 0
+        },
+        "cost_changes": {
+          "type": "integer",
+          "description": "Waiting until the cost changes for the amount specified, optional, 0 by default.",
+          "minimum": 0
+        },
+        "name": {
+          "type": "string",
+          "description": "Operator/group name, required when `type` is one of \"Deploy (部署)\" | \"Skill (技能)\" | \"Retreat (撤退)\"."
+        },
+        "location": {
+          "type": "array",
+          "description": "Position for deployment. Required when `type` is \"Deploy (部署)\".  Optional when `type` is \"Retreat (撤退)\". Recommended only when multiple summons exist, retreating with location instead of name. Please simply use name to retreat for normal operators.",
+          "minLength": 2,
+          "maxLength": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "direction": {
+          "type": "string",
+          "description": "Direction for deployment, required when `type` is \"Deploy (部署)\".",
+          "enum": [
+            "Left",
+            "Right",
+            "Up",
+            "Down",
+            "None",
+            "左",
+            "右",
+            "上",
+            "下",
+            "无"
+          ]
+        },
+        "skill_usage": {
+          "type": "integer",
+          "description": "Override skill usage settings, required when `type` is \"SkillUsage (技能用法)\".  E.g.: Myrtle needs to attack without using the skill at the beginning, and use the skill automatically later. Set it to 1 in that case.",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "pre_delay": {
+          "type": "integer",
+          "description": "Pre-delay in ms, optional, 0 by default.",
+          "minimum": 0,
+          "default": 0
+        },
+        "rear_delay": {
+          "type": "integer",
+          "description": "Post-delay in ms, optional, 0 by default.",
+          "minimum": 0,
+          "default": 0
+        },
+        "doc": {
+          "type": "string",
+          "description": "Action description. Optional. Displayed on the UI with no effects."
+        },
+        "doc_color": {
+          "type": "string",
+          "description": "Action description color. Optional. Displayed on the UI with no effects"
         }
       }
     }
