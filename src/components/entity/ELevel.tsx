@@ -1,6 +1,6 @@
+import { EDifficulty } from 'components/entity/EDifficulty'
 import { Level, OpDifficulty } from 'models/operation'
 import { FC } from 'react'
-import { EDifficulty } from 'src/components/entity/EDifficulty'
 
 export const ELevel: FC<{
   className?: string

@@ -9,13 +9,13 @@ import {
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 import { ComponentType, useState } from 'react'
 
+import { useLevels } from 'apis/arknights'
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
-import { useLevels } from 'src/apis/arknights'
-import { copilotSchemaValidator } from 'src/models/copilot.schema.validator'
-import type { Level } from 'src/models/operation'
+import { copilotSchemaValidator } from 'models/copilot.schema.validator'
+import type { Level } from 'models/operation'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
