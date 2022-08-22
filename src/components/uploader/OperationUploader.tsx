@@ -7,6 +7,7 @@ import {
   H4,
   Icon,
 } from '@blueprintjs/core'
+import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
@@ -126,12 +127,10 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
       )
 
       if (!jsonSchemaValidation && copilotSchemaValidator.errors) {
-        setErrors(
-          copilotSchemaValidator.errors.map(
-            (error) =>
-              `Path: ${error.instancePath}, Error: ${error.message}` ?? '',
-          ),
-        )
+        ajvLocalizeZh(copilotSchemaValidator.errors)
+        setErrors([
+          copilotSchemaValidator.errorsText(copilotSchemaValidator.errors),
+        ])
         return
       }
       setOperation(patchedOperation)
