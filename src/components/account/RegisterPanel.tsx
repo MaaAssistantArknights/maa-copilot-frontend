@@ -28,7 +28,7 @@ export const RegisterPanel: FC<{
 
   const onSubmit = async (val: RegisterFormValues) => {
     await wrapErrorMessage(
-      (e: NetworkError) => `注册失败：${e.responseMessage}`,
+      (e: NetworkError) => `注册失败：${e.message}`,
       requestRegister(val.email, val.username, val.password),
     )
     AppToaster.show({

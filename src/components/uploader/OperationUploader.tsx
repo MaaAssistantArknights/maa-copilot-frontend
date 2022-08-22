@@ -1,4 +1,3 @@
-import { ComponentType, useState } from 'react'
 import {
   Button,
   Callout,
@@ -8,16 +7,18 @@ import {
   Icon,
 } from '@blueprintjs/core'
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
+import { ComponentType, useState } from 'react'
 
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
 import { useLevels } from 'src/apis/arknights'
+import type { Level } from 'src/models/operation'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 import { withSuspensable } from 'components/Suspensable'
 import type { Level } from 'src/models/operation'
-import { copilotSchemaValidator } from 'src/models/copilot.schema.validator'
 
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
@@ -141,7 +142,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
     setIsUploading(true)
     try {
       await wrapErrorMessage(
-        (e: NetworkError) => `作业上传失败：${e.responseMessage}`,
+        (e: NetworkError) => `作业上传失败：${e.message}`,
         requestOperationUpload(JSON.stringify(operation)),
       )
     } finally {

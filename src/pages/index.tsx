@@ -52,7 +52,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
           <OperationUploaderLauncher />
         </Card>
 
-        <div className="flex flex-wrap">
+        <div className="flex flex-wrap leading-relaxed">
           {SOCIAL_LINKS.map((link) => (
             <a
               href={link.href}

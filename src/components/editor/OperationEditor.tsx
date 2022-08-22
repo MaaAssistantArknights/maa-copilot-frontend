@@ -29,10 +29,16 @@ export const StageNameInput: FC<{
   } = useController<CopilotDocV1.Operation>({
     name: 'stageName',
     control,
-    rules: { required: '请输入干员名' },
+    rules: { required: '请输入关卡' },
   })
 
-  const { data, isValidating } = useLevels()
+  // we are going to manually handle loading state so we could show the skeleton state easily,
+  // without swapping the actual element.
+  const {
+    data,
+    error: levelError,
+    isValidating,
+  } = useLevels({ suspense: false })
   const loading = isValidating && !data
 
   const levels = data?.data || []
@@ -51,7 +57,7 @@ export const StageNameInput: FC<{
       <FormField2
         label="关卡"
         field="stageName"
-        error={error?.message}
+        error={levelError || error?.message}
         asterisk
         FormGroupProps={{
           helperText: (
@@ -65,7 +71,7 @@ export const StageNameInput: FC<{
       >
         <Suggest2<Level>
           className={clsx(loading && 'bp4-skeleton')}
-          disabled={loading}
+          disabled={loading || !!error}
           items={levels}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem

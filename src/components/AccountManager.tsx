@@ -48,7 +48,7 @@ const ActivationDialog: FC<{
 
   const onSubmit = async ({ code }) => {
     await wrapErrorMessage(
-      (e: NetworkError) => `激活失败：${e.responseMessage}`,
+      (e: NetworkError) => `激活失败：${e.message}`,
       requestActivation(code),
     )
 
@@ -127,7 +127,7 @@ const ActivationCodeRequestButton: FC = () => {
   const handleClick = () => {
     start()
     wrapErrorMessage(
-      (e: NetworkError) => `获取激活码失败：${e.responseMessage}`,
+      (e: NetworkError) => `获取激活码失败：${e.message}`,
       requestActivationCode(),
     )
       .then(() => {
@@ -216,61 +216,69 @@ const AccountMenu: FC = () => {
   )
 }
 
+export const AccountAuthDialog: ComponentType<{
+  open?: boolean
+  onClose?: () => void
+}> = withGlobalErrorBoundary(({ open, onClose }) => {
+  const [activeTab, setActiveTab] = useState<TabId>('login')
+
+  return (
+    <Dialog
+      title="MAA Copilot 账户"
+      icon="user"
+      isOpen={open}
+      onClose={onClose}
+    >
+      <div className="flex flex-col px-4 pt-2">
+        <GlobalErrorBoundary>
+          <Tabs
+            // renderActiveTabPanelOnly: avoid autocomplete on inactive panel
+            renderActiveTabPanelOnly={true}
+            id="account-manager-tabs"
+            onChange={(tab) => {
+              setActiveTab(tab)
+            }}
+            selectedTabId={activeTab}
+          >
+            <Tab
+              id="login"
+              title={
+                <div>
+                  <Icon icon="person" />
+                  <span className="ml-1">登录</span>
+                </div>
+              }
+              panel={
+                <LoginPanel
+                  onNavigateRegisterPanel={() => setActiveTab('register')}
+                  onComplete={() => onClose?.()}
+                />
+              }
+            />
+            <Tab
+              id="register"
+              title={
+                <div>
+                  <Icon icon="new-person" />
+                  <span className="ml-1">注册</span>
+                </div>
+              }
+              panel={<RegisterPanel onComplete={() => setActiveTab('login')} />}
+            />
+          </Tabs>
+        </GlobalErrorBoundary>
+      </div>
+    </Dialog>
+  )
+})
+
 export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
   const [open, setOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState<TabId>('login')
   const [authState] = useAtom(authAtom)
 
   return (
     <>
-      <Dialog
-        title="MAA Copilot 账户"
-        icon="user"
-        isOpen={open}
-        onClose={() => setOpen(false)}
-      >
-        <div className="flex flex-col px-4 pt-2">
-          <GlobalErrorBoundary>
-            <Tabs
-              // renderActiveTabPanelOnly: avoid autocomplete on inactive panel
-              renderActiveTabPanelOnly={true}
-              id="account-manager-tabs"
-              onChange={(tab) => {
-                setActiveTab(tab)
-              }}
-              selectedTabId={activeTab}
-            >
-              <Tab
-                id="login"
-                title={
-                  <div>
-                    <Icon icon="person" />
-                    <span className="ml-1">登录</span>
-                  </div>
-                }
-                panel={
-                  <LoginPanel
-                    onNavigateRegisterPanel={() => setActiveTab('register')}
-                    onComplete={() => setOpen(false)}
-                  />
-                }
-              />
-              <Tab
-                id="register"
-                title={
-                  <div>
-                    <Icon icon="new-person" />
-                    <span className="ml-1">注册</span>
-                  </div>
-                }
-                panel={
-                  <RegisterPanel onComplete={() => setActiveTab('login')} />
-                }
-              />
-            </Tabs>
-          </GlobalErrorBoundary>
-        </div>
-      </Dialog>
+      <AccountAuthDialog open={open} onClose={() => setOpen(false)} />
       {authState.token ? (
         // BUTTOM_RIGHT设置防止弹出框撑大body超过100vw
         <Popover2 content={<AccountMenu />} position={Position.BOTTOM_RIGHT}>

@@ -27,7 +27,7 @@ export const LoginPanel: FC<{
 
   const onSubmit = async (val: LoginFormValues) => {
     const res = await wrapErrorMessage(
-      (e: NetworkError) => `登录失败：${e.responseMessage}`,
+      (e: NetworkError) => `登录失败：${e.message}`,
       requestLogin(val.email, val.password),
     )
     const username = res.data.userInfo.userName
