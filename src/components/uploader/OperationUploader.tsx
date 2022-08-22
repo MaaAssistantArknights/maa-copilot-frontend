@@ -17,8 +17,6 @@ import { useLevels } from 'src/apis/arknights'
 import type { Level } from 'src/models/operation'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { withSuspensable } from 'components/Suspensable'
-import type { Level } from 'src/models/operation'
 
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
