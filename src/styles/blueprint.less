@@ -56,6 +56,19 @@ body {
     }
   }
 
+  .bp4-large .bp4-file-upload-input {
+    line-height: 2.375rem;
+  }
+
+  .bp4-large .bp4-file-upload-input::after {
+    @apply text-slate-900 shadow-none rounded-none m-0;
+    @apply border-l border-solid border-slate-400;
+    @apply hover:shadow-none;
+
+    height: 2.375rem;
+    line-height: 2.375rem;
+  }
+
   .bp4-button {
     @apply flex;
     @apply border-0 rounded-md font-semibold;
