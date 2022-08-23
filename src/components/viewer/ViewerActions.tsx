@@ -93,20 +93,20 @@ export const ViewerActions: FC<{
               {/* {import.meta.env.DEV && JSON.stringify(action, null, 2)} */}
             </Card>
             {i < actions.length - 1 && (
-              <div className="flex w-full justify-center items-center mb-2 text-slate-500">
-                <div className="inline-flex items-center text-center relative">
-                  <Icon icon="double-chevron-down" />
-                  {action.rearDelay ? (
-                    <div className="absolute right-0 text-right whitespace-nowrap mr-4 tabular-nums">
-                      <Icon icon="time" className="mr-2" />
-                      <span className="mr-2">等待时间</span>
-                      <span className="mr-2">
-                        {formatDuration(action.rearDelay)}
-                      </span>
-                      <div className="flex w-[1px] bg-slate-100 self-stretch" />
-                    </div>
-                  ) : null}
-                </div>
+              <div className="flex w-full justify-start items-center mb-2 select-none ml-0.5">
+                <Icon
+                  className="text-slate-400 mr-2"
+                  icon="double-chevron-down"
+                />
+                {action.rearDelay ? (
+                  <div className="flex items-center text-slate-500">
+                    <Icon icon="time" className="mr-2" />
+                    <span className="mr-1.5">等待时间</span>
+                    <span className="mr-2">
+                      {formatDuration(action.rearDelay)}
+                    </span>
+                  </div>
+                ) : null}
               </div>
             )}
           </>
