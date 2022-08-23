@@ -17,6 +17,7 @@ import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
+import camelcaseKeys from 'camelcase-keys'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
@@ -172,7 +173,9 @@ export const OperationViewer: ComponentType<{
   }
 
   const operationDoc = useMemo(() => {
-    return JSON.parse(operation.content) as CopilotDocV1.Operation
+    const json = JSON.parse(operation.content)
+    const transformed = camelcaseKeys(json, { deep: true })
+    return transformed as CopilotDocV1.Operation
   }, [operation])
 
   return (
