@@ -9,7 +9,7 @@
 // 加上最外层的id，保证自定义css优先级
 body {
   .bp4-card {
-    @apply rounded-lg;
+    @apply rounded-lg py-4;
   }
 
   .bp4-input {
@@ -54,6 +54,19 @@ body {
     .bp4-icon + .bp4-input {
       @apply pl-8;
     }
+  }
+
+  .bp4-large .bp4-file-upload-input {
+    line-height: 2.375rem;
+  }
+
+  .bp4-large .bp4-file-upload-input::after {
+    @apply text-slate-900 shadow-none rounded-none m-0;
+    @apply border-l border-solid border-slate-400;
+    @apply hover:shadow-none;
+
+    height: 2.375rem;
+    line-height: 2.375rem;
   }
 
   .bp4-button {

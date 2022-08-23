@@ -17,7 +17,9 @@ import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
+import camelcaseKeys from 'camelcase-keys'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -171,7 +173,9 @@ export const OperationViewer: ComponentType<{
   }
 
   const operationDoc = useMemo(() => {
-    return JSON.parse(operation.content) as CopilotDocV1.Operation
+    const json = JSON.parse(operation.content)
+    const transformed = camelcaseKeys(json, { deep: true })
+    return transformed as CopilotDocV1.Operation
   }, [operation])
 
   return (
@@ -355,6 +359,7 @@ const OperatorCard: FC<{
   const [name, skill] = operator.split('::')
   return (
     <Card elevation={Elevation.ONE} className="mb-2 last:mb-0 flex">
+      <OperatorAvatar name={name} size="large" className="mr-3" />
       <div className="flex items-center font-bold">{name}</div>
       <div className="flex-1"></div>
       <div className="flex items-center tabular-nums">

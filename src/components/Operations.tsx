@@ -63,7 +63,9 @@ export const Operations: ComponentType = withSuspensable(() => {
         </FormGroup>
       </Card>
 
-      <OperationList orderBy={orderBy} query={query} />
+      <div className="tabular-nums">
+        <OperationList orderBy={orderBy} query={query} />
+      </div>
     </>
   )
 })
