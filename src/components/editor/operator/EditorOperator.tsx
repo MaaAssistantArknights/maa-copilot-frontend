@@ -179,6 +179,7 @@ export const OperatorAvatar = ({
       )}
       src={'/assets/operator-avatars/' + foundId + '.png'}
       alt={id}
+      loading="lazy"
     />
   )
 }
