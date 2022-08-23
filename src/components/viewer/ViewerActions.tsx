@@ -53,14 +53,6 @@ export const ViewerActions: FC<{
                   <InlinePrecondition title="费用回复">
                     {action.costChanges || '-'}
                   </InlinePrecondition>
-
-                  {/* <InlinePrecondition title="动作前等待">
-                    {action.preDelay ? formatDuration(action.preDelay) : '-'}
-                  </InlinePrecondition>
-
-                  <InlinePrecondition title="动作后等待">
-                    {action.rearDelay ? formatDuration(action.rearDelay) : '-'}
-                  </InlinePrecondition> */}
                 </div>
               </CardTitle>
               <div className="grid grid-flow-row grid-cols-4 gap-2 [&>*]:mt-4 w-full">
@@ -90,7 +82,6 @@ export const ViewerActions: FC<{
                   </FactItem>
                 )}
               </div>
-              {/* {import.meta.env.DEV && JSON.stringify(action, null, 2)} */}
             </Card>
             {i < actions.length - 1 && (
               <div className="flex w-full justify-start items-center mb-2 select-none ml-0.5">
