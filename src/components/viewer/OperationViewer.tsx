@@ -18,6 +18,7 @@ import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -355,6 +356,7 @@ const OperatorCard: FC<{
   const [name, skill] = operator.split('::')
   return (
     <Card elevation={Elevation.ONE} className="mb-2 last:mb-0 flex">
+      <OperatorAvatar name={name} size="large" className="mr-3" />
       <div className="flex items-center font-bold">{name}</div>
       <div className="flex-1"></div>
       <div className="flex items-center tabular-nums">
