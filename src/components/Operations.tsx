@@ -26,7 +26,7 @@ export const Operations: ComponentType = withSuspensable(() => {
         </CardTitle>
         <FormGroup
           label="搜索"
-          helperText="键入关卡名、干员名、干员组名、标题或描述以搜索"
+          helperText="键入关卡名、关卡类型、关卡编号以搜索"
           className="mt-2"
         >
           <InputGroup
