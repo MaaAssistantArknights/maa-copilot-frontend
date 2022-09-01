@@ -95,15 +95,10 @@ export const OperationCard = ({
         </div>
         <H5 className="flex items-center text-slate-900 -mt-3">
           <div className="text-sm text-zinc-600 mr-2">作战</div>
-          <Tag
-            className="bg-slate-100 text-slate-900 border border-slate-300 border-solid"
-            large
-          >
-            <EDifficultyLevel
-              level={operation.level}
-              difficulty={operation.difficulty}
-            />
-          </Tag>
+          <EDifficultyLevel
+            level={operation.level}
+            difficulty={operation.difficulty}
+          />
         </H5>
         <div className="flex">
           <div className="text-gray-700 leading-normal w-1/2">
