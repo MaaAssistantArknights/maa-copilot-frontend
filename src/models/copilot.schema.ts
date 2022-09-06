@@ -14,19 +14,57 @@ namespace CopilotDocV1 {
     stageName: string
   }
 
-  export interface Action {
-    costChanges?: number
-    direction?: Direction
+  interface ActionBase {
+    // Action common optional fields
     doc?: string
     docColor?: string
+    costChanges?: number
     kills?: number
-    location?: any[]
-    name: string
     preDelay?: number
     rearDelay?: number
-    skillUsage?: number
-    type?: Type
   }
+
+  export interface ActionDeploy extends ActionBase {
+    direction: Direction
+    // location: any[]
+    // should be
+    location: [number, number]
+    name: string
+    type: Type.Deploy
+  }
+
+  export type ActionSkillOrRetreat = ActionBase &
+    (
+      | {
+          // location: any[]
+          // should be
+          location: [number, number]
+          name?: string
+          type: Type.Skill | Type.Retreat
+        }
+      | {
+          // location?: any[]
+          // should be
+          location?: [number, number]
+          name: string
+          type: Type.Skill | Type.Retreat
+        }
+    )
+
+  export interface ActionSkillUsage extends ActionBase {
+    skillUsage: number
+    type: Type.SkillUsage
+  }
+
+  export interface ActionUtil extends ActionBase {
+    type: Type.SpeedUp | Type.BulletTime | Type.Output | Type.SkillDaemon
+  }
+
+  export type Action =
+    | ActionDeploy
+    | ActionSkillOrRetreat
+    | ActionSkillUsage
+    | ActionUtil
 
   export enum Direction {
     Down = 'Down',
@@ -80,3 +118,5 @@ namespace CopilotDocV1 {
     skillLevel?: number
   }
 }
+
+export { CopilotDocV1 }
