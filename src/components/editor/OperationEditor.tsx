@@ -49,7 +49,7 @@ export const StageNameInput: FC<{
         keys: ['name', 'catOne', 'catTwo', 'catThree'],
         threshold: 0.3,
       }),
-    [],
+    [levels],
   )
 
   return (
