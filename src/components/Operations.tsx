@@ -36,7 +36,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             size={64}
             large
             enterKeyHint="search"
-            onChange={(e) => debouncedSetQuery(e.target.value)}
+            onChange={(e) => debouncedSetQuery(e.target.value.trim())}
           />
         </FormGroup>
         <FormGroup label="排序">
