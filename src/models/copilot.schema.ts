@@ -118,5 +118,3 @@ namespace CopilotDocV1 {
     skillLevel?: number
   }
 }
-
-export { CopilotDocV1 }

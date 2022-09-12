@@ -22,7 +22,6 @@ import type {
   FieldErrorsImpl,
   DeepRequired,
 } from 'react-hook-form'
-import { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>
@@ -78,9 +77,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           </div>
         </div>
 
-        {(type === CopilotDocV1.Type.Deploy ||
-          type === CopilotDocV1.Type.Skill ||
-          type === CopilotDocV1.Type.Retreat) && (
+        {(type === 'Deploy' || type === 'Skill' || type === 'Retreat') && (
           <>
             <div className="flex">
               <FormField2
@@ -149,7 +146,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           </>
         )}
 
-        {type === CopilotDocV1.Type.Deploy && (
+        {type === 'Deploy' && (
           <div className="flex">
             <FormField2
               label="干员朝向"
