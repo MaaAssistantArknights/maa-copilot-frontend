@@ -1,13 +1,20 @@
-import { Card, Elevation } from '@blueprintjs/core'
+import { Card, Elevation, Icon } from '@blueprintjs/core'
+import clsx from 'clsx'
 import { OPERATORS } from '../../../models/generated/operators'
 import { findOperatorSkillUsage } from '../../../models/operator'
+import { SortableItemProps } from '../../dnd'
 import { OperatorAvatar } from './EditorOperator'
 
-interface EditorOperatorItemProps {
+interface EditorOperatorItemProps extends Partial<SortableItemProps> {
   operator: CopilotDocV1.Operator
 }
 
-export const EditorOperatorItem = ({ operator }: EditorOperatorItemProps) => {
+export const EditorOperatorItem = ({
+  operator,
+  isDragging,
+  attributes,
+  listeners,
+}: EditorOperatorItemProps) => {
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
   const skillUsage = findOperatorSkillUsage(operator.skillUsage)?.title
 
@@ -16,7 +23,16 @@ export const EditorOperatorItem = ({ operator }: EditorOperatorItemProps) => {
   }技能：${skillUsage}`
 
   return (
-    <Card elevation={Elevation.TWO} className="flex">
+    <Card
+      elevation={Elevation.TWO}
+      className={clsx('flex', isDragging && 'opacity-30')}
+    >
+      <Icon
+        className="cursor-grab active:cursor-grabbing p-1 -my-1 -ml-2 mr-3 rounded-[1px]"
+        icon="drag-handle-vertical"
+        {...attributes}
+        {...listeners}
+      />
       <OperatorAvatar id={id} size="large" />
       <div className="ml-4">
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>

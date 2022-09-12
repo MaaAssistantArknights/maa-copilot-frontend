@@ -2,23 +2,37 @@ import { Button } from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { handleFieldError } from '../../../utils/fieldError'
 import { EditorOperator } from './EditorOperator'
-import { EditorPerformerChildProps } from './EditorPerformer'
+
+export interface EditorPerformerOperatorProps {
+  submit: (operator: CopilotDocV1.Operator) => void
+  categorySelector: JSX.Element
+}
 
 export const EditorPerformerOperator = ({
   submit,
   categorySelector,
-}: EditorPerformerChildProps) => {
+}: EditorPerformerOperatorProps) => {
   const {
     control,
     reset,
     handleSubmit,
+    setError,
     formState: { errors, isValid, isDirty },
   } = useForm<CopilotDocV1.Operator>()
 
   const onSubmit: SubmitHandler<CopilotDocV1.Operator> = (values) => {
-    submit(values)
-    reset()
+    try {
+      submit({
+        ...values,
+        name: values.name.trim(),
+      })
+      reset()
+    } catch (e) {
+      handleFieldError(setError, e)
+      console.warn(e)
+    }
   }
 
   return (
