@@ -14,19 +14,19 @@ body,
   background-color: rgb(250, 250, 250);
 }
 
-::-webkit-scrollbar {
+.platform--windows ::-webkit-scrollbar {
   background-color: transparent;
-  width: 6px;
-  padding-left: 3px;
+  width: 3px;
+  height: 3px;
 }
 
-::-webkit-scrollbar-track {
+.platform--windows ::-webkit-scrollbar-track {
   background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb {
+.platform--windows ::-webkit-scrollbar-thumb {
   background-color: #babac0;
-  border-radius: 6px;
+  border-radius: 1.5px;
 }
 
 *:focus {
