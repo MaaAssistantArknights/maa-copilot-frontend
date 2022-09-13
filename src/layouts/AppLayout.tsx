@@ -22,7 +22,7 @@ const LINKS: {
 
 export const AppLayout: FCC = ({ children }) => (
   <div className="flex flex-col h-full w-full bg-zinc-50">
-    <nav className="flex w-full px-8 py-2 items-center bg-zinc-100 shadow fixed h-14 z-10">
+    <nav className="flex w-full px-8 py-2 items-center bg-zinc-100 shadow fixed h-14 z-10 whitespace-nowrap overflow-x-auto overflow-y-hidden">
       <Link to="/" className="flex items-center hover:no-underline">
         <div className="select-none text-lg font-bold leading-none">
           MAA Copilot

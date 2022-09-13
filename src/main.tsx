@@ -28,6 +28,13 @@ Sentry.init({
   },
 })
 
+// add platform class to root element
+if (navigator.userAgent.includes('Win')) {
+  document.documentElement.classList.add('platform--windows')
+} else {
+  document.documentElement.classList.add('platform--non-windows')
+}
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App>
