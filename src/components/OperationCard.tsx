@@ -54,14 +54,16 @@ export const OperationCard = ({
           <div className="flex-1"></div>
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
-              <div className="flex items-center mr-4">
-                <Icon icon="star" className="mr-1.5" />
-                <OperationRating
-                  className="text-sm"
-                  operation={operation}
-                  layout="horizontal"
-                />
-              </div>
+              {!operation.isNotEnoughRating && (
+                <div className="flex items-center mr-4">
+                  <Icon icon="star" className="mr-1.5" />
+                  <OperationRating
+                    className="text-sm"
+                    operation={operation}
+                    layout="horizontal"
+                  />
+                </div>
+              )}
 
               <Tooltip2
                 className="mr-4"
@@ -94,7 +96,7 @@ export const OperationCard = ({
           </div>
         </div>
         <H5 className="flex items-center text-slate-900 -mt-3">
-          <div className="text-sm text-zinc-600 mr-2">作战</div>
+          {/* <div className="text-sm text-zinc-600 mr-2">作战</div> */}
           <EDifficultyLevel
             level={operation.level}
             difficulty={operation.difficulty}
@@ -102,7 +104,7 @@ export const OperationCard = ({
         </H5>
         <div className="flex">
           <div className="text-gray-700 leading-normal w-1/2">
-            <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div>
+            {/* <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div> */}
             <Paragraphs content={operation.detail} linkify />
           </div>
           <div className="w-1/2 ml-4">

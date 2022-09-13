@@ -43,27 +43,28 @@ export const EDifficulty: FC<{
   difficulty: OpDifficulty
 }> = ({ difficulty }) => {
   if (difficulty === OpDifficulty.UNKNOWN) {
-    return (
-      <DifficultyTag
-        tooltip={
-          <div className="flex flex-col">
-            <span>
-              本作业并未支持难度支持标识，请自行根据作业的文字描述判断其所支持的作业难度等级。通常来说，未写明支持难度的作业均兼容突袭和普通难度作战。
-            </span>
+    return <></>
+    // return (
+    //   <DifficultyTag
+    //     tooltip={
+    //       <div className="flex flex-col">
+    //         <span>
+    //           本作业并未支持难度支持标识，请自行根据作业的文字描述判断其所支持的作业难度等级。通常来说，未写明支持难度的作业均兼容突袭和普通难度作战。
+    //         </span>
 
-            {/* <Callout
-              className="mt-2"
-              intent="primary"
-              title="作业作者"
-              icon="help"
-            >
-              若您为作业作者，您可使用作业编辑器将此作业编辑为对应的难度支持标识。
-            </Callout> */}
-          </div>
-        }
-        content="未知难度"
-      />
-    )
+    //         {/* <Callout
+    //           className="mt-2"
+    //           intent="primary"
+    //           title="作业作者"
+    //           icon="help"
+    //         >
+    //           若您为作业作者，您可使用作业编辑器将此作业编辑为对应的难度支持标识。
+    //         </Callout> */}
+    //       </div>
+    //     }
+    //     content="未知难度"
+    //   />
+    // )
   }
 
   const children: JSX.Element[] = []
