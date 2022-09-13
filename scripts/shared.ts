@@ -3,11 +3,13 @@ import fetch from 'node-fetch'
 import pinyin from 'pinyin'
 
 function transformOperatorName(name: string) {
-  const fullPinyin = pinyin(name, {
+  const cleanedName = name.replace(/[”“"]/g, '')
+
+  const fullPinyin = pinyin(cleanedName, {
     segment: true,
     style: pinyin.STYLE_NORMAL,
   })
-  const partialPinyin = pinyin(name, {
+  const partialPinyin = pinyin(cleanedName, {
     segment: true,
     style: pinyin.STYLE_FIRST_LETTER,
   })
@@ -25,6 +27,7 @@ const CHARACTER_TABLE_JSON_URL =
 
 const CHARACTER_BLOCKLIST = [
   'char_512_aprot', // 暮落(集成战略)：It's just not gonna be there.
+  'token_10012_rosmon_shield', // 迷迭香的战术装备：It's just not gonna be there.
 ]
 
 export async function getOperatorNames() {
@@ -35,7 +38,7 @@ export async function getOperatorNames() {
   const result = uniqBy(
     ids.flatMap((el) => {
       const op = resp[el]
-      if (['TOKEN', 'TRAP'].includes(op.profession)) return []
+      if (['TRAP'].includes(op.profession)) return []
       return [
         {
           id: el,

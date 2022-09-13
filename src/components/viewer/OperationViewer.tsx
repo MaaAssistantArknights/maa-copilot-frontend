@@ -232,15 +232,10 @@ export const OperationViewer: ComponentType<{
 
           <div className="flex flex-col">
             <FactItem title="作战">
-              <Tag
-                className="bg-slate-100 text-slate-900 border border-slate-300 border-solid"
-                large
-              >
-                <EDifficultyLevel
-                  level={operation.level}
-                  difficulty={operation.difficulty}
-                />
-              </Tag>
+              <EDifficultyLevel
+                level={operation.level}
+                difficulty={operation.difficulty}
+              />
             </FactItem>
 
             <FactItem relaxed className="items-start" title="作业评分">

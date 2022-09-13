@@ -3,7 +3,7 @@ import {
   ButtonGroup,
   Card,
   FormGroup,
-  InputGroup,
+  InputGroup
 } from '@blueprintjs/core'
 import { OrderBy } from 'apis/query'
 import { CardTitle } from 'components/CardTitle'
@@ -36,7 +36,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             size={64}
             large
             enterKeyHint="search"
-            onChange={(e) => debouncedSetQuery(e.target.value)}
+            onChange={(e) => debouncedSetQuery(e.target.value.trim())}
           />
         </FormGroup>
         <FormGroup label="排序">
@@ -49,6 +49,13 @@ export const Operations: ComponentType = withSuspensable(() => {
               }}
             >
               热度
+            </Button>
+            <Button
+              icon="time"
+              active={orderBy === 'id'}
+              onClick={() => setOrderBy('id')}
+            >
+              最新
             </Button>
             <Button
               icon="eye-open"

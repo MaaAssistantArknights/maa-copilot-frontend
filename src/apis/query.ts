@@ -10,6 +10,8 @@ import useSWRInfinite from 'swr/infinite'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
+const maaProtocol = 'maa://'
+
 export const useOperations = ({
   orderBy,
   query,
@@ -17,37 +19,52 @@ export const useOperations = ({
   orderBy: OrderBy
   query: string
 }) => {
-  const { data, ...rest } = useSWRInfinite<
-    Response<PaginatedResponse<OperationListItem>>
-  >((_pageIndex, previousPageData) => {
-    if (previousPageData && !previousPageData?.data.hasNext) {
-      console.info('useOperations: No more pages')
-      return null // reached the end
-    }
-    const searchParams = new URLSearchParams('?desc=true&limit=50')
-    searchParams.set(
-      'page',
-      ((previousPageData?.data?.page || 0) + 1).toString(),
-    )
-    searchParams.set('order_by', orderBy)
-    if (query) {
-      searchParams.set('level_keyword', query)
-    }
+  const isIdQuery = query.startsWith(maaProtocol)
 
-    return `/copilot/query?${searchParams.toString()}`
-  })
+  const {
+    data: listData,
+    size,
+    setSize,
+    isValidating,
+  } = useSWRInfinite<Response<PaginatedResponse<OperationListItem>>>(
+    (_pageIndex, previousPageData) => {
+      if (isIdQuery) {
+        return null
+      }
+      if (previousPageData && !previousPageData?.data.hasNext) {
+        console.info('useOperations: No more pages')
+        return null // reached the end
+      }
+      const searchParams = new URLSearchParams('?desc=true&limit=50')
+      searchParams.set(
+        'page',
+        ((previousPageData?.data?.page || 0) + 1).toString(),
+      )
+      searchParams.set('order_by', orderBy)
+      if (query) {
+        searchParams.set('level_keyword', query)
+      }
 
-  const isReachingEnd = data?.some((el) => !el.data.hasNext)
+      return `/copilot/query?${searchParams.toString()}`
+    },
+  )
 
-  const operations = data
-    ? ([] as OperationListItem[]).concat(...data.map((el) => el.data.data))
-    : []
+  const { data: singleData } = useSWR<Response<Operation>>(
+    isIdQuery && `/copilot/get/${query.slice(maaProtocol.length)}`,
+  )
+
+  const isReachingEnd = isIdQuery || listData?.some((el) => !el.data.hasNext)
+
+  const operations: OperationListItem[] =
+    (isIdQuery
+      ? singleData && [singleData.data]
+      : listData?.map((el) => el.data.data).flat()) || []
 
   useEffect(() => {
-    rest.setSize(1)
+    setSize(1)
   }, [orderBy, query])
 
-  return { operations, isReachingEnd, ...rest }
+  return { operations, size, setSize, isValidating, isReachingEnd }
 }
 
 export const useOperation = (id: string) => {

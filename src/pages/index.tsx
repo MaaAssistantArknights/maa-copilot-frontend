@@ -10,11 +10,9 @@ import { ComponentType } from 'react'
 
 const SOCIAL_LINKS = [
   {
-    icon: (
-      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
-    ),
-    href: 'https://github.com/MaaAssistantArknights/maa-copilot-frontend',
-    label: '本站 GitHub Repo',
+    icon: <BlueprintIcon icon="globe" className="mr-2" size={12} />,
+    href: 'https://maa.plus',
+    label: 'MAA 官网',
   },
   {
     icon: <BlueprintIcon icon="edit" className="mr-2" size={12} />,
@@ -22,9 +20,18 @@ const SOCIAL_LINKS = [
     label: '意见与反馈',
   },
   {
-    icon: <BlueprintIcon icon="globe" className="mr-2" size={12} />,
-    href: 'https://maa.plus',
-    label: 'MAA 官网',
+    icon: (
+      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
+    ),
+    href: 'https://github.com/MaaAssistantArknights/maa-copilot-frontend',
+    label: '前端 GitHub Repo',
+  },
+  {
+    icon: (
+      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
+    ),
+    href: 'https://github.com/MaaAssistantArknights/MaaCopilotServer',
+    label: '后端 GitHub Repo',
   },
   {
     icon: (
