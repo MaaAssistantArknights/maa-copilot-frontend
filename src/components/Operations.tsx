@@ -42,6 +42,13 @@ export const Operations: ComponentType = withSuspensable(() => {
         <FormGroup label="排序">
           <ButtonGroup>
             <Button
+              icon="time"
+              active={orderBy === 'id'}
+              onClick={() => setOrderBy('id')}
+            >
+              最新
+            </Button>
+            <Button
               icon="flame"
               active={orderBy === 'hot'}
               onClick={() => {
