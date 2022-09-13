@@ -11,7 +11,6 @@ import {
   Menu,
   MenuItem,
   NonIdealState,
-  Tag,
 } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { requestDeleteOperation } from 'apis/copilotOperation'
@@ -156,20 +155,20 @@ export const OperationViewer: ComponentType<{
   }
 
   const handleRating = async (decision: OpRatingType) => {
-    mutate(
-      async (val) => {
-        const response = await apiPostRating(operationId, decision)
+    mutate(async (val) => {
+      try {
+        return await wrapErrorMessage(
+          (e: NetworkError) => `提交评分失败：${e.message}`,
+          (async () => {
+            const response = await apiPostRating(operationId, decision)
 
-        return merge(val, response)
-      },
-      {
-        // optimisticData: (current) =>
-        //   merge(current, {
-        //     data: { ...operation, ratingType: decision },
-        //   }),
-        rollbackOnError: true,
-      },
-    )
+            return merge(val, response)
+          })(),
+        )
+      } catch (e) {
+        return val
+      }
+    })
   }
 
   const operationDoc = useMemo(() => {
