@@ -2,6 +2,7 @@ import { Button, Card, TextArea } from '@blueprintjs/core'
 import { DevTool } from '@hookform/devtools'
 import { CardTitle } from 'components/CardTitle'
 import {
+  EditorActionExecPredicateCooling,
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills,
 } from 'components/editor/action/EditorActionExecPredicate'
@@ -11,11 +12,17 @@ import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTyp
 import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { FormField, FormField2 } from 'components/FormField'
 import {
+  FieldErrors,
   SubmitHandler,
   UseFieldArrayAppend,
   useForm,
   useWatch,
 } from 'react-hook-form'
+import { EditorOperatorName } from '../operator/EditorOperator'
+import {
+  EditorActionPreDelay,
+  EditorActionRearDelay,
+} from './EditorActionDelay'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>
@@ -31,7 +38,6 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
     append(values)
-    reset()
   }
 
   const type = useWatch({ control, name: 'type' })
@@ -69,6 +75,37 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
             <div className="flex">
               <EditorActionExecPredicateKills control={control} />
               <EditorActionExecPredicateCostChange control={control} />
+              <EditorActionExecPredicateCooling control={control} />
+            </div>
+
+            <div className="flex">
+              <FormField2<
+                CopilotDocV1.ActionDeploy | CopilotDocV1.ActionSkillOrRetreat
+              >
+                label="干员名"
+                description="选择干员或直接使用搜索内容创建干员"
+                field="name"
+                error={
+                  (
+                    errors as FieldErrors<
+                      | CopilotDocV1.ActionDeploy
+                      | CopilotDocV1.ActionSkillOrRetreat
+                    >
+                  ).name
+                }
+                asterisk={type === 'Deploy'}
+                FormGroupProps={{
+                  helperText: '键入干员名、拼音或拼音首字母以从干员列表中搜索',
+                }}
+              >
+                <EditorOperatorName
+                  control={control}
+                  name="name"
+                  rules={{
+                    required: type === 'Deploy' && '部署动作下必须填写干员',
+                  }}
+                />
+              </FormField2>
             </div>
 
             <div className="flex">
@@ -83,13 +120,14 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
 
         {type === 'Deploy' && (
           <div className="flex">
-            <EditorActionOperatorDirection
-              control={control}
-              name="direction"
-              actionType={type}
-            />
+            <EditorActionOperatorDirection control={control} name="direction" />
           </div>
         )}
+
+        <div className="flex">
+          <EditorActionPreDelay control={control} />
+          <EditorActionRearDelay control={control} />
+        </div>
 
         <div className="flex">
           <div className="w-full">

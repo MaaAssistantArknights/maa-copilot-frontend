@@ -13,6 +13,8 @@ export const EditorActionOperatorLocation = ({
   control,
   actionType,
 }: EditorActionOperatorLocationProps) => {
+  const isRequired = actionType === 'Deploy'
+
   const {
     field: { onChange, value },
     formState: { errors },
@@ -22,7 +24,7 @@ export const EditorActionOperatorLocation = ({
     rules: {
       validate: (v) => {
         if (
-          actionType === 'Deploy' &&
+          isRequired &&
           (!v ||
             !Array.isArray(v) ||
             v.length !== 2 ||
@@ -51,6 +53,7 @@ export const EditorActionOperatorLocation = ({
     <FormField2
       label="干员位置"
       field="location"
+      asterisk={isRequired}
       error={errors[name]}
       description="填完关卡名后开一局，会在目录下 map 文件夹中生成地图坐标图片"
       className="mr-4"

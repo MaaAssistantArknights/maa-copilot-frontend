@@ -60,16 +60,17 @@ const createArbitraryOperator = (name: string): typeof OPERATORS[number] => ({
   pron: '',
 })
 
-const EditorOperatorName = <T extends FieldValues>({
+export const EditorOperatorName = <T extends FieldValues>({
   name,
   control,
-}: EditorFieldProps<T>) => {
+  rules,
+}: EditorFieldProps<T, string>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
     name,
     control,
-    rules: { required: '请输入干员名' },
+    rules: { required: '请输入干员名', ...rules },
   })
 
   const fuse = useMemo(

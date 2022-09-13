@@ -20,6 +20,7 @@ namespace CopilotDocV1 {
     docColor?: string
     costChanges?: number
     kills?: number
+    cooling?: number
     preDelay?: number
     rearDelay?: number
   }
