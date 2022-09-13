@@ -56,14 +56,17 @@ async function main() {
   console.info('all metadata fetched.')
 
   for (const { id, name } of operators) {
-    const avatarUrl = files.find((el) => el.name === `头像_${name}.png`)?.url
+    const withTokenName = id.startsWith('token_') ? `召唤物_${name}` : name
+    const avatarUrl = files.find(
+      (el) => el.name === `头像_${withTokenName}.png`,
+    )?.url
     if (!avatarUrl) {
       console.error(`${name}: cannot found avatar file`)
       continue
     }
     const expectFileAt = `public/assets/operator-avatars/${id}.png`
     if (await fileExists(expectFileAt)) {
-      console.log(`${name}: already exists`)
+      // console.log(`${name}: already exists`)
       continue
     }
     console.log(`Downloading ${name} from ${avatarUrl}...`)
