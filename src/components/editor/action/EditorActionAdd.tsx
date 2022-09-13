@@ -16,12 +16,6 @@ import {
   useForm,
   useWatch,
 } from 'react-hook-form'
-import type {
-  Control,
-  UseFormGetValues,
-  FieldErrorsImpl,
-  DeepRequired,
-} from 'react-hook-form'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>
@@ -31,7 +25,6 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
   const {
     control,
     reset,
-    getValues,
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm<CopilotDocV1.Action>()
@@ -80,77 +73,33 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
         {(type === 'Deploy' || type === 'Skill' || type === 'Retreat') && (
           <>
             <div className="flex">
-              <EditorActionExecPredicateKills
-                control={control}
-                error={errors.kills}
-              />
-
-              <EditorActionExecPredicateCostChange
-                control={control}
-                error={errors.costChanges}
-              />
+              <EditorActionExecPredicateKills control={control} />
+              <EditorActionExecPredicateCostChange control={control} />
             </div>
 
             <div className="flex">
-              <FormField2
-                label="干员位置"
-                field="location"
-                error={
-                  (
-                    errors as FieldErrorsImpl<
-                      DeepRequired<
-                        | CopilotDocV1.ActionDeploy
-                        | CopilotDocV1.ActionSkillOrRetreat
-                      >
-                    >
-                  ).location
-                }
-                description="填完关卡名后开一局，会在目录下 map 文件夹中生成地图坐标图片"
-                className="mr-4"
-              >
-                <EditorActionOperatorLocation
-                  control={control}
-                  name="location"
-                  getValues={
-                    getValues as UseFormGetValues<
-                      | CopilotDocV1.ActionDeploy
-                      | CopilotDocV1.ActionSkillOrRetreat
-                    >
-                  }
-                />
-              </FormField2>
+              <EditorActionOperatorLocation
+                actionType={type}
+                control={control}
+                name="location"
+              />
             </div>
           </>
         )}
 
         {type === 'Deploy' && (
           <div className="flex">
-            <FormField2
-              label="干员朝向"
-              field="direction"
-              error={
-                (
-                  errors as FieldErrorsImpl<
-                    DeepRequired<CopilotDocV1.ActionDeploy>
-                  >
-                ).direction
-              }
-              description="部署干员的干员朝向"
-            >
-              <EditorActionOperatorDirection<CopilotDocV1.ActionDeploy>
-                control={control as Control<CopilotDocV1.ActionDeploy, object>}
-                name="direction"
-                getValues={
-                  getValues as UseFormGetValues<CopilotDocV1.ActionDeploy>
-                }
-              />
-            </FormField2>
+            <EditorActionOperatorDirection
+              control={control}
+              name="direction"
+              actionType={type}
+            />
           </div>
         )}
 
         <div className="flex">
           <div className="w-full">
-            <FormField<CopilotDocV1.Action>
+            <FormField
               label="描述"
               field="doc"
               control={control}

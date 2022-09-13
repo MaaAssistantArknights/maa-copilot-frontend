@@ -33,9 +33,7 @@ export interface EditorFieldProps<
           >,
           FieldPath<TFieldValues>
         >
-  > {
-  error?: any
-}
+  > {}
 
 export interface EditorFieldPropsByName<
   TFieldValues extends FieldValues = FieldValues,
