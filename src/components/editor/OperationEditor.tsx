@@ -153,7 +153,7 @@ export const OperationEditor: FC<{
         <Button intent="primary" className="ml-4" icon="upload" text="发布" />
       </div>
 
-      {import.meta.env.PROD && (
+      {import.meta.env.PROD && !location.href.includes('azurestaticapps') && (
         <Overlay
           isOpen
           hasBackdrop={false}
