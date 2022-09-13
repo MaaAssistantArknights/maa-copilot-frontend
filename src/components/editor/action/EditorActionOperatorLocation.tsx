@@ -2,15 +2,16 @@ import { InputGroup } from '@blueprintjs/core'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useController, UseFormGetValues } from 'react-hook-form'
 
-interface EditorActionOperatorLocationProps<T> extends EditorFieldProps<T> {
-  getValues: UseFormGetValues<T>
+interface EditorActionOperatorLocationProps
+  extends EditorFieldProps<CopilotDocV1.Action, [number, number]> {
+  getValues: UseFormGetValues<CopilotDocV1.Action>
 }
 
-export const EditorActionOperatorLocation = <T extends { type?: string }>({
+export const EditorActionOperatorLocation = ({
   name,
   control,
   getValues,
-}: EditorActionOperatorLocationProps<T>) => {
+}: EditorActionOperatorLocationProps) => {
   const {
     field: { onChange, value },
   } = useController({
