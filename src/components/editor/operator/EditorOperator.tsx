@@ -6,7 +6,7 @@ import { FormField2 } from 'components/FormField'
 import Fuse from 'fuse.js'
 import { OPERATORS } from 'models/generated/operators'
 import { FC, useMemo } from 'react'
-import { Control, FormState, useController } from 'react-hook-form'
+import { Control, FieldValues, FormState, useController } from 'react-hook-form'
 import { EditorOperatorSkill } from './EditorOperatorSkill'
 import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
 
@@ -66,7 +66,10 @@ const createArbitraryOperator = (name: string): typeof OPERATORS[number] => ({
   pron: '',
 })
 
-const EditorOperatorName = <T,>({ name, control }: EditorFieldProps<T>) => {
+const EditorOperatorName = <T extends FieldValues>({
+  name,
+  control,
+}: EditorFieldProps<T>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController<T>({
@@ -102,6 +105,9 @@ const EditorOperatorName = <T,>({ name, control }: EditorFieldProps<T>) => {
         return item.name === query
       }}
       itemListPredicate={(query) => {
+        if (!query) {
+          return OPERATORS
+        }
         return fuse.search(query).map((el) => el.item)
       }}
       onItemSelect={(item) => {

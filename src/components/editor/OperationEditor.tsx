@@ -87,7 +87,13 @@ export const StageNameInput: FC<{
             return item.name === query
           }}
           itemListPredicate={(query) => {
-            return fuse.search(query).map((el) => el.item)
+            let filteredLevel = levels
+            if (query) {
+              filteredLevel = fuse.search(query).map((el) => el.item)
+            }
+            return filteredLevel.sort((a, b) =>
+              a.levelId.localeCompare(b.levelId),
+            )
           }}
           onItemSelect={(item) => {
             onChange(item.levelId)
