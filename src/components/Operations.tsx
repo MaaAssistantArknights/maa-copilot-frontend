@@ -3,7 +3,7 @@ import {
   ButtonGroup,
   Card,
   FormGroup,
-  InputGroup
+  InputGroup,
 } from '@blueprintjs/core'
 import { OrderBy } from 'apis/query'
 import { CardTitle } from 'components/CardTitle'

@@ -33,11 +33,7 @@
       }
     }
   },
-  "required": [
-    "stage_name",
-    "minimum_required",
-    "doc"
-  ],
+  "required": ["stage_name", "minimum_required", "doc"],
   "definitions": {
     "stage_name": {
       "type": "string",
@@ -72,10 +68,7 @@
           "description": "The color of details text displayed in Maa"
         }
       },
-      "required": [
-        "title",
-        "details"
-      ]
+      "required": ["title", "details"]
     },
     "operator": {
       "type": "object",
@@ -105,9 +98,7 @@
           "$ref": "#/definitions/operator_requirements"
         }
       },
-      "required": [
-        "name"
-      ]
+      "required": ["name"]
     },
     "operator_requirements": {
       "type": "object",
@@ -167,10 +158,7 @@
           }
         }
       },
-      "required": [
-        "name",
-        "opers"
-      ]
+      "required": ["name", "opers"]
     },
     "action": {
       "type": "object",
