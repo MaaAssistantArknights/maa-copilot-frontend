@@ -46,10 +46,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
 
           <div className="flex-1" />
 
-          <EditorResetButton<CopilotDocV1.Action>
-            reset={reset}
-            entityName="动作"
-          />
+          <EditorResetButton reset={reset} entityName="动作" />
         </div>
 
         {import.meta.env.DEV && <DevTool control={control} />}
@@ -62,10 +59,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
               error={errors.type}
               asterisk
             >
-              <EditorActionTypeSelect<CopilotDocV1.Action>
-                control={control}
-                name="type"
-              />
+              <EditorActionTypeSelect control={control} name="type" />
             </FormField2>
           </div>
         </div>
