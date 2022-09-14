@@ -52,7 +52,7 @@ namespace CopilotDocV1 {
     )
 
   export interface ActionSkillUsage extends ActionBase {
-    skillUsage: number
+    skillUsage: SkillUsageType
     type: Type.SkillUsage
   }
 
@@ -107,8 +107,10 @@ namespace CopilotDocV1 {
      * 可选，默认 1，取值范围 [1, 3]
      */
     skill?: number
-    skillUsage?: number
+    skillUsage?: SkillUsageType
   }
+
+  export type SkillUsageType = 0 | 1 | 2 | 3
 
   export interface Requirements {
     elite?: number

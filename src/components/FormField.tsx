@@ -10,27 +10,31 @@ import {
   Controller,
   ControllerProps,
   FieldError,
+  FieldValues,
   Path,
 } from 'react-hook-form'
 import { WithChildren } from 'types'
 
-export interface FormFieldRenderProps<T> {
+export interface FormFieldRenderProps<
+  T extends FieldValues,
+  P extends Path<T>,
+> {
   name: Path<T>
   control: Control<T>
-  props?: Omit<ControllerProps<T>, 'name' | 'render'>
+  props?: Omit<ControllerProps<T, P>, 'name' | 'render'>
 }
 
-export interface FormFieldProps<T> {
+export interface FormFieldProps<T extends FieldValues, P extends Path<T>> {
   FormGroupProps?: Omit<FormGroupProps, 'label' | 'labelFor'>
   control: Control<T>
   error?: FieldError
   label: ReactNode
-  field: Path<T>
-  ControllerProps?: Omit<ControllerProps<T>, 'name'>
-  render?: (props: FormFieldRenderProps<T>) => ReactNode
+  field: P
+  ControllerProps?: Omit<ControllerProps<T, P>, 'name'>
+  render?: (props: FormFieldRenderProps<T, P>) => ReactNode
 }
 
-export const FormField = <T,>({
+export const FormField = <T extends FieldValues, P extends Path<T>>({
   ControllerProps,
   FormGroupProps,
   control,
@@ -38,7 +42,7 @@ export const FormField = <T,>({
   label,
   field,
   render,
-}: FormFieldProps<T>) => {
+}: FormFieldProps<T, P>) => {
   return (
     <FormGroup
       label={
