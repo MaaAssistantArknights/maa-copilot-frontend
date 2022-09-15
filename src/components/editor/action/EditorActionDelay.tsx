@@ -23,7 +23,12 @@ export const EditorActionPreDelay = ({
       description="可选，默认为 0，单位毫秒"
     >
       <EditorIntegerInput
-        NumericInputProps={{ placeholder: '前置延时', stepSize: 100 }}
+        NumericInputProps={{
+          placeholder: '前置延时',
+          stepSize: 100,
+          minorStepSize: 10,
+          majorStepSize: 1000,
+        }}
         control={control}
         name={name}
         rules={rules}

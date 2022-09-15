@@ -23,6 +23,7 @@ import {
   EditorActionPreDelay,
   EditorActionRearDelay,
 } from './EditorActionDelay'
+import { validateAction } from './validation'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>
@@ -32,12 +33,15 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
   const {
     control,
     reset,
+    setError,
     handleSubmit,
     formState: { errors, isValid, isDirty },
   } = useForm<CopilotDocV1.Action>()
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
-    append(values)
+    if (validateAction(values, setError)) {
+      append(values)
+    }
   }
 
   const type = useWatch({ control, name: 'type' })
