@@ -9,18 +9,18 @@ import { FormField2 } from '../../FormField'
 interface EditorActionOperatorDirectionChoice {
   icon?: IconName
   title: string
-  value: string | null
+  value: CopilotDocV1.Direction | null
 }
 
 interface EditorActionOperatorDirectionProps
-  extends SetOptional<EditorFieldProps<CopilotDocV1.Action>, 'name'> {
-  actionType: CopilotDocV1.Type
-}
+  extends SetOptional<
+    EditorFieldProps<CopilotDocV1.Action, CopilotDocV1.Direction>,
+    'name'
+  > {}
 
 export const EditorActionOperatorDirection = ({
   name = 'direction',
   control,
-  actionType,
 }: EditorActionOperatorDirectionProps) => {
   const {
     field: { onChange, onBlur, value, ref },
@@ -28,46 +28,43 @@ export const EditorActionOperatorDirection = ({
   } = useController({
     name,
     control,
-    rules: {
-      validate: (v) => {
-        if (actionType === 'Deploy' && !v) return '部署动作下必须选择朝向'
-        return true
-      },
-    },
+    rules: { required: '必须选择朝向' },
+    defaultValue: 'None' as CopilotDocV1.Direction.None,
   })
 
   const items = useMemo<EditorActionOperatorDirectionChoice[]>(
     () => [
+      // TODO: remove these string literals when CopilotDocV1 can be imported
       {
         icon: 'slash',
-        title: '选择朝向',
-        value: null,
+        title: '无',
+        value: 'None' as CopilotDocV1.Direction.None,
       },
       {
         icon: 'arrow-up',
         title: '上',
-        value: 'Up',
+        value: 'Up' as CopilotDocV1.Direction.Up,
       },
       {
         icon: 'arrow-down',
         title: '下',
-        value: 'Down',
+        value: 'Down' as CopilotDocV1.Direction.Down,
       },
       {
         icon: 'arrow-left',
         title: '左',
-        value: 'Left',
+        value: 'Left' as CopilotDocV1.Direction.Left,
       },
       {
         icon: 'arrow-right',
         title: '右',
-        value: 'Right',
+        value: 'Right' as CopilotDocV1.Direction.Right,
       },
     ],
     [],
   )
 
-  const selected = items.find((item) => item.value === (value ?? null))
+  const selected = items.find((item) => item.value === value)
 
   return (
     <FormField2

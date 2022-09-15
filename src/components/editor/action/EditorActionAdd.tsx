@@ -2,6 +2,7 @@ import { Button, Card, TextArea } from '@blueprintjs/core'
 import { DevTool } from '@hookform/devtools'
 import { CardTitle } from 'components/CardTitle'
 import {
+  EditorActionExecPredicateCooling,
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills,
 } from 'components/editor/action/EditorActionExecPredicate'
@@ -11,11 +12,20 @@ import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTyp
 import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { FormField, FormField2 } from 'components/FormField'
 import {
+  Control,
+  FieldErrors,
   SubmitHandler,
   UseFieldArrayAppend,
   useForm,
   useWatch,
 } from 'react-hook-form'
+import { EditorOperatorName } from '../operator/EditorOperator'
+import { EditorOperatorSkillUsage } from '../operator/EditorOperatorSkillUsage'
+import {
+  EditorActionPreDelay,
+  EditorActionRearDelay,
+} from './EditorActionDelay'
+import { validateAction } from './validation'
 
 export interface EditorActionAddProps {
   append: UseFieldArrayAppend<CopilotDocV1.Action>
@@ -25,13 +35,19 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
   const {
     control,
     reset,
+    setError,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<CopilotDocV1.Action>()
+  } = useForm<CopilotDocV1.Action>({
+    defaultValues: {
+      type: 'Deploy' as CopilotDocV1.Type.Deploy,
+    },
+  })
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
-    append(values)
-    reset()
+    if (validateAction(values, setError)) {
+      append(values)
+    }
   }
 
   const type = useWatch({ control, name: 'type' })
@@ -64,32 +80,87 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           </div>
         </div>
 
-        {(type === 'Deploy' || type === 'Skill' || type === 'Retreat') && (
-          <>
-            <div className="flex">
-              <EditorActionExecPredicateKills control={control} />
-              <EditorActionExecPredicateCostChange control={control} />
-            </div>
-
-            <div className="flex">
-              <EditorActionOperatorLocation
-                actionType={type}
+        {(type === 'Deploy' ||
+          type === 'Skill' ||
+          type === 'Retreat' ||
+          type === 'SkillUsage') && (
+          <div className="flex">
+            <FormField2<
+              CopilotDocV1.ActionDeploy | CopilotDocV1.ActionSkillOrRetreat
+            >
+              label="干员名"
+              description="选择干员或直接使用搜索内容创建干员"
+              field="name"
+              error={
+                (
+                  errors as FieldErrors<
+                    | CopilotDocV1.ActionDeploy
+                    | CopilotDocV1.ActionSkillOrRetreat
+                  >
+                ).name
+              }
+              asterisk={type === 'Deploy'}
+              FormGroupProps={{
+                helperText: '键入干员名、拼音或拼音首字母以从干员列表中搜索',
+              }}
+            >
+              <EditorOperatorName
                 control={control}
-                name="location"
+                name="name"
+                rules={{
+                  required:
+                    (type === 'Deploy' || type === 'SkillUsage') &&
+                    '必须填写干员',
+                }}
               />
-            </div>
-          </>
+            </FormField2>
+          </div>
+        )}
+
+        {(type === 'Deploy' || type === 'Skill' || type === 'Retreat') && (
+          <div className="flex">
+            <EditorActionOperatorLocation
+              actionType={type}
+              control={control}
+              name="location"
+            />
+          </div>
         )}
 
         {type === 'Deploy' && (
           <div className="flex">
-            <EditorActionOperatorDirection
-              control={control}
-              name="direction"
-              actionType={type}
-            />
+            <EditorActionOperatorDirection control={control} name="direction" />
           </div>
         )}
+
+        {type === 'SkillUsage' && (
+          <div className="flex">
+            <FormField2
+              label="技能用法"
+              field="skillUsage"
+              error={
+                (errors as FieldErrors<CopilotDocV1.ActionSkillUsage>)
+                  .skillUsage
+              }
+            >
+              <EditorOperatorSkillUsage
+                control={control as Control<CopilotDocV1.ActionSkillUsage>}
+                name="skillUsage"
+              />
+            </FormField2>
+          </div>
+        )}
+
+        <div className="flex">
+          <EditorActionExecPredicateKills control={control} />
+          <EditorActionExecPredicateCostChange control={control} />
+          <EditorActionExecPredicateCooling control={control} />
+        </div>
+
+        <div className="flex">
+          <EditorActionPreDelay control={control} />
+          <EditorActionRearDelay control={control} />
+        </div>
 
         <div className="flex">
           <div className="w-full">

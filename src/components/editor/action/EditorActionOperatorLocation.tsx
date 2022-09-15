@@ -13,6 +13,8 @@ export const EditorActionOperatorLocation = ({
   control,
   actionType,
 }: EditorActionOperatorLocationProps) => {
+  const isRequired = actionType === 'Deploy'
+
   const {
     field: { onChange, value },
     formState: { errors },
@@ -20,37 +22,27 @@ export const EditorActionOperatorLocation = ({
     name,
     control,
     rules: {
-      validate: (v) => {
-        if (
-          actionType === 'Deploy' &&
-          (!v ||
-            !Array.isArray(v) ||
-            v.length !== 2 ||
-            v.some(
-              (i) =>
-                typeof i !== 'number' ||
-                Number.isNaN(i) ||
-                i < 0 ||
-                !Number.isFinite(i),
-            ))
-        )
-          return '部署动作下必须填写位置'
-        return true
-      },
+      required: isRequired && '必须填写位置',
+      validate: (v) =>
+        // v being undefined is allowed because the `required` rule will handle it properly
+        !v ||
+        (Array.isArray(v) &&
+          v.length === 2 &&
+          v.every((i) => i >= 0 && Number.isFinite(i))) ||
+        '位置不合法',
     },
   })
 
-  const converted = value ?? [0, 0]
-
   const transform = {
-    fromX: (v: number) => [v, converted[1]],
-    fromY: (v: number) => [converted[0], v],
+    fromX: (v: number) => [v, value?.[1]],
+    fromY: (v: number) => [value?.[0], v],
   }
 
   return (
     <FormField2
       label="干员位置"
       field="location"
+      asterisk={isRequired}
       error={errors[name]}
       description="填完关卡名后开一局，会在目录下 map 文件夹中生成地图坐标图片"
       className="mr-4"
@@ -60,7 +52,7 @@ export const EditorActionOperatorLocation = ({
           onChange={(v) =>
             onChange(transform.fromX(castInteger(v.target.value)))
           }
-          value={converted[0] === 0 ? '' : converted[0].toString()}
+          value={value?.[0]?.toString() ?? ''}
           placeholder="X 坐标"
           className="mr-2"
         />
@@ -68,7 +60,7 @@ export const EditorActionOperatorLocation = ({
           onChange={(v) =>
             onChange(transform.fromY(castInteger(v.target.value)))
           }
-          value={converted[1] === 0 ? '' : converted[1].toString()}
+          value={value?.[1]?.toString() ?? ''}
           placeholder="Y 坐标"
         />
       </div>
@@ -78,7 +70,5 @@ export const EditorActionOperatorLocation = ({
 
 function castInteger(v: string | number) {
   const result = typeof v === 'number' ? v : parseInt(v)
-  return Number.isNaN(result) || result < 0 || !Number.isFinite(result)
-    ? 0
-    : result
+  return result < 0 || !Number.isFinite(result) ? 0 : result
 }
