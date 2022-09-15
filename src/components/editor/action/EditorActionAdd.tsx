@@ -38,7 +38,11 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
     setError,
     handleSubmit,
     formState: { errors, isValid, isDirty },
-  } = useForm<CopilotDocV1.Action>()
+  } = useForm<CopilotDocV1.Action>({
+    defaultValues: {
+      type: 'Deploy' as CopilotDocV1.Type.Deploy,
+    },
+  })
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
     if (validateAction(values, setError)) {
