@@ -70,7 +70,7 @@ export const FormField = <T extends FieldValues, P extends Path<T>>({
   )
 }
 
-export interface FormField2Props<T> {
+export interface FormField2Props<T extends FieldValues> {
   FormGroupProps?: Omit<FormGroupProps, 'label' | 'labelFor'>
   className?: string
   error?: any
@@ -80,7 +80,7 @@ export interface FormField2Props<T> {
   description?: Tooltip2Props['content']
 }
 
-export const FormField2 = <T,>({
+export const FormField2 = <T extends FieldValues>({
   FormGroupProps,
   className,
   error,

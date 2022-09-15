@@ -36,10 +36,7 @@ export const EditorOperator: FC<{
           error={errors.skill}
           className="mr-2"
         >
-          <EditorOperatorSkill<CopilotDocV1.Operator>
-            control={control}
-            name="skill"
-          />
+          <EditorOperatorSkill control={control} name="skill" />
         </FormField2>
 
         <FormField2
@@ -47,10 +44,7 @@ export const EditorOperator: FC<{
           field="skillUsage"
           error={errors.skillUsage}
         >
-          <EditorOperatorSkillUsage<CopilotDocV1.Operator>
-            control={control}
-            name="skillUsage"
-          />
+          <EditorOperatorSkillUsage control={control} name="skillUsage" />
         </FormField2>
       </div>
     </>
@@ -72,7 +66,7 @@ const EditorOperatorName = <T extends FieldValues>({
 }: EditorFieldProps<T>) => {
   const {
     field: { onChange, onBlur, value, ref },
-  } = useController<T>({
+  } = useController({
     name,
     control,
     rules: { required: '请输入干员名' },

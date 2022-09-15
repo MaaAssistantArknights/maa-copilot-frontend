@@ -8,10 +8,10 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
 
-export const EditorActionTypeSelect = <T,>({
+export const EditorActionTypeSelect = ({
   name,
   control,
-}: EditorFieldProps<T>) => {
+}: EditorFieldProps<CopilotDocV1.Action, CopilotDocV1.Type>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({

@@ -6,9 +6,9 @@ import {
 } from 'components/editor/DetailedSelect'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
-import { useController } from 'react-hook-form'
+import { FieldValues, useController } from 'react-hook-form'
 
-export const EditorOperatorSelect = <T,>({
+export const EditorOperatorSelect = <T extends FieldValues>({
   name,
   control,
 }: EditorFieldProps<T>) => {

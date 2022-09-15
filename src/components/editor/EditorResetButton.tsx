@@ -1,8 +1,8 @@
 import { Alert, Button, H4 } from '@blueprintjs/core'
 import { useState } from 'react'
-import { UseFormReset } from 'react-hook-form'
+import { FieldValues, UseFormReset } from 'react-hook-form'
 
-export const EditorResetButton = <T,>({
+export const EditorResetButton = <T extends FieldValues>({
   reset,
   entityName,
 }: {
