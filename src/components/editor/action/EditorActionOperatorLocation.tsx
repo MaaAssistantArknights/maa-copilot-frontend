@@ -22,7 +22,7 @@ export const EditorActionOperatorLocation = ({
     name,
     control,
     rules: {
-      required: isRequired && '部署动作下必须填写位置',
+      required: isRequired && '必须填写位置',
       validate: (v) =>
         // v being undefined is allowed because the `required` rule will handle it properly
         !v ||

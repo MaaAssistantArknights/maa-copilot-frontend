@@ -7,10 +7,12 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useController } from 'react-hook-form'
 import { operatorSkillUsages } from '../../../models/operator'
 
-export const EditorOperatorSkillUsage = ({
+export const EditorOperatorSkillUsage = <
+  T extends CopilotDocV1.Operator | CopilotDocV1.ActionSkillUsage,
+>({
   name,
   control,
-}: EditorFieldProps<CopilotDocV1.Operator, CopilotDocV1.SkillUsageType>) => {
+}: EditorFieldProps<T, CopilotDocV1.SkillUsageType>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
