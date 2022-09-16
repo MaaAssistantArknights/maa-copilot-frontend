@@ -7,6 +7,7 @@ import { OperatorAvatar } from './EditorOperator'
 
 interface EditorOperatorItemProps extends Partial<SortableItemProps> {
   operator: CopilotDocV1.Operator
+  removeOperator: () => void
 }
 
 export const EditorOperatorItem = ({
@@ -14,6 +15,7 @@ export const EditorOperatorItem = ({
   isDragging,
   attributes,
   listeners,
+  removeOperator,
 }: EditorOperatorItemProps) => {
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
   const skillUsage = findOperatorSkillUsage(operator.skillUsage)?.title
@@ -34,10 +36,11 @@ export const EditorOperatorItem = ({
         {...listeners}
       />
       <OperatorAvatar id={id} size="large" />
-      <div className="ml-4">
+      <div className="ml-4 flex-grow">
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
         <div className="text-gray-400">{skill}</div>
       </div>
+      <Icon icon="delete" intent="danger" onClick={() => removeOperator()} />
     </Card>
   )
 }

@@ -58,6 +58,7 @@ export const EditorPerformer: FC<{
     append: appendGroup,
     move: moveGroup,
     update: updateGroup,
+    remove: removeGroup,
   } = useFieldArray({
     name: 'groups',
     control,
@@ -229,7 +230,13 @@ export const EditorPerformer: FC<{
                       data={{ type: 'operator' }}
                     >
                       {(attrs) => (
-                        <EditorOperatorItem operator={operator} {...attrs} />
+                        <EditorOperatorItem
+                          operator={operator}
+                          removeOperator={() =>
+                            removeOperator(operators.indexOf(operator))
+                          }
+                          {...attrs}
+                        />
                       )}
                     </Sortable>
                   </li>
@@ -258,6 +265,14 @@ export const EditorPerformer: FC<{
                       <EditorGroupItem
                         group={group}
                         getOperatorId={getOperatorId}
+                        removeGroup={() => removeGroup(groups.indexOf(group))}
+                        removeGroupOperator={(operatorIndexInGroup) => {
+                          const groupIndex = groups.indexOf(group)
+                          if (operatorIndexInGroup > -1) {
+                            group.opers?.splice(operatorIndexInGroup, 1)
+                          }
+                          updateGroup(groupIndex, group)
+                        }}
                         {...attrs}
                       />
                     )}
@@ -268,11 +283,18 @@ export const EditorPerformer: FC<{
           </SortableContext>
 
           <DragOverlay>
-            {activeOperator && <EditorOperatorItem operator={activeOperator} />}
+            {activeOperator && (
+              <EditorOperatorItem
+                operator={activeOperator}
+                removeOperator={() => {}}
+              />
+            )}
             {activeGroup && (
               <EditorGroupItem
                 group={activeGroup}
                 getOperatorId={getOperatorId}
+                removeGroup={() => {}}
+                removeGroupOperator={() => {}}
               />
             )}
           </DragOverlay>

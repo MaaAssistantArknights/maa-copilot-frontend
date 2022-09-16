@@ -12,6 +12,8 @@ export type GroupWithIdentifiedOperators = Omit<CopilotDocV1.Group, 'opers'> & {
 interface EditorGroupItemProps extends Partial<SortableItemProps> {
   group: CopilotDocV1.Group
   getOperatorId: (operator: CopilotDocV1.Operator) => UniqueIdentifier
+  removeGroupOperator: (index: number) => void
+  removeGroup: () => void
 }
 
 export const EditorGroupItem = ({
@@ -20,6 +22,8 @@ export const EditorGroupItem = ({
   isDragging,
   attributes,
   listeners,
+  removeGroupOperator,
+  removeGroup,
 }: EditorGroupItemProps) => {
   return (
     <Card elevation={Elevation.TWO} className={clsx(isDragging && 'invisible')}>
@@ -35,7 +39,10 @@ export const EditorGroupItem = ({
             {...listeners}
           />
 
-          <h3 className="font-bold leading-none mb-4">{group.name}</h3>
+          <h3 className="font-bold leading-none mb-4 flex-grow">
+            {group.name}
+          </h3>
+          <Icon icon="delete" intent="danger" onClick={() => removeGroup()} />
         </div>
 
         <ul>
@@ -46,7 +53,13 @@ export const EditorGroupItem = ({
                 data={{ type: 'operator' }}
               >
                 {(attrs) => (
-                  <EditorOperatorItem operator={operator} {...attrs} />
+                  <EditorOperatorItem
+                    operator={operator}
+                    removeOperator={() => {
+                      removeGroupOperator(group.opers?.indexOf(operator) ?? -1)
+                    }}
+                    {...attrs}
+                  />
                 )}
               </Sortable>
             </li>
