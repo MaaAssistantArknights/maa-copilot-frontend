@@ -21,6 +21,7 @@ import { Control, useFieldArray, UseFieldArrayMove } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
 import { FieldError } from '../../../utils/fieldError'
 import { Droppable, Sortable } from '../../dnd'
+import { FactItem } from '../../FactItem'
 import { EditorGroupItem } from './EditorGroupItem'
 import { EditorOperatorItem } from './EditorOperatorItem'
 import {
@@ -208,7 +209,11 @@ export const EditorPerformer: FC<{
           onDragEnd={handleDragEnd}
         >
           <Droppable id={nonGroupedContainerId}>
-            <div className="font-bold">干员</div>
+            <FactItem
+              title="干员"
+              icon="person"
+              className="font-bold"
+            ></FactItem>
 
             {operators.length === 0 && <NonIdealState title="暂无干员" />}
 
@@ -233,7 +238,11 @@ export const EditorPerformer: FC<{
             </SortableContext>
           </Droppable>
 
-          <div className="font-bold mt-8">干员组</div>
+          <FactItem
+            title="干员组"
+            icon="people"
+            className="font-bold mt-8"
+          ></FactItem>
 
           {groups.length === 0 && <NonIdealState title="暂无干员组" />}
 

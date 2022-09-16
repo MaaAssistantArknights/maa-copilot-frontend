@@ -19,6 +19,7 @@ import {
   useForm,
   useWatch,
 } from 'react-hook-form'
+import { FactItem } from '../../FactItem'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillUsage } from '../operator/EditorOperatorSkillUsage'
 import {
@@ -151,6 +152,14 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           </div>
         )}
 
+        <div className="h-px w-full bg-gray-200 mt-4 mb-6"></div>
+
+        <FactItem
+          title="通用属性"
+          icon="properties"
+          className="font-bold"
+        ></FactItem>
+
         <div className="flex">
           <EditorActionExecPredicateKills control={control} />
           <EditorActionExecPredicateCostChange control={control} />
@@ -190,6 +199,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           intent="primary"
           type="submit"
           icon="add"
+          className="mt-4"
         >
           添加
         </Button>

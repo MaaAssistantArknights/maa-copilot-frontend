@@ -1,4 +1,4 @@
-import { Card, Elevation, Icon } from '@blueprintjs/core'
+import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { clsx } from 'clsx'
@@ -52,6 +52,10 @@ export const EditorGroupItem = ({
             </li>
           ))}
         </ul>
+
+        {!group.opers?.length && (
+          <NonIdealState>将干员拖拽到此处</NonIdealState>
+        )}
       </SortableContext>
     </Card>
   )

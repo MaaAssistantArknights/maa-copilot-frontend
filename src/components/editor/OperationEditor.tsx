@@ -223,6 +223,7 @@ export const OperationEditor: FC<{
           <div className="w-1/3 mr-8 flex flex-col">
             <H4>干员与干员组</H4>
             <HelperText className="mb-4">
+              <span>拖拽以重新排序或分配干员</span>
               <span>右键以展开上下文菜单</span>
             </HelperText>
             <EditorPerformer control={control} />

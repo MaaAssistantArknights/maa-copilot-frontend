@@ -47,7 +47,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
   }
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col">
       <EditorActionAdd append={append} />
 
       <div className="h-full overflow-auto p-2 -mx-2 relative">
