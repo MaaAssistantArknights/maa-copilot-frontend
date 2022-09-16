@@ -42,7 +42,7 @@ export const useOperations = ({
       )
       searchParams.set('order_by', orderBy)
       if (query) {
-        searchParams.set('level_keyword', query)
+        searchParams.set('document', query)
       }
 
       return `/copilot/query?${searchParams.toString()}`
