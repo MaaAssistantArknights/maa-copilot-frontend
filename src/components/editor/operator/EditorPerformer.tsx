@@ -210,11 +210,7 @@ export const EditorPerformer: FC<{
           onDragEnd={handleDragEnd}
         >
           <Droppable id={nonGroupedContainerId}>
-            <FactItem
-              title="干员"
-              icon="person"
-              className="font-bold"
-            ></FactItem>
+            <FactItem title="干员" icon="person" className="font-bold" />
 
             {operators.length === 0 && <NonIdealState title="暂无干员" />}
 
@@ -245,11 +241,7 @@ export const EditorPerformer: FC<{
             </SortableContext>
           </Droppable>
 
-          <FactItem
-            title="干员组"
-            icon="people"
-            className="font-bold mt-8"
-          ></FactItem>
+          <FactItem title="干员组" icon="people" className="font-bold mt-8" />
 
           {groups.length === 0 && <NonIdealState title="暂无干员组" />}
 

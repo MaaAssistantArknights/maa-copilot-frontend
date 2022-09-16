@@ -49,7 +49,7 @@ export const AppLayout: FCC = ({ children }) => (
         </NavLink>
       ))}
 
-      <div className="flex-1"></div>
+      <div className="flex-1" />
 
       <AccountManager />
     </nav>

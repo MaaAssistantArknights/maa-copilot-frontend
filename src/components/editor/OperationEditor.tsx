@@ -148,7 +148,7 @@ export const OperationEditor: FC<{
             {formatRelativeTime(Date.now())} 已自动保存
           </span> */}
 
-        <div className="flex-1"></div>
+        <div className="flex-1" />
 
         <Button intent="primary" className="ml-4" icon="upload" text="发布" />
       </div>
@@ -194,7 +194,7 @@ export const OperationEditor: FC<{
         </div>
 
         <div className="flex">
-          <div className="w-1/4 mr-8"></div>
+          <div className="w-1/4 mr-8" />
           <div className="w-3/4">
             <FormField
               label="作业描述"
@@ -217,7 +217,7 @@ export const OperationEditor: FC<{
           </div>
         </div>
 
-        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6"></div>
+        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
         <div className="flex h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
           <div className="w-1/3 mr-8 flex flex-col">
