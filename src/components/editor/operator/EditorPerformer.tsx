@@ -12,7 +12,7 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import {
-  arraySwap,
+  arrayMove,
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
@@ -160,7 +160,7 @@ export const EditorPerformer: FC<{
             moveItem(group.opers, getOperatorId, (oldIndex, newIndex) => {
               updateGroup(groups.indexOf(group), {
                 ...group,
-                opers: arraySwap(group.opers, oldIndex, newIndex),
+                opers: arrayMove(group.opers, oldIndex, newIndex),
               })
             })
           } else {
