@@ -106,6 +106,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
               }}
             >
               <EditorOperatorName
+                shouldUnregister
                 control={control}
                 name="name"
                 rules={{
@@ -121,6 +122,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
         {(type === 'Deploy' || type === 'Skill' || type === 'Retreat') && (
           <div className="flex">
             <EditorActionOperatorLocation
+              shouldUnregister
               actionType={type}
               control={control}
               name="location"
@@ -130,7 +132,11 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
 
         {type === 'Deploy' && (
           <div className="flex">
-            <EditorActionOperatorDirection control={control} name="direction" />
+            <EditorActionOperatorDirection
+              shouldUnregister
+              control={control}
+              name="direction"
+            />
           </div>
         )}
 
@@ -145,6 +151,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
               }
             >
               <EditorOperatorSkillUsage
+                shouldUnregister
                 control={control as Control<CopilotDocV1.ActionSkillUsage>}
                 name="skillUsage"
               />

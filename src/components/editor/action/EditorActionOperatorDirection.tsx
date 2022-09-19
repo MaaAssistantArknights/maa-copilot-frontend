@@ -21,6 +21,7 @@ interface EditorActionOperatorDirectionProps
 export const EditorActionOperatorDirection = ({
   name = 'direction',
   control,
+  ...controllerProps
 }: EditorActionOperatorDirectionProps) => {
   const {
     field: { onChange, onBlur, value, ref },
@@ -30,6 +31,7 @@ export const EditorActionOperatorDirection = ({
     control,
     rules: { required: '必须选择朝向' },
     defaultValue: 'None' as CopilotDocV1.Direction.None,
+    ...controllerProps,
   })
 
   const items = useMemo<EditorActionOperatorDirectionChoice[]>(
