@@ -208,6 +208,7 @@ export const EditorPerformer: FC<{
           onDragStart={handleDragStart}
           onDragOver={handleDragOver}
           onDragEnd={handleDragEnd}
+          onDragCancel={handleDragEnd}
         >
           <Droppable id={nonGroupedContainerId}>
             <FactItem title="干员" icon="person" className="font-bold" />
