@@ -21,7 +21,7 @@ export interface EditorActionsProps {
 export const EditorActions = ({ control }: EditorActionsProps) => {
   const [activeAction, setActiveAction] = useState<CopilotDocV1.Action>()
 
-  const { fields, append, move } = useFieldArray({
+  const { fields, append, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
@@ -61,10 +61,16 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
             strategy={verticalListSortingStrategy}
           >
             <ul>
-              {fields.map((field) => (
+              {fields.map((field, i) => (
                 <li key={field.id} className="mt-2">
                   <Sortable id={field.id}>
-                    {(attrs) => <EditorActionItem action={field} {...attrs} />}
+                    {(attrs) => (
+                      <EditorActionItem
+                        action={field}
+                        {...attrs}
+                        onRemove={() => remove(i)}
+                      />
+                    )}
                   </Sortable>
                 </li>
               ))}

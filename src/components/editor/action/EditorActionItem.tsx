@@ -22,10 +22,12 @@ import { SortableItemProps } from '../../dnd'
 
 interface EditorActionItemProps extends Partial<SortableItemProps> {
   action: CopilotDocV1.Action
+  onRemove?: () => void
 }
 
 export const EditorActionItem: FC<EditorActionItemProps> = ({
   action,
+  onRemove,
   isDragging,
   attributes,
   listeners,
@@ -56,7 +58,12 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
               position="right"
               content={
                 <Menu className="p-0">
-                  <MenuItem intent="danger" text="删除动作" icon="trash" />
+                  <MenuItem
+                    intent="danger"
+                    text="删除动作"
+                    icon="trash"
+                    onClick={onRemove}
+                  />
                 </Menu>
               }
             >
