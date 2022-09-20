@@ -1,6 +1,7 @@
 import { UniqueIdentifier, useDroppable } from '@dnd-kit/core'
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import clsx from 'clsx'
 import { FC, ReactNode } from 'react'
 
 export type SortableItemProps = ReturnType<typeof useSortable>
@@ -8,10 +9,16 @@ export type SortableItemProps = ReturnType<typeof useSortable>
 export interface SortableProps {
   id: UniqueIdentifier
   data?: Record<string, any>
+  className?: string
   children: ReactNode | ((childProps: SortableItemProps) => ReactNode)
 }
 
-export const Sortable: FC<SortableProps> = ({ id, data, children }) => {
+export const Sortable: FC<SortableProps> = ({
+  id,
+  data,
+  className,
+  children,
+}) => {
   const sortable = useSortable({
     id,
     data,
@@ -30,14 +37,24 @@ export const Sortable: FC<SortableProps> = ({ id, data, children }) => {
 
   if (typeof children === 'function') {
     return (
-      <div ref={setNodeRef} style={style}>
+      <div
+        ref={setNodeRef}
+        style={style}
+        className={clsx('relative', className)}
+      >
         {children(sortable)}
       </div>
     )
   }
 
   return (
-    <div ref={setNodeRef} {...listeners} {...attributes} style={style}>
+    <div
+      ref={setNodeRef}
+      {...listeners}
+      {...attributes}
+      style={style}
+      className={clsx('relative', className)}
+    >
       {children}
     </div>
   )

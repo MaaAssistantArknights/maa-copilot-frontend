@@ -154,6 +154,7 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
                 shouldUnregister
                 control={control as Control<CopilotDocV1.ActionSkillUsage>}
                 name="skillUsage"
+                defaultValue={0}
               />
             </FormField2>
           </div>

@@ -16,15 +16,25 @@ export function formatDateTime(input: DayjsInput) {
 }
 
 export function formatDuration(milliseconds: number) {
-  const seconds = Math.floor(milliseconds / 1000)
-  const minutes = Math.floor(seconds / 60)
-  const hours = Math.floor(minutes / 60)
+  const hours = ~~(milliseconds / (60 * 60 * 1000))
+
+  milliseconds -= hours * 60 * 60 * 1000
+
+  const minutes = ~~(milliseconds / (60 * 1000))
+
+  milliseconds -= minutes * 60 * 1000
+
+  const seconds = ~~(milliseconds / 1000)
+
+  milliseconds -= seconds * 1000
 
   if (hours > 0) {
     return `${hours}h${minutes}m`
   } else if (minutes > 0) {
     return `${minutes}m${seconds}s`
+  } else if (seconds > 0) {
+    return `${seconds + milliseconds / 1000}s`
   } else {
-    return `${seconds}s`
+    return `${milliseconds}ms`
   }
 }
