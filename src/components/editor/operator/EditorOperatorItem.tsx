@@ -1,4 +1,4 @@
-import { Card, Elevation, Icon } from '@blueprintjs/core'
+import { Button, Card, Elevation, Icon } from '@blueprintjs/core'
 import clsx from 'clsx'
 import { OPERATORS } from '../../../models/generated/operators'
 import { findOperatorSkillUsage } from '../../../models/operator'
@@ -27,10 +27,10 @@ export const EditorOperatorItem = ({
   return (
     <Card
       elevation={Elevation.TWO}
-      className={clsx('flex', isDragging && 'opacity-30')}
+      className={clsx('flex items-start', isDragging && 'opacity-30')}
     >
       <Icon
-        className="cursor-grab active:cursor-grabbing p-1 -my-1 -ml-2 mr-3 rounded-[1px]"
+        className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 mr-3 rounded-[1px]"
         icon="drag-handle-vertical"
         {...attributes}
         {...listeners}
@@ -40,7 +40,13 @@ export const EditorOperatorItem = ({
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
         <div className="text-gray-400">{skill}</div>
       </div>
-      <Icon icon="delete" intent="danger" onClick={() => removeOperator()} />
+      <Button
+        minimal
+        className="-mt-2 -mr-3"
+        icon="delete"
+        intent="danger"
+        onClick={removeOperator}
+      />
     </Card>
   )
 }
