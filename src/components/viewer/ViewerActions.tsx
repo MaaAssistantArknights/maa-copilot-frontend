@@ -44,7 +44,7 @@ export const ViewerActions: FC<{
             >
               <CardTitle large className="mb-0" icon={type.icon}>
                 <span className="text-xl">{type.title}</span>
-                <span className="flex-1"></span>
+                <span className="flex-1" />
                 <div className="w-[25%] grid grid-flow-row grid-cols-2 text-right font-normal">
                   <InlinePrecondition title="击杀">
                     {action.kills || '-'}

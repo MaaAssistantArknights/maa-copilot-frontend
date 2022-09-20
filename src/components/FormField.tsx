@@ -31,6 +31,7 @@ export interface FormFieldProps<T extends FieldValues, P extends Path<T>> {
   label: ReactNode
   field: P
   ControllerProps?: Omit<ControllerProps<T, P>, 'name'>
+  description?: Tooltip2Props['content']
   render?: (props: FormFieldRenderProps<T, P>) => ReactNode
 }
 
@@ -41,6 +42,7 @@ export const FormField = <T extends FieldValues, P extends Path<T>>({
   error,
   label,
   field,
+  description,
   render,
 }: FormFieldProps<T, P>) => {
   return (
@@ -48,6 +50,21 @@ export const FormField = <T extends FieldValues, P extends Path<T>>({
       label={
         <span>
           {label}
+          {description && (
+            <Tooltip2
+              className="!inline-block !mt-0"
+              interactionKind={Popover2InteractionKind.HOVER}
+              content={
+                typeof description === 'string' ? (
+                  <div className="max-w-sm">{description}</div>
+                ) : (
+                  description
+                )
+              }
+            >
+              <Icon className="ml-1 text-slate-600" icon="help" />
+            </Tooltip2>
+          )}
           {error && (
             <Tag minimal intent="danger" className="float-right">
               {error.message}

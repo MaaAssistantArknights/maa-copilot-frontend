@@ -51,7 +51,7 @@ export const OperationCard = ({
           <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
             {operation.title}
           </H4>
-          <div className="flex-1"></div>
+          <div className="flex-1" />
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
               {!operation.isNotEnoughRating && (

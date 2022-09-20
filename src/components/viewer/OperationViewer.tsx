@@ -184,7 +184,7 @@ export const OperationViewer: ComponentType<{
           <Icon icon="document" />
           <span className="ml-2">MAA Copilot 作业</span>
 
-          <div className="flex-1"></div>
+          <div className="flex-1" />
 
           {operation.uploader === auth.username && (
             <Popover2
@@ -292,7 +292,7 @@ export const OperationViewer: ComponentType<{
           </div>
         </div>
 
-        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6"></div>
+        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
         <div className="grid grid-rows-1 grid-cols-3 h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)] gap-8">
           <div className="flex flex-col">
@@ -355,7 +355,7 @@ const OperatorCard: FC<{
     <Card elevation={Elevation.ONE} className="mb-2 last:mb-0 flex">
       <OperatorAvatar name={name} size="large" className="mr-3" />
       <div className="flex items-center font-bold">{name}</div>
-      <div className="flex-1"></div>
+      <div className="flex-1" />
       <div className="flex items-center tabular-nums">
         技能<span className="font-bold ml-1">{skill}</span>
       </div>
