@@ -8,7 +8,7 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
 import { Sortable } from '../../dnd'
 import { EditorActionAdd } from './EditorActionAdd'
@@ -20,8 +20,10 @@ export interface EditorActionsProps {
 
 export const EditorActions = ({ control }: EditorActionsProps) => {
   const [activeAction, setActiveAction] = useState<CopilotDocV1.Action>()
+  const [editingAction, setEditingAction] = useState<typeof fields[number]>()
+  const editingIndex = useRef(-1)
 
-  const { fields, append, move, remove } = useFieldArray({
+  const { fields, append, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
@@ -44,9 +46,39 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
     setActiveAction(undefined)
   }
 
+  const onSubmit = (action: CopilotDocV1.Action) => {
+    if (editingAction) {
+      const index = fields.findIndex((el) => el.id === editingAction.id)
+      if (index !== -1) {
+        update(index, action)
+
+        // we cannot directly update editingAction using the action because its ID
+        // as well as the object reference will be changed. The only thing we can do
+        // is keep track of the index and retrieve the action after fields have been
+        // updated. Beware: make sure the indices do not change before next rerender,
+        // otherwise the index access in useEffect will be wrong.
+        editingIndex.current = index
+      }
+    } else {
+      append(action)
+    }
+  }
+
+  // retrieve the action that's just updated
+  useEffect(() => {
+    if (editingIndex.current !== -1) {
+      setEditingAction(fields[editingIndex.current])
+      editingIndex.current = -1
+    }
+  }, [fields])
+
   return (
     <div>
-      <EditorActionAdd append={append} />
+      <EditorActionAdd
+        action={editingAction}
+        onSubmit={onSubmit}
+        onCancel={() => setEditingAction(undefined)}
+      />
 
       <div className="p-2 -mx-2">
         <DndContext
@@ -67,8 +99,14 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
                     {(attrs) => (
                       <EditorActionItem
                         action={field}
-                        {...attrs}
+                        editing={editingAction?.id === field.id}
+                        onEdit={() =>
+                          setEditingAction(
+                            editingAction?.id === field.id ? undefined : field,
+                          )
+                        }
                         onRemove={() => remove(i)}
+                        {...attrs}
                       />
                     )}
                   </Sortable>

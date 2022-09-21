@@ -21,12 +21,16 @@ import { formatDuration } from '../../../utils/times'
 import { SortableItemProps } from '../../dnd'
 
 interface EditorActionItemProps extends Partial<SortableItemProps> {
+  editing?: boolean
   action: CopilotDocV1.Action
+  onEdit?: () => void
   onRemove?: () => void
 }
 
 export const EditorActionItem: FC<EditorActionItemProps> = ({
+  editing,
   action,
+  onEdit,
   onRemove,
   isDragging,
   attributes,
@@ -40,6 +44,7 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
       className={clsx(
         'flex mb-2 last:mb-0 border-l-4',
         type.accent,
+        editing && 'bg-gray-100',
         isDragging && 'invisible',
       )}
     >
@@ -53,7 +58,13 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
           />
           <CardTitle className="mb-0 flex-grow" icon={type.icon}>
             <span>{type.title}</span>
-            <Button minimal icon="edit" className="ml-2 -my-2" />
+            <Button
+              minimal
+              icon="edit"
+              className="ml-2 -my-2"
+              active={editing}
+              onClick={onEdit}
+            />
             <Popover2
               position="right"
               content={
