@@ -12,6 +12,7 @@ export const EditorActionOperatorLocation = ({
   name,
   control,
   actionType,
+  ...controllerProps
 }: EditorActionOperatorLocationProps) => {
   const isRequired = actionType === 'Deploy'
 
@@ -31,6 +32,7 @@ export const EditorActionOperatorLocation = ({
           v.every((i) => i >= 0 && Number.isFinite(i))) ||
         '位置不合法',
     },
+    ...controllerProps,
   })
 
   const transform = {

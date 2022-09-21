@@ -18,7 +18,7 @@ export const EditorOperatorItem = ({
   removeOperator,
 }: EditorOperatorItemProps) => {
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
-  const skillUsage = findOperatorSkillUsage(operator.skillUsage)?.title
+  const skillUsage = findOperatorSkillUsage(operator.skillUsage).title
 
   const skill = `${
     [null, '一', '二', '三'][operator.skill ?? 1] ?? '未知'

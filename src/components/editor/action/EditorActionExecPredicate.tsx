@@ -10,7 +10,7 @@ interface EditorActionExecPredicateProps
 export const EditorActionExecPredicateKills = ({
   name = 'kills',
   control,
-  rules,
+  ...controllerProps
 }: EditorActionExecPredicateProps) => {
   const { errors } = useFormState({ control, name })
 
@@ -26,7 +26,7 @@ export const EditorActionExecPredicateKills = ({
         NumericInputProps={{ placeholder: '击杀数' }}
         control={control}
         name={name}
-        rules={rules}
+        {...controllerProps}
       />
     </FormField2>
   )
@@ -35,7 +35,7 @@ export const EditorActionExecPredicateKills = ({
 export const EditorActionExecPredicateCostChange = ({
   name = 'costChanges',
   control,
-  rules,
+  ...controllerProps
 }: EditorActionExecPredicateProps) => {
   const { errors } = useFormState({ control, name })
 
@@ -51,7 +51,7 @@ export const EditorActionExecPredicateCostChange = ({
         NumericInputProps={{ placeholder: '费用变化量' }}
         control={control}
         name={name}
-        rules={rules}
+        {...controllerProps}
       />
     </FormField2>
   )
@@ -60,7 +60,7 @@ export const EditorActionExecPredicateCostChange = ({
 export const EditorActionExecPredicateCooling = ({
   name = 'cooling',
   control,
-  rules,
+  ...controllerProps
 }: EditorActionExecPredicateProps) => {
   const { errors } = useFormState({ control, name })
 
@@ -75,7 +75,7 @@ export const EditorActionExecPredicateCooling = ({
         NumericInputProps={{ placeholder: 'CD 中干员数量' }}
         control={control}
         name={name}
-        rules={rules}
+        {...controllerProps}
       />
     </FormField2>
   )

@@ -8,7 +8,11 @@ import { FCC } from 'types'
 import { formatDuration } from '../../utils/times'
 
 const actionKey = (action: CopilotDocV1.Action, index?: number) =>
-  `${action.type}_${action.name}_${action.kills}_${action.costChanges}_${action.preDelay}_${action.rearDelay}_${action.direction}_${index}`
+  `${index}_${action.type}_${'name' in action ? action.name : ''}_${
+    action.kills
+  }_${action.costChanges}_${action.preDelay}_${action.rearDelay}_${
+    'location' in action ? action.location : ''
+  }`
 
 export const ViewerActions: FC<{
   className?: string
@@ -56,27 +60,28 @@ export const ViewerActions: FC<{
                 </div>
               </CardTitle>
               <div className="grid grid-flow-row grid-cols-4 gap-2 [&>*]:mt-4 w-full">
-                {action.name && (
+                {'name' in action && (
                   <FactItem dense title="干员/干员组" icon="mugshot">
                     {action.name}
                   </FactItem>
                 )}
 
-                {action.skillUsage !== undefined && (
+                {'skillUsage' in action && action.skillUsage !== undefined && (
                   <FactItem dense title="切换技能用法至" icon="swap-horizontal">
                     {action.skillUsage}
                   </FactItem>
                 )}
 
-                {!!action.location?.filter(Boolean).length && (
-                  <FactItem dense title="坐标" icon="map-marker">
-                    <span className="font-mono">
-                      {action.location?.[0]}, {action.location?.[1]}
-                    </span>
-                  </FactItem>
-                )}
+                {'location' in action &&
+                  !!action.location?.filter(Boolean).length && (
+                    <FactItem dense title="坐标" icon="map-marker">
+                      <span className="font-mono">
+                        {action.location?.[0]}, {action.location?.[1]}
+                      </span>
+                    </FactItem>
+                  )}
 
-                {!!action.direction && (
+                {'direction' in action && (
                   <FactItem dense title="朝向" icon="compass">
                     <span className="font-mono">{action.direction}</span>
                   </FactItem>

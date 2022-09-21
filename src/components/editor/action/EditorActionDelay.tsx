@@ -10,7 +10,7 @@ interface EditorActionDelayProps
 export const EditorActionPreDelay = ({
   name = 'preDelay',
   control,
-  rules,
+  ...controllerProps
 }: EditorActionDelayProps) => {
   const { errors } = useFormState({ control, name })
 
@@ -31,7 +31,7 @@ export const EditorActionPreDelay = ({
         }}
         control={control}
         name={name}
-        rules={rules}
+        {...controllerProps}
       />
     </FormField2>
   )
@@ -40,7 +40,7 @@ export const EditorActionPreDelay = ({
 export const EditorActionRearDelay = ({
   name = 'rearDelay',
   control,
-  rules,
+  ...controllerProps
 }: EditorActionDelayProps) => {
   const { errors } = useFormState({ control, name })
 
@@ -60,7 +60,7 @@ export const EditorActionRearDelay = ({
         }}
         control={control}
         name={name}
-        rules={rules}
+        {...controllerProps}
       />
     </FormField2>
   )

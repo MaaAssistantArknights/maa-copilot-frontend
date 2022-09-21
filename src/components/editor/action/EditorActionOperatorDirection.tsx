@@ -1,16 +1,10 @@
-import { Button, IconName, MenuItem } from '@blueprintjs/core'
+import { Button, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
+import { operatorDirections } from '../../../models/operator'
 import { FormField2 } from '../../FormField'
-
-interface EditorActionOperatorDirectionChoice {
-  icon?: IconName
-  title: string
-  value: CopilotDocV1.Direction | null
-}
 
 interface EditorActionOperatorDirectionProps
   extends SetOptional<
@@ -21,6 +15,7 @@ interface EditorActionOperatorDirectionProps
 export const EditorActionOperatorDirection = ({
   name = 'direction',
   control,
+  ...controllerProps
 }: EditorActionOperatorDirectionProps) => {
   const {
     field: { onChange, onBlur, value, ref },
@@ -30,41 +25,10 @@ export const EditorActionOperatorDirection = ({
     control,
     rules: { required: '必须选择朝向' },
     defaultValue: 'None' as CopilotDocV1.Direction.None,
+    ...controllerProps,
   })
 
-  const items = useMemo<EditorActionOperatorDirectionChoice[]>(
-    () => [
-      // TODO: remove these string literals when CopilotDocV1 can be imported
-      {
-        icon: 'slash',
-        title: '无',
-        value: 'None' as CopilotDocV1.Direction.None,
-      },
-      {
-        icon: 'arrow-up',
-        title: '上',
-        value: 'Up' as CopilotDocV1.Direction.Up,
-      },
-      {
-        icon: 'arrow-down',
-        title: '下',
-        value: 'Down' as CopilotDocV1.Direction.Down,
-      },
-      {
-        icon: 'arrow-left',
-        title: '左',
-        value: 'Left' as CopilotDocV1.Direction.Left,
-      },
-      {
-        icon: 'arrow-right',
-        title: '右',
-        value: 'Right' as CopilotDocV1.Direction.Right,
-      },
-    ],
-    [],
-  )
-
-  const selected = items.find((item) => item.value === value)
+  const selected = operatorDirections.find((item) => item.value === value)
 
   return (
     <FormField2
@@ -75,7 +39,7 @@ export const EditorActionOperatorDirection = ({
     >
       <Select2
         filterable={false}
-        items={items}
+        items={operatorDirections}
         itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
           <MenuItem
             selected={modifiers.active}

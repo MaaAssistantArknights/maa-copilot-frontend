@@ -12,12 +12,14 @@ export const EditorOperatorSkillUsage = <
 >({
   name,
   control,
+  ...controllerProps
 }: EditorFieldProps<T, CopilotDocV1.SkillUsageType>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
     name,
     control,
+    ...controllerProps,
   })
 
   const selectedAction = operatorSkillUsages.find(

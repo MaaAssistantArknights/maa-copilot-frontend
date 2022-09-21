@@ -64,6 +64,7 @@ export const EditorOperatorName = <T extends FieldValues>({
   name,
   control,
   rules,
+  ...controllerProps
 }: EditorFieldProps<T, string>) => {
   const {
     field: { onChange, onBlur, value, ref },
@@ -71,6 +72,7 @@ export const EditorOperatorName = <T extends FieldValues>({
     name,
     control,
     rules: { required: '请输入干员名', ...rules },
+    ...controllerProps,
   })
 
   const fuse = useMemo(
