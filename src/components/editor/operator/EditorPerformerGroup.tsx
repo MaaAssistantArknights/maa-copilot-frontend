@@ -59,7 +59,7 @@ export const EditorPerformerGroup = ({
           title="什么是干员组？"
           className="font-bold"
         />
-        <div>组内的干员任选其一，无序，会优先选练度高的</div>
+        <div>编队时将选择组内练度最高的一位干员；组内前后顺序并不影响判断</div>
       </Callout>
 
       <FormField

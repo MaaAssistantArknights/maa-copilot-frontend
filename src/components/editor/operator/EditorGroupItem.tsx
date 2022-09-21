@@ -1,4 +1,4 @@
-import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
+import { Button, Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { clsx } from 'clsx'
@@ -31,18 +31,22 @@ export const EditorGroupItem = ({
         items={group.opers?.map(getOperatorId) || []}
         strategy={verticalListSortingStrategy}
       >
-        <div className="flex">
+        <div className="flex items-start mb-2">
           <Icon
-            className="cursor-grab active:cursor-grabbing p-1 -my-1 -ml-2 rounded-[1px]"
+            className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 rounded-[1px]"
             icon="drag-handle-vertical"
             {...attributes}
             {...listeners}
           />
 
-          <h3 className="font-bold leading-none mb-4 flex-grow">
-            {group.name}
-          </h3>
-          <Icon icon="delete" intent="danger" onClick={() => removeGroup()} />
+          <h3 className="font-bold leading-none flex-grow">{group.name}</h3>
+          <Button
+            minimal
+            className="-mt-2 -mr-3"
+            icon="delete"
+            intent="danger"
+            onClick={removeGroup}
+          />
         </div>
 
         <ul>
