@@ -8,8 +8,9 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
+import { useEditableFields } from '../../../utils/useEditableFields'
 import { Sortable } from '../../dnd'
 import { EditorActionAdd } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
@@ -19,19 +20,23 @@ export interface EditorActionsProps {
 }
 
 export const EditorActions = ({ control }: EditorActionsProps) => {
-  const [activeAction, setActiveAction] = useState<CopilotDocV1.Action>()
-  const [editingAction, setEditingAction] = useState<typeof fields[number]>()
-  const editingIndex = useRef(-1)
+  const [draggingAction, setDraggingAction] = useState<typeof fields[number]>()
 
   const { fields, append, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
 
+  const {
+    editingField: editingAction,
+    setEditingField: setEditingAction,
+    reserveEditingField: reserveEditingAction,
+  } = useEditableFields(fields)
+
   const sensors = useSensors(useSensor(PointerSensor))
 
   const handleDragStart = ({ active }: DragEndEvent) => {
-    setActiveAction(fields.find((action) => action.id === active.id))
+    setDraggingAction(fields.find((action) => action.id === active.id))
   }
 
   const handleDragOver = ({ active, over }: DragEndEvent) => {
@@ -43,34 +48,20 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
   }
 
   const handleDragEnd = () => {
-    setActiveAction(undefined)
+    setDraggingAction(undefined)
   }
 
   const onSubmit = (action: CopilotDocV1.Action) => {
     if (editingAction) {
-      const index = fields.findIndex((el) => el.id === editingAction.id)
+      const index = fields.indexOf(editingAction)
       if (index !== -1) {
         update(index, action)
-
-        // we cannot directly update editingAction using the action because its ID
-        // as well as the object reference will be changed. The only thing we can do
-        // is keep track of the index and retrieve the action after fields have been
-        // updated. Beware: make sure the indices do not change before next rerender,
-        // otherwise the index access in useEffect will be wrong.
-        editingIndex.current = index
+        reserveEditingAction(index)
       }
     } else {
       append(action)
     }
   }
-
-  // retrieve the action that's just updated
-  useEffect(() => {
-    if (editingIndex.current !== -1) {
-      setEditingAction(fields[editingIndex.current])
-      editingIndex.current = -1
-    }
-  }, [fields])
 
   return (
     <div>
@@ -99,10 +90,10 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
                     {(attrs) => (
                       <EditorActionItem
                         action={field}
-                        editing={editingAction?.id === field.id}
+                        editing={editingAction === field}
                         onEdit={() =>
                           setEditingAction(
-                            editingAction?.id === field.id ? undefined : field,
+                            editingAction === field ? undefined : field,
                           )
                         }
                         onRemove={() => remove(i)}
@@ -116,7 +107,12 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
           </SortableContext>
 
           <DragOverlay>
-            {activeAction && <EditorActionItem action={activeAction} />}
+            {draggingAction && (
+              <EditorActionItem
+                editing={editingAction === draggingAction}
+                action={draggingAction}
+              />
+            )}
           </DragOverlay>
         </DndContext>
 

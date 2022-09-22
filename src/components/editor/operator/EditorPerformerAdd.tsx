@@ -1,6 +1,6 @@
 import { Button, Card, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
-import { FC, useMemo, useState } from 'react'
+import { FC, useMemo } from 'react'
 import {
   EditorPerformerGroup,
   EditorPerformerGroupProps,
@@ -10,12 +10,17 @@ import {
   EditorPerformerOperatorProps,
 } from './EditorPerformerOperator'
 
+export type PerformerType = 'operator' | 'group'
+
 export interface EditorPerformerAddProps {
+  mode: PerformerType
+  operator?: CopilotDocV1.Operator
+  group?: CopilotDocV1.Group
+  onModeChange: (mode: PerformerType) => void
+  onCancel: () => void
   submitOperator: EditorPerformerOperatorProps['submit']
   submitGroup: EditorPerformerGroupProps['submit']
 }
-
-type PerformerType = 'operator' | 'group'
 
 interface PerformerSelectItem {
   label: string
@@ -28,11 +33,14 @@ const performerSelectItems: PerformerSelectItem[] = [
 ]
 
 export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
+  mode,
+  operator,
+  group,
+  onModeChange,
+  onCancel,
   submitOperator,
   submitGroup,
 }) => {
-  const [mode, setMode] = useState<PerformerType>('operator')
-
   const activeItem =
     performerSelectItems.find((item) => item.value === mode) ||
     performerSelectItems[0]
@@ -44,10 +52,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
         filterable={false}
         items={performerSelectItems}
         className="ml-1"
-        onItemSelect={(e) => {
-          console.log('selected', e.value)
-          setMode(e.value)
-        }}
+        onItemSelect={(e) => onModeChange(e.value)}
         itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
           <MenuItem
             key={action.value}
@@ -71,11 +76,18 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   const child = useMemo(() => {
     return mode === 'operator' ? (
       <EditorPerformerOperator
+        operator={operator}
         submit={submitOperator}
+        onCancel={onCancel}
         categorySelector={selector}
       />
     ) : (
-      <EditorPerformerGroup submit={submitGroup} categorySelector={selector} />
+      <EditorPerformerGroup
+        group={group}
+        submit={submitGroup}
+        onCancel={onCancel}
+        categorySelector={selector}
+      />
     )
   }, [mode, submitOperator, submitGroup])
 

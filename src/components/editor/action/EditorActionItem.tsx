@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  Elevation,
-  Icon,
-  Menu,
-  MenuItem,
-} from '@blueprintjs/core'
-import { Popover2 } from '@blueprintjs/popover2'
+import { Card, Elevation, Icon } from '@blueprintjs/core'
 import clsx from 'clsx'
 import { CardTitle } from 'components/CardTitle'
 import { FactItem } from 'components/FactItem'
@@ -19,6 +11,7 @@ import {
 } from '../../../models/operator'
 import { formatDuration } from '../../../utils/times'
 import { SortableItemProps } from '../../dnd'
+import { CardDeleteOption, CardEditOption } from '../CardOptions'
 
 interface EditorActionItemProps extends Partial<SortableItemProps> {
   editing?: boolean
@@ -58,28 +51,8 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
           />
           <CardTitle className="mb-0 flex-grow" icon={type.icon}>
             <span>{type.title}</span>
-            <Button
-              minimal
-              icon="edit"
-              className="ml-2 -my-2"
-              active={editing}
-              onClick={onEdit}
-            />
-            <Popover2
-              position="right"
-              content={
-                <Menu className="p-0">
-                  <MenuItem
-                    intent="danger"
-                    text="删除动作"
-                    icon="trash"
-                    onClick={onRemove}
-                  />
-                </Menu>
-              }
-            >
-              <Button minimal icon="trash" className="-my-2" />
-            </Popover2>
+            <CardEditOption active={editing} onClick={onEdit} />
+            <CardDeleteOption onClick={onRemove} />
           </CardTitle>
         </div>
 

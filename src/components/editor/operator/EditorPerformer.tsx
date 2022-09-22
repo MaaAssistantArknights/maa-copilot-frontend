@@ -16,10 +16,11 @@ import {
   SortableContext,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
-import { FC, useState } from 'react'
+import { uniqueId } from 'lodash-es'
+import { FC, useEffect, useState } from 'react'
 import { Control, useFieldArray, UseFieldArrayMove } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
-import { FieldError } from '../../../utils/fieldError'
+import { useEditableFields } from '../../../utils/useEditableFields'
 import { Droppable, Sortable } from '../../dnd'
 import { FactItem } from '../../FactItem'
 import { EditorGroupItem } from './EditorGroupItem'
@@ -27,26 +28,33 @@ import { EditorOperatorItem } from './EditorOperatorItem'
 import {
   EditorPerformerAdd,
   EditorPerformerAddProps,
+  PerformerType,
 } from './EditorPerformerAdd'
+
+type Operator = CopilotDocV1.Operator
+type Group = CopilotDocV1.Group
+
+type WithId<T> = T & { _uid: string }
 
 const nonGroupedContainerId = 'nonGrouped'
 
-// use .name as ID instead of .id because .id may not exist in operators inside group.opers
-const getOperatorId = (operator: CopilotDocV1.Operator) => operator.name
-
-// add a prefix to prevent ID collision, not really necessary because we already got data.type,
-// but just in case
-const getGroupId = (group: CopilotDocV1.Group) => 'group:' + group.name
+// generate IDs ourself because useFieldArray will not generate IDs for operators inside group.opers
+// TODO: strip IDs away when submitting operation
+const idFor = (performer: Operator | Group) => {
+  return ((performer as WithId<Operator | Group>)._uid ??= uniqueId())
+}
 
 export const EditorPerformer: FC<{
   control: Control<CopilotDocV1.Operation>
 }> = ({ control }) => {
+  const [editMode, setEditMode] = useState<PerformerType>('operator')
   const sensors = useSensors(useSensor(PointerSensor))
 
   const {
-    fields: operators,
+    fields: _operators,
     append: appendOperator,
     move: moveOperator,
+    update: updateOperator,
     remove: removeOperator,
   } = useFieldArray({
     name: 'opers',
@@ -54,7 +62,7 @@ export const EditorPerformer: FC<{
   })
 
   const {
-    fields: groups,
+    fields: _groups,
     append: appendGroup,
     move: moveGroup,
     update: updateGroup,
@@ -64,27 +72,57 @@ export const EditorPerformer: FC<{
     control,
   })
 
-  const [activeOperator, setActiveOperator] = useState<CopilotDocV1.Operator>()
-  const [activeGroup, setActiveGroup] = useState<CopilotDocV1.Group>()
+  // upcast them to the base types to stop TS from complaining when calling indexOf(), includes(), etc.
+  const operators: Operator[] = _operators
+  const groups: Group[] = _groups
+
+  const {
+    editingField: editingOperator,
+    setEditingField: setEditingOperator,
+    reserveEditingField: reserveEditingOperator,
+  } = useEditableFields(operators)
+  const {
+    editingField: editingGroup,
+    setEditingField: setEditingGroup,
+    reserveEditingField: reserveEditingGroup,
+  } = useEditableFields(groups)
+
+  const [draggingOperator, setDraggingOperator] = useState<Operator>()
+  const [draggingGroup, setDraggingGroup] = useState<Group>()
+
+  const isOperatorEditing = (operator: Operator) => operator === editingOperator
+  const isGroupEditing = (group: Group) => group === editingGroup
+
+  useEffect(() => {
+    if (editingOperator) {
+      setEditingGroup(undefined)
+      setEditMode('operator')
+    }
+  }, [editingOperator])
+
+  useEffect(() => {
+    if (editingGroup) {
+      setEditingOperator(undefined)
+      setEditMode('group')
+    }
+  }, [editingGroup])
 
   const findOperatorById = (id: UniqueIdentifier) =>
     // find operator from operators
-    operators.find((op) => getOperatorId(op) === id) ||
+    operators.find((op) => idFor(op) === id) ||
     // find operator from inside groups
-    (groups
+    groups
       .map(({ opers }) => opers)
       .flat()
-      .find((op) => op && getOperatorId(op) === id) as
-      | typeof operators[number]
-      | undefined)
+      .find((op) => op && idFor(op) === id)
 
   const findGroupById = (id: UniqueIdentifier) =>
-    groups.find((group) => getGroupId(group) === id)
+    groups.find((group) => idFor(group) === id)
 
-  const findGroupByOperator = (operator?: CopilotDocV1.Operator) =>
+  const findGroupByOperator = (operator?: Operator) =>
     operator &&
     (groups.find((group) => group.opers?.includes(operator)) as
-      | SetRequired<typeof groups[number], 'opers'>
+      | SetRequired<Group, 'opers'>
       | undefined)
 
   const getType = (item: Active | Over) =>
@@ -92,9 +130,9 @@ export const EditorPerformer: FC<{
 
   const handleDragStart = ({ active }: DragStartEvent) => {
     if (getType(active) === 'operator') {
-      setActiveOperator(findOperatorById(active.id))
+      setDraggingOperator(findOperatorById(active.id))
     } else {
-      setActiveGroup(findGroupById(active.id))
+      setDraggingGroup(findGroupById(active.id))
     }
   }
 
@@ -118,9 +156,7 @@ export const EditorPerformer: FC<{
           if (oldGroup) {
             updateGroup(groups.indexOf(oldGroup), {
               ...oldGroup,
-              opers: oldGroup.opers?.filter(
-                ({ name }) => name !== operator.name,
-              ),
+              opers: oldGroup.opers?.filter((op) => op !== operator),
             })
           } else {
             removeOperator(operators.indexOf(operator))
@@ -140,13 +176,12 @@ export const EditorPerformer: FC<{
 
     // move item
     if (getType(active) === getType(over)) {
-      const moveItem = <T extends CopilotDocV1.Operator | CopilotDocV1.Group>(
+      const moveItem = <T extends Group | Operator>(
         items: T[],
-        getId: (item: T) => UniqueIdentifier,
         move: UseFieldArrayMove,
       ) => {
-        const oldIndex = items.findIndex((item) => getId(item) === active.id)
-        const newIndex = items.findIndex((item) => getId(item) === over.id)
+        const oldIndex = items.findIndex((item) => idFor(item) === active.id)
+        const newIndex = items.findIndex((item) => idFor(item) === over.id)
         if (oldIndex !== -1 && newIndex !== -1) move(oldIndex, newIndex)
       }
 
@@ -157,48 +192,105 @@ export const EditorPerformer: FC<{
           const group = findGroupByOperator(operator)
 
           if (group) {
-            moveItem(group.opers, getOperatorId, (oldIndex, newIndex) => {
+            moveItem(group.opers, (oldIndex, newIndex) => {
               updateGroup(groups.indexOf(group), {
                 ...group,
                 opers: arrayMove(group.opers, oldIndex, newIndex),
               })
             })
           } else {
-            moveItem(operators, getOperatorId, moveOperator)
+            moveItem(operators, moveOperator)
           }
         }
       } else if (getType(active) === 'group') {
-        moveItem(groups, getGroupId, moveGroup)
+        moveItem(groups, moveGroup)
       }
     }
   }
 
   const handleDragEnd = () => {
-    setActiveOperator(undefined)
-    setActiveGroup(undefined)
+    setDraggingOperator(undefined)
+    setDraggingGroup(undefined)
   }
 
   const submitOperator: EditorPerformerAddProps['submitOperator'] = (
     operator,
+    setError,
   ) => {
-    if (findOperatorById(getOperatorId(operator))) {
-      throw new FieldError('name', '该干员已存在')
-    }
+    if (editingOperator) {
+      const existingOperator = findOperatorById(idFor(editingOperator))
 
-    appendOperator(operator)
+      if (existingOperator) {
+        const group = findGroupByOperator(existingOperator)
+
+        if (group) {
+          const index = groups.indexOf(group)
+          const operIndex = group.opers.indexOf(existingOperator)
+
+          // replace existing operator in group
+          updateGroup(index, {
+            ...group,
+            opers: group.opers.map((op) =>
+              op === existingOperator ? operator : op,
+            ),
+          })
+
+          reserveEditingGroup(-1, (updatedGroups) => {
+            setEditingOperator(updatedGroups[index]?.opers?.[operIndex])
+          })
+        } else {
+          const index = operators.indexOf(existingOperator)
+          updateOperator(index, operator)
+          reserveEditingOperator(index)
+        }
+      }
+    } else {
+      if (operators.find(({ name }) => name === operator.name)) {
+        setError('name', { message: '干员已存在' })
+      } else {
+        // generate ID before appending or else it'll lose every time the fields are updated
+        idFor(operator)
+
+        appendOperator(operator)
+      }
+    }
   }
 
-  const submitGroup: EditorPerformerAddProps['submitGroup'] = (group) => {
-    if (findGroupById(getGroupId(group))) {
-      throw new FieldError('name', '该干员组已存在')
-    }
+  const submitGroup: EditorPerformerAddProps['submitGroup'] = (
+    group,
+    setError,
+  ) => {
+    if (editingGroup) {
+      const existingGroup = findGroupById(idFor(group))
 
-    appendGroup(group)
+      if (existingGroup) {
+        const index = groups.indexOf(existingGroup)
+        updateGroup(index, group)
+        reserveEditingGroup(index)
+      }
+    } else {
+      if (groups.find(({ name }) => name === group.name)) {
+        setError('name', { message: '干员组已存在' })
+      } else {
+        // generate ID before appending or else it'll lose every time the fields are updated
+        idFor(group)
+
+        appendGroup(group)
+      }
+    }
   }
 
   return (
     <>
       <EditorPerformerAdd
+        mode={editMode}
+        operator={editingOperator}
+        group={editingGroup}
+        onModeChange={setEditMode}
+        onCancel={() => {
+          setEditingOperator(undefined)
+          setEditingGroup(undefined)
+        }}
         submitOperator={submitOperator}
         submitGroup={submitGroup}
       />
@@ -216,20 +308,25 @@ export const EditorPerformer: FC<{
             {operators.length === 0 && <NonIdealState title="暂无干员" />}
 
             <SortableContext
-              items={operators.map(getOperatorId)}
+              items={operators.map(idFor)}
               strategy={verticalListSortingStrategy}
             >
               <ul>
                 {operators.map((operator) => (
-                  <li className="mt-2" key={getOperatorId(operator)}>
-                    <Sortable
-                      id={getOperatorId(operator)}
-                      data={{ type: 'operator' }}
-                    >
+                  <li className="mt-2" key={idFor(operator)}>
+                    <Sortable id={idFor(operator)} data={{ type: 'operator' }}>
                       {(attrs) => (
                         <EditorOperatorItem
                           operator={operator}
-                          removeOperator={() =>
+                          editing={isOperatorEditing(operator)}
+                          onEdit={() =>
+                            setEditingOperator(
+                              isOperatorEditing(operator)
+                                ? undefined
+                                : operator,
+                            )
+                          }
+                          onRemove={() =>
                             removeOperator(operators.indexOf(operator))
                           }
                           {...attrs}
@@ -247,19 +344,33 @@ export const EditorPerformer: FC<{
           {groups.length === 0 && <NonIdealState title="暂无干员组" />}
 
           <SortableContext
-            items={groups.map(getGroupId)}
+            items={groups.map(idFor)}
             strategy={verticalListSortingStrategy}
           >
             <ul>
               {groups.map((group) => (
-                <li className="mt-2" key={getGroupId(group)}>
-                  <Sortable id={getGroupId(group)} data={{ type: 'group' }}>
+                <li className="mt-2" key={idFor(group)}>
+                  <Sortable id={idFor(group)} data={{ type: 'group' }}>
                     {(attrs) => (
                       <EditorGroupItem
                         group={group}
-                        getOperatorId={getOperatorId}
-                        removeGroup={() => removeGroup(groups.indexOf(group))}
-                        removeGroupOperator={(operatorIndexInGroup) => {
+                        editing={isGroupEditing(group)}
+                        onEdit={() =>
+                          setEditingGroup(
+                            isGroupEditing(group) ? undefined : group,
+                          )
+                        }
+                        onRemove={() => removeGroup(groups.indexOf(group))}
+                        getOperatorId={idFor}
+                        isOperatorEditing={(operator) =>
+                          isOperatorEditing(operator)
+                        }
+                        onOperatorEdit={(operator) =>
+                          setEditingOperator(
+                            isOperatorEditing(operator) ? undefined : operator,
+                          )
+                        }
+                        onOperatorRemove={(operatorIndexInGroup) => {
                           const groupIndex = groups.indexOf(group)
                           if (operatorIndexInGroup > -1) {
                             group.opers?.splice(operatorIndexInGroup, 1)
@@ -276,18 +387,18 @@ export const EditorPerformer: FC<{
           </SortableContext>
 
           <DragOverlay>
-            {activeOperator && (
+            {draggingOperator && (
               <EditorOperatorItem
-                operator={activeOperator}
-                removeOperator={() => {}}
+                editing={isOperatorEditing(draggingOperator)}
+                operator={draggingOperator}
               />
             )}
-            {activeGroup && (
+            {draggingGroup && (
               <EditorGroupItem
-                group={activeGroup}
-                getOperatorId={getOperatorId}
-                removeGroup={() => {}}
-                removeGroupOperator={() => {}}
+                group={draggingGroup}
+                editing={isGroupEditing(draggingGroup)}
+                isOperatorEditing={isOperatorEditing}
+                getOperatorId={idFor}
               />
             )}
           </DragOverlay>
