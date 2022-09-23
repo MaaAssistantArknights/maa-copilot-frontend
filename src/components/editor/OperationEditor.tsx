@@ -61,7 +61,7 @@ export const StageNameInput: FC<{
       <FormField2
         label="关卡"
         field="stageName"
-        error={levelError || error?.message}
+        error={levelError || error}
         asterisk
         FormGroupProps={{
           helperText: (
@@ -75,7 +75,7 @@ export const StageNameInput: FC<{
       >
         <Suggest2<Level>
           className={clsx(loading && 'bp4-skeleton')}
-          disabled={loading || !!error}
+          disabled={loading}
           items={levels}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem

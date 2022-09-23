@@ -131,7 +131,7 @@ export const FormField2 = <T extends FieldValues>({
           {asterisk && <span className="ml-1 text-slate-600">*</span>}
           {error && (
             <Tag minimal intent="danger" className="float-right">
-              {error.message}
+              {error.message || error}
             </Tag>
           )}
         </div>
