@@ -11,11 +11,12 @@ import { EditorActionOperatorLocation } from 'components/editor/action/EditorAct
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { FormField, FormField2 } from 'components/FormField'
+import { useEffect } from 'react'
 import {
   Control,
+  DeepPartial,
   FieldErrors,
   SubmitHandler,
-  UseFieldArrayAppend,
   useForm,
   useWatch,
 } from 'react-hook-form'
@@ -29,25 +30,41 @@ import {
 import { validateAction } from './validation'
 
 export interface EditorActionAddProps {
-  append: UseFieldArrayAppend<CopilotDocV1.Action>
+  onSubmit: (action: CopilotDocV1.Action) => void
+  onCancel: () => void
+  action?: CopilotDocV1.Action
 }
 
-export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
+const defaultAction: DeepPartial<CopilotDocV1.Action> = {
+  type: 'Deploy' as CopilotDocV1.Type.Deploy,
+}
+
+export const EditorActionAdd = ({
+  action,
+  onSubmit: _onSubmit,
+  onCancel,
+}: EditorActionAddProps) => {
+  const isNew = !action
+
   const {
     control,
     reset,
     setError,
     handleSubmit,
-    formState: { errors, isValid, isDirty },
+    formState: { errors },
   } = useForm<CopilotDocV1.Action>({
-    defaultValues: {
-      type: 'Deploy' as CopilotDocV1.Type.Deploy,
-    },
+    defaultValues: defaultAction,
   })
+
+  useEffect(() => {
+    if (action) {
+      reset(action)
+    }
+  }, [action])
 
   const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
     if (validateAction(values, setError)) {
-      append(values)
+      _onSubmit(values)
     }
   }
 
@@ -63,7 +80,10 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
 
           <div className="flex-1" />
 
-          <EditorResetButton reset={reset} entityName="动作" />
+          <EditorResetButton
+            reset={() => reset(defaultAction)}
+            entityName="动作"
+          />
         </div>
 
         {import.meta.env.DEV && <DevTool control={control} />}
@@ -198,15 +218,17 @@ export const EditorActionAdd = ({ append }: EditorActionAddProps) => {
           </div>
         </div>
 
-        <Button
-          disabled={!isValid && !isDirty}
-          intent="primary"
-          type="submit"
-          icon="add"
-          className="mt-4"
-        >
-          添加
-        </Button>
+        <div className="mt-4 flex items-start">
+          <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
+            {isNew ? '添加' : '保存'}
+          </Button>
+
+          {!isNew && (
+            <Button icon="cross" className="ml-2" onClick={onCancel}>
+              取消编辑
+            </Button>
+          )}
+        </div>
       </Card>
     </form>
   )

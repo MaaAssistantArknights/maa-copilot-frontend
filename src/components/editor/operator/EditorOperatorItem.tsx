@@ -1,21 +1,26 @@
-import { Button, Card, Elevation, Icon } from '@blueprintjs/core'
+import { Card, Elevation, Icon } from '@blueprintjs/core'
 import clsx from 'clsx'
 import { OPERATORS } from '../../../models/generated/operators'
 import { findOperatorSkillUsage } from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'
+import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { OperatorAvatar } from './EditorOperator'
 
 interface EditorOperatorItemProps extends Partial<SortableItemProps> {
   operator: CopilotDocV1.Operator
-  removeOperator: () => void
+  editing?: boolean
+  onEdit?: () => void
+  onRemove?: () => void
 }
 
 export const EditorOperatorItem = ({
   operator,
+  editing,
+  onEdit,
+  onRemove,
   isDragging,
   attributes,
   listeners,
-  removeOperator,
 }: EditorOperatorItemProps) => {
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
   const skillUsage = findOperatorSkillUsage(operator.skillUsage).title
@@ -27,7 +32,11 @@ export const EditorOperatorItem = ({
   return (
     <Card
       elevation={Elevation.TWO}
-      className={clsx('flex items-start', isDragging && 'opacity-30')}
+      className={clsx(
+        'flex items-start',
+        editing && 'bg-gray-100',
+        isDragging && 'opacity-30',
+      )}
     >
       <Icon
         className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 mr-3 rounded-[1px]"
@@ -40,13 +49,9 @@ export const EditorOperatorItem = ({
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
         <div className="text-gray-400">{skill}</div>
       </div>
-      <Button
-        minimal
-        className="-mt-2 -mr-3"
-        icon="delete"
-        intent="danger"
-        onClick={removeOperator}
-      />
+
+      <CardEditOption active={editing} onClick={onEdit} />
+      <CardDeleteOption className="-mr-3" onClick={onRemove} />
     </Card>
   )
 }

@@ -71,7 +71,7 @@ body {
 
   .bp4-button {
     @apply flex;
-    @apply border-0 rounded-md font-semibold;
+    @apply border border-solid border-transparent rounded-md font-semibold;
     @apply text-sm;
     @apply transition-colors;
     @apply justify-center items-center;
@@ -82,7 +82,7 @@ body {
 
     &:not([class*='bp4-intent-']):not(.bp4-minimal) {
       @apply text-slate-900 shadow-none;
-      @apply border border-solid border-slate-400;
+      @apply border-slate-400;
       @apply hover:shadow-none;
     }
 

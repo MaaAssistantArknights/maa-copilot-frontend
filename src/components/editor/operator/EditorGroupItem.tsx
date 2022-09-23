@@ -1,8 +1,9 @@
-import { Button, Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
+import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { clsx } from 'clsx'
 import { Sortable, SortableItemProps } from '../../dnd'
+import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { EditorOperatorItem } from './EditorOperatorItem'
 
 export type GroupWithIdentifiedOperators = Omit<CopilotDocV1.Group, 'opers'> & {
@@ -11,22 +12,33 @@ export type GroupWithIdentifiedOperators = Omit<CopilotDocV1.Group, 'opers'> & {
 
 interface EditorGroupItemProps extends Partial<SortableItemProps> {
   group: CopilotDocV1.Group
+  editing?: boolean
+  onEdit?: () => void
+  onRemove?: () => void
   getOperatorId: (operator: CopilotDocV1.Operator) => UniqueIdentifier
-  removeGroupOperator: (index: number) => void
-  removeGroup: () => void
+  isOperatorEditing?: (operator: CopilotDocV1.Operator) => boolean
+  onOperatorEdit?: (operator: CopilotDocV1.Operator) => void
+  onOperatorRemove?: (index: number) => void
 }
 
 export const EditorGroupItem = ({
   group,
+  editing,
   getOperatorId,
+  isOperatorEditing,
+  onEdit,
+  onRemove,
+  onOperatorEdit,
+  onOperatorRemove,
   isDragging,
   attributes,
   listeners,
-  removeGroupOperator,
-  removeGroup,
 }: EditorGroupItemProps) => {
   return (
-    <Card elevation={Elevation.TWO} className={clsx(isDragging && 'invisible')}>
+    <Card
+      elevation={Elevation.TWO}
+      className={clsx(editing && 'bg-gray-100', isDragging && 'invisible')}
+    >
       <SortableContext
         items={group.opers?.map(getOperatorId) || []}
         strategy={verticalListSortingStrategy}
@@ -40,17 +52,13 @@ export const EditorGroupItem = ({
           />
 
           <h3 className="font-bold leading-none flex-grow">{group.name}</h3>
-          <Button
-            minimal
-            className="-mt-2 -mr-3"
-            icon="delete"
-            intent="danger"
-            onClick={removeGroup}
-          />
+
+          <CardEditOption active={editing} onClick={onEdit} />
+          <CardDeleteOption className="-mr-3" onClick={onRemove} />
         </div>
 
         <ul>
-          {group.opers?.map((operator) => (
+          {group.opers?.map((operator, i) => (
             <li className="mb-2" key={getOperatorId(operator)}>
               <Sortable
                 id={getOperatorId(operator)}
@@ -59,9 +67,9 @@ export const EditorGroupItem = ({
                 {(attrs) => (
                   <EditorOperatorItem
                     operator={operator}
-                    removeOperator={() => {
-                      removeGroupOperator(group.opers?.indexOf(operator) ?? -1)
-                    }}
+                    editing={isOperatorEditing?.(operator)}
+                    onEdit={() => onOperatorEdit?.(operator)}
+                    onRemove={() => onOperatorRemove?.(i)}
                     {...attrs}
                   />
                 )}

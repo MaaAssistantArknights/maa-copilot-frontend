@@ -10,6 +10,7 @@ import {
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
+import { useEditableFields } from '../../../utils/useEditableFields'
 import { Sortable } from '../../dnd'
 import { EditorActionAdd } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
@@ -19,17 +20,23 @@ export interface EditorActionsProps {
 }
 
 export const EditorActions = ({ control }: EditorActionsProps) => {
-  const [activeAction, setActiveAction] = useState<CopilotDocV1.Action>()
+  const [draggingAction, setDraggingAction] = useState<typeof fields[number]>()
 
-  const { fields, append, move, remove } = useFieldArray({
+  const { fields, append, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
 
+  const {
+    editingField: editingAction,
+    setEditingField: setEditingAction,
+    reserveEditingField: reserveEditingAction,
+  } = useEditableFields(fields)
+
   const sensors = useSensors(useSensor(PointerSensor))
 
   const handleDragStart = ({ active }: DragEndEvent) => {
-    setActiveAction(fields.find((action) => action.id === active.id))
+    setDraggingAction(fields.find((action) => action.id === active.id))
   }
 
   const handleDragOver = ({ active, over }: DragEndEvent) => {
@@ -41,12 +48,28 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
   }
 
   const handleDragEnd = () => {
-    setActiveAction(undefined)
+    setDraggingAction(undefined)
+  }
+
+  const onSubmit = (action: CopilotDocV1.Action) => {
+    if (editingAction) {
+      const index = fields.indexOf(editingAction)
+      if (index !== -1) {
+        update(index, action)
+        reserveEditingAction(index)
+      }
+    } else {
+      append(action)
+    }
   }
 
   return (
     <div>
-      <EditorActionAdd append={append} />
+      <EditorActionAdd
+        action={editingAction}
+        onSubmit={onSubmit}
+        onCancel={() => setEditingAction(undefined)}
+      />
 
       <div className="p-2 -mx-2">
         <DndContext
@@ -67,8 +90,14 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
                     {(attrs) => (
                       <EditorActionItem
                         action={field}
-                        {...attrs}
+                        editing={editingAction === field}
+                        onEdit={() =>
+                          setEditingAction(
+                            editingAction === field ? undefined : field,
+                          )
+                        }
                         onRemove={() => remove(i)}
+                        {...attrs}
                       />
                     )}
                   </Sortable>
@@ -78,7 +107,12 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
           </SortableContext>
 
           <DragOverlay>
-            {activeAction && <EditorActionItem action={activeAction} />}
+            {draggingAction && (
+              <EditorActionItem
+                editing={editingAction === draggingAction}
+                action={draggingAction}
+              />
+            )}
           </DragOverlay>
         </DndContext>
 

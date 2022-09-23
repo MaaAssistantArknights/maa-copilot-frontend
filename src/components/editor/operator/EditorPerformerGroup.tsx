@@ -1,42 +1,58 @@
-import { Button, Callout, Card, Icon, InputGroup } from '@blueprintjs/core'
+import { Button, Callout, InputGroup } from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { FormField } from 'components/FormField'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { handleFieldError } from '../../../utils/fieldError'
+import { useEffect } from 'react'
+import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form'
 import { FactItem } from '../../FactItem'
 
 export interface EditorPerformerGroupProps {
-  submit: (group: CopilotDocV1.Group) => void
+  group?: CopilotDocV1.Group
+  submit: (
+    group: CopilotDocV1.Group,
+    setError: UseFormSetError<CopilotDocV1.Group>,
+  ) => boolean
+  onCancel: () => void
   categorySelector: JSX.Element
 }
 
 export const EditorPerformerGroup = ({
+  group,
   submit,
+  onCancel,
   categorySelector,
 }: EditorPerformerGroupProps) => {
+  const isNew = !group
+
   const {
     control,
     reset,
     handleSubmit,
     setError,
-    formState: { errors, isValid, isDirty },
+    formState: { errors },
   } = useForm<CopilotDocV1.Group>({
     defaultValues: {
       name: '',
     },
   })
 
+  useEffect(() => {
+    if (group) {
+      reset(group)
+    }
+  }, [group])
+
   const onSubmit: SubmitHandler<CopilotDocV1.Group> = (values) => {
-    try {
-      submit({
-        ...values,
-        name: values.name.trim(),
-      })
+    if (
+      submit(
+        {
+          ...values,
+          name: values.name.trim(),
+        },
+        setError,
+      )
+    ) {
       reset()
-    } catch (e) {
-      handleFieldError(setError, e)
-      console.warn(e)
     }
   }
 
@@ -76,14 +92,17 @@ export const EditorPerformerGroup = ({
         }}
       />
 
-      <Button
-        disabled={!isValid && !isDirty}
-        intent="primary"
-        type="submit"
-        icon="add"
-      >
-        添加
-      </Button>
+      <div className="flex items-start">
+        <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
+          {isNew ? '添加' : '保存'}
+        </Button>
+
+        {!isNew && (
+          <Button icon="cross" className="ml-2" onClick={onCancel}>
+            取消编辑
+          </Button>
+        )}
+      </div>
     </form>
   )
 }

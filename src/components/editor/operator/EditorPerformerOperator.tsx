@@ -1,37 +1,53 @@
 import { Button } from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
-import { SubmitHandler, useForm } from 'react-hook-form'
-import { handleFieldError } from '../../../utils/fieldError'
+import { useEffect } from 'react'
+import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form'
 import { EditorOperator } from './EditorOperator'
 
 export interface EditorPerformerOperatorProps {
-  submit: (operator: CopilotDocV1.Operator) => void
+  operator?: CopilotDocV1.Operator
+  submit: (
+    operator: CopilotDocV1.Operator,
+    setError: UseFormSetError<CopilotDocV1.Operator>,
+  ) => boolean
+  onCancel: () => void
   categorySelector: JSX.Element
 }
 
 export const EditorPerformerOperator = ({
+  operator,
   submit,
+  onCancel,
   categorySelector,
 }: EditorPerformerOperatorProps) => {
+  const isNew = !operator
+
   const {
     control,
     reset,
     handleSubmit,
     setError,
-    formState: { errors, isValid, isDirty },
+    formState: { errors },
   } = useForm<CopilotDocV1.Operator>()
 
+  useEffect(() => {
+    if (operator) {
+      reset(operator)
+    }
+  }, [operator])
+
   const onSubmit: SubmitHandler<CopilotDocV1.Operator> = (values) => {
-    try {
-      submit({
-        ...values,
-        name: values.name.trim(),
-      })
+    if (
+      submit(
+        {
+          ...values,
+          name: values.name.trim(),
+        },
+        setError,
+      )
+    ) {
       reset()
-    } catch (e) {
-      handleFieldError(setError, e)
-      console.warn(e)
     }
   }
 
@@ -52,14 +68,17 @@ export const EditorPerformerOperator = ({
 
       <EditorOperator control={control} errors={errors} />
 
-      <Button
-        disabled={!isValid && !isDirty}
-        intent="primary"
-        type="submit"
-        icon="add"
-      >
-        添加
-      </Button>
+      <div className="flex items-start">
+        <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
+          {isNew ? '添加' : '保存'}
+        </Button>
+
+        {!isNew && (
+          <Button icon="cross" className="ml-2" onClick={onCancel}>
+            取消编辑
+          </Button>
+        )}
+      </div>
     </form>
   )
 }
