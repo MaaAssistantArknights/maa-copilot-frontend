@@ -274,7 +274,11 @@ export const EditorPerformer: FC<{
         mode={editMode}
         operator={editingOperator}
         group={editingGroup}
-        onModeChange={setEditMode}
+        onModeChange={(mode) => {
+          setEditingOperator(undefined)
+          setEditingGroup(undefined)
+          setEditMode(mode)
+        }}
         onCancel={() => {
           setEditingOperator(undefined)
           setEditingGroup(undefined)
