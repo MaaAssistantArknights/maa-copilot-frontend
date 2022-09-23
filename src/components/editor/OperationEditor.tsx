@@ -1,5 +1,6 @@
 import {
   Button,
+  Callout,
   H4,
   Icon,
   InputGroup,
@@ -14,21 +15,35 @@ import clsx from 'clsx'
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
-import { Level } from 'models/operation'
-import { FC, useMemo, useState } from 'react'
-import { Control, useController, useForm } from 'react-hook-form'
+import { Level, MinimumRequired } from 'models/operation'
+import { FC, useEffect, useMemo, useState } from 'react'
+import {
+  Control,
+  DeepPartial,
+  FieldErrors,
+  useController,
+  useForm,
+} from 'react-hook-form'
+import { requestOperationUpload } from '../../apis/copilotOperation'
+import { NetworkError } from '../../utils/fetcher'
+import { AppToaster } from '../Toaster'
 import { EditorActions } from './action/EditorActions'
+import { convertOperation } from './converter'
 import {
   EditorPerformer,
   EditorPerformerProps,
 } from './operator/EditorPerformer'
-import { sanitizeOperation } from './sanitizer'
+import { validateOperation } from './validation'
+
+const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
+  minimumRequired: MinimumRequired.V4_0_0,
+}
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
   const {
-    field: { onChange, onBlur, value, ref },
+    field: { onChange, onBlur, ref },
     fieldState: { error },
   } = useController<CopilotDocV1.Operation>({
     name: 'stageName',
@@ -136,15 +151,61 @@ export const StageNameInput: FC<{
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
 }> = ({ operation }) => {
-  const { control, handleSubmit } = useForm<CopilotDocV1.Operation>({
-    defaultValues: operation,
+  const levels = useLevels({ suspense: false }).data?.data || []
+
+  const {
+    control,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors },
+  } = useForm<CopilotDocV1.Operation>({
+    defaultValues: defaultOperation,
   })
 
-  const onPublish = handleSubmit((raw: CopilotDocV1.Operation) => {
-    const operation = sanitizeOperation(raw)
+  useEffect(() => {
+    if (operation) {
+      reset(operation)
+    }
+  }, [operation])
 
-    console.info('operation', operation)
+  const [publishing, setPublishing] = useState(false)
+
+  const onPublish = handleSubmit(async (raw: CopilotDocV1.Operation) => {
+    try {
+      setPublishing(true)
+
+      const operation = convertOperation(raw, levels)
+
+      console.info('operation', operation)
+
+      if (!validateOperation(operation, setError)) {
+        return
+      }
+
+      await requestOperationUpload(JSON.stringify(operation))
+
+      AppToaster.show({
+        intent: 'success',
+        message: '作业发布成功',
+      })
+    } catch (e) {
+      setError('global' as any, {
+        message:
+          e instanceof NetworkError
+            ? `作业发布失败：${e.message}`
+            : (e as Error).message || String(e),
+      })
+    } finally {
+      setPublishing(false)
+    }
   })
+
+  useEffect(() => {
+    console.log(publishing)
+  }, [publishing])
+
+  const globalError = (errors as FieldErrors<{ global: void }>).global
 
   return (
     <section className="flex flex-col relative h-full pt-4">
@@ -163,9 +224,16 @@ export const OperationEditor: FC<{
           className="ml-4"
           icon="upload"
           text="发布"
+          loading={publishing}
           onClick={onPublish}
         />
       </div>
+
+      {globalError?.message && (
+        <Callout className="mt-4" intent="danger" icon="error" title="错误">
+          {globalError.message}
+        </Callout>
+      )}
 
       {import.meta.env.PROD && !location.href.includes('azurestaticapps') && (
         <Overlay
