@@ -230,13 +230,16 @@ export const EditorPerformer: FC<{
     } else {
       if (operators.find(({ name }) => name === operator.name)) {
         setError('name', { message: '干员已存在' })
-      } else {
-        // generate ID before appending or else it'll be lost every time the fields are updated
-        idFor(operator)
-
-        appendOperator(operator)
+        return false
       }
+
+      // generate ID before appending or else it'll be lost every time the fields are updated
+      idFor(operator)
+
+      appendOperator(operator)
     }
+
+    return true
   }
 
   const submitGroup: EditorPerformerAddProps['submitGroup'] = (
@@ -253,13 +256,16 @@ export const EditorPerformer: FC<{
     } else {
       if (groups.find(({ name }) => name === group.name)) {
         setError('name', { message: '干员组已存在' })
-      } else {
-        // generate ID before appending or else it'll be lost every time the fields are updated
-        idFor(group)
-
-        appendGroup(group)
+        return false
       }
+
+      // generate ID before appending or else it'll be lost every time the fields are updated
+      idFor(group)
+
+      appendGroup(group)
     }
+
+    return true
   }
 
   return (

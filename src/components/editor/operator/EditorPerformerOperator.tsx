@@ -10,7 +10,7 @@ export interface EditorPerformerOperatorProps {
   submit: (
     operator: CopilotDocV1.Operator,
     setError: UseFormSetError<CopilotDocV1.Operator>,
-  ) => void
+  ) => boolean
   onCancel: () => void
   categorySelector: JSX.Element
 }
@@ -38,14 +38,17 @@ export const EditorPerformerOperator = ({
   }, [operator])
 
   const onSubmit: SubmitHandler<CopilotDocV1.Operator> = (values) => {
-    submit(
-      {
-        ...values,
-        name: values.name.trim(),
-      },
-      setError,
-    )
-    reset()
+    if (
+      submit(
+        {
+          ...values,
+          name: values.name.trim(),
+        },
+        setError,
+      )
+    ) {
+      reset()
+    }
   }
 
   return (

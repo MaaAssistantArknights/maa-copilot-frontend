@@ -11,7 +11,7 @@ export interface EditorPerformerGroupProps {
   submit: (
     group: CopilotDocV1.Group,
     setError: UseFormSetError<CopilotDocV1.Group>,
-  ) => void
+  ) => boolean
   onCancel: () => void
   categorySelector: JSX.Element
 }
@@ -43,14 +43,17 @@ export const EditorPerformerGroup = ({
   }, [group])
 
   const onSubmit: SubmitHandler<CopilotDocV1.Group> = (values) => {
-    submit(
-      {
-        ...values,
-        name: values.name.trim(),
-      },
-      setError,
-    )
-    reset()
+    if (
+      submit(
+        {
+          ...values,
+          name: values.name.trim(),
+        },
+        setError,
+      )
+    ) {
+      reset()
+    }
   }
 
   return (
