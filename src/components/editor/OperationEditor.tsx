@@ -15,10 +15,13 @@ import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
 import { Level } from 'models/operation'
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { Control, useController, useForm } from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
-import { EditorPerformer } from './operator/EditorPerformer'
+import {
+  EditorPerformer,
+  EditorPerformerProps,
+} from './operator/EditorPerformer'
 import { sanitizeOperation } from './sanitizer'
 
 export const StageNameInput: FC<{
@@ -232,23 +235,48 @@ export const OperationEditor: FC<{
 
         <div className="flex h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
           <div className="w-1/3 mr-8 flex flex-col">
-            <H4>干员与干员组</H4>
-            <HelperText className="mb-4">
-              <span>拖拽以重新排序或分配干员</span>
-              <span>右键以展开上下文菜单</span>
-            </HelperText>
-            <EditorPerformer control={control} />
+            <EditorPerformerPanel control={control} />
           </div>
           <div className="w-2/3">
             <H4>动作序列</H4>
             <HelperText className="mb-4">
               <span>拖拽以重新排序</span>
-              <span>右键以展开上下文菜单</span>
             </HelperText>
             <EditorActions control={control} />
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+const EditorPerformerPanel: FC<EditorPerformerProps> = (props) => {
+  const [reload, setReload] = useState(false)
+
+  // temporary workaround for https://github.com/clauderic/dnd-kit/issues/799
+  if (reload) {
+    setTimeout(() => setReload(false), 100)
+    return null
+  }
+
+  return (
+    <>
+      <H4>干员与干员组</H4>
+      <HelperText className="mb-4">
+        <span>拖拽以重新排序或分配干员</span>
+        <span>
+          如果拖拽速度过快可能会使动画出现问题，此时请点击
+          <Button
+            minimal
+            className="!inline !p-0 !min-h-0 ![font-size:inherit] !leading-none !align-baseline underline"
+            onClick={() => setReload(true)}
+          >
+            刷新界面
+          </Button>
+          以修复 （不会丢失数据）
+        </span>
+      </HelperText>
+      <EditorPerformer {...props} />
+    </>
   )
 }

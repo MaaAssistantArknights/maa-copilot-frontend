@@ -31,6 +31,10 @@ import {
   PerformerType,
 } from './EditorPerformerAdd'
 
+export interface EditorPerformerProps {
+  control: Control<CopilotDocV1.Operation>
+}
+
 type Operator = CopilotDocV1.Operator
 type Group = CopilotDocV1.Group
 
@@ -41,9 +45,7 @@ const idFor = (performer: Operator | Group) => {
   return ((performer as WithTempId<Operator | Group>)._id ??= uniqueId())
 }
 
-export const EditorPerformer: FC<{
-  control: Control<CopilotDocV1.Operation>
-}> = ({ control }) => {
+export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const [editMode, setEditMode] = useState<PerformerType>('operator')
   const sensors = useSensors(useSensor(PointerSensor))
 
