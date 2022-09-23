@@ -85,17 +85,25 @@ export const EditorPerformer: FC<{
 
   useEffect(() => {
     if (editingOperator) {
-      setEditingGroup(undefined)
       setEditMode('operator')
+      setEditingGroup(undefined)
     }
   }, [editingOperator])
 
   useEffect(() => {
     if (editingGroup) {
-      setEditingOperator(undefined)
       setEditMode('group')
+      setEditingOperator(undefined)
     }
   }, [editingGroup])
+
+  useEffect(() => {
+    if (editMode === 'operator') {
+      setEditingGroup(undefined)
+    } else {
+      setEditingOperator(undefined)
+    }
+  }, [editMode])
 
   const findOperatorById = (id: UniqueIdentifier) =>
     // find operator from operators
@@ -274,11 +282,7 @@ export const EditorPerformer: FC<{
         mode={editMode}
         operator={editingOperator}
         group={editingGroup}
-        onModeChange={(mode) => {
-          setEditingOperator(undefined)
-          setEditingGroup(undefined)
-          setEditMode(mode)
-        }}
+        onModeChange={setEditMode}
         onCancel={() => {
           setEditingOperator(undefined)
           setEditingGroup(undefined)
