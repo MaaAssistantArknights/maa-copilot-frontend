@@ -20,6 +20,7 @@ import { uniqueId } from 'lodash-es'
 import { FC, useEffect, useState } from 'react'
 import { Control, useFieldArray, UseFieldArrayMove } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
+import { WithTempId } from '../../../types'
 import { Droppable, Sortable } from '../../dnd'
 import { FactItem } from '../../FactItem'
 import { EditorGroupItem } from './EditorGroupItem'
@@ -33,14 +34,11 @@ import {
 type Operator = CopilotDocV1.Operator
 type Group = CopilotDocV1.Group
 
-type WithId<T> = T & { _uid: string }
-
 const nonGroupedContainerId = 'nonGrouped'
 
 // generate IDs ourself because useFieldArray will not generate IDs for operators inside group.opers
-// TODO: strip IDs away when submitting operation
 const idFor = (performer: Operator | Group) => {
-  return ((performer as WithId<Operator | Group>)._uid ??= uniqueId())
+  return ((performer as WithTempId<Operator | Group>)._id ??= uniqueId())
 }
 
 export const EditorPerformer: FC<{

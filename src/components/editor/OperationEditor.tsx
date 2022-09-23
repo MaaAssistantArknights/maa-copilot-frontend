@@ -19,6 +19,7 @@ import { FC, useMemo } from 'react'
 import { Control, useController, useForm } from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
 import { EditorPerformer } from './operator/EditorPerformer'
+import { sanitizeOperation } from './sanitizer'
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
@@ -132,11 +133,15 @@ export const StageNameInput: FC<{
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
 }> = ({ operation }) => {
-  const { control } = useForm<CopilotDocV1.Operation>({
+  const { control, handleSubmit } = useForm<CopilotDocV1.Operation>({
     defaultValues: operation,
   })
 
-  console.info('operation', operation)
+  const onPublish = handleSubmit((raw: CopilotDocV1.Operation) => {
+    const operation = sanitizeOperation(raw)
+
+    console.info('operation', operation)
+  })
 
   return (
     <section className="flex flex-col relative h-full pt-4">
@@ -150,7 +155,13 @@ export const OperationEditor: FC<{
 
         <div className="flex-1" />
 
-        <Button intent="primary" className="ml-4" icon="upload" text="发布" />
+        <Button
+          intent="primary"
+          className="ml-4"
+          icon="upload"
+          text="发布"
+          onClick={onPublish}
+        />
       </div>
 
       {import.meta.env.PROD && !location.href.includes('azurestaticapps') && (
