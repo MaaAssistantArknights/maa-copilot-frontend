@@ -20,7 +20,6 @@ import { uniqueId } from 'lodash-es'
 import { FC, useEffect, useState } from 'react'
 import { Control, useFieldArray, UseFieldArrayMove } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
-import { useEditableFields } from '../../../utils/useEditableFields'
 import { Droppable, Sortable } from '../../dnd'
 import { FactItem } from '../../FactItem'
 import { EditorGroupItem } from './EditorGroupItem'
@@ -76,22 +75,15 @@ export const EditorPerformer: FC<{
   const operators: Operator[] = _operators
   const groups: Group[] = _groups
 
-  const {
-    editingField: editingOperator,
-    setEditingField: setEditingOperator,
-    reserveEditingField: reserveEditingOperator,
-  } = useEditableFields(operators)
-  const {
-    editingField: editingGroup,
-    setEditingField: setEditingGroup,
-    reserveEditingField: reserveEditingGroup,
-  } = useEditableFields(groups)
-
   const [draggingOperator, setDraggingOperator] = useState<Operator>()
   const [draggingGroup, setDraggingGroup] = useState<Group>()
+  const [editingOperator, setEditingOperator] = useState<Operator>()
+  const [editingGroup, setEditingGroup] = useState<Group>()
 
-  const isOperatorEditing = (operator: Operator) => operator === editingOperator
-  const isGroupEditing = (group: Group) => group === editingGroup
+  const isOperatorEditing = (operator: Operator) =>
+    !!editingOperator && idFor(editingOperator) === idFor(operator)
+  const isGroupEditing = (group: Group) =>
+    !!editingGroup && idFor(editingGroup) === idFor(group)
 
   useEffect(() => {
     if (editingOperator) {
@@ -224,31 +216,24 @@ export const EditorPerformer: FC<{
         const group = findGroupByOperator(existingOperator)
 
         if (group) {
-          const index = groups.indexOf(group)
-          const operIndex = group.opers.indexOf(existingOperator)
-
           // replace existing operator in group
-          updateGroup(index, {
+          updateGroup(groups.indexOf(group), {
             ...group,
             opers: group.opers.map((op) =>
               op === existingOperator ? operator : op,
             ),
           })
-
-          reserveEditingGroup(-1, (updatedGroups) => {
-            setEditingOperator(updatedGroups[index]?.opers?.[operIndex])
-          })
         } else {
-          const index = operators.indexOf(existingOperator)
-          updateOperator(index, operator)
-          reserveEditingOperator(index)
+          updateOperator(operators.indexOf(existingOperator), operator)
         }
+
+        setEditingOperator(operator)
       }
     } else {
       if (operators.find(({ name }) => name === operator.name)) {
         setError('name', { message: '干员已存在' })
       } else {
-        // generate ID before appending or else it'll lose every time the fields are updated
+        // generate ID before appending or else it'll be lost every time the fields are updated
         idFor(operator)
 
         appendOperator(operator)
@@ -264,15 +249,14 @@ export const EditorPerformer: FC<{
       const existingGroup = findGroupById(idFor(group))
 
       if (existingGroup) {
-        const index = groups.indexOf(existingGroup)
-        updateGroup(index, group)
-        reserveEditingGroup(index)
+        updateGroup(groups.indexOf(existingGroup), group)
+        setEditingGroup(group)
       }
     } else {
       if (groups.find(({ name }) => name === group.name)) {
         setError('name', { message: '干员组已存在' })
       } else {
-        // generate ID before appending or else it'll lose every time the fields are updated
+        // generate ID before appending or else it'll be lost every time the fields are updated
         idFor(group)
 
         appendGroup(group)
@@ -362,9 +346,7 @@ export const EditorPerformer: FC<{
                         }
                         onRemove={() => removeGroup(groups.indexOf(group))}
                         getOperatorId={idFor}
-                        isOperatorEditing={(operator) =>
-                          isOperatorEditing(operator)
-                        }
+                        isOperatorEditing={isOperatorEditing}
                         onOperatorEdit={(operator) =>
                           setEditingOperator(
                             isOperatorEditing(operator) ? undefined : operator,
