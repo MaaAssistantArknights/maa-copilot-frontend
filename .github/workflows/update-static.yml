@@ -1,0 +1,50 @@
+name: azure-deploy
+
+on:
+  # schedule:
+  #   - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Switch branch
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          # create scripts/update, and if already exists, switch to it
+          git checkout -b scripts/update || git checkout scripts/update
+
+      - name: Update static
+        run: |
+          yarn scripts:update
+          git add -A
+          git commit -m "chore: update generated assets" || echo "Nothing to commit"
+          git push origin scripts/update
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update generated assets'
+          title: 'chore: update generated assets'
+          body: |
+            This is an auto-generated PR with updated static assets.
+          branch: scripts/update
+          base: dev
+          labels: |
+            scripts/update
