@@ -5,6 +5,7 @@ import {
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills,
 } from 'components/editor/action/EditorActionExecPredicate'
+import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
 import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
 import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
@@ -179,7 +180,7 @@ export const EditorActionAdd = ({
 
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
-        <FactItem title="通用属性" icon="properties" className="font-bold" />
+        <FactItem title="执行条件" icon="stopwatch" className="font-bold" />
 
         <div className="flex flex-wrap">
           <EditorActionExecPredicateKills control={control} />
@@ -192,27 +193,35 @@ export const EditorActionAdd = ({
           <EditorActionRearDelay control={control} />
         </div>
 
-        <div className="flex">
-          <div className="w-full">
-            <FormField
-              label="描述"
-              field="doc"
-              control={control}
-              ControllerProps={{
-                render: ({ field }) => (
-                  <TextArea
-                    fill
-                    rows={2}
-                    growVertically
-                    large
-                    id="doc"
-                    placeholder="描述，可选。会显示在界面上，没有实际作用"
-                    {...field}
-                  />
-                ),
-              }}
-            />
-          </div>
+        <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
+
+        <FactItem title="日志" icon="annotation" className="font-bold" />
+
+        <div className="flex flex-col w-full">
+          <EditorActionDocColor
+            shouldUnregister
+            control={control}
+            name="docColor"
+          />
+
+          <FormField
+            label="描述"
+            field="doc"
+            control={control}
+            ControllerProps={{
+              render: ({ field }) => (
+                <TextArea
+                  fill
+                  rows={2}
+                  growVertically
+                  large
+                  id="doc"
+                  placeholder="描述，可选。会显示在界面上，没有实际作用"
+                  {...field}
+                />
+              ),
+            }}
+          />
         </div>
 
         <div className="mt-4 flex items-start">
