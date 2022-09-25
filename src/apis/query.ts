@@ -42,7 +42,7 @@ export const useOperations = ({
       )
       searchParams.set('order_by', orderBy)
       if (query) {
-        searchParams.set('level_keyword', query)
+        searchParams.set('document', query)
       }
 
       return `/copilot/query?${searchParams.toString()}`
@@ -67,6 +67,6 @@ export const useOperations = ({
   return { operations, size, setSize, isValidating, isReachingEnd }
 }
 
-export const useOperation = (id: string) => {
-  return useSWR<Response<Operation>>(`/copilot/get/${id}`)
+export const useOperation = (id: string | undefined) => {
+  return useSWR<Response<Operation>>(id ? `/copilot/get/${id}` : null)
 }

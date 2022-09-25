@@ -1,0 +1,53 @@
+name: scripts-update
+
+on:
+  # schedule:
+  #   - cron: '0 0 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update:
+    timeout-minutes: 20
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Update static
+        run: |
+          yarn scripts:update
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'chore: update generated assets [skip ci]'
+          title: 'chore: update generated assets [skip ci]'
+          body: |
+            This is an auto-generated PR with updated static assets.
+          branch: scripts/update
+          delete-branch: true
+          base: dev
+          labels: |
+            scripts/update
+          assignees: |
+            GalvinGao
+          reviewers: |
+            GalvinGao
+
+      - name: Print Pull Request URL
+        run: echo "Created Pull Request at ${{ steps.cpr.outputs.pull-request-url }}"

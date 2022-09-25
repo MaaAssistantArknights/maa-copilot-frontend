@@ -49,6 +49,7 @@
     "react-rating": "^2.0.5",
     "react-router-dom": "6",
     "react-spring": "^9.4.5",
+    "snakecase-keys": "^5.4.4",
     "swr": "^1.3.0",
     "type-fest": "^2.16.0",
     "unfetch": "^4.2.0",

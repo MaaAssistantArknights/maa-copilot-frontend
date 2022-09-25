@@ -65,7 +65,7 @@ export const LoginPanel: FC<{
           前往注册
         </Button>
 
-        <div className="flex-1"></div>
+        <div className="flex-1" />
 
         <Button
           disabled={(!isValid && !isDirty) || isSubmitting}

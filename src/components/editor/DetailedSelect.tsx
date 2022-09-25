@@ -68,3 +68,9 @@ export const DetailedSelect: FCC<
     </DetailedSelect2>
   )
 }
+
+export function isChoice(
+  item: DetailedSelectItem,
+): item is DetailedSelectChoice {
+  return item.type === 'choice'
+}

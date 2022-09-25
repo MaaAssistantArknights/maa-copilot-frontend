@@ -1,15 +1,16 @@
 import { NumericInput, NumericInputProps } from '@blueprintjs/core'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { useController } from 'react-hook-form'
+import { FieldValues, useController } from 'react-hook-form'
 
-export interface EditorIntegerInputProps<T> extends EditorFieldProps<T> {
+export interface EditorIntegerInputProps<T extends FieldValues>
+  extends EditorFieldProps<T, number> {
   NumericInputProps: Omit<
     NumericInputProps,
     'name' | 'inputRef' | 'onValueChange' | 'onBlur'
   >
 }
 
-export const EditorIntegerInput = <T,>({
+export const EditorIntegerInput = <T extends FieldValues>({
   name,
   control,
   NumericInputProps,
@@ -42,7 +43,6 @@ export const EditorIntegerInput = <T,>({
         onChange(value)
       }}
       onBlur={onBlur}
-      // @ts-ignore: TODO: improve generics usage to solve this typing problem
       value={value ?? ''}
       // seems that NumericInput component have a bug where if
       // passed an undefined value, it's just simply not gonna update anymore...

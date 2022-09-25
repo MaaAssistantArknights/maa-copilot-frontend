@@ -11,12 +11,13 @@ interface EditorOperatorSkillChoice {
 }
 const EditorOperatorSkillSelect = Select2.ofType<EditorOperatorSkillChoice>()
 
-interface EditorOperatorSkillProps<T> extends EditorFieldProps<T> {}
+interface EditorOperatorSkillProps
+  extends EditorFieldProps<CopilotDocV1.Operator, number> {}
 
-export const EditorOperatorSkill = <T,>({
+export const EditorOperatorSkill = ({
   name,
   control,
-}: EditorOperatorSkillProps<T>) => {
+}: EditorOperatorSkillProps) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({

@@ -1,97 +1,67 @@
-import { Button, IconName, MenuItem } from '@blueprintjs/core'
+import { Button, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { useMemo } from 'react'
-import { useController, UseFormGetValues } from 'react-hook-form'
+import { useController } from 'react-hook-form'
+import { SetOptional } from 'type-fest'
+import { operatorDirections } from '../../../models/operator'
+import { FormField2 } from '../../FormField'
 
-interface EditorActionOperatorDirectionChoice {
-  icon?: IconName
-  title: string
-  value: string | null
-}
-const EditorActionOperatorDirectionSelect =
-  Select2.ofType<EditorActionOperatorDirectionChoice>()
+interface EditorActionOperatorDirectionProps
+  extends SetOptional<
+    EditorFieldProps<CopilotDocV1.Action, CopilotDocV1.Direction>,
+    'name'
+  > {}
 
-interface EditorActionOperatorDirectionProps<T> extends EditorFieldProps<T> {
-  getValues: UseFormGetValues<T>
-}
-
-export const EditorActionOperatorDirection = <T extends { type?: string }>({
-  name,
+export const EditorActionOperatorDirection = ({
+  name = 'direction',
   control,
-  getValues,
-}: EditorActionOperatorDirectionProps<T>) => {
+  ...controllerProps
+}: EditorActionOperatorDirectionProps) => {
   const {
     field: { onChange, onBlur, value, ref },
+    formState: { errors },
   } = useController({
     name,
     control,
-    rules: {
-      validate: (v) => {
-        if (getValues().type === 'Deploy' && !v) return '部署动作下必须选择朝向'
-        return true
-      },
-    },
+    rules: { required: '必须选择朝向' },
+    defaultValue: 'None' as CopilotDocV1.Direction.None,
+    ...controllerProps,
   })
 
-  const items = useMemo<EditorActionOperatorDirectionChoice[]>(
-    () => [
-      {
-        icon: 'slash',
-        title: '选择朝向',
-        value: null,
-      },
-      {
-        icon: 'arrow-up',
-        title: '上',
-        value: 'Up',
-      },
-      {
-        icon: 'arrow-down',
-        title: '下',
-        value: 'Down',
-      },
-      {
-        icon: 'arrow-left',
-        title: '左',
-        value: 'Left',
-      },
-      {
-        icon: 'arrow-right',
-        title: '右',
-        value: 'Right',
-      },
-    ],
-    [],
-  )
-
-  const selected = items.find((item) => item.value === (value ?? null))
+  const selected = operatorDirections.find((item) => item.value === value)
 
   return (
-    <EditorActionOperatorDirectionSelect
-      filterable={false}
-      items={items}
-      itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
-        <MenuItem
-          selected={modifiers.active}
-          key={action.value}
-          onClick={handleClick}
-          onFocus={handleFocus}
-          icon={action.icon}
-          text={action.title}
-        />
-      )}
-      onItemSelect={(item) => {
-        onChange(item.value)
-      }}
+    <FormField2
+      label="干员朝向"
+      field={name}
+      error={errors[name]}
+      description="部署干员的干员朝向"
     >
-      <Button
-        icon={selected?.icon}
-        text={selected?.title}
-        rightIcon="double-caret-vertical"
-        onBlur={onBlur}
-        ref={ref}
-      />
-    </EditorActionOperatorDirectionSelect>
+      <Select2
+        filterable={false}
+        items={operatorDirections}
+        itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
+          <MenuItem
+            selected={modifiers.active}
+            key={action.value}
+            onClick={handleClick}
+            onFocus={handleFocus}
+            icon={action.icon}
+            text={action.title}
+          />
+        )}
+        onItemSelect={(item) => {
+          onChange(item.value)
+        }}
+      >
+        <Button
+          icon={selected?.icon}
+          text={selected?.title}
+          rightIcon="double-caret-vertical"
+          onBlur={onBlur}
+          ref={ref}
+        />
+      </Select2>
+    </FormField2>
   )
 }

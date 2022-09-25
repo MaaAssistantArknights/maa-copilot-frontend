@@ -1,5 +1,6 @@
 import {
   Button,
+  Callout,
   H4,
   Icon,
   InputGroup,
@@ -14,17 +15,32 @@ import clsx from 'clsx'
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
-import { Level } from 'models/operation'
-import { FC, useMemo } from 'react'
-import { Control, useController, useForm } from 'react-hook-form'
+import { Level, MinimumRequired } from 'models/operation'
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
+import {
+  Control,
+  DeepPartial,
+  FieldErrors,
+  useController,
+  useForm,
+  UseFormHandleSubmit,
+  UseFormSetError,
+} from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
-import { EditorPerformer } from './operator/EditorPerformer'
+import {
+  EditorPerformer,
+  EditorPerformerProps,
+} from './operator/EditorPerformer'
+
+const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
+  minimumRequired: MinimumRequired.V4_0_0,
+}
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
   const {
-    field: { onChange, onBlur, value, ref },
+    field: { onChange, onBlur, ref },
     fieldState: { error },
   } = useController<CopilotDocV1.Operation>({
     name: 'stageName',
@@ -49,7 +65,7 @@ export const StageNameInput: FC<{
         keys: ['name', 'catOne', 'catTwo', 'catThree'],
         threshold: 0.3,
       }),
-    [],
+    [levels],
   )
 
   return (
@@ -57,7 +73,7 @@ export const StageNameInput: FC<{
       <FormField2
         label="关卡"
         field="stageName"
-        error={levelError || error?.message}
+        error={levelError || error}
         asterisk
         FormGroupProps={{
           helperText: (
@@ -71,7 +87,7 @@ export const StageNameInput: FC<{
       >
         <Suggest2<Level>
           className={clsx(loading && 'bp4-skeleton')}
-          disabled={loading || !!error}
+          disabled={loading}
           items={levels}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem
@@ -131,12 +147,28 @@ export const StageNameInput: FC<{
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
-}> = ({ operation }) => {
-  const { control } = useForm<CopilotDocV1.Operation>({
-    defaultValues: operation,
+  submitElement: (
+    handleSubmit: UseFormHandleSubmit<CopilotDocV1.Operation>,
+    setError: UseFormSetError<CopilotDocV1.Operation>,
+  ) => ReactNode
+}> = ({ operation, submitElement }) => {
+  const {
+    control,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors },
+  } = useForm<CopilotDocV1.Operation>({
+    defaultValues: defaultOperation,
   })
 
-  console.info('operation', operation)
+  useEffect(() => {
+    if (operation) {
+      reset(operation)
+    }
+  }, [operation])
+
+  const globalError = (errors as FieldErrors<{ global: void }>).global
 
   return (
     <section className="flex flex-col relative h-full pt-4">
@@ -148,12 +180,18 @@ export const OperationEditor: FC<{
             {formatRelativeTime(Date.now())} 已自动保存
           </span> */}
 
-        <div className="flex-1"></div>
+        <div className="flex-1" />
 
-        <Button intent="primary" className="ml-4" icon="upload" text="发布" />
+        {submitElement(handleSubmit, setError)}
       </div>
 
-      {import.meta.env.PROD && (
+      {globalError?.message && (
+        <Callout className="mt-4" intent="danger" icon="error" title="错误">
+          {globalError.message}
+        </Callout>
+      )}
+
+      {import.meta.env.PROD && !location.href.includes('azurestaticapps') && (
         <Overlay
           isOpen
           hasBackdrop={false}
@@ -170,11 +208,11 @@ export const OperationEditor: FC<{
 
       <div className="py-4 px-8 mr-0.5">
         <H4>作业元信息</H4>
-        <div className="flex">
-          <div className="w-1/4 mr-8">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/4 md:mr-8">
             <StageNameInput control={control} />
           </div>
-          <div className="w-3/4">
+          <div className="w-full md:w-3/4">
             <FormField
               label="作业标题"
               field="doc.title"
@@ -193,9 +231,9 @@ export const OperationEditor: FC<{
           </div>
         </div>
 
-        <div className="flex">
-          <div className="w-1/4 mr-8"></div>
-          <div className="w-3/4">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/4 md:mr-8" />
+          <div className="w-full md:w-3/4">
             <FormField
               label="作业描述"
               field="doc.details"
@@ -217,26 +255,52 @@ export const OperationEditor: FC<{
           </div>
         </div>
 
-        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6"></div>
+        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
-        <div className="flex h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
-          <div className="w-1/3 mr-8 flex flex-col">
-            <H4>干员与干员组</H4>
-            <HelperText className="mb-4">
-              <span>右键以展开上下文菜单</span>
-            </HelperText>
-            <EditorPerformer control={control} />
+        <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
+          <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
+            <EditorPerformerPanel control={control} />
           </div>
-          <div className="w-2/3">
+          <div className="w-full md:w-2/3 pb-8">
             <H4>动作序列</H4>
             <HelperText className="mb-4">
               <span>拖拽以重新排序</span>
-              <span>右键以展开上下文菜单</span>
             </HelperText>
             <EditorActions control={control} />
           </div>
         </div>
       </div>
     </section>
+  )
+}
+
+const EditorPerformerPanel: FC<EditorPerformerProps> = (props) => {
+  const [reload, setReload] = useState(false)
+
+  // temporary workaround for https://github.com/clauderic/dnd-kit/issues/799
+  if (reload) {
+    setTimeout(() => setReload(false), 100)
+    return null
+  }
+
+  return (
+    <>
+      <H4>干员与干员组</H4>
+      <HelperText className="mb-4">
+        <span>拖拽以重新排序或分配干员</span>
+        <span>
+          如果拖拽速度过快可能会使动画出现问题，此时请点击
+          <Button
+            minimal
+            className="!inline !p-0 !min-h-0 ![font-size:inherit] !leading-none !align-baseline underline"
+            onClick={() => setReload(true)}
+          >
+            刷新界面
+          </Button>
+          以修复 （不会丢失数据）
+        </span>
+      </HelperText>
+      <EditorPerformer {...props} />
+    </>
   )
 }

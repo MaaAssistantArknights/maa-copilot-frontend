@@ -22,8 +22,8 @@ export const HelperText: FCC<{
 
   return (
     <div className={clsx('flex text-gray-600 text-xs items-center', className)}>
-      <Icon icon="help" size={12} className="mr-1.5" />
-      {child()}
+      <Icon icon="info-sign" size={12} className="mr-1.5" />
+      <div>{child()}</div>
     </div>
   )
 }

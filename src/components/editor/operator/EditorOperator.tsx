@@ -36,10 +36,7 @@ export const EditorOperator: FC<{
           error={errors.skill}
           className="mr-2"
         >
-          <EditorOperatorSkill<CopilotDocV1.Operator>
-            control={control}
-            name="skill"
-          />
+          <EditorOperatorSkill control={control} name="skill" />
         </FormField2>
 
         <FormField2
@@ -47,10 +44,7 @@ export const EditorOperator: FC<{
           field="skillUsage"
           error={errors.skillUsage}
         >
-          <EditorOperatorSkillUsage<CopilotDocV1.Operator>
-            control={control}
-            name="skillUsage"
-          />
+          <EditorOperatorSkillUsage control={control} name="skillUsage" />
         </FormField2>
       </div>
     </>
@@ -66,16 +60,27 @@ const createArbitraryOperator = (name: string): typeof OPERATORS[number] => ({
   pron: '',
 })
 
-const EditorOperatorName = <T extends FieldValues>({
+export const EditorOperatorName = <T extends FieldValues>({
   name,
   control,
-}: EditorFieldProps<T>) => {
+  rules,
+  allowOperatorGroups,
+  ...controllerProps
+}: EditorFieldProps<T, string> & {
+  allowOperatorGroups?: boolean
+}) => {
+  const entityName = useMemo(
+    () => (allowOperatorGroups ? '干员或干员组' : '干员'),
+    [allowOperatorGroups],
+  )
+
   const {
     field: { onChange, onBlur, value, ref },
-  } = useController<T>({
+  } = useController({
     name,
     control,
-    rules: { required: '请输入干员名' },
+    rules: { required: `请输入${entityName}名`, ...rules },
+    ...controllerProps,
   })
 
   const fuse = useMemo(
@@ -120,7 +125,7 @@ const EditorOperatorName = <T extends FieldValues>({
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem
           key="create-new-item"
-          text={`使用自定义干员名 "${query}"`}
+          text={`使用自定义${entityName}名 "${query}"`}
           icon="text-highlight"
           onClick={handleClick}
           selected={active}
@@ -129,9 +134,9 @@ const EditorOperatorName = <T extends FieldValues>({
       popoverContentProps={{
         className: 'max-h-64 overflow-auto',
       }}
-      noResults={<MenuItem disabled text="没有匹配的干员名" />}
+      noResults={<MenuItem disabled text={`没有匹配的${entityName}`} />}
       inputProps={{
-        placeholder: '干员名',
+        placeholder: `${entityName}名`,
         large: true,
         onBlur,
       }}

@@ -8,16 +8,14 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
 
-export const EditorActionTypeSelect = <T,>({
-  name,
-  control,
-}: EditorFieldProps<T>) => {
+export const EditorActionTypeSelect = (
+  props: EditorFieldProps<CopilotDocV1.Action, CopilotDocV1.Type>,
+) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
-    name,
-    control,
     rules: { required: '请选择动作类型' },
+    ...props,
   })
 
   const menuItems = useMemo<DetailedSelectItem[]>(

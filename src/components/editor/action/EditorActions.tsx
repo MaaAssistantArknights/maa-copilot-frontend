@@ -1,44 +1,45 @@
-import {
-  Card,
-  Elevation,
-  Icon,
-  Menu,
-  MenuItem,
-  NonIdealState,
-} from '@blueprintjs/core'
-import { ContextMenu2 } from '@blueprintjs/popover2'
+import { NonIdealState } from '@blueprintjs/core'
 import {
   DndContext,
   DragEndEvent,
+  DragOverlay,
   PointerSensor,
-  UniqueIdentifier,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
-import {
-  SortableContext,
-  useSortable,
-  verticalListSortingStrategy,
-} from '@dnd-kit/sortable'
-import { CSS } from '@dnd-kit/utilities'
-import { FC } from 'react'
+import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
+import { useEditableFields } from '../../../utils/useEditableFields'
+import { Sortable } from '../../dnd'
 import { EditorActionAdd } from './EditorActionAdd'
+import { EditorActionItem } from './EditorActionItem'
 
 export interface EditorActionsProps {
   control: Control<CopilotDocV1.Operation>
 }
 
 export const EditorActions = ({ control }: EditorActionsProps) => {
-  const { fields, append, move } = useFieldArray({
+  const [draggingAction, setDraggingAction] = useState<typeof fields[number]>()
+
+  const { fields, append, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
 
+  const {
+    editingField: editingAction,
+    setEditingField: setEditingAction,
+    reserveEditingField: reserveEditingAction,
+  } = useEditableFields(fields)
+
   const sensors = useSensors(useSensor(PointerSensor))
 
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event
+  const handleDragStart = ({ active }: DragEndEvent) => {
+    setDraggingAction(fields.find((action) => action.id === active.id))
+  }
+
+  const handleDragOver = ({ active, over }: DragEndEvent) => {
     if (over && active.id !== over.id) {
       const oldIndex = fields.findIndex((el) => el.id === active.id)
       const newIndex = fields.findIndex((el) => el.id === over.id)
@@ -46,67 +47,79 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
     }
   }
 
-  return (
-    <div className="flex flex-col h-full">
-      <EditorActionAdd append={append} />
+  const handleDragEnd = () => {
+    setDraggingAction(undefined)
+  }
 
-      <div className="h-full overflow-auto p-2 -mx-2 relative">
-        <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+  const onSubmit = (action: CopilotDocV1.Action) => {
+    if (editingAction) {
+      const index = fields.indexOf(editingAction)
+      if (index !== -1) {
+        update(index, action)
+        reserveEditingAction(index)
+      }
+    } else {
+      append(action)
+    }
+  }
+
+  return (
+    <div>
+      <EditorActionAdd
+        action={editingAction}
+        onSubmit={onSubmit}
+        onCancel={() => setEditingAction(undefined)}
+      />
+
+      <div className="p-2 -mx-2">
+        <DndContext
+          sensors={sensors}
+          onDragStart={handleDragStart}
+          onDragOver={handleDragOver}
+          onDragEnd={handleDragEnd}
+          onDragCancel={handleDragEnd}
+        >
           <SortableContext
             items={fields}
             strategy={verticalListSortingStrategy}
           >
-            {fields.map((field) => (
-              <EditorActionItem key={field.id} id={field.id} action={field} />
-            ))}
+            <ul>
+              {fields.map((field, i) => (
+                <li key={field.id} className="mt-2">
+                  <Sortable id={field.id}>
+                    {(attrs) => (
+                      <EditorActionItem
+                        action={field}
+                        editing={editingAction === field}
+                        onEdit={() =>
+                          setEditingAction(
+                            editingAction === field ? undefined : field,
+                          )
+                        }
+                        onRemove={() => remove(i)}
+                        {...attrs}
+                      />
+                    )}
+                  </Sortable>
+                </li>
+              ))}
+            </ul>
           </SortableContext>
+
+          <DragOverlay>
+            {draggingAction && (
+              <EditorActionItem
+                editing={editingAction === draggingAction}
+                action={draggingAction}
+              />
+            )}
+          </DragOverlay>
         </DndContext>
 
-        {fields.length === 0 && <NonIdealState title="暂无动作" icon="inbox" />}
+        {fields.length === 0 && (
+          <NonIdealState title="暂无动作" className="my-4" icon="inbox" />
+        )}
       </div>
     </div>
-  )
-}
-
-export const EditorActionItem: FC<{
-  id: UniqueIdentifier
-  action: CopilotDocV1.Action
-}> = ({ id, action }) => {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({
-      id,
-      transition: {
-        duration: 250, // milliseconds
-        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
-      },
-    })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
-
-  return (
-    <ContextMenu2
-      className="mb-2 last:mb-0"
-      content={
-        <Menu>
-          <MenuItem text="编辑动作" icon="edit" />
-          <MenuItem intent="danger" text="删除动作..." icon="delete" />
-        </Menu>
-      }
-    >
-      <div style={style} ref={setNodeRef}>
-        <Card elevation={Elevation.TWO}>
-          <Icon
-            className="cursor-grab active:cursor-grabbing py-1 px-0.5 -my-1 -mx-0.5 rounded-[1px]"
-            icon="drag-handle-vertical"
-            {...attributes}
-            {...listeners}
-          />
-          <span className="ml-4">{action.type}</span>
-        </Card>
-      </div>
-    </ContextMenu2>
   )
 }
