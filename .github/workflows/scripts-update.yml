@@ -5,6 +5,10 @@ on:
   #   - cron: '0 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update:
     timeout-minutes: 20
@@ -22,29 +26,28 @@ jobs:
       - name: Install dependencies
         run: yarn
 
-      - name: Switch branch
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          # create scripts/update, and if already exists, switch to it
-          git checkout -b scripts/update || git checkout scripts/update
-
       - name: Update static
         run: |
           yarn scripts:update
-          git add -A
-          git commit -m "chore: update generated assets" || echo "Nothing to commit"
-          git push origin scripts/update
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v3
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'chore: update generated assets'
-          title: 'chore: update generated assets'
+          commit-message: 'chore: update generated assets [skip ci]'
+          title: 'chore: update generated assets [skip ci]'
           body: |
             This is an auto-generated PR with updated static assets.
           branch: scripts/update
+          delete-branch: true
           base: dev
           labels: |
             scripts/update
+          assignees: |
+            GalvinGao
+          reviewers: |
+            GalvinGao
+
+      - name: Print Pull Request URL
+        run: echo "Created Pull Request at ${{ steps.cpr.outputs.pull-request-url }}"
