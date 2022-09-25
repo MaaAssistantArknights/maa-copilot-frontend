@@ -1,4 +1,4 @@
-name: azure-deploy
+name: scripts-update
 
 on:
   # schedule:
