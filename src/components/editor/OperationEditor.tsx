@@ -257,11 +257,11 @@ export const OperationEditor: FC<{
 
         <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
-        <div className="flex h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
-          <div className="w-1/3 mr-8 flex flex-col">
+        <div className="flex flex-wrap md:flex-nowrap h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
+          <div className="w-full md:w-1/3 md:mr-8 flex flex-col">
             <EditorPerformerPanel control={control} />
           </div>
-          <div className="w-2/3">
+          <div className="w-full md:w-2/3 ">
             <H4>动作序列</H4>
             <HelperText className="mb-4">
               <span>拖拽以重新排序</span>

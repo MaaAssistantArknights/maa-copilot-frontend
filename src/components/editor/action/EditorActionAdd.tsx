@@ -1,5 +1,4 @@
 import { Button, Card, TextArea } from '@blueprintjs/core'
-import { DevTool } from '@hookform/devtools'
 import { CardTitle } from 'components/CardTitle'
 import {
   EditorActionExecPredicateCooling,
@@ -85,8 +84,6 @@ export const EditorActionAdd = ({
             entityName="动作"
           />
         </div>
-
-        {import.meta.env.DEV && <DevTool control={control} />}
 
         <div className="flex flex-col lg:flex-row">
           <div className="flex flex-1">
@@ -184,13 +181,13 @@ export const EditorActionAdd = ({
 
         <FactItem title="通用属性" icon="properties" className="font-bold" />
 
-        <div className="flex">
+        <div className="flex flex-wrap">
           <EditorActionExecPredicateKills control={control} />
           <EditorActionExecPredicateCostChange control={control} />
           <EditorActionExecPredicateCooling control={control} />
         </div>
 
-        <div className="flex">
+        <div className="flex flex-wrap">
           <EditorActionPreDelay control={control} />
           <EditorActionRearDelay control={control} />
         </div>
