@@ -14,6 +14,9 @@ namespace CopilotDocV1 {
     stageName: string
   }
 
+  export type OperationSnakeCased =
+    import('type-fest').SnakeCasedPropertiesDeep<Operation>
+
   interface ActionBase {
     // Action common optional fields
     doc?: string

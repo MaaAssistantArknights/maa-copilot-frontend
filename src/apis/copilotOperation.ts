@@ -14,6 +14,16 @@ export const requestOperationUpload = (content: string) => {
   })
 }
 
+export const requestOperationUpdate = (id: string, content: string) => {
+  return jsonRequest<Response<OperationUploadResponse>>('/copilot/update', {
+    method: 'POST',
+    json: {
+      id,
+      content,
+    },
+  })
+}
+
 export const requestDeleteOperation = (id: string) => {
   return jsonRequest<Response<OperationUploadResponse>>(`/copilot/delete`, {
     method: 'POST',

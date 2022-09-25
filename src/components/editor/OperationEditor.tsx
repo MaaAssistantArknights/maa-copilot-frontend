@@ -1,5 +1,6 @@
 import {
   Button,
+  Callout,
   H4,
   Icon,
   InputGroup,
@@ -14,21 +15,32 @@ import clsx from 'clsx'
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
-import { Level } from 'models/operation'
-import { FC, useMemo, useState } from 'react'
-import { Control, useController, useForm } from 'react-hook-form'
+import { Level, MinimumRequired } from 'models/operation'
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
+import {
+  Control,
+  DeepPartial,
+  FieldErrors,
+  useController,
+  useForm,
+  UseFormHandleSubmit,
+  UseFormSetError,
+} from 'react-hook-form'
 import { EditorActions } from './action/EditorActions'
 import {
   EditorPerformer,
   EditorPerformerProps,
 } from './operator/EditorPerformer'
-import { sanitizeOperation } from './sanitizer'
+
+const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
+  minimumRequired: MinimumRequired.V4_0_0,
+}
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
   const {
-    field: { onChange, onBlur, value, ref },
+    field: { onChange, onBlur, ref },
     fieldState: { error },
   } = useController<CopilotDocV1.Operation>({
     name: 'stageName',
@@ -61,7 +73,7 @@ export const StageNameInput: FC<{
       <FormField2
         label="关卡"
         field="stageName"
-        error={levelError || error?.message}
+        error={levelError || error}
         asterisk
         FormGroupProps={{
           helperText: (
@@ -75,7 +87,7 @@ export const StageNameInput: FC<{
       >
         <Suggest2<Level>
           className={clsx(loading && 'bp4-skeleton')}
-          disabled={loading || !!error}
+          disabled={loading}
           items={levels}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem
@@ -135,16 +147,28 @@ export const StageNameInput: FC<{
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
-}> = ({ operation }) => {
-  const { control, handleSubmit } = useForm<CopilotDocV1.Operation>({
-    defaultValues: operation,
+  submitElement: (
+    handleSubmit: UseFormHandleSubmit<CopilotDocV1.Operation>,
+    setError: UseFormSetError<CopilotDocV1.Operation>,
+  ) => ReactNode
+}> = ({ operation, submitElement }) => {
+  const {
+    control,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors },
+  } = useForm<CopilotDocV1.Operation>({
+    defaultValues: defaultOperation,
   })
 
-  const onPublish = handleSubmit((raw: CopilotDocV1.Operation) => {
-    const operation = sanitizeOperation(raw)
+  useEffect(() => {
+    if (operation) {
+      reset(operation)
+    }
+  }, [operation])
 
-    console.info('operation', operation)
-  })
+  const globalError = (errors as FieldErrors<{ global: void }>).global
 
   return (
     <section className="flex flex-col relative h-full pt-4">
@@ -158,14 +182,14 @@ export const OperationEditor: FC<{
 
         <div className="flex-1" />
 
-        <Button
-          intent="primary"
-          className="ml-4"
-          icon="upload"
-          text="发布"
-          onClick={onPublish}
-        />
+        {submitElement(handleSubmit, setError)}
       </div>
+
+      {globalError?.message && (
+        <Callout className="mt-4" intent="danger" icon="error" title="错误">
+          {globalError.message}
+        </Callout>
+      )}
 
       {import.meta.env.PROD && !location.href.includes('azurestaticapps') && (
         <Overlay
@@ -233,11 +257,11 @@ export const OperationEditor: FC<{
 
         <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
-        <div className="flex h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
-          <div className="w-1/3 mr-8 flex flex-col">
+        <div className="flex flex-wrap md:flex-nowrap h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
+          <div className="w-full md:w-1/3 md:mr-8 flex flex-col">
             <EditorPerformerPanel control={control} />
           </div>
-          <div className="w-2/3">
+          <div className="w-full md:w-2/3 ">
             <H4>动作序列</H4>
             <HelperText className="mb-4">
               <span>拖拽以重新排序</span>

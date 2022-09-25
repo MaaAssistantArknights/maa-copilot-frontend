@@ -110,3 +110,54 @@ export function findOperatorDirection(
     operatorDirections.find((item) => item.value === value) || unknownDirection
   )
 }
+
+export interface ActionDocColor {
+  title: string
+  value: string
+}
+
+// Colors from
+// https://github.com/MaaAssistantArknights/MaaAssistantArknights/blob/50f5f94dfcc2ec175556bbaa55d0ffec74128a8e/src/MeoAsstGui/Helper/LogColor.cs
+export const actionDocColors: ActionDocColor[] = [
+  {
+    title: '默认',
+    value: 'Gray',
+  },
+  {
+    title: '信息',
+    value: 'DarkCyan',
+  },
+  {
+    title: '警告',
+    value: 'DarkGoldenrod',
+  },
+
+  {
+    title: '错误',
+    value: 'DarkRed',
+  },
+  {
+    title: '黑色',
+    value: 'Black',
+  },
+  {
+    title: '稀有干员色',
+    value: 'DarkOrange',
+  },
+  {
+    title: '小车色',
+    value: 'DarkGray',
+  },
+  {
+    title: '紫色',
+    value: '#6f42c1',
+  },
+  {
+    title: '粉色',
+    value: '#d63384',
+  },
+  {
+    title: '绿色',
+    value: '#198754',
+  },
+]
