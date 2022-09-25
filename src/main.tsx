@@ -41,6 +41,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <AppLayout>
         <Routes>
           <Route path="/" element={<IndexPage />} />
+          <Route path="/create/:id" element={<CreatePage />} />
           <Route path="/create" element={<CreatePage />} />
           <Route path="/account/activation" element={<AccountActivatePage />} />
           <Route path="*" element={<NotFoundPage />} />

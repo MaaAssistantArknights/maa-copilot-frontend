@@ -16,24 +16,21 @@ import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
 import { Level, MinimumRequired } from 'models/operation'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   Control,
   DeepPartial,
   FieldErrors,
   useController,
   useForm,
+  UseFormHandleSubmit,
+  UseFormSetError,
 } from 'react-hook-form'
-import { requestOperationUpload } from '../../apis/copilotOperation'
-import { NetworkError } from '../../utils/fetcher'
-import { AppToaster } from '../Toaster'
 import { EditorActions } from './action/EditorActions'
-import { convertOperation } from './converter'
 import {
   EditorPerformer,
   EditorPerformerProps,
 } from './operator/EditorPerformer'
-import { validateOperation } from './validation'
 
 const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
   minimumRequired: MinimumRequired.V4_0_0,
@@ -150,9 +147,11 @@ export const StageNameInput: FC<{
 
 export const OperationEditor: FC<{
   operation?: CopilotDocV1.Operation
-}> = ({ operation }) => {
-  const levels = useLevels({ suspense: false }).data?.data || []
-
+  submitElement: (
+    handleSubmit: UseFormHandleSubmit<CopilotDocV1.Operation>,
+    setError: UseFormSetError<CopilotDocV1.Operation>,
+  ) => ReactNode
+}> = ({ operation, submitElement }) => {
   const {
     control,
     handleSubmit,
@@ -169,42 +168,6 @@ export const OperationEditor: FC<{
     }
   }, [operation])
 
-  const [publishing, setPublishing] = useState(false)
-
-  const onPublish = handleSubmit(async (raw: CopilotDocV1.Operation) => {
-    try {
-      setPublishing(true)
-
-      const operation = convertOperation(raw, levels)
-
-      console.info('operation', operation)
-
-      if (!validateOperation(operation, setError)) {
-        return
-      }
-
-      await requestOperationUpload(JSON.stringify(operation))
-
-      AppToaster.show({
-        intent: 'success',
-        message: '作业发布成功',
-      })
-    } catch (e) {
-      setError('global' as any, {
-        message:
-          e instanceof NetworkError
-            ? `作业发布失败：${e.message}`
-            : (e as Error).message || String(e),
-      })
-    } finally {
-      setPublishing(false)
-    }
-  })
-
-  useEffect(() => {
-    console.log(publishing)
-  }, [publishing])
-
   const globalError = (errors as FieldErrors<{ global: void }>).global
 
   return (
@@ -219,14 +182,7 @@ export const OperationEditor: FC<{
 
         <div className="flex-1" />
 
-        <Button
-          intent="primary"
-          className="ml-4"
-          icon="upload"
-          text="发布"
-          loading={publishing}
-          onClick={onPublish}
-        />
+        {submitElement(handleSubmit, setError)}
       </div>
 
       {globalError?.message && (

@@ -16,7 +16,6 @@ import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
-import camelcaseKeys from 'camelcase-keys'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
@@ -31,9 +30,11 @@ import { useAtom } from 'jotai'
 import { merge } from 'lodash-es'
 import { Operation, OpRatingType } from 'models/operation'
 import { ComponentType, FC, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+import { toCopilotOperation } from '../../models/converter'
 
 const ManageMenu: FC<{
   operation: Operation
@@ -78,7 +79,12 @@ const ManageMenu: FC<{
       </Alert>
 
       <Menu>
-        <MenuItem icon="edit" text="修改作业" disabled />
+        <Link
+          className="hover:[color:inherit] hover:no-underline"
+          to={`/create/${operation.id}`}
+        >
+          <MenuItem icon="edit" text="修改作业" />
+        </Link>
         <MenuItem
           icon="delete"
           intent="danger"
@@ -171,11 +177,7 @@ export const OperationViewer: ComponentType<{
     })
   }
 
-  const operationDoc = useMemo(() => {
-    const json = JSON.parse(operation.content)
-    const transformed = camelcaseKeys(json, { deep: true })
-    return transformed as CopilotDocV1.Operation
-  }, [operation])
+  const operationDoc = useMemo(() => toCopilotOperation(operation), [operation])
 
   return (
     <OperationDrawer
