@@ -7,12 +7,15 @@ interface SuspensableProps {
   // deps that will cause the Suspense's error to reset
   retryDeps?: readonly any[]
 
+  pendingTitle?: string
+
   fetcher?: () => void
 }
 
 export const Suspensable: FCC<SuspensableProps> = ({
   children,
   retryDeps = [],
+  pendingTitle = '加载中',
   fetcher,
 }) => {
   const resetError = useRef<() => void>()
@@ -51,7 +54,15 @@ export const Suspensable: FCC<SuspensableProps> = ({
         )
       }}
     >
-      <Suspense fallback={<NonIdealState icon={<Spinner />} title="加载中" />}>
+      <Suspense
+        fallback={
+          <NonIdealState
+            icon={<Spinner />}
+            title={pendingTitle}
+            className="py-8"
+          />
+        }
+      >
         {children}
       </Suspense>
     </ErrorBoundary>

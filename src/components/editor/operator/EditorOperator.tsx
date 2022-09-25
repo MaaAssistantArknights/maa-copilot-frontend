@@ -64,14 +64,22 @@ export const EditorOperatorName = <T extends FieldValues>({
   name,
   control,
   rules,
+  allowOperatorGroups,
   ...controllerProps
-}: EditorFieldProps<T, string>) => {
+}: EditorFieldProps<T, string> & {
+  allowOperatorGroups?: boolean
+}) => {
+  const entityName = useMemo(
+    () => (allowOperatorGroups ? '干员或干员组' : '干员'),
+    [allowOperatorGroups],
+  )
+
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
     name,
     control,
-    rules: { required: '请输入干员名', ...rules },
+    rules: { required: `请输入${entityName}名`, ...rules },
     ...controllerProps,
   })
 
@@ -117,7 +125,7 @@ export const EditorOperatorName = <T extends FieldValues>({
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem
           key="create-new-item"
-          text={`使用自定义干员名 "${query}"`}
+          text={`使用自定义${entityName}名 "${query}"`}
           icon="text-highlight"
           onClick={handleClick}
           selected={active}
@@ -126,9 +134,9 @@ export const EditorOperatorName = <T extends FieldValues>({
       popoverContentProps={{
         className: 'max-h-64 overflow-auto',
       }}
-      noResults={<MenuItem disabled text="没有匹配的干员名" />}
+      noResults={<MenuItem disabled text={`没有匹配的${entityName}`} />}
       inputProps={{
-        placeholder: '干员名',
+        placeholder: `${entityName}名`,
         large: true,
         onBlur,
       }}

@@ -1,11 +1,11 @@
 import { Button, Card, TextArea } from '@blueprintjs/core'
 import { CardTitle } from 'components/CardTitle'
+import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
 import {
   EditorActionExecPredicateCooling,
   EditorActionExecPredicateCostChange,
   EditorActionExecPredicateKills,
 } from 'components/editor/action/EditorActionExecPredicate'
-import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
 import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
 import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
@@ -72,17 +72,17 @@ export const EditorActionAdd = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Card className="mb-8 pt-4">
+      <Card className="mb-2 pt-4">
         <div className="flex items-center mb-4">
-          <CardTitle className="mb-0" icon="add">
-            <span>添加动作</span>
+          <CardTitle className="mb-0" icon={isNew ? 'add' : 'edit'}>
+            <span>{isNew ? '添加' : '编辑'}动作</span>
           </CardTitle>
 
           <div className="flex-1" />
 
           <EditorResetButton
             reset={() => reset(defaultAction)}
-            entityName="动作"
+            entityName="正在编辑的动作"
           />
         </div>
 
@@ -107,8 +107,8 @@ export const EditorActionAdd = ({
             <FormField2<
               CopilotDocV1.ActionDeploy | CopilotDocV1.ActionSkillOrRetreat
             >
-              label="干员名"
-              description="选择干员或直接使用搜索内容创建干员"
+              label="干员或干员组名"
+              description="选择干员、使用干员名、或使用干员组名引用"
               field="name"
               error={
                 (
@@ -120,17 +120,23 @@ export const EditorActionAdd = ({
               }
               asterisk={type === 'Deploy'}
               FormGroupProps={{
-                helperText: '键入干员名、拼音或拼音首字母以从干员列表中搜索',
+                helperText: (
+                  <>
+                    <p>键入干员名、拼音或拼音首字母以搜索干员列表</p>
+                    <p>键入干员组名以引用干员组配置</p>
+                  </>
+                ),
               }}
             >
               <EditorOperatorName
                 shouldUnregister
+                allowOperatorGroups
                 control={control}
                 name="name"
                 rules={{
                   required:
                     (type === 'Deploy' || type === 'SkillUsage') &&
-                    '必须填写干员',
+                    '必须填写干员或干员组名',
                 }}
               />
             </FormField2>

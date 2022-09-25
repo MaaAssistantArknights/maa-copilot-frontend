@@ -208,11 +208,11 @@ export const OperationEditor: FC<{
 
       <div className="py-4 px-8 mr-0.5">
         <H4>作业元信息</H4>
-        <div className="flex">
-          <div className="w-1/4 mr-8">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/4 md:mr-8">
             <StageNameInput control={control} />
           </div>
-          <div className="w-3/4">
+          <div className="w-full md:w-3/4">
             <FormField
               label="作业标题"
               field="doc.title"
@@ -231,9 +231,9 @@ export const OperationEditor: FC<{
           </div>
         </div>
 
-        <div className="flex">
-          <div className="w-1/4 mr-8" />
-          <div className="w-3/4">
+        <div className="flex flex-col md:flex-row">
+          <div className="w-full md:w-1/4 md:mr-8" />
+          <div className="w-full md:w-3/4">
             <FormField
               label="作业描述"
               field="doc.details"
@@ -257,11 +257,11 @@ export const OperationEditor: FC<{
 
         <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
-        <div className="flex flex-wrap md:flex-nowrap h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)]">
-          <div className="w-full md:w-1/3 md:mr-8 flex flex-col">
+        <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
+          <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
             <EditorPerformerPanel control={control} />
           </div>
-          <div className="w-full md:w-2/3 ">
+          <div className="w-full md:w-2/3 pb-8">
             <H4>动作序列</H4>
             <HelperText className="mb-4">
               <span>拖拽以重新排序</span>

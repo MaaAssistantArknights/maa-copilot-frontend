@@ -339,7 +339,12 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
           <FactItem title="干员组" icon="people" className="font-bold mt-8" />
 
-          {groups.length === 0 && <NonIdealState title="暂无干员组" />}
+          {groups.length === 0 && (
+            // extra div container: NonIdealState is using height: 100% which causes unexpected overflow
+            <div className="relative">
+              <NonIdealState title="暂无干员组" />
+            </div>
+          )}
 
           <SortableContext
             items={groups.map(idFor)}

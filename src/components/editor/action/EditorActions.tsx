@@ -116,7 +116,9 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
           </DragOverlay>
         </DndContext>
 
-        {fields.length === 0 && <NonIdealState title="暂无动作" icon="inbox" />}
+        {fields.length === 0 && (
+          <NonIdealState title="暂无动作" className="my-4" icon="inbox" />
+        )}
       </div>
     </div>
   )

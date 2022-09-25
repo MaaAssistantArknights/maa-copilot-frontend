@@ -62,7 +62,7 @@ export const EditorPerformerOperator = ({
 
         <EditorResetButton<CopilotDocV1.Operator>
           reset={reset}
-          entityName="干员"
+          entityName="正在编辑的干员"
         />
       </div>
 

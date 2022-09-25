@@ -65,7 +65,7 @@ export const EditorPerformerGroup = ({
 
         <div className="flex-1" />
 
-        <EditorResetButton reset={reset} entityName="干员组" />
+        <EditorResetButton reset={reset} entityName="正在编辑的干员组" />
       </div>
 
       <Callout className="mb-4">
