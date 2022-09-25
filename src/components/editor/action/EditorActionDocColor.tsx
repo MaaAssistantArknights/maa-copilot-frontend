@@ -1,10 +1,10 @@
-import { Button, MenuItem, Icon } from '@blueprintjs/core'
+import { Button, Icon, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+import { FormField2 } from 'components/FormField'
+import { actionDocColors } from 'models/operator'
 import { useController } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
-import { actionDocColors } from 'models/operator'
-import { FormField2 } from 'components/FormField'
 
 interface EditorActionDocColorProps
   extends SetOptional<EditorFieldProps<CopilotDocV1.Action, string>, 'name'> {}
@@ -31,7 +31,7 @@ export const EditorActionDocColor = ({
       label="描述颜色"
       field={name}
       error={errors[name]}
-      description="在MAA中打印描述时的颜色"
+      description="在 MAA 中打印描述时的颜色"
     >
       <Select2
         filterable={false}
