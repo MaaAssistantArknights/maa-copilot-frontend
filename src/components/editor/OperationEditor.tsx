@@ -156,6 +156,7 @@ export const OperationEditor: FC<{
     control,
     handleSubmit,
     setError,
+    clearErrors,
     reset,
     formState: { errors },
   } = useForm<CopilotDocV1.Operation>({
@@ -170,6 +171,16 @@ export const OperationEditor: FC<{
 
   const globalError = (errors as FieldErrors<{ global: void }>).global
 
+  const wrappedHandleSubmit: typeof handleSubmit = (onValid, onInvalid) => {
+    const handler = handleSubmit(onValid, onInvalid)
+
+    return () => {
+      // need to manually clear the `global` error
+      clearErrors()
+      return handler()
+    }
+  }
+
   return (
     <section className="flex flex-col relative h-full pt-4">
       <div className="px-8 text-lg font-medium flex items-center w-full h-12">
@@ -182,7 +193,7 @@ export const OperationEditor: FC<{
 
         <div className="flex-1" />
 
-        {submitElement(handleSubmit, setError)}
+        {submitElement(wrappedHandleSubmit, setError)}
       </div>
 
       {globalError?.message && (
