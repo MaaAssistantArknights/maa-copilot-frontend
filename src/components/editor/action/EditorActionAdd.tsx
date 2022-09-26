@@ -1,4 +1,5 @@
 import { Button, Card, TextArea } from '@blueprintjs/core'
+import { DevTool } from '@hookform/devtools'
 import { CardTitle } from 'components/CardTitle'
 import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
 import {
@@ -85,6 +86,8 @@ export const EditorActionAdd = ({
             entityName="正在编辑的动作"
           />
         </div>
+
+        {import.meta.env.DEV && <DevTool control={control} />}
 
         <div className="flex flex-col lg:flex-row">
           <div className="flex flex-1">
