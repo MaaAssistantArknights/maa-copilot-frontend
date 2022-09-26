@@ -5,8 +5,6 @@ import {
   Icon,
   InputGroup,
   MenuItem,
-  NonIdealState,
-  Overlay,
   TextArea,
 } from '@blueprintjs/core'
 import { Suggest2 } from '@blueprintjs/select'
@@ -59,14 +57,14 @@ export const StageNameInput: FC<{
 
   const levels = data?.data || []
 
-  const fuse = useMemo(
-    () =>
-      new Fuse(levels, {
-        keys: ['name', 'catOne', 'catTwo', 'catThree'],
-        threshold: 0.3,
-      }),
-    [levels],
-  )
+  const fuse = useMemo(() => {
+    levels.sort((a, b) => a.levelId.localeCompare(b.levelId))
+
+    return new Fuse(levels, {
+      keys: ['name', 'catThree'],
+      threshold: 0.3,
+    })
+  }, [levels])
 
   return (
     <>
@@ -102,15 +100,9 @@ export const StageNameInput: FC<{
           itemPredicate={(query, item) => {
             return item.name === query
           }}
-          itemListPredicate={(query) => {
-            let filteredLevel = levels
-            if (query) {
-              filteredLevel = fuse.search(query).map((el) => el.item)
-            }
-            return filteredLevel.sort((a, b) =>
-              a.levelId.localeCompare(b.levelId),
-            )
-          }}
+          itemListPredicate={(query) =>
+            query ? fuse.search(query).map((el) => el.item) : levels
+          }
           onItemSelect={(item) => {
             onChange(item.levelId)
           }}
