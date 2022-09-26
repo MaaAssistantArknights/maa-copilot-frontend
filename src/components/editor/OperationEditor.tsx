@@ -61,7 +61,7 @@ export const StageNameInput: FC<{
     levels.sort((a, b) => a.levelId.localeCompare(b.levelId))
 
     return new Fuse(levels, {
-      keys: ['name', 'catThree'],
+      keys: ['name', 'catOne', 'catTwo', 'catThree'],
       threshold: 0.3,
     })
   }, [levels])
