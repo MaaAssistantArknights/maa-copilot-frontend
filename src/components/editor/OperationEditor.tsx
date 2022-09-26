@@ -191,21 +191,6 @@ export const OperationEditor: FC<{
         </Callout>
       )}
 
-      {import.meta.env.PROD && !location.href.includes('azurestaticapps') && (
-        <Overlay
-          isOpen
-          hasBackdrop={false}
-          usePortal={false}
-          className="z-20 absolute top-0 left-0 w-full h-full bg-white/60 flex flex-col items-center justify-center select-none"
-        >
-          <NonIdealState
-            title="作业编辑器锐意施工中"
-            description="太多了做不完了QAQ"
-            icon="cog"
-          />
-        </Overlay>
-      )}
-
       <div className="py-4 px-8 mr-0.5">
         <H4>作业元信息</H4>
         <div className="flex flex-col md:flex-row">
