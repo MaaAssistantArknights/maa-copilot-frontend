@@ -110,7 +110,9 @@ export function findOperatorDirection(
   value: CopilotDocV1.Direction = defaultDirection,
 ): OperatorDirection {
   return (
-    operatorDirections.find((item) => item.value === value) || unknownDirection
+    operatorDirections.find(
+      (item) => item.value === value || item.title === value,
+    ) || unknownDirection
   )
 }
 

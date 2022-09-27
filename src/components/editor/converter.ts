@@ -5,6 +5,9 @@ import type { CopilotDocV1 } from 'models/copilot.schema'
 import type { Level } from 'models/operation'
 import { MinimumRequired } from 'models/operation'
 
+import { findOperatorDirection } from '../../models/operator'
+import { findActionType } from '../../models/types'
+
 /**
  * Creates an operation that can be used in editor. Used for importing.
  */
@@ -23,6 +26,25 @@ export function toEditableOperation(
     ].flat(2),
   ).forEach((item) => {
     item._id = uniqueId()
+  })
+
+  operation.actions.forEach((action) => {
+    const type = findActionType(action.type)
+
+    // normalize action type, e.g. '部署' -> 'Deploy'
+    if (type.value !== 'Unknown') {
+      action.type = type.value
+    }
+
+    if (type.value === 'Deploy') {
+      const deployAction = action as CopilotDocV1.ActionDeploy
+      const direction = findOperatorDirection(deployAction.direction).value
+
+      // normalize direction, e.g. '上' -> 'Up'
+      if (direction !== null) {
+        deployAction.direction = direction
+      }
+    }
   })
 
   return operation
