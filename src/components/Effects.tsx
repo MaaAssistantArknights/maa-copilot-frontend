@@ -1,5 +1,6 @@
 import { useAtom } from 'jotai'
 import { FC, useEffect } from 'react'
+
 import { authAtom } from 'store/auth'
 import { FETCHER_CONFIG } from 'utils/fetcher'
 

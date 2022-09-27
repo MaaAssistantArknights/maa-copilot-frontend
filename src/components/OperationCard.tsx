@@ -9,12 +9,15 @@ import {
   Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
+
+import { useState } from 'react'
+
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OperationListItem } from 'models/operation'
-import { useState } from 'react'
-import { EDifficultyLevel } from './entity/ELevel'
+
 import { Paragraphs } from './Paragraphs'
+import { EDifficultyLevel } from './entity/ELevel'
 import { OperationViewer } from './viewer/OperationViewer'
 
 const formatOperatorTag = (operator: string) => {

@@ -1,19 +1,23 @@
 import { Button } from '@blueprintjs/core'
-import { OperationEditor } from 'components/editor/OperationEditor'
-import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
+
 import { ComponentType, useMemo, useState } from 'react'
 import { UseFormSetError } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
+
+import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
+import { OperationEditor } from 'components/editor/OperationEditor'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { useLevels } from '../apis/arknights'
 import {
   requestOperationUpdate,
   requestOperationUpload,
 } from '../apis/copilotOperation'
 import { useOperation } from '../apis/query'
-import { convertOperation } from '../components/editor/converter'
-import { validateOperation } from '../components/editor/validation'
 import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
+import { toQualifiedOperation } from '../components/editor/converter'
+import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { NetworkError } from '../utils/fetcher'
 
@@ -41,7 +45,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
       try {
         setUploading(true)
 
-        const operation = convertOperation(raw, levels)
+        const operation = toQualifiedOperation(raw, levels)
 
         if (!validateOperation(operation, setError)) {
           return

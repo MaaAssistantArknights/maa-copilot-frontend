@@ -1,8 +1,10 @@
 import { NonIdealState, Spinner } from '@blueprintjs/core'
+
 import { requestActivation } from 'apis/auth'
-import { AppToaster } from 'components/Toaster'
 import { FC, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+import { AppToaster } from 'components/Toaster'
 import { NetworkError } from 'utils/fetcher'
 import { useNetworkState } from 'utils/useNetworkState'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'

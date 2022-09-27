@@ -1,12 +1,14 @@
-import { Card, Icon as BlueprintIcon } from '@blueprintjs/core'
+import { Icon as BlueprintIcon, Card } from '@blueprintjs/core'
 import simpleIconsGitHub from '@iconify/icons-simple-icons/github'
 import { Icon as IconifyIcon } from '@iconify/react'
+
+import { ComponentType } from 'react'
+
 import { CardTitle } from 'components/CardTitle'
-import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { Operations } from 'components/Operations'
+import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
-import { ComponentType } from 'react'
 
 const SOCIAL_LINKS = [
   {

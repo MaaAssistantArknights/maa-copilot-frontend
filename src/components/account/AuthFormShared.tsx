@@ -1,6 +1,8 @@
 import { InputGroup } from '@blueprintjs/core'
-import { FormField, FormFieldProps } from 'components/FormField'
+
 import { UseControllerProps } from 'react-hook-form'
+
+import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL } from 'utils/regexes'
 
 export type RuleKeys = 'email' | 'password' | 'username'

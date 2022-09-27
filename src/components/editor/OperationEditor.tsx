@@ -5,27 +5,29 @@ import {
   Icon,
   InputGroup,
   MenuItem,
-  NonIdealState,
-  Overlay,
   TextArea,
 } from '@blueprintjs/core'
 import { Suggest2 } from '@blueprintjs/select'
+
 import { useLevels } from 'apis/arknights'
 import clsx from 'clsx'
-import { FormField, FormField2 } from 'components/FormField'
-import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
-import { Level, MinimumRequired } from 'models/operation'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   Control,
   DeepPartial,
   FieldErrors,
-  useController,
-  useForm,
   UseFormHandleSubmit,
   UseFormSetError,
+  useController,
+  useForm,
 } from 'react-hook-form'
+
+import { FormField, FormField2 } from 'components/FormField'
+import { HelperText } from 'components/HelperText'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+import { Level, MinimumRequired } from 'models/operation'
+
 import { EditorActions } from './action/EditorActions'
 import {
   EditorPerformer,
@@ -40,9 +42,9 @@ export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
   const {
-    field: { onChange, onBlur, ref },
+    field: { value, onChange, onBlur, ref },
     fieldState: { error },
-  } = useController<CopilotDocV1.Operation>({
+  } = useController({
     name: 'stageName',
     control,
     rules: { required: '请输入关卡' },
@@ -59,13 +61,29 @@ export const StageNameInput: FC<{
 
   const levels = data?.data || []
 
-  const fuse = useMemo(
+  const fuse = useMemo(() => {
+    levels.sort((a, b) => a.levelId.localeCompare(b.levelId))
+
+    return new Fuse(levels, {
+      keys: ['name', 'catOne', 'catTwo', 'catThree'],
+      threshold: 0.3,
+    })
+  }, [levels])
+
+  const selectedLevel = useMemo(
     () =>
-      new Fuse(levels, {
-        keys: ['name', 'catOne', 'catTwo', 'catThree'],
-        threshold: 0.3,
-      }),
-    [levels],
+      value
+        ? levels.find((level) => level.levelId === value) || {
+            catOne: '',
+            catTwo: '',
+            catThree: '自定义关卡',
+            levelId: value,
+            name: value,
+            width: 0,
+            height: 0,
+          }
+        : undefined,
+    [levels, value],
   )
 
   return (
@@ -102,31 +120,15 @@ export const StageNameInput: FC<{
           itemPredicate={(query, item) => {
             return item.name === query
           }}
-          itemListPredicate={(query) => {
-            let filteredLevel = levels
-            if (query) {
-              filteredLevel = fuse.search(query).map((el) => el.item)
-            }
-            return filteredLevel.sort((a, b) =>
-              a.levelId.localeCompare(b.levelId),
-            )
-          }}
+          itemListPredicate={(query) =>
+            query ? fuse.search(query).map((el) => el.item) : levels
+          }
+          selectedItem={selectedLevel}
           onItemSelect={(item) => {
             onChange(item.levelId)
           }}
-          // selectedItem={createArbitraryOperator(value as string)}
           inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
           ref={ref}
-          // createNewItemFromQuery={(query) => createArbitraryOperator(query)}
-          // createNewItemRenderer={(query, active, handleClick) => (
-          //   <MenuItem
-          //     key="create-new-item"
-          //     text={`使用自定义干员名 "${query}"`}
-          //     icon="text-highlight"
-          //     onClick={handleClick}
-          //     selected={active}
-          //   />
-          // )}
           popoverContentProps={{
             className: 'max-h-64 overflow-auto',
           }}
@@ -156,6 +158,7 @@ export const OperationEditor: FC<{
     control,
     handleSubmit,
     setError,
+    clearErrors,
     reset,
     formState: { errors },
   } = useForm<CopilotDocV1.Operation>({
@@ -170,6 +173,16 @@ export const OperationEditor: FC<{
 
   const globalError = (errors as FieldErrors<{ global: void }>).global
 
+  const wrappedHandleSubmit: typeof handleSubmit = (onValid, onInvalid) => {
+    const handler = handleSubmit(onValid, onInvalid)
+
+    return () => {
+      // need to manually clear the `global` error
+      clearErrors()
+      return handler()
+    }
+  }
+
   return (
     <section className="flex flex-col relative h-full pt-4">
       <div className="px-8 text-lg font-medium flex items-center w-full h-12">
@@ -182,7 +195,7 @@ export const OperationEditor: FC<{
 
         <div className="flex-1" />
 
-        {submitElement(handleSubmit, setError)}
+        {submitElement(wrappedHandleSubmit, setError)}
       </div>
 
       {globalError?.message && (

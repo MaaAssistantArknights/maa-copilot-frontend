@@ -1,6 +1,8 @@
 import { NumericInput, NumericInputProps } from '@blueprintjs/core'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+
 import { FieldValues, useController } from 'react-hook-form'
+
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 export interface EditorIntegerInputProps<T extends FieldValues>
   extends EditorFieldProps<T, number> {

@@ -1,7 +1,9 @@
 import camelcaseKeys from 'camelcase-keys'
 import { merge } from 'lodash-es'
-import { Response } from 'models/network'
 import unfetch from 'unfetch'
+
+import { Response } from 'models/network'
+
 import { envUseProductionApi } from './envvar'
 
 const fetch = window.fetch || unfetch

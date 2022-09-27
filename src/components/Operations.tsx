@@ -5,13 +5,15 @@ import {
   FormGroup,
   InputGroup,
 } from '@blueprintjs/core'
+
 import { OrderBy } from 'apis/query'
+import { debounce } from 'lodash-es'
+import { ComponentType, useMemo, useState } from 'react'
+
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
-import { ComponentType, useMemo, useState } from 'react'
-import { withSuspensable } from './Suspensable'
 
-import { debounce } from 'lodash-es'
+import { withSuspensable } from './Suspensable'
 
 export const Operations: ComponentType = withSuspensable(() => {
   const [query, setQuery] = useState('')

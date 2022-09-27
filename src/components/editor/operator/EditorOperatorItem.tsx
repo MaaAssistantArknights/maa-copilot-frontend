@@ -1,5 +1,9 @@
 import { Card, Elevation, Icon } from '@blueprintjs/core'
+
 import clsx from 'clsx'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { OPERATORS } from '../../../models/generated/operators'
 import { findOperatorSkillUsage } from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'

@@ -1,4 +1,4 @@
-import { atom, WritableAtom } from 'jotai'
+import { WritableAtom, atom } from 'jotai'
 
 interface AuthState {
   token?: string

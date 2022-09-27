@@ -1,7 +1,11 @@
 import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
 import { UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+
 import { clsx } from 'clsx'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { Sortable, SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { EditorOperatorItem } from './EditorOperatorItem'

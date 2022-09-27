@@ -1,5 +1,8 @@
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 import { UseFormSetError } from 'react-hook-form'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
 
 export function validateOperation(

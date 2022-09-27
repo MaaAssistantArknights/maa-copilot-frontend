@@ -1,5 +1,7 @@
 import { UseFormSetError } from 'react-hook-form'
 
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 export function validateAction(
   action: CopilotDocV1.Action,
   setError: UseFormSetError<CopilotDocV1.Action>,

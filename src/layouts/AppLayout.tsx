@@ -1,7 +1,9 @@
 import { Button, IconName, Tag } from '@blueprintjs/core'
-import { AccountManager } from 'components/AccountManager'
+
 import { Link, NavLink } from 'react-router-dom'
 import { FCC } from 'types'
+
+import { AccountManager } from 'components/AccountManager'
 
 const LINKS: {
   to: string

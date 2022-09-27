@@ -4,10 +4,12 @@ import '@blueprintjs/popover2/lib/css/blueprint-popover2.css'
 import '@blueprintjs/select/lib/css/blueprint-select.css'
 import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
+
 import 'normalize.css'
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Route, Routes } from 'react-router-dom'
+
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
@@ -15,6 +17,7 @@ import { AccountActivatePage } from './pages/account/activate'
 import { CreatePage } from './pages/create'
 import { IndexPage } from './pages/index'
 import './styles/blueprint.less'
+
 import './styles/index.css'
 
 Sentry.init({

@@ -1,4 +1,7 @@
 import { IconName } from '@blueprintjs/core'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import {
   DetailedSelectChoice,
   DetailedSelectItem,
@@ -107,7 +110,9 @@ export function findOperatorDirection(
   value: CopilotDocV1.Direction = defaultDirection,
 ): OperatorDirection {
   return (
-    operatorDirections.find((item) => item.value === value) || unknownDirection
+    operatorDirections.find(
+      (item) => item.value === value || item.title === value,
+    ) || unknownDirection
   )
 }
 

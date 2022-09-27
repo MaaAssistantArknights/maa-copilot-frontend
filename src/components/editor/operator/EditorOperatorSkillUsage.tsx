@@ -1,10 +1,15 @@
 import { Button } from '@blueprintjs/core'
+
+import { useController } from 'react-hook-form'
+
 import {
   DetailedSelect,
   DetailedSelectChoice,
+  DetailedSelectItem,
 } from 'components/editor/DetailedSelect'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { useController } from 'react-hook-form'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { operatorSkillUsages } from '../../../models/operator'
 
 export const EditorOperatorSkillUsage = <
@@ -28,7 +33,7 @@ export const EditorOperatorSkillUsage = <
 
   return (
     <DetailedSelect
-      items={operatorSkillUsages}
+      items={operatorSkillUsages as DetailedSelectItem[]}
       onItemSelect={(item) => {
         onChange(item.value)
       }}

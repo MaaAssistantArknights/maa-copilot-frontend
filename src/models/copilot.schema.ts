@@ -1,7 +1,7 @@
 /**
  * MAA Copilot 战斗协议 v1
  */
-namespace CopilotDocV1 {
+export namespace CopilotDocV1 {
   export interface Operation {
     actions: Action[]
     doc?: Doc
@@ -18,6 +18,8 @@ namespace CopilotDocV1 {
     import('type-fest').SnakeCasedPropertiesDeep<Operation>
 
   interface ActionBase {
+    /** Required in editor; should be stripped when exporting. */
+    _id?: string
     // Action common optional fields
     doc?: string
     docColor?: string
@@ -97,12 +99,16 @@ namespace CopilotDocV1 {
   }
 
   export interface Group {
+    /** Required in editor; should be stripped when exporting. */
+    _id?: string
     name: string
     opers?: Operator[]
   }
 
   export interface Operator {
-    /**w
+    /** Required in editor; should be stripped when exporting. */
+    _id?: string
+    /**
      * 必填
      */
     name: string

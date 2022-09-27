@@ -13,27 +13,30 @@ import {
   NonIdealState,
 } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
+
 import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
-import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
-import { EDifficultyLevel } from 'components/entity/ELevel'
+import { useAtom } from 'jotai'
+import { merge } from 'lodash-es'
+import { ComponentType, FC, useMemo, useState } from 'react'
+import { Link } from 'react-router-dom'
+
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
 import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
+import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
+import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { ViewerActions } from 'components/viewer/ViewerActions'
-import { useAtom } from 'jotai'
-import { merge } from 'lodash-es'
-import { Operation, OpRatingType } from 'models/operation'
-import { ComponentType, FC, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { OpRatingType, Operation } from 'models/operation'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+
 import { toCopilotOperation } from '../../models/converter'
 
 const ManageMenu: FC<{

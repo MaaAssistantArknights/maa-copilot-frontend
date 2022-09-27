@@ -1,8 +1,10 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
-import { AccountActivator } from 'components/account/AccountActivator'
+
 import { useAtom } from 'jotai'
 import { FC, useMemo } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+
+import { AccountActivator } from 'components/account/AccountActivator'
 import { authAtom } from 'store/auth'
 
 export const AccountActivatePage: FC = () => {
