@@ -42,9 +42,9 @@ export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
   const {
-    field: { onChange, onBlur, ref },
+    field: { value, onChange, onBlur, ref },
     fieldState: { error },
-  } = useController<CopilotDocV1.Operation>({
+  } = useController({
     name: 'stageName',
     control,
     rules: { required: '请输入关卡' },
@@ -69,6 +69,22 @@ export const StageNameInput: FC<{
       threshold: 0.3,
     })
   }, [levels])
+
+  const selectedLevel = useMemo(
+    () =>
+      value
+        ? levels.find((level) => level.levelId === value) || {
+            catOne: '',
+            catTwo: '',
+            catThree: '自定义关卡',
+            levelId: value,
+            name: value,
+            width: 0,
+            height: 0,
+          }
+        : undefined,
+    [levels, value],
+  )
 
   return (
     <>
@@ -107,22 +123,12 @@ export const StageNameInput: FC<{
           itemListPredicate={(query) =>
             query ? fuse.search(query).map((el) => el.item) : levels
           }
+          selectedItem={selectedLevel}
           onItemSelect={(item) => {
             onChange(item.levelId)
           }}
-          // selectedItem={createArbitraryOperator(value as string)}
           inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
           ref={ref}
-          // createNewItemFromQuery={(query) => createArbitraryOperator(query)}
-          // createNewItemRenderer={(query, active, handleClick) => (
-          //   <MenuItem
-          //     key="create-new-item"
-          //     text={`使用自定义干员名 "${query}"`}
-          //     icon="text-highlight"
-          //     onClick={handleClick}
-          //     selected={active}
-          //   />
-          // )}
           popoverContentProps={{
             className: 'max-h-64 overflow-auto',
           }}
