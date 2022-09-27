@@ -3,6 +3,7 @@ import { EditorIntegerInput } from 'components/editor/EditorIntegerInput'
 import { useFormState } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
 import { FormField2 } from '../../FormField'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorActionExecPredicateProps
   extends SetOptional<EditorFieldProps<CopilotDocV1.Action, number>, 'name'> {}

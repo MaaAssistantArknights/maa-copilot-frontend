@@ -14,6 +14,7 @@ import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
 import { Level, MinimumRequired } from 'models/operation'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   Control,

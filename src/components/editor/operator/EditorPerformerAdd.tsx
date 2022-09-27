@@ -9,6 +9,7 @@ import {
   EditorPerformerOperator,
   EditorPerformerOperatorProps,
 } from './EditorPerformerOperator'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export type PerformerType = 'operator' | 'group'
 

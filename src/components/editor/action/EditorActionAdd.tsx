@@ -29,6 +29,7 @@ import {
   EditorActionRearDelay,
 } from './EditorActionDelay'
 import { validateAction } from './validation'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorActionAddProps {
   onSubmit: (action: CopilotDocV1.Action) => void

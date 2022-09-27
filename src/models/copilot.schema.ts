@@ -1,7 +1,7 @@
 /**
  * MAA Copilot 战斗协议 v1
  */
-namespace CopilotDocV1 {
+export namespace CopilotDocV1 {
   export interface Operation {
     actions: Action[]
     doc?: Doc

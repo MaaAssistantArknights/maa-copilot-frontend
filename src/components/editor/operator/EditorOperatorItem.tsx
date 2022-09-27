@@ -5,6 +5,7 @@ import { findOperatorSkillUsage } from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { OperatorAvatar } from './EditorOperator'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorOperatorItemProps extends Partial<SortableItemProps> {
   operator: CopilotDocV1.Operator

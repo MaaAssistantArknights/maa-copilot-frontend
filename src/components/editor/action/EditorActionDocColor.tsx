@@ -5,6 +5,7 @@ import { FormField2 } from 'components/FormField'
 import { actionDocColors } from 'models/operator'
 import { useController } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorActionDocColorProps
   extends SetOptional<EditorFieldProps<CopilotDocV1.Action, string>, 'name'> {}

@@ -30,6 +30,7 @@ import {
   EditorPerformerAddProps,
   PerformerType,
 } from './EditorPerformerAdd'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorPerformerProps {
   control: Control<CopilotDocV1.Operation>

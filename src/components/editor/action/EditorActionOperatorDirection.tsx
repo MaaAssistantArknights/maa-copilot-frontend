@@ -5,6 +5,7 @@ import { useController } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
 import { operatorDirections } from '../../../models/operator'
 import { FormField2 } from '../../FormField'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorActionOperatorDirectionProps
   extends SetOptional<

@@ -3,6 +3,7 @@ import { Select2 } from '@blueprintjs/select'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorOperatorSkillChoice {
   icon?: IconName

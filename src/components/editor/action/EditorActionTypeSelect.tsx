@@ -7,6 +7,7 @@ import {
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export const EditorActionTypeSelect = (
   props: EditorFieldProps<CopilotDocV1.Action, CopilotDocV1.Type>,

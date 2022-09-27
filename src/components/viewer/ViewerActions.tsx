@@ -6,6 +6,7 @@ import { findActionType } from 'models/types'
 import { FC, useMemo } from 'react'
 import { FCC } from 'types'
 import { formatDuration } from '../../utils/times'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 const actionKey = (action: CopilotDocV1.Action, index?: number) =>
   `${index}_${action.type}_${'name' in action ? action.name : ''}_${

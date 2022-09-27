@@ -16,6 +16,7 @@ import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
 import { toCopilotOperation } from '../models/converter'
 import { NetworkError } from '../utils/fetcher'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export const CreatePage: ComponentType = withGlobalErrorBoundary(
   withSuspensable(() => {

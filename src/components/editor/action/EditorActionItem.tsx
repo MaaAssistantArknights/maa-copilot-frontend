@@ -12,6 +12,7 @@ import {
 import { formatDuration } from '../../../utils/times'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorActionItemProps extends Partial<SortableItemProps> {
   editing?: boolean

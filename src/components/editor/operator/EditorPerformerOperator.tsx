@@ -4,6 +4,7 @@ import { EditorResetButton } from 'components/editor/EditorResetButton'
 import { useEffect } from 'react'
 import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form'
 import { EditorOperator } from './EditorOperator'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorPerformerOperatorProps {
   operator?: CopilotDocV1.Operator

@@ -5,6 +5,7 @@ import { clsx } from 'clsx'
 import { Sortable, SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { EditorOperatorItem } from './EditorOperatorItem'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export type GroupWithIdentifiedOperators = Omit<CopilotDocV1.Group, 'opers'> & {
   opers: (CopilotDocV1.Operator & { id: UniqueIdentifier })[]

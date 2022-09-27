@@ -4,6 +4,7 @@ import {
   DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
+import type { CopilotDocV1 } from 'models/copilot.schema'
 
 const defaultSkillUsage: CopilotDocV1.SkillUsageType = 0
 
