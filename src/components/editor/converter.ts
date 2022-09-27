@@ -1,7 +1,9 @@
-import type { CopilotDocV1 } from 'models/copilot.schema'
-import type { Level } from 'models/operation'
 import { FieldArrayWithId } from 'react-hook-form'
 import snakeCaseKeys from 'snakecase-keys'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+import type { Level } from 'models/operation'
+
 import { WithTempId } from '../../types'
 
 export function convertOperation(

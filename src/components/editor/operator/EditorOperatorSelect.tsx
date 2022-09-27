@@ -1,12 +1,14 @@
 import { Button } from '@blueprintjs/core'
+
+import { useMemo } from 'react'
+import { FieldValues, useController } from 'react-hook-form'
+
 import {
   DetailedSelect,
   DetailedSelectChoice,
   DetailedSelectItem,
 } from 'components/editor/DetailedSelect'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { useMemo } from 'react'
-import { FieldValues, useController } from 'react-hook-form'
 
 export const EditorOperatorSelect = <T extends FieldValues>({
   name,

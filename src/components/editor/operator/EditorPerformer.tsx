@@ -12,17 +12,21 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import {
-  arrayMove,
   SortableContext,
+  arrayMove,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
+
 import { uniqueId } from 'lodash-es'
 import { FC, useEffect, useState } from 'react'
-import { Control, useFieldArray, UseFieldArrayMove } from 'react-hook-form'
+import { Control, UseFieldArrayMove, useFieldArray } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { WithTempId } from '../../../types'
-import { Droppable, Sortable } from '../../dnd'
 import { FactItem } from '../../FactItem'
+import { Droppable, Sortable } from '../../dnd'
 import { EditorGroupItem } from './EditorGroupItem'
 import { EditorOperatorItem } from './EditorOperatorItem'
 import {
@@ -30,7 +34,6 @@ import {
   EditorPerformerAddProps,
   PerformerType,
 } from './EditorPerformerAdd'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorPerformerProps {
   control: Control<CopilotDocV1.Operation>

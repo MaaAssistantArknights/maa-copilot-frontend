@@ -1,8 +1,10 @@
 import { Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
+
 import clsx from 'clsx'
-import { OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 import { FC, ReactNode } from 'react'
+
+import { OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
 const descriptions = {
   regular: {

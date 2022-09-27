@@ -1,8 +1,11 @@
 import { InputGroup } from '@blueprintjs/core'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+
 import { useController } from 'react-hook-form'
-import { FormField2 } from '../../FormField'
+
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+
+import { FormField2 } from '../../FormField'
 
 interface EditorActionOperatorLocationProps
   extends EditorFieldProps<CopilotDocV1.Action, [number, number]> {

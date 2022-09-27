@@ -1,6 +1,10 @@
 import { Button, Card, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
+
 import { FC, useMemo } from 'react'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import {
   EditorPerformerGroup,
   EditorPerformerGroupProps,
@@ -9,7 +13,6 @@ import {
   EditorPerformerOperator,
   EditorPerformerOperatorProps,
 } from './EditorPerformerOperator'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export type PerformerType = 'operator' | 'group'
 

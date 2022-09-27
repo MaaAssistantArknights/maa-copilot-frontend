@@ -1,7 +1,9 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
-import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
+
 import { ComponentType } from 'react'
 import { Link } from 'react-router-dom'
+
+import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 
 export const NotFoundPage: ComponentType = withGlobalErrorBoundary(() => {
   return (

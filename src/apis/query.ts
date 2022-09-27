@@ -1,12 +1,13 @@
+import { useEffect } from 'react'
+import useSWR from 'swr'
+import useSWRInfinite from 'swr/infinite'
+
 import { Response } from 'models/network'
 import type {
   Operation,
   OperationListItem,
   PaginatedResponse,
 } from 'models/operation'
-import { useEffect } from 'react'
-import useSWR from 'swr'
-import useSWRInfinite from 'swr/infinite'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 

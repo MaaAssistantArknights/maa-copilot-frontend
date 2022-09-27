@@ -1,13 +1,16 @@
 import { Button } from '@blueprintjs/core'
+
+import { useController } from 'react-hook-form'
+
 import {
   DetailedSelect,
   DetailedSelectChoice,
   DetailedSelectItem,
 } from 'components/editor/DetailedSelect'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { useController } from 'react-hook-form'
-import { operatorSkillUsages } from '../../../models/operator'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+
+import { operatorSkillUsages } from '../../../models/operator'
 
 export const EditorOperatorSkillUsage = <
   T extends CopilotDocV1.Operator | CopilotDocV1.ActionSkillUsage,

@@ -8,23 +8,26 @@ import {
   TextArea,
 } from '@blueprintjs/core'
 import { Suggest2 } from '@blueprintjs/select'
+
 import { useLevels } from 'apis/arknights'
 import clsx from 'clsx'
-import { FormField, FormField2 } from 'components/FormField'
-import { HelperText } from 'components/HelperText'
 import Fuse from 'fuse.js'
-import { Level, MinimumRequired } from 'models/operation'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   Control,
   DeepPartial,
   FieldErrors,
-  useController,
-  useForm,
   UseFormHandleSubmit,
   UseFormSetError,
+  useController,
+  useForm,
 } from 'react-hook-form'
+
+import { FormField, FormField2 } from 'components/FormField'
+import { HelperText } from 'components/HelperText'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+import { Level, MinimumRequired } from 'models/operation'
+
 import { EditorActions } from './action/EditorActions'
 import {
   EditorPerformer,

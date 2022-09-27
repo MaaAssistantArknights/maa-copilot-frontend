@@ -1,17 +1,6 @@
 import { Button, Card, TextArea } from '@blueprintjs/core'
 import { DevTool } from '@hookform/devtools'
-import { CardTitle } from 'components/CardTitle'
-import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
-import {
-  EditorActionExecPredicateCooling,
-  EditorActionExecPredicateCostChange,
-  EditorActionExecPredicateKills,
-} from 'components/editor/action/EditorActionExecPredicate'
-import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
-import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
-import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
-import { EditorResetButton } from 'components/editor/EditorResetButton'
-import { FormField, FormField2 } from 'components/FormField'
+
 import { useEffect } from 'react'
 import {
   Control,
@@ -21,6 +10,21 @@ import {
   useForm,
   useWatch,
 } from 'react-hook-form'
+
+import { CardTitle } from 'components/CardTitle'
+import { FormField, FormField2 } from 'components/FormField'
+import { EditorResetButton } from 'components/editor/EditorResetButton'
+import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
+import {
+  EditorActionExecPredicateCooling,
+  EditorActionExecPredicateCostChange,
+  EditorActionExecPredicateKills,
+} from 'components/editor/action/EditorActionExecPredicate'
+import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
+import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
+import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { FactItem } from '../../FactItem'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillUsage } from '../operator/EditorOperatorSkillUsage'
@@ -29,7 +33,6 @@ import {
   EditorActionRearDelay,
 } from './EditorActionDelay'
 import { validateAction } from './validation'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorActionAddProps {
   onSubmit: (action: CopilotDocV1.Action) => void

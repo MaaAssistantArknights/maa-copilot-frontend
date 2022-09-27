@@ -1,4 +1,5 @@
 import Ajv from 'ajv'
+
 import schema from './copilot.schema.json'
 
 const copilotAjv = new Ajv()

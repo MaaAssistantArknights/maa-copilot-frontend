@@ -1,10 +1,13 @@
 import { Button } from '@blueprintjs/core'
+
+import { useEffect } from 'react'
+import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
+
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
-import { useEffect } from 'react'
-import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form'
-import { EditorOperator } from './EditorOperator'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+
+import { EditorOperator } from './EditorOperator'
 
 export interface EditorPerformerOperatorProps {
   operator?: CopilotDocV1.Operator

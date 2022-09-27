@@ -1,9 +1,11 @@
 import { Icon, IconSize } from '@blueprintjs/core'
+
 import clsx from 'clsx'
-import { OpRatingLevelString } from 'models/enums'
-import { Operation } from 'models/operation'
 import { FC } from 'react'
 import Rating from 'react-rating'
+
+import { OpRatingLevelString } from 'models/enums'
+import { Operation } from 'models/operation'
 
 export const OperationRating: FC<{
   operation: Pick<

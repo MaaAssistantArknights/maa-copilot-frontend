@@ -1,5 +1,6 @@
 import { Button, NonIdealState, Spinner } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
+
 import { ComponentType, Suspense, useEffect, useRef } from 'react'
 import { FCC } from 'types'
 

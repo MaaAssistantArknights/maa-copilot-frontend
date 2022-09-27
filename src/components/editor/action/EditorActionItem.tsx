@@ -1,10 +1,14 @@
 import { Card, Elevation, Icon } from '@blueprintjs/core'
+
 import clsx from 'clsx'
-import { CardTitle } from 'components/CardTitle'
-import { FactItem } from 'components/FactItem'
-import { findActionType } from 'models/types'
 import { FC } from 'react'
 import { FCC } from 'types'
+
+import { CardTitle } from 'components/CardTitle'
+import { FactItem } from 'components/FactItem'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+import { findActionType } from 'models/types'
+
 import {
   findOperatorDirection,
   findOperatorSkillUsage,
@@ -12,7 +16,6 @@ import {
 import { formatDuration } from '../../../utils/times'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorActionItemProps extends Partial<SortableItemProps> {
   editing?: boolean

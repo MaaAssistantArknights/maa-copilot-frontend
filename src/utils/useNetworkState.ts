@@ -1,4 +1,5 @@
 import { useState } from 'react'
+
 export interface NetworkState {
   loading: boolean
   error: Error | null

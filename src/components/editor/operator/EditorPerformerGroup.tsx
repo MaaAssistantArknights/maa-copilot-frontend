@@ -1,11 +1,14 @@
 import { Button, Callout, InputGroup } from '@blueprintjs/core'
-import { CardTitle } from 'components/CardTitle'
-import { EditorResetButton } from 'components/editor/EditorResetButton'
-import { FormField } from 'components/FormField'
+
 import { useEffect } from 'react'
-import { SubmitHandler, useForm, UseFormSetError } from 'react-hook-form'
-import { FactItem } from '../../FactItem'
+import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
+
+import { CardTitle } from 'components/CardTitle'
+import { FormField } from 'components/FormField'
+import { EditorResetButton } from 'components/editor/EditorResetButton'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+
+import { FactItem } from '../../FactItem'
 
 export interface EditorPerformerGroupProps {
   group?: CopilotDocV1.Group

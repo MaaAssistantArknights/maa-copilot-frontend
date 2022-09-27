@@ -1,11 +1,13 @@
 import { Button, Icon, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { FormField2 } from 'components/FormField'
-import { actionDocColors } from 'models/operator'
+
 import { useController } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
+
+import { FormField2 } from 'components/FormField'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+import { actionDocColors } from 'models/operator'
 
 interface EditorActionDocColorProps
   extends SetOptional<EditorFieldProps<CopilotDocV1.Action, string>, 'name'> {}

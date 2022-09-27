@@ -1,7 +1,8 @@
+import useSWR from 'swr'
+
 import type { Operator, Version } from 'models/arknights'
 import type { Response } from 'models/network'
 import type { Level } from 'models/operation'
-import useSWR from 'swr'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 

@@ -1,4 +1,5 @@
 import { IToastProps } from '@blueprintjs/core'
+
 import { AppToaster } from 'components/Toaster'
 
 export type MessageFormatter = (error: any) => string

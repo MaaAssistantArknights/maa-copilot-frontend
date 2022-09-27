@@ -1,6 +1,8 @@
 import { Button, Drawer } from '@blueprintjs/core'
-import { OperationUploader } from 'components/uploader/OperationUploader'
+
 import { FC, useState } from 'react'
+
+import { OperationUploader } from 'components/uploader/OperationUploader'
 
 export const OperationUploaderLauncher: FC = () => {
   const [uploaderActive, setUploaderActive] = useState(false)

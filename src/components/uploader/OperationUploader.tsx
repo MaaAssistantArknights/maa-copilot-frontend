@@ -6,14 +6,15 @@ import {
   H4,
   Icon,
 } from '@blueprintjs/core'
-import ajvLocalizeZh from 'ajv-i18n/localize/zh'
-import { ComponentType, useState } from 'react'
 
+import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 import { useLevels } from 'apis/arknights'
 import { requestOperationUpload } from 'apis/copilotOperation'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { ComponentType, useState } from 'react'
+
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
+import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { copilotSchemaValidator } from 'models/copilot.schema.validator'
 import type { Level } from 'models/operation'
 import { NetworkError } from 'utils/fetcher'

@@ -1,4 +1,5 @@
 import { IconName } from '@blueprintjs/core'
+
 interface ActionType {
   type: 'choice'
   icon: IconName

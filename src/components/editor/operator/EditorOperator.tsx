@@ -1,15 +1,18 @@
 import { MenuItem } from '@blueprintjs/core'
 import { Suggest2 } from '@blueprintjs/select'
+
 import clsx from 'clsx'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { FormField2 } from 'components/FormField'
 import Fuse from 'fuse.js'
-import { OPERATORS } from 'models/generated/operators'
 import { FC, useMemo } from 'react'
 import { Control, FieldValues, FormState, useController } from 'react-hook-form'
+
+import { FormField2 } from 'components/FormField'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+import { OPERATORS } from 'models/generated/operators'
+
 import { EditorOperatorSkill } from './EditorOperatorSkill'
 import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export const EditorOperator: FC<{
   control: Control<CopilotDocV1.Operator>

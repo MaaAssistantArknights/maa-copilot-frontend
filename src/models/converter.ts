@@ -1,6 +1,8 @@
 import camelcaseKeys from 'camelcase-keys'
-import { Operation } from './operation'
+
 import type { CopilotDocV1 } from 'models/copilot.schema'
+
+import { Operation } from './operation'
 
 export function toCopilotOperation(
   apiOperation: Operation,

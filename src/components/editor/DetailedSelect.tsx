@@ -1,5 +1,6 @@
 import { Classes, H6, Icon, IconName, MenuItem } from '@blueprintjs/core'
 import { Select2, Select2Props } from '@blueprintjs/select'
+
 import { FCC } from 'types'
 
 export type DetailedSelectItem =

@@ -1,11 +1,14 @@
 import { Button, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+
 import { useController } from 'react-hook-form'
 import { SetOptional } from 'type-fest'
+
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { operatorDirections } from '../../../models/operator'
 import { FormField2 } from '../../FormField'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 interface EditorActionOperatorDirectionProps
   extends SetOptional<

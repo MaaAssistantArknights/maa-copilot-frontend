@@ -8,13 +8,16 @@ import {
   useSensors,
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+
 import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
+
+import type { CopilotDocV1 } from 'models/copilot.schema'
+
 import { useEditableFields } from '../../../utils/useEditableFields'
 import { Sortable } from '../../dnd'
 import { EditorActionAdd } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 
 export interface EditorActionsProps {
   control: Control<CopilotDocV1.Operation>

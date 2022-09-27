@@ -1,12 +1,15 @@
 import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
+
 import clsx from 'clsx'
-import { CardTitle } from 'components/CardTitle'
-import { FactItem } from 'components/FactItem'
-import { findActionType } from 'models/types'
 import { FC, useMemo } from 'react'
 import { FCC } from 'types'
-import { formatDuration } from '../../utils/times'
+
+import { CardTitle } from 'components/CardTitle'
+import { FactItem } from 'components/FactItem'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+import { findActionType } from 'models/types'
+
+import { formatDuration } from '../../utils/times'
 
 const actionKey = (action: CopilotDocV1.Action, index?: number) =>
   `${index}_${action.type}_${'name' in action ? action.name : ''}_${

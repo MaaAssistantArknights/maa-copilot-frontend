@@ -1,7 +1,9 @@
 import { H4, Tag } from '@blueprintjs/core'
+
+import { FC } from 'react'
+
 import { EDifficulty } from 'components/entity/EDifficulty'
 import { Level, OpDifficulty } from 'models/operation'
-import { FC } from 'react'
 
 export const ELevel: FC<{
   className?: string

@@ -14,23 +14,26 @@ import {
   Tabs,
 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
+
 import { requestActivation, requestActivationCode } from 'apis/auth'
-import { LoginPanel } from 'components/account/LoginPanel'
-import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useMemo, useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
+
+import { LoginPanel } from 'components/account/LoginPanel'
+import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { useNetworkState } from 'utils/useNetworkState'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
-import { RegisterPanel } from './account/RegisterPanel'
+
 import { FormField2 } from './FormField'
 import {
   GlobalErrorBoundary,
   withGlobalErrorBoundary,
 } from './GlobalErrorBoundary'
 import { AppToaster } from './Toaster'
+import { RegisterPanel } from './account/RegisterPanel'
 
 interface ActivationFormValues {
   code: string
