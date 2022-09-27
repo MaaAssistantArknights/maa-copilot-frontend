@@ -16,7 +16,7 @@ import {
 import { useOperation } from '../apis/query'
 import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
-import { convertOperation } from '../components/editor/converter'
+import { toQualifiedOperation } from '../components/editor/converter'
 import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { NetworkError } from '../utils/fetcher'
@@ -45,7 +45,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
       try {
         setUploading(true)
 
-        const operation = convertOperation(raw, levels)
+        const operation = toQualifiedOperation(raw, levels)
 
         if (!validateOperation(operation, setError)) {
           return

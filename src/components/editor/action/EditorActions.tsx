@@ -9,12 +9,12 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
+import { uniqueId } from 'lodash-es'
 import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { useEditableFields } from '../../../utils/useEditableFields'
 import { Sortable } from '../../dnd'
 import { EditorActionAdd } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
@@ -23,30 +23,37 @@ export interface EditorActionsProps {
   control: Control<CopilotDocV1.Operation>
 }
 
+const getId = (action: CopilotDocV1.Action) => {
+  // normally the id will never be undefined, but we need to make TS happy as well as handing edge cases
+  return (action._id ??= uniqueId())
+}
+
 export const EditorActions = ({ control }: EditorActionsProps) => {
-  const [draggingAction, setDraggingAction] = useState<typeof fields[number]>()
+  const [draggingAction, setDraggingAction] = useState<CopilotDocV1.Action>()
 
   const { fields, append, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
 
-  const {
-    editingField: editingAction,
-    setEditingField: setEditingAction,
-    reserveEditingField: reserveEditingAction,
-  } = useEditableFields(fields)
+  // upcast to prevent misuse of `.id`
+  const actions: CopilotDocV1.Action[] = fields
+
+  const [editingAction, setEditingAction] = useState<CopilotDocV1.Action>()
+
+  const isEditing = (action: CopilotDocV1.Action) =>
+    editingAction?._id === action._id
 
   const sensors = useSensors(useSensor(PointerSensor))
 
   const handleDragStart = ({ active }: DragEndEvent) => {
-    setDraggingAction(fields.find((action) => action.id === active.id))
+    setDraggingAction(actions.find((action) => getId(action) === active.id))
   }
 
   const handleDragOver = ({ active, over }: DragEndEvent) => {
     if (over && active.id !== over.id) {
-      const oldIndex = fields.findIndex((el) => el.id === active.id)
-      const newIndex = fields.findIndex((el) => el.id === over.id)
+      const oldIndex = actions.findIndex((el) => getId(el) === active.id)
+      const newIndex = actions.findIndex((el) => getId(el) === over.id)
       if (oldIndex !== -1 && newIndex !== -1) move(oldIndex, newIndex)
     }
   }
@@ -57,12 +64,15 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
 
   const onSubmit = (action: CopilotDocV1.Action) => {
     if (editingAction) {
-      const index = fields.indexOf(editingAction)
+      const index = actions.findIndex((field) => isEditing(field))
       if (index !== -1) {
+        action._id = getId(editingAction)
         update(index, action)
-        reserveEditingAction(index)
+      } else {
+        console.warn('Could not locate editing action.')
       }
     } else {
+      action._id = uniqueId()
       append(action)
     }
   }
@@ -84,20 +94,20 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
           onDragCancel={handleDragEnd}
         >
           <SortableContext
-            items={fields}
+            items={actions.map(getId)}
             strategy={verticalListSortingStrategy}
           >
             <ul>
-              {fields.map((field, i) => (
-                <li key={field.id} className="mt-2">
-                  <Sortable id={field.id}>
+              {actions.map((action, i) => (
+                <li key={getId(action)} className="mt-2">
+                  <Sortable id={getId(action)}>
                     {(attrs) => (
                       <EditorActionItem
-                        action={field}
-                        editing={editingAction === field}
+                        action={action}
+                        editing={isEditing(action)}
                         onEdit={() =>
                           setEditingAction(
-                            editingAction === field ? undefined : field,
+                            isEditing(action) ? undefined : action,
                           )
                         }
                         onRemove={() => remove(i)}
@@ -113,14 +123,14 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
           <DragOverlay>
             {draggingAction && (
               <EditorActionItem
-                editing={editingAction === draggingAction}
+                editing={isEditing(draggingAction)}
                 action={draggingAction}
               />
             )}
           </DragOverlay>
         </DndContext>
 
-        {fields.length === 0 && (
+        {actions.length === 0 && (
           <NonIdealState title="暂无动作" className="my-4" icon="inbox" />
         )}
       </div>

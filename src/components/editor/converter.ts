@@ -1,16 +1,43 @@
-import { FieldArrayWithId } from 'react-hook-form'
+import { compact, uniqueId } from 'lodash-es'
 import snakeCaseKeys from 'snakecase-keys'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import type { Level } from 'models/operation'
+import { MinimumRequired } from 'models/operation'
 
-import { WithTempId } from '../../types'
+/**
+ * Creates an operation that can be used in editor. Used for importing.
+ */
+export function toEditableOperation(
+  operation: CopilotDocV1.Operation,
+): CopilotDocV1.Operation {
+  operation = JSON.parse(JSON.stringify(operation))
 
-export function convertOperation(
+  // generate IDs
+  compact(
+    [
+      operation.actions,
+      operation.opers,
+      operation.groups,
+      operation.groups?.map(({ opers }) => opers),
+    ].flat(2),
+  ).forEach((item) => {
+    item._id = uniqueId()
+  })
+
+  return operation
+}
+
+/**
+ * Creates an operation that satisfies the schema. Used for exporting.
+ */
+export function toQualifiedOperation(
   operation: CopilotDocV1.Operation,
   levels: Level[],
 ): CopilotDocV1.OperationSnakeCased {
   operation = JSON.parse(JSON.stringify(operation))
+
+  operation.minimumRequired ||= MinimumRequired.V4_0_0
 
   operation.doc ||= {}
 
@@ -28,33 +55,18 @@ export function convertOperation(
 
   operation.doc.details ||= operation.doc.title
 
-  if (operation.opers) {
-    operation.opers = sanitizePerformer(operation.opers)
-  }
-
-  if (operation.groups) {
-    operation.groups = sanitizePerformer(operation.groups)
-  }
+  // strip IDs
+  compact(
+    [
+      operation.actions,
+      operation.opers,
+      operation.groups,
+      operation.groups?.map(({ opers }) => opers),
+    ].flat(2),
+  ).forEach((item) => {
+    delete item._id
+  })
 
   // something's wrong with the typing
   return snakeCaseKeys(operation) as CopilotDocV1.OperationSnakeCased
-}
-
-function sanitizePerformer<
-  T extends CopilotDocV1.Group | CopilotDocV1.Operator,
->(performers: T[]) {
-  return (performers as (FieldArrayWithId & WithTempId<T>)[]).map(
-    ({ id, _id, ...performer }) => {
-      const opers = (performer as CopilotDocV1.Group).opers
-
-      if (opers) {
-        return {
-          ...performer,
-          opers: sanitizePerformer(opers),
-        }
-      }
-
-      return performer
-    },
-  )
 }
