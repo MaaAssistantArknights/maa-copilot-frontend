@@ -15,6 +15,8 @@ import { OperationList } from 'components/OperationList'
 
 import { OperatorSelect } from './OperatorSelect'
 import { withSuspensable } from './Suspensable'
+import { useAtom } from 'jotai'
+import { authAtom } from '../store/auth'
 
 export const Operations: ComponentType = withSuspensable(() => {
   const [queryParams, setQueryParams] = useState<UseOperationsParams>({
@@ -24,6 +26,7 @@ export const Operations: ComponentType = withSuspensable(() => {
     () => debounce(setQueryParams, 250),
     [],
   )
+  const [authState] = useAtom(authAtom)
 
   return (
     <>
@@ -83,7 +86,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             }
           />
         </FormGroup>
-        <FormGroup label="排序">
+        <FormGroup label="排序" contentClassName="flex flex-wrap">
           <ButtonGroup>
             <Button
               icon="flame"
@@ -113,6 +116,19 @@ export const Operations: ComponentType = withSuspensable(() => {
               访问量
             </Button>
           </ButtonGroup>
+
+          {!!authState.token && (
+            <Button
+              className="ml-auto"
+              icon="user"
+              active={queryParams.byMyself}
+              onClick={() => {
+                setQueryParams((old) => ({ ...old, byMyself: !old.byMyself }))
+              }}
+            >
+              看看我的
+            </Button>
+          )}
         </FormGroup>
       </Card>
 

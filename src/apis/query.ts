@@ -18,6 +18,7 @@ export interface UseOperationsParams {
   document?: string
   levelKeyword?: string
   operator?: string
+  byMyself?: boolean
 }
 
 export const useOperations = ({
@@ -25,6 +26,7 @@ export const useOperations = ({
   document,
   levelKeyword,
   operator,
+  byMyself,
 }: UseOperationsParams) => {
   const isIdQuery = document?.startsWith(maaProtocol)
 
@@ -56,6 +58,9 @@ export const useOperations = ({
       }
       if (operator) {
         searchParams.set('operator', operator)
+      }
+      if (byMyself) {
+        searchParams.set('uploader_id', 'me')
       }
 
       return `/copilot/query?${searchParams.toString()}`
