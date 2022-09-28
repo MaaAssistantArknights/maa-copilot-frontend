@@ -147,13 +147,18 @@ export const StageNameInput: FC<{
   )
 }
 
-export const OperationEditor: FC<{
+export interface OperationEditorProps {
   operation?: CopilotDocV1.Operation
-  submitElement: (
+  toolbar: (
     handleSubmit: UseFormHandleSubmit<CopilotDocV1.Operation>,
     setError: UseFormSetError<CopilotDocV1.Operation>,
   ) => ReactNode
-}> = ({ operation, submitElement }) => {
+}
+
+export const OperationEditor: FC<OperationEditorProps> = ({
+  operation,
+  toolbar,
+}) => {
   const {
     control,
     handleSubmit,
@@ -195,7 +200,7 @@ export const OperationEditor: FC<{
 
         <div className="flex-1" />
 
-        {submitElement(wrappedHandleSubmit, setError)}
+        {toolbar(wrappedHandleSubmit, setError)}
       </div>
 
       {globalError?.message && (
