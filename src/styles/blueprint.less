@@ -13,7 +13,6 @@ body {
   }
 
   .bp4-input {
-    @apply placeholder:italic placeholder:text-slate-400;
     @apply block w-full py-2 pl-3 pr-3;
     @apply bg-white shadow-sm border border-slate-400 rounded-md border-solid;
     @apply focus:border-violet-500;
@@ -21,6 +20,12 @@ body {
     &:focus {
       box-shadow: 0 0 5px @primary-color;
     }
+  }
+
+  .bp4-input,
+  // class of TagInput (also used by MultiSelect2)
+  .bp4-input-ghost {
+    @apply placeholder:italic placeholder:text-slate-400;
   }
 
   .bp4-file-upload-input {

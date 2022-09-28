@@ -6,19 +6,24 @@ import {
   InputGroup,
 } from '@blueprintjs/core'
 
-import { OrderBy } from 'apis/query'
+import { UseOperationsParams } from 'apis/query'
 import { debounce } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 
+import { OperatorSelect } from './OperatorSelect'
 import { withSuspensable } from './Suspensable'
 
 export const Operations: ComponentType = withSuspensable(() => {
-  const [query, setQuery] = useState('')
-  const [orderBy, setOrderBy] = useState<OrderBy>('hot')
-  const debouncedSetQuery = useMemo(() => debounce(setQuery, 250), [])
+  const [queryParams, setQueryParams] = useState<UseOperationsParams>({
+    orderBy: 'hot',
+  })
+  const debouncedSetQueryParams = useMemo(
+    () => debounce(setQueryParams, 250),
+    [],
+  )
 
   return (
     <>
@@ -27,43 +32,82 @@ export const Operations: ComponentType = withSuspensable(() => {
           查找作业
         </CardTitle>
         <FormGroup
+          helperText={
+            queryParams.operator?.length
+              ? '点击干员标签以标记为排除'
+              : undefined
+          }
           label="搜索"
-          helperText="键入关卡名、关卡类型、关卡编号以搜索"
           className="mt-2"
         >
           <InputGroup
-            className="w-1/3"
-            placeholder="搜索..."
+            className="[&>input]:!rounded-md"
+            placeholder="标题、描述、神秘代码"
             leftIcon="search"
             size={64}
             large
+            type="search"
             enterKeyHint="search"
-            onChange={(e) => debouncedSetQuery(e.target.value.trim())}
+            onChange={(e) =>
+              debouncedSetQueryParams((old) => ({
+                ...old,
+                document: e.target.value.trim(),
+              }))
+            }
+            onBlur={() => debouncedSetQueryParams.flush()}
+          />
+          <InputGroup
+            className="mt-2 [&>input]:!rounded-md"
+            placeholder="关卡名、关卡类型、关卡编号"
+            leftIcon="area-of-interest"
+            size={64}
+            large
+            type="search"
+            enterKeyHint="search"
+            onChange={(e) =>
+              debouncedSetQueryParams((old) => ({
+                ...old,
+                levelKeyword: e.target.value.trim(),
+              }))
+            }
+            onBlur={() => debouncedSetQueryParams.flush()}
+          />
+          <OperatorSelect
+            className="mt-2"
+            operators={queryParams.operator?.split(',') || []}
+            onChange={(operators) =>
+              setQueryParams((old) => ({
+                ...old,
+                operator: operators.join(','),
+              }))
+            }
           />
         </FormGroup>
         <FormGroup label="排序">
           <ButtonGroup>
             <Button
               icon="flame"
-              active={orderBy === 'hot'}
+              active={queryParams.orderBy === 'hot'}
               onClick={() => {
-                setOrderBy('hot')
+                setQueryParams((old) => ({ ...old, orderBy: 'hot' }))
               }}
             >
               热度
             </Button>
             <Button
               icon="time"
-              active={orderBy === 'id'}
-              onClick={() => setOrderBy('id')}
+              active={queryParams.orderBy === 'id'}
+              onClick={() => {
+                setQueryParams((old) => ({ ...old, orderBy: 'id' }))
+              }}
             >
               最新
             </Button>
             <Button
               icon="eye-open"
-              active={orderBy === 'views'}
+              active={queryParams.orderBy === 'views'}
               onClick={() => {
-                setOrderBy('views')
+                setQueryParams((old) => ({ ...old, orderBy: 'views' }))
               }}
             >
               访问量
@@ -73,7 +117,7 @@ export const Operations: ComponentType = withSuspensable(() => {
       </Card>
 
       <div className="tabular-nums">
-        <OperationList orderBy={orderBy} query={query} />
+        <OperationList {...queryParams} />
       </div>
     </>
   )
