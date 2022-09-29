@@ -13,14 +13,22 @@ export type OrderBy = 'views' | 'hot' | 'id'
 
 const maaProtocol = 'maa://'
 
+export interface UseOperationsParams {
+  orderBy: OrderBy
+  document?: string
+  levelKeyword?: string
+  operator?: string
+  byMyself?: boolean
+}
+
 export const useOperations = ({
   orderBy,
-  query,
-}: {
-  orderBy: OrderBy
-  query: string
-}) => {
-  const isIdQuery = query.startsWith(maaProtocol)
+  document,
+  levelKeyword,
+  operator,
+  byMyself,
+}: UseOperationsParams) => {
+  const isIdQuery = document?.startsWith(maaProtocol)
 
   const {
     data: listData,
@@ -42,8 +50,17 @@ export const useOperations = ({
         ((previousPageData?.data?.page || 0) + 1).toString(),
       )
       searchParams.set('order_by', orderBy)
-      if (query) {
-        searchParams.set('document', query)
+      if (document) {
+        searchParams.set('document', document)
+      }
+      if (levelKeyword) {
+        searchParams.set('level_keyword', levelKeyword)
+      }
+      if (operator) {
+        searchParams.set('operator', operator)
+      }
+      if (byMyself) {
+        searchParams.set('uploader_id', 'me')
       }
 
       return `/copilot/query?${searchParams.toString()}`
@@ -51,7 +68,7 @@ export const useOperations = ({
   )
 
   const { data: singleData } = useSWR<Response<Operation>>(
-    isIdQuery && `/copilot/get/${query.slice(maaProtocol.length)}`,
+    isIdQuery && `/copilot/get/${document!.slice(maaProtocol.length)}`,
   )
 
   const isReachingEnd = isIdQuery || listData?.some((el) => !el.data.hasNext)
@@ -63,7 +80,7 @@ export const useOperations = ({
 
   useEffect(() => {
     setSize(1)
-  }, [orderBy, query])
+  }, [orderBy, document, levelKeyword, operator])
 
   return { operations, size, setSize, isValidating, isReachingEnd }
 }
