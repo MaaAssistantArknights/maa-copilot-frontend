@@ -37,11 +37,11 @@ export const Operations: ComponentType = withSuspensable(() => {
         <FormGroup
           helperText={
             queryParams.operator?.length
-              ? '点击干员标签以标记为排除'
+              ? '点击干员标签以标记为排除该干员'
               : undefined
           }
           label="搜索"
-          className="mt-2"
+          className="mt-2 max-w-md"
         >
           <InputGroup
             className="[&>input]:!rounded-md"
@@ -86,7 +86,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             }
           />
         </FormGroup>
-        <FormGroup label="排序" contentClassName="flex flex-wrap">
+        <FormGroup label="排序" contentClassName="flex flex-wrap gap-y-2">
           <ButtonGroup>
             <Button
               icon="flame"
@@ -121,6 +121,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             <Button
               className="ml-auto"
               icon="user"
+              title="只显示我发布的作业"
               active={queryParams.byMyself}
               onClick={() => {
                 setQueryParams((old) => ({ ...old, byMyself: !old.byMyself }))

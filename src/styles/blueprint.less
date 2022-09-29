@@ -20,6 +20,10 @@ body {
     &:focus {
       box-shadow: 0 0 5px @primary-color;
     }
+
+    &[type='search' i]::-webkit-search-cancel-button {
+      @apply mr-0 cursor-pointer;
+    }
   }
 
   .bp4-input,
