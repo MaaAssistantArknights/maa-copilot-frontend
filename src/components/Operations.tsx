@@ -7,16 +7,16 @@ import {
 } from '@blueprintjs/core'
 
 import { UseOperationsParams } from 'apis/query'
+import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 
+import { authAtom } from '../store/auth'
 import { OperatorSelect } from './OperatorSelect'
 import { withSuspensable } from './Suspensable'
-import { useAtom } from 'jotai'
-import { authAtom } from '../store/auth'
 
 export const Operations: ComponentType = withSuspensable(() => {
   const [queryParams, setQueryParams] = useState<UseOperationsParams>({

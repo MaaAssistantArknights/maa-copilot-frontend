@@ -1,8 +1,10 @@
 import { Button, Drawer, Icon } from '@blueprintjs/core'
-import { FC, useRef, useState, useMemo } from 'react'
+
+import { FC, useMemo, useRef, useState } from 'react'
+
 import { CopilotDocV1 } from '../../models/copilot.schema'
-import { OperationDrawer } from '../drawer/OperationDrawer'
 import { AppToaster } from '../Toaster'
+import { OperationDrawer } from '../drawer/OperationDrawer'
 
 export const SourceViewerButton: FC<{
   className?: string

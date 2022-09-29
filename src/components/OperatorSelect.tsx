@@ -1,8 +1,10 @@
 import { MenuItem } from '@blueprintjs/core'
 import { MultiSelect2 } from '@blueprintjs/select'
+
 import Fuse from 'fuse.js'
 import { compact } from 'lodash-es'
 import { FC, useMemo, useRef } from 'react'
+
 import { OPERATORS } from '../models/generated/operators'
 import { OperatorAvatar } from './editor/operator/EditorOperator'
 

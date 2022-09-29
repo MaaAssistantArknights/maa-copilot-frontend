@@ -3,11 +3,11 @@ import { Button } from '@blueprintjs/core'
 import { ComponentType, useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 
+import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import {
   OperationEditor,
   OperationEditorProps,
 } from 'components/editor/OperationEditor'
-import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { useLevels } from '../apis/arknights'
@@ -16,11 +16,11 @@ import {
   requestOperationUpload,
 } from '../apis/copilotOperation'
 import { useOperation } from '../apis/query'
-import { toQualifiedOperation } from '../components/editor/converter'
-import { SourceViewerButton } from '../components/editor/SourceViewerButton'
-import { validateOperation } from '../components/editor/validation'
 import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
+import { SourceViewerButton } from '../components/editor/SourceViewerButton'
+import { toQualifiedOperation } from '../components/editor/converter'
+import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { NetworkError } from '../utils/fetcher'
 

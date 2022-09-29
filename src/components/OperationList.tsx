@@ -1,6 +1,6 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
-import { useOperations, UseOperationsParams } from 'apis/query'
+import { UseOperationsParams, useOperations } from 'apis/query'
 import { ComponentType } from 'react'
 
 import { OperationCard } from './OperationCard'
