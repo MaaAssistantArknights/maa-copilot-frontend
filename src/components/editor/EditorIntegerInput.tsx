@@ -15,14 +15,17 @@ export interface EditorIntegerInputProps<T extends FieldValues>
 export const EditorIntegerInput = <T extends FieldValues>({
   name,
   control,
+  rules,
   NumericInputProps,
+  ...controllerProps
 }: EditorIntegerInputProps<T>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
     name,
     control,
-    rules: { min: { value: 0, message: '最小为 0' } },
+    ...controllerProps,
+    rules: { min: { value: 0, message: '最小为 0' }, ...rules },
   })
 
   return (
@@ -34,15 +37,12 @@ export const EditorIntegerInput = <T extends FieldValues>({
       inputRef={ref}
       onValueChange={(value) => {
         if (
-          Number.isNaN(value) ||
-          !Number.isFinite(value) ||
-          !Number.isSafeInteger(value) ||
-          value === 0
+          !Number.isNaN(value) &&
+          Number.isFinite(value) &&
+          Number.isSafeInteger(value)
         ) {
-          onChange(null)
-          return
+          onChange(value)
         }
-        onChange(value)
       }}
       onBlur={onBlur}
       value={value ?? ''}
