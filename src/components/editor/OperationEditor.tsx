@@ -28,6 +28,7 @@ import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level, MinimumRequired } from 'models/operation'
 
+import { FieldResetButton } from '../FieldResetButton'
 import { EditorActions } from './action/EditorActions'
 import {
   EditorPerformer,
@@ -70,6 +71,9 @@ export const StageNameInput: FC<{
     })
   }, [levels])
 
+  // take over the query state so that we are able to reset it
+  const [query, setQuery] = useState('')
+
   const selectedLevel = useMemo(
     () =>
       value
@@ -82,7 +86,7 @@ export const StageNameInput: FC<{
             width: 0,
             height: 0,
           }
-        : undefined,
+        : null,
     [levels, value],
   )
 
@@ -123,6 +127,8 @@ export const StageNameInput: FC<{
           itemListPredicate={(query) =>
             query ? fuse.search(query).map((el) => el.item) : levels
           }
+          query={query}
+          onQueryChange={setQuery}
           selectedItem={selectedLevel}
           onItemSelect={(item) => {
             onChange(item.levelId)
@@ -137,6 +143,15 @@ export const StageNameInput: FC<{
             placeholder: '关卡',
             large: true,
             onBlur,
+            rightElement: (
+              <FieldResetButton
+                value={value}
+                onReset={() => {
+                  setQuery('')
+                  onChange(undefined)
+                }}
+              />
+            ),
           }}
           popoverProps={{
             placement: 'bottom-start',

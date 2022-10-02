@@ -4,6 +4,8 @@ import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
+import { FieldResetButton } from '../FieldResetButton'
+
 export interface EditorIntegerInputProps<T extends FieldValues>
   extends EditorFieldProps<T, number> {
   NumericInputProps: Omit<
@@ -46,6 +48,7 @@ export const EditorIntegerInput = <T extends FieldValues>({
       }}
       onBlur={onBlur}
       value={value ?? ''}
+      rightElement={<FieldResetButton value={value} onReset={onChange} />}
       // seems that NumericInput component have a bug where if
       // passed an undefined value, it's just simply not gonna update anymore...
       {...NumericInputProps}

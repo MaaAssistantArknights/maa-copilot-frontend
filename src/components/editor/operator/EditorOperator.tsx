@@ -3,7 +3,7 @@ import { Suggest2 } from '@blueprintjs/select'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { FC, useMemo } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { Control, FieldValues, FormState, useController } from 'react-hook-form'
 
 import { FormField2 } from 'components/FormField'
@@ -11,6 +11,7 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
+import { FieldResetButton } from '../../FieldResetButton'
 import { EditorOperatorSkill } from './EditorOperatorSkill'
 import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
 
@@ -96,6 +97,9 @@ export const EditorOperatorName = <T extends FieldValues>({
     [],
   )
 
+  // take over the query state so that we are able to reset it
+  const [query, setQuery] = useState('')
+
   return (
     <Suggest2<typeof OPERATORS[number]>
       items={OPERATORS}
@@ -119,6 +123,8 @@ export const EditorOperatorName = <T extends FieldValues>({
         }
         return fuse.search(query).map((el) => el.item)
       }}
+      query={query}
+      onQueryChange={setQuery}
       onItemSelect={(item) => {
         onChange(item.name)
       }}
@@ -143,6 +149,15 @@ export const EditorOperatorName = <T extends FieldValues>({
         placeholder: `${entityName}名`,
         large: true,
         onBlur,
+        rightElement: (
+          <FieldResetButton
+            value={value}
+            onReset={() => {
+              setQuery('')
+              onChange(undefined)
+            }}
+          />
+        ),
       }}
       popoverProps={{
         placement: 'bottom-start',
