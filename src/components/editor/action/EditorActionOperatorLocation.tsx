@@ -82,6 +82,7 @@ export const EditorActionOperatorLocation = ({
               onReset={() => reset(transform.fromX(undefined))}
             />
           }
+          onFocus={(e) => e.target.select()}
         />
         <InputGroup
           onChange={(v) =>
@@ -95,6 +96,7 @@ export const EditorActionOperatorLocation = ({
               onReset={() => reset(transform.fromY(undefined))}
             />
           }
+          onFocus={(e) => e.target.select()}
         />
       </div>
     </FormField2>
