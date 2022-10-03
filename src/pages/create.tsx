@@ -48,6 +48,8 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
       const exportOperation = () =>
         new Promise<CopilotDocV1.OperationSnakeCased | undefined>((resolve) => {
           handleSubmit((raw) => {
+            console.log('[Editor] submitting:', JSON.stringify(raw))
+
             try {
               const operation = toQualifiedOperation(raw, levels)
 
