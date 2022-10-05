@@ -1,21 +1,21 @@
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
-import { UseFormSetError } from 'react-hook-form'
+import { DeepPartial, UseFormSetError } from 'react-hook-form'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
 
 export function validateOperation(
-  operation: CopilotDocV1.OperationSnakeCased,
+  operation: DeepPartial<CopilotDocV1.OperationSnakeCased>,
   setError: UseFormSetError<CopilotDocV1.Operation>,
 ): boolean {
   const emptyGroup = operation.groups?.find(
-    (group) => !group.opers || group.opers.length === 0,
+    (group) => (group?.opers?.length || 0) === 0,
   )
 
   if (emptyGroup) {
     setError('global' as any, {
-      message: `干员组${emptyGroup.name}不能为空`,
+      message: `干员组“${emptyGroup.name}”不能为空`,
     })
     return false
   }

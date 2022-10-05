@@ -15,18 +15,15 @@ import Fuse from 'fuse.js'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   Control,
-  DeepPartial,
   FieldErrors,
-  UseFormHandleSubmit,
-  UseFormSetError,
+  UseFormReturn,
   useController,
-  useForm,
 } from 'react-hook-form'
 
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
-import { Level, MinimumRequired } from 'models/operation'
+import { Level } from 'models/operation'
 
 import { FieldResetButton } from '../FieldResetButton'
 import { EditorActions } from './action/EditorActions'
@@ -34,10 +31,6 @@ import {
   EditorPerformer,
   EditorPerformerProps,
 } from './operator/EditorPerformer'
-
-const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
-  minimumRequired: MinimumRequired.V4_0_0,
-}
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
@@ -163,45 +156,41 @@ export const StageNameInput: FC<{
 }
 
 export interface OperationEditorProps {
-  operation?: CopilotDocV1.Operation
-  toolbar: (
-    handleSubmit: UseFormHandleSubmit<CopilotDocV1.Operation>,
-    setError: UseFormSetError<CopilotDocV1.Operation>,
-  ) => ReactNode
+  form: UseFormReturn<CopilotDocV1.Operation>
+  toolbar: ReactNode
 }
 
 export const OperationEditor: FC<OperationEditorProps> = ({
-  operation,
+  form: {
+    control,
+    watch,
+    getValues,
+    setValue,
+    formState: { errors },
+  },
   toolbar,
 }) => {
-  const {
-    control,
-    handleSubmit,
-    setError,
-    clearErrors,
-    reset,
-    formState: { errors },
-  } = useForm<CopilotDocV1.Operation>({
-    defaultValues: defaultOperation,
-  })
+  const levels = useLevels({ suspense: false }).data?.data || []
 
+  const stageName = watch('stageName')
+
+  // set default title if not set
   useEffect(() => {
-    if (operation) {
-      reset(operation)
+    if (!getValues('doc.title')) {
+      const level = levels.find(({ levelId }) => levelId === stageName)
+
+      if (level) {
+        setValue(
+          'doc.title',
+          [level.catTwo, level.catThree, level.name]
+            .filter(Boolean)
+            .join(' - '),
+        )
+      }
     }
-  }, [operation])
+  }, [stageName, levels])
 
   const globalError = (errors as FieldErrors<{ global: void }>).global
-
-  const wrappedHandleSubmit: typeof handleSubmit = (onValid, onInvalid) => {
-    const handler = handleSubmit(onValid, onInvalid)
-
-    return () => {
-      // need to manually clear the `global` error
-      clearErrors()
-      return handler()
-    }
-  }
 
   return (
     <section className="flex flex-col relative h-full pt-4">
@@ -215,7 +204,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 
         <div className="flex-1" />
 
-        {toolbar(wrappedHandleSubmit, setError)}
+        {toolbar}
       </div>
 
       {globalError?.message && (
@@ -235,7 +224,9 @@ export const OperationEditor: FC<OperationEditorProps> = ({
               label="作业标题"
               field="doc.title"
               control={control}
+              error={errors.doc?.title}
               ControllerProps={{
+                rules: { required: '必须填写标题' },
                 render: ({ field }) => (
                   <InputGroup
                     large
@@ -257,6 +248,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
               label="作业描述"
               field="doc.details"
               control={control}
+              error={errors.doc?.details}
               ControllerProps={{
                 render: ({ field }) => (
                   <TextArea

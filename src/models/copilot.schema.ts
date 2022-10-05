@@ -4,7 +4,7 @@
 export namespace CopilotDocV1 {
   export interface Operation {
     actions: Action[]
-    doc?: Doc
+    doc: Doc
     groups?: Group[]
     minimumRequired: string
     opers?: Operator[]
@@ -94,7 +94,7 @@ export namespace CopilotDocV1 {
   export interface Doc {
     details?: string
     detailsColor?: string
-    title?: string
+    title: string
     titleColor?: string
   }
 
