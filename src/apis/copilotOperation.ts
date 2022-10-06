@@ -1,8 +1,14 @@
 import { Response } from 'models/network'
 import { jsonRequest } from 'utils/fetcher'
 
+import { Operation } from '../models/operation'
+
 export interface OperationUploadResponse {
   id: string
+}
+
+export const requestGetOperation = (id: string) => {
+  return jsonRequest<Response<Operation>>('/copilot/get/' + id)
 }
 
 export const requestOperationUpload = (content: string) => {

@@ -1,9 +1,11 @@
 import { Button, Icon, Menu, MenuItem } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
-import { FC } from 'react'
+import { FC, useState } from 'react'
 
 import { AppToaster } from '../../Toaster'
+import { FileImporter } from './FileImporter'
+import { ShortCodeImporter } from './ShortCodeImporter'
 
 interface SourceEditorHeaderProps {
   text: string
@@ -14,6 +16,13 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
   text,
   onChange,
 }) => {
+  const [importDropdownOpen, setImportDropdownOpen] = useState(false)
+
+  const handleImport = (text: string) => {
+    setImportDropdownOpen(false)
+    onChange(text)
+  }
+
   const handleCopy = () => {
     navigator.clipboard.writeText(text)
 
@@ -50,10 +59,12 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
       <Popover2
         minimal
         position="bottom-left"
+        isOpen={importDropdownOpen}
+        onClose={() => setImportDropdownOpen(false)}
         content={
           <Menu>
-            <MenuItem disabled icon="document-open" text="导入本地文件..." />
-            <MenuItem disabled icon="backlink" text="导入神秘代码..." />
+            <FileImporter onImport={handleImport} />
+            <ShortCodeImporter onImport={handleImport} />
           </Menu>
         }
       >
@@ -62,6 +73,7 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
           icon="import"
           text="导入"
           rightIcon="caret-down"
+          onClick={() => setImportDropdownOpen(!importDropdownOpen)}
         />
       </Popover2>
 

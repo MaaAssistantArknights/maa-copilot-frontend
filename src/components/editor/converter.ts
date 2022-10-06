@@ -12,8 +12,8 @@ import { findActionType } from '../../models/types'
  * Creates an operation that can be used in editor. Used for importing.
  */
 export function toEditableOperation(
-  operation: CopilotDocV1.Operation,
-): CopilotDocV1.Operation {
+  operation: DeepPartial<CopilotDocV1.Operation>,
+): DeepPartial<CopilotDocV1.Operation> {
   operation = JSON.parse(JSON.stringify(operation))
 
   // generate IDs
@@ -22,18 +22,18 @@ export function toEditableOperation(
       operation.actions,
       operation.opers,
       operation.groups,
-      operation.groups?.map(({ opers }) => opers),
+      operation.groups?.map((group) => group?.opers),
     ].flat(2),
   ).forEach((item) => {
     item._id = uniqueId()
   })
 
-  operation.actions.forEach((action) => {
-    const type = findActionType(action.type)
+  operation.actions?.forEach((action) => {
+    const type = findActionType(action?.type)
 
     // normalize action type, e.g. '部署' -> 'Deploy'
     if (type.value !== 'Unknown') {
-      action.type = type.value
+      action!.type = type.value
     }
 
     if (type.value === 'Deploy') {

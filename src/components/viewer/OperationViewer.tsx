@@ -38,6 +38,7 @@ import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { toCopilotOperation } from '../../models/converter'
+import { toShortCode } from '../../models/shortCode'
 
 const ManageMenu: FC<{
   operation: Operation
@@ -129,7 +130,7 @@ export const OperationViewer: ComponentType<{
         return
       }
 
-      const shortCode = `maa://${operation.id}`
+      const shortCode = toShortCode(operation.id)
       navigator.clipboard.writeText(shortCode)
 
       AppToaster.show({

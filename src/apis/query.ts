@@ -9,9 +9,9 @@ import type {
   PaginatedResponse,
 } from 'models/operation'
 
-export type OrderBy = 'views' | 'hot' | 'id'
+import { parseShortCode, shortCodeProtocol } from '../models/shortCode'
 
-const maaProtocol = 'maa://'
+export type OrderBy = 'views' | 'hot' | 'id'
 
 export interface UseOperationsParams {
   orderBy: OrderBy
@@ -28,7 +28,7 @@ export const useOperations = ({
   operator,
   byMyself,
 }: UseOperationsParams) => {
-  const isIdQuery = document?.startsWith(maaProtocol)
+  const isIdQuery = document?.startsWith(shortCodeProtocol)
 
   const {
     data: listData,
@@ -68,7 +68,7 @@ export const useOperations = ({
   )
 
   const { data: singleData } = useSWR<Response<Operation>>(
-    isIdQuery && `/copilot/get/${document!.slice(maaProtocol.length)}`,
+    isIdQuery && `/copilot/get/${parseShortCode(document!) || ''}`,
   )
 
   const isReachingEnd = isIdQuery || listData?.some((el) => !el.data.hasNext)

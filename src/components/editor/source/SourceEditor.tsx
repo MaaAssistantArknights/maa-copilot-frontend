@@ -24,7 +24,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
   },
   triggerValidation,
 }) => {
-  const hasErrors = !!Object.keys(errors).length
+  const hasValidationErrors = !!Object.keys(errors).length
 
   const initialText = useMemo(() => {
     try {
@@ -44,20 +44,36 @@ export const SourceEditor: FC<SourceEditorProps> = ({
   }, [operation])
 
   const [text, setText] = useState(initialText)
-  const [isInvalidJson, setIsInvalidJson] = useState(false)
+  const [jsonError, setJsonError] = useState<string>()
 
   const handleChange = (text: string) => {
     try {
-      setIsInvalidJson(false)
-      reset(toEditableOperation(camelcaseKeys(JSON.parse(text))))
+      setJsonError(undefined)
+
+      const json = JSON.parse(text)
+      reset(toEditableOperation(camelcaseKeys(json)))
     } catch (e) {
-      setIsInvalidJson(true)
+      if (e instanceof SyntaxError) {
+        setJsonError('存在语法错误')
+      } else {
+        // this will most likely not happen
+        console.warn(e)
+        setJsonError('存在结构错误')
+      }
     }
   }
 
   return (
     <OperationDrawer
-      title={<SourceEditorHeader text={text} onChange={setText} />}
+      title={
+        <SourceEditorHeader
+          text={text}
+          onChange={(text) => {
+            setText(text)
+            handleChange(text)
+          }}
+        />
+      }
     >
       <div className="px-8 py-4 flex-grow flex flex-col bg-zinc-50">
         <Callout
@@ -70,25 +86,26 @@ export const SourceEditor: FC<SourceEditorProps> = ({
               refer to: https://github.com/philipwalton/flexbugs#flexbug-7 */}
           <div className="flex-1">
             <Callout
-              title={'JSON 验证：' + (isInvalidJson ? '语法错误' : '通过')}
-              intent={isInvalidJson ? 'warning' : 'success'}
+              title={'JSON 验证：' + (jsonError ? '语法错误' : '通过')}
+              intent={jsonError ? 'warning' : 'success'}
             />
           </div>
           <Tooltip2
             className="flex-1"
             content="请在表单中查看错误信息"
             position="bottom"
-            disabled={!hasErrors}
+            disabled={!hasValidationErrors}
           >
             <Callout
-              title={'表单验证：' + (hasErrors ? '未通过' : '通过')}
-              intent={hasErrors ? 'warning' : 'success'}
+              title={'表单验证：' + (hasValidationErrors ? '未通过' : '通过')}
+              intent={hasValidationErrors ? 'warning' : 'success'}
             />
           </Tooltip2>
         </div>
         <textarea
-          className="mt-4 flex-grow bg-white text-xm font-mono resize-none"
-          defaultValue={text}
+          className="mt-4 p-1 flex-grow bg-white text-xm font-mono resize-none focus:outline focus:outline-2 focus:outline-blue-300"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           onBlur={(e) => handleChange(e.target.value)}
         />
       </div>
