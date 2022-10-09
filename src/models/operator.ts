@@ -142,11 +142,11 @@ export const actionDocColors: ActionDocColor[] = [
   },
   {
     title: '黄色',
-    value: 'Glod',
+    value: 'Gold',
   },
   {
     title: '绿色',
-    value: '#198754',
+    value: 'SpringGreen',
   },
   {
     title: '青色',
