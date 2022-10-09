@@ -85,7 +85,7 @@ export const EditorActionAdd = ({
     }
   })
 
-  const type = useWatch({ control, name: 'type' })
+  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 
   return (
     <form onSubmit={onSubmit}>
@@ -249,7 +249,7 @@ export const EditorActionAdd = ({
           />
         </div>
 
-        <div className="mt-4 flex items-start">
+        <div className="mt-4 flex">
           <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
             {isNew ? '添加' : '保存'}
           </Button>
@@ -260,6 +260,12 @@ export const EditorActionAdd = ({
             </Button>
           )}
         </div>
+
+        {globalError && (
+          <Callout intent="danger" className="mt-2">
+            {globalError}
+          </Callout>
+        )}
       </Card>
     </form>
   )

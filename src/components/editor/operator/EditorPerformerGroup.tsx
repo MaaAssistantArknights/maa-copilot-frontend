@@ -57,6 +57,8 @@ export const EditorPerformerGroup = ({
     }
   }
 
+  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center mb-4">
@@ -93,7 +95,7 @@ export const EditorPerformerGroup = ({
         }}
       />
 
-      <div className="flex items-start">
+      <div className="flex">
         <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
           {isNew ? '添加' : '保存'}
         </Button>
@@ -104,6 +106,12 @@ export const EditorPerformerGroup = ({
           </Button>
         )}
       </div>
+
+      {globalError && (
+        <Callout intent="danger" className="mt-2">
+          {globalError}
+        </Callout>
+      )}
     </form>
   )
 }

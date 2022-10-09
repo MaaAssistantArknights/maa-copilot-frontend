@@ -73,8 +73,10 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
       if (index !== -1) {
         action._id = getId(editingAction)
         update(index, action)
+        setEditingAction(undefined)
       } else {
-        console.warn('Could not locate editing action.')
+        setError('global' as any, { message: '未能找到要更新的动作' })
+        return false
       }
     } else {
       action._id = uniqueId()
