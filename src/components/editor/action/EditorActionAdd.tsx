@@ -243,6 +243,7 @@ export const EditorActionAdd = ({
                   id="doc"
                   placeholder="描述，可选。会显示在界面上，没有实际作用"
                   {...field}
+                  value={field.value || ''}
                 />
               ),
             }}
