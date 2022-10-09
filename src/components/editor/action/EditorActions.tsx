@@ -16,8 +16,9 @@ import { Control, useFieldArray } from 'react-hook-form'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { Sortable } from '../../dnd'
-import { EditorActionAdd } from './EditorActionAdd'
+import { EditorActionAdd, EditorActionAddProps } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
+import { validateAction } from './validation'
 
 export interface EditorActionsProps {
   control: Control<CopilotDocV1.Operation>
@@ -62,7 +63,11 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
     setDraggingAction(undefined)
   }
 
-  const onSubmit = (action: CopilotDocV1.Action) => {
+  const onSubmit: EditorActionAddProps['onSubmit'] = (action, setError) => {
+    if (!validateAction(action, setError)) {
+      return false
+    }
+
     if (editingAction) {
       const index = actions.findIndex((field) => isEditing(field))
       if (index !== -1) {
@@ -75,6 +80,8 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
       action._id = uniqueId()
       append(action)
     }
+
+    return true
   }
 
   return (

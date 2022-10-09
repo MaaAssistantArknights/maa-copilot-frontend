@@ -1,7 +1,12 @@
-import { Button } from '@blueprintjs/core'
+import { Button, Callout } from '@blueprintjs/core'
 
 import { useEffect } from 'react'
-import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
+import {
+  FieldErrors,
+  SubmitHandler,
+  UseFormSetError,
+  useForm,
+} from 'react-hook-form'
 
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
@@ -36,21 +41,13 @@ export const EditorPerformerOperator = ({
   } = useForm<CopilotDocV1.Operator>()
 
   useEffect(() => {
-    if (operator) {
-      reset(operator)
-    }
-  }, [operator])
+    reset(operator, { keepDefaultValues: true })
+  }, [reset, operator])
 
   const onSubmit: SubmitHandler<CopilotDocV1.Operator> = (values) => {
-    if (
-      submit(
-        {
-          ...values,
-          name: values.name.trim(),
-        },
-        setError,
-      )
-    ) {
+    values.name = values.name.trim()
+
+    if (submit(values, setError)) {
       reset()
     }
   }

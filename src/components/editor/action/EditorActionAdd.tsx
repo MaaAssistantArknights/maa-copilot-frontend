@@ -1,4 +1,4 @@
-import { Button, Card, TextArea } from '@blueprintjs/core'
+import { Button, Callout, Card, TextArea } from '@blueprintjs/core'
 import { DevTool } from '@hookform/devtools'
 
 import { useEffect } from 'react'
@@ -6,7 +6,7 @@ import {
   Control,
   DeepPartial,
   FieldErrors,
-  SubmitHandler,
+  UseFormSetError,
   useForm,
   useWatch,
 } from 'react-hook-form'
@@ -23,7 +23,7 @@ import {
 import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
 import { EditorActionOperatorLocation } from 'components/editor/action/EditorActionOperatorLocation'
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FactItem } from '../../FactItem'
 import { EditorOperatorName } from '../operator/EditorOperator'
@@ -32,16 +32,18 @@ import {
   EditorActionPreDelay,
   EditorActionRearDelay,
 } from './EditorActionDelay'
-import { validateAction } from './validation'
 
 export interface EditorActionAddProps {
-  onSubmit: (action: CopilotDocV1.Action) => void
+  onSubmit: (
+    action: CopilotDocV1.Action,
+    setError: UseFormSetError<CopilotDocV1.Action>,
+  ) => boolean
   onCancel: () => void
   action?: CopilotDocV1.Action
 }
 
 const defaultAction: DeepPartial<CopilotDocV1.Action> = {
-  type: 'Deploy' as CopilotDocV1.Type.Deploy,
+  type: CopilotDocV1.Type.Deploy,
 }
 
 export const EditorActionAdd = ({
@@ -61,22 +63,32 @@ export const EditorActionAdd = ({
     defaultValues: defaultAction,
   })
 
-  useEffect(() => {
-    if (action) {
-      reset(action)
-    }
-  }, [action])
+  const type = useWatch({ control, name: 'type' })
 
-  const onSubmit: SubmitHandler<CopilotDocV1.Action> = (values) => {
-    if (validateAction(values, setError)) {
-      _onSubmit(values)
-    }
+  const resettingValues: DeepPartial<CopilotDocV1.Action> = {
+    ...defaultAction,
+    // to prevent layout jumping, we persist the action type on reset
+    type,
   }
+
+  useEffect(() => {
+    reset(action || resettingValues)
+  }, [reset, action])
+
+  const onSubmit = handleSubmit((values) => {
+    if ('name' in values) {
+      values.name = values.name?.trim()
+    }
+
+    if (_onSubmit(values, setError)) {
+      reset(resettingValues)
+    }
+  })
 
   const type = useWatch({ control, name: 'type' })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <Card className="mb-2 pt-4">
         <div className="flex items-center mb-4">
           <CardTitle className="mb-0" icon={isNew ? 'add' : 'edit'}>
@@ -86,7 +98,7 @@ export const EditorActionAdd = ({
           <div className="flex-1" />
 
           <EditorResetButton
-            reset={() => reset(defaultAction)}
+            reset={() => reset(resettingValues)}
             entityName="正在编辑的动作"
           />
         </div>

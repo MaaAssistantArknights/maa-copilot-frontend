@@ -1,7 +1,12 @@
 import { Button, Callout, InputGroup } from '@blueprintjs/core'
 
 import { useEffect } from 'react'
-import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
+import {
+  FieldErrors,
+  SubmitHandler,
+  UseFormSetError,
+  useForm,
+} from 'react-hook-form'
 
 import { CardTitle } from 'components/CardTitle'
 import { FormField } from 'components/FormField'
@@ -41,21 +46,13 @@ export const EditorPerformerGroup = ({
   })
 
   useEffect(() => {
-    if (group) {
-      reset(group)
-    }
-  }, [group])
+    reset(group, { keepDefaultValues: true })
+  }, [reset, group])
 
   const onSubmit: SubmitHandler<CopilotDocV1.Group> = (values) => {
-    if (
-      submit(
-        {
-          ...values,
-          name: values.name.trim(),
-        },
-        setError,
-      )
-    ) {
+    values.name = values.name.trim()
+
+    if (submit(values, setError)) {
       reset()
     }
   }
