@@ -9,7 +9,7 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
-import { uniqueId } from 'lodash-es'
+import { uniqueId, unset } from 'lodash-es'
 import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
 
@@ -32,7 +32,7 @@ const getId = (action: CopilotDocV1.Action) => {
 export const EditorActions = ({ control }: EditorActionsProps) => {
   const [draggingAction, setDraggingAction] = useState<CopilotDocV1.Action>()
 
-  const { fields, append, update, move, remove } = useFieldArray({
+  const { fields, append, insert, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
@@ -61,6 +61,13 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
 
   const handleDragEnd = () => {
     setDraggingAction(undefined)
+  }
+
+  const handleDuplicate = (index: number) => {
+    const action = JSON.parse(JSON.stringify(actions[index]))
+    action._id = uniqueId()
+    unset(action, 'id')
+    insert(index + 1, action)
   }
 
   const onSubmit: EditorActionAddProps['onSubmit'] = (action, setError) => {
@@ -119,6 +126,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
                             isEditing(action) ? undefined : action,
                           )
                         }
+                        onDuplicate={() => handleDuplicate(i)}
                         onRemove={() => remove(i)}
                         {...attrs}
                       />
