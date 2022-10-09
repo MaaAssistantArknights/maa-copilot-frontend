@@ -3,7 +3,7 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 
 import camelcaseKeys from 'camelcase-keys'
 import { FC, useEffect, useMemo, useState } from 'react'
-import { UseFormReturn, useWatch } from 'react-hook-form'
+import { UseFormReturn } from 'react-hook-form'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { OperationDrawer } from '../../drawer/OperationDrawer'
@@ -17,8 +17,8 @@ export interface SourceEditorProps {
 
 export const SourceEditor: FC<SourceEditorProps> = ({
   form: {
-    control,
     getValues,
+    watch,
     reset,
     formState: { errors },
   },
@@ -36,12 +36,11 @@ export const SourceEditor: FC<SourceEditorProps> = ({
     }
   }, [getValues])
 
-  // use useWatch instead of form.watch because the latter will cause infinite loop when using with useEffect
-  const operation = useWatch({ control })
-
+  // use watch + callback instead of watch + useEffect because the latter will cause infinite re-render due to unstable reference
   useEffect(() => {
-    triggerValidation()
-  }, [operation])
+    const { unsubscribe } = watch(triggerValidation)
+    return () => unsubscribe()
+  }, [watch])
 
   const [text, setText] = useState(initialText)
   const [jsonError, setJsonError] = useState<string>()
