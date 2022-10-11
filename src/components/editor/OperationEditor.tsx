@@ -197,11 +197,6 @@ export const OperationEditor: FC<OperationEditorProps> = ({
       <div className="px-8 text-lg font-medium flex items-center w-full h-12">
         <Icon icon="document" />
         <span className="ml-2 mr-4">作业编辑器</span>
-        {/* <Icon icon="saved" size={14} className="text-gray-600 font-normal" />
-          <span className="ml-1 text-sm text-gray-600 font-normal">
-            {formatRelativeTime(Date.now())} 已自动保存
-          </span> */}
-
         <div className="flex-1" />
 
         {toolbar}

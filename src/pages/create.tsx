@@ -1,6 +1,6 @@
 import { Button } from '@blueprintjs/core'
 
-import { ComponentType, useState } from 'react'
+import { ComponentType, useMemo, useState } from 'react'
 import { DeepPartial, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
@@ -17,6 +17,12 @@ import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
 import { patchOperation, toMaaOperation } from '../components/editor/converter'
 import { SourceEditorButton } from '../components/editor/source/SourceEditorButton'
+import {
+  AutosaveOptions,
+  AutosaveSheet,
+  isChangedSinceLastSave,
+  useAutosave,
+} from '../components/editor/useAutosave'
 import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { MinimumRequired } from '../models/operation'
@@ -24,7 +30,16 @@ import { NetworkError } from '../utils/fetcher'
 
 const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
   minimumRequired: MinimumRequired.V4_0_0,
+  // the following fields will immediately be set when passed into useForm, even if they are not set by default.
+  // so we manually set them in order to check the dirtiness when determining whether the form should be autosaved.
+  actions: [],
+  doc: {},
+  groups: [],
+  opers: [],
 }
+
+const isDirty = (operation: CopilotDocV1.Operation) =>
+  JSON.stringify(operation) !== JSON.stringify(defaultOperation)
 
 export const CreatePage: ComponentType = withGlobalErrorBoundary(
   withSuspensable(() => {
@@ -41,7 +56,24 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
         ? toCopilotOperation(apiOperation)
         : defaultOperation,
     })
-    const { handleSubmit, getValues, trigger, setError, clearErrors } = form
+    const { handleSubmit, getValues, trigger, reset, setError, clearErrors } =
+      form
+
+    const autosaveOptions: AutosaveOptions<CopilotDocV1.Operation> = useMemo(
+      () => ({
+        key: 'maa-copilot-editor',
+        interval: 1000 * 60,
+        limit: 20,
+        shouldSave: (operation, archive) =>
+          isChangedSinceLastSave(operation, archive) && isDirty(operation),
+      }),
+      [],
+    )
+
+    const { archive } = useAutosave<CopilotDocV1.Operation>(
+      getValues,
+      autosaveOptions,
+    )
 
     const [uploading, setUploading] = useState(false)
 
@@ -96,6 +128,14 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
         form={form}
         toolbar={
           <>
+            <AutosaveSheet
+              minimal
+              className="!text-xs opacity-75"
+              archive={archive}
+              options={autosaveOptions}
+              itemTitle={(record) => record.v.doc?.title || '无标题'}
+              onRestore={(value) => reset(value, { keepDefaultValues: true })}
+            />
             <SourceEditorButton
               className="ml-4"
               form={form}
