@@ -34,7 +34,9 @@ export function validateOperation(
   if (!jsonSchemaValidation && copilotSchemaValidator.errors) {
     ajvLocalizeZh(copilotSchemaValidator.errors)
     setError('global' as any, {
-      message: copilotSchemaValidator.errorsText(copilotSchemaValidator.errors),
+      message: copilotSchemaValidator.errorsText(undefined, {
+        separator: '\n',
+      }),
     })
     return false
   }

@@ -190,7 +190,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
     }
   }, [stageName, levels])
 
-  const globalError = (errors as FieldErrors<{ global: void }>).global
+  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 
   return (
     <section className="flex flex-col relative h-full pt-4">
@@ -202,9 +202,11 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         {toolbar}
       </div>
 
-      {globalError?.message && (
+      {globalError && (
         <Callout className="mt-4" intent="danger" icon="error" title="错误">
-          {globalError.message}
+          {globalError.split('\n').map((line) => (
+            <p key={line}>{line}</p>
+          ))}
         </Callout>
       )}
 

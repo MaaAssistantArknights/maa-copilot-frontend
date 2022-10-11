@@ -2,10 +2,11 @@ import { Callout } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import camelcaseKeys from 'camelcase-keys'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
+import { useAfterRender } from '../../../utils/useAfterRender'
 import { OperationDrawer } from '../../drawer/OperationDrawer'
 import { toEditableOperation, toMaaOperation } from '../converter'
 import { SourceEditorHeader } from './SourceEditorHeader'
@@ -36,11 +37,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
     }
   }, [getValues])
 
-  // use watch + callback instead of watch + useEffect because the latter will cause infinite re-render due to unstable reference
-  useEffect(() => {
-    const { unsubscribe } = watch(triggerValidation)
-    return () => unsubscribe()
-  }, [watch])
+  const { afterRender } = useAfterRender()
 
   const [text, setText] = useState(initialText)
   const [jsonError, setJsonError] = useState<string>()
@@ -50,7 +47,11 @@ export const SourceEditor: FC<SourceEditorProps> = ({
       setJsonError(undefined)
 
       const json = JSON.parse(text)
-      reset(toEditableOperation(camelcaseKeys(json)))
+      reset(toEditableOperation(camelcaseKeys(json)), {
+        keepDefaultValues: true,
+      })
+
+      afterRender(triggerValidation)
     } catch (e) {
       if (e instanceof SyntaxError) {
         setJsonError('存在语法错误')
