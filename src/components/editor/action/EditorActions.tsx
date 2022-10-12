@@ -9,15 +9,16 @@ import {
 } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
-import { uniqueId } from 'lodash-es'
+import { uniqueId, unset } from 'lodash-es'
 import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { Sortable } from '../../dnd'
-import { EditorActionAdd } from './EditorActionAdd'
+import { EditorActionAdd, EditorActionAddProps } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
+import { validateAction } from './validation'
 
 export interface EditorActionsProps {
   control: Control<CopilotDocV1.Operation>
@@ -31,7 +32,7 @@ const getId = (action: CopilotDocV1.Action) => {
 export const EditorActions = ({ control }: EditorActionsProps) => {
   const [draggingAction, setDraggingAction] = useState<CopilotDocV1.Action>()
 
-  const { fields, append, update, move, remove } = useFieldArray({
+  const { fields, append, insert, update, move, remove } = useFieldArray({
     name: 'actions',
     control,
   })
@@ -62,19 +63,34 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
     setDraggingAction(undefined)
   }
 
-  const onSubmit = (action: CopilotDocV1.Action) => {
+  const handleDuplicate = (index: number) => {
+    const action = JSON.parse(JSON.stringify(actions[index]))
+    action._id = uniqueId()
+    unset(action, 'id')
+    insert(index + 1, action)
+  }
+
+  const onSubmit: EditorActionAddProps['onSubmit'] = (action, setError) => {
+    if (!validateAction(action, setError)) {
+      return false
+    }
+
     if (editingAction) {
       const index = actions.findIndex((field) => isEditing(field))
       if (index !== -1) {
         action._id = getId(editingAction)
         update(index, action)
+        setEditingAction(undefined)
       } else {
-        console.warn('Could not locate editing action.')
+        setError('global' as any, { message: '未能找到要更新的动作' })
+        return false
       }
     } else {
       action._id = uniqueId()
       append(action)
     }
+
+    return true
   }
 
   return (
@@ -110,6 +126,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
                             isEditing(action) ? undefined : action,
                           )
                         }
+                        onDuplicate={() => handleDuplicate(i)}
                         onRemove={() => remove(i)}
                         {...attrs}
                       />

@@ -32,6 +32,13 @@ body {
     @apply placeholder:italic placeholder:text-slate-400;
   }
 
+  // simulate border using outline because Blueprint TextArea's auto-sizing doesn't work well with border
+  textarea.bp4-input {
+    @apply border-none outline outline-1 outline-slate-400;
+
+    outline-offset: -1px;
+  }
+
   .bp4-file-upload-input {
     @apply placeholder:italic placeholder:text-slate-400;
     @apply block w-full;

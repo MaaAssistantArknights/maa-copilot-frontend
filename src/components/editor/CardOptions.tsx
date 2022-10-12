@@ -4,17 +4,30 @@ import { Popover2 } from '@blueprintjs/popover2'
 import clsx from 'clsx'
 import { FC } from 'react'
 
-interface CardEditOptionProps extends ButtonProps {}
-interface CardDeleteOptionProps extends ButtonProps {}
-
-export const CardEditOption: FC<CardEditOptionProps> = ({
+export const CardDuplicateOption: FC<ButtonProps> = ({
   className,
   ...props
 }) => (
-  <Button minimal icon="edit" className={clsx('-my-2', className)} {...props} />
+  <Button
+    minimal
+    icon="duplicate"
+    title="复制"
+    className={clsx('-my-2', className)}
+    {...props}
+  />
 )
 
-export const CardDeleteOption: FC<CardDeleteOptionProps> = ({
+export const CardEditOption: FC<ButtonProps> = ({ className, ...props }) => (
+  <Button
+    minimal
+    icon="edit"
+    title="编辑"
+    className={clsx('-my-2', className)}
+    {...props}
+  />
+)
+
+export const CardDeleteOption: FC<ButtonProps> = ({
   className,
   onClick,
   ...props
@@ -30,6 +43,7 @@ export const CardDeleteOption: FC<CardDeleteOptionProps> = ({
     <Button
       minimal
       icon="trash"
+      title="删除"
       className={clsx('-my-2', className)}
       {...props}
     />

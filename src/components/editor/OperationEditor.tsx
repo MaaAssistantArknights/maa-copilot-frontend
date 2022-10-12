@@ -242,6 +242,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
                     id="doc.title"
                     placeholder="起一个引人注目的标题吧"
                     {...field}
+                    value={field.value || ''}
                   />
                 ),
               }}
@@ -266,6 +267,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
                     id="doc.details"
                     placeholder="如：作者名、参考的视频攻略链接（如有）等"
                     {...field}
+                    value={field.value || ''}
                   />
                 ),
               }}

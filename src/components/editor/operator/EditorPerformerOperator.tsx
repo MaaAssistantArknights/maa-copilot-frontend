@@ -1,7 +1,12 @@
-import { Button } from '@blueprintjs/core'
+import { Button, Callout } from '@blueprintjs/core'
 
 import { useEffect } from 'react'
-import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
+import {
+  FieldErrors,
+  SubmitHandler,
+  UseFormSetError,
+  useForm,
+} from 'react-hook-form'
 
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
@@ -36,24 +41,18 @@ export const EditorPerformerOperator = ({
   } = useForm<CopilotDocV1.Operator>()
 
   useEffect(() => {
-    if (operator) {
-      reset(operator)
-    }
-  }, [operator])
+    reset(operator, { keepDefaultValues: true })
+  }, [reset, operator])
 
   const onSubmit: SubmitHandler<CopilotDocV1.Operator> = (values) => {
-    if (
-      submit(
-        {
-          ...values,
-          name: values.name.trim(),
-        },
-        setError,
-      )
-    ) {
+    values.name = values.name.trim()
+
+    if (submit(values, setError)) {
       reset()
     }
   }
+
+  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -72,7 +71,7 @@ export const EditorPerformerOperator = ({
 
       <EditorOperator control={control} errors={errors} />
 
-      <div className="flex items-start">
+      <div className="flex">
         <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
           {isNew ? '添加' : '保存'}
         </Button>
@@ -83,6 +82,12 @@ export const EditorPerformerOperator = ({
           </Button>
         )}
       </div>
+
+      {globalError && (
+        <Callout intent="danger" className="mt-2">
+          {globalError}
+        </Callout>
+      )}
     </form>
   )
 }

@@ -3,7 +3,7 @@ import { Suggest2 } from '@blueprintjs/select'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { FC, useMemo, useState } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 import { Control, FieldValues, FormState, useController } from 'react-hook-form'
 
 import { FormField2 } from 'components/FormField'
@@ -81,6 +81,7 @@ export const EditorOperatorName = <T extends FieldValues>({
 
   const {
     field: { onChange, onBlur, value, ref },
+    fieldState: { isTouched },
   } = useController({
     name,
     control,
@@ -99,6 +100,12 @@ export const EditorOperatorName = <T extends FieldValues>({
 
   // take over the query state so that we are able to reset it
   const [query, setQuery] = useState('')
+
+  useEffect(() => {
+    if (!isTouched) {
+      setQuery('')
+    }
+  }, [isTouched])
 
   return (
     <Suggest2<typeof OPERATORS[number]>
@@ -162,11 +169,6 @@ export const EditorOperatorName = <T extends FieldValues>({
       popoverProps={{
         placement: 'bottom-start',
       }}
-      // value={value as string}
-      // onChange={onChange}
-      // onBlur={onBlur}
-      // ref={ref}
-      // placeholder="请输入干员名"
     />
   )
 }

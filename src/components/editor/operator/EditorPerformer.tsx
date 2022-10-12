@@ -239,8 +239,11 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         } else {
           updateOperator(operators.indexOf(existingOperator), operator)
         }
+
+        setEditingOperator(undefined)
       } else {
-        console.warn('Could not locate editing operator.')
+        setError('global' as any, { message: '未能找到要更新的干员' })
+        return false
       }
     } else {
       if (operators.find(({ name }) => name === operator.name)) {
@@ -265,8 +268,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       if (existingGroup) {
         group._id = getId(editingGroup)
         updateGroup(groups.indexOf(existingGroup), group)
+        setEditingGroup(undefined)
       } else {
-        console.warn('Could not locate editing group.')
+        setError('global' as any, { message: '未能找到要更新的干员组' })
+        return false
       }
     } else {
       if (groups.find(({ name }) => name === group.name)) {
