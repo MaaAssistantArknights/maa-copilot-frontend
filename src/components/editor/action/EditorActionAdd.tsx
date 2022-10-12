@@ -79,6 +79,9 @@ export const EditorActionAdd = ({
     if ('name' in values) {
       values.name = values.name?.trim()
     }
+    if (!values.doc) {
+      delete values.docColor
+    }
 
     if (_onSubmit(values, setError)) {
       reset(resettingValues)
