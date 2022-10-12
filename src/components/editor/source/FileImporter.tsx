@@ -1,12 +1,14 @@
 import { MenuItem } from '@blueprintjs/core'
 
-import { ChangeEventHandler, FC } from 'react'
+import { ChangeEventHandler, FC, useRef } from 'react'
 
 import { AppToaster } from '../../Toaster'
 
 export const FileImporter: FC<{ onImport: (content: string) => void }> = ({
   onImport,
 }) => {
+  const inputRef = useRef<HTMLInputElement>(null)
+
   const handleUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
     const file = e.target.files?.[0]
 
@@ -30,17 +32,17 @@ export const FileImporter: FC<{ onImport: (content: string) => void }> = ({
       <MenuItem
         icon="document-open"
         shouldDismissPopover={false}
+        onClick={() => inputRef.current?.click()}
         text={
           <>
-            <label className="cursor-pointer">
-              导入本地文件...
-              <input
-                className="hidden"
-                type="file"
-                accept="application/json"
-                onChange={handleUpload}
-              />
-            </label>
+            导入本地文件...
+            <input
+              className="hidden"
+              type="file"
+              accept="application/json"
+              ref={inputRef}
+              onChange={handleUpload}
+            />
           </>
         }
       />

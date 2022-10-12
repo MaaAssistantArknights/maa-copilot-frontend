@@ -90,7 +90,7 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
         <Button
           className="mr-4"
           icon="export"
-          text="导出..."
+          text="导出"
           rightIcon="caret-down"
         />
       </Popover2>
