@@ -20,6 +20,16 @@ export function validateOperation(
     return false
   }
 
+  // force details to exist to bypass ajv's required check - we can patch it later,
+  // don't be so strict right now!
+  operation = {
+    ...operation,
+    doc: {
+      ...operation.doc,
+      details: operation.doc?.details || 'dummy',
+    },
+  }
+
   const jsonSchemaValidation = copilotSchemaValidator.validate(
     'copilot',
     operation,
