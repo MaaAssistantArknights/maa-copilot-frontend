@@ -1,11 +1,12 @@
 import { Classes, H6, Icon, IconName, MenuItem } from '@blueprintjs/core'
 import { Select2, Select2Props } from '@blueprintjs/select'
 
+import { ReactNode } from 'react'
 import { FCC } from 'types'
 
 export type DetailedSelectItem =
   | DetailedSelectChoice
-  | { type: 'header'; header: string }
+  | { type: 'header'; header: ReactNode }
 export interface DetailedSelectChoice {
   type: 'choice'
   icon?: IconName
