@@ -9,7 +9,7 @@ import {
 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
-import { first } from 'lodash-es'
+import { first, isEqual } from 'lodash-es'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
 import { formatRelativeTime } from '../../utils/times'
@@ -34,7 +34,7 @@ type Archive<T> = Record<T>[]
 export const isChangedSinceLastSave = (
   value: unknown,
   archive: Archive<unknown>,
-) => JSON.stringify(value) !== JSON.stringify(first(archive)?.v)
+) => !isEqual(value, first(archive)?.v)
 
 export function useAutosave<T>(
   getValue: () => T,
@@ -67,12 +67,14 @@ export function useAutosave<T>(
 
   const doSave = useCallback(
     (value: T = getValue()) => {
+      // perform a deep clone to prevent value's mutation (from outside) from affecting the archive;
+      // also, the JSON conversion drops excess properties (e.g. undefined) so that we can correctly
+      // deep-compare it with archived values to detect changes
+      value = JSON.parse(JSON.stringify(value))
+
       if (!shouldSave(value, latestArchive.current)) {
         return
       }
-
-      // perform a deep clone to prevent value's mutation (from outside) from affecting the archive
-      value = JSON.parse(JSON.stringify(value))
 
       const record: Record<T> = {
         v: value,
