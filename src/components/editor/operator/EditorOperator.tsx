@@ -156,6 +156,11 @@ export const EditorOperatorName = <T extends FieldValues>({
         placeholder: `${entityName}名`,
         large: true,
         onBlur,
+        onKeyDown: (event) => {
+          if (event.key === 'Enter') {
+            event.preventDefault()
+          }
+        },
         rightElement: (
           <FieldResetButton
             value={value}

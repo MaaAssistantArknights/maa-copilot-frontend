@@ -136,6 +136,11 @@ export const StageNameInput: FC<{
             placeholder: '关卡',
             large: true,
             onBlur,
+            onKeyDown: (event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault()
+              }
+            },
             rightElement: (
               <FieldResetButton
                 value={value}
