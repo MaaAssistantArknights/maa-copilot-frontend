@@ -144,16 +144,25 @@ export const OperatorAvatar = ({
       large: 'h-8 w-8',
     }[size || 'medium'] || 'h-6 w-6'
 
-  return (
+  const commonClassName = 'rounded-md object-cover bp4-elevation-1 bg-slate-100'
+
+  return foundId ? (
     <img
-      className={clsx(
-        sizingClassName,
-        'rounded-md object-cover bp4-elevation-1 bg-slate-100',
-        className,
-      )}
+      className={clsx(sizingClassName, commonClassName, className)}
       src={'/assets/operator-avatars/' + foundId + '.png'}
       alt={id}
       loading="lazy"
     />
+  ) : (
+    <div
+      className={clsx(
+        sizingClassName,
+        commonClassName,
+        'flex items-center justify-center font-bold text-2xl text-slate-300 select-none',
+        className,
+      )}
+    >
+      ?
+    </div>
   )
 }
