@@ -1,9 +1,7 @@
 import { MenuItem } from '@blueprintjs/core'
-import { Suggest2 } from '@blueprintjs/select'
 
 import clsx from 'clsx'
-import Fuse from 'fuse.js'
-import { FC, useEffect, useMemo, useState } from 'react'
+import { FC, useMemo } from 'react'
 import { Control, FieldValues, FormState, useController } from 'react-hook-form'
 
 import { FormField2 } from 'components/FormField'
@@ -11,7 +9,7 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
-import { FieldResetButton } from '../../FieldResetButton'
+import { FuseSuggest } from '../../FuseSuggest'
 import { EditorOperatorSkill } from './EditorOperatorSkill'
 import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
 
@@ -80,8 +78,8 @@ export const EditorOperatorName = <T extends FieldValues>({
   )
 
   const {
-    field: { onChange, onBlur, value, ref },
-    fieldState: { isTouched, isDirty },
+    field: { onChange, onBlur, value },
+    fieldState,
   } = useController({
     name,
     control,
@@ -89,27 +87,12 @@ export const EditorOperatorName = <T extends FieldValues>({
     ...controllerProps,
   })
 
-  const fuse = useMemo(
-    () =>
-      new Fuse(OPERATORS, {
-        keys: ['name', 'pron'],
-        threshold: 0.3,
-      }),
-    [],
-  )
-
-  // take over the query state so that we are able to reset it
-  const [query, setQuery] = useState('')
-
-  useEffect(() => {
-    if (!isTouched) {
-      setQuery('')
-    }
-  }, [isTouched])
-
   return (
-    <Suggest2<typeof OPERATORS[number]>
+    <FuseSuggest<typeof OPERATORS[number]>
       items={OPERATORS}
+      fuse={{ keys: ['name', 'pron'] }}
+      fieldState={fieldState}
+      onReset={() => onChange(undefined)}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
           key={item.name}
@@ -121,23 +104,9 @@ export const EditorOperatorName = <T extends FieldValues>({
           disabled={modifiers.disabled}
         />
       )}
-      itemPredicate={(query, item) => {
-        return item.name === query
-      }}
-      itemListPredicate={(query) => {
-        if (!query) {
-          return OPERATORS
-        }
-        return fuse.search(query).map((el) => el.item)
-      }}
-      query={query}
-      onQueryChange={setQuery}
-      onItemSelect={(item) => {
-        onChange(item.name)
-      }}
+      onItemSelect={(item) => onChange(item.name)}
       selectedItem={createArbitraryOperator(value as string)}
       inputValueRenderer={(item) => item.name}
-      ref={ref}
       createNewItemFromQuery={(query) => createArbitraryOperator(query)}
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem
@@ -156,20 +125,6 @@ export const EditorOperatorName = <T extends FieldValues>({
         placeholder: `${entityName}名`,
         large: true,
         onBlur,
-        onKeyDown: (event) => {
-          if (event.key === 'Enter') {
-            event.preventDefault()
-          }
-        },
-        rightElement: (
-          <FieldResetButton
-            disabled={!isDirty}
-            onReset={() => {
-              setQuery('')
-              onChange(undefined)
-            }}
-          />
-        ),
       }}
       popoverProps={{
         placement: 'bottom-start',
