@@ -1,4 +1,4 @@
-import { MenuItem } from '@blueprintjs/core'
+import { Icon, IconSize, MenuItem } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
@@ -8,30 +8,34 @@ import { FieldValues, useController } from 'react-hook-form'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { OPERATORS } from 'models/generated/operators'
 
+import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { Suggest } from '../../Suggest'
+
+type OperatorInfo = typeof OPERATORS[number]
+type PerformerItem = OperatorInfo | CopilotDocV1.Group
+
+const isOperator = (item: PerformerItem): item is OperatorInfo =>
+  !!(item as OperatorInfo).pron
 
 const findOperatorIdByName = (name: string) =>
   OPERATORS.find((el) => el.name === name)?.id ?? ''
 
-const createArbitraryOperator = (name: string): typeof OPERATORS[number] => ({
+const createArbitraryOperator = (name: string): OperatorInfo => ({
   id: findOperatorIdByName(name),
   name,
   pron: '',
 })
 
 export const EditorOperatorName = <T extends FieldValues>({
+  groups,
   name,
   control,
   rules,
-  allowOperatorGroups,
   ...controllerProps
 }: EditorFieldProps<T, string> & {
-  allowOperatorGroups?: boolean
+  groups?: CopilotDocV1.Group[]
 }) => {
-  const entityName = useMemo(
-    () => (allowOperatorGroups ? '干员或干员组' : '干员'),
-    [allowOperatorGroups],
-  )
+  const entityName = useMemo(() => (groups ? '干员或干员组' : '干员'), [groups])
 
   const {
     field: { onChange, onBlur, value },
@@ -43,20 +47,25 @@ export const EditorOperatorName = <T extends FieldValues>({
     ...controllerProps,
   })
 
+  const items: PerformerItem[] = useMemo(
+    () => [...(groups || []), ...OPERATORS],
+    [groups],
+  )
+
   const fuse = useMemo(
     () =>
-      new Fuse(OPERATORS, {
+      new Fuse(items, {
         keys: ['name', 'pron'],
         threshold: 0.3,
       }),
-    [],
+    [items],
   )
 
   return (
-    <Suggest<typeof OPERATORS[number]>
-      items={OPERATORS}
+    <Suggest<PerformerItem>
+      items={items}
       itemListPredicate={(query) =>
-        query ? fuse.search(query).map((el) => el.item) : OPERATORS
+        query ? fuse.search(query).map((el) => el.item) : items
       }
       fieldState={fieldState}
       onReset={() => onChange(undefined)}
@@ -64,7 +73,13 @@ export const EditorOperatorName = <T extends FieldValues>({
         <MenuItem
           key={item.name}
           text={item.name}
-          icon={<OperatorAvatar id={item.id} size="small" />}
+          icon={
+            isOperator(item) ? (
+              <OperatorAvatar id={item.id} size="small" />
+            ) : (
+              <Icon icon="people" size={IconSize.LARGE} />
+            )
+          }
           onClick={handleClick}
           onFocus={handleFocus}
           selected={modifiers.active}
