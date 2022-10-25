@@ -2,58 +2,13 @@ import { MenuItem } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { FC, useMemo } from 'react'
-import { Control, FieldValues, FormState, useController } from 'react-hook-form'
+import { useMemo } from 'react'
+import { FieldValues, useController } from 'react-hook-form'
 
-import { FormField2 } from 'components/FormField'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
 import { Suggest } from '../../Suggest'
-import { EditorOperatorSkill } from './EditorOperatorSkill'
-import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
-
-export const EditorOperator: FC<{
-  control: Control<CopilotDocV1.Operator>
-  errors: FormState<CopilotDocV1.Operator>['errors']
-}> = ({ control, errors }) => {
-  return (
-    <>
-      <FormField2
-        label="干员名"
-        description="选择干员或直接使用搜索内容创建干员"
-        field="name"
-        error={errors.name}
-        asterisk
-        FormGroupProps={{
-          helperText: '键入干员名、拼音或拼音首字母以从干员列表中搜索',
-        }}
-      >
-        <EditorOperatorName control={control} name="name" />
-      </FormField2>
-
-      <div className="flex flex-col lg:flex-row">
-        <FormField2
-          label="技能"
-          field="skill"
-          error={errors.skill}
-          className="mr-2"
-        >
-          <EditorOperatorSkill control={control} name="skill" />
-        </FormField2>
-
-        <FormField2
-          label="技能用法"
-          field="skillUsage"
-          error={errors.skillUsage}
-        >
-          <EditorOperatorSkillUsage control={control} name="skillUsage" />
-        </FormField2>
-      </div>
-    </>
-  )
-}
 
 const findOperatorIdByName = (name: string) =>
   OPERATORS.find((el) => el.name === name)?.id ?? ''

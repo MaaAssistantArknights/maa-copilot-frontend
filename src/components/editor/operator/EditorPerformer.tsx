@@ -173,11 +173,13 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           } else {
             appendOperator(operator)
           }
+
+          return
         }
       }
     }
 
-    // move item
+    // move operator or group within their own container
     if (getType(active) === getType(over)) {
       const moveItem = <T extends Group | Operator>(
         items: T[],
@@ -217,27 +219,68 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   }
 
   const submitOperator: EditorPerformerAddProps['submitOperator'] = (
-    operator,
+    { groupName, ...operator },
     setError,
   ) => {
+    let newGroup: Group | undefined
+    let newGroupIndex = -1
+
+    if (groupName) {
+      newGroupIndex = groups.findIndex((group) => group.name === groupName)
+      newGroup = groups[newGroupIndex]
+
+      if (!newGroup) {
+        newGroup = { name: groupName }
+        newGroupIndex = groups.length
+        submitGroup(newGroup, setError)
+      }
+    }
+
+    const addOperator = () => {
+      if (newGroup) {
+        updateGroup(newGroupIndex, {
+          ...newGroup,
+          opers: [...(newGroup.opers || []), operator],
+        })
+      } else {
+        appendOperator(operator)
+      }
+    }
+
     if (editingOperator) {
       const existingOperator = findOperatorById(getId(editingOperator))
 
       if (existingOperator) {
         operator._id = getId(editingOperator)
 
-        const group = findGroupByOperator(existingOperator)
+        const oldGroup = findGroupByOperator(existingOperator)
 
-        if (group) {
-          // replace existing operator in group
-          updateGroup(groups.indexOf(group), {
-            ...group,
-            opers: group.opers.map((op) =>
-              op === existingOperator ? operator : op,
-            ),
-          })
+        if (oldGroup) {
+          if (oldGroup === newGroup) {
+            // replace existing operator in group
+            updateGroup(groups.indexOf(oldGroup), {
+              ...oldGroup,
+              opers: oldGroup.opers.map((op) =>
+                op === existingOperator ? operator : op,
+              ),
+            })
+          } else {
+            // remove existing operator from group
+            updateGroup(groups.indexOf(oldGroup), {
+              ...oldGroup,
+              opers: oldGroup.opers.filter((op) => op !== existingOperator),
+            })
+
+            // add new operator to group
+            addOperator()
+          }
         } else {
-          updateOperator(operators.indexOf(existingOperator), operator)
+          if (newGroup) {
+            removeOperator(operators.indexOf(existingOperator))
+            addOperator()
+          } else {
+            updateOperator(operators.indexOf(existingOperator), operator)
+          }
         }
 
         setEditingOperator(undefined)
@@ -252,7 +295,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       }
 
       operator._id = uniqueId()
-      appendOperator(operator)
+      addOperator()
     }
 
     return true
@@ -292,6 +335,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         mode={editMode}
         operator={editingOperator}
         group={editingGroup}
+        groups={groups}
         onModeChange={setEditMode}
         onCancel={() => {
           setEditingOperator(undefined)

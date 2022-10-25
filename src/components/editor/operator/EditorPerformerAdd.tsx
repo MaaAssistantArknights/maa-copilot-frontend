@@ -20,6 +20,7 @@ export interface EditorPerformerAddProps {
   mode: PerformerType
   operator?: CopilotDocV1.Operator
   group?: CopilotDocV1.Group
+  groups: CopilotDocV1.Group[]
   onModeChange: (mode: PerformerType) => void
   onCancel: () => void
   submitOperator: EditorPerformerOperatorProps['submit']
@@ -40,6 +41,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   mode,
   operator,
   group,
+  groups,
   onModeChange,
   onCancel,
   submitOperator,
@@ -84,6 +86,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
         submit={submitOperator}
         onCancel={onCancel}
         categorySelector={selector}
+        groups={groups}
       />
     ) : (
       <EditorPerformerGroup
