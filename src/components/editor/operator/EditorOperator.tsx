@@ -1,87 +1,45 @@
-import { MenuItem } from '@blueprintjs/core'
-import { Suggest2 } from '@blueprintjs/select'
+import { Icon, IconSize, MenuItem } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { FC, useEffect, useMemo, useState } from 'react'
-import { Control, FieldValues, FormState, useController } from 'react-hook-form'
+import { useMemo } from 'react'
+import { FieldValues, useController } from 'react-hook-form'
 
-import { FormField2 } from 'components/FormField'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import type { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
-import { FieldResetButton } from '../../FieldResetButton'
-import { EditorOperatorSkill } from './EditorOperatorSkill'
-import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
+import { CopilotDocV1 } from '../../../models/copilot.schema'
+import { Suggest } from '../../Suggest'
 
-export const EditorOperator: FC<{
-  control: Control<CopilotDocV1.Operator>
-  errors: FormState<CopilotDocV1.Operator>['errors']
-}> = ({ control, errors }) => {
-  return (
-    <>
-      <FormField2
-        label="干员名"
-        description="选择干员或直接使用搜索内容创建干员"
-        field="name"
-        error={errors.name}
-        asterisk
-        FormGroupProps={{
-          helperText: '键入干员名、拼音或拼音首字母以从干员列表中搜索',
-        }}
-      >
-        <EditorOperatorName control={control} name="name" />
-      </FormField2>
+type OperatorInfo = typeof OPERATORS[number]
+type PerformerItem = OperatorInfo | CopilotDocV1.Group
 
-      <div className="flex flex-col lg:flex-row">
-        <FormField2
-          label="技能"
-          field="skill"
-          error={errors.skill}
-          className="mr-2"
-        >
-          <EditorOperatorSkill control={control} name="skill" />
-        </FormField2>
-
-        <FormField2
-          label="技能用法"
-          field="skillUsage"
-          error={errors.skillUsage}
-        >
-          <EditorOperatorSkillUsage control={control} name="skillUsage" />
-        </FormField2>
-      </div>
-    </>
-  )
-}
+const isOperator = (item: PerformerItem): item is OperatorInfo =>
+  !!(item as OperatorInfo).pron
 
 const findOperatorIdByName = (name: string) =>
   OPERATORS.find((el) => el.name === name)?.id ?? ''
 
-const createArbitraryOperator = (name: string): typeof OPERATORS[number] => ({
+const createArbitraryOperator = (name: string): OperatorInfo => ({
   id: findOperatorIdByName(name),
   name,
   pron: '',
 })
 
 export const EditorOperatorName = <T extends FieldValues>({
+  groups,
   name,
   control,
   rules,
-  allowOperatorGroups,
   ...controllerProps
 }: EditorFieldProps<T, string> & {
-  allowOperatorGroups?: boolean
+  groups?: CopilotDocV1.Group[]
 }) => {
-  const entityName = useMemo(
-    () => (allowOperatorGroups ? '干员或干员组' : '干员'),
-    [allowOperatorGroups],
-  )
+  const entityName = useMemo(() => (groups ? '干员或干员组' : '干员'), [groups])
 
   const {
-    field: { onChange, onBlur, value, ref },
-    fieldState: { isTouched },
+    field: { onChange, onBlur, value },
+    fieldState,
   } = useController({
     name,
     control,
@@ -89,55 +47,48 @@ export const EditorOperatorName = <T extends FieldValues>({
     ...controllerProps,
   })
 
+  const items: PerformerItem[] = useMemo(
+    () => [...(groups || []), ...OPERATORS],
+    [groups],
+  )
+
   const fuse = useMemo(
     () =>
-      new Fuse(OPERATORS, {
+      new Fuse(items, {
         keys: ['name', 'pron'],
         threshold: 0.3,
       }),
-    [],
+    [items],
   )
 
-  // take over the query state so that we are able to reset it
-  const [query, setQuery] = useState('')
-
-  useEffect(() => {
-    if (!isTouched) {
-      setQuery('')
-    }
-  }, [isTouched])
-
   return (
-    <Suggest2<typeof OPERATORS[number]>
-      items={OPERATORS}
+    <Suggest<PerformerItem>
+      items={items}
+      itemListPredicate={(query) =>
+        query ? fuse.search(query).map((el) => el.item) : items
+      }
+      fieldState={fieldState}
+      onReset={() => onChange(undefined)}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
           key={item.name}
           text={item.name}
-          icon={<OperatorAvatar id={item.id} size="small" />}
+          icon={
+            isOperator(item) ? (
+              <OperatorAvatar id={item.id} size="small" />
+            ) : (
+              <Icon icon="people" size={IconSize.LARGE} />
+            )
+          }
           onClick={handleClick}
           onFocus={handleFocus}
           selected={modifiers.active}
           disabled={modifiers.disabled}
         />
       )}
-      itemPredicate={(query, item) => {
-        return item.name === query
-      }}
-      itemListPredicate={(query) => {
-        if (!query) {
-          return OPERATORS
-        }
-        return fuse.search(query).map((el) => el.item)
-      }}
-      query={query}
-      onQueryChange={setQuery}
-      onItemSelect={(item) => {
-        onChange(item.name)
-      }}
+      onItemSelect={(item) => onChange(item.name)}
       selectedItem={createArbitraryOperator(value as string)}
       inputValueRenderer={(item) => item.name}
-      ref={ref}
       createNewItemFromQuery={(query) => createArbitraryOperator(query)}
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem
@@ -156,15 +107,6 @@ export const EditorOperatorName = <T extends FieldValues>({
         placeholder: `${entityName}名`,
         large: true,
         onBlur,
-        rightElement: (
-          <FieldResetButton
-            value={value}
-            onReset={() => {
-              setQuery('')
-              onChange(undefined)
-            }}
-          />
-        ),
       }}
       popoverProps={{
         placement: 'bottom-start',
@@ -202,16 +144,25 @@ export const OperatorAvatar = ({
       large: 'h-8 w-8',
     }[size || 'medium'] || 'h-6 w-6'
 
-  return (
+  const commonClassName = 'rounded-md object-cover bp4-elevation-1 bg-slate-100'
+
+  return foundId ? (
     <img
-      className={clsx(
-        sizingClassName,
-        'rounded-md object-cover bp4-elevation-1 bg-slate-100',
-        className,
-      )}
+      className={clsx(sizingClassName, commonClassName, className)}
       src={'/assets/operator-avatars/' + foundId + '.png'}
       alt={id}
       loading="lazy"
     />
+  ) : (
+    <div
+      className={clsx(
+        sizingClassName,
+        commonClassName,
+        'flex items-center justify-center font-bold text-2xl text-slate-300 select-none',
+        className,
+      )}
+    >
+      ?
+    </div>
   )
 }

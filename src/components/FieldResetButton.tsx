@@ -2,26 +2,27 @@ import { Button, ButtonProps } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 
-interface FieldResetButtonProps<T> extends ButtonProps {
-  value?: T
-  onReset: (value: undefined) => void
+interface FieldResetButtonProps extends ButtonProps {
+  disabled?: boolean
+  onReset: () => void
 }
 
-export const FieldResetButton = <T,>({
-  value,
+export const FieldResetButton = ({
+  disabled,
   onReset,
   ...buttonProps
-}: FieldResetButtonProps<T>) => {
+}: FieldResetButtonProps) => {
   return (
     <Button
       small
       minimal
+      disabled={disabled}
       className={clsx(
-        'invisible',
-        value !== undefined && '[.bp4-input-group:hover_&]:visible',
+        'invisible pointer-events-none',
+        !disabled && '[.bp4-input-group:hover_&]:visible pointer-events-auto',
       )}
       icon="cross"
-      onClick={() => onReset(undefined)}
+      onClick={() => onReset()}
       {...buttonProps}
     />
   )

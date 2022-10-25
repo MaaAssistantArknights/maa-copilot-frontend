@@ -34,6 +34,7 @@ import {
 } from './EditorActionDelay'
 
 export interface EditorActionAddProps {
+  control: Control<CopilotDocV1.Operation>
   onSubmit: (
     action: CopilotDocV1.Action,
     setError: UseFormSetError<CopilotDocV1.Action>,
@@ -47,11 +48,13 @@ const defaultAction: DeepPartial<CopilotDocV1.Action> = {
 }
 
 export const EditorActionAdd = ({
+  control: operationControl,
   action,
   onSubmit: _onSubmit,
   onCancel,
 }: EditorActionAddProps) => {
   const isNew = !action
+  const operatorGroups = useWatch({ control: operationControl, name: 'groups' })
 
   const {
     control,
@@ -152,7 +155,7 @@ export const EditorActionAdd = ({
             >
               <EditorOperatorName
                 shouldUnregister
-                allowOperatorGroups
+                groups={operatorGroups}
                 control={control}
                 name="name"
                 rules={{

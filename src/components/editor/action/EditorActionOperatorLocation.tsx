@@ -78,7 +78,7 @@ export const EditorActionOperatorLocation = ({
           className="mr-2"
           rightElement={
             <FieldResetButton
-              value={value?.[0]}
+              disabled={value?.[0] === undefined}
               onReset={() => reset(transform.fromX(undefined))}
             />
           }
@@ -92,7 +92,7 @@ export const EditorActionOperatorLocation = ({
           placeholder="Y 坐标"
           rightElement={
             <FieldResetButton
-              value={value?.[1]}
+              disabled={value?.[1] === undefined}
               onReset={() => reset(transform.fromY(undefined))}
             />
           }

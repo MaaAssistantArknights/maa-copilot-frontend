@@ -1,5 +1,6 @@
 import { Button } from '@blueprintjs/core'
 
+import { isEqual } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
 import { DeepPartial, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
@@ -39,7 +40,7 @@ const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
 }
 
 const isDirty = (operation: CopilotDocV1.Operation) =>
-  JSON.stringify(operation) !== JSON.stringify(defaultOperation)
+  !isEqual(operation, defaultOperation)
 
 export const CreatePage: ComponentType = withGlobalErrorBoundary(
   withSuspensable(() => {

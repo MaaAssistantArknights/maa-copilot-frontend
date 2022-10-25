@@ -7,7 +7,6 @@ import {
   MenuItem,
   TextArea,
 } from '@blueprintjs/core'
-import { Suggest2 } from '@blueprintjs/select'
 
 import { useLevels } from 'apis/arknights'
 import clsx from 'clsx'
@@ -25,7 +24,7 @@ import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level } from 'models/operation'
 
-import { FieldResetButton } from '../FieldResetButton'
+import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
 import {
   EditorPerformer,
@@ -36,8 +35,8 @@ export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
   const {
-    field: { value, onChange, onBlur, ref },
-    fieldState: { error },
+    field: { value, onChange, onBlur },
+    fieldState,
   } = useController({
     name: 'stageName',
     control,
@@ -53,19 +52,19 @@ export const StageNameInput: FC<{
   } = useLevels({ suspense: false })
   const loading = isValidating && !data
 
-  const levels = data?.data || []
+  const levels = useMemo(
+    () => data?.data.sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
+    [data],
+  )
 
-  const fuse = useMemo(() => {
-    levels.sort((a, b) => a.levelId.localeCompare(b.levelId))
-
-    return new Fuse(levels, {
-      keys: ['name', 'catOne', 'catTwo', 'catThree'],
-      threshold: 0.3,
-    })
-  }, [levels])
-
-  // take over the query state so that we are able to reset it
-  const [query, setQuery] = useState('')
+  const fuse = useMemo(
+    () =>
+      new Fuse(levels, {
+        keys: ['name', 'catOne', 'catTwo', 'catThree'],
+        threshold: 0.3,
+      }),
+    [levels],
+  )
 
   const selectedLevel = useMemo(
     () =>
@@ -88,7 +87,7 @@ export const StageNameInput: FC<{
       <FormField2
         label="关卡"
         field="stageName"
-        error={levelError || error}
+        error={levelError || fieldState.error}
         asterisk
         FormGroupProps={{
           helperText: (
@@ -100,10 +99,15 @@ export const StageNameInput: FC<{
           ),
         }}
       >
-        <Suggest2<Level>
+        <Suggest<Level>
+          items={levels}
+          itemListPredicate={(query) =>
+            query ? fuse.search(query).map((el) => el.item) : levels
+          }
+          fieldState={fieldState}
+          onReset={() => onChange(undefined)}
           className={clsx(loading && 'bp4-skeleton')}
           disabled={loading}
-          items={levels}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem
               key={item.levelId}
@@ -114,20 +118,9 @@ export const StageNameInput: FC<{
               disabled={modifiers.disabled}
             />
           )}
-          itemPredicate={(query, item) => {
-            return item.name === query
-          }}
-          itemListPredicate={(query) =>
-            query ? fuse.search(query).map((el) => el.item) : levels
-          }
-          query={query}
-          onQueryChange={setQuery}
           selectedItem={selectedLevel}
-          onItemSelect={(item) => {
-            onChange(item.levelId)
-          }}
+          onItemSelect={(item) => onChange(item.levelId)}
           inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
-          ref={ref}
           popoverContentProps={{
             className: 'max-h-64 overflow-auto',
           }}
@@ -136,18 +129,6 @@ export const StageNameInput: FC<{
             placeholder: '关卡',
             large: true,
             onBlur,
-            rightElement: (
-              <FieldResetButton
-                value={value}
-                onReset={() => {
-                  setQuery('')
-                  onChange(undefined)
-                }}
-              />
-            ),
-          }}
-          popoverProps={{
-            placement: 'bottom-start',
           }}
         />
       </FormField2>

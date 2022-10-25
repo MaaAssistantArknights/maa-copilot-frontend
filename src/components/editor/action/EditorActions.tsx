@@ -96,6 +96,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
   return (
     <div>
       <EditorActionAdd
+        control={control}
         action={editingAction}
         onSubmit={onSubmit}
         onCancel={() => setEditingAction(undefined)}
