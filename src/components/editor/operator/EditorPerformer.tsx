@@ -222,6 +222,15 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     { groupName, ...operator },
     setError,
   ) => {
+    if (
+      operators.find(
+        ({ _id, name }) => name === operator.name && _id !== operator._id,
+      )
+    ) {
+      setError('name', { message: '干员已存在' })
+      return false
+    }
+
     let newGroup: Group | undefined
     let newGroupIndex = -1
 
@@ -289,11 +298,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         return false
       }
     } else {
-      if (operators.find(({ name }) => name === operator.name)) {
-        setError('name', { message: '干员已存在' })
-        return false
-      }
-
       operator._id = uniqueId()
       addOperator()
     }
@@ -305,6 +309,13 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     group,
     setError,
   ) => {
+    if (
+      groups.find(({ _id, name }) => name === group.name && _id !== group._id)
+    ) {
+      setError('name', { message: '干员组已存在' })
+      return false
+    }
+
     if (editingGroup) {
       const existingGroup = findGroupById(getId(editingGroup))
 
@@ -317,11 +328,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         return false
       }
     } else {
-      if (groups.find(({ name }) => name === group.name)) {
-        setError('name', { message: '干员组已存在' })
-        return false
-      }
-
       group._id = uniqueId()
       appendGroup(group)
     }
