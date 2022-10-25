@@ -37,7 +37,7 @@ export const StageNameInput: FC<{
 }> = ({ control }) => {
   const {
     field: { value, onChange, onBlur, ref },
-    fieldState: { error },
+    fieldState: { isDirty, error },
   } = useController({
     name: 'stageName',
     control,
@@ -143,7 +143,7 @@ export const StageNameInput: FC<{
             },
             rightElement: (
               <FieldResetButton
-                value={value}
+                disabled={!isDirty}
                 onReset={() => {
                   setQuery('')
                   onChange(undefined)

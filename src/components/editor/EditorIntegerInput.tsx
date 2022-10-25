@@ -23,6 +23,7 @@ export const EditorIntegerInput = <T extends FieldValues>({
 }: EditorIntegerInputProps<T>) => {
   const {
     field: { onChange, onBlur, value, ref },
+    fieldState: { isDirty },
   } = useController({
     name,
     control,
@@ -48,7 +49,12 @@ export const EditorIntegerInput = <T extends FieldValues>({
       }}
       onBlur={onBlur}
       value={value ?? ''}
-      rightElement={<FieldResetButton value={value} onReset={onChange} />}
+      rightElement={
+        <FieldResetButton
+          disabled={!isDirty}
+          onReset={() => onChange(undefined)}
+        />
+      }
       // seems that NumericInput component have a bug where if
       // passed an undefined value, it's just simply not gonna update anymore...
       {...NumericInputProps}

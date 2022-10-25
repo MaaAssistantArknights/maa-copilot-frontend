@@ -81,7 +81,7 @@ export const EditorOperatorName = <T extends FieldValues>({
 
   const {
     field: { onChange, onBlur, value, ref },
-    fieldState: { isTouched },
+    fieldState: { isTouched, isDirty },
   } = useController({
     name,
     control,
@@ -163,7 +163,7 @@ export const EditorOperatorName = <T extends FieldValues>({
         },
         rightElement: (
           <FieldResetButton
-            value={value}
+            disabled={!isDirty}
             onReset={() => {
               setQuery('')
               onChange(undefined)
