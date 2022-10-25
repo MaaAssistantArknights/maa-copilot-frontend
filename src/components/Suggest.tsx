@@ -1,49 +1,43 @@
 import { Suggest2, Suggest2Props } from '@blueprintjs/select'
 
-import Fuse from 'fuse.js'
 import { useEffect, useMemo, useState } from 'react'
 import { ControllerFieldState } from 'react-hook-form'
 
 import { FieldResetButton } from './FieldResetButton'
 
-interface FuseSuggestProps<T> extends Suggest2Props<T> {
-  items: T[]
-  fuse: Fuse.IFuseOptions<T>
+interface SuggestProps<T> extends Suggest2Props<T> {
+  debounce?: number // defaults to 100(ms), set to 0 to disable
   fieldState?: ControllerFieldState
   onReset?: () => void
 }
 
-export const FuseSuggest = <T,>({
-  items,
-  fuse: fuseOptions,
+export const Suggest = <T,>({
+  debounce = 100,
   fieldState,
   onReset,
+
+  items,
+  itemListPredicate,
   inputProps,
   ...suggest2Props
-}: FuseSuggestProps<T>) => {
-  const fuse = useMemo(
-    () =>
-      new Fuse(items, {
-        threshold: 0.3,
-        ...fuseOptions,
-      }),
-    [items],
-  )
-
+}: SuggestProps<T>) => {
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
 
   // the debounce fixes https://github.com/MaaAssistantArknights/maa-copilot-frontend/issues/72
   useEffect(() => {
-    const timer = setTimeout(() => setDebouncedQuery(query), 100)
-    return () => clearTimeout(timer)
-  }, [query])
+    if (debounce) {
+      const timer = setTimeout(() => setDebouncedQuery(query), debounce)
+      return () => clearTimeout(timer)
+    }
+    setDebouncedQuery(query)
+    return undefined
+  }, [query, debounce])
 
-  const filteredItems = useMemo(() => {
-    return debouncedQuery
-      ? fuse.search(debouncedQuery).map((el) => el.item)
-      : items
-  }, [fuse, items, debouncedQuery])
+  const filteredItems = useMemo(
+    () => itemListPredicate?.(debouncedQuery, items) || items,
+    [itemListPredicate, debouncedQuery, items],
+  )
 
   useEffect(() => {
     if (!fieldState?.isTouched) {

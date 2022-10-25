@@ -10,6 +10,7 @@ import {
 
 import { useLevels } from 'apis/arknights'
 import clsx from 'clsx'
+import Fuse from 'fuse.js'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
 import {
   Control,
@@ -23,7 +24,7 @@ import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level } from 'models/operation'
 
-import { FuseSuggest } from '../FuseSuggest'
+import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
 import {
   EditorPerformer,
@@ -54,6 +55,15 @@ export const StageNameInput: FC<{
   const levels = useMemo(
     () => data?.data.sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
     [data],
+  )
+
+  const fuse = useMemo(
+    () =>
+      new Fuse(levels, {
+        keys: ['name', 'catOne', 'catTwo', 'catThree'],
+        threshold: 0.3,
+      }),
+    [levels],
   )
 
   const selectedLevel = useMemo(
@@ -89,9 +99,11 @@ export const StageNameInput: FC<{
           ),
         }}
       >
-        <FuseSuggest<Level>
+        <Suggest<Level>
           items={levels}
-          fuse={{ keys: ['name', 'catOne', 'catTwo', 'catThree'] }}
+          itemListPredicate={(query) =>
+            query ? fuse.search(query).map((el) => el.item) : levels
+          }
           fieldState={fieldState}
           onReset={() => onChange(undefined)}
           className={clsx(loading && 'bp4-skeleton')}

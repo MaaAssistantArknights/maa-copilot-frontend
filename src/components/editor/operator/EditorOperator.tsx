@@ -1,6 +1,7 @@
 import { MenuItem } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import Fuse from 'fuse.js'
 import { FC, useMemo } from 'react'
 import { Control, FieldValues, FormState, useController } from 'react-hook-form'
 
@@ -9,7 +10,7 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
-import { FuseSuggest } from '../../FuseSuggest'
+import { Suggest } from '../../Suggest'
 import { EditorOperatorSkill } from './EditorOperatorSkill'
 import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
 
@@ -87,10 +88,21 @@ export const EditorOperatorName = <T extends FieldValues>({
     ...controllerProps,
   })
 
+  const fuse = useMemo(
+    () =>
+      new Fuse(OPERATORS, {
+        keys: ['name', 'pron'],
+        threshold: 0.3,
+      }),
+    [],
+  )
+
   return (
-    <FuseSuggest<typeof OPERATORS[number]>
+    <Suggest<typeof OPERATORS[number]>
       items={OPERATORS}
-      fuse={{ keys: ['name', 'pron'] }}
+      itemListPredicate={(query) =>
+        query ? fuse.search(query).map((el) => el.item) : OPERATORS
+      }
       fieldState={fieldState}
       onReset={() => onChange(undefined)}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
