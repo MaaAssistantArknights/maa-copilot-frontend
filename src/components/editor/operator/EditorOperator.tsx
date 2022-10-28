@@ -6,12 +6,11 @@ import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { OPERATORS } from 'models/generated/operators'
+import { OPERATORS, OperatorInfo } from 'models/generated/operators'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { Suggest } from '../../Suggest'
 
-type OperatorInfo = typeof OPERATORS[number]
 type PerformerItem = OperatorInfo | CopilotDocV1.Group
 
 const isOperator = (item: PerformerItem): item is OperatorInfo =>
@@ -24,6 +23,7 @@ const createArbitraryOperator = (name: string): OperatorInfo => ({
   id: findOperatorIdByName(name),
   name,
   pron: '',
+  subProf: '',
 })
 
 export const EditorOperatorName = <T extends FieldValues>({

@@ -28,6 +28,7 @@ import { FactItem } from '../../FactItem'
 import { Droppable, Sortable } from '../../dnd'
 import { EditorGroupItem } from './EditorGroupItem'
 import { EditorOperatorItem } from './EditorOperatorItem'
+import { EditorOperatorSheetTrigger } from './EditorOperatorSheet'
 import {
   EditorPerformerAdd,
   EditorPerformerAddProps,
@@ -337,6 +338,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
   return (
     <>
+      <EditorOperatorSheetTrigger />
       <EditorPerformerAdd
         mode={editMode}
         operator={editingOperator}

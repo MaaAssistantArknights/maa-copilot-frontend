@@ -1,15 +1,7 @@
-import { access, writeFile } from 'fs/promises'
+import { writeFile } from 'fs/promises'
 import fetch from 'node-fetch'
-import { getOperatorNames } from './shared'
 
-async function fileExists(file: string) {
-  try {
-    await access(file)
-    return true
-  } catch (e) {
-    return false
-  }
-}
+import { fileExists, getOperators } from './shared'
 
 async function getAllAvatarsFromPrtsWiki() {
   console.info('fetching all avatars from prts wiki...')
@@ -48,8 +40,8 @@ async function getAllAvatarsFromPrtsWiki() {
 async function main() {
   console.info('update-operator-avatars: launched')
 
-  const [operators, files] = await Promise.all([
-    getOperatorNames(),
+  const [{ operators }, files] = await Promise.all([
+    getOperators(),
     getAllAvatarsFromPrtsWiki(),
   ])
 
