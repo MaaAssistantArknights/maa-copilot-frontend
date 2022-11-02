@@ -47,7 +47,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
       setJsonError(undefined)
 
       const json = JSON.parse(text)
-      reset(toEditableOperation(camelcaseKeys(json)), {
+      reset(toEditableOperation(camelcaseKeys(json, { deep: true })), {
         keepDefaultValues: true,
       })
 
