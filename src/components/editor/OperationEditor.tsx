@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonGroup,
   Callout,
   H4,
   Icon,
@@ -22,7 +23,7 @@ import {
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
-import { Level } from 'models/operation'
+import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
 import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
@@ -136,6 +137,48 @@ export const StageNameInput: FC<{
   )
 }
 
+const DifficultyPicker: FC<{
+  control: Control<CopilotDocV1.Operation>
+}> = ({ control }) => {
+  const {
+    field: { value = OpDifficulty.UNKNOWN, onChange },
+    fieldState: { error },
+  } = useController({
+    name: 'difficulty',
+    control,
+  })
+
+  const toggle = (bit: OpDifficultyBitFlag) => {
+    onChange(value ^ bit)
+  }
+
+  return (
+    <FormField2
+      label="关卡难度"
+      FormGroupProps={{
+        helperText: '对于没有突袭难度的关卡，建议不选择',
+      }}
+      field="difficulty"
+      error={error}
+    >
+      <ButtonGroup>
+        <Button
+          active={!!(value & OpDifficultyBitFlag.REGULAR)}
+          onClick={() => toggle(OpDifficultyBitFlag.REGULAR)}
+        >
+          普通
+        </Button>
+        <Button
+          active={!!(value & OpDifficultyBitFlag.HARD)}
+          onClick={() => toggle(OpDifficultyBitFlag.HARD)}
+        >
+          突袭
+        </Button>
+      </ButtonGroup>
+    </FormField2>
+  )
+}
+
 export interface OperationEditorProps {
   form: UseFormReturn<CopilotDocV1.Operation>
   toolbar: ReactNode
@@ -220,7 +263,9 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         </div>
 
         <div className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/4 md:mr-8" />
+          <div className="w-full md:w-1/4 md:mr-8">
+            <DifficultyPicker control={control} />
+          </div>
           <div className="w-full md:w-3/4">
             <FormField
               label="作业描述"

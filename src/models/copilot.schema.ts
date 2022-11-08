@@ -1,3 +1,5 @@
+import { OpDifficulty } from './operation'
+
 /**
  * MAA Copilot 战斗协议 v1
  */
@@ -12,6 +14,7 @@ export namespace CopilotDocV1 {
      * 必填。除危机合约外，均为关卡中文名
      */
     stageName: string
+    difficulty?: OpDifficulty
   }
 
   export type OperationSnakeCased =
