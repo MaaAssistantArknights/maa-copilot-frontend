@@ -108,7 +108,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
       }}
       selectedItems={selectedItems}
       popoverContentProps={{
-        className: 'max-h-64 overflow-auto',
+        className: 'max-h-80 overflow-auto',
       }}
       placeholder="包含或排除干员"
       noResults={<MenuItem disabled text={`没有匹配的干员`} />}
