@@ -123,6 +123,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
           }
         },
       }}
+      resetOnSelect={true}
       tagRenderer={(item) => item.name}
       popoverProps={{
         placement: 'bottom-start',
