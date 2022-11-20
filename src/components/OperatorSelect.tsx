@@ -107,9 +107,6 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
         return fuse.search(query).map((el) => el.item)
       }}
       selectedItems={selectedItems}
-      popoverContentProps={{
-        className: 'max-h-64 overflow-auto',
-      }}
       placeholder="包含或排除干员"
       noResults={<MenuItem disabled text={`没有匹配的干员`} />}
       tagInputProps={{
@@ -126,6 +123,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
           }
         },
       }}
+      resetOnSelect={true}
       tagRenderer={(item) => item.name}
       popoverProps={{
         placement: 'bottom-start',
