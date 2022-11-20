@@ -76,6 +76,7 @@ export const EditorPerformerOperator = ({
     values.name = values.name.trim()
     values.groupName = values.groupName?.trim()
     values.skill = values.skill ? values.skill : 1
+    values.skillUsage = values.skillUsage ? values.skillUsage : 0
     if (submit(values, setError)) {
       reset()
     }
