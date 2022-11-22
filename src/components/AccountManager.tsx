@@ -17,7 +17,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import { requestActivation, requestActivationCode } from 'apis/auth'
 import { useAtom } from 'jotai'
-import { ComponentType, FC, useMemo, useState } from 'react'
+import { ComponentType, FC, useMemo, useRef, useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
 
 import { LoginPanel } from 'components/account/LoginPanel'
@@ -49,11 +49,20 @@ const ActivationDialog: FC<{
     formState: { errors, isValid, isDirty, isSubmitting },
   } = useForm<ActivationFormValues>()
 
+  const [authState, setAuthState] = useAtom(authAtom)
+  const latestAuthState = useRef(authState)
+  latestAuthState.current = authState
+
   const onSubmit = async ({ code }) => {
     await wrapErrorMessage(
       (e: NetworkError) => `激活失败：${e.message}`,
       requestActivation(code),
     )
+
+    setAuthState({
+      ...latestAuthState.current,
+      activated: true,
+    })
 
     AppToaster.show({
       message: '激活成功',
