@@ -45,7 +45,12 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   )
 
   const selectedItems = useMemo(
-    () => OPERATORS.filter((el) => operators.find((op) => op.name === el.name)),
+    () =>
+      compact(
+        operators.map(({ name }) =>
+          OPERATORS.find((item) => item.name === name),
+        ),
+      ),
     [operators],
   )
 
