@@ -1,5 +1,4 @@
 import { useFormState } from 'react-hook-form'
-import { SetOptional } from 'type-fest'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { EditorIntegerInput } from 'components/editor/EditorIntegerInput'
@@ -8,10 +7,10 @@ import type { CopilotDocV1 } from 'models/copilot.schema'
 import { FormField2 } from '../../FormField'
 
 interface EditorActionExecPredicateProps
-  extends SetOptional<EditorFieldProps<CopilotDocV1.Action, number>, 'name'> {}
+  extends EditorFieldProps<CopilotDocV1.Operation, number> {}
 
 export const EditorActionExecPredicateKills = ({
-  name = 'kills',
+  name,
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
@@ -36,7 +35,7 @@ export const EditorActionExecPredicateKills = ({
 }
 
 export const EditorActionExecPredicateCostChange = ({
-  name = 'costChanges',
+  name,
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
@@ -61,7 +60,7 @@ export const EditorActionExecPredicateCostChange = ({
 }
 
 export const EditorActionExecPredicateCooling = ({
-  name = 'cooling',
+  name,
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {

@@ -1,91 +1,87 @@
-import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
+import { Icon, Tag } from '@blueprintjs/core'
 import { UniqueIdentifier } from '@dnd-kit/core'
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
-import { clsx } from 'clsx'
+import { compact } from 'lodash-es'
+import { useMemo, useState } from 'react'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { Sortable, SortableItemProps } from '../../dnd'
-import { CardDeleteOption, CardEditOption } from '../CardOptions'
-import { EditorOperatorItem } from './EditorOperatorItem'
-
-export type GroupWithIdentifiedOperators = Omit<CopilotDocV1.Group, 'opers'> & {
-  opers: (CopilotDocV1.Operator & { id: UniqueIdentifier })[]
-}
+import { FieldErrorsWithGlobal } from '../../../types'
+import { SortableItemProps } from '../../dnd'
+import { CardDeleteOption } from '../CardOptions'
+import { ExpandableCard } from '../ExpandableCard'
+import {
+  EditorGroupForm,
+  EditorGroupFormProps,
+  EditorGroupFormValues,
+} from './EditorGroupForm'
 
 interface EditorGroupItemProps extends Partial<SortableItemProps> {
   group: CopilotDocV1.Group
-  editing?: boolean
-  onEdit?: () => void
+  onChange?: EditorGroupFormProps['onChange']
   onRemove?: () => void
   getOperatorId: (operator: CopilotDocV1.Operator) => UniqueIdentifier
-  isOperatorEditing?: (operator: CopilotDocV1.Operator) => boolean
-  onOperatorEdit?: (operator: CopilotDocV1.Operator) => void
-  onOperatorRemove?: (index: number) => void
 }
 
 export const EditorGroupItem = ({
   group,
-  editing,
-  getOperatorId,
-  isOperatorEditing,
-  onEdit,
+  onChange,
   onRemove,
-  onOperatorEdit,
-  onOperatorRemove,
-  isDragging,
   attributes,
   listeners,
 }: EditorGroupItemProps) => {
+  const [expand, setExpand] = useState(false)
+  const [errors, setErrors] = useState(
+    {} as FieldErrorsWithGlobal<EditorGroupFormValues>,
+  )
+
+  const error = useMemo(
+    // display global error or the first field error
+    () => (errors.global || compact(Object.values(errors))[0])?.message,
+    [errors],
+  )
+
   return (
-    <Card
-      elevation={Elevation.TWO}
-      className={clsx(editing && 'bg-gray-100', isDragging && 'invisible')}
-    >
-      <SortableContext
-        items={group.opers?.map(getOperatorId) || []}
-        strategy={verticalListSortingStrategy}
-      >
-        <div className="flex items-start mb-2">
-          <Icon
-            className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 rounded-[1px]"
-            icon="drag-handle-vertical"
-            {...attributes}
-            {...listeners}
+    <ExpandableCard
+      expand={expand}
+      setExpand={setExpand}
+      content={
+        <>
+          <EditorGroupForm
+            group={group}
+            onChange={onChange}
+            onError={setErrors}
           />
+        </>
+      }
+    >
+      <div className="flex items-start mb-2">
+        <Icon
+          className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 rounded-[1px]"
+          icon="drag-handle-vertical"
+          {...attributes}
+          {...listeners}
+        />
 
-          <h3 className="font-bold leading-none flex-grow">{group.name}</h3>
+        <h3 className="font-bold leading-none flex-grow">
+          <span>
+            {group.name} ({group.opers?.length})
+          </span>
+          {error && <Tag minimal intent="danger">{error}</Tag>}
+        </h3>
 
-          <CardEditOption active={editing} onClick={onEdit} />
-          <CardDeleteOption className="-mr-3" onClick={onRemove} />
-        </div>
+        <CardDeleteOption className="-mr-3" onClick={onRemove} />
+      </div>
 
-        <ul>
-          {group.opers?.map((operator, i) => (
-            <li className="mb-2" key={getOperatorId(operator)}>
-              <Sortable
-                id={getOperatorId(operator)}
-                data={{ type: 'operator' }}
-              >
-                {(attrs) => (
-                  <EditorOperatorItem
-                    operator={operator}
-                    editing={isOperatorEditing?.(operator)}
-                    onEdit={() => onOperatorEdit?.(operator)}
-                    onRemove={() => onOperatorRemove?.(i)}
-                    {...attrs}
-                  />
-                )}
-              </Sortable>
-            </li>
-          ))}
-        </ul>
+      <div className="flex flex-wrap gap-1 text-gray-400">
+        {group.opers?.map(({ _id, name, skill }) => (
+          <Tag key={_id}>
+            {name} {skill || 1}
+          </Tag>
+        ))}
 
-        {!group.opers?.length && (
-          <NonIdealState>将干员拖拽到此处</NonIdealState>
-        )}
-      </SortableContext>
-    </Card>
+        {!group.opers?.length && '请添加干员'}
+      </div>
+    </ExpandableCard>
   )
 }

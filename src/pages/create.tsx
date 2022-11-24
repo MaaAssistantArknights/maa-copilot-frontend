@@ -2,7 +2,7 @@ import { Button } from '@blueprintjs/core'
 
 import { isEqual } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
-import { DeepPartial, useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
@@ -16,28 +16,21 @@ import {
 import { useOperation } from '../apis/query'
 import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
-import { patchOperation, toMaaOperation } from '../components/editor/converter'
 import { SourceEditorButton } from '../components/editor/source/SourceEditorButton'
+import {
+  patchOperation,
+  toMaaOperation,
+} from '../components/editor/utils/converter'
+import { defaultOperation } from '../components/editor/utils/defaults'
 import {
   AutosaveOptions,
   AutosaveSheet,
   isChangedSinceLastSave,
   useAutosave,
-} from '../components/editor/useAutosave'
-import { validateOperation } from '../components/editor/validation'
+} from '../components/editor/utils/useAutosave'
+import { validateOperation } from '../components/editor/utils/validation'
 import { toCopilotOperation } from '../models/converter'
-import { MinimumRequired } from '../models/operation'
 import { NetworkError } from '../utils/fetcher'
-
-const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
-  minimumRequired: MinimumRequired.V4_0_0,
-  // the following fields will immediately be set when passed into useForm, even if they are not set by default.
-  // so we manually set them in order to check the dirtiness when determining whether the form should be autosaved.
-  actions: [],
-  doc: {},
-  groups: [],
-  opers: [],
-}
 
 const isDirty = (operation: CopilotDocV1.Operation) =>
   !isEqual(operation, defaultOperation)
@@ -125,38 +118,40 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
     })
 
     return (
-      <OperationEditor
-        form={form}
-        toolbar={
-          <>
-            <AutosaveSheet
-              minimal
-              className="!text-xs opacity-75"
-              archive={archive}
-              options={autosaveOptions}
-              itemTitle={(record) => record.v.doc?.title || '无标题'}
-              onRestore={(value) => reset(value, { keepDefaultValues: true })}
-            />
-            <SourceEditorButton
-              className="ml-4"
-              form={form}
-              triggerValidation={triggerValidation}
-            />
-            <Button
-              intent="primary"
-              className="ml-4"
-              icon="upload"
-              text={submitAction}
-              loading={uploading}
-              onClick={() => {
-                // manually clear the `global` error or else the submission will be blocked
-                clearErrors()
-                onSubmit()
-              }}
-            />
-          </>
-        }
-      />
+      <FormProvider {...form}>
+        <OperationEditor
+          form={form}
+          toolbar={
+            <>
+              <AutosaveSheet
+                minimal
+                className="!text-xs opacity-75"
+                archive={archive}
+                options={autosaveOptions}
+                itemTitle={(record) => record.v.doc?.title || '无标题'}
+                onRestore={(value) => reset(value, { keepDefaultValues: true })}
+              />
+              <SourceEditorButton
+                className="ml-4"
+                form={form}
+                triggerValidation={triggerValidation}
+              />
+              <Button
+                intent="primary"
+                className="ml-4"
+                icon="upload"
+                text={submitAction}
+                loading={uploading}
+                onClick={() => {
+                  // manually clear the `global` error or else the submission will be blocked
+                  clearErrors()
+                  onSubmit()
+                }}
+              />
+            </>
+          }
+        />
+      </FormProvider>
     )
   }),
 )

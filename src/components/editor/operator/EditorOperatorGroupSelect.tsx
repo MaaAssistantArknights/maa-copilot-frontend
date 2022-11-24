@@ -5,7 +5,7 @@ import { useController } from 'react-hook-form'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { Suggest } from '../../Suggest'
 import { EditorFieldProps } from '../EditorFieldProps'
-import { EditorOperatorFormValues } from './EditorPerformerOperator'
+import { EditorOperatorFormValues } from './EditorOperatorForm'
 
 interface Props extends EditorFieldProps<EditorOperatorFormValues, string> {
   className?: string

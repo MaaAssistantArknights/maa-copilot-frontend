@@ -12,13 +12,11 @@ import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { operatorSkillUsages } from '../../../models/operator'
 
-export const EditorOperatorSkillUsage = <
-  T extends CopilotDocV1.Operator | CopilotDocV1.ActionSkillUsage,
->({
+export const EditorOperatorSkillUsage = ({
   name,
   control,
   ...controllerProps
-}: EditorFieldProps<T, CopilotDocV1.SkillUsageType>) => {
+}: EditorFieldProps<CopilotDocV1.Operation, CopilotDocV1.SkillUsageType>) => {
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({

@@ -3,7 +3,7 @@ import { DeepPartial, UseFormSetError } from 'react-hook-form'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
+import { copilotSchemaValidator } from '../../../models/copilot.schema.validator'
 
 export function validateOperation(
   operation: DeepPartial<CopilotDocV1.OperationSnakeCased>,

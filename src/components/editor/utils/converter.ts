@@ -5,8 +5,8 @@ import snakeCaseKeys from 'snakecase-keys'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { MinimumRequired } from 'models/operation'
 
-import { findOperatorDirection } from '../../models/operator'
-import { findActionType } from '../../models/types'
+import { findOperatorDirection } from '../../../models/operator'
+import { findActionType } from '../../../models/types'
 
 /**
  * Creates an operation that can be used in editor. Used for importing.

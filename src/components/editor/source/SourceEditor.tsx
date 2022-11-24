@@ -8,7 +8,7 @@ import { UseFormReturn } from 'react-hook-form'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { useAfterRender } from '../../../utils/useAfterRender'
 import { OperationDrawer } from '../../drawer/OperationDrawer'
-import { toEditableOperation, toMaaOperation } from '../converter'
+import { toEditableOperation, toMaaOperation } from '../utils/converter'
 import { SourceEditorHeader } from './SourceEditorHeader'
 
 export interface SourceEditorProps {

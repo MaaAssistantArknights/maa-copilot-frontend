@@ -15,7 +15,7 @@ interface EditorOperatorSkillChoice {
 const EditorOperatorSkillSelect = Select2.ofType<EditorOperatorSkillChoice>()
 
 interface EditorOperatorSkillProps
-  extends EditorFieldProps<CopilotDocV1.Operator, number> {}
+  extends EditorFieldProps<CopilotDocV1.Operation, number> {}
 
 export const EditorOperatorSkill = ({
   name,

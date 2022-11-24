@@ -1,5 +1,6 @@
 import {
   ArrayPath,
+  DeepRequired,
   FieldPath,
   FieldValues,
   Path,
@@ -59,8 +60,8 @@ export interface EditorFieldProps<
     Cast<
       PathOfType<
         // wrap in Require to prevent optional keys from being stripped
-        Required<TFieldValues>,
-        FieldPath<Required<TFieldValues>>,
+        DeepRequired<TFieldValues>,
+        FieldPath<DeepRequired<TFieldValues>>,
         TType
       >,
       FieldPath<TFieldValues>

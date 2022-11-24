@@ -30,6 +30,7 @@ import {
   EditorPerformer,
   EditorPerformerProps,
 } from './operator/EditorPerformer'
+import { DevTool } from '@hookform/devtools'
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
@@ -175,6 +176,8 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 
   return (
     <section className="flex flex-col relative h-full pt-4">
+      {import.meta.env.DEV && <DevTool control={control} />}
+
       <div className="px-8 text-lg font-medium flex items-center w-full h-12">
         <Icon icon="document" />
         <span className="ml-2 mr-4">作业编辑器</span>
@@ -249,7 +252,11 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 
         <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
           <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
-            <EditorPerformerPanel control={control} />
+            <H4>干员与干员组</H4>
+            <HelperText className="mb-4">
+              <span>拖拽以重新排序</span>
+            </HelperText>
+            <EditorPerformer control={control} />
           </div>
           <div className="w-full md:w-2/3 pb-8">
             <H4>动作序列</H4>
@@ -261,36 +268,5 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         </div>
       </div>
     </section>
-  )
-}
-
-const EditorPerformerPanel: FC<EditorPerformerProps> = (props) => {
-  const [reload, setReload] = useState(false)
-
-  // temporary workaround for https://github.com/clauderic/dnd-kit/issues/799
-  if (reload) {
-    setTimeout(() => setReload(false), 100)
-    return null
-  }
-
-  return (
-    <>
-      <H4>干员与干员组</H4>
-      <HelperText className="mb-4">
-        <span>拖拽以重新排序或分配干员</span>
-        <span>
-          如果拖拽速度过快可能会使动画出现问题，此时请点击
-          <Button
-            minimal
-            className="!inline !p-0 !min-h-0 ![font-size:inherit] !leading-none !align-baseline underline"
-            onClick={() => setReload(true)}
-          >
-            刷新界面
-          </Button>
-          以修复 （不会丢失数据）
-        </span>
-      </HelperText>
-      <EditorPerformer {...props} />
-    </>
   )
 }

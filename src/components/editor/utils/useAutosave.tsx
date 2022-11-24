@@ -12,7 +12,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 import { first, isEqual } from 'lodash-es'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
 
-import { formatRelativeTime } from '../../utils/times'
+import { formatRelativeTime } from '../../../utils/times'
 
 export interface AutosaveOptions<T> {
   key: string

@@ -6,13 +6,13 @@ import { FC, useMemo } from 'react'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
-  EditorPerformerGroup,
-  EditorPerformerGroupProps,
-} from './EditorPerformerGroup'
+  EditorGroupForm,
+  EditorGroupFormProps,
+} from './EditorGroupForm'
 import {
   EditorPerformerOperator,
-  EditorPerformerOperatorProps,
-} from './EditorPerformerOperator'
+  EditorOperatorFormProps,
+} from './EditorOperatorForm'
 
 export type PerformerType = 'operator' | 'group'
 
@@ -23,8 +23,8 @@ export interface EditorPerformerAddProps {
   groups: CopilotDocV1.Group[]
   onModeChange: (mode: PerformerType) => void
   onCancel: () => void
-  submitOperator: EditorPerformerOperatorProps['submit']
-  submitGroup: EditorPerformerGroupProps['submit']
+  submitOperator: EditorOperatorFormProps['submit']
+  submitGroup: EditorGroupFormProps['submit']
 }
 
 interface PerformerSelectItem {
@@ -89,7 +89,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
         groups={groups}
       />
     ) : (
-      <EditorPerformerGroup
+      <EditorGroupForm
         group={group}
         submit={submitGroup}
         onCancel={onCancel}

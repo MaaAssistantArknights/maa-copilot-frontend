@@ -1,9 +1,9 @@
-import { NonIdealState } from '@blueprintjs/core'
+import { Icon, NonIdealState } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 import {
   Active,
   DndContext,
   DragEndEvent,
-  DragOverlay,
   DragStartEvent,
   Over,
   PointerSensor,
@@ -18,21 +18,17 @@ import {
 } from '@dnd-kit/sortable'
 
 import { uniqueId } from 'lodash-es'
-import { FC, useEffect, useState } from 'react'
+import { FC, useState } from 'react'
 import { Control, UseFieldArrayMove, useFieldArray } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FactItem } from '../../FactItem'
-import { Droppable, Sortable } from '../../dnd'
+import { Sortable } from '../../dnd'
 import { EditorGroupItem } from './EditorGroupItem'
 import { EditorOperatorItem } from './EditorOperatorItem'
-import {
-  EditorPerformerAdd,
-  EditorPerformerAddProps,
-  PerformerType,
-} from './EditorPerformerAdd'
+import { EditorPerformerAddProps, PerformerType } from './EditorPerformerAdd'
 
 export interface EditorPerformerProps {
   control: Control<CopilotDocV1.Operation>
@@ -40,8 +36,6 @@ export interface EditorPerformerProps {
 
 type Operator = CopilotDocV1.Operator
 type Group = CopilotDocV1.Group
-
-const nonGroupedContainerId = 'nonGrouped'
 
 const getId = (performer: Operator | Group) => {
   // normally the id will never be undefined, but we need to make TS happy as well as handing edge cases
@@ -54,7 +48,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
   const {
     fields: _operators,
-    append: appendOperator,
+    insert: insertOperator,
     move: moveOperator,
     update: updateOperator,
     remove: removeOperator,
@@ -65,7 +59,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
   const {
     fields: _groups,
-    append: appendGroup,
+    insert: insertGroup,
     move: moveGroup,
     update: updateGroup,
     remove: removeGroup,
@@ -78,46 +72,8 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const operators: Operator[] = _operators
   const groups: Group[] = _groups
 
-  const [draggingOperator, setDraggingOperator] = useState<Operator>()
-  const [draggingGroup, setDraggingGroup] = useState<Group>()
-  const [editingOperator, setEditingOperator] = useState<Operator>()
-  const [editingGroup, setEditingGroup] = useState<Group>()
-
-  const isOperatorEditing = (operator: Operator) =>
-    !!editingOperator && getId(editingOperator) === getId(operator)
-  const isGroupEditing = (group: Group) =>
-    !!editingGroup && getId(editingGroup) === getId(group)
-
-  useEffect(() => {
-    if (editingOperator) {
-      setEditMode('operator')
-      setEditingGroup(undefined)
-    }
-  }, [editingOperator])
-
-  useEffect(() => {
-    if (editingGroup) {
-      setEditMode('group')
-      setEditingOperator(undefined)
-    }
-  }, [editingGroup])
-
-  useEffect(() => {
-    if (editMode === 'operator') {
-      setEditingGroup(undefined)
-    } else {
-      setEditingOperator(undefined)
-    }
-  }, [editMode])
-
   const findOperatorById = (id?: UniqueIdentifier) =>
-    // find operator from operators
-    operators.find((op) => getId(op) === id) ||
-    // find operator from inside groups
-    groups
-      .map(({ opers }) => opers)
-      .flat()
-      .find((op) => op && getId(op) === id)
+    operators.find((op) => getId(op) === id)
 
   const findGroupById = (id?: UniqueIdentifier) =>
     groups.find((group) => getId(group) === id)
@@ -131,53 +87,18 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const getType = (item: Active | Over) =>
     item.data.current?.type as 'operator' | 'group'
 
-  const handleDragStart = ({ active }: DragStartEvent) => {
-    if (getType(active) === 'operator') {
-      setDraggingOperator(findOperatorById(active.id))
-    } else {
-      setDraggingGroup(findGroupById(active.id))
-    }
-  }
+  const handleDragStart = ({ active }: DragStartEvent) => {}
 
-  const handleDragOver = ({ active, over }: DragEndEvent) => {
+  const handleDragOver = ({ active, over }: DragEndEvent) => {}
+
+  const handleDragEnd = ({ active, over }: DragEndEvent) => {
     if (!over || active.id === over.id) {
       return
     }
 
-    // move operator between groups, or make it non-grouped
-    if (getType(active) === 'operator') {
-      const operator = findOperatorById(active.id)
+    console.log(active, over)
 
-      if (operator) {
-        const oldGroup = findGroupByOperator(operator)
-        const newGroup =
-          getType(over) === 'group'
-            ? findGroupById(over.id)
-            : findGroupByOperator(findOperatorById(over.id))
-
-        if (oldGroup !== newGroup) {
-          if (oldGroup) {
-            updateGroup(groups.indexOf(oldGroup), {
-              ...oldGroup,
-              opers: oldGroup.opers?.filter((op) => op !== operator),
-            })
-          } else {
-            removeOperator(operators.indexOf(operator))
-          }
-
-          if (newGroup) {
-            updateGroup(groups.indexOf(newGroup), {
-              ...newGroup,
-              opers: [operator, ...(newGroup.opers || [])],
-            })
-          } else {
-            appendOperator(operator)
-          }
-
-          return
-        }
-      }
-    }
+    return
 
     // move operator or group within their own container
     if (getType(active) === getType(over)) {
@@ -213,15 +134,11 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     }
   }
 
-  const handleDragEnd = () => {
-    setDraggingOperator(undefined)
-    setDraggingGroup(undefined)
-  }
-
   const submitOperator: EditorPerformerAddProps['submitOperator'] = (
-    { groupName, ...operator },
+    operator,
     setError,
   ) => {
+    const groupName = undefined
     if (
       operators.find(
         ({ _id, name }) => name === operator.name && _id !== operator._id,
@@ -337,19 +254,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
   return (
     <>
-      <EditorPerformerAdd
-        mode={editMode}
-        operator={editingOperator}
-        group={editingGroup}
-        groups={groups}
-        onModeChange={setEditMode}
-        onCancel={() => {
-          setEditingOperator(undefined)
-          setEditingGroup(undefined)
-        }}
-        submitOperator={submitOperator}
-        submitGroup={submitGroup}
-      />
       <div className="p-2 -mx-2 relative">
         <DndContext
           sensors={sensors}
@@ -358,45 +262,55 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           onDragEnd={handleDragEnd}
           onDragCancel={handleDragEnd}
         >
-          <Droppable id={nonGroupedContainerId}>
-            <FactItem title="干员" icon="person" className="font-bold" />
-
-            {operators.length === 0 && <NonIdealState title="暂无干员" />}
-
-            <SortableContext
-              items={operators.map(getId)}
-              strategy={verticalListSortingStrategy}
-            >
-              <ul>
-                {operators.map((operator) => (
-                  <li className="mt-2" key={getId(operator)}>
-                    <Sortable id={getId(operator)} data={{ type: 'operator' }}>
-                      {(attrs) => (
-                        <EditorOperatorItem
-                          operator={operator}
-                          editing={isOperatorEditing(operator)}
-                          onEdit={() =>
-                            setEditingOperator(
-                              isOperatorEditing(operator)
-                                ? undefined
-                                : operator,
-                            )
-                          }
-                          onRemove={() =>
-                            removeOperator(operators.indexOf(operator))
-                          }
-                          {...attrs}
-                        />
-                      )}
-                    </Sortable>
-                  </li>
-                ))}
-              </ul>
-            </SortableContext>
-          </Droppable>
-
-          <FactItem title="干员组" icon="people" className="font-bold mt-8" />
-
+          <FactItem
+            title={`干员 (${operators.length})`}
+            icon="person"
+            className="font-bold"
+          />
+          {operators.length === 0 && <NonIdealState title="暂无干员" />}
+          <SortableContext
+            items={operators.map(getId)}
+            strategy={verticalListSortingStrategy}
+          >
+            {operators.map((operator, index) => (
+              <Sortable
+                className="mb-2"
+                key={getId(operator)}
+                id={getId(operator)}
+                data={{ type: 'operator' }}
+              >
+                {(attrs) => (
+                  <EditorOperatorItem
+                    control={control}
+                    name={`opers.${index}`}
+                    onRemove={() => removeOperator(operators.indexOf(operator))}
+                    {...attrs}
+                  />
+                )}
+              </Sortable>
+            ))}
+          </SortableContext>
+          <FactItem
+            className="font-bold mt-8"
+            icon="people"
+            title={
+              <>
+                {`干员组 (${groups.length})`}
+                <Tooltip2
+                  placement="right"
+                  content={
+                    <>
+                      编队时将选择每个组内练度最高的一位干员，
+                      <br />
+                      组内的前后顺序不影响判断
+                    </>
+                  }
+                >
+                  <Icon icon="help" className="ml-1" />
+                </Tooltip2>
+              </>
+            }
+          />
           {groups.length === 0 && (
             // extra div container: NonIdealState is using height: 100% which causes unexpected overflow
             <div className="relative">
@@ -408,59 +322,25 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             items={groups.map(getId)}
             strategy={verticalListSortingStrategy}
           >
-            <ul>
-              {groups.map((group) => (
-                <li className="mt-2" key={getId(group)}>
-                  <Sortable id={getId(group)} data={{ type: 'group' }}>
-                    {(attrs) => (
-                      <EditorGroupItem
-                        group={group}
-                        editing={isGroupEditing(group)}
-                        onEdit={() =>
-                          setEditingGroup(
-                            isGroupEditing(group) ? undefined : group,
-                          )
-                        }
-                        onRemove={() => removeGroup(groups.indexOf(group))}
-                        getOperatorId={getId}
-                        isOperatorEditing={isOperatorEditing}
-                        onOperatorEdit={(operator) =>
-                          setEditingOperator(
-                            isOperatorEditing(operator) ? undefined : operator,
-                          )
-                        }
-                        onOperatorRemove={(operatorIndexInGroup) => {
-                          const groupIndex = groups.indexOf(group)
-                          if (operatorIndexInGroup > -1) {
-                            group.opers?.splice(operatorIndexInGroup, 1)
-                          }
-                          updateGroup(groupIndex, group)
-                        }}
-                        {...attrs}
-                      />
-                    )}
-                  </Sortable>
-                </li>
-              ))}
-            </ul>
+            {groups.map((group, index) => (
+              <Sortable
+                className="mb-2"
+                key={getId(group)}
+                id={getId(group)}
+                data={{ type: 'group' }}
+              >
+                {(attrs) => (
+                  <EditorGroupItem
+                    group={group}
+                    onChange={(data) => updateGroup(index, data)}
+                    onRemove={() => removeGroup(groups.indexOf(group))}
+                    getOperatorId={getId}
+                    {...attrs}
+                  />
+                )}
+              </Sortable>
+            ))}
           </SortableContext>
-
-          <DragOverlay>
-            {draggingOperator && (
-              <EditorOperatorItem
-                editing={isOperatorEditing(draggingOperator)}
-                operator={draggingOperator}
-              />
-            )}
-            {draggingGroup && (
-              <EditorGroupItem
-                group={draggingGroup}
-                editing={isGroupEditing(draggingGroup)}
-                isOperatorEditing={isOperatorEditing}
-                getOperatorId={getId}
-              />
-            )}
-          </DragOverlay>
         </DndContext>
       </div>
     </>
