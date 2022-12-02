@@ -5,6 +5,7 @@ import type { Response } from 'models/network'
 import type { Level } from 'models/operation'
 
 import { request } from '../utils/fetcher'
+import { enableCache } from '../utils/swr-cache'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 
@@ -15,7 +16,11 @@ export const useVersion = () => {
 }
 
 export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
-  return useSWR<Response<Level[]>>('/arknights/level', {
+  const url = '/arknights/level'
+
+  enableCache(url)
+
+  return useSWR<Response<Level[]>>(url, {
     focusThrottleInterval: ONE_DAY,
     suspense,
     fetcher: async (input: string, init?: RequestInit) => {
