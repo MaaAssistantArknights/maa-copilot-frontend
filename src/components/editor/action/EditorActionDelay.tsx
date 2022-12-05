@@ -28,6 +28,7 @@ export const EditorActionPreDelay = ({
       <EditorIntegerInput
         NumericInputProps={{
           placeholder: '前置延时',
+          min: 0,
           stepSize: 100,
           minorStepSize: 10,
           majorStepSize: 1000,
@@ -57,6 +58,7 @@ export const EditorActionRearDelay = ({
       <EditorIntegerInput
         NumericInputProps={{
           placeholder: '后置延时',
+          min: 0,
           stepSize: 100,
           minorStepSize: 10,
           majorStepSize: 1000,

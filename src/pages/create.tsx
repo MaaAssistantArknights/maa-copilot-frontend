@@ -102,10 +102,33 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
           return
         }
 
-        if (isNew) {
-          await requestOperationUpload(JSON.stringify(operation))
-        } else {
-          await requestOperationUpdate(id, JSON.stringify(operation))
+        try {
+          if (isNew) {
+            await requestOperationUpload(JSON.stringify(operation))
+          } else {
+            await requestOperationUpdate(id, JSON.stringify(operation))
+          }
+        } catch (e) {
+          // handle a special error
+          if (
+            e instanceof Error &&
+            e.message.includes('is less than or equal to 0')
+          ) {
+            const actionWithNegativeCostChanges =
+              operation.actions?.findIndex(
+                (action) => (action?.cost_changes as number) < 0,
+              ) ?? -1
+
+            if (actionWithNegativeCostChanges !== -1) {
+              throw new Error(
+                `目前暂不支持上传费用变化量为负数的动作（第${
+                  actionWithNegativeCostChanges + 1
+                }个动作）`,
+              )
+            }
+          }
+
+          throw e
         }
 
         AppToaster.show({
