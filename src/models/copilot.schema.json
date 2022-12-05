@@ -191,6 +191,11 @@
           "description": "Waiting until the number of kills required is reached, optional, 0 by default.",
           "minimum": 0
         },
+        "costs": {
+          "type": "integer",
+          "description": "Waiting until the cost for the amount specified, optional, 0 by default",
+          "minimum": 0
+        },
         "cost_changes": {
           "type": "integer",
           "description": "Waiting until the cost changes for the amount specified, optional, 0 by default.",

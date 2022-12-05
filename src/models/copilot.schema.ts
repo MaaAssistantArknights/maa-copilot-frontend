@@ -26,6 +26,7 @@ export namespace CopilotDocV1 {
     // Action common optional fields
     doc?: string
     docColor?: string
+    costs?: number
     costChanges?: number
     kills?: number
     cooling?: number

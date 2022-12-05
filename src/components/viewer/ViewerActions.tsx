@@ -50,46 +50,58 @@ export const ViewerActions: FC<{
               )}
               key={actionKey(action, i)}
             >
-              <CardTitle large className="mb-0" icon={type.icon}>
-                <span className="text-xl">{type.title}</span>
-                <span className="flex-1" />
-                <div className="w-[25%] grid grid-flow-row grid-cols-2 text-right font-normal">
+              <div className="flex">
+                <div className="flex-grow">
+                  <CardTitle large className="mb-0" icon={type.icon}>
+                    <span className="text-xl">{type.title}</span>
+                  </CardTitle>
+                  <div className="grid grid-flow-row grid-cols-4 gap-2 [&>*]:mt-4 w-full">
+                    {'name' in action && (
+                      <FactItem dense title="干员/干员组" icon="mugshot">
+                        {action.name}
+                      </FactItem>
+                    )}
+
+                    {'skillUsage' in action && action.skillUsage !== undefined && (
+                      <FactItem
+                        dense
+                        title="切换技能用法至"
+                        icon="swap-horizontal"
+                      >
+                        {action.skillUsage}
+                      </FactItem>
+                    )}
+
+                    {'location' in action &&
+                      !!action.location?.filter(Boolean).length && (
+                        <FactItem dense title="坐标" icon="map-marker">
+                          <span className="font-mono">
+                            {action.location?.[0]}, {action.location?.[1]}
+                          </span>
+                        </FactItem>
+                      )}
+
+                    {'direction' in action && (
+                      <FactItem dense title="朝向" icon="compass">
+                        <span className="font-mono">{action.direction}</span>
+                      </FactItem>
+                    )}
+                  </div>
+                </div>
+                <div className="grid grid-flow-row grid-cols-2 gap-y-2 text-right">
                   <InlinePrecondition title="击杀">
                     {action.kills || '-'}
                   </InlinePrecondition>
-
-                  <InlinePrecondition title="费用回复">
+                  <InlinePrecondition title="费用">
+                    {action.costs || '-'}
+                  </InlinePrecondition>
+                  <InlinePrecondition title="费用变化">
                     {action.costChanges || '-'}
                   </InlinePrecondition>
+                  <InlinePrecondition title="冷却中">
+                    {action.cooling || '-'}
+                  </InlinePrecondition>
                 </div>
-              </CardTitle>
-              <div className="grid grid-flow-row grid-cols-4 gap-2 [&>*]:mt-4 w-full">
-                {'name' in action && (
-                  <FactItem dense title="干员/干员组" icon="mugshot">
-                    {action.name}
-                  </FactItem>
-                )}
-
-                {'skillUsage' in action && action.skillUsage !== undefined && (
-                  <FactItem dense title="切换技能用法至" icon="swap-horizontal">
-                    {action.skillUsage}
-                  </FactItem>
-                )}
-
-                {'location' in action &&
-                  !!action.location?.filter(Boolean).length && (
-                    <FactItem dense title="坐标" icon="map-marker">
-                      <span className="font-mono">
-                        {action.location?.[0]}, {action.location?.[1]}
-                      </span>
-                    </FactItem>
-                  )}
-
-                {'direction' in action && (
-                  <FactItem dense title="朝向" icon="compass">
-                    <span className="font-mono">{action.direction}</span>
-                  </FactItem>
-                )}
               </div>
             </Card>
             {i < actions.length - 1 && (
@@ -119,8 +131,8 @@ export const ViewerActions: FC<{
 const InlinePrecondition: FCC<{
   title?: string
 }> = ({ title, children }) => (
-  <div className="inline-flex items-end">
-    <span className="text-zinc-500 leading-none mr-0.5 tabular-nums font-bold">
+  <div className="min-w-[5em] text-lg leading-none">
+    <span className="text-zinc-500 mr-0.5 tabular-nums font-bold">
       {children}
     </span>
     <span className="text-zinc-400 text-xs">{title}</span>

@@ -104,7 +104,11 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
       {/* direction:rtl is for the grid to place columns from right to left; need to set it back to ltr for the children */}
       <div className="grid grid-flow-row grid-cols-2 gap-y-2 text-right [direction:rtl] [&>*]:[direction:ltr]">
         <InlineCondition title="击杀">{action.kills || '-'}</InlineCondition>
-        <InlineCondition title="回费">
+        <InlineCondition title="冷却中">
+          {action.cooling || '-'}
+        </InlineCondition>
+        <InlineCondition title="费用">{action.costs || '-'}</InlineCondition>
+        <InlineCondition title="费用变化">
           {action.costChanges || '-'}
         </InlineCondition>
         <InlineCondition title="前置">
@@ -112,9 +116,6 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
         </InlineCondition>
         <InlineCondition title="后置">
           {action.rearDelay ? formatDuration(action.rearDelay) : '-'}
-        </InlineCondition>
-        <InlineCondition title="冷却中">
-          {action.cooling || '-'}
         </InlineCondition>
       </div>
     </Card>
