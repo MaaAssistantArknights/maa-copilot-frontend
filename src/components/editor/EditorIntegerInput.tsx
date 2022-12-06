@@ -1,10 +1,12 @@
-import { NumericInput, NumericInputProps } from '@blueprintjs/core'
+import { NumericInputProps } from '@blueprintjs/core'
 
+import { isNil } from 'lodash-es'
 import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 import { FieldResetButton } from '../FieldResetButton'
+import { NumericInput2 } from './NumericInput2'
 
 export interface EditorIntegerInputProps<T extends FieldValues>
   extends EditorFieldProps<T, number> {
@@ -21,6 +23,8 @@ export const EditorIntegerInput = <T extends FieldValues>({
   NumericInputProps,
   ...controllerProps
 }: EditorIntegerInputProps<T>) => {
+  const { min } = NumericInputProps
+
   const {
     field: { onChange, onBlur, value, ref },
     fieldState: { isDirty },
@@ -28,25 +32,20 @@ export const EditorIntegerInput = <T extends FieldValues>({
     name,
     control,
     ...controllerProps,
-    rules: { min: { value: 0, message: '最小为 0' }, ...rules },
+    rules: {
+      min: isNil(min) ? undefined : { value: min, message: '最小为 ${min}' },
+      ...rules,
+    },
   })
 
   return (
-    <NumericInput
+    <NumericInput2
+      intOnly
       selectAllOnFocus
       minorStepSize={null}
-      min={0}
       name={name}
       inputRef={ref}
-      onValueChange={(value) => {
-        if (
-          !Number.isNaN(value) &&
-          Number.isFinite(value) &&
-          Number.isSafeInteger(value)
-        ) {
-          onChange(value)
-        }
-      }}
+      onValueChange={(value) => onChange(value)}
       onBlur={onBlur}
       value={value ?? ''}
       rightElement={
@@ -55,8 +54,6 @@ export const EditorIntegerInput = <T extends FieldValues>({
           onReset={() => onChange(undefined)}
         />
       }
-      // seems that NumericInput component have a bug where if
-      // passed an undefined value, it's just simply not gonna update anymore...
       {...NumericInputProps}
     />
   )

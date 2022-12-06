@@ -18,6 +18,7 @@ import { EditorActionDocColor } from 'components/editor/action/EditorActionDocCo
 import {
   EditorActionExecPredicateCooling,
   EditorActionExecPredicateCostChange,
+  EditorActionExecPredicateCosts,
   EditorActionExecPredicateKills,
 } from 'components/editor/action/EditorActionExecPredicate'
 import { EditorActionOperatorDirection } from 'components/editor/action/EditorActionOperatorDirection'
@@ -215,10 +216,12 @@ export const EditorActionAdd = ({
 
         <div className="flex flex-wrap">
           <EditorActionExecPredicateKills control={control} />
-          <EditorActionExecPredicateCostChange control={control} />
           <EditorActionExecPredicateCooling control={control} />
         </div>
-
+        <div className="flex flex-wrap">
+          <EditorActionExecPredicateCosts control={control} />
+          <EditorActionExecPredicateCostChange control={control} />
+        </div>
         <div className="flex flex-wrap">
           <EditorActionPreDelay control={control} />
           <EditorActionRearDelay control={control} />

@@ -48,10 +48,14 @@ export const StageNameInput: FC<{
   // without swapping the actual element.
   const {
     data,
-    error: levelError,
+    error: _levelError,
     isValidating,
   } = useLevels({ suspense: false })
   const loading = isValidating && !data
+  const levelError =
+    _levelError && data
+      ? '更新关卡失败：' + (_levelError.message || _levelError)
+      : _levelError
 
   const levels = useMemo(
     () => data?.data.sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
