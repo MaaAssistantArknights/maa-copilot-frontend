@@ -1,6 +1,6 @@
 import { InputGroup } from '@blueprintjs/core'
 
-import { UseControllerProps } from 'react-hook-form'
+import { FieldValues, UseControllerProps } from 'react-hook-form'
 
 import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL } from 'utils/regexes'
@@ -26,34 +26,39 @@ export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
 
 // --- **Opinioned** AuthForm Field Components ---
 
-export type AuthFormFieldProps<T> = Pick<
-  FormFieldProps<T>,
+export type AuthFormFieldProps<T extends FieldValues> = Pick<
+  FormFieldProps<T, any>,
   'control' | 'error' | 'field'
 > & {
+  label?: string
   register?: boolean
+  autoComplete?: string
 }
 
-export const AuthFormEmailField = <T extends {}>({
+export const AuthFormEmailField = <T extends FieldValues>({
+  label = '邮箱',
   control,
   error,
   field,
   register,
+  autoComplete = 'email',
 }: AuthFormFieldProps<T>) => {
   return (
     <FormField
-      label="邮箱"
+      label={label}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
         rules: rule.email,
-        render: ({ field: binding }) => (
+        render: ({ field: { value, ...binding } }) => (
           <InputGroup
             id={field}
+            value={value || ''}
             placeholder="user@example.com"
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus
-            autoComplete="email"
+            autoComplete={autoComplete}
             {...binding}
           />
         ),
@@ -65,25 +70,28 @@ export const AuthFormEmailField = <T extends {}>({
   )
 }
 
-export const AuthFormPasswordField = <T extends {}>({
+export const AuthFormPasswordField = <T extends FieldValues>({
+  label = '密码',
   control,
   error,
   field,
+  autoComplete = 'current-password',
 }: AuthFormFieldProps<T>) => {
   return (
     <FormField
-      label="密码"
+      label={label}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
         rules: rule.password,
-        render: ({ field: binding }) => (
+        render: ({ field: { value, ...binding } }) => (
           <InputGroup
             id={field}
-            placeholder="· · · · · ·"
+            value={value || ''}
+            placeholder="· · · · · · · ·"
             type="password"
-            autoComplete="current-password"
+            autoComplete={autoComplete}
             {...binding}
           />
         ),
@@ -92,24 +100,27 @@ export const AuthFormPasswordField = <T extends {}>({
   )
 }
 
-export const AuthFormUsernameField = <T extends {}>({
+export const AuthFormUsernameField = <T extends FieldValues>({
+  label = '用户名',
   control,
   error,
   field,
+  autoComplete = 'username',
 }: AuthFormFieldProps<T>) => {
   return (
     <FormField
-      label="用户名"
+      label={label}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
         rules: rule.username,
-        render: ({ field: binding }) => (
+        render: ({ field: { value, ...binding } }) => (
           <InputGroup
             id={field}
+            value={value || ''}
             placeholder="Pallas-Bot"
-            autoComplete="username"
+            autoComplete={autoComplete}
             {...binding}
           />
         ),

@@ -65,3 +65,39 @@ export const requestRegister = (
     },
   })
 }
+
+export interface UpdateInfoResponse {}
+
+export const requestUpdateInfo = ({
+  email,
+  username,
+}: {
+  email?: string
+  username?: string
+}) => {
+  return jsonRequest<Response<RegisterResponse>>('/user/update/info', {
+    method: 'POST',
+    json: {
+      email,
+      user_name: username,
+    },
+  })
+}
+
+export interface UpdatePasswordResponse {}
+
+export const requestUpdatePassword = ({
+  original,
+  newPassword,
+}: {
+  original?: string
+  newPassword?: string
+}) => {
+  return jsonRequest<Response<RegisterResponse>>('/user/update/password', {
+    method: 'POST',
+    json: {
+      original_password: original,
+      new_password: newPassword,
+    },
+  })
+}

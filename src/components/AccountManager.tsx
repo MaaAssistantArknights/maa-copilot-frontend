@@ -18,7 +18,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 import { requestActivation, requestActivationCode } from 'apis/auth'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useMemo, useRef, useState } from 'react'
-import { useController, useForm } from 'react-hook-form'
+import { FieldValues, useController, useForm } from 'react-hook-form'
 
 import { LoginPanel } from 'components/account/LoginPanel'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
@@ -33,6 +33,7 @@ import {
   withGlobalErrorBoundary,
 } from './GlobalErrorBoundary'
 import { AppToaster } from './Toaster'
+import { EditDialog } from './account/EditDialog'
 import { RegisterPanel } from './account/RegisterPanel'
 
 interface ActivationFormValues {
@@ -107,7 +108,10 @@ const ActivationDialog: FC<{
   )
 }
 
-const ActivationInputGroup = <T,>({ name, control }: EditorFieldProps<T>) => {
+const ActivationInputGroup = <T extends FieldValues>({
+  name,
+  control,
+}: EditorFieldProps<T>) => {
   const {
     field: { onChange, onBlur, ref },
   } = useController({
@@ -163,6 +167,7 @@ const AccountMenu: FC = () => {
   const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   const [activationDialogOpen, setActivationDialogOpen] = useState(false)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   const handleLogout = () => {
     setAuthState({})
@@ -208,10 +213,19 @@ const AccountMenu: FC = () => {
         onClose={() => setActivationDialogOpen(false)}
       />
 
+      <EditDialog
+        isOpen={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+      />
+
       <Menu>
-        {/* <MenuItem icon="edit" text="修改用户名" />
-        <MenuItem icon="key" text="修改密码" />
-        <MenuDivider /> */}
+        <MenuItem
+          shouldDismissPopover={false}
+          icon="edit"
+          text="修改信息..."
+          onClick={() => setEditDialogOpen(true)}
+        />
+        <MenuDivider />
         {menuItems}
 
         {menuItems.length > 0 && <MenuDivider />}
@@ -220,7 +234,7 @@ const AccountMenu: FC = () => {
           shouldDismissPopover={false}
           intent="danger"
           icon="log-out"
-          text="退出登录..."
+          text="退出登录"
           onClick={() => setLogoutDialogOpen(true)}
         />
       </Menu>
@@ -246,7 +260,7 @@ export const AccountAuthDialog: ComponentType<{
           <Tabs
             // renderActiveTabPanelOnly: avoid autocomplete on inactive panel
             renderActiveTabPanelOnly={true}
-            id="account-manager-tabs"
+            id="account-auto-tabs"
             onChange={(tab) => {
               setActiveTab(tab)
             }}
