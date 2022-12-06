@@ -19,6 +19,7 @@ import { AppToaster } from 'components/Toaster'
 import { authAtom } from '../../store/auth'
 import { GlobalErrorBoundary } from '../GlobalErrorBoundary'
 import { AuthFormPasswordField, AuthFormUsernameField } from './AuthFormShared'
+import { ResetPasswordDialog } from './ResetPasswordDialog'
 
 interface EditDialogProps {
   isOpen: boolean
@@ -134,10 +135,10 @@ const InfoPanel = () => {
           loading={isSubmitting}
           type="submit"
           icon="floppy-disk"
-          onClick={() => {
+          onClick={(e) => {
             // manually clear the `global` error or else the submission will be blocked
             clearErrors()
-            onSubmit()
+            onSubmit(e)
           }}
         >
           保存
@@ -153,6 +154,8 @@ const PasswordPanel = () => {
     newPassword: string
     newPassword2: string
   }
+
+  const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false)
 
   const {
     control,
@@ -188,50 +191,65 @@ const PasswordPanel = () => {
   )
 
   return (
-    <form>
-      {globalError && (
-        <Callout intent="danger" icon="error" title="错误">
-          {globalError}
-        </Callout>
-      )}
+    <>
+      <form>
+        {globalError && (
+          <Callout intent="danger" icon="error" title="错误">
+            {globalError}
+          </Callout>
+        )}
 
-      <AuthFormPasswordField
-        label="当前密码"
-        field="original"
-        control={control}
-        error={errors.original}
-      />
-      <AuthFormPasswordField
-        label="新密码"
-        field="newPassword"
-        control={control}
-        error={errors.newPassword}
-        autoComplete="off"
-      />
-      <AuthFormPasswordField
-        label="确认新密码"
-        field="newPassword2"
-        control={control}
-        error={errors.newPassword2}
-        autoComplete="off"
-      />
+        <AuthFormPasswordField
+          label="当前密码"
+          field="original"
+          control={control}
+          error={errors.original}
+        />
+        <AuthFormPasswordField
+          label="新密码"
+          field="newPassword"
+          control={control}
+          error={errors.newPassword}
+          autoComplete="off"
+        />
+        <AuthFormPasswordField
+          label="确认新密码"
+          field="newPassword2"
+          control={control}
+          error={errors.newPassword2}
+          autoComplete="off"
+        />
 
-      <div className="mt-6 flex justify-end">
-        <Button
-          disabled={!isDirty || isSubmitting}
-          intent="primary"
-          loading={isSubmitting}
-          type="submit"
-          icon="floppy-disk"
-          onClick={() => {
-            // manually clear the `global` error or else the submission will be blocked
-            clearErrors()
-            onSubmit()
-          }}
-        >
-          保存
-        </Button>
-      </div>
-    </form>
+        <div className="mt-6 flex justify-end">
+          <Button
+            minimal
+            className="mr-2"
+            icon="key"
+            onClick={() => setResetPasswordDialogOpen(true)}
+          >
+            忘记密码...
+          </Button>
+          <Button
+            disabled={!isDirty || isSubmitting}
+            intent="primary"
+            loading={isSubmitting}
+            type="submit"
+            icon="floppy-disk"
+            onClick={(e) => {
+              // manually clear the `global` error or else the submission will be blocked
+              clearErrors()
+              onSubmit(e)
+            }}
+          >
+            保存
+          </Button>
+        </div>
+      </form>
+
+      <ResetPasswordDialog
+        isOpen={resetPasswordDialogOpen}
+        onClose={() => setResetPasswordDialogOpen(false)}
+      />
+    </>
   )
 }

@@ -101,3 +101,27 @@ export const requestUpdatePassword = ({
     },
   })
 }
+
+export interface ResetPasswordTokenResponse {}
+
+export const requestResetPasswordToken = (data: { email: string }) => {
+  return jsonRequest<Response<RegisterResponse>>(
+    '/user/password/reset_request',
+    {
+      method: 'POST',
+      json: data,
+    },
+  )
+}
+
+export interface ResetPasswordResponse {}
+
+export const requestResetPassword = (data: {
+  token: string
+  password: string
+}) => {
+  return jsonRequest<Response<RegisterResponse>>('/user/password/reset', {
+    method: 'POST',
+    json: data,
+  })
+}
