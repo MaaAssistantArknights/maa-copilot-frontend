@@ -166,6 +166,14 @@ export const OperationViewer: ComponentType<{
     }
 
     const handleRating = async (decision: OpRatingType) => {
+      if (!authed) {
+        AppToaster.show({
+          message: '请先登录',
+          intent: 'warning',
+        })
+        return
+      }
+
       mutate(async (val) => {
         try {
           return await wrapErrorMessage(
@@ -250,36 +258,33 @@ export const OperationViewer: ComponentType<{
               <FactItem relaxed className="items-start" title="作业评分">
                 <OperationRating operation={operation} className="mr-2" />
 
-                {/* only show like or dislike if the user is authed. otherwise, hide it */}
-                {authed && (
-                  <ButtonGroup className="flex items-center ml-2">
-                    <Tooltip2 content="o(*≧▽≦)ツ" placement="bottom">
-                      <Button
-                        icon="thumbs-up"
-                        intent={
-                          operation?.ratingType === OpRatingType.Like
-                            ? 'success'
-                            : 'none'
-                        }
-                        className="mr-2"
-                        active={operation?.ratingType === OpRatingType.Like}
-                        onClick={() => handleRating(OpRatingType.Like)}
-                      />
-                    </Tooltip2>
-                    <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
-                      <Button
-                        icon="thumbs-down"
-                        intent={
-                          operation?.ratingType === OpRatingType.Dislike
-                            ? 'danger'
-                            : 'none'
-                        }
-                        active={operation?.ratingType === OpRatingType.Dislike}
-                        onClick={() => handleRating(OpRatingType.Dislike)}
-                      />
-                    </Tooltip2>
-                  </ButtonGroup>
-                )}
+                <ButtonGroup className="flex items-center ml-2">
+                  <Tooltip2 content="o(*≧▽≦)ツ" placement="bottom">
+                    <Button
+                      icon="thumbs-up"
+                      intent={
+                        operation?.ratingType === OpRatingType.Like
+                          ? 'success'
+                          : 'none'
+                      }
+                      className="mr-2"
+                      active={operation?.ratingType === OpRatingType.Like}
+                      onClick={() => handleRating(OpRatingType.Like)}
+                    />
+                  </Tooltip2>
+                  <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
+                    <Button
+                      icon="thumbs-down"
+                      intent={
+                        operation?.ratingType === OpRatingType.Dislike
+                          ? 'danger'
+                          : 'none'
+                      }
+                      active={operation?.ratingType === OpRatingType.Dislike}
+                      onClick={() => handleRating(OpRatingType.Dislike)}
+                    />
+                  </Tooltip2>
+                </ButtonGroup>
               </FactItem>
             </div>
 
