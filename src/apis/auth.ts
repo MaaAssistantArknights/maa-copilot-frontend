@@ -75,7 +75,7 @@ export const requestUpdateInfo = ({
   email?: string
   username?: string
 }) => {
-  return jsonRequest<Response<RegisterResponse>>('/user/update/info', {
+  return jsonRequest<Response<UpdateInfoResponse>>('/user/update/info', {
     method: 'POST',
     json: {
       email,
@@ -93,19 +93,22 @@ export const requestUpdatePassword = ({
   original?: string
   newPassword?: string
 }) => {
-  return jsonRequest<Response<RegisterResponse>>('/user/update/password', {
-    method: 'POST',
-    json: {
-      original_password: original,
-      new_password: newPassword,
+  return jsonRequest<Response<UpdatePasswordResponse>>(
+    '/user/update/password',
+    {
+      method: 'POST',
+      json: {
+        original_password: original,
+        new_password: newPassword,
+      },
     },
-  })
+  )
 }
 
 export interface ResetPasswordTokenResponse {}
 
 export const requestResetPasswordToken = (data: { email: string }) => {
-  return jsonRequest<Response<RegisterResponse>>(
+  return jsonRequest<Response<ResetPasswordTokenResponse>>(
     '/user/password/reset_request',
     {
       method: 'POST',
@@ -120,7 +123,7 @@ export const requestResetPassword = (data: {
   token: string
   password: string
 }) => {
-  return jsonRequest<Response<RegisterResponse>>('/user/password/reset', {
+  return jsonRequest<Response<ResetPasswordResponse>>('/user/password/reset', {
     method: 'POST',
     json: data,
   })
