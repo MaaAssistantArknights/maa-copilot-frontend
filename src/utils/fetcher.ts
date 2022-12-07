@@ -15,26 +15,33 @@ const baseURL = envUseProductionApi
   : 'http://localhost:5259'
 
 export const FETCHER_CONFIG: {
-  apiToken?: string
-} = {
-  apiToken: undefined,
+  apiToken?: () => Promise<string | undefined>
+} = {}
+
+interface ExtendedRequestInit extends RequestInit {
+  noToken?: boolean
 }
 
 export const request = <T extends Response<unknown>>(
   input: string,
-  init?: RequestInit,
+  init?: ExtendedRequestInit,
 ): Promise<T> =>
-  fetch(
-    baseURL + input,
-    merge(
-      init,
-      FETCHER_CONFIG.apiToken && {
-        headers: {
-          Authorization: `Bearer ${FETCHER_CONFIG.apiToken}`,
-        },
-      },
-    ),
+  Promise.resolve(
+    init?.noToken ? undefined : FETCHER_CONFIG.apiToken?.().catch(console.warn),
   )
+    .then((apiToken) =>
+      fetch(
+        baseURL + input,
+        merge(
+          init,
+          apiToken && {
+            headers: {
+              Authorization: `Bearer ${apiToken}`,
+            },
+          },
+        ),
+      ),
+    )
     .then(async (res) => {
       return {
         response: res,
@@ -66,7 +73,7 @@ export const request = <T extends Response<unknown>>(
       return res.data
     })
 
-export type JsonRequestInit = RequestInit & {
+export type JsonRequestInit = ExtendedRequestInit & {
   json?: any
 }
 

@@ -6,7 +6,7 @@ import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
-import { authAtom } from 'store/auth'
+import { authAtom, fromCredentials } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
@@ -36,17 +36,10 @@ export const LoginPanel: FC<{
       (e: NetworkError) => `登录失败：${e.message}`,
       requestLogin(val.email, val.password),
     )
-    const username = res.data.userInfo.userName
-    setAuthState({
-      token: res.data.token,
-      activated: res.data.userInfo.activated,
-      role: res.data.userInfo.role,
-      userId: res.data.userInfo.id,
-      username,
-    })
+    setAuthState(fromCredentials(res.data))
     AppToaster.show({
       intent: 'success',
-      message: `登录成功。欢迎回来，${username}`,
+      message: `登录成功。欢迎回来，${res.data.userInfo.userName}`,
     })
     onComplete()
   }

@@ -1,9 +1,11 @@
 import { Response } from 'models/network'
 import { jsonRequest } from 'utils/fetcher'
 
-export interface LoginResponse {
+export interface UserCredentials {
   token: string
   validBefore: string
+  refreshToken: string
+  refreshTokenValidBefore: string
   userInfo: UserInfo
 }
 
@@ -16,6 +18,8 @@ export interface UserInfo {
   uploadCount: number
 }
 
+export interface LoginResponse extends UserCredentials {}
+
 export const requestLogin = (email: string, password: string) => {
   return jsonRequest<Response<LoginResponse>>('/user/login', {
     method: 'POST',
@@ -23,6 +27,19 @@ export const requestLogin = (email: string, password: string) => {
       email,
       password,
     },
+  })
+}
+
+export interface RefreshResponse extends UserCredentials {}
+
+export const requestRefresh = (token: string, refreshToken: string) => {
+  return jsonRequest<Response<RefreshResponse>>('/user/refresh', {
+    method: 'POST',
+    json: {
+      access_token: token,
+      refresh_token: refreshToken,
+    },
+    noToken: true,
   })
 }
 
