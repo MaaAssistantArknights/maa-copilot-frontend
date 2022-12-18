@@ -5,6 +5,7 @@ import { useController, useForm } from 'react-hook-form'
 
 import { requestGetOperation } from '../../../apis/copilotOperation'
 import { parseShortCode } from '../../../models/shortCode'
+import { formatError } from '../../../utils/error'
 import { FormField2 } from '../../FormField'
 
 interface ShortCodeForm {
@@ -58,7 +59,7 @@ export const ShortCodeImporter: FC<{
       setDialogOpen(false)
     } catch (e) {
       console.warn(e)
-      setError('code', { message: '加载失败：' + ((e as Error)?.message || e) })
+      setError('code', { message: '加载失败：' + formatError(e) })
     } finally {
       setPending(false)
     }

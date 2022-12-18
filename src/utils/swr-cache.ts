@@ -1,3 +1,7 @@
+import { State } from 'swr'
+
+type SwrCache = [string, State][]
+
 const STORAGE_KEY = 'copilot-swr'
 
 const cachedKeys = new Set<string>()
@@ -13,10 +17,25 @@ export function localStorageProvider() {
   )
 
   window.addEventListener('beforeunload', () => {
-    const cache = Array.from(map.entries()).filter(([key]) =>
-      cachedKeys.has(key),
+    const cache = Object.fromEntries(
+      JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]') as SwrCache,
     )
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cache))
+
+    // overwrite cache with map entries
+    Array.from(map.entries())
+      .filter(
+        ([key, state]) => cachedKeys.has(key) && state.data && !state.error,
+      )
+      .forEach(([key, state]) => (cache[key] = state))
+
+    // remove entries that are no longer needed
+    Object.keys(cache).forEach((key) => {
+      if (!cachedKeys.has(key)) {
+        delete cache[key]
+      }
+    })
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(Object.entries(cache)))
   })
 
   return map

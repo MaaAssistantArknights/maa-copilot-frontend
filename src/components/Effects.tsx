@@ -5,6 +5,7 @@ import { authAtom, fromCredentials } from 'store/auth'
 import { FETCHER_CONFIG } from 'utils/fetcher'
 
 import { requestRefresh } from '../apis/auth'
+import { formatError } from '../utils/error'
 import { AppToaster } from './Toaster'
 
 export const Effects: FC = () => {
@@ -56,7 +57,7 @@ export const Effects: FC = () => {
                 // do not logout here, let the user decide
                 AppToaster.show({
                   intent: 'warning',
-                  message: '登录失效：' + ((e as Error).message || e),
+                  message: '登录失效：' + formatError(e),
                 })
               }
             } else {

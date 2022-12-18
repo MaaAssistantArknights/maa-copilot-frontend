@@ -25,6 +25,7 @@ import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
+import { formatError } from '../../utils/error'
 import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
 import {
@@ -53,9 +54,7 @@ export const StageNameInput: FC<{
   } = useLevels({ suspense: false })
   const loading = isValidating && !data
   const levelError =
-    _levelError && data
-      ? '更新关卡失败：' + (_levelError.message || _levelError)
-      : _levelError
+    _levelError && (data ? '更新关卡失败：' : '') + formatError(_levelError)
 
   const levels = useMemo(
     () => data?.data.sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
