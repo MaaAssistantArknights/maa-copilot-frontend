@@ -7,6 +7,7 @@ import {
   requestResetPassword,
   requestResetPasswordToken,
 } from '../../apis/auth'
+import { formatError } from '../../utils/error'
 import { NetworkError } from '../../utils/fetcher'
 import { useNetworkState } from '../../utils/useNetworkState'
 import { wrapErrorMessage } from '../../utils/wrapErrorMessage'
@@ -51,9 +52,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
       onClose()
     } catch (e) {
       console.warn(e)
-      setError('global' as any, {
-        message: (e as Error)?.message || String(e),
-      })
+      setError('global' as any, { message: formatError(e) })
     }
   })
 

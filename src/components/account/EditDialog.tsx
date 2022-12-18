@@ -17,6 +17,7 @@ import { useLatest } from 'react-use'
 import { AppToaster } from 'components/Toaster'
 
 import { authAtom } from '../../store/auth'
+import { formatError } from '../../utils/error'
 import { GlobalErrorBoundary } from '../GlobalErrorBoundary'
 import { AuthFormPasswordField, AuthFormUsernameField } from './AuthFormShared'
 import { ResetPasswordDialog } from './ResetPasswordDialog'
@@ -110,7 +111,7 @@ const InfoPanel = () => {
       })
     } catch (e) {
       console.warn(e)
-      setError('global' as any, { message: (e as Error)?.message || String(e) })
+      setError('global' as any, { message: formatError(e) })
     }
   })
 
@@ -183,9 +184,7 @@ const PasswordPanel = () => {
         })
       } catch (e) {
         console.warn(e)
-        setError('global' as any, {
-          message: (e as Error)?.message || String(e),
-        })
+        setError('global' as any, { message: formatError(e) })
       }
     },
   )

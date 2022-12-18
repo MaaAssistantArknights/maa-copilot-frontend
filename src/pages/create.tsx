@@ -27,6 +27,7 @@ import {
 import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { MinimumRequired } from '../models/operation'
+import { formatError } from '../utils/error'
 import { NetworkError } from '../utils/fetcher'
 
 const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
@@ -140,7 +141,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
           message:
             e instanceof NetworkError
               ? `作业${submitAction}失败：${e.message}`
-              : (e as Error).message || String(e),
+              : formatError(e),
         })
       } finally {
         setUploading(false)
