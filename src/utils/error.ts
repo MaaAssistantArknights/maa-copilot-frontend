@@ -1,9 +1,9 @@
 export function formatError(
   e: unknown,
   fallback = '未知错误',
-): string | undefined {
-  if (e === undefined) {
-    return undefined
+): string | null | undefined {
+  if (e === undefined || e === null) {
+    return e
   }
 
   if (typeof e === 'string') {
