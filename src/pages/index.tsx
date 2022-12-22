@@ -33,7 +33,7 @@ const SOCIAL_LINKS = [
     icon: (
       <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
     ),
-    href: 'https://github.com/MaaAssistantArknights/MaaCopilotServer',
+    href: 'https://github.com/MaaAssistantArknights/MaaBackendCenter',
     label: '后端 GitHub Repo',
   },
   {
@@ -64,7 +64,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
             服务器数据已不幸丢失，目前作业站后端正准备用 Java
             重写，如果有以下经验欢迎加入我们（JDK17，Gradle，MongoDB，SpringBoot）
           </p>
-          <p>作业站开发群：724540644</p>
+          <p>Repo 地址: https://github.com/MaaAssistantArknights/MaaBackendCenter</p>
         </Callout>
         <Operations />
       </div>
