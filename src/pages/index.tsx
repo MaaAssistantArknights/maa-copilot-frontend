@@ -64,7 +64,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
             服务器数据已不幸丢失，目前作业站后端正准备用 Java
             重写，如果有以下经验欢迎加入我们（JDK17，Gradle，MongoDB，SpringBoot）
           </p>
-          <p>Repo 地址: https://github.com/MaaAssistantArknights/MaaBackendCenter</p>
+          <p>Repo 地址: <a href="https://github.com/MaaAssistantArknights/MaaBackendCenter">https://github.com/MaaAssistantArknights/MaaBackendCenter</a></p>
         </Callout>
         <Operations />
       </div>
