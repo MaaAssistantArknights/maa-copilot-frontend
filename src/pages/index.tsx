@@ -45,13 +45,8 @@ const SOCIAL_LINKS = [
   },
   {
     icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
-    href: 'https://jq.qq.com/?_wv=1027&k=GQvypaR7',
-    label: '作业站开发群：724540644',
-  },
-  {
-    icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
     href: 'https://jq.qq.com/?_wv=1027&k=ElimpMzQ',
-    label: '写作业群：1169188429',
+    label: '作业制作者交流群：1169188429',
   },
 ]
 
@@ -64,7 +59,12 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
             服务器数据已不幸丢失，目前作业站后端正准备用 Java
             重写，如果有以下经验欢迎加入我们（JDK17，Gradle，MongoDB，SpringBoot）
           </p>
-          <p>Repo 地址: https://github.com/MaaAssistantArknights/MaaBackendCenter</p>
+          <p>
+            Repo 地址：
+            <a href="https://github.com/MaaAssistantArknights/MaaBackendCenter">
+              https://github.com/MaaAssistantArknights/MaaBackendCenter
+            </a>
+          </p>
         </Callout>
         <Operations />
       </div>

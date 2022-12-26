@@ -33,6 +33,18 @@ import {
   EditorPerformerProps,
 } from './operator/EditorPerformer'
 
+function createArbitraryLevel(name: string): Level {
+  return {
+    name,
+    levelId: name,
+    catOne: '',
+    catTwo: '',
+    catThree: '自定义关卡',
+    width: 0,
+    height: 0,
+  }
+}
+
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
@@ -73,15 +85,8 @@ export const StageNameInput: FC<{
   const selectedLevel = useMemo(
     () =>
       value
-        ? levels.find((level) => level.levelId === value) || {
-            catOne: '',
-            catTwo: '',
-            catThree: '自定义关卡',
-            levelId: value,
-            name: value,
-            width: 0,
-            height: 0,
-          }
+        ? levels.find((level) => level.levelId === value) ||
+          createArbitraryLevel(value)
         : null,
     [levels, value],
   )
@@ -99,6 +104,9 @@ export const StageNameInput: FC<{
               <p>键入以搜索</p>
               <p>对于主线、活动关卡：键入关卡代号、关卡中文名或活动名称</p>
               <p>对于悖论模拟关卡：键入关卡名或干员名</p>
+              <p className="text-red-700">
+                目前服务器尚未恢复，此处的关卡是内置在编辑器里的本地数据，可能不包含近期的新关卡
+              </p>
             </>
           ),
         }}
@@ -129,6 +137,16 @@ export const StageNameInput: FC<{
             className: 'max-h-64 overflow-auto',
           }}
           noResults={<MenuItem disabled text="没有匹配的关卡" />}
+          createNewItemFromQuery={(query) => createArbitraryLevel(query)}
+          createNewItemRenderer={(query, active, handleClick) => (
+            <MenuItem
+              key="create-new-item"
+              text={`使用自定义关卡名 "${query}"`}
+              icon="text-highlight"
+              onClick={handleClick}
+              selected={active}
+            />
+          )}
           inputProps={{
             placeholder: '关卡',
             large: true,
