@@ -28,6 +28,11 @@ import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 import { formatError } from '../../utils/error'
 import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
+import { FloatingMap } from './floatingMap/FloatingMap'
+import {
+  FloatingMapContext,
+  useFloatingMap,
+} from './floatingMap/FloatingMapContext'
 import {
   EditorPerformer,
   EditorPerformerProps,
@@ -90,6 +95,12 @@ export const StageNameInput: FC<{
         : null,
     [levels, value],
   )
+
+  const { setLevelId } = useFloatingMap()
+
+  useEffect(() => {
+    setLevelId(selectedLevel?.levelId || undefined)
+  }, [selectedLevel, setLevelId])
 
   return (
     <>
@@ -238,95 +249,99 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 
   return (
-    <section className="flex flex-col relative h-full pt-4">
-      <div className="px-8 text-lg font-medium flex items-center w-full h-12">
-        <Icon icon="document" />
-        <span className="ml-2 mr-4">作业编辑器</span>
-        <div className="flex-1" />
+    <FloatingMapContext>
+      <section className="flex flex-col relative h-full pt-4">
+        <div className="px-8 text-lg font-medium flex items-center w-full h-12">
+          <Icon icon="document" />
+          <span className="ml-2 mr-4">作业编辑器</span>
+          <div className="flex-1" />
 
-        {toolbar}
-      </div>
+          {toolbar}
+        </div>
 
-      {globalError && (
-        <Callout className="mt-4" intent="danger" icon="error" title="错误">
-          {globalError.split('\n').map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </Callout>
-      )}
+        {globalError && (
+          <Callout className="mt-4" intent="danger" icon="error" title="错误">
+            {globalError.split('\n').map((line) => (
+              <p key={line}>{line}</p>
+            ))}
+          </Callout>
+        )}
 
-      <div className="py-4 px-8 mr-0.5">
-        <H4>作业元信息</H4>
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/4 md:mr-8">
-            <StageNameInput control={control} />
+        <div className="py-4 px-8 mr-0.5">
+          <H4>作业元信息</H4>
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-1/4 md:mr-8">
+              <StageNameInput control={control} />
+            </div>
+            <div className="w-full md:w-3/4">
+              <FormField
+                label="作业标题"
+                field="doc.title"
+                control={control}
+                error={errors.doc?.title}
+                ControllerProps={{
+                  rules: { required: '必须填写标题' },
+                  render: ({ field }) => (
+                    <InputGroup
+                      large
+                      id="doc.title"
+                      placeholder="起一个引人注目的标题吧"
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  ),
+                }}
+              />
+            </div>
           </div>
-          <div className="w-full md:w-3/4">
-            <FormField
-              label="作业标题"
-              field="doc.title"
-              control={control}
-              error={errors.doc?.title}
-              ControllerProps={{
-                rules: { required: '必须填写标题' },
-                render: ({ field }) => (
-                  <InputGroup
-                    large
-                    id="doc.title"
-                    placeholder="起一个引人注目的标题吧"
-                    {...field}
-                    value={field.value || ''}
-                  />
-                ),
-              }}
-            />
+
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-1/4 md:mr-8">
+              <DifficultyPicker control={control} />
+            </div>
+            <div className="w-full md:w-3/4">
+              <FormField
+                label="作业描述"
+                field="doc.details"
+                control={control}
+                error={errors.doc?.details}
+                ControllerProps={{
+                  render: ({ field }) => (
+                    <TextArea
+                      fill
+                      rows={4}
+                      growVertically
+                      large
+                      id="doc.details"
+                      placeholder="如：作者名、参考的视频攻略链接（如有）等"
+                      {...field}
+                      value={field.value || ''}
+                    />
+                  ),
+                }}
+              />
+            </div>
+          </div>
+
+          <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
+
+          <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
+            <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
+              <EditorPerformerPanel control={control} />
+            </div>
+            <div className="w-full md:w-2/3 pb-8">
+              <H4>动作序列</H4>
+              <HelperText className="mb-4">
+                <span>拖拽以重新排序</span>
+              </HelperText>
+              <EditorActions control={control} />
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row">
-          <div className="w-full md:w-1/4 md:mr-8">
-            <DifficultyPicker control={control} />
-          </div>
-          <div className="w-full md:w-3/4">
-            <FormField
-              label="作业描述"
-              field="doc.details"
-              control={control}
-              error={errors.doc?.details}
-              ControllerProps={{
-                render: ({ field }) => (
-                  <TextArea
-                    fill
-                    rows={4}
-                    growVertically
-                    large
-                    id="doc.details"
-                    placeholder="如：作者名、参考的视频攻略链接（如有）等"
-                    {...field}
-                    value={field.value || ''}
-                  />
-                ),
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
-
-        <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
-          <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
-            <EditorPerformerPanel control={control} />
-          </div>
-          <div className="w-full md:w-2/3 pb-8">
-            <H4>动作序列</H4>
-            <HelperText className="mb-4">
-              <span>拖拽以重新排序</span>
-            </HelperText>
-            <EditorActions control={control} />
-          </div>
-        </div>
-      </div>
-    </section>
+        <FloatingMap />
+      </section>
+    </FloatingMapContext>
   )
 }
 
