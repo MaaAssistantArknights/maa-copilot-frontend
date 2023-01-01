@@ -32,6 +32,7 @@ export interface Level {
   catThree: string
   name: string
   levelId: string
+  stageId: string
   width: number
   height: number
 }

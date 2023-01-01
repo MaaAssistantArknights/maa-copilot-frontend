@@ -1,11 +1,11 @@
+import { Level } from '../../../models/operation'
 import { Message } from '../../../utils/messenger'
 
 // const MAP_SITE = 'https://theresa.wiki'
 export const MAP_SITE = 'http://localhost:3001'
 
-export const getMapUrl = (stageId: string) =>
-  `http://localhost:3001/widget/map/main_00-01/scene`
-// `${MAP_SITE}/widget/map/${stageId}/scene`
+export const getMapUrl = (level: Level) =>
+  `${MAP_SITE}/widget/map/${level.stageId}/scene`
 
 export type MapReadyMessage = Message<'mapReady'>
 

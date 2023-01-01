@@ -25,6 +25,11 @@ import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
+import {
+  findLevelByStageName,
+  isHardMode,
+  toNormalMode,
+} from '../../models/level'
 import { formatError } from '../../utils/error'
 import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
@@ -41,7 +46,8 @@ import {
 function createArbitraryLevel(name: string): Level {
   return {
     name,
-    levelId: name,
+    stageId: name,
+    levelId: '',
     catOne: '',
     catTwo: '',
     catThree: '自定义关卡',
@@ -74,7 +80,11 @@ export const StageNameInput: FC<{
     _levelError && (data ? '更新关卡失败：' : '') + formatError(_levelError)
 
   const levels = useMemo(
-    () => data?.data.sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
+    () =>
+      data?.data
+        // to simplify the list, we only show levels in normal mode
+        .filter((level) => !isHardMode(level.stageId))
+        .sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
     [data],
   )
 
@@ -90,11 +100,18 @@ export const StageNameInput: FC<{
   const selectedLevel = useMemo(
     () =>
       value
-        ? levels.find((level) => level.levelId === value) ||
-          createArbitraryLevel(value)
-        : null,
+        ? findLevelByStageName(
+            levels,
+            // the levels only include normal mode, so we need to coerce the value to normal mode
+            toNormalMode(value),
+          ) || createArbitraryLevel(value)
+        : // return null to ensure the component is controlled
+          null,
     [levels, value],
   )
+
+  // stageName should always be in normal mode
+  const selectLevel = (level: Level) => onChange(toNormalMode(level.stageId))
 
   const { setLevelId } = useFloatingMap()
 
@@ -133,7 +150,7 @@ export const StageNameInput: FC<{
           disabled={loading}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem
-              key={item.levelId}
+              key={item.stageId}
               text={`${item.catThree} ${item.name}`}
               onClick={handleClick}
               onFocus={handleFocus}
@@ -142,7 +159,7 @@ export const StageNameInput: FC<{
             />
           )}
           selectedItem={selectedLevel}
-          onItemSelect={(item) => onChange(item.levelId)}
+          onItemSelect={selectLevel}
           inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
           popoverContentProps={{
             className: 'max-h-64 overflow-auto',
@@ -233,7 +250,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   // set default title if not set
   useEffect(() => {
     if (!getValues('doc.title')) {
-      const level = levels.find(({ levelId }) => levelId === stageName)
+      const level = findLevelByStageName(levels, stageName)
 
       if (level) {
         setValue(

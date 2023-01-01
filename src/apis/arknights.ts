@@ -4,6 +4,7 @@ import type { Operator, Version } from 'models/arknights'
 import type { Response } from 'models/network'
 import type { Level } from 'models/operation'
 
+import { withoutUnusedLevels } from '../models/level'
 import { enableCache } from '../utils/swr-cache'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
@@ -27,17 +28,7 @@ export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
       const res = await requestBuiltInLevels(init)
       // const res = await request<Response<Level[]>>(input, init)
 
-      const uniqueLevels: Record<string, Level> = {}
-
-      res.data.forEach((level) => {
-        if (uniqueLevels[level.levelId]) {
-          console.warn('Duplicate level', level)
-        } else {
-          uniqueLevels[level.levelId] = level
-        }
-      })
-
-      res.data = Object.values(uniqueLevels)
+      res.data = withoutUnusedLevels(res.data)
 
       return res
     },
