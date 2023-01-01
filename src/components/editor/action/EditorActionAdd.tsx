@@ -1,7 +1,7 @@
 import { Button, Callout, Card, TextArea } from '@blueprintjs/core'
 import { DevTool } from '@hookform/devtools'
 
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import {
   Control,
   DeepPartial,
@@ -26,6 +26,8 @@ import { EditorActionOperatorLocation } from 'components/editor/action/EditorAct
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useLevels } from '../../../apis/arknights'
+import { findLevelByStageName } from '../../../models/level'
 import { FactItem } from '../../FactItem'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillUsage } from '../operator/EditorOperatorSkillUsage'
@@ -68,6 +70,13 @@ export const EditorActionAdd = ({
   })
 
   const type = useWatch({ control, name: 'type' })
+  const stageName = useWatch({ control: operationControl, name: 'stageName' })
+
+  const levels = useLevels({ suspense: false }).data?.data || []
+  const level = useMemo(
+    () => findLevelByStageName(levels, stageName),
+    [levels, stageName],
+  )
 
   const resettingValues: DeepPartial<CopilotDocV1.Action> = {
     ...defaultAction,
@@ -174,6 +183,7 @@ export const EditorActionAdd = ({
             <EditorActionOperatorLocation
               shouldUnregister
               actionType={type}
+              level={level}
               control={control}
               name="location"
             />

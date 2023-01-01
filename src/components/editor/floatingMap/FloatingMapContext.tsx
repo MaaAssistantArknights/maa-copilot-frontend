@@ -34,11 +34,6 @@ export function FloatingMapContext({ children }: { children: ReactNode }) {
     [level, activeTiles],
   )
 
-  useMessage<TileClickMessage>(MAP_SITE, 'tileClick', (e) => {
-    const [x, y] = e.message.data.maaLocation
-    setActiveTiles([{ x, y }])
-  })
-
   return (
     <FloatingMapContextObject.Provider value={value}>
       {children}
