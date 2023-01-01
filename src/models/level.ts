@@ -46,6 +46,36 @@ export function findLevelByStageName(levels: Level[], stageName: string) {
   return levels.find((level) => matchLevelByStageName(level, stageName))
 }
 
+export function hasHardMode(levels: Level[], stageName: string) {
+  if (isHardMode(stageName)) {
+    return true
+  }
+
+  let stageId: string
+
+  // stageId always contains "_" while levelId and name don't
+  if (stageName.includes('_')) {
+    stageId = stageName
+  } else {
+    const level = findLevelByStageName(levels, stageName)
+
+    // return false if there's no such level
+    if (!level) {
+      return false
+    }
+
+    stageId = level.stageId
+  }
+
+  if (isHardMode(stageId)) {
+    return true
+  }
+
+  const hardStageId = toHardMode(stageId)
+
+  return !!levels.find((level) => level.stageId === hardStageId)
+}
+
 export function matchLevelByStageName(level: Level, stageName: string) {
   return (
     matchStageIdIgnoringDifficulty(level.stageId, stageName) ||

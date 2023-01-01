@@ -18,6 +18,7 @@ import {
   FieldErrors,
   UseFormReturn,
   useController,
+  useWatch,
 } from 'react-hook-form'
 
 import { FormField, FormField2 } from 'components/FormField'
@@ -27,6 +28,7 @@ import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
 import {
   findLevelByStageName,
+  hasHardMode,
   isHardMode,
   toNormalMode,
 } from '../../models/level'
@@ -197,6 +199,19 @@ const DifficultyPicker: FC<{
     control,
   })
 
+  const stageName = useWatch({ control, name: 'stageName' })
+  const levels = useLevels({ suspense: false }).data?.data || []
+  const invalid = useMemo(
+    () => !hasHardMode(levels, stageName),
+    [levels, stageName],
+  )
+
+  useEffect(() => {
+    if (invalid && value !== OpDifficulty.UNKNOWN) {
+      onChange(OpDifficulty.UNKNOWN)
+    }
+  }, [invalid, value, onChange])
+
   const toggle = (bit: OpDifficultyBitFlag) => {
     onChange(value ^ bit)
   }
@@ -205,19 +220,21 @@ const DifficultyPicker: FC<{
     <FormField2
       label="关卡难度"
       FormGroupProps={{
-        helperText: '对于没有突袭难度的关卡，建议不选择',
+        helperText: invalid ? '该关卡没有突袭难度，无需选择' : '',
       }}
       field="difficulty"
       error={error}
     >
       <ButtonGroup>
         <Button
+          disabled={invalid}
           active={!!(value & OpDifficultyBitFlag.REGULAR)}
           onClick={() => toggle(OpDifficultyBitFlag.REGULAR)}
         >
           普通
         </Button>
         <Button
+          disabled={invalid}
           active={!!(value & OpDifficultyBitFlag.HARD)}
           onClick={() => toggle(OpDifficultyBitFlag.HARD)}
         >
