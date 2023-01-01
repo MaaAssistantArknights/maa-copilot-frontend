@@ -130,7 +130,7 @@ export function FloatingMap() {
               ref={setIframe}
             />
             {mapReady || (
-              <div className="absolute bottom-0 left-0 bg-black bg-opacity-50 text-white">
+              <div className="absolute top-[16px] left-0 bg-black bg-opacity-50 text-white">
                 等待地图连接……
               </div>
             )}
