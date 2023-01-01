@@ -40,12 +40,12 @@ export function FloatingMap() {
   const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null)
   const [mapReady, setMapReady] = useState(false)
 
-  const { levelId, activeTiles } = useFloatingMap()
+  const { level, activeTiles } = useFloatingMap()
 
   useEffect(() => {
-    // when levelId changes, the iframe should reload
+    // when level changes, the iframe should reload
     setMapReady(false)
-  }, [levelId])
+  }, [level])
 
   const setMapState = useCallback(() => {
     if (iframe?.contentWindow) {
@@ -121,15 +121,15 @@ export function FloatingMap() {
         onResizeStop={onResizeStopHandler}
       >
         <div className="drag-handle h-[16px] cursor-move bg-gray-800" />
-        {levelId ? (
+        {level ? (
           <>
             <iframe
               className="flex-grow"
               title={UID}
-              src={getMapUrl(levelId)}
+              src={getMapUrl(level)}
               ref={setIframe}
             />
-            {mapReady || (
+            {!mapReady && (
               <div className="absolute top-[16px] left-0 bg-black bg-opacity-50 text-white">
                 等待地图连接……
               </div>

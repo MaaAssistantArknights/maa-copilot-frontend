@@ -1,7 +1,6 @@
 import { ReactNode, createContext, useContext, useMemo, useState } from 'react'
 
-import { useMessage } from '../../../utils/messenger'
-import { MAP_SITE, TileClickMessage } from './connection'
+import { Level } from '../../../models/operation'
 
 export interface MapTile {
   x: number
@@ -9,8 +8,8 @@ export interface MapTile {
 }
 
 export interface IFloatingMapContext {
-  levelId?: string
-  setLevelId: (id?: string) => void
+  level?: Level
+  setLevel: (level?: Level) => void
   activeTiles: MapTile[]
   setActiveTiles: (tiles: MapTile[]) => void
 }
@@ -22,17 +21,17 @@ export function useFloatingMap() {
 }
 
 export function FloatingMapContext({ children }: { children: ReactNode }) {
-  const [levelId, setLevelId] = useState<string>()
+  const [level, setLevel] = useState<Level>()
   const [activeTiles, setActiveTiles] = useState<MapTile[]>([])
 
   const value = useMemo(
     () => ({
-      levelId,
-      setLevelId,
+      level,
+      setLevel,
       activeTiles,
       setActiveTiles,
     }),
-    [levelId, activeTiles],
+    [level, activeTiles],
   )
 
   useMessage<TileClickMessage>(MAP_SITE, 'tileClick', (e) => {

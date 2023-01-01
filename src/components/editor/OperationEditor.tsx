@@ -115,11 +115,11 @@ export const StageNameInput: FC<{
   // stageName should always be in normal mode
   const selectLevel = (level: Level) => onChange(toNormalMode(level.stageId))
 
-  const { setLevelId } = useFloatingMap()
+  const { setLevel } = useFloatingMap()
 
   useEffect(() => {
-    setLevelId(selectedLevel?.levelId || undefined)
-  }, [selectedLevel, setLevelId])
+    setLevel(selectedLevel || undefined)
+  }, [selectedLevel, setLevel])
 
   return (
     <>
