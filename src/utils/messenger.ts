@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 
 const DEBUG = true as boolean
 
-let messengerName = location.host
+let messengerName = 'Copilot'
 
 export type Message<
   T extends string = string,
