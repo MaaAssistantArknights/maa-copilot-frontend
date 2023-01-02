@@ -1,8 +1,10 @@
 import { Level } from '../../../models/operation'
+import { envUseProductionTheresa } from '../../../utils/envvar'
 import { Message } from '../../../utils/messenger'
 
-// const MAP_SITE = 'https://theresa.wiki'
-export const MAP_SITE = 'http://localhost:3001'
+export const MAP_SITE = envUseProductionTheresa
+  ? 'https://theresa.wiki'
+  : 'http://localhost:3001'
 
 export const getMapUrl = (level: Level) =>
   `${MAP_SITE}/widget/map/${level.stageId}/scene`
