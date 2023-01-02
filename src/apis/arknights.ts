@@ -18,7 +18,12 @@ export const useVersion = () => {
 export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
   const url = '/arknights/level'
 
-  enableCache(url)
+  enableCache(
+    url,
+    // discard the cache if the level data has no stageId
+    ({ data }) =>
+      !!data?.data && Array.isArray(data.data) && 'stageId' in data.data[0],
+  )
 
   return useSWR<Response<Level[]>>(url, {
     focusThrottleInterval: ONE_DAY,
