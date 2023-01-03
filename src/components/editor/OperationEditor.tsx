@@ -102,11 +102,7 @@ export const StageNameInput: FC<{
   const selectedLevel = useMemo(
     () =>
       value
-        ? findLevelByStageName(
-            levels,
-            // the levels only include normal mode, so we need to coerce the value to normal mode
-            toNormalMode(value),
-          ) || createArbitraryLevel(value)
+        ? findLevelByStageName(levels, value) || createArbitraryLevel(value)
         : // return null to ensure the component is controlled
           null,
     [levels, value],
@@ -147,7 +143,7 @@ export const StageNameInput: FC<{
             query ? fuse.search(query).map((el) => el.item) : levels
           }
           fieldState={fieldState}
-          onReset={() => onChange(undefined)}
+          onReset={() => onChange('')}
           className={clsx(loading && 'bp4-skeleton')}
           disabled={loading}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
