@@ -24,14 +24,21 @@ interface FloatingMapConfig {
 const UID = 'floating-map'
 const STORAGE_KEY = `copilot-${UID}`
 
+const HEADER_HEIGHT = 16
+const ASPECT_RATIO = 16 / 9
+const MIN_HEIGHT = 150 + HEADER_HEIGHT
+const MIN_WIDTH = 150 * ASPECT_RATIO
+const DEFAULT_HEIGHT = 300 + HEADER_HEIGHT
+const DEFAULT_WIDTH = 300 * ASPECT_RATIO
+
 export function FloatingMap() {
   const [config, setConfig] = useLazyStorage<FloatingMapConfig>(
     STORAGE_KEY,
     {
       x: 0,
       y: window.innerHeight - 300,
-      width: 300 * (16 / 9),
-      height: 300,
+      width: DEFAULT_WIDTH,
+      height: DEFAULT_HEIGHT,
     },
     // merge two values in case the saved value is missing some properties
     (savedValue, defaultValue) => ({ ...defaultValue, ...savedValue }),
@@ -110,17 +117,20 @@ export function FloatingMap() {
         className="!flex flex-col bg-black pointer-events-auto"
         dragHandleClassName="drag-handle"
         bounds="window"
-        minWidth={150 * (16 / 9)}
-        minHeight={150}
-        lockAspectRatio={16 / 9}
-        lockAspectRatioExtraHeight={16} // height of the drag handle
+        minWidth={MIN_WIDTH}
+        minHeight={MIN_HEIGHT}
+        lockAspectRatio={ASPECT_RATIO}
+        lockAspectRatioExtraHeight={HEADER_HEIGHT}
         default={config}
         onDragStart={onDragStartHandler}
         onDragStop={onDragStopHandler}
         onResizeStart={onResizeStartHandler}
         onResizeStop={onResizeStopHandler}
       >
-        <div className="drag-handle h-[16px] cursor-move bg-gray-800" />
+        <div
+          className="drag-handle cursor-move bg-gray-800"
+          style={{ height: HEADER_HEIGHT }}
+        />
         {level ? (
           <>
             <iframe
@@ -130,7 +140,10 @@ export function FloatingMap() {
               ref={setIframe}
             />
             {!mapReady && (
-              <div className="absolute top-[16px] left-0 bg-black bg-opacity-50 text-white">
+              <div
+                className="absolute left-0 bg-black bg-opacity-50 text-white"
+                style={{ top: HEADER_HEIGHT }}
+              >
                 等待地图连接……
               </div>
             )}
