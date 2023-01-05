@@ -11,7 +11,7 @@ import { useMessage } from '../../../utils/messenger'
 import { FieldResetButton } from '../../FieldResetButton'
 import { FormField2 } from '../../FormField'
 import { useFloatingMap } from '../floatingMap/FloatingMapContext'
-import { MAP_SITE, TileClickMessage } from '../floatingMap/connection'
+import { MAP_ORIGIN, TileClickMessage } from '../floatingMap/connection'
 
 interface EditorActionOperatorLocationProps
   extends EditorFieldProps<CopilotDocV1.Action, [number, number]> {
@@ -87,7 +87,7 @@ export const EditorActionOperatorLocation = ({
   // reset active tiles when unmounting
   useEffect(() => () => setActiveTiles([]), [setActiveTiles])
 
-  useMessage<TileClickMessage>(MAP_SITE, 'tileClick', (e) => {
+  useMessage<TileClickMessage>(MAP_ORIGIN, 'tileClick', (e) => {
     const [x, y] = e.message.data.maaLocation
     onChange([x, y])
   })

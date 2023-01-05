@@ -8,7 +8,7 @@ import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
 import { useFloatingMap } from './FloatingMapContext'
 import {
-  MAP_SITE,
+  MAP_ORIGIN,
   MapReadyMessage,
   SetMapStateMessage,
   getMapUrl,
@@ -56,7 +56,7 @@ export function FloatingMap() {
 
   const setMapState = useCallback(() => {
     if (iframe?.contentWindow) {
-      sendMessage<SetMapStateMessage>(iframe?.contentWindow, MAP_SITE, {
+      sendMessage<SetMapStateMessage>(iframe?.contentWindow, MAP_ORIGIN, {
         type: 'setMapState',
         data: { activeTiles },
       })
@@ -65,7 +65,7 @@ export function FloatingMap() {
 
   useEffect(setMapState, [setMapState])
 
-  useMessage<MapReadyMessage>(MAP_SITE, 'mapReady', () => {
+  useMessage<MapReadyMessage>(MAP_ORIGIN, 'mapReady', () => {
     setMapReady(true)
 
     // sync state when the map is ready

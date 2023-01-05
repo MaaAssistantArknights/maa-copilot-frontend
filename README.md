@@ -18,8 +18,8 @@ MAA 作业站前端！
 # 使用线上的后端 API，否则使用本地开发服务器
 VITE_USE_PRODUCTION_API=true
 
-# 使用线上的 theresa.wiki 地图，否则使用本地开发服务器
-VITE_USE_PRODUCTION_THERESA=true
+# 地图服务器，如果正在对地图进行本地开发请改为例如 http://localhost:3001
+VITE_THERESA_SERVER=https://theresa.wiki
 ```
 
 ## 命令

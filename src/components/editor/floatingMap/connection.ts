@@ -1,13 +1,17 @@
 import { Level } from '../../../models/operation'
-import { envUseProductionTheresa } from '../../../utils/envvar'
 import { Message } from '../../../utils/messenger'
 
-export const MAP_SITE = envUseProductionTheresa
-  ? 'https://theresa.wiki'
-  : 'http://localhost:3001'
+export const MAP_SERVER = import.meta.env.VITE_THERESA_SERVER as string
+
+if (!MAP_SERVER) {
+  throw new Error('Environment variable VITE_THERESA_SERVER is not defined.')
+}
+
+// in the future we may need some conversion on this
+export const MAP_ORIGIN = MAP_SERVER
 
 export const getMapUrl = (level: Level) =>
-  `${MAP_SITE}/widget/map/${level.stageId}/scene`
+  `${MAP_SERVER}/widget/map/${level.stageId}/scene`
 
 export type MapReadyMessage = Message<'mapReady'>
 
