@@ -13,7 +13,11 @@ export const MAP_ORIGIN = MAP_SERVER
 export const getMapUrl = (level: Level) =>
   `${MAP_SERVER}/widget/map/${level.stageId}/scene`
 
+/** Tells that the map is ready. */
 export type MapReadyMessage = Message<'mapReady'>
+
+/** Checks if the map is ready. The map should reply with a MapReadyMessage. */
+export type CheckMapMessage = Message<'checkMap'>
 
 export type TileClickMessage = Message<
   'tileClick',

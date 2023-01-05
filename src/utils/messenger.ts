@@ -52,6 +52,9 @@ export class MessengerEvent<M extends Message = Message> extends Event {
     this.source = params.source
     this.origin = params.origin
     this.message = params.message
+
+    // allow the method to be destructured etc.
+    this.reply = this.reply.bind(this)
   }
 
   /**
@@ -157,7 +160,7 @@ export function sendMessage<M extends Message>(
       }, timeout)
     }
 
-    messenger.removeEventListener(eventType, handler)
+    messenger.addEventListener(eventType, handler)
   })
 }
 

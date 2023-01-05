@@ -8,6 +8,7 @@ import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
 import { useFloatingMap } from './FloatingMapContext'
 import {
+  CheckMapMessage,
   MAP_ORIGIN,
   MapReadyMessage,
   SetMapStateMessage,
@@ -44,7 +45,7 @@ export function FloatingMap() {
     (savedValue, defaultValue) => ({ ...defaultValue, ...savedValue }),
   )
 
-  const [iframe, setIframe] = useState<HTMLIFrameElement | null>(null)
+  const [iframeWindow, setIframeWindow] = useState<Window | null | undefined>()
   const [mapReady, setMapReady] = useState(false)
 
   const { level, activeTiles } = useFloatingMap()
@@ -55,13 +56,13 @@ export function FloatingMap() {
   }, [level])
 
   const setMapState = useCallback(() => {
-    if (iframe?.contentWindow) {
-      sendMessage<SetMapStateMessage>(iframe?.contentWindow, MAP_ORIGIN, {
+    if (iframeWindow) {
+      sendMessage<SetMapStateMessage>(iframeWindow, MAP_ORIGIN, {
         type: 'setMapState',
         data: { activeTiles },
       })
     }
-  }, [iframe, activeTiles])
+  }, [iframeWindow, activeTiles])
 
   useEffect(setMapState, [setMapState])
 
@@ -71,6 +72,15 @@ export function FloatingMap() {
     // sync state when the map is ready
     setMapState()
   })
+
+  // check the connection when the component is re-mounted, useful during development
+  useEffect(() => {
+    if (iframeWindow) {
+      sendMessage<CheckMapMessage>(iframeWindow, MAP_ORIGIN, {
+        type: 'checkMap',
+      })
+    }
+  }, [iframeWindow])
 
   // this function and the following resize/drag handlers are used to
   // disable pointer events on every iframe while resizing/dragging,
@@ -137,7 +147,9 @@ export function FloatingMap() {
               className="flex-grow"
               title={UID}
               src={getMapUrl(level)}
-              ref={setIframe}
+              onLoad={(e) => {
+                setIframeWindow((e.target as HTMLIFrameElement).contentWindow)
+              }}
             />
             {!mapReady && (
               <div
