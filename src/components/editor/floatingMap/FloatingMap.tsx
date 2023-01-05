@@ -1,4 +1,4 @@
-import { NonIdealState } from '@blueprintjs/core'
+import { NonIdealState, Spinner } from '@blueprintjs/core'
 
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -142,30 +142,27 @@ export function FloatingMap() {
           style={{ height: HEADER_HEIGHT }}
         />
         {level ? (
-          <>
+          <div className="relative flex-grow">
             <iframe
-              className="flex-grow"
               title={UID}
+              className="w-full h-full"
               src={getMapUrl(level)}
               onLoad={(e) => {
                 setIframeWindow((e.target as HTMLIFrameElement).contentWindow)
               }}
             />
             {!mapReady && (
-              <div
-                className="absolute left-0 bg-black bg-opacity-50 text-white"
-                style={{ top: HEADER_HEIGHT }}
-              >
-                等待地图连接……
-              </div>
+              <NonIdealState
+                className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
+                icon={
+                  <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
+                }
+                description={iframeWindow ? undefined : '等待地图连接...'}
+              />
             )}
-          </>
+          </div>
         ) : (
-          <NonIdealState
-            className="select-none"
-            icon="area-of-interest"
-            title="未选择关卡"
-          />
+          <NonIdealState icon="area-of-interest" title="未选择关卡" />
         )}
       </Rnd>
     </div>,
