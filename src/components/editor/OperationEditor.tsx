@@ -36,6 +36,7 @@ import {
   isHardMode,
   toNormalMode,
 } from '../../models/level'
+import { useBreakpoint } from '../../utils/device'
 import { formatError } from '../../utils/error'
 import { Suggest } from '../Suggest'
 import { EditorActions } from './action/EditorActions'
@@ -284,6 +285,8 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 
   const stageName = watch('stageName')
 
+  const breakpoint = useBreakpoint()
+
   // set default title if not set
   useEffect(() => {
     if (!getValues('doc.title')) {
@@ -393,7 +396,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
           </div>
         </div>
 
-        <FloatingMap />
+        {breakpoint !== 'tablet' && <FloatingMap />}
       </section>
     </FloatingMapContext>
   )
