@@ -1,4 +1,4 @@
-import { NonIdealState, Spinner } from '@blueprintjs/core'
+import { Card, NonIdealState, Spinner } from '@blueprintjs/core'
 
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
@@ -138,7 +138,7 @@ export function FloatingMap() {
   return createPortal(
     <div className="fixed z-50 inset-0 pointer-events-none">
       <Rnd
-        className="!flex flex-col bg-white outline outline-1 outline-gray-200 pointer-events-auto"
+        className="pointer-events-auto"
         dragHandleClassName="drag-handle"
         bounds="window"
         minWidth={MIN_WIDTH}
@@ -151,33 +151,38 @@ export function FloatingMap() {
         onResizeStart={onResizeStartHandler}
         onResizeStop={onResizeStopHandler}
       >
-        <div
-          className="drag-handle cursor-move bg-gray-200"
-          style={{ height: HEADER_HEIGHT }}
-        />
-        {level ? (
-          <div className="relative flex-grow">
-            <iframe
-              title={UID}
-              className="w-full h-full"
-              src={getMapUrl(level)}
-              onLoad={(e) => {
-                setIframeWindow((e.target as HTMLIFrameElement).contentWindow)
-              }}
-            />
-            {mapStatus === MapStatus.Loading && (
-              <NonIdealState
-                className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
-                icon={
-                  <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
-                }
-                description={iframeWindow ? undefined : '等待地图连接...'}
+        <Card
+          className="h-full !p-0 flex flex-col overflow-hidden"
+          elevation={3}
+        >
+          <div
+            className="drag-handle cursor-move bg-gray-200"
+            style={{ height: HEADER_HEIGHT }}
+          />
+          {level ? (
+            <div className="relative flex-grow">
+              <iframe
+                title={UID}
+                className="w-full h-full"
+                src={getMapUrl(level)}
+                onLoad={(e) => {
+                  setIframeWindow((e.target as HTMLIFrameElement).contentWindow)
+                }}
               />
-            )}
-          </div>
-        ) : (
-          <NonIdealState icon="area-of-interest" title="未选择关卡" />
-        )}
+              {mapStatus === MapStatus.Loading && (
+                <NonIdealState
+                  className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
+                  icon={
+                    <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
+                  }
+                  description={iframeWindow ? undefined : '等待地图连接...'}
+                />
+              )}
+            </div>
+          ) : (
+            <NonIdealState icon="area-of-interest" title="未选择关卡" />
+          )}
+        </Card>
       </Rnd>
     </div>,
 
