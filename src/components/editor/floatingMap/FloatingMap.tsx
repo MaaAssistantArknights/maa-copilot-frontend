@@ -138,7 +138,7 @@ export function FloatingMap() {
   return createPortal(
     <div className="fixed z-50 inset-0 pointer-events-none">
       <Rnd
-        className="!flex flex-col bg-black pointer-events-auto"
+        className="!flex flex-col bg-white outline outline-1 outline-gray-200 pointer-events-auto"
         dragHandleClassName="drag-handle"
         bounds="window"
         minWidth={MIN_WIDTH}
@@ -152,7 +152,7 @@ export function FloatingMap() {
         onResizeStop={onResizeStopHandler}
       >
         <div
-          className="drag-handle cursor-move bg-gray-800"
+          className="drag-handle cursor-move bg-gray-200"
           style={{ height: HEADER_HEIGHT }}
         />
         {level ? (
