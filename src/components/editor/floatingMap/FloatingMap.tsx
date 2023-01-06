@@ -37,7 +37,7 @@ export function FloatingMap() {
     STORAGE_KEY,
     {
       x: 0,
-      y: window.innerHeight - 300,
+      y: window.innerHeight - DEFAULT_HEIGHT,
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT,
     },
