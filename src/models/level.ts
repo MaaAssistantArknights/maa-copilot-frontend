@@ -108,5 +108,5 @@ export function matchStageIdIgnoringDifficulty(id1: string, id2: string) {
 }
 
 export function getPrtsMapUrl(stageId: string) {
-  return `https://map.ark-nights.com/map/${stageId}`
+  return `https://map.ark-nights.com/map/${stageId}?coord_override=maa`
 }
