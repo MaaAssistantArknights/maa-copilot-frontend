@@ -20,6 +20,8 @@ import type { Level } from 'models/operation'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
+import { findLevelByStageName, matchLevelByStageName } from '../../models/level'
+
 // TODO: json schema validation
 // ajv can work properly with http://json-schema.org/draft-07/schema
 // and copilot backend server need to use draft-6
@@ -53,15 +55,11 @@ const operationPatch = (operation: object, levels: Level[]): object => {
     !(operation['stage_name'] as string).match('^[a-z/_0-9-]*$') ||
     (operation['stage_name'] as string).indexOf('/') === -1
   ) {
-    const matchStages = levels.filter((stage) => {
-      return (
-        stage.name === operation['stage_name'] ||
-        // catThree contains the stage code, e.g. 1-7
-        stage.catThree === operation['stage_name']
-      )
-    })
+    const matchStages = levels.filter((level) =>
+      matchLevelByStageName(level, operation['stage_name']),
+    )
     if (matchStages.length === 1) {
-      operation['stage_name'] = matchStages[0].levelId
+      operation['stage_name'] = matchStages[0].stageId
     } else {
       AppToaster.show({
         message: `已找到 ${matchStages.length} 个关卡，跳过自动修正`,

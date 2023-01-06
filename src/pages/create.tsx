@@ -30,12 +30,15 @@ import { MinimumRequired } from '../models/operation'
 import { formatError } from '../utils/error'
 import { NetworkError } from '../utils/fetcher'
 
-const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
+const defaultOperation: CopilotDocV1.Operation = {
   minimumRequired: MinimumRequired.V4_0_0,
+  stageName: '',
   // the following fields will immediately be set when passed into useForm, even if they are not set by default.
   // so we manually set them in order to check the dirtiness when determining whether the form should be autosaved.
   actions: [],
-  doc: {},
+  doc: {
+    title: '',
+  },
   groups: [],
   opers: [],
 }

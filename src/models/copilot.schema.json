@@ -37,7 +37,7 @@
   "definitions": {
     "stage_name": {
       "type": "string",
-      "description": "Arknights level id like obt/main/level_main_00-01"
+      "description": "The level's name, stage ID, or level ID."
     },
     "minimum_required": {
       "type": "string",
