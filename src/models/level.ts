@@ -9,7 +9,7 @@
  * Normally, levels of the last two kinds will never be used in Copilot,
  * so we do not care about them and just remove them from the list.
  */
-import { Level } from './operation'
+import { Level, OpDifficulty } from './operation'
 
 const HARD_MODE_SUFFIX = '#f#'
 
@@ -40,6 +40,21 @@ export function toNormalMode(stageId: string) {
   return isHardMode(stageId)
     ? stageId.slice(0, -HARD_MODE_SUFFIX.length)
     : stageId
+}
+
+export function getStageIdWithDifficulty(
+  stageId: string,
+  difficulty: OpDifficulty,
+) {
+  if (difficulty & OpDifficulty.HARD) {
+    return toHardMode(stageId)
+  }
+  if (difficulty & OpDifficulty.REGULAR) {
+    return toNormalMode(stageId)
+  }
+
+  // if neither hard nor normal is expected, return as is
+  return stageId
 }
 
 export function findLevelByStageName(levels: Level[], stageName: string) {
@@ -90,4 +105,8 @@ export function matchStageIdIgnoringDifficulty(id1: string, id2: string) {
     id1 === id2 + HARD_MODE_SUFFIX ||
     id1 + HARD_MODE_SUFFIX === id2
   )
+}
+
+export function getPrtsMapUrl(stageId: string) {
+  return `https://map.ark-nights.com/map/${stageId}`
 }

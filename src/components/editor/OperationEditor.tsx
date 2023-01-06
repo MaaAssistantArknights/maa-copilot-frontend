@@ -1,4 +1,5 @@
 import {
+  AnchorButton,
   Button,
   ButtonGroup,
   Callout,
@@ -8,6 +9,7 @@ import {
   MenuItem,
   TextArea,
 } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 import { useLevels } from 'apis/arknights'
 import clsx from 'clsx'
@@ -28,6 +30,8 @@ import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
 import {
   findLevelByStageName,
+  getPrtsMapUrl,
+  getStageIdWithDifficulty,
   hasHardMode,
   isHardMode,
   toNormalMode,
@@ -108,6 +112,16 @@ export const StageNameInput: FC<{
     [levels, value],
   )
 
+  const difficulty = useWatch({ control, name: 'difficulty' })
+  const prtsMapUrl = selectedLevel
+    ? getPrtsMapUrl(
+        getStageIdWithDifficulty(
+          selectedLevel.stageId,
+          difficulty ?? OpDifficulty.UNKNOWN,
+        ),
+      )
+    : undefined
+
   // stageName should always be in normal mode
   const selectLevel = (level: Level) => onChange(toNormalMode(level.stageId))
 
@@ -118,25 +132,25 @@ export const StageNameInput: FC<{
   }, [selectedLevel, setLevel])
 
   return (
-    <>
-      <FormField2
-        label="关卡"
-        field="stageName"
-        error={levelError || fieldState.error}
-        asterisk
-        FormGroupProps={{
-          helperText: (
-            <>
-              <p>键入以搜索</p>
-              <p>对于主线、活动关卡：键入关卡代号、关卡中文名或活动名称</p>
-              <p>对于悖论模拟关卡：键入关卡名或干员名</p>
-              <p className="text-red-700">
-                目前服务器尚未恢复，此处的关卡是内置在编辑器里的本地数据，可能不包含近期的新关卡
-              </p>
-            </>
-          ),
-        }}
-      >
+    <FormField2
+      label="关卡"
+      field="stageName"
+      error={levelError || fieldState.error}
+      asterisk
+      FormGroupProps={{
+        helperText: (
+          <>
+            <p>键入以搜索</p>
+            <p>对于主线、活动关卡：键入关卡代号、关卡中文名或活动名称</p>
+            <p>对于悖论模拟关卡：键入关卡名或干员名</p>
+            <p className="text-red-700">
+              目前服务器尚未恢复，此处的关卡是内置在编辑器里的本地数据，可能不包含近期的新关卡
+            </p>
+          </>
+        ),
+      }}
+    >
+      <div className="flex">
         <Suggest<Level>
           items={levels}
           itemListPredicate={(query) =>
@@ -144,7 +158,7 @@ export const StageNameInput: FC<{
           }
           fieldState={fieldState}
           onReset={() => onChange('')}
-          className={clsx(loading && 'bp4-skeleton')}
+          className={clsx('flex-grow mr-2', loading && 'bp4-skeleton')}
           disabled={loading}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem
@@ -179,8 +193,17 @@ export const StageNameInput: FC<{
             onBlur,
           }}
         />
-      </FormField2>
-    </>
+        <Tooltip2 placement="top" content="在 PRTS.Map 中查看关卡">
+          <AnchorButton
+            large
+            icon="share"
+            target="_blank"
+            href={prtsMapUrl}
+            disabled={!prtsMapUrl}
+          />
+        </Tooltip2>
+      </div>
+    </FormField2>
   )
 }
 
@@ -215,6 +238,7 @@ const DifficultyPicker: FC<{
   return (
     <FormField2
       label="关卡难度"
+      description="在作业上显示的难度标识，如果不选择则不显示"
       FormGroupProps={{
         helperText: invalid ? '该关卡没有突袭难度，无需选择' : '',
       }}
