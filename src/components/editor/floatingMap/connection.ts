@@ -35,6 +35,8 @@ export type SetMapStateMessage = Message<
   { activeTiles: { x: number; y: number }[] }
 >
 
+export type ErrorMessage = Message<'error', { reason: string }>
+
 // types defined in Theresa-wiki
 
 export interface IMapDataTiles {

@@ -9,6 +9,7 @@ import { useLazyStorage } from '../../../utils/useLazyStorage'
 import { useFloatingMap } from './FloatingMapContext'
 import {
   CheckMapMessage,
+  ErrorMessage,
   MAP_ORIGIN,
   MapReadyMessage,
   SetMapStateMessage,
@@ -32,6 +33,12 @@ const MIN_WIDTH = 150 * ASPECT_RATIO
 const DEFAULT_HEIGHT = 300 + HEADER_HEIGHT
 const DEFAULT_WIDTH = 300 * ASPECT_RATIO
 
+const enum MapStatus {
+  Loading,
+  Ready,
+  Error,
+}
+
 export function FloatingMap() {
   const [config, setConfig] = useLazyStorage<FloatingMapConfig>(
     STORAGE_KEY,
@@ -46,13 +53,13 @@ export function FloatingMap() {
   )
 
   const [iframeWindow, setIframeWindow] = useState<Window | null | undefined>()
-  const [mapReady, setMapReady] = useState(false)
+  const [mapStatus, setMapStatus] = useState(MapStatus.Loading)
 
   const { level, activeTiles } = useFloatingMap()
 
   useEffect(() => {
     // when level changes, the iframe should reload
-    setMapReady(false)
+    setMapStatus(MapStatus.Loading)
   }, [level])
 
   const setMapState = useCallback(() => {
@@ -67,10 +74,17 @@ export function FloatingMap() {
   useEffect(setMapState, [setMapState])
 
   useMessage<MapReadyMessage>(MAP_ORIGIN, 'mapReady', () => {
-    setMapReady(true)
+    setMapStatus(MapStatus.Ready)
 
     // sync state when the map is ready
     setMapState()
+  })
+
+  useMessage<ErrorMessage>(MAP_ORIGIN, 'error', ({ message }) => {
+    setMapStatus(MapStatus.Error)
+
+    // no need to display the error, the map site will show it reasonably
+    console.warn(`Map error: ${message}`)
   })
 
   // check the connection when the component is re-mounted, useful during development
@@ -151,7 +165,7 @@ export function FloatingMap() {
                 setIframeWindow((e.target as HTMLIFrameElement).contentWindow)
               }}
             />
-            {!mapReady && (
+            {mapStatus === MapStatus.Loading && (
               <NonIdealState
                 className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
                 icon={
