@@ -98,6 +98,12 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
               </span>
             </FactItem>
           )}
+
+          {'distance' in action && action.distance && (
+            <FactItem dense title="距离" icon="camera">
+              <span className="font-mono">{action.distance.join(', ')}</span>
+            </FactItem>
+          )}
         </div>
       </div>
 

@@ -35,6 +35,7 @@ import {
   EditorActionPreDelay,
   EditorActionRearDelay,
 } from './EditorActionDelay'
+import { EditorActionDistance } from './EditorActionDistance'
 
 export interface EditorActionAddProps {
   control: Control<CopilotDocV1.Operation>
@@ -48,6 +49,11 @@ export interface EditorActionAddProps {
 
 const defaultAction: DeepPartial<CopilotDocV1.Action> = {
   type: CopilotDocV1.Type.Deploy,
+}
+
+const defaultMoveCameraAction: DeepPartial<CopilotDocV1.ActionMoveCamera> = {
+  type: CopilotDocV1.Type.MoveCamera,
+  distance: [4.5, 0],
 }
 
 export const EditorActionAdd = ({
@@ -82,11 +88,21 @@ export const EditorActionAdd = ({
     ...defaultAction,
     // to prevent layout jumping, we persist the action type on reset
     type,
+
+    ...(type === 'MoveCamera' ? defaultMoveCameraAction : null),
   }
 
   useEffect(() => {
     reset(action || resettingValues)
   }, [reset, action])
+
+  useEffect(() => {
+    // fill in default values for MoveCamera
+    if (type === 'MoveCamera' && !action) {
+      // looks like the passed object will be mutated somehow
+      reset({ ...defaultMoveCameraAction })
+    }
+  }, [reset, action, type])
 
   const onSubmit = handleSubmit((values) => {
     if ('name' in values) {
@@ -218,6 +234,21 @@ export const EditorActionAdd = ({
               />
             </FormField2>
           </div>
+        )}
+
+        {type === 'MoveCamera' && (
+          <>
+            <Callout>
+              移动距离一般不需要修改，只填写前置延迟（15000）和击杀数条件即可
+            </Callout>
+            <div className="flex mt-2">
+              <EditorActionDistance
+                shouldUnregister
+                control={control}
+                name="distance"
+              />
+            </div>
+          </>
         )}
 
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
