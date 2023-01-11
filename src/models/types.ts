@@ -88,6 +88,16 @@ export const ACTION_TYPES: ActionType[] = [
   },
   {
     type: 'choice',
+    icon: 'camera',
+    accent: accent.blue,
+    title: '移动相机',
+    value: CopilotDocV1.Type.MoveCamera,
+    alternativeValue: '移动相机',
+    description: `仅用于引航者试炼模式中切换区域`,
+    group: '作战控制',
+  },
+  {
+    type: 'choice',
     icon: 'antenna',
     accent: accent.violet,
     title: '开始挂机',

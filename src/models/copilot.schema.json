@@ -176,6 +176,7 @@
             "技能用法",
             "打印",
             "摆完挂机",
+            "移动相机",
             "Deploy",
             "Skill",
             "Retreat",
@@ -183,7 +184,8 @@
             "BulletTime",
             "SkillUsage",
             "Output",
-            "SkillDaemon"
+            "SkillDaemon",
+            "MoveCamera"
           ]
         },
         "kills": {

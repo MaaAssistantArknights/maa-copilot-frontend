@@ -70,11 +70,17 @@ export namespace CopilotDocV1 {
     type: Type.SpeedUp | Type.BulletTime | Type.Output | Type.SkillDaemon
   }
 
+  export interface ActionMoveCamera extends ActionBase {
+    type: Type.MoveCamera
+    distance: [number, number]
+  }
+
   export type Action =
     | ActionDeploy
     | ActionSkillOrRetreat
     | ActionSkillUsage
     | ActionUtil
+    | ActionMoveCamera
 
   export enum Direction {
     Down = 'Down',
@@ -93,6 +99,7 @@ export namespace CopilotDocV1 {
     SkillDaemon = 'SkillDaemon',
     SkillUsage = 'SkillUsage',
     SpeedUp = 'SpeedUp',
+    MoveCamera = 'MoveCamera',
   }
 
   export interface Doc {
