@@ -47,3 +47,7 @@ Lint fix
 ```bash
 yarn lint:fix
 ```
+
+## Join us!
+
+QQ Group: 724540644
