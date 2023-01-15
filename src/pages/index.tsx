@@ -3,6 +3,7 @@ import simpleIconsGitHub from '@iconify/icons-simple-icons/github'
 import simpleIconsQQ from '@iconify/icons-simple-icons/tencentqq'
 import { Icon as IconifyIcon } from '@iconify/react'
 
+import Linkify from 'linkify-react'
 import { ComponentType } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
@@ -48,23 +49,37 @@ const SOCIAL_LINKS = [
     href: 'https://jq.qq.com/?_wv=1027&k=ElimpMzQ',
     label: '作业制作者交流群：1169188429',
   },
+  {
+    icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
+    href: 'https://ota.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
+    label: '作业分享群',
+  },
 ]
 
 export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   return (
     <div className="flex flex-col md:flex-row px-8 mt-8 container mx-auto">
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8">
-        <Callout title="2022/12/22 公告" className="mb-4" intent="primary">
-          <p>
-            服务器数据已不幸丢失，目前作业站后端正准备用 Java
-            重写，如果有以下经验欢迎加入我们（JDK17，Gradle，MongoDB，SpringBoot）
-          </p>
-          <p>
-            Repo 地址：
-            <a href="https://github.com/MaaAssistantArknights/MaaBackendCenter">
+        <Callout
+          title="2022/12/22 公告"
+          className="mb-4 [&_p]:mb-4"
+          intent="primary"
+        >
+          <Linkify options={{ target: '_blank' }}>
+            <p>
+              服务器数据已不幸丢失，目前作业站后端正在重写，前端也在缺人中，欢迎加入我们！
+            </p>
+            <p>
+              后端（JDK17，Gradle，MongoDB，SpringBoot）：
+              <br />
               https://github.com/MaaAssistantArknights/MaaBackendCenter
-            </a>
-          </p>
+            </p>
+            <p>
+              前端（TypeScript，React，Blueprint UI，SWR）：
+              <br />
+              https://github.com/MaaAssistantArknights/maa-copilot-frontend
+            </p>
+          </Linkify>
         </Callout>
         <Operations />
       </div>
