@@ -136,7 +136,7 @@ export function FloatingMap() {
   )
 
   return createPortal(
-    <div className="fixed z-50 inset-0 pointer-events-none">
+    <div className="fixed z-30 inset-0 pointer-events-none">
       <Rnd
         className="pointer-events-auto"
         dragHandleClassName="drag-handle"
