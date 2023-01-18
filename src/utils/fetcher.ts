@@ -11,7 +11,7 @@ const fetch = window.fetch || unfetch
 export class NetworkError extends Error {}
 
 const baseURL = envUseProductionApi
-  ? 'https://api.prts.plus'
+  ? 'https://prts.maa.plus'
   : 'http://localhost:5259'
 
 export const FETCHER_CONFIG: {
