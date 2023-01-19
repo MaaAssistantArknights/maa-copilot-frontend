@@ -13,6 +13,26 @@ import { Level, OpDifficulty } from './operation'
 
 const HARD_MODE_SUFFIX = '#f#'
 
+const customLevelKey = '__customLevel'
+
+export function createCustomLevel(name: string): Level {
+  return {
+    ...{ [customLevelKey]: true },
+    name,
+    stageId: name,
+    levelId: '',
+    catOne: '',
+    catTwo: '',
+    catThree: '自定义关卡',
+    width: 0,
+    height: 0,
+  }
+}
+
+export function isCustomLevel(level: Level): boolean {
+  return customLevelKey in level
+}
+
 export function withoutUnusedLevels(levels: Level[]) {
   const unusedKeywords = [
     // 引航者试炼

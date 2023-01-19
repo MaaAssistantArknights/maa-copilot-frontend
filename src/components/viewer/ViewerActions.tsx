@@ -1,7 +1,7 @@
 import { Card, Elevation, Icon, NonIdealState } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { FC, useMemo } from 'react'
+import { FC, Fragment, useMemo } from 'react'
 import { FCC } from 'types'
 
 import { CardTitle } from 'components/CardTitle'
@@ -40,7 +40,7 @@ export const ViewerActions: FC<{
       {patchedActions.map((action, i) => {
         const type = findActionType(action.type)
         return (
-          <>
+          <Fragment key={actionKey(action, i)}>
             <Card
               elevation={Elevation.ONE}
               className={clsx(
@@ -48,7 +48,6 @@ export const ViewerActions: FC<{
                 type.accent,
                 className,
               )}
-              key={actionKey(action, i)}
             >
               <div className="flex">
                 <div className="flex-grow">
@@ -121,7 +120,7 @@ export const ViewerActions: FC<{
                 ) : null}
               </div>
             )}
-          </>
+          </Fragment>
         )
       })}
     </div>

@@ -1,8 +1,11 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
 import { UseOperationsParams, useOperations } from 'apis/query'
-import { ComponentType } from 'react'
+import { ComponentType, useMemo } from 'react'
 
+import { toCopilotOperation } from '../models/converter'
+import { CopilotDocV1 } from '../models/copilot.schema'
+import { OperationListItem } from '../models/operation'
 import { OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
 
@@ -11,10 +14,28 @@ export const OperationList: ComponentType<UseOperationsParams> =
     (props) => {
       const { operations, size, setSize, isValidating, isReachingEnd } =
         useOperations(props)
+
+      const docCache = useMemo(
+        () => new WeakMap<OperationListItem, CopilotDocV1.Operation>(),
+        [],
+      )
+      const operationsWithDoc = operations.map((operation) => {
+        let doc = docCache.get(operation)
+        if (!doc) {
+          doc = toCopilotOperation(operation)
+          docCache.set(operation, doc)
+        }
+        return { operation, doc }
+      })
+
       return (
         <>
-          {operations?.map((operation) => (
-            <OperationCard operation={operation} key={operation.id} />
+          {operationsWithDoc.map(({ operation, doc }) => (
+            <OperationCard
+              operation={operation}
+              operationDoc={doc}
+              key={operation.id}
+            />
           ))}
 
           {isReachingEnd && operations.length === 0 && (

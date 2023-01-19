@@ -13,11 +13,9 @@ export interface Operation {
   title: string
   detail: string
   uploader: string
-  operators: string[]
-  groups: OperationGroup[]
   views: number
   hotScore: number
-  level: Level
+  level?: Level
   available: boolean
   ratingLevel: OpRatingLevel
   ratingRatio: number
@@ -67,7 +65,8 @@ export enum OpDifficultyBitFlag {
   HARD = 2,
 }
 
-export type OperationListItem = Omit<Operation, 'content'>
+// exists for historical reasons
+export type OperationListItem = Operation
 
 export interface OperationGroup {
   name: string

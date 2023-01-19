@@ -16,20 +16,21 @@ import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OperationListItem } from 'models/operation'
 
+import { useLevels } from '../apis/arknights'
+import { CopilotDocV1 } from '../models/copilot.schema'
+import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficultyLevel } from './entity/ELevel'
 import { OperationViewer } from './viewer/OperationViewer'
 
-const formatOperatorTag = (operator: string) => {
-  const splitted = operator.split('::')
-  return splitted.length > 1 ? `${splitted[0]} ${splitted[1]}` : operator
-}
-
 export const OperationCard = ({
   operation,
+  operationDoc,
 }: {
   operation: OperationListItem
+  operationDoc: CopilotDocV1.Operation
 }) => {
+  const levels = useLevels({ suspense: false })?.data?.data || []
   const [drawerOpen, setDrawerOpen] = useState(false)
   return (
     <>
@@ -100,7 +101,11 @@ export const OperationCard = ({
         </div>
         <H5 className="flex items-center text-slate-900 -mt-3">
           <EDifficultyLevel
-            level={operation.level}
+            level={
+              operation.level ||
+              findLevelByStageName(levels, operationDoc.stageName) ||
+              createCustomLevel(operationDoc.stageName)
+            }
             difficulty={operation.difficulty}
           />
         </H5>
@@ -111,21 +116,43 @@ export const OperationCard = ({
           </div>
           <div className="w-1/2 ml-4">
             <div className="text-sm text-zinc-600 mb-2 font-bold">
-              使用干员与技能
+              干员/干员组
             </div>
-            <div>
-              {operation.operators.map((operator, index) => (
-                <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
-                  {formatOperatorTag(operator)}
-                </Tag>
-              ))}
-              {operation.operators.length === 0 && (
-                <span className="text-gray-500">无记录</span>
-              )}
-            </div>
+            <OperatorTags operationDoc={operationDoc} />
           </div>
         </div>
       </Card>
     </>
+  )
+}
+
+const OperatorTags = ({
+  operationDoc: { opers, groups },
+}: {
+  operationDoc: CopilotDocV1.Operation
+}) => {
+  return opers?.length && groups?.length ? (
+    <div>
+      {opers?.map(({ name, skill }, index) => (
+        <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
+          {`${name} ${skill ?? 1}`}
+        </Tag>
+      ))}
+      {groups?.map(({ name, opers }, index) => (
+        <Tooltip2
+          className="mr-2 last:mr-0 mb-1 last:mb-0"
+          placement="top"
+          content={
+            opers
+              ?.map(({ name, skill }) => `${name} ${skill ?? 1}`)
+              .join(', ') || '无干员'
+          }
+        >
+          <Tag key={index}>[{name}]</Tag>
+        </Tooltip2>
+      ))}
+    </div>
+  ) : (
+    <div className="text-gray-500">无记录</div>
   )
 }
