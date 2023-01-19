@@ -16,19 +16,17 @@ import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OperationListItem } from 'models/operation'
 
+import { CopilotDocV1 } from '../models/copilot.schema'
 import { Paragraphs } from './Paragraphs'
 import { EDifficultyLevel } from './entity/ELevel'
 import { OperationViewer } from './viewer/OperationViewer'
 
-const formatOperatorTag = (operator: string) => {
-  const splitted = operator.split('::')
-  return splitted.length > 1 ? `${splitted[0]} ${splitted[1]}` : operator
-}
-
 export const OperationCard = ({
   operation,
+  operationDoc,
 }: {
   operation: OperationListItem
+  operationDoc: CopilotDocV1.Operation
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false)
   return (
@@ -114,12 +112,12 @@ export const OperationCard = ({
               使用干员与技能
             </div>
             <div>
-              {operation.operators.map((operator, index) => (
+              {operationDoc.opers?.map(({ name, skill }, index) => (
                 <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
-                  {formatOperatorTag(operator)}
+                  {`${name} ${skill ?? 1}`}
                 </Tag>
               ))}
-              {operation.operators.length === 0 && (
+              {!operationDoc.opers?.length && (
                 <span className="text-gray-500">无记录</span>
               )}
             </div>

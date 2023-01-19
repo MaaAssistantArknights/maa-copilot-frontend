@@ -38,6 +38,7 @@ import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { toCopilotOperation } from '../../models/converter'
+import { CopilotDocV1 } from '../../models/copilot.schema'
 import { toShortCode } from '../../models/shortCode'
 
 const ManageMenu: FC<{
@@ -316,27 +317,30 @@ export const OperationViewer: ComponentType<{
               <H4 className="mb-4">干员与干员组</H4>
               <H5 className="mb-4 text-slate-600">干员</H5>
               <div className="flex flex-col mb-4">
-                {operation.operators.map((operator) => (
-                  <OperatorCard key={operator} operator={operator} />
+                {operationDoc.opers?.map((operator) => (
+                  <OperatorCard key={operator.name} operator={operator} />
                 ))}
-                {operation.operators.length === 0 && (
+                {!operationDoc.opers?.length && (
                   <EmptyOperator description="作业并未添加干员" />
                 )}
               </div>
 
               <H5 className="mb-4 text-slate-600">干员组</H5>
               <div className="flex flex-col">
-                {operation.groups.map((el) => (
+                {operationDoc.groups?.map((group) => (
                   <Card elevation={Elevation.ONE} className="mb-4">
                     <div className="flex flex-col">
-                      <H5 className="text-gray-800 font-bold">{el.name}</H5>
+                      <H5 className="text-gray-800 font-bold">{group.name}</H5>
 
                       <div className="flex flex-col">
-                        {el.operators.filter(Boolean).map((operator) => (
-                          <OperatorCard key={operator} operator={operator} />
+                        {group.opers?.filter(Boolean).map((operator) => (
+                          <OperatorCard
+                            key={operator.name}
+                            operator={operator}
+                          />
                         ))}
 
-                        {el.operators.filter(Boolean).length === 0 && (
+                        {group.opers?.filter(Boolean).length === 0 && (
                           <EmptyOperator description="干员组中并未添加干员" />
                         )}
                       </div>
@@ -344,7 +348,7 @@ export const OperationViewer: ComponentType<{
                   </Card>
                 ))}
 
-                {operation.groups.length === 0 && (
+                {!operationDoc.groups?.length && (
                   <EmptyOperator
                     title="暂无干员组"
                     description="作业并未添加干员组"
@@ -369,9 +373,9 @@ export const OperationViewer: ComponentType<{
 )
 
 const OperatorCard: FC<{
-  operator: string
+  operator: CopilotDocV1.Operator
 }> = ({ operator }) => {
-  const [name, skill] = operator.split('::')
+  const { name, skill } = operator
   return (
     <Card elevation={Elevation.ONE} className="mb-2 last:mb-0 flex">
       <OperatorAvatar name={name} size="large" className="mr-3" />
