@@ -16,7 +16,9 @@ import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OperationListItem } from 'models/operation'
 
+import { useLevels } from '../apis/arknights'
 import { CopilotDocV1 } from '../models/copilot.schema'
+import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficultyLevel } from './entity/ELevel'
 import { OperationViewer } from './viewer/OperationViewer'
@@ -28,6 +30,7 @@ export const OperationCard = ({
   operation: OperationListItem
   operationDoc: CopilotDocV1.Operation
 }) => {
+  const levels = useLevels({ suspense: false })?.data?.data || []
   const [drawerOpen, setDrawerOpen] = useState(false)
   return (
     <>
@@ -98,7 +101,11 @@ export const OperationCard = ({
         </div>
         <H5 className="flex items-center text-slate-900 -mt-3">
           <EDifficultyLevel
-            level={operation.level}
+            level={
+              operation.level ||
+              findLevelByStageName(levels, operationDoc.stageName) ||
+              createCustomLevel(operationDoc.stageName)
+            }
             difficulty={operation.difficulty}
           />
         </H5>

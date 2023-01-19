@@ -37,8 +37,10 @@ import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
+import { useLevels } from '../../apis/arknights'
 import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
+import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { toShortCode } from '../../models/shortCode'
 
 const ManageMenu: FC<{
@@ -109,6 +111,8 @@ export const OperationViewer: ComponentType<{
   ({ operationId, onCloseDrawer }) => {
     const { data, error, mutate } = useOperation(operationId)
     const operation = data?.data
+
+    const levels = useLevels({ suspense: false })?.data?.data || []
 
     const [auth] = useAtom(authAtom)
     const authed = !!auth.token
@@ -251,7 +255,11 @@ export const OperationViewer: ComponentType<{
             <div className="flex flex-col">
               <FactItem title="作战">
                 <EDifficultyLevel
-                  level={operation.level}
+                  level={
+                    operation.level ||
+                    findLevelByStageName(levels, operationDoc.stageName) ||
+                    createCustomLevel(operationDoc.stageName)
+                  }
                   difficulty={operation.difficulty}
                 />
               </FactItem>

@@ -15,7 +15,7 @@ export interface Operation {
   uploader: string
   views: number
   hotScore: number
-  level: Level
+  level?: Level
   available: boolean
   ratingLevel: OpRatingLevel
   ratingRatio: number

@@ -29,6 +29,7 @@ import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
 import {
+  createCustomLevel,
   findLevelByStageName,
   getPrtsMapUrl,
   getStageIdWithDifficulty,
@@ -49,19 +50,6 @@ import {
   EditorPerformer,
   EditorPerformerProps,
 } from './operator/EditorPerformer'
-
-function createArbitraryLevel(name: string): Level {
-  return {
-    name,
-    stageId: name,
-    levelId: '',
-    catOne: '',
-    catTwo: '',
-    catThree: '自定义关卡',
-    width: 0,
-    height: 0,
-  }
-}
 
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
@@ -107,7 +95,7 @@ export const StageNameInput: FC<{
   const selectedLevel = useMemo(
     () =>
       value
-        ? findLevelByStageName(levels, value) || createArbitraryLevel(value)
+        ? findLevelByStageName(levels, value) || createCustomLevel(value)
         : // return null to ensure the component is controlled
           null,
     [levels, value],
@@ -178,7 +166,7 @@ export const StageNameInput: FC<{
             className: 'max-h-64 overflow-auto',
           }}
           noResults={<MenuItem disabled text="没有匹配的关卡" />}
-          createNewItemFromQuery={(query) => createArbitraryLevel(query)}
+          createNewItemFromQuery={(query) => createCustomLevel(query)}
           createNewItemRenderer={(query, active, handleClick) => (
             <MenuItem
               key="create-new-item"
