@@ -46,7 +46,7 @@ export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
     },
   })
 
-  if ((response.data as any).__serverError) {
+  if ((response.data as any)?.__serverError) {
     return {
       ...response,
       error: (response.data as any).__serverError,
