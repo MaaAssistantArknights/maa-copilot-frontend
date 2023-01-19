@@ -5,6 +5,7 @@ import type { Response } from 'models/network'
 import type { Level } from 'models/operation'
 
 import { withoutUnusedLevels } from '../models/level'
+import { request } from '../utils/fetcher'
 import { enableCache } from '../utils/swr-cache'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
@@ -25,19 +26,34 @@ export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
       !!data?.data && Array.isArray(data.data) && 'stageId' in data.data[0],
   )
 
-  return useSWR<Response<Level[]>>(url, {
+  const response = useSWR<Response<Level[]>>(url, {
     focusThrottleInterval: ONE_DAY,
     suspense,
     fetcher: async (input: string, init?: RequestInit) => {
-      // TODO: remove this when backend is ready
-      const res = await requestBuiltInLevels(init)
-      // const res = await request<Response<Level[]>>(input, init)
+      let res: Response<Level[]>
+
+      try {
+        res = await request<Response<Level[]>>(input, init)
+      } catch (e) {
+        // fallback to built-in levels while retaining the error
+        res = await requestBuiltInLevels(init)
+        ;(res as any).__serverError = e
+      }
 
       res.data = withoutUnusedLevels(res.data)
 
       return res
     },
   })
+
+  if ((response.data as any).__serverError) {
+    return {
+      ...response,
+      error: (response.data as any).__serverError,
+    }
+  }
+
+  return response
 }
 
 const requestBuiltInLevels = async (
