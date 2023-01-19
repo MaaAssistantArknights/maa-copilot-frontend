@@ -116,21 +116,43 @@ export const OperationCard = ({
           </div>
           <div className="w-1/2 ml-4">
             <div className="text-sm text-zinc-600 mb-2 font-bold">
-              使用干员与技能
+              干员/干员组
             </div>
-            <div>
-              {operationDoc.opers?.map(({ name, skill }, index) => (
-                <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
-                  {`${name} ${skill ?? 1}`}
-                </Tag>
-              ))}
-              {!operationDoc.opers?.length && (
-                <span className="text-gray-500">无记录</span>
-              )}
-            </div>
+            <OperatorTags operationDoc={operationDoc} />
           </div>
         </div>
       </Card>
     </>
+  )
+}
+
+const OperatorTags = ({
+  operationDoc: { opers, groups },
+}: {
+  operationDoc: CopilotDocV1.Operation
+}) => {
+  return opers?.length && groups?.length ? (
+    <div>
+      {opers?.map(({ name, skill }, index) => (
+        <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
+          {`${name} ${skill ?? 1}`}
+        </Tag>
+      ))}
+      {groups?.map(({ name, opers }, index) => (
+        <Tooltip2
+          className="mr-2 last:mr-0 mb-1 last:mb-0"
+          placement="top"
+          content={
+            opers
+              ?.map(({ name, skill }) => `${name} ${skill ?? 1}`)
+              .join(', ') || '无干员'
+          }
+        >
+          <Tag key={index}>[{name}]</Tag>
+        </Tooltip2>
+      ))}
+    </div>
+  ) : (
+    <div className="text-gray-500">无记录</div>
   )
 }
