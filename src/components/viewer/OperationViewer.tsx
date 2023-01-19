@@ -336,7 +336,11 @@ export const OperationViewer: ComponentType<{
               <H5 className="mb-4 text-slate-600">干员组</H5>
               <div className="flex flex-col">
                 {operationDoc.groups?.map((group) => (
-                  <Card elevation={Elevation.ONE} className="mb-4">
+                  <Card
+                    elevation={Elevation.ONE}
+                    className="mb-4"
+                    key={group.name}
+                  >
                     <div className="flex flex-col">
                       <H5 className="text-gray-800 font-bold">{group.name}</H5>
 
