@@ -1,9 +1,11 @@
 import { Button, Card, NonIdealState, Spinner } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import { clamp } from 'lodash-es'
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Rnd, RndResizeCallback } from 'react-rnd'
+import { useWindowSize } from 'react-use'
 
 import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
@@ -57,15 +59,15 @@ export function FloatingMap() {
     (savedValue, defaultValue) => ({ ...defaultValue, ...savedValue }),
   )
 
+  const { width: windowWidth, height: windowHeight } = useWindowSize()
+
   useEffect(() => {
-    if (config.show) {
-      setConfig({
-        ...config,
-        x: Math.max(0, Math.min(config.x, window.innerWidth - config.width)),
-        y: Math.max(0, Math.min(config.y, window.innerHeight - config.height)),
-      })
-    }
-  }, [config.show])
+    setConfig((cfg) => ({
+      ...cfg,
+      x: clamp(cfg.x, 0, windowWidth - cfg.width),
+      y: clamp(cfg.y, 0, windowHeight - cfg.height),
+    }))
+  }, [windowWidth, windowHeight])
 
   const [iframeWindow, setIframeWindow] = useState<Window | null | undefined>()
   const [mapStatus, setMapStatus] = useState(MapStatus.Loading)
@@ -162,6 +164,7 @@ export function FloatingMap() {
           lockAspectRatio={ASPECT_RATIO}
           lockAspectRatioExtraHeight={HEADER_HEIGHT}
           default={config}
+          position={config}
           onDragStart={onDragStartHandler}
           onDragStop={onDragStopHandler}
           onResizeStart={onResizeStartHandler}
