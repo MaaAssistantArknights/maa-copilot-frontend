@@ -11,4 +11,7 @@ export default defineConfig({
       src: require('path').resolve(__dirname, 'src'),
     },
   },
+  build: {
+    sourcemap: true,
+  },
 })
