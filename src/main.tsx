@@ -22,8 +22,14 @@ import './styles/index.css'
 
 Sentry.init({
   dsn: 'https://0a2bb44996194bb7aff8d0e32dcacb55@o1299554.ingest.sentry.io/6545242',
-  integrations: [new BrowserTracing()],
+  integrations: [new BrowserTracing(), new Sentry.Replay()],
   tracesSampleRate: 0.05,
+
+  replaysSessionSampleRate: 0.001,
+  replaysOnErrorSampleRate: 0.1,
+
+  debug: import.meta.env.DEV,
+
   enabled: import.meta.env.PROD,
   beforeSend: (event) => {
     if (import.meta.env.DEV) return null

@@ -1,8 +1,11 @@
-import { Card, NonIdealState, Spinner } from '@blueprintjs/core'
+import { Button, Card, NonIdealState, Spinner } from '@blueprintjs/core'
 
+import clsx from 'clsx'
+import { clamp } from 'lodash-es'
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Rnd, RndResizeCallback } from 'react-rnd'
+import { useWindowSize } from 'react-use'
 
 import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
@@ -17,6 +20,7 @@ import {
 } from './connection'
 
 interface FloatingMapConfig {
+  show: boolean
   x: number
   y: number
   width: number
@@ -25,6 +29,8 @@ interface FloatingMapConfig {
 
 const UID = 'floating-map'
 const STORAGE_KEY = `copilot-${UID}`
+
+const HEADER_CLASS = 'floating-map-header'
 
 const HEADER_HEIGHT = 16
 const ASPECT_RATIO = 16 / 9
@@ -43,6 +49,7 @@ export function FloatingMap() {
   const [config, setConfig] = useLazyStorage<FloatingMapConfig>(
     STORAGE_KEY,
     {
+      show: true,
       x: 0,
       y: window.innerHeight - DEFAULT_HEIGHT,
       width: DEFAULT_WIDTH,
@@ -51,6 +58,16 @@ export function FloatingMap() {
     // merge two values in case the saved value is missing some properties
     (savedValue, defaultValue) => ({ ...defaultValue, ...savedValue }),
   )
+
+  const { width: windowWidth, height: windowHeight } = useWindowSize()
+
+  useEffect(() => {
+    setConfig((cfg) => ({
+      ...cfg,
+      x: clamp(cfg.x, 0, windowWidth - cfg.width),
+      y: clamp(cfg.y, 0, windowHeight - cfg.height),
+    }))
+  }, [windowWidth, windowHeight])
 
   const [iframeWindow, setIframeWindow] = useState<Window | null | undefined>()
   const [mapStatus, setMapStatus] = useState(MapStatus.Loading)
@@ -137,55 +154,98 @@ export function FloatingMap() {
 
   return createPortal(
     <div className="fixed z-30 inset-0 pointer-events-none">
-      <Rnd
-        className="pointer-events-auto"
-        dragHandleClassName="drag-handle"
-        bounds="window"
-        minWidth={MIN_WIDTH}
-        minHeight={MIN_HEIGHT}
-        lockAspectRatio={ASPECT_RATIO}
-        lockAspectRatioExtraHeight={HEADER_HEIGHT}
-        default={config}
-        onDragStart={onDragStartHandler}
-        onDragStop={onDragStopHandler}
-        onResizeStart={onResizeStartHandler}
-        onResizeStop={onResizeStopHandler}
-      >
-        <Card
-          className="h-full !p-0 flex flex-col overflow-hidden"
-          elevation={3}
+      {config.show ? (
+        <Rnd
+          className="pointer-events-auto"
+          dragHandleClassName={HEADER_CLASS}
+          bounds="window"
+          minWidth={MIN_WIDTH}
+          minHeight={MIN_HEIGHT}
+          lockAspectRatio={ASPECT_RATIO}
+          lockAspectRatioExtraHeight={HEADER_HEIGHT}
+          default={config}
+          position={config}
+          onDragStart={onDragStartHandler}
+          onDragStop={onDragStopHandler}
+          onResizeStart={onResizeStartHandler}
+          onResizeStop={onResizeStopHandler}
         >
-          <div
-            className="drag-handle cursor-move bg-gray-200"
-            style={{ height: HEADER_HEIGHT }}
-          />
-          {level ? (
-            <div className="relative flex-grow">
-              <iframe
-                title={UID}
-                className="w-full h-full"
-                src={getMapUrl(level)}
-                onLoad={(e) => {
-                  setIframeWindow((e.target as HTMLIFrameElement).contentWindow)
-                }}
-              />
-              {mapStatus === MapStatus.Loading && (
-                <NonIdealState
-                  className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
-                  icon={
-                    <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
-                  }
-                  description={iframeWindow ? undefined : '等待地图连接...'}
+          <Card
+            className="h-full !p-0 flex flex-col overflow-hidden"
+            elevation={3}
+          >
+            <FloatingMapHeader config={config} setConfig={setConfig} />
+            {level ? (
+              <div className="relative flex-grow">
+                <iframe
+                  title={UID}
+                  className="w-full h-full"
+                  src={getMapUrl(level)}
+                  onLoad={(e) => {
+                    setIframeWindow(
+                      (e.target as HTMLIFrameElement).contentWindow,
+                    )
+                  }}
                 />
-              )}
-            </div>
-          ) : (
-            <NonIdealState icon="area-of-interest" title="未选择关卡" />
-          )}
+                {mapStatus === MapStatus.Loading && (
+                  <NonIdealState
+                    className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
+                    icon={
+                      <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
+                    }
+                    description={iframeWindow ? undefined : '等待地图连接...'}
+                  />
+                )}
+              </div>
+            ) : (
+              <NonIdealState icon="area-of-interest" title="未选择关卡" />
+            )}
+          </Card>
+        </Rnd>
+      ) : (
+        <Card
+          className="absolute !p-0 overflow-hidden pointer-events-auto"
+          elevation={2}
+          style={{ left: 0, bottom: 0 }}
+        >
+          <FloatingMapHeader config={config} setConfig={setConfig} />
         </Card>
-      </Rnd>
+      )}
     </div>,
 
     document.body,
+  )
+}
+
+function FloatingMapHeader({
+  className,
+  config,
+  setConfig,
+}: {
+  className?: string
+  config: FloatingMapConfig
+  setConfig: (config: FloatingMapConfig) => void
+}) {
+  return (
+    <div
+      className={clsx(
+        className,
+        HEADER_CLASS,
+        'flex items-center text-xs bg-gray-200',
+        config.show ? 'cursor-move' : 'cursor-default',
+      )}
+      style={{ height: HEADER_HEIGHT }}
+    >
+      <Button
+        minimal
+        small={!config.show}
+        className="min-h-0 !py-0"
+        title={config.show ? '隐藏地图' : '显示地图'}
+        icon={config.show ? 'caret-down' : 'caret-up'}
+        onClick={() => setConfig({ ...config, show: !config.show })}
+      >
+        {!config.show && '地图'}
+      </Button>
+    </div>
   )
 }
