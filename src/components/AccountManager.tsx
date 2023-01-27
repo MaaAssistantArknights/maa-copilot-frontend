@@ -121,19 +121,21 @@ const ActivationInputGroup = <T extends FieldValues>({
   })
 
   return (
-    <InputGroup
-      large
-      rightElement={<ActivationCodeRequestButton />}
-      leftIcon="lock"
-      onChange={onChange}
-      onBlur={onBlur}
-      placeholder="请输入您的激活码"
-      ref={ref}
-      className="font-mono"
-      autoComplete="off"
-      // eslint-disable-next-line jsx-a11y/no-autofocus
-      autoFocus
-    />
+    <div className="flex">
+      <InputGroup
+        large
+        leftIcon="lock"
+        onChange={onChange}
+        onBlur={onBlur}
+        placeholder="请输入您的激活码"
+        ref={ref}
+        className="flex-grow font-mono"
+        autoComplete="off"
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus
+      />
+      <ActivationCodeRequestButton />
+    </div>
   )
 }
 
