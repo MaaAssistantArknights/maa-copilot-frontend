@@ -4,6 +4,7 @@ import { Link, NavLink } from 'react-router-dom'
 import { FCC } from 'types'
 
 import { AccountManager } from 'components/AccountManager'
+import { BackToTop } from 'components/BackToTop'
 
 const LINKS: {
   to: string
@@ -57,5 +58,7 @@ export const AppLayout: FCC = ({ children }) => (
     </nav>
 
     <div className="pt-14 pb-16">{children}</div>
+
+    <BackToTop />
   </div>
 )
