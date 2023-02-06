@@ -18,22 +18,25 @@ export const useVersion = () => {
 
 export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
   const url = '/arknights/level'
+  type LevelResponse = Response<Level[]>
 
   enableCache(
     url,
     // discard the cache if the level data has no stageId
-    ({ data }) =>
-      !!data?.data && Array.isArray(data.data) && 'stageId' in data.data[0],
+    ({ data }) => {
+      const firstLevel = (data as LevelResponse)?.data?.[0]
+      return !!firstLevel && 'stageId' in firstLevel
+    },
   )
 
-  const response = useSWR<Response<Level[]>>(url, {
+  const response = useSWR<LevelResponse>(url, {
     focusThrottleInterval: ONE_DAY,
     suspense,
     fetcher: async (input: string, init?: RequestInit) => {
-      let res: Response<Level[]>
+      let res: LevelResponse
 
       try {
-        res = await request<Response<Level[]>>(input, init)
+        res = await request<LevelResponse>(input, init)
       } catch (e) {
         // fallback to built-in levels while retaining the error
         res = await requestBuiltInLevels(init)
