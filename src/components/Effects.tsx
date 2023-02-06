@@ -1,5 +1,5 @@
 import { useAtom } from 'jotai'
-import { FC, useEffect } from 'react'
+import { FC, useRef } from 'react'
 
 import { authAtom, fromCredentials } from 'store/auth'
 import { FETCHER_CONFIG } from 'utils/fetcher'
@@ -10,8 +10,14 @@ import { AppToaster } from './Toaster'
 
 export const Effects: FC = () => {
   const [auth, setAuth] = useAtom(authAtom)
+  const lastAuth = useRef<typeof auth | null>(null)
 
-  useEffect(() => {
+  // here we are simulating a synchronous version of useEffect(() => {}, [auth])
+  // in order to set the FETCHER_CONFIG.apiToken before any useSWR() call,
+  // because useSWR() seems to send request synchronously, and useEffect() is too late
+  if (lastAuth.current !== auth) {
+    lastAuth.current = auth
+
     const { token, validBefore, refreshToken, refreshTokenValidBefore } = auth
 
     const endTime = +new Date(validBefore || 0) || 0
@@ -32,7 +38,7 @@ export const Effects: FC = () => {
             }
 
             if (!refreshToken) {
-              // seems that user was logging in in previous version of the app
+              // the refresh token is somehow missing, no way to update the token
               shouldLogout = true
             }
           }
@@ -66,6 +72,9 @@ export const Effects: FC = () => {
           }
 
           if (shouldLogout) {
+            // setting the state synchronously may cause problems (not really sure), so we add a small delay
+            await new Promise((resolve) => setTimeout(resolve, 50))
+
             setAuth({})
             AppToaster.show({
               intent: 'warning',
@@ -84,7 +93,7 @@ export const Effects: FC = () => {
     }
 
     FETCHER_CONFIG.apiToken = currentFn
-  }, [auth])
+  }
 
   return null
 }
