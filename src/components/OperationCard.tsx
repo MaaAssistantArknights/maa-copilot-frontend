@@ -140,6 +140,7 @@ const OperatorTags = ({
       ))}
       {groups?.map(({ name, opers }, index) => (
         <Tooltip2
+          key={index}
           className="mr-2 last:mr-0 mb-1 last:mb-0"
           placement="top"
           content={
@@ -148,7 +149,7 @@ const OperatorTags = ({
               .join(', ') || '无干员'
           }
         >
-          <Tag key={index}>[{name}]</Tag>
+          <Tag>[{name}]</Tag>
         </Tooltip2>
       ))}
     </div>
