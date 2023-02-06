@@ -53,15 +53,18 @@ export function useSWRCache(
 
 /**
  * The only thing this middleware does is to borrow the <SWRConfig>'s lifecycle
- * and clear the key maps when it unmounts (happens during hot reload).
+ * and clear validatedKeys when it unmounts (happens during hot reload).
  * It should be used in the topmost <SWRConfig>.
  */
 export const swrCacheMiddleware: Middleware =
   (useSWRNext: SWRHook) => (key, fetcher, config) => {
     useEffect(
       () => () => {
-        cachedKeys.clear()
         validatedKeys.clear()
+
+        // however, do not clear cachedKeys!!
+        // because this unmount callback also runs before the page unloads,
+        // and if there's no keys, no cache will be persisted.
       },
       [],
     )
