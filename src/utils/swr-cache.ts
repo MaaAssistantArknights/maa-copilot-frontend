@@ -11,10 +11,11 @@ const cachedKeys = new Set<string>()
 const validatedKeys = new Set<string>()
 
 /**
+ * @param key - **the key is not supposed to be dynamic.**
  * @param validate - validates the cached state, if it returns false, the state will be discarded.
  * This function will only run once for each key (because we want it to validate cached data, not fresh data).
  */
-export function enableCache(
+export function useSWRCache(
   key: string,
   validate?: (state: State<unknown>) => boolean,
 ) {

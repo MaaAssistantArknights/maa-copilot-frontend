@@ -6,7 +6,7 @@ import type { Level } from 'models/operation'
 
 import { withoutUnusedLevels } from '../models/level'
 import { request } from '../utils/fetcher'
-import { enableCache } from '../utils/swr-cache'
+import { useSWRCache } from '../utils/swr-cache'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
 
@@ -20,7 +20,7 @@ export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
   const url = '/arknights/level'
   type LevelResponse = Response<Level[]>
 
-  enableCache(
+  useSWRCache(
     url,
     // discard the cache if the level data has no stageId
     ({ data }) => {
