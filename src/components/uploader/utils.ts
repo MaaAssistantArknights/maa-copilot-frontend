@@ -1,12 +1,17 @@
 import { isString } from '@sentry/utils'
 
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
-import { isObject } from 'lodash-es'
+import { isFinite, isObject } from 'lodash-es'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
-import { matchLevelByStageName } from '../../models/level'
-import { Level } from '../../models/operation'
+import {
+  isHardMode,
+  matchLevelByStageName,
+  toHardMode,
+  toNormalMode,
+} from '../../models/level'
+import { Level, OpDifficulty } from '../../models/operation'
 import { formatError } from '../../utils/error'
 import { AppToaster } from '../Toaster'
 
@@ -65,20 +70,32 @@ export function patchOperation(operation: object, levels: Level[]): object {
       }
 
       // i18n compatibility of level id
-      if (
-        !stage_name.match('^[a-z/_0-9-]*$') ||
-        stage_name.indexOf('/') === -1
-      ) {
-        const matchStages = levels.filter((level) =>
-          matchLevelByStageName(level, stage_name),
-        )
-        if (matchStages.length === 1) {
-          operation['stage_name'] = matchStages[0].stageId
-        } else {
-          const reason =
-            matchStages.length > 0 ? '匹配到的关卡不唯一' : '未找到对应关卡'
-          throw new Error(`${reason} (${stage_name})`)
-        }
+
+      const expectsHardMode =
+        isHardMode(stage_name) ||
+        (isFinite(operation['difficulty']) &&
+          operation['difficulty'] & OpDifficulty.HARD)
+
+      const matchedLevels = levels.filter((level) =>
+        matchLevelByStageName(level, stage_name),
+      )
+
+      const uniqueStageIds = new Set(
+        matchedLevels.map(({ stageId }) =>
+          expectsHardMode ? toHardMode(stageId) : toNormalMode(stageId),
+        ),
+      )
+
+      if (uniqueStageIds.size === 1) {
+        operation['stage_name'] = [...uniqueStageIds][0]
+      } else {
+        const reason =
+          uniqueStageIds.size > 0 ? '匹配到的关卡不唯一' : '未找到对应关卡'
+        const error = new Error(`${reason}(${stage_name})`)
+
+        ;(error as any).matchedLevels = matchedLevels
+
+        throw error
       }
     }
   } catch (e) {
