@@ -5,6 +5,8 @@ import {
   FormGroup,
   H4,
   Icon,
+  Spinner,
+  SpinnerSize,
   Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
@@ -12,6 +14,7 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 import { useLevels } from 'apis/arknights'
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { ComponentType, useState } from 'react'
+import { useList } from 'react-use'
 
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
@@ -29,18 +32,23 @@ interface FileEntry {
 }
 
 export const OperationUploader: ComponentType = withSuspensable(() => {
-  const [files, setFiles] = useState(null as FileEntry[] | null)
+  const [files, { set: setFiles, update: updateFileWhere }] =
+    useList<FileEntry>([])
+
   const [globalErrors, setGlobalErrors] = useState(null as string[] | null)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
 
+  // reasons are in the order of keys
   const nonUploadableReason = Object.entries({
     ['正在上传，请等待']: isUploading,
-    ['存在错误，请排查问题']: globalErrors?.length,
-    ['请选择文件']: !files?.length,
-    ['文件列表中包含已上传的文件，请重新选择']: files?.some(
+    ['正在解析文件，请等待']: isProcessing,
+    ['请选择文件']: !files.length,
+    ['文件列表中包含已上传的文件，请重新选择']: files.some(
       (file) => file.uploaded,
     ),
-    ['文件存在错误，请修复']: files?.some((file) => file.error),
+    ['文件存在错误，请修改内容']: files.some((file) => file.error),
+    ['存在错误，请排查问题']: globalErrors?.length,
   }).find(([, value]) => value)?.[0]
 
   const isUploadable = !nonUploadableReason
@@ -55,16 +63,17 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
     setGlobalErrors([levelError.message])
   }
 
-  const handleFileUpload = async (event: React.FormEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (event: React.FormEvent<HTMLInputElement>) => {
     setGlobalErrors(null)
 
     if (event.currentTarget.files?.length) {
+      setIsProcessing(true)
+
       const toFileEntry = async (file: File): Promise<FileEntry> => {
         const entry: FileEntry = { file }
-        let content: object
 
         try {
-          content = await parseOperationFile(file)
+          let content = await parseOperationFile(file)
           content = patchOperation(content, levels)
 
           validateOperation(content)
@@ -79,34 +88,44 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
       }
 
       setFiles(
-        await Promise.all(
-          Array.from(event.currentTarget.files).map(toFileEntry),
-        ),
+        await Promise.all(Array.from(event.currentTarget.files, toFileEntry)),
       )
+
+      setIsProcessing(false)
     } else {
-      setFiles(null)
+      setFiles([])
     }
   }
 
   const handleOperationSubmit = async () => {
-    if (!isUploadable || !files?.length) {
+    if (!isUploadable || !files.length) {
       return
     }
 
     setIsUploading(true)
     try {
+      let successCount = 0
+
       await Promise.allSettled(
         files.map((file) =>
           requestOperationUpload(JSON.stringify(file.operation))
-            .then(() => (file.uploaded = true))
+            .then(() => {
+              successCount++
+              updateFileWhere((candidate) => candidate === file, {
+                ...file,
+                uploaded: true,
+              })
+            })
             .catch((e) => {
               console.warn(e)
-              file.error = `上传失败：${formatError(e)}`
+              updateFileWhere((candidate) => candidate === file, {
+                ...file,
+                error: `上传失败：${formatError(e)}`,
+              })
             }),
         ),
       )
 
-      const successCount = files.filter((file) => !file.error).length
       const errorCount = files.length - successCount
 
       AppToaster.show({
@@ -147,13 +166,14 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
           <FileInput
             large
             fill
+            disabled={isUploading || isProcessing}
             buttonText="浏览"
-            text={files?.length ? `${files.length} 个文件` : '选择文件...'}
+            text={files.length ? `${files.length} 个文件` : '选择文件...'}
             inputProps={{
               accept: '.json',
               multiple: true,
             }}
-            onInputChange={handleFileUpload}
+            onInputChange={handleFileSelect}
           />
         </FormGroup>
 
@@ -161,19 +181,36 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
           fill
           className="mt-4"
           placement="top"
+          disabled={!nonUploadableReason}
           content={nonUploadableReason}
         >
-          {/* do not use <Button> because its disabled state does not work well with Tooltip */}
-          <AnchorButton
-            large
-            fill
-            disabled={!isUploadable}
-            loading={isUploading}
-            icon="cloud-upload"
-            onClick={handleOperationSubmit}
-          >
-            上传
-          </AnchorButton>
+          {(() => {
+            const settledCount = files.filter(
+              (file) => file.uploaded || file.error,
+            ).length
+
+            return (
+              // do not use <Button> because its disabled state does not work well with Tooltip
+              <AnchorButton
+                large
+                fill
+                disabled={!isUploadable}
+                icon={
+                  isUploading ? (
+                    <Spinner
+                      size={SpinnerSize.SMALL}
+                      value={settledCount / files.length}
+                    />
+                  ) : (
+                    'cloud-upload'
+                  )
+                }
+                onClick={handleOperationSubmit}
+              >
+                {isUploading ? `${settledCount}/${files.length}` : '上传'}
+              </AnchorButton>
+            )
+          })()}
         </Tooltip2>
 
         {globalErrors && (
@@ -184,8 +221,8 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
           </Callout>
         )}
 
-        {!!files?.length && <div className="mt-4 font-bold">文件详情</div>}
-        {files?.map(({ file, uploaded, error, operation }, index) => (
+        {!!files.length && <div className="mt-4 font-bold">文件详情</div>}
+        {files.map(({ file, uploaded, error, operation }, index) => (
           <Callout
             className="mt-2"
             title={file.name}

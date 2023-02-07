@@ -1,7 +1,7 @@
 import { isString } from '@sentry/utils'
 
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
-import { isFinite, isObject } from 'lodash-es'
+import { isFinite, isPlainObject } from 'lodash-es'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
@@ -25,7 +25,7 @@ export async function parseOperationFile(file: File): Promise<object> {
 
     const json = JSON.parse(fileText)
 
-    if (!isObject(json)) {
+    if (!isPlainObject(json)) {
       throw new Error('不是有效的对象')
     }
 
@@ -128,7 +128,9 @@ export function validateOperation(
       )
       ajvLocalizeZh(copilotSchemaValidator.errors)
       throw new Error(
-        copilotSchemaValidator.errorsText(copilotSchemaValidator.errors),
+        copilotSchemaValidator.errorsText(copilotSchemaValidator.errors, {
+          separator: '；',
+        }),
       )
     }
   } catch (e) {
