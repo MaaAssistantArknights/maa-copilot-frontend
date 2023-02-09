@@ -1,12 +1,12 @@
-export const shortCodeProtocol = 'maa://'
+export const shortCodeScheme = 'maa://'
 
 export function toShortCode(id: string) {
-  return shortCodeProtocol + id
+  return shortCodeScheme + id
 }
 
 export function parseShortCode(code: string) {
-  if (code.startsWith(shortCodeProtocol)) {
-    return code.slice(shortCodeProtocol.length)
+  if (code.startsWith(shortCodeScheme)) {
+    return code.slice(shortCodeScheme.length)
   }
   return null
 }
