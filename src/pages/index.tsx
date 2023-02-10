@@ -1,9 +1,8 @@
-import { Icon as BlueprintIcon, Callout, Card } from '@blueprintjs/core'
+import { Icon as BlueprintIcon, Card } from '@blueprintjs/core'
 import simpleIconsGitHub from '@iconify/icons-simple-icons/github'
 import simpleIconsQQ from '@iconify/icons-simple-icons/tencentqq'
 import { Icon as IconifyIcon } from '@iconify/react'
 
-import Linkify from 'linkify-react'
 import { ComponentType } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
@@ -11,6 +10,8 @@ import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { Operations } from 'components/Operations'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
+
+import { AnnPanel } from '../components/announcement/AnnPanel'
 
 const SOCIAL_LINKS = [
   {
@@ -60,27 +61,6 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   return (
     <div className="flex flex-col md:flex-row px-8 mt-8 container mx-auto">
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8">
-        <Callout
-          title="2022/12/22 公告"
-          className="mb-4 [&_p]:mb-4"
-          intent="primary"
-        >
-          <Linkify options={{ target: '_blank' }}>
-            <p>
-              服务器数据已不幸丢失，目前作业站后端正在重写，前端也在缺人中，欢迎加入我们！
-            </p>
-            <p>
-              后端（JDK17，Gradle，MongoDB，SpringBoot）：
-              <br />
-              https://github.com/MaaAssistantArknights/MaaBackendCenter
-            </p>
-            <p>
-              前端（TypeScript，React，Blueprint UI，SWR）：
-              <br />
-              https://github.com/MaaAssistantArknights/maa-copilot-frontend
-            </p>
-          </Linkify>
-        </Callout>
         <Operations />
       </div>
       <div className="md:w-1/3 order-1 md:order-2">
@@ -93,6 +73,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
 
           <OperationUploaderLauncher />
         </Card>
+
+        <AnnPanel className="mb-4" />
 
         <div className="flex flex-wrap leading-relaxed mb-8">
           {SOCIAL_LINKS.map((link) => (
