@@ -16,8 +16,8 @@ body,
 
 .platform--windows ::-webkit-scrollbar {
   background-color: transparent;
-  width: 3px;
-  height: 3px;
+  width: 6px;
+  height: 6px;
 }
 
 .platform--windows ::-webkit-scrollbar-track {
@@ -26,7 +26,7 @@ body,
 
 .platform--windows ::-webkit-scrollbar-thumb {
   background-color: #babac0;
-  border-radius: 1.5px;
+  border-radius: 3px;
 }
 
 *:focus {

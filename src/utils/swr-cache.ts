@@ -1,5 +1,5 @@
-import { useFirstMountState } from 'react-use'
-import { State, useSWRConfig } from 'swr'
+import { useEffect } from 'react'
+import { Middleware, SWRHook, State, useSWRConfig } from 'swr'
 
 type SwrCache = [string, State][]
 
@@ -7,25 +7,70 @@ const STORAGE_KEY = 'copilot-swr'
 
 const cachedKeys = new Set<string>()
 
+// keys that have been validated (even if no validator is provided for it)
+const validatedKeys = new Set<string>()
+
 /**
+ * @param key - **the key is not supposed to be dynamic.**
  * @param validate - validates the cached state, if it returns false, the state will be discarded.
+ * This function will only run once for each key (because we want it to validate cached data, not fresh data).
  */
-export function enableCache(key: string, validate?: (state: State) => boolean) {
+export function useSWRCache(
+  key: string,
+  validate?: (state: State<unknown>) => boolean,
+) {
   cachedKeys.add(key)
 
-  const isFirstMount = useFirstMountState()
   const { cache, mutate } = useSWRConfig()
 
-  // only validate cache on first mount, meaning that the validator
-  // will only run on cached data, not on fresh data
-  if (isFirstMount && validate) {
-    const state = cache.get(key)
+  useEffect(() => {
+    if (!validatedKeys.has(key)) {
+      validatedKeys.add(key)
 
-    if (state && !validate(state)) {
-      mutate(key, undefined, { revalidate: false })
+      if (validate) {
+        const state = cache.get(key)
+
+        if (state) {
+          let isValid: boolean
+
+          try {
+            isValid = validate(state)
+          } catch (e) {
+            isValid = false
+            console.warn(e)
+          }
+
+          if (!isValid) {
+            console.log('[SWR cache]: invalid cache, discarding:', key)
+
+            mutate(key, undefined, { revalidate: false })
+          }
+        }
+      }
     }
-  }
+  }, [])
 }
+
+/**
+ * The only thing this middleware does is to borrow the <SWRConfig>'s lifecycle
+ * and clear validatedKeys when it unmounts (happens during hot reload).
+ * It should be used in the topmost <SWRConfig>.
+ */
+export const swrCacheMiddleware: Middleware =
+  (useSWRNext: SWRHook) => (key, fetcher, config) => {
+    useEffect(
+      () => () => {
+        validatedKeys.clear()
+
+        // however, do not clear cachedKeys!!
+        // because this unmount callback also runs before the page unloads,
+        // and if there's no keys, no cache will be persisted.
+      },
+      [],
+    )
+
+    return useSWRNext(key, fetcher, config)
+  }
 
 // https://swr.vercel.app/docs/advanced/cache#localstorage-based-persistent-cache
 export function localStorageProvider() {
