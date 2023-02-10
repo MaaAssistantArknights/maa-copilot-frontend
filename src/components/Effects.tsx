@@ -72,7 +72,7 @@ export const Effects: FC = () => {
           }
 
           if (shouldLogout) {
-            // setting the state synchronously may cause problems (not really sure), so we add a small delay
+            // FIXME: setting the state synchronously may cause problems (not really sure), so we add a small delay for a temporary hack
             await new Promise((resolve) => setTimeout(resolve, 50))
 
             setAuth({})
