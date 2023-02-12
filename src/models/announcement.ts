@@ -28,16 +28,16 @@ export function parseAnnouncement(raw: string): Announcement {
   // but that can be dangerous, so we simply remove the comments
   raw = raw.replace(/<!--[\s\S]*?-->/g, '')
 
-  // a section starts with an arbitrary level of heading
+  // a section starts with a heading of arbitrary level
   const sectionSeparator = /^(#+)/m
 
   // will be like: ["###", "Section 1\nContent", "###", "Section 2\nContent", ...]
-  const slices = raw
+  const sectionSlices = raw
     .split(sectionSeparator)
-    // ignore everything before the first heading, which is typically empty lines
+    // ignore everything before the first section
     .slice(1)
 
-  const rawSections = chunk(slices, 2).map(
+  const rawSections = chunk(sectionSlices, 2).map(
     ([headingMarks, rest]) => headingMarks + rest,
   )
 
@@ -46,13 +46,21 @@ export function parseAnnouncement(raw: string): Announcement {
       try {
         const emptyLinesMatcher = /^(\s*\n)+/m
         const slices = rawSection.split(emptyLinesMatcher)
-        const segments = compact(slices.map((s) => s.trim())) // remove the matched empty lines
+        const segments = compact(slices.map((s) => s.trim())) // filter out the matched empty lines
 
-        const title = segments[0]?.replace(/^#+/, '').trim() || 'No title'
-        const meta = segments[1] ? parseSectionMeta(segments[1]) : undefined
+        const title = segments[0]?.replace(/^#+/, '').trim() || '公告'
 
-        if (meta) {
+        let meta: AnnouncementSectionMeta | undefined
+        const jsonBlockStart = '```json'
+        const jsonBlockEnd = '```'
+
+        if (segments[1]?.startsWith(jsonBlockStart)) {
+          // remove the block to hide it from view
           rawSection = rawSection.replace(segments[1], '')
+
+          meta = parseSectionMeta(
+            segments[1].slice(jsonBlockStart.length, -jsonBlockEnd.length),
+          )
         }
 
         return {
@@ -73,29 +81,22 @@ export function parseAnnouncement(raw: string): Announcement {
   }
 }
 
-function parseSectionMeta(segment: string) {
-  const jsonBlockStart = '```json'
-  const jsonBlockEnd = '```'
-
+function parseSectionMeta(json: string) {
   try {
-    if (segment.startsWith(jsonBlockStart)) {
-      const rawMeta = JSON.parse(
-        segment.slice(jsonBlockStart.length, -jsonBlockEnd.length),
-      ) as AnnouncementSectionMetaRaw
+    const rawMeta = JSON.parse(json) as AnnouncementSectionMetaRaw
 
-      let time: Date
+    let time: Date
 
-      try {
-        time = new Date(rawMeta.time || 0)
-      } catch (e) {
-        time = new Date(0)
-        console.warn(e)
-      }
+    try {
+      time = new Date(rawMeta.time || 0)
+    } catch (e) {
+      time = new Date(0)
+      console.warn(e)
+    }
 
-      return {
-        time,
-        level: rawMeta.level || 'info',
-      }
+    return {
+      time,
+      level: rawMeta.level || 'info',
     }
   } catch (e) {
     console.warn(e)

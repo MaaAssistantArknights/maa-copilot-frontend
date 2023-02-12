@@ -8,6 +8,7 @@ import {
   AnnouncementSection,
   parseAnnouncement,
 } from '../../models/announcement'
+import { formatError } from '../../utils/error'
 import { useLazyStorage } from '../../utils/useLazyStorage'
 import { CardTitle } from '../CardTitle'
 import { AnnDialog } from './AnnDialog'
@@ -17,7 +18,7 @@ interface AnnPanelProps {
 }
 
 export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
-  const { data } = useAnnouncement()
+  const { data, error } = useAnnouncement()
   const announcement = useMemo(
     () => (data ? parseAnnouncement(data) : undefined),
     [data],
@@ -57,11 +58,18 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
         <CardTitle icon="info-sign">公告</CardTitle>
 
         <div className="flex">
-          <ul className="grow list-disc pl-4">
-            {announcement?.sections.slice(0, 3).map(({ title }) => (
-              <li key={title}>{title}</li>
-            ))}
-          </ul>
+          {announcement && (
+            <ul className="grow list-disc pl-4">
+              {announcement?.sections.slice(0, 3).map(({ title }) => (
+                <li key={title}>{title}</li>
+              ))}
+            </ul>
+          )}
+          {!announcement && error && (
+            <div className="grow text-red-500">
+              公告加载失败：{formatError(error)}
+            </div>
+          )}
           <Icon className="self-end" icon="more" size={14} />
         </div>
       </Card>

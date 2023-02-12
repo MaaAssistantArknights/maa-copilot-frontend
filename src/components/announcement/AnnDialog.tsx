@@ -25,7 +25,7 @@ interface AnnDialogProps extends DialogProps {
 export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
   const content = sections?.map(({ raw }) => raw).join('\n\n')
 
-  // attach meta to heading node
+  // attach each section's meta to its heading node
   const attachMetaPlugin = () => {
     // https://github.com/remarkjs/remark#what-is-this
     // the tree's type definition is not exported, if you want to know, log it to console
@@ -92,7 +92,7 @@ export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
             {content || ''}
           </ReactMarkdown>
         ) : (
-          <NonIdealState icon="help" title="没有公告" />
+          <NonIdealState icon="help" title="暂无公告" />
         )}
       </DialogBody>
       <DialogFooter

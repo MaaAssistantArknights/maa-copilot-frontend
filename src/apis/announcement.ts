@@ -15,7 +15,17 @@ export const announcementBaseURL = isMock
 export function useAnnouncement() {
   return useSWR<string>(
     announcementURL,
-    (url) => fetch(url).then((res) => res.text()),
+    (url) =>
+      fetch(url)
+        .then((res) => res.text())
+        .catch((e) => {
+          if ((e as Error).message === 'Failed to fetch') {
+            console.warn(e)
+            throw new Error('网络错误')
+          }
+
+          throw e
+        }),
     {
       refreshInterval: 1000 * 60 * 60,
       suspense: false,
