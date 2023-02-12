@@ -83,6 +83,6 @@ export const useOperations = ({
   return { operations, size, setSize, isValidating, isReachingEnd }
 }
 
-export const useOperation = (id: string | undefined) => {
+export const useOperation = (id: Operation['id'] | undefined) => {
   return useSWR<Response<Operation>>(id ? `/copilot/get/${id}` : null)
 }

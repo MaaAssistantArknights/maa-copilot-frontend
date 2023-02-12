@@ -6,7 +6,7 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Operation {
-  id: string
+  id: string | number
   content: string
   minimumRequired: string
   uploadTime: string

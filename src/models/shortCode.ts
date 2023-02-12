@@ -1,6 +1,8 @@
+import { Operation } from './operation'
+
 export const shortCodeScheme = 'maa://'
 
-export function toShortCode(id: string) {
+export function toShortCode(id: Operation['id']) {
   return shortCodeScheme + id
 }
 

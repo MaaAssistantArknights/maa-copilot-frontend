@@ -105,7 +105,7 @@ const ManageMenu: FC<{
 }
 
 export const OperationViewer: ComponentType<{
-  operationId: string
+  operationId: Operation['id']
   onCloseDrawer: () => void
 }> = withSuspensable(
   ({ operationId, onCloseDrawer }) => {
