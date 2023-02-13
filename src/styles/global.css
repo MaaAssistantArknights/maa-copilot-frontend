@@ -32,3 +32,10 @@ body,
 *:focus {
   outline: none;
 }
+
+.markdown-body {
+  ul,
+  ol {
+    list-style: initial;
+  }
+}

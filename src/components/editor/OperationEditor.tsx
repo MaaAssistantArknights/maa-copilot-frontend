@@ -65,11 +65,7 @@ export const StageNameInput: FC<{
 
   // we are going to manually handle loading state so we could show the skeleton state easily,
   // without swapping the actual element.
-  const {
-    data,
-    error: _levelError,
-    isValidating,
-  } = useLevels({ suspense: false })
+  const { data, error: _levelError, isValidating } = useLevels()
   const loading = isValidating && !data
   const levelError =
     _levelError && (data ? '更新关卡失败：' : '') + formatError(_levelError)
@@ -205,7 +201,7 @@ const DifficultyPicker: FC<{
   })
 
   const stageName = useWatch({ control, name: 'stageName' })
-  const levels = useLevels({ suspense: false }).data?.data || []
+  const levels = useLevels().data?.data || []
   const invalid = useMemo(
     () => !hasHardMode(levels, stageName),
     [levels, stageName],
@@ -266,7 +262,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   },
   toolbar,
 }) => {
-  const levels = useLevels({ suspense: false }).data?.data || []
+  const levels = useLevels().data?.data || []
 
   const stageName = watch('stageName')
 

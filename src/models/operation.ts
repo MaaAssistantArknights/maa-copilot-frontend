@@ -6,16 +6,12 @@ export interface PaginatedResponse<T> {
 }
 
 export interface Operation {
-  id: string
+  id: string | number
   content: string
-  minimumRequired: string
   uploadTime: string
-  title: string
-  detail: string
   uploader: string
   views: number
   hotScore: number
-  level?: Level
   available: boolean
   ratingLevel: OpRatingLevel
   ratingRatio: number

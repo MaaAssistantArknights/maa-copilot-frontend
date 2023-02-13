@@ -30,7 +30,7 @@ export const OperationCard = ({
   operation: OperationListItem
   operationDoc: CopilotDocV1.Operation
 }) => {
-  const levels = useLevels({ suspense: false })?.data?.data || []
+  const levels = useLevels()?.data?.data || []
   const [drawerOpen, setDrawerOpen] = useState(false)
   return (
     <>
@@ -53,7 +53,7 @@ export const OperationCard = ({
       >
         <div className="flex items-start">
           <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
-            {operation.title}
+            {operationDoc.doc.title}
           </H4>
           <div className="flex-1" />
           <div className="flex flex-col items-end">
@@ -102,7 +102,6 @@ export const OperationCard = ({
         <H5 className="flex items-center text-slate-900 -mt-3">
           <EDifficultyLevel
             level={
-              operation.level ||
               findLevelByStageName(levels, operationDoc.stageName) ||
               createCustomLevel(operationDoc.stageName)
             }
@@ -112,7 +111,7 @@ export const OperationCard = ({
         <div className="flex">
           <div className="text-gray-700 leading-normal w-1/2">
             {/* <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div> */}
-            <Paragraphs content={operation.detail} linkify />
+            <Paragraphs content={operationDoc.doc.details} linkify />
           </div>
           <div className="w-1/2 ml-4">
             <div className="text-sm text-zinc-600 mb-2 font-bold">

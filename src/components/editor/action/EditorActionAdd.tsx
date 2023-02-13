@@ -78,7 +78,7 @@ export const EditorActionAdd = ({
   const type = useWatch({ control, name: 'type' })
   const stageName = useWatch({ control: operationControl, name: 'stageName' })
 
-  const levels = useLevels({ suspense: false }).data?.data || []
+  const levels = useLevels().data?.data || []
   const level = useMemo(
     () => findLevelByStageName(levels, stageName),
     [levels, stageName],

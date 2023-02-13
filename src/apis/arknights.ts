@@ -16,7 +16,7 @@ export const useVersion = () => {
   })
 }
 
-export const useLevels = ({ suspense = true }: { suspense?: boolean } = {}) => {
+export const useLevels = ({ suspense }: { suspense?: boolean } = {}) => {
   const url = '/arknights/level'
   type LevelResponse = Response<Level[]>
 

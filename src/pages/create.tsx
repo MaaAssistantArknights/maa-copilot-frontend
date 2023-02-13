@@ -2,7 +2,7 @@ import { Button } from '@blueprintjs/core'
 
 import { isEqual } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
-import { DeepPartial, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
@@ -53,7 +53,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
     const isNew = !id
     const submitAction = isNew ? '发布' : '更新'
 
-    const apiOperation = useOperation(id).data?.data
+    const apiOperation = useOperation({ id, suspense: true }).data?.data
 
     const form = useForm<CopilotDocV1.Operation>({
       // set form values by fetched data, or an empty operation by default

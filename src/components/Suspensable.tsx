@@ -35,7 +35,7 @@ export const Suspensable: FCC<SuspensableProps> = ({
           <NonIdealState
             icon="issue"
             title="加载失败"
-            description={fetcher && '数据加载失败，请尝试重试'}
+            description={fetcher && '数据加载失败，请尝试'}
             action={
               fetcher && (
                 <Button

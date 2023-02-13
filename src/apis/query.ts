@@ -9,7 +9,7 @@ import type {
   PaginatedResponse,
 } from 'models/operation'
 
-import { parseShortCode, shortCodeProtocol } from '../models/shortCode'
+import { parseShortCode, shortCodeScheme } from '../models/shortCode'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
@@ -19,6 +19,7 @@ export interface UseOperationsParams {
   levelKeyword?: string
   operator?: string
   byMyself?: boolean
+  suspense?: boolean
 }
 
 export const useOperations = ({
@@ -27,8 +28,9 @@ export const useOperations = ({
   levelKeyword,
   operator,
   byMyself,
+  suspense,
 }: UseOperationsParams) => {
-  const isIdQuery = document?.startsWith(shortCodeProtocol)
+  const isIdQuery = document?.startsWith(shortCodeScheme)
 
   const {
     data: listData,
@@ -36,7 +38,7 @@ export const useOperations = ({
     setSize,
     isValidating,
   } = useSWRInfinite<Response<PaginatedResponse<OperationListItem>>>(
-    (_pageIndex, previousPageData) => {
+    (pageIndex, previousPageData) => {
       if (isIdQuery) {
         return null
       }
@@ -45,10 +47,7 @@ export const useOperations = ({
         return null // reached the end
       }
       const searchParams = new URLSearchParams('?desc=true&limit=50')
-      searchParams.set(
-        'page',
-        ((previousPageData?.data?.page || 0) + 1).toString(),
-      )
+      searchParams.set('page', (pageIndex + 1).toString())
       searchParams.set('order_by', orderBy)
       if (document) {
         searchParams.set('document', document)
@@ -65,6 +64,10 @@ export const useOperations = ({
 
       return `/copilot/query?${searchParams.toString()}`
     },
+    {
+      suspense,
+      focusThrottleInterval: 1000 * 60 * 30,
+    },
   )
 
   const { data: singleData } = useSWR<Response<Operation>>(
@@ -80,11 +83,18 @@ export const useOperations = ({
 
   useEffect(() => {
     setSize(1)
-  }, [orderBy, document, levelKeyword, operator])
+  }, [orderBy, document, levelKeyword, operator, isIdQuery])
 
   return { operations, size, setSize, isValidating, isReachingEnd }
 }
 
-export const useOperation = (id: string | undefined) => {
-  return useSWR<Response<Operation>>(id ? `/copilot/get/${id}` : null)
+export interface UseOperationParams {
+  id?: Operation['id']
+  suspense?: boolean
+}
+
+export const useOperation = ({ id, suspense }: UseOperationParams) => {
+  return useSWR<Response<Operation>>(id ? `/copilot/get/${id}` : null, {
+    suspense,
+  })
 }

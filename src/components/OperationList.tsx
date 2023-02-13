@@ -13,7 +13,7 @@ export const OperationList: ComponentType<UseOperationsParams> =
   withSuspensable(
     (props) => {
       const { operations, size, setSize, isValidating, isReachingEnd } =
-        useOperations(props)
+        useOperations({ ...props, suspense: true })
 
       const docCache = useMemo(
         () => new WeakMap<OperationListItem, CopilotDocV1.Operation>(),
