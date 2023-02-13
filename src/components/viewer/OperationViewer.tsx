@@ -245,18 +245,17 @@ export const OperationViewer: ComponentType<{
         }
       >
         <div className="h-full overflow-auto py-4 px-8 pt-8">
-          <H3>{operation?.title}</H3>
+          <H3>{operationDoc.doc.title}</H3>
 
           <div className="grid grid-rows-1 grid-cols-3 gap-8">
             <div className="flex flex-col">
-              <Paragraphs content={operation?.detail} linkify />
+              <Paragraphs content={operationDoc.doc.details} linkify />
             </div>
 
             <div className="flex flex-col">
               <FactItem title="作战">
                 <EDifficultyLevel
                   level={
-                    operation.level ||
                     findLevelByStageName(levels, operationDoc.stageName) ||
                     createCustomLevel(operationDoc.stageName)
                   }

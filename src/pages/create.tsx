@@ -2,7 +2,7 @@ import { Button } from '@blueprintjs/core'
 
 import { isEqual } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
-import { DeepPartial, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
