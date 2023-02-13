@@ -65,13 +65,7 @@ export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
   }
 
   return (
-    <Dialog
-      className=""
-      title="公告"
-      icon="info-sign"
-      canOutsideClickClose={false}
-      {...dialogProps}
-    >
+    <Dialog className="" title="公告" icon="info-sign" {...dialogProps}>
       <DialogBody className="">
         {content ? (
           <ReactMarkdown

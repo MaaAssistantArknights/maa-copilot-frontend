@@ -30,7 +30,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
   const [displaySections, setDisplaySections] =
     useState<AnnouncementSection[]>()
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState<{ yes: boolean; manually: boolean }>()
 
   useEffect(() => {
     const freshSections = announcement?.sections.filter(
@@ -39,7 +39,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
     )
 
     if (freshSections?.length) {
-      setIsOpen(true)
+      setIsOpen({ yes: true, manually: false })
       setDisplaySections(freshSections)
       setLastNoticed(Date.now())
     }
@@ -51,7 +51,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
         interactive
         className={clsx(className)}
         onClick={() => {
-          setIsOpen(true)
+          setIsOpen({ yes: true, manually: true })
           setDisplaySections(announcement?.sections)
         }}
       >
@@ -75,8 +75,9 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
       </Card>
       <AnnDialog
         sections={displaySections}
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
+        isOpen={!!isOpen?.yes}
+        canOutsideClickClose={isOpen?.manually}
+        onClose={() => setIsOpen(undefined)}
       />
     </>
   )
