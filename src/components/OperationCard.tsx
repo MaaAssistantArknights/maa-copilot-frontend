@@ -30,7 +30,7 @@ export const OperationCard = ({
   operation: OperationListItem
   operationDoc: CopilotDocV1.Operation
 }) => {
-  const levels = useLevels({ suspense: false })?.data?.data || []
+  const levels = useLevels()?.data?.data || []
   const [drawerOpen, setDrawerOpen] = useState(false)
   return (
     <>

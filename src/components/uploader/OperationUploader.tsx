@@ -53,7 +53,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
 
   const isUploadable = !nonUploadableReason
 
-  const { data: levelsData, error: levelError } = useLevels()
+  const { data: levelsData, error: levelError } = useLevels({ suspense: true })
   const levels = levelsData?.data
 
   // make eslint happy: we got Suspense out there

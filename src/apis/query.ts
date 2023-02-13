@@ -19,6 +19,7 @@ export interface UseOperationsParams {
   levelKeyword?: string
   operator?: string
   byMyself?: boolean
+  suspense?: boolean
 }
 
 export const useOperations = ({
@@ -27,6 +28,7 @@ export const useOperations = ({
   levelKeyword,
   operator,
   byMyself,
+  suspense,
 }: UseOperationsParams) => {
   const isIdQuery = document?.startsWith(shortCodeScheme)
 
@@ -62,7 +64,10 @@ export const useOperations = ({
 
       return `/copilot/query?${searchParams.toString()}`
     },
-    { focusThrottleInterval: 1000 * 60 * 30 },
+    {
+      suspense,
+      focusThrottleInterval: 1000 * 60 * 30,
+    },
   )
 
   const { data: singleData } = useSWR<Response<Operation>>(
@@ -83,6 +88,13 @@ export const useOperations = ({
   return { operations, size, setSize, isValidating, isReachingEnd }
 }
 
-export const useOperation = (id: Operation['id'] | undefined) => {
-  return useSWR<Response<Operation>>(id ? `/copilot/get/${id}` : null)
+export interface UseOperationParams {
+  id?: Operation['id']
+  suspense?: boolean
+}
+
+export const useOperation = ({ id, suspense }: UseOperationParams) => {
+  return useSWR<Response<Operation>>(id ? `/copilot/get/${id}` : null, {
+    suspense,
+  })
 }

@@ -53,7 +53,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
     const isNew = !id
     const submitAction = isNew ? '发布' : '更新'
 
-    const apiOperation = useOperation(id).data?.data
+    const apiOperation = useOperation({ id, suspense: true }).data?.data
 
     const form = useForm<CopilotDocV1.Operation>({
       // set form values by fetched data, or an empty operation by default

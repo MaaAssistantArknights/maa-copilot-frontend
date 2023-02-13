@@ -109,10 +109,13 @@ export const OperationViewer: ComponentType<{
   onCloseDrawer: () => void
 }> = withSuspensable(
   ({ operationId, onCloseDrawer }) => {
-    const { data, error, mutate } = useOperation(operationId)
+    const { data, error, mutate } = useOperation({
+      id: operationId,
+      suspense: true,
+    })
     const operation = data?.data
 
-    const levels = useLevels({ suspense: false })?.data?.data || []
+    const levels = useLevels()?.data?.data || []
 
     const [auth] = useAtom(authAtom)
     const authed = !!auth.token

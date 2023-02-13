@@ -28,7 +28,6 @@ export function useAnnouncement() {
         }),
     {
       refreshInterval: 1000 * 60 * 60,
-      suspense: false,
     },
   )
 }

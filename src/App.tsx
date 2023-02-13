@@ -16,7 +16,6 @@ export const App: FCC = ({ children }) => {
         value={{
           fetcher: request,
           provider: localStorageProvider,
-          suspense: true,
           focusThrottleInterval: 1000 * 60,
           errorRetryInterval: 1000 * 3,
           errorRetryCount: 3,
