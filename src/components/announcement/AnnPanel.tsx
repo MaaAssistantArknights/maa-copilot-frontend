@@ -25,7 +25,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
   )
   const [lastNoticed, setLastNoticed] = useLazyStorage(
     'copilot-last-noticed',
-    Date.now(),
+    0,
   )
   const [displaySections, setDisplaySections] =
     useState<AnnouncementSection[]>()

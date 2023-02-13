@@ -6,7 +6,7 @@ import { useLatest } from 'react-use'
  *
  * @param storageKey
  * @param defaultValue
- * @param reviver - a function to transform the saved value on init, if not provided, the default value will be used
+ * @param reviver - an optional function to transform the saved value on init.
  */
 export function useLazyStorage<T>(
   storageKey: string,
@@ -22,7 +22,9 @@ export function useLazyStorage<T>(
       console.warn(e)
     }
 
-    return reviver ? reviver(savedValue, defaultValue) : defaultValue
+    return reviver
+      ? reviver(savedValue, defaultValue)
+      : savedValue ?? defaultValue
   })
 
   const latestValue = useLatest(value)
