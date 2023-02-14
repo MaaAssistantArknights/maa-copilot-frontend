@@ -99,9 +99,6 @@ export const EditorOperatorName = <T extends FieldValues>({
           selected={active}
         />
       )}
-      popoverContentProps={{
-        className: 'max-h-64 overflow-auto',
-      }}
       noResults={<MenuItem disabled text={`没有匹配的${entityName}`} />}
       inputProps={{
         placeholder: `${entityName}名`,
