@@ -130,7 +130,7 @@ const OperatorTags = ({
 }: {
   operationDoc: CopilotDocV1.Operation
 }) => {
-  return opers?.length && groups?.length ? (
+  return opers?.length || groups?.length ? (
     <div>
       {opers?.map(({ name, skill }, index) => (
         <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
