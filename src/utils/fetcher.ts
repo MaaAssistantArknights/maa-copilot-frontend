@@ -62,7 +62,10 @@ export const request = <T extends Response<unknown>>(
 
           let message: string
 
-          if (res.response.status === 401 || res.data.statusCode === 401) {
+          if (
+            res.response.status === 401 ||
+            res.data.message.includes('Full authentication is required')
+          ) {
             if (apiToken) {
               message = '登录已失效，请重新登录'
             } else {
