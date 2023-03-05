@@ -13,7 +13,7 @@ export interface Operation {
   views: number
   hotScore: number
   available: boolean
-  ratingLevel: OpRatingLevel
+  ratingLevel: number // integer in [0, 10]
   ratingRatio: number
   ratingType: OpRatingType
   isNotEnoughRating: boolean
@@ -29,18 +29,6 @@ export interface Level {
   stageId: string
   width: number
   height: number
-}
-
-export enum OpRatingLevel {
-  OverwhelminglyPositive = 'OverwhelminglyPositive',
-  VeryPositive = 'VeryPositive',
-  Positive = 'Positive',
-  MostlyPositive = 'MostlyPositive',
-  Mixed = 'Mixed',
-  MostlyNegative = 'MostlyNegative',
-  Negative = 'Negative',
-  VeryNegative = 'VeryNegative',
-  OverwhelminglyNegative = 'OverwhelminglyNegative',
 }
 
 export enum OpRatingType {

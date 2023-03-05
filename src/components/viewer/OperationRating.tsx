@@ -4,8 +4,8 @@ import clsx from 'clsx'
 import { FC } from 'react'
 import Rating from 'react-rating'
 
-import { OpRatingLevelString } from 'models/enums'
 import { Operation } from 'models/operation'
+import { ratingLevelToString } from 'models/rating'
 
 export const OperationRating: FC<{
   operation: Pick<
@@ -67,7 +67,7 @@ export const OperationRating: FC<{
           ? layout === 'vertical'
             ? '还没有足够的评分'
             : '评分不足'
-          : OpRatingLevelString[operation.ratingLevel]}
+          : ratingLevelToString(operation.ratingLevel)}
       </div>
     </div>
   )
