@@ -9,6 +9,10 @@ import { FactItem } from 'components/FactItem'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { findActionType } from 'models/types'
 
+import {
+  findOperatorDirection,
+  findOperatorSkillUsage,
+} from '../../models/operator'
 import { formatDuration } from '../../utils/times'
 
 const actionKey = (action: CopilotDocV1.Action, index?: number) =>
@@ -67,7 +71,7 @@ export const ViewerActions: FC<{
                         title="切换技能用法至"
                         icon="swap-horizontal"
                       >
-                        {action.skillUsage}
+                        {findOperatorSkillUsage(action.skillUsage).title}
                       </FactItem>
                     )}
 
@@ -82,7 +86,9 @@ export const ViewerActions: FC<{
 
                     {'direction' in action && (
                       <FactItem dense title="朝向" icon="compass">
-                        <span className="font-mono">{action.direction}</span>
+                        <span className="font-mono">
+                          {findOperatorDirection(action.direction).title}
+                        </span>
                       </FactItem>
                     )}
                   </div>

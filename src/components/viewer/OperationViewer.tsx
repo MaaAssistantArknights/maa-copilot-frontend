@@ -18,7 +18,7 @@ import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
 import { useAtom } from 'jotai'
-import { merge } from 'lodash-es'
+import { noop } from 'lodash-es'
 import { ComponentType, FC, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -118,7 +118,6 @@ export const OperationViewer: ComponentType<{
     const levels = useLevels()?.data?.data || []
 
     const [auth] = useAtom(authAtom)
-    const authed = !!auth.token
 
     // make eslint happy: we got Suspense out there
     if (!operation) return null
@@ -129,15 +128,12 @@ export const OperationViewer: ComponentType<{
       )
     }
 
-    const handleCopyShortCode = () => {
-      if (!operation?.id) {
-        AppToaster.show({
-          message: '获取作业失败',
-          intent: 'danger',
-        })
-        return
-      }
+    const operationDoc = useMemo(
+      () => toCopilotOperation(operation),
+      [operation],
+    )
 
+    const handleCopyShortCode = () => {
       const shortCode = toShortCode(operation.id)
       navigator.clipboard.writeText(shortCode)
 
@@ -148,22 +144,15 @@ export const OperationViewer: ComponentType<{
     }
 
     const handleDownloadJSON = () => {
-      const content = operation?.content
-      if (!content) {
-        AppToaster.show({
-          message: '获取作业失败',
-          intent: 'danger',
-        })
-        return
-      }
-
-      const blob = new Blob([content], {
+      // pretty print the JSON
+      const json = JSON.stringify(operationDoc, null, 2)
+      const blob = new Blob([json], {
         type: 'application/json',
       })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `MAACopilot_作业${operation.id}.json`
+      link.download = `MAACopilot_${operationDoc.doc.title}.json`
       link.click()
       URL.revokeObjectURL(url)
 
@@ -174,34 +163,19 @@ export const OperationViewer: ComponentType<{
     }
 
     const handleRating = async (decision: OpRatingType) => {
-      if (!authed) {
-        AppToaster.show({
-          message: '请先登录',
-          intent: 'warning',
-        })
-        return
+      // cancel rating if already rated by the same type
+      if (decision === operation.ratingType) {
+        decision = OpRatingType.None
       }
 
-      mutate(async (val) => {
-        try {
-          return await wrapErrorMessage(
-            (e: NetworkError) => `提交评分失败：${e.message}`,
-            (async () => {
-              const response = await apiPostRating(operationId, decision)
-
-              return merge(val, response)
-            })(),
-          )
-        } catch (e) {
+      wrapErrorMessage(
+        (e: NetworkError) => `提交评分失败：${e.message}`,
+        mutate(async (val) => {
+          await apiPostRating(operationId, decision)
           return val
-        }
-      })
+        }),
+      ).catch(noop)
     }
-
-    const operationDoc = useMemo(
-      () => toCopilotOperation(operation),
-      [operation],
-    )
 
     return (
       <OperationDrawer
@@ -274,12 +248,12 @@ export const OperationViewer: ComponentType<{
                     <Button
                       icon="thumbs-up"
                       intent={
-                        operation?.ratingType === OpRatingType.Like
+                        operation.ratingType === OpRatingType.Like
                           ? 'success'
                           : 'none'
                       }
                       className="mr-2"
-                      active={operation?.ratingType === OpRatingType.Like}
+                      active={operation.ratingType === OpRatingType.Like}
                       onClick={() => handleRating(OpRatingType.Like)}
                     />
                   </Tooltip2>
@@ -287,11 +261,11 @@ export const OperationViewer: ComponentType<{
                     <Button
                       icon="thumbs-down"
                       intent={
-                        operation?.ratingType === OpRatingType.Dislike
+                        operation.ratingType === OpRatingType.Dislike
                           ? 'danger'
                           : 'none'
                       }
-                      active={operation?.ratingType === OpRatingType.Dislike}
+                      active={operation.ratingType === OpRatingType.Dislike}
                       onClick={() => handleRating(OpRatingType.Dislike)}
                     />
                   </Tooltip2>
