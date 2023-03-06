@@ -18,7 +18,7 @@ import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
 import { useAtom } from 'jotai'
-import { merge } from 'lodash-es'
+import { noop } from 'lodash-es'
 import { ComponentType, FC, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -182,20 +182,13 @@ export const OperationViewer: ComponentType<{
         return
       }
 
-      mutate(async (val) => {
-        try {
-          return await wrapErrorMessage(
-            (e: NetworkError) => `提交评分失败：${e.message}`,
-            (async () => {
-              const response = await apiPostRating(operationId, decision)
-
-              return merge(val, response)
-            })(),
-          )
-        } catch (e) {
-          return val
-        }
-      })
+      wrapErrorMessage(
+        (e: NetworkError) => `提交评分失败：${e.message}`,
+        mutate(async () => {
+          await apiPostRating(operationId, decision)
+          return undefined
+        }),
+      ).catch(noop)
     }
 
     const operationDoc = useMemo(
