@@ -57,9 +57,6 @@ export const EditorOperatorGroupSelect = ({
           selected={active}
         />
       )}
-      popoverContentProps={{
-        className: 'max-h-64 overflow-auto',
-      }}
       noResults={<MenuItem disabled text={`没有匹配的干员组`} />}
       inputProps={{
         placeholder: `干员组名`,
