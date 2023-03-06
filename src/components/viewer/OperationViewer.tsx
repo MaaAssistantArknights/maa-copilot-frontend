@@ -118,7 +118,6 @@ export const OperationViewer: ComponentType<{
     const levels = useLevels()?.data?.data || []
 
     const [auth] = useAtom(authAtom)
-    const authed = !!auth.token
 
     // make eslint happy: we got Suspense out there
     if (!operation) return null
@@ -174,14 +173,6 @@ export const OperationViewer: ComponentType<{
     }
 
     const handleRating = async (decision: OpRatingType) => {
-      if (!authed) {
-        AppToaster.show({
-          message: '请先登录',
-          intent: 'warning',
-        })
-        return
-      }
-
       // cancel rating if already rated by the same type
       if (decision === operation.ratingType) {
         decision = OpRatingType.None
