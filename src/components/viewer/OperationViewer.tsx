@@ -182,6 +182,11 @@ export const OperationViewer: ComponentType<{
         return
       }
 
+      // cancel rating if already rated by the same type
+      if (decision === operation.ratingType) {
+        decision = OpRatingType.None
+      }
+
       wrapErrorMessage(
         (e: NetworkError) => `提交评分失败：${e.message}`,
         mutate(async () => {
@@ -267,12 +272,12 @@ export const OperationViewer: ComponentType<{
                     <Button
                       icon="thumbs-up"
                       intent={
-                        operation?.ratingType === OpRatingType.Like
+                        operation.ratingType === OpRatingType.Like
                           ? 'success'
                           : 'none'
                       }
                       className="mr-2"
-                      active={operation?.ratingType === OpRatingType.Like}
+                      active={operation.ratingType === OpRatingType.Like}
                       onClick={() => handleRating(OpRatingType.Like)}
                     />
                   </Tooltip2>
@@ -280,11 +285,11 @@ export const OperationViewer: ComponentType<{
                     <Button
                       icon="thumbs-down"
                       intent={
-                        operation?.ratingType === OpRatingType.Dislike
+                        operation.ratingType === OpRatingType.Dislike
                           ? 'danger'
                           : 'none'
                       }
-                      active={operation?.ratingType === OpRatingType.Dislike}
+                      active={operation.ratingType === OpRatingType.Dislike}
                       onClick={() => handleRating(OpRatingType.Dislike)}
                     />
                   </Tooltip2>

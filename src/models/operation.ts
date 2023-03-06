@@ -32,9 +32,9 @@ export interface Level {
 }
 
 export enum OpRatingType {
-  Like = 'Like',
-  Dislike = 'Dislike',
-  None = 'None',
+  None = 0,
+  Like = 1,
+  Dislike = 2,
 }
 
 export enum OpDifficulty {
