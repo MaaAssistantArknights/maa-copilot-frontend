@@ -180,9 +180,9 @@ export const OperationViewer: ComponentType<{
 
       wrapErrorMessage(
         (e: NetworkError) => `提交评分失败：${e.message}`,
-        mutate(async () => {
+        mutate(async (val) => {
           await apiPostRating(operationId, decision)
-          return undefined
+          return val
         }),
       ).catch(noop)
     }
