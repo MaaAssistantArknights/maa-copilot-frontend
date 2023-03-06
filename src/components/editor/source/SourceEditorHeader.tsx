@@ -37,9 +37,8 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
     let title: string | undefined
     try {
       title = (JSON.parse(text) as CopilotDocV1.Operation).doc.title
-      title = title.slice(0, 20)
     } catch (e) {
-      // ignored
+      console.warn(e)
     }
 
     const blob = new Blob([text], {

@@ -128,15 +128,12 @@ export const OperationViewer: ComponentType<{
       )
     }
 
-    const handleCopyShortCode = () => {
-      if (!operation?.id) {
-        AppToaster.show({
-          message: '获取作业失败',
-          intent: 'danger',
-        })
-        return
-      }
+    const operationDoc = useMemo(
+      () => toCopilotOperation(operation),
+      [operation],
+    )
 
+    const handleCopyShortCode = () => {
       const shortCode = toShortCode(operation.id)
       navigator.clipboard.writeText(shortCode)
 
@@ -147,22 +144,15 @@ export const OperationViewer: ComponentType<{
     }
 
     const handleDownloadJSON = () => {
-      const content = operation?.content
-      if (!content) {
-        AppToaster.show({
-          message: '获取作业失败',
-          intent: 'danger',
-        })
-        return
-      }
-
-      const blob = new Blob([content], {
+      // pretty print the JSON
+      const json = JSON.stringify(operationDoc, null, 2)
+      const blob = new Blob([json], {
         type: 'application/json',
       })
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = `MAACopilot_作业${operation.id}.json`
+      link.download = `MAACopilot_${operationDoc.doc.title}.json`
       link.click()
       URL.revokeObjectURL(url)
 
@@ -186,11 +176,6 @@ export const OperationViewer: ComponentType<{
         }),
       ).catch(noop)
     }
-
-    const operationDoc = useMemo(
-      () => toCopilotOperation(operation),
-      [operation],
-    )
 
     return (
       <OperationDrawer
