@@ -31,6 +31,7 @@ export const useLevels = ({ suspense }: { suspense?: boolean } = {}) => {
 
   const response = useSWR<LevelResponse>(url, {
     focusThrottleInterval: ONE_DAY,
+    dedupingInterval: ONE_DAY,
     suspense,
     fetcher: async (input: string, init?: RequestInit) => {
       let res: LevelResponse
