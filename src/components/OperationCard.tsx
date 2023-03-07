@@ -58,16 +58,14 @@ export const OperationCard = ({
           <div className="flex-1" />
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
-              {!operation.notEnoughRating && (
-                <div className="flex items-center mr-4">
-                  <Icon icon="star" className="mr-1.5" />
-                  <OperationRating
-                    className="text-sm"
-                    operation={operation}
-                    layout="horizontal"
-                  />
-                </div>
-              )}
+              <div className="flex items-center mr-4">
+                <Icon icon="star" className="mr-1.5" />
+                <OperationRating
+                  className="text-sm"
+                  operation={operation}
+                  layout="horizontal"
+                />
+              </div>
 
               <Tooltip2
                 className="mr-4"
