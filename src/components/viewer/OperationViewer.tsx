@@ -21,6 +21,7 @@ import { useAtom } from 'jotai'
 import { noop } from 'lodash-es'
 import { ComponentType, FC, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import snakecaseKeys from 'snakecase-keys'
 
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -145,7 +146,11 @@ export const OperationViewer: ComponentType<{
 
     const handleDownloadJSON = () => {
       // pretty print the JSON
-      const json = JSON.stringify(operationDoc, null, 2)
+      const json = JSON.stringify(
+        snakecaseKeys(operationDoc, { deep: true }),
+        null,
+        2,
+      )
       const blob = new Blob([json], {
         type: 'application/json',
       })
