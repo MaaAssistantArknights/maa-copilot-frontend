@@ -16,7 +16,7 @@ export interface Operation {
   ratingLevel: number // integer in [0, 10]
   ratingRatio: number
   ratingType: OpRatingType
-  isNotEnoughRating: boolean
+  notEnoughRating: boolean
   difficulty: OpDifficulty
 }
 

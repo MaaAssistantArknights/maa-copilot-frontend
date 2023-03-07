@@ -58,7 +58,7 @@ export const OperationCard = ({
           <div className="flex-1" />
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
-              {!operation.isNotEnoughRating && (
+              {!operation.notEnoughRating && (
                 <div className="flex items-center mr-4">
                   <Icon icon="star" className="mr-1.5" />
                   <OperationRating

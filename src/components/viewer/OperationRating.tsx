@@ -8,10 +8,7 @@ import { Operation } from 'models/operation'
 import { ratingLevelToString } from 'models/rating'
 
 export const OperationRating: FC<{
-  operation: Pick<
-    Operation,
-    'isNotEnoughRating' | 'ratingRatio' | 'ratingLevel'
-  >
+  operation: Pick<Operation, 'notEnoughRating' | 'ratingRatio' | 'ratingLevel'>
   layout?: 'horizontal' | 'vertical'
   className?: string
 }> = ({ operation, layout = 'vertical', className }) => {
@@ -24,7 +21,7 @@ export const OperationRating: FC<{
         className,
       )}
     >
-      {!operation.isNotEnoughRating && (
+      {!operation.notEnoughRating && (
         <Rating
           initialRating={operation.ratingRatio * 5}
           fullSymbol={
@@ -60,10 +57,10 @@ export const OperationRating: FC<{
       <div
         className={clsx(
           'text-sm text-zinc-500',
-          layout === 'horizontal' && !operation.isNotEnoughRating && 'mr-1.5',
+          layout === 'horizontal' && !operation.notEnoughRating && 'mr-1.5',
         )}
       >
-        {operation.isNotEnoughRating
+        {operation.notEnoughRating
           ? layout === 'vertical'
             ? '还没有足够的评分'
             : '评分不足'
