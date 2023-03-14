@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Middleware, SWRHook, State, useSWRConfig } from 'swr'
 
 type SwrCache = [string, State][]
@@ -11,6 +11,9 @@ const cachedKeys = new Set<string>()
 const validatedKeys = new Set<string>()
 
 /**
+ * This hook should be used before the corresponding useSWR() call,
+ * otherwise SWR will consider the fetched data stale and send a new request.
+ *
  * @param key - **the key is not supposed to be dynamic.**
  * @param validate - validates the cached state, if it returns false, the state will be discarded.
  * This function will only run once for each key (because we want it to validate cached data, not fresh data).
@@ -23,7 +26,14 @@ export function useSWRCache(
 
   const { cache, mutate } = useSWRConfig()
 
-  useEffect(() => {
+  const validated = useRef(false)
+
+  // Only run once. We cannot use useEffect() here because useSWR() fires request synchronously,
+  // if we mutate() the state in useEffect(), SWR will think the fetched data is stale,
+  // discard it, and attempt to fire a new request, which will be blocked if dedupingInterval is set.
+  if (!validated.current) {
+    validated.current = true
+
     if (!validatedKeys.has(key)) {
       validatedKeys.add(key)
 
@@ -48,7 +58,7 @@ export function useSWRCache(
         }
       }
     }
-  }, [])
+  }
 }
 
 /**
