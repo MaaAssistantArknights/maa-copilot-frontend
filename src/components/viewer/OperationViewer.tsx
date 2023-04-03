@@ -43,6 +43,7 @@ import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { toShortCode } from '../../models/shortCode'
+import { CommentArea } from './comment/CommentArea'
 
 const ManageMenu: FC<{
   operation: Operation
@@ -109,7 +110,7 @@ export const OperationViewer: ComponentType<{
   operationId: Operation['id']
   onCloseDrawer: () => void
 }> = withSuspensable(
-  ({ operationId, onCloseDrawer }) => {
+  function OperationViewer({ operationId, onCloseDrawer }) {
     const { data, error, mutate } = useOperation({
       id: operationId,
       suspense: true,
@@ -301,7 +302,7 @@ export const OperationViewer: ComponentType<{
 
           <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
-          <div className="grid grid-rows-1 grid-cols-3 h-[calc(100vh-6rem)] min-h-[calc(100vh-6rem)] gap-8">
+          <div className="grid grid-rows-1 grid-cols-3 gap-8">
             <div className="flex flex-col">
               <H4 className="mb-4">干员与干员组</H4>
               <H5 className="mb-4 text-slate-600">干员</H5>
@@ -354,6 +355,15 @@ export const OperationViewer: ComponentType<{
               <H4 className="mb-4">动作序列</H4>
 
               <ViewerActions actions={operationDoc.actions} />
+            </div>
+          </div>
+
+          <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
+
+          <div className="mb-6">
+            <div>
+              <H4 className="mb-4">评论 ({operation.commentsCount})</H4>
+              <CommentArea operationId={operation.id} />
             </div>
           </div>
         </div>
