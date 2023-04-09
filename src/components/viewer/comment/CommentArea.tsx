@@ -91,7 +91,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
             {comment.subCommentsInfos.map((sub) => (
               <SubComment
                 key={sub.commentId}
-                className="mt-6"
+                className="mt-2"
                 comment={sub}
                 fromComment={
                   sub.fromCommentId === comment.commentId
@@ -148,7 +148,7 @@ const MainComment = ({
   return (
     <Card className={clsx(className)}>
       <div className="">
-        <div className="mb-1 flex text-slate-500">
+        <div className="mb-2 flex text-slate-500">
           <div className="font-bold mr-2">{uploader}</div>
           <div>{formatDateTime(uploadTime)}</div>
         </div>
@@ -173,7 +173,7 @@ const SubComment = ({
 
   return (
     <div className={clsx(className, 'pl-8')}>
-      <div className="mb-1 flex text-slate-500">
+      <div className="mb-2 flex text-slate-500">
         <div className="font-bold mr-2">{uploader}</div>
         <div>{formatDateTime(uploadTime)}</div>
       </div>
@@ -236,14 +236,14 @@ const CommentActions = ({
       <div
         className={clsx(
           className,
-          'mt-2 -ml-1.5 flex items-center space-x-2 [&_*]:!text-slate-500',
+          'mt-2 -ml-1.5 flex items-center space-x-2 [&_*]:!text-slate-400',
         )}
       >
         <CommentRatingButtons comment={comment} />
         <Button
           minimal
           small
-          className="!font-normal"
+          className="!font-normal !text-[13px]"
           active={replyTo === comment}
           onClick={() => setReplyTo(replyTo !== comment ? comment : undefined)}
         >
@@ -253,7 +253,7 @@ const CommentActions = ({
           <Button
             minimal
             small
-            className="!font-normal"
+            className="!font-normal !text-[13px]"
             onClick={() => setDeleteDialogOpen(true)}
           >
             删除
