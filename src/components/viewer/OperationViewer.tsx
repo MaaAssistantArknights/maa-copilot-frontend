@@ -32,7 +32,6 @@ import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
-import { ViewerActions } from 'components/viewer/ViewerActions'
 import { OpRatingType, Operation } from 'models/operation'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
@@ -43,6 +42,7 @@ import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { toShortCode } from '../../models/shortCode'
+import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
 const ManageMenu: FC<{
@@ -354,7 +354,21 @@ export const OperationViewer: ComponentType<{
             <div className="col-span-2">
               <H4 className="mb-4">动作序列</H4>
 
-              <ViewerActions actions={operationDoc.actions} />
+              {operationDoc.actions.length ? (
+                <div className="flex flex-col pb-8">
+                  {operationDoc.actions.map((action, i) => (
+                    <ActionCard action={action} key={i} />
+                  ))}
+                </div>
+              ) : (
+                <NonIdealState
+                  className="my-2"
+                  title="暂无动作"
+                  description="作业并未定义任何动作"
+                  icon="slash"
+                  layout="horizontal"
+                />
+              )}
             </div>
           </div>
 
