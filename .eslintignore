@@ -1,1 +1,6 @@
 .eslintrc.js
+node_modules/
+build/
+*.md
+*.css
+*.less
