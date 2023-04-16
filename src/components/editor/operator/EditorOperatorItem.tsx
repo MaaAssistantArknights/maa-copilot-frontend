@@ -34,28 +34,30 @@ export const EditorOperatorItem = ({
   }技能：${skillUsage}`
 
   return (
-    <Card
-      elevation={Elevation.TWO}
-      className={clsx(
-        'flex items-start',
-        editing && 'bg-gray-100',
-        isDragging && 'opacity-30',
-      )}
-    >
-      <Icon
-        className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 mr-3 rounded-[1px]"
-        icon="drag-handle-vertical"
-        {...attributes}
-        {...listeners}
-      />
-      <OperatorAvatar id={id} size="large" />
-      <div className="ml-4 flex-grow">
-        <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
-        <div className="text-gray-400">{skill}</div>
-      </div>
+    <div className="card-container">
+      <Card
+        elevation={Elevation.TWO}
+        className={clsx(
+          'flex items-start',
+          editing && 'bg-gray-100',
+          isDragging && 'opacity-30',
+        )}
+      >
+        <Icon
+          className="cursor-grab active:cursor-grabbing p-1 -mt-1 -ml-2 mr-3 rounded-[1px]"
+          icon="drag-handle-vertical"
+          {...attributes}
+          {...listeners}
+        />
+        <OperatorAvatar id={id} size="large" />
+        <div className="ml-4 flex-grow">
+          <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
+          <div className="text-gray-400">{skill}</div>
+        </div>
 
-      <CardEditOption active={editing} onClick={onEdit} />
-      <CardDeleteOption className="-mr-3" onClick={onRemove} />
-    </Card>
+        <CardEditOption active={editing} onClick={onEdit} />
+        <CardDeleteOption className="-mr-3" onClick={onRemove} />
+      </Card>
+    </div>
   )
 }

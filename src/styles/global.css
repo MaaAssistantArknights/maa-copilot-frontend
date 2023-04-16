@@ -39,3 +39,30 @@ body,
     list-style: initial;
   }
 }
+
+
+
+.card-container {
+  height: 72px;
+  aspect-ratio: 5 / 1;
+}
+
+.group-card-container{
+  width: auto;
+}
+
+.EditorActionAdd-container{
+  position: relative;
+  overflow-y: auto;
+  height: 100vh;
+}
+.EditorActionAdd-element {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+}
+
+.action-list-container{
+  height: 100vh;
+  overflow-y: auto;
+}
