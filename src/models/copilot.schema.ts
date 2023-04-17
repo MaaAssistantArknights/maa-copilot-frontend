@@ -43,21 +43,21 @@ export namespace CopilotDocV1 {
     type: Type.Deploy
   }
 
-  export type ActionSkillOrRetreat = ActionBase &
+  export type ActionSkillOrRetreatOrBulletTime = ActionBase &
     (
       | {
           // location: any[]
           // should be
           location: [number, number]
           name?: string
-          type: Type.Skill | Type.Retreat
+          type: Type.Skill | Type.Retreat | Type.BulletTime
         }
       | {
           // location?: any[]
           // should be
           location?: [number, number]
           name: string
-          type: Type.Skill | Type.Retreat
+          type: Type.Skill | Type.Retreat | Type.BulletTime
         }
     )
 
@@ -77,7 +77,7 @@ export namespace CopilotDocV1 {
 
   export type Action =
     | ActionDeploy
-    | ActionSkillOrRetreat
+    | ActionSkillOrRetreatOrBulletTime
     | ActionSkillUsage
     | ActionUtil
     | ActionMoveCamera

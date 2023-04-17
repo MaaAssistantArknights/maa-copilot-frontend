@@ -153,10 +153,12 @@ export const EditorActionAdd = ({
         {(type === 'Deploy' ||
           type === 'Skill' ||
           type === 'Retreat' ||
-          type === 'SkillUsage') && (
+          type === 'SkillUsage' ||
+          type === 'BulletTime') && (
           <div className="flex">
             <FormField2<
-              CopilotDocV1.ActionDeploy | CopilotDocV1.ActionSkillOrRetreat
+              | CopilotDocV1.ActionDeploy
+              | CopilotDocV1.ActionSkillOrRetreatOrBulletTime
             >
               label="干员或干员组名"
               description="选择干员、使用干员名、或使用干员组名引用"
@@ -165,7 +167,7 @@ export const EditorActionAdd = ({
                 (
                   errors as FieldErrors<
                     | CopilotDocV1.ActionDeploy
-                    | CopilotDocV1.ActionSkillOrRetreat
+                    | CopilotDocV1.ActionSkillOrRetreatOrBulletTime
                   >
                 ).name
               }
@@ -194,7 +196,10 @@ export const EditorActionAdd = ({
           </div>
         )}
 
-        {(type === 'Deploy' || type === 'Skill' || type === 'Retreat') && (
+        {(type === 'Deploy' ||
+          type === 'Skill' ||
+          type === 'Retreat' ||
+          type === 'BulletTime') && (
           <div className="flex">
             <EditorActionOperatorLocation
               shouldUnregister
