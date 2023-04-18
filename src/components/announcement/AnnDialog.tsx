@@ -8,8 +8,7 @@ import {
 } from '@blueprintjs/core'
 
 import { FC } from 'react'
-import ReactMarkdown, { Components } from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import { Components } from 'react-markdown'
 
 import { announcementBaseURL } from '../../apis/announcement'
 import {
@@ -17,6 +16,7 @@ import {
   AnnouncementSectionMeta,
 } from '../../models/announcement'
 import { formatDateTime, formatRelativeTime } from '../../utils/times'
+import { Markdown } from '../Markdown'
 
 interface AnnDialogProps extends DialogProps {
   sections?: AnnouncementSection[]
@@ -68,9 +68,7 @@ export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
     <Dialog className="" title="公告" icon="info-sign" {...dialogProps}>
       <DialogBody className="">
         {content ? (
-          <ReactMarkdown
-            className="markdown-body !text-sm !bg-transparent [&_img]:!bg-transparent"
-            remarkPlugins={[remarkGfm]}
+          <Markdown
             rehypePlugins={[attachMetaPlugin]}
             components={{
               h1: Heading,
@@ -84,7 +82,7 @@ export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
             transformImageUri={transformUri}
           >
             {content || ''}
-          </ReactMarkdown>
+          </Markdown>
         ) : (
           <NonIdealState icon="help" title="暂无公告" />
         )}

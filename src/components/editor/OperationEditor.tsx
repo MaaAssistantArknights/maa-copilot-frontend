@@ -360,11 +360,11 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 
           <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
-          <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
-            <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
+          <div className="flex flex-col min-h-[calc(100vh-6rem)]">
+            <div className="w-full flex flex-col pb-8">
               <EditorPerformerPanel control={control} />
             </div>
-            <div className="w-full md:w-2/3 pb-8">
+            <div className="w-full pb-8">
               <H4>动作序列</H4>
               <HelperText className="mb-4">
                 <span>拖拽以重新排序</span>

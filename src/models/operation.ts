@@ -18,6 +18,7 @@ export interface Operation {
   ratingType: OpRatingType
   notEnoughRating: boolean
   difficulty: OpDifficulty
+  commentsCount: number
 }
 
 export interface Level {

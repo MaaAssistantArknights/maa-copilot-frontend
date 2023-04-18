@@ -42,6 +42,7 @@ export const EditorGroupItem = ({
     <Card
       elevation={Elevation.TWO}
       className={clsx(editing && 'bg-gray-100', isDragging && 'invisible')}
+      style={{ width: 'fit-content' }}
     >
       <SortableContext
         items={group.opers?.map(getOperatorId) || []}
