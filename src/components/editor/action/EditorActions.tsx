@@ -152,7 +152,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
           </DndContext>
 
           {actions.length === 0 && (
-            <NonIdealState title="暂无动作" className="my-4" icon="inbox" />
+            <NonIdealState title="暂无动作" className="" icon="inbox" />
           )}
         </div>
       </div>
