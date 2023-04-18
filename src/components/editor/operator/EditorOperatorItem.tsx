@@ -40,6 +40,7 @@ export const EditorOperatorItem = ({
         'flex items-start',
         editing && 'bg-gray-100',
         isDragging && 'opacity-30',
+        'h-[72px] w-[calc(4.5*72px)]',
       )}
     >
       <Icon
@@ -51,7 +52,7 @@ export const EditorOperatorItem = ({
       <OperatorAvatar id={id} size="large" />
       <div className="ml-4 flex-grow">
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
-        <div className="text-gray-400">{skill}</div>
+        <div className="text-gray-400 text-xs">{skill}</div>
       </div>
 
       <CardEditOption active={editing} onClick={onEdit} />

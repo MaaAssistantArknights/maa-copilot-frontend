@@ -121,7 +121,7 @@ export const EditorActionAdd = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <Card className="mb-2 pt-4">
+      <Card className="mb-2 pb-8 pt-4 overflow-auto h-[calc(100vh-6rem)]">
         <div className="flex items-center mb-4">
           <CardTitle className="mb-0" icon={isNew ? 'add' : 'edit'}>
             <span>{isNew ? '添加' : '编辑'}动作</span>
