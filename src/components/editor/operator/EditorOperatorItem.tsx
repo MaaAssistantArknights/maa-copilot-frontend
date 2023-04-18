@@ -34,7 +34,7 @@ export const EditorOperatorItem = ({
   }技能：${skillUsage}`
 
   return (
-    <div className="aspect-[5/1] h-large">
+    <div className="h-[72px] w-[calc(5*72px)]">
       <Card
         elevation={Elevation.TWO}
         className={clsx(
