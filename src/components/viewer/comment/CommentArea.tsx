@@ -30,6 +30,7 @@ import { authAtom } from '../../../store/auth'
 import { formatError } from '../../../utils/error'
 import { formatDateTime } from '../../../utils/times'
 import { wrapErrorMessage } from '../../../utils/wrapErrorMessage'
+import { Markdown } from '../../Markdown'
 import { OutlinedIcon } from '../../OutlinedIcon'
 import { withSuspensable } from '../../Suspensable'
 import { CommentForm } from './CommentForm'
@@ -143,7 +144,7 @@ const MainComment = ({
   comment: MainCommentInfo
   children?: ReactNode
 }) => {
-  const { message, uploader, uploadTime } = comment
+  const { uploader, uploadTime } = comment
 
   return (
     <Card className={clsx(className)}>
@@ -152,7 +153,7 @@ const MainComment = ({
           <div className="font-bold mr-2">{uploader}</div>
           <div>{formatDateTime(uploadTime)}</div>
         </div>
-        <div className="text-base">{message}</div>
+        <CommentContent comment={comment} />
         <CommentActions comment={comment} />
       </div>
       {children}
@@ -169,7 +170,7 @@ const SubComment = ({
   comment: SubCommentInfo
   fromComment?: SubCommentInfo
 }) => {
-  const { message, uploader, uploadTime } = comment
+  const { uploader, uploadTime } = comment
 
   return (
     <div className={clsx(className, 'pl-8')}>
@@ -190,13 +191,23 @@ const SubComment = ({
                 :&nbsp;
               </>
             )}
-            <span>{message}</span>
+            <CommentContent comment={comment} />
           </div>
           <CommentActions comment={comment} />
         </div>
       )}
     </div>
   )
+}
+
+const CommentContent = ({
+  className,
+  comment: { message },
+}: {
+  className?: string
+  comment: CommentInfo
+}) => {
+  return <Markdown className={clsx(className)}>{message}</Markdown>
 }
 
 const CommentActions = ({
