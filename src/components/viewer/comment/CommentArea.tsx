@@ -61,10 +61,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
 
   // clear replyTo if it's not in comments
   useEffect(() => {
-    if (
-      replyTo &&
-      !traverseComments(comments, (c) => c.commentId === replyTo.commentId)
-    ) {
+    if (replyTo && !traverseComments(comments, (c) => c === replyTo)) {
       setReplyTo(undefined)
     }
   }, [replyTo, comments])
@@ -82,7 +79,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
   return (
     <CommentAreaContext.Provider value={contextValue}>
       <div>
-        <CommentForm className="mb-6" />
+        <CommentForm primary className="mb-6" />
         {comments.map((comment) => (
           <MainComment
             key={comment.commentId}
@@ -291,7 +288,6 @@ const CommentActions = ({
       </div>
       {replyTo === comment && (
         <CommentForm
-          embedded
           inputAutoFocus
           className="mt-4"
           placeholder={`回复 @${comment.uploader}:`}

@@ -12,14 +12,14 @@ import { CommentAreaContext } from './CommentArea'
 
 export interface CommentFormProps {
   className?: string
-  embedded?: boolean
+  primary?: boolean
   placeholder?: string
   inputAutoFocus?: boolean
 }
 
 export const CommentForm = ({
   className,
-  embedded,
+  primary,
   placeholder = '发表一条评论吧',
   inputAutoFocus,
 }: CommentFormProps) => {
@@ -46,7 +46,17 @@ export const CommentForm = ({
     try {
       await wrapErrorMessage(
         (e) => '发表评论失败：' + formatError(e),
-        requestAddComment(message, operationId, replyTo?.commentId),
+        (async () => {
+          if (primary) {
+            // this comment is a main comment and does not reply to others
+            await requestAddComment(message, operationId)
+          } else {
+            if (!replyTo) {
+              throw new Error('要回复的评论不存在')
+            }
+            await requestAddComment(message, operationId, replyTo?.commentId)
+          }
+        })(),
       )
 
       setMessage('')
@@ -78,7 +88,7 @@ export const CommentForm = ({
           loading={isSubmitting}
           onClick={handleSubmit}
         >
-          {embedded ? '回复' : '发表评论'}
+          {primary ? '发表评论' : '回复'}
         </Button>
 
         <div className="ml-auto text-slate-500 text-sm">
