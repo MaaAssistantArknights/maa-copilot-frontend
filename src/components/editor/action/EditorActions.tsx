@@ -95,19 +95,18 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
 
   return (
     <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
-      <div className="EditorActionAdd-container w-full md:w-1/2 md:mr-8 flex flex-col pb-8">
+      <div className="flex flex-col w-full h-[calc(100vh-6rem)] m-4.5 md:w-1/2 md:mr-8 pb-8 overflow-auto ">
         <div className="EditorActionAdd-element">
           <EditorActionAdd
             control={control}
             action={editingAction}
             onSubmit={onSubmit}
             onCancel={() => setEditingAction(undefined)}
-            // className="sticky top-0 left-0 w-full md:w-1/3 md:mr-8"
           />
         </div>
       </div>
 
-      <div className="action-list-container p-2 -mx-2 w-full md:w-1/2 pb-8">
+      <div className="p-2 -mx-2 w-full h-[calc(100vh-6rem)] md:w-1/2 pb-8 overflow-auto">
         <DndContext
           sensors={sensors}
           onDragStart={handleDragStart}
