@@ -59,6 +59,11 @@ export const CommentForm = ({
         })(),
       )
 
+      AppToaster.show({
+        intent: 'success',
+        message: `发表成功`,
+      })
+
       setMessage('')
       reload()
     } finally {

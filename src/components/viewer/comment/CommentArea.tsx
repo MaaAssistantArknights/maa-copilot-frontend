@@ -28,7 +28,7 @@ import {
 import { Operation } from '../../../models/operation'
 import { authAtom } from '../../../store/auth'
 import { formatError } from '../../../utils/error'
-import { formatDateTime } from '../../../utils/times'
+import { formatDateTime, formatRelativeTime } from '../../../utils/times'
 import { wrapErrorMessage } from '../../../utils/wrapErrorMessage'
 import { Markdown } from '../../Markdown'
 import { OutlinedIcon } from '../../OutlinedIcon'
@@ -104,9 +104,9 @@ export const CommentArea = withSuspensable(function ViewerComments({
         ))}
         {isReachingEnd && comments.length === 0 && (
           <NonIdealState
-            icon="slash"
-            title="没有找到任何作业"
-            description="(つД｀)･ﾟ･"
+            icon="comment"
+            title="还没有评论，发一条评论鼓励作者吧！"
+            description="(｡･ω･｡)ﾉ♡"
           />
         )}
 
@@ -141,15 +141,10 @@ const MainComment = ({
   comment: MainCommentInfo
   children?: ReactNode
 }) => {
-  const { uploader, uploadTime } = comment
-
   return (
     <Card className={clsx(className)}>
-      <div className="">
-        <div className="mb-2 flex text-slate-500">
-          <div className="font-bold mr-2">{uploader}</div>
-          <div>{formatDateTime(uploadTime)}</div>
-        </div>
+      <div>
+        <CommentHeader comment={comment} />
         <CommentContent comment={comment} />
         <CommentActions comment={comment} />
       </div>
@@ -167,14 +162,9 @@ const SubComment = ({
   comment: SubCommentInfo
   fromComment?: SubCommentInfo
 }) => {
-  const { uploader, uploadTime } = comment
-
   return (
     <div className={clsx(className, 'pl-8')}>
-      <div className="mb-2 flex text-slate-500">
-        <div className="font-bold mr-2">{uploader}</div>
-        <div>{formatDateTime(uploadTime)}</div>
-      </div>
+      <CommentHeader comment={comment} />
       {comment.deleted ? (
         <div className="italic text-gray-500">（已删除）</div>
       ) : (
@@ -193,6 +183,27 @@ const SubComment = ({
           <CommentActions comment={comment} />
         </div>
       )}
+    </div>
+  )
+}
+
+const CommentHeader = ({
+  className,
+  comment: { uploader, uploaderId, uploadTime },
+}: {
+  className?: string
+  comment: CommentInfo
+}) => {
+  const [{ userId }] = useAtom(authAtom)
+
+  return (
+    <div className={clsx(className, 'mb-2 flex items-center text-xs')}>
+      <div className={clsx('mr-2', userId === uploaderId && 'font-bold')}>
+        {uploader}
+      </div>
+      <div className="text-slate-500" title={formatDateTime(uploadTime)}>
+        {formatRelativeTime(uploadTime)}
+      </div>
     </div>
   )
 }
