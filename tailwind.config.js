@@ -6,6 +6,14 @@ module.exports = {
       transitionDuration: {
         DEFAULT: '150ms',
       },
+      aspectRatio: {
+        '5/1': '5 / 1',
+      },
+      height: {
+        small: '45px',
+        medium: '54px',
+        large: '72px',
+      },
     },
   },
   plugins: [],

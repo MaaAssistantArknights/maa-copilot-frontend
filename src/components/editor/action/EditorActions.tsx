@@ -96,7 +96,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
   return (
     <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
       <div className="flex flex-col w-full h-[calc(100vh-6rem)] m-4.5 md:w-1/2 md:mr-8 pb-8 overflow-auto ">
-        <div className="EditorActionAdd-element">
+        <div>
           <EditorActionAdd
             control={control}
             action={editingAction}
