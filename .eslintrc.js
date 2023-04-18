@@ -26,7 +26,6 @@ module.exports = {
 
     project: './tsconfig.json',
     tsconfigRootDir: './',
-    extraFileExtensions: ['.css','.md', '.less'],
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   rules: {
