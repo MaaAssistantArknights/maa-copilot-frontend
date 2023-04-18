@@ -67,7 +67,7 @@ export namespace CopilotDocV1 {
   }
 
   export interface ActionUtil extends ActionBase {
-    type: Type.SpeedUp | Type.BulletTime | Type.Output | Type.SkillDaemon
+    type: Type.SpeedUp | Type.Output | Type.SkillDaemon
   }
 
   export interface ActionMoveCamera extends ActionBase {
