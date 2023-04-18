@@ -6,11 +6,15 @@ export function validateAction(
   action: CopilotDocV1.Action,
   setError: UseFormSetError<CopilotDocV1.Action>,
 ) {
-  if (action.type === 'Skill' || action.type === 'Retreat') {
+  if (
+    action.type === 'Skill' ||
+    action.type === 'Retreat' ||
+    action.type === 'BulletTime'
+  ) {
     if (!action.name && !action.location) {
       const error = {
         type: 'required',
-        message: '类型为技能或撤退时，必须填写名称或位置其中一个',
+        message: '类型为技能、撤退或子弹时间时，必须填写名称或位置其中一个',
       }
       setError('name', error)
       setError('location', error)
