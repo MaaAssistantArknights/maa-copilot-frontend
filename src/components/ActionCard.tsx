@@ -1,8 +1,7 @@
 import { Card, Elevation } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { FC } from 'react'
-import { ReactNode } from 'react-markdown/lib/ast-to-react'
+import { FC, ReactNode } from 'react'
 import { FCC } from 'types'
 
 import { CardTitle } from 'components/CardTitle'
