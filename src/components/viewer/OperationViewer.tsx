@@ -121,6 +121,11 @@ export const OperationViewer: ComponentType<{
 
     const [auth] = useAtom(authAtom)
 
+    const operationDoc = useMemo(
+      () => toCopilotOperation(operation!),
+      [operation],
+    )
+
     // make eslint happy: we got Suspense out there
     if (!operation) return null
 
@@ -129,11 +134,6 @@ export const OperationViewer: ComponentType<{
         <NonIdealState icon="error" title="获取作业失败" description={error} />
       )
     }
-
-    const operationDoc = useMemo(
-      () => toCopilotOperation(operation),
-      [operation],
-    )
 
     const handleCopyShortCode = () => {
       const shortCode = toShortCode(operation.id)
