@@ -64,7 +64,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
       isOpen={isOpen}
       onClose={onClose}
     >
-      <div className="px-4 pt-2">
+      <div className="p-4 pt-2">
         <GlobalErrorBoundary>
           <form>
             {globalError && (

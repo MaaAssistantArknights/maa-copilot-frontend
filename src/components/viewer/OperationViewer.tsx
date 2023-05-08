@@ -13,6 +13,7 @@ import {
   NonIdealState,
 } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
+import { ErrorBoundary } from '@sentry/react'
 
 import { requestDeleteOperation } from 'apis/copilotOperation'
 import { useOperation } from 'apis/query'
@@ -41,6 +42,7 @@ import { useLevels } from '../../apis/arknights'
 import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
+import { Level } from '../../models/operation'
 import { toShortCode } from '../../models/shortCode'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
@@ -227,160 +229,22 @@ export const OperationViewer: ComponentType<{
           </>
         }
       >
-        <div className="h-full overflow-auto py-4 px-8 pt-8">
-          <H3>{operationDoc.doc.title}</H3>
-
-          <div className="grid grid-rows-1 grid-cols-3 gap-8">
-            <div className="flex flex-col">
-              <Paragraphs content={operationDoc.doc.details} linkify />
-            </div>
-
-            <div className="flex flex-col">
-              <FactItem title="作战">
-                <EDifficultyLevel
-                  level={
-                    findLevelByStageName(levels, operationDoc.stageName) ||
-                    createCustomLevel(operationDoc.stageName)
-                  }
-                  difficulty={operation.difficulty}
-                />
-              </FactItem>
-
-              <FactItem relaxed className="items-start" title="作业评分">
-                <OperationRating operation={operation} className="mr-2" />
-
-                <ButtonGroup className="flex items-center ml-2">
-                  <Tooltip2 content="o(*≧▽≦)ツ" placement="bottom">
-                    <Button
-                      icon="thumbs-up"
-                      intent={
-                        operation.ratingType === OpRatingType.Like
-                          ? 'success'
-                          : 'none'
-                      }
-                      className="mr-2"
-                      active={operation.ratingType === OpRatingType.Like}
-                      onClick={() => handleRating(OpRatingType.Like)}
-                    />
-                  </Tooltip2>
-                  <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
-                    <Button
-                      icon="thumbs-down"
-                      intent={
-                        operation.ratingType === OpRatingType.Dislike
-                          ? 'danger'
-                          : 'none'
-                      }
-                      active={operation.ratingType === OpRatingType.Dislike}
-                      onClick={() => handleRating(OpRatingType.Dislike)}
-                    />
-                  </Tooltip2>
-                </ButtonGroup>
-              </FactItem>
-            </div>
-
-            <div className="flex flex-col items-start select-none tabular-nums">
-              <FactItem title="浏览量" icon="eye-open">
-                <span className="text-gray-800 font-bold">
-                  {operation.views}
-                </span>
-              </FactItem>
-
-              <FactItem title="发布于" icon="time">
-                <span className="text-gray-800 font-bold">
-                  <RelativeTime moment={operation.uploadTime} />
-                </span>
-              </FactItem>
-
-              <FactItem title="作者" icon="user">
-                <span className="text-gray-800 font-bold">
-                  {operation.uploader}
-                </span>
-              </FactItem>
-            </div>
-          </div>
-
-          <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
-
-          <div className="grid grid-rows-1 grid-cols-3 gap-8">
-            <div className="flex flex-col">
-              <H4 className="mb-4">干员与干员组</H4>
-              <H5 className="mb-4 text-slate-600">干员</H5>
-              <div className="flex flex-col mb-4">
-                {operationDoc.opers?.map((operator) => (
-                  <OperatorCard key={operator.name} operator={operator} />
-                ))}
-                {!operationDoc.opers?.length && (
-                  <EmptyOperator description="作业并未添加干员" />
-                )}
-              </div>
-
-              <H5 className="mb-4 text-slate-600">干员组</H5>
-              <div className="flex flex-col">
-                {operationDoc.groups?.map((group) => (
-                  <Card
-                    elevation={Elevation.ONE}
-                    className="mb-4"
-                    key={group.name}
-                  >
-                    <div className="flex flex-col">
-                      <H5 className="text-gray-800 font-bold">{group.name}</H5>
-
-                      <div className="flex flex-col">
-                        {group.opers?.filter(Boolean).map((operator) => (
-                          <OperatorCard
-                            key={operator.name}
-                            operator={operator}
-                          />
-                        ))}
-
-                        {group.opers?.filter(Boolean).length === 0 && (
-                          <EmptyOperator description="干员组中并未添加干员" />
-                        )}
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-
-                {!operationDoc.groups?.length && (
-                  <EmptyOperator
-                    title="暂无干员组"
-                    description="作业并未添加干员组"
-                  />
-                )}
-              </div>
-            </div>
-
-            <div className="col-span-2">
-              <H4 className="mb-4">动作序列</H4>
-
-              {operationDoc.actions.length ? (
-                <div className="flex flex-col pb-8">
-                  {operationDoc.actions.map((action, i) => (
-                    <ActionCard action={action} key={i} />
-                  ))}
-                </div>
-              ) : (
-                <NonIdealState
-                  className="my-2"
-                  title="暂无动作"
-                  description="作业并未定义任何动作"
-                  icon="slash"
-                  layout="horizontal"
-                />
-              )}
-            </div>
-          </div>
-
-          <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
-
-          <div className="mb-6">
-            <div>
-              <H4 className="mb-4">评论 ({operation.commentsCount})</H4>
-              <CommentArea operationId={operation.id} />
-            </div>
-          </div>
-        </div>
+        <ErrorBoundary
+          fallback={
+            <NonIdealState
+              icon="issue"
+              title="渲染错误"
+              description="渲染此作业时出现了问题。是否是还未支持的作业类型？"
+            />
+          }
+        >
+          <OperationViewerInner
+            operationDoc={operationDoc}
+            levels={levels}
+            operation={operation}
+            handleRating={handleRating}
+          />
+        </ErrorBoundary>
       </OperationDrawer>
     )
   },
@@ -417,3 +281,183 @@ const EmptyOperator: FC<{
     layout="horizontal"
   />
 )
+
+function OperationViewerInner({
+  operationDoc,
+  levels,
+  operation,
+  handleRating,
+}: {
+  operationDoc: CopilotDocV1.Operation
+  levels: Level[]
+  operation: Operation
+  handleRating: (decision: OpRatingType) => Promise<void>
+}) {
+  return (
+    <div className="h-full overflow-auto py-4 px-8 pt-8">
+      <H3>{operationDoc.doc.title}</H3>
+
+      <div className="grid grid-rows-1 grid-cols-3 gap-8">
+        <div className="flex flex-col">
+          <Paragraphs content={operationDoc.doc.details} linkify />
+        </div>
+
+        <div className="flex flex-col">
+          <FactItem title="作战">
+            <EDifficultyLevel
+              level={
+                findLevelByStageName(levels, operationDoc.stageName) ||
+                createCustomLevel(operationDoc.stageName)
+              }
+              difficulty={operation.difficulty}
+            />
+          </FactItem>
+
+          <FactItem relaxed className="items-start" title="作业评分">
+            <OperationRating operation={operation} className="mr-2" />
+
+            <ButtonGroup className="flex items-center ml-2">
+              <Tooltip2 content="o(*≧▽≦)ツ" placement="bottom">
+                <Button
+                  icon="thumbs-up"
+                  intent={
+                    operation.ratingType === OpRatingType.Like
+                      ? 'success'
+                      : 'none'
+                  }
+                  className="mr-2"
+                  active={operation.ratingType === OpRatingType.Like}
+                  onClick={() => handleRating(OpRatingType.Like)}
+                />
+              </Tooltip2>
+              <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
+                <Button
+                  icon="thumbs-down"
+                  intent={
+                    operation.ratingType === OpRatingType.Dislike
+                      ? 'danger'
+                      : 'none'
+                  }
+                  active={operation.ratingType === OpRatingType.Dislike}
+                  onClick={() => handleRating(OpRatingType.Dislike)}
+                />
+              </Tooltip2>
+            </ButtonGroup>
+          </FactItem>
+        </div>
+
+        <div className="flex flex-col items-start select-none tabular-nums">
+          <FactItem title="浏览量" icon="eye-open">
+            <span className="text-gray-800 font-bold">{operation.views}</span>
+          </FactItem>
+
+          <FactItem title="发布于" icon="time">
+            <span className="text-gray-800 font-bold">
+              <RelativeTime moment={operation.uploadTime} />
+            </span>
+          </FactItem>
+
+          <FactItem title="作者" icon="user">
+            <span className="text-gray-800 font-bold">
+              {operation.uploader}
+            </span>
+          </FactItem>
+        </div>
+      </div>
+
+      <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
+
+      <ErrorBoundary
+        fallback={
+          <NonIdealState
+            icon="issue"
+            title="渲染错误"
+            description="渲染此作业的预览时出现了问题。是否是还未支持的作业类型？"
+            className="h-96 bg-stripe rounded"
+          />
+        }
+      >
+        <OperationViewerInnerDetails operationDoc={operationDoc} />
+      </ErrorBoundary>
+
+      <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
+
+      <div className="mb-6">
+        <div>
+          <H4 className="mb-4">评论 ({operation.commentsCount})</H4>
+          <CommentArea operationId={operation.id} />
+        </div>
+      </div>
+    </div>
+  )
+}
+function OperationViewerInnerDetails({
+  operationDoc,
+}: {
+  operationDoc: CopilotDocV1.Operation
+}) {
+  return (
+    <div className="grid grid-rows-1 grid-cols-3 gap-8">
+      <div className="flex flex-col">
+        <H4 className="mb-4">干员与干员组</H4>
+        <H5 className="mb-4 text-slate-600">干员</H5>
+        <div className="flex flex-col mb-4">
+          {operationDoc.opers?.map((operator) => (
+            <OperatorCard key={operator.name} operator={operator} />
+          ))}
+          {!operationDoc.opers?.length && (
+            <EmptyOperator description="作业并未添加干员" />
+          )}
+        </div>
+
+        <H5 className="mb-4 text-slate-600">干员组</H5>
+        <div className="flex flex-col">
+          {operationDoc.groups?.map((group) => (
+            <Card elevation={Elevation.ONE} className="mb-4" key={group.name}>
+              <div className="flex flex-col">
+                <H5 className="text-gray-800 font-bold">{group.name}</H5>
+
+                <div className="flex flex-col">
+                  {group.opers?.filter(Boolean).map((operator) => (
+                    <OperatorCard key={operator.name} operator={operator} />
+                  ))}
+
+                  {group.opers?.filter(Boolean).length === 0 && (
+                    <EmptyOperator description="干员组中并未添加干员" />
+                  )}
+                </div>
+              </div>
+            </Card>
+          ))}
+
+          {!operationDoc.groups?.length && (
+            <EmptyOperator
+              title="暂无干员组"
+              description="作业并未添加干员组"
+            />
+          )}
+        </div>
+      </div>
+
+      <div className="col-span-2">
+        <H4 className="mb-4">动作序列</H4>
+
+        {operationDoc.actions.length ? (
+          <div className="flex flex-col pb-8">
+            {operationDoc.actions.map((action, i) => (
+              <ActionCard action={action} key={i} />
+            ))}
+          </div>
+        ) : (
+          <NonIdealState
+            className="my-2"
+            title="暂无动作"
+            description="作业并未定义任何动作"
+            icon="slash"
+            layout="horizontal"
+          />
+        )}
+      </div>
+    </div>
+  )
+}
