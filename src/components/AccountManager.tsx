@@ -257,7 +257,7 @@ export const AccountAuthDialog: ComponentType<{
       isOpen={open}
       onClose={onClose}
     >
-      <div className="flex flex-col px-4 pt-2">
+      <div className="flex flex-col p-4 pt-2">
         <GlobalErrorBoundary>
           <Tabs
             // renderActiveTabPanelOnly: avoid autocomplete on inactive panel

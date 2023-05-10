@@ -6,9 +6,9 @@ import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
-import { OPERATORS } from 'models/generated/operators'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
+import { OPERATORS } from '../../../models/operator'
 import { Suggest } from '../../Suggest'
 
 type OperatorInfo = typeof OPERATORS[number]

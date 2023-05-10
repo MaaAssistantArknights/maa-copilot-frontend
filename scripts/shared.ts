@@ -6,19 +6,24 @@ function transformOperatorName(name: string) {
   const cleanedName = name.replace(/[”“"]/g, '')
 
   const fullPinyin = pinyin(cleanedName, {
-    segment: true,
+    compact: true,
+    heteronym: true,
     style: pinyin.STYLE_NORMAL,
   })
   const partialPinyin = pinyin(cleanedName, {
-    segment: true,
+    compact: true,
+    heteronym: true,
     style: pinyin.STYLE_FIRST_LETTER,
   })
   return {
     name,
-    pron: [
-      fullPinyin.flatMap((el) => el).join(''),
-      partialPinyin.flatMap((el) => el).join(''),
-    ].join(' '),
+    pron:
+      //  in: [[['a', 'mi', 'ya'], ['e', 'mi', 'ya']], [['a', 'm', 'y'], ['e', 'm', 'y']]]
+      [fullPinyin, partialPinyin]
+        // out: ['amiya', 'emiya', 'amy', 'emy']
+        .flatMap((py) => py.map((el) => el.join('')))
+        // out: 'amiya emiya amy emy'
+        .join(' '),
   }
 }
 

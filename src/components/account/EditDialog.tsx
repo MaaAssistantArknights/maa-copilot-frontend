@@ -32,7 +32,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
 
   return (
     <Dialog title="修改账户信息" icon="user" isOpen={isOpen} onClose={onClose}>
-      <div className="px-4 pt-2">
+      <div className="p-4 pt-2">
         <GlobalErrorBoundary>
           <Tabs
             // renderActiveTabPanelOnly: avoid autocomplete on inactive panel
