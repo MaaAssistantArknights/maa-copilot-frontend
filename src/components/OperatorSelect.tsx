@@ -5,7 +5,7 @@ import Fuse from 'fuse.js'
 import { compact } from 'lodash-es'
 import { FC, useMemo, useRef } from 'react'
 
-import { OPERATORS } from '../models/generated/operators'
+import { OPERATORS } from '../models/operator'
 import { OperatorAvatar } from './editor/operator/EditorOperator'
 
 interface OperatorSelectProps {

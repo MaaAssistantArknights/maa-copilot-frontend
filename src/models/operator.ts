@@ -7,6 +7,9 @@ import {
   DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
+import OPERATORS from '../models/generated/operators.json'
+
+export { OPERATORS }
 
 const defaultSkillUsage: CopilotDocV1.SkillUsageType = 0
 
