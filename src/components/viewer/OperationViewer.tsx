@@ -20,7 +20,7 @@ import { useOperation } from 'apis/query'
 import { apiPostRating } from 'apis/rating'
 import { useAtom } from 'jotai'
 import { noop } from 'lodash-es'
-import { ComponentType, FC, useMemo, useState } from 'react'
+import { ComponentType, FC, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import snakecaseKeys from 'snakecase-keys'
 
@@ -44,6 +44,7 @@ import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
 import { toShortCode } from '../../models/shortCode'
+import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
@@ -123,19 +124,22 @@ export const OperationViewer: ComponentType<{
 
     const [auth] = useAtom(authAtom)
 
-    const operationDoc = useMemo(
-      () => toCopilotOperation(operation!),
-      [operation],
-    )
-
     // make eslint happy: we got Suspense out there
     if (!operation) return null
 
-    if (error) {
-      return (
-        <NonIdealState icon="error" title="获取作业失败" description={error} />
-      )
-    }
+    const operationDoc = useMemo(
+      () => toCopilotOperation(operation),
+      [operation],
+    )
+
+    useEffect(() => {
+      if (error) {
+        AppToaster.show({
+          intent: 'danger',
+          message: `刷新作业失败：${formatError(error)}`,
+        })
+      }
+    }, [error])
 
     const handleCopyShortCode = () => {
       const shortCode = toShortCode(operation.id)
