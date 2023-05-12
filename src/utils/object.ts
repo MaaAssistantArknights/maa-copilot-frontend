@@ -1,5 +1,10 @@
 import snakeCaseKeys from 'snakecase-keys'
 
+/**
+ * Wrapper around `snakecase-keys` that prevents it from stripping out non-ASCII keys.
+ *
+ * Note: no need to do this for `camelcase-keys`, it works fine.
+ */
 export const snakeCaseKeysUnicode = ((
   input: any,
   options?: snakeCaseKeys.Options,
