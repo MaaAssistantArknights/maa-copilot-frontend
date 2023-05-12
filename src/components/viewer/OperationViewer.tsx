@@ -22,7 +22,6 @@ import { useAtom } from 'jotai'
 import { noop } from 'lodash-es'
 import { ComponentType, FC, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
-import snakecaseKeys from 'snakecase-keys'
 
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -45,6 +44,7 @@ import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
 import { toShortCode } from '../../models/shortCode'
 import { formatError } from '../../utils/error'
+import { snakeCaseKeysUnicode } from '../../utils/object'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
@@ -154,7 +154,7 @@ export const OperationViewer: ComponentType<{
     const handleDownloadJSON = () => {
       // pretty print the JSON
       const json = JSON.stringify(
-        snakecaseKeys(operationDoc, { deep: true }),
+        snakeCaseKeysUnicode(operationDoc, { deep: true }),
         null,
         2,
       )
