@@ -28,7 +28,6 @@ import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { useLevels } from '../../../apis/arknights'
 import { findLevelByStageName } from '../../../models/level'
-import { FactItem } from '../../FactItem'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillUsage } from '../operator/EditorOperatorSkillUsage'
 import {
@@ -36,6 +35,7 @@ import {
   EditorActionRearDelay,
 } from './EditorActionDelay'
 import { EditorActionDistance } from './EditorActionDistance'
+import { EditorActionModule } from './EditorActionModule'
 
 export interface EditorActionAddProps {
   control: Control<CopilotDocV1.Operation>
@@ -258,8 +258,9 @@ export const EditorActionAdd = ({
 
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
-        <FactItem title="执行条件" icon="stopwatch" className="font-bold" />
-
+        <EditorActionModule
+          title="执行条件" icon="stopwatch" className="font-bold" 
+        >
         <div className="flex flex-wrap">
           <EditorActionExecPredicateKills control={control} />
           <EditorActionExecPredicateCooling control={control} />
@@ -272,39 +273,43 @@ export const EditorActionAdd = ({
           <EditorActionPreDelay control={control} />
           <EditorActionRearDelay control={control} />
         </div>
-
+        </EditorActionModule>
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
-        <FactItem title="日志" icon="annotation" className="font-bold" />
+        <EditorActionModule
+          title="日志"
+          icon="annotation"
+          className="font-bold"
+        >
+          <div className="flex flex-col w-full">
+            <EditorActionDocColor
+              shouldUnregister
+              control={control}
+              name="docColor"
+            />
 
-        <div className="flex flex-col w-full">
-          <EditorActionDocColor
-            shouldUnregister
-            control={control}
-            name="docColor"
-          />
-
-          <FormField
-            label="描述"
-            field="doc"
-            control={control}
-            ControllerProps={{
-              render: ({ field }) => (
-                <TextArea
-                  fill
-                  rows={2}
-                  growVertically
-                  large
-                  id="doc"
-                  placeholder="描述，可选。会显示在界面上，没有实际作用"
-                  {...field}
-                  value={field.value || ''}
-                />
-              ),
-            }}
-          />
-        </div>
-
+            <FormField
+              label="描述"
+              field="doc"
+              control={control}
+              ControllerProps={{
+                render: ({ field }) => (
+                  <TextArea
+                    fill
+                    rows={2}
+                    growVertically
+                    large
+                    id="doc"
+                    placeholder="描述，可选。会显示在界面上，没有实际作用"
+                    {...field}
+                    value={field.value || ''}
+                  />
+                ),
+              }}
+            />
+          </div>
+        </EditorActionModule>
+        
         <div className="mt-4 flex">
           <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
             {isNew ? '添加' : '保存'}
