@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom'
 import { Rnd, RndResizeCallback } from 'react-rnd'
 import { useWindowSize } from 'react-use'
 
+import { Level } from '../../../models/operation'
 import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
 import { useFloatingMap } from './FloatingMapContext'
@@ -25,6 +26,7 @@ interface FloatingMapConfig {
   y: number
   width: number
   height: number
+  level?: Level
 }
 
 const UID = 'floating-map'
@@ -32,7 +34,7 @@ const STORAGE_KEY = `copilot-${UID}`
 
 const HEADER_CLASS = 'floating-map-header'
 
-const HEADER_HEIGHT = 16
+const HEADER_HEIGHT = 36
 const ASPECT_RATIO = 16 / 9
 const MIN_HEIGHT = 150 + HEADER_HEIGHT
 const MIN_WIDTH = 150 * ASPECT_RATIO
@@ -54,6 +56,7 @@ export function FloatingMap() {
       y: window.innerHeight - DEFAULT_HEIGHT,
       width: DEFAULT_WIDTH,
       height: DEFAULT_HEIGHT,
+      level: undefined,
     },
     // merge two values in case the saved value is missing some properties
     (savedValue, defaultValue) => ({ ...defaultValue, ...savedValue }),
@@ -77,6 +80,7 @@ export function FloatingMap() {
   useEffect(() => {
     // when level changes, the iframe should reload
     setMapStatus(MapStatus.Loading)
+    setConfig((cfg) => ({ ...cfg, level }))
   }, [level])
 
   const setMapState = useCallback(() => {
@@ -204,9 +208,8 @@ export function FloatingMap() {
         </Rnd>
       ) : (
         <Card
-          className="absolute !p-0 overflow-hidden pointer-events-auto"
+          className="absolute !p-0 overflow-hidden pointer-events-auto left-4 bottom-4"
           elevation={2}
-          style={{ left: 0, bottom: 0 }}
         >
           <FloatingMapHeader config={config} setConfig={setConfig} />
         </Card>
@@ -238,13 +241,14 @@ function FloatingMapHeader({
     >
       <Button
         minimal
-        small={!config.show}
-        className="min-h-0 !py-0"
+        style={{ height: HEADER_HEIGHT }}
+        className="px-4"
         title={config.show ? '隐藏地图' : '显示地图'}
         icon={config.show ? 'caret-down' : 'caret-up'}
         onClick={() => setConfig({ ...config, show: !config.show })}
       >
-        {!config.show && '地图'}
+        地图
+        {config.show && ` ${config.level?.name}`}
       </Button>
     </div>
   )
