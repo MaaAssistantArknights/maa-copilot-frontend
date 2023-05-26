@@ -48,6 +48,7 @@ export async function getOperatorNames() {
         {
           id: el,
           ...transformOperatorName(op.name),
+          alt_name: op.appellation,
         },
       ]
     }),
