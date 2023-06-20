@@ -313,7 +313,7 @@ function OperationViewerInner({
                 findLevelByStageName(levels, operationDoc.stageName) ||
                 createCustomLevel(operationDoc.stageName)
               }
-              difficulty={operation.difficulty}
+              difficulty={operationDoc.difficulty}
             />
           </FactItem>
 
