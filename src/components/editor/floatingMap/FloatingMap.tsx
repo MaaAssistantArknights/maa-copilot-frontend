@@ -1,7 +1,7 @@
 import { Button, Card, NonIdealState, Spinner } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { clamp } from 'lodash-es'
+import { clamp, isNil } from 'lodash-es'
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Rnd, RndResizeCallback } from 'react-rnd'
@@ -229,6 +229,14 @@ function FloatingMapHeader({
   config: FloatingMapConfig
   setConfig: (config: FloatingMapConfig) => void
 }) {
+  let levelName = config.level?.name
+
+  if (isNil(levelName)) {
+    levelName = '未选择关卡'
+  } else if (!levelName.trim()) {
+    levelName = '未命名关卡'
+  }
+
   return (
     <div
       className={clsx(
@@ -248,7 +256,7 @@ function FloatingMapHeader({
         onClick={() => setConfig({ ...config, show: !config.show })}
       >
         地图
-        {config.show && ` ${config.level?.name}`}
+        {config.show && ` - ${levelName}`}
       </Button>
     </div>
   )
