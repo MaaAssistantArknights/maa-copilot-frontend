@@ -834,6 +834,12 @@
     "alt_name": "Catapult"
   },
   {
+    "id": "char_4015_spuria",
+    "name": "空构",
+    "pron": "konggou kg",
+    "alt_name": "Spuria"
+  },
+  {
     "id": "char_332_archet",
     "name": "空弦",
     "pron": "kongxian kx",
@@ -1312,6 +1318,12 @@
     "name": "深海色",
     "pron": "shenhaise shs",
     "alt_name": "Deepcolor"
+  },
+  {
+    "id": "char_1032_excu2",
+    "name": "圣约送葬人",
+    "pron": "shengyuesongzangren shengyaosongzangren syszr",
+    "alt_name": "Executor the Ex Foedere"
   },
   {
     "id": "char_210_stward",
@@ -1798,6 +1810,12 @@
     "name": "因陀罗",
     "pron": "yintuoluo ytl",
     "alt_name": "Indra"
+  },
+  {
+    "id": "char_498_inside",
+    "name": "隐现",
+    "pron": "yinxian yx",
+    "alt_name": "Insider"
   },
   {
     "id": "token_10016_rfrost_mine",
