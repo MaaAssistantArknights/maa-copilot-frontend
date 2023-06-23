@@ -1,4 +1,4 @@
-import { Button, TextArea } from '@blueprintjs/core'
+import { Button, Card, Checkbox, TextArea } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { useContext, useState } from 'react'
@@ -7,6 +7,7 @@ import { requestAddComment } from '../../../apis/comment'
 import { MAX_COMMENT_LENGTH } from '../../../models/comment'
 import { formatError } from '../../../utils/error'
 import { wrapErrorMessage } from '../../../utils/wrapErrorMessage'
+import { Markdown } from '../../Markdown'
 import { AppToaster } from '../../Toaster'
 import { CommentAreaContext } from './CommentArea'
 
@@ -26,6 +27,7 @@ export const CommentForm = ({
   const { operationId, replyTo, reload } = useContext(CommentAreaContext)
 
   const [message, setMessage] = useState('')
+  const [showMarkdownPreview, setShowMarkdownPreview] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
 
   const handleSubmit = async () => {
@@ -96,10 +98,26 @@ export const CommentForm = ({
           {primary ? '发表评论' : '回复'}
         </Button>
 
+        <Checkbox
+          className="mb-0 ml-6"
+          checked={showMarkdownPreview}
+          onChange={(e) =>
+            setShowMarkdownPreview((e.target as HTMLInputElement).checked)
+          }
+        >
+          预览 Markdown
+        </Checkbox>
+
         <div className="ml-auto text-slate-500 text-sm">
           {message.length}/{MAX_COMMENT_LENGTH}
         </div>
       </div>
+
+      {showMarkdownPreview && (
+        <Card className="mt-2 border-2">
+          <Markdown>{message || '*没有内容*'}</Markdown>
+        </Card>
+      )}
     </form>
   )
 }

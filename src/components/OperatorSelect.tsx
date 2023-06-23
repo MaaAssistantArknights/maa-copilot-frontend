@@ -38,7 +38,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   const fuse = useMemo(
     () =>
       new Fuse(OPERATORS, {
-        keys: ['name', 'pron'],
+        keys: ['name', 'pron', 'alt_name'],
         threshold: 0.3,
       }),
     [],

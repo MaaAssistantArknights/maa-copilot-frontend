@@ -103,7 +103,7 @@ export const OperationCard = ({
               findLevelByStageName(levels, operationDoc.stageName) ||
               createCustomLevel(operationDoc.stageName)
             }
-            difficulty={operation.difficulty}
+            difficulty={operationDoc.difficulty}
           />
         </H5>
         <div className="flex">

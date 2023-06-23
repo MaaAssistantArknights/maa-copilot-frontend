@@ -36,8 +36,8 @@ export const ELevel: FC<{
 
 export const EDifficultyLevel: FC<{
   level: Level
-  difficulty: OpDifficulty
-}> = ({ level, difficulty }) => {
+  difficulty?: OpDifficulty
+}> = ({ level, difficulty = OpDifficulty.UNKNOWN }) => {
   return (
     <div className="flex flex-wrap">
       <ELevel level={level} />
