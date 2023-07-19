@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Drawer,
   DrawerSize,
@@ -11,6 +12,7 @@ import {
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import { useState } from 'react'
+import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
@@ -32,6 +34,7 @@ export const OperationCard = ({
 }) => {
   const levels = useLevels()?.data?.data || []
   const [drawerOpen, setDrawerOpen] = useState(false)
+
   return (
     <>
       <Drawer
@@ -52,9 +55,27 @@ export const OperationCard = ({
         onClick={() => setDrawerOpen(true)}
       >
         <div className="flex items-start">
-          <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
+          <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2 mr-2">
             {operationDoc.doc.title}
           </H4>
+          <Button
+            small
+            className="mr-2 mb-2"
+            icon="download"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleDownloadJSON(operationDoc)
+            }}
+          />
+          <Button
+            small
+            className="mb-2"
+            icon="clipboard"
+            onClick={(e) => {
+              e.stopPropagation()
+              handleCopyShortCode(operation)
+            }}
+          />
           <div className="flex-1" />
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
