@@ -58,24 +58,34 @@ export const OperationCard = ({
           <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2 mr-2">
             {operationDoc.doc.title}
           </H4>
-          <Button
-            small
-            className="mr-2 mb-2"
-            icon="download"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleDownloadJSON(operationDoc)
-            }}
-          />
-          <Button
-            small
-            className="mb-2"
-            icon="clipboard"
-            onClick={(e) => {
-              e.stopPropagation()
-              handleCopyShortCode(operation)
-            }}
-          />
+          <Tooltip2
+            placement="bottom"
+            content={<div className="max-w-sm">下载原 JSON</div>}
+          >
+            <Button
+              small
+              className="mr-2 mb-2 cursor-help"
+              icon="download"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleDownloadJSON(operationDoc)
+              }}
+            />
+          </Tooltip2>
+          <Tooltip2
+            placement="bottom"
+            content={<div className="max-w-sm">复制神秘代码</div>}
+          >
+            <Button
+              small
+              className="mb-2 cursor-help"
+              icon="clipboard"
+              onClick={(e) => {
+                e.stopPropagation()
+                handleCopyShortCode(operation)
+              }}
+            />
+          </Tooltip2>
           <div className="flex-1" />
           <div className="flex flex-col items-end">
             <div className="w-full flex justify-end text-zinc-500">
