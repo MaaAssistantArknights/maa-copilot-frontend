@@ -64,7 +64,7 @@ export const OperationCard = ({
           >
             <Button
               small
-              className="mr-2 mb-2 cursor-help"
+              className="mr-2 mb-2"
               icon="download"
               onClick={(e) => {
                 e.stopPropagation()
@@ -78,7 +78,7 @@ export const OperationCard = ({
           >
             <Button
               small
-              className="mb-2 cursor-help"
+              className="mb-2"
               icon="clipboard"
               onClick={(e) => {
                 e.stopPropagation()
