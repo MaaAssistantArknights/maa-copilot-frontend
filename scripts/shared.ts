@@ -1,4 +1,4 @@
-import { uniqBy } from 'lodash-es'
+import { uniq, uniqBy } from 'lodash-es'
 import fetch from 'node-fetch'
 import pinyin from 'pinyin'
 import simplebig from 'simplebig'
@@ -25,12 +25,12 @@ function transformOperatorName(name: string) {
   const cleanedTraditional = traditional.replace(/[”“"]/g, '')
   return {
     name,
-    alias: [
+    alias: uniq([
       ...pinyinify(cleanedSimplifiedName),
       traditional,
       cleanedTraditional,
       ...pinyinify(cleanedTraditional),
-    ].join(' '),
+    ]).join(' '),
   }
 }
 

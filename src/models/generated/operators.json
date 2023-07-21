@@ -2,1999 +2,1999 @@
   {
     "id": "token_10013_robin_mine",
     "name": "\"夹子\"",
-    "alias": "jiazi gazi jz gz \"夾子\" 夾子 jiazi gazi jz gz",
+    "alias": "jiazi gazi jz gz \"夾子\" 夾子",
     "alt_name": "\"Clip\" Charge"
   },
   {
     "id": "token_10015_dusk_drgn",
     "name": "\"小自在\"",
-    "alias": "xiaozizai xzz \"小自在\" 小自在 xiaozizai xzz",
+    "alias": "xiaozizai xzz \"小自在\" 小自在",
     "alt_name": "Little Instinct"
   },
   {
     "id": "token_10026_bgsnow_subbow",
     "name": "“打字机”",
-    "alias": "daziji dzj “打字機” 打字機 daziji dzj",
+    "alias": "daziji dzj “打字機” 打字機",
     "alt_name": "Typewriters"
   },
   {
     "id": "token_10020_ling_soul1",
     "name": "“清平”",
-    "alias": "qingping qp “清平” 清平 qingping qp",
+    "alias": "qingping qp “清平” 清平",
     "alt_name": "Tranquility"
   },
   {
     "id": "token_10020_ling_soul3",
     "name": "“弦惊”",
-    "alias": "xianjing xj “弦驚” 弦驚 xianjing xj",
+    "alias": "xianjing xj “弦驚” 弦驚",
     "alt_name": "Thunderer"
   },
   {
     "id": "token_10020_ling_soul2",
     "name": "“逍遥”",
-    "alias": "xiaoyao xy “逍遙” 逍遙 xiaoyao xy",
+    "alias": "xiaoyao xy “逍遙” 逍遙",
     "alt_name": "Peripateticism"
   },
   {
     "id": "token_10019_nearl2_sword",
     "name": "“耀阳”",
-    "alias": "yaoyang yy “耀陽” 耀陽 yaoyang yy",
+    "alias": "yaoyang yy “耀陽” 耀陽",
     "alt_name": "Blazing Sun"
   },
   {
     "id": "char_009_12fce",
     "name": "12F",
-    "alias": "12F 12F 12F 12F 12F 12F",
+    "alias": "12F",
     "alt_name": "12F"
   },
   {
     "id": "char_225_haak",
     "name": "阿",
-    "alias": "ae ae 阿 阿 ae ae",
+    "alias": "ae 阿",
     "alt_name": "Aak"
   },
   {
     "id": "char_002_amiya",
     "name": "阿米娅",
-    "alias": "amiya emiya amy emy 阿米婭 阿米婭 amiya emiya amy emy",
+    "alias": "amiya emiya amy emy 阿米婭",
     "alt_name": "Amiya"
   },
   {
     "id": "char_277_sqrrel",
     "name": "阿消",
-    "alias": "axiao exiao ax ex 阿消 阿消 axiao exiao ax ex",
+    "alias": "axiao exiao ax ex 阿消",
     "alt_name": "Shaw"
   },
   {
     "id": "char_4043_erato",
     "name": "埃拉托",
-    "alias": "ailatuo alt 埃拉托 埃拉托 ailatuo alt",
+    "alias": "ailatuo alt 埃拉托",
     "alt_name": "Erato"
   },
   {
     "id": "char_4009_irene",
     "name": "艾丽妮",
-    "alias": "ailini yilini aln yln 艾麗妮 艾麗妮 ailini yilini aln yln",
+    "alias": "ailini yilini aln yln 艾麗妮",
     "alt_name": "Irene"
   },
   {
     "id": "char_338_iris",
     "name": "爱丽丝",
-    "alias": "ailisi als 愛麗絲 愛麗絲 ailisi als",
+    "alias": "ailisi als 愛麗絲",
     "alt_name": "Iris"
   },
   {
     "id": "char_127_estell",
     "name": "艾丝黛尔",
-    "alias": "aisidaier yisidaier asde ysde 艾絲黛爾 艾絲黛爾 aisidaier yisidaier asde ysde",
+    "alias": "aisidaier yisidaier asde ysde 艾絲黛爾",
     "alt_name": "Estelle"
   },
   {
     "id": "char_180_amgoat",
     "name": "艾雅法拉",
-    "alias": "aiyafala yiyafala ayfl yyfl 艾雅法拉 艾雅法拉 aiyafala yiyafala ayfl yyfl",
+    "alias": "aiyafala yiyafala ayfl yyfl 艾雅法拉",
     "alt_name": "Eyjafjalla"
   },
   {
     "id": "char_302_glaze",
     "name": "安比尔",
-    "alias": "anbier abe 安比爾 安比爾 anbier abe",
+    "alias": "anbier abe 安比爾",
     "alt_name": "Ambriel"
   },
   {
     "id": "char_211_adnach",
     "name": "安德切尔",
-    "alias": "andeqieer adqe 安德切爾 安德切爾 andeqieer adqe",
+    "alias": "andeqieer adqe 安德切爾",
     "alt_name": "Adnachiel"
   },
   {
     "id": "char_291_aglina",
     "name": "安洁莉娜",
-    "alias": "anjielina anjielinuo ajln 安潔莉娜 安潔莉娜 anjielina anjielinuo ajln",
+    "alias": "anjielina anjielinuo ajln 安潔莉娜",
     "alt_name": "Angelina"
   },
   {
     "id": "char_212_ansel",
     "name": "安赛尔",
-    "alias": "ansaier ase 安賽爾 安賽爾 ansaier ase",
+    "alias": "ansaier ase 安賽爾",
     "alt_name": "Ansel"
   },
   {
     "id": "char_236_rope",
     "name": "暗索",
-    "alias": "ansuo as 暗索 暗索 ansuo as",
+    "alias": "ansuo as 暗索",
     "alt_name": "Rope"
   },
   {
     "id": "char_218_cuttle",
     "name": "安哲拉",
-    "alias": "anzhela azl 安哲拉 安哲拉 anzhela azl",
+    "alias": "anzhela azl 安哲拉",
     "alt_name": "Andreana"
   },
   {
     "id": "char_346_aosta",
     "name": "奥斯塔",
-    "alias": "aosita yusita ast yst 奧斯塔 奧斯塔 aosita yusita ast yst",
+    "alias": "aosita yusita ast yst 奧斯塔",
     "alt_name": "Aosta"
   },
   {
     "id": "char_252_bibeak",
     "name": "柏喙",
-    "alias": "baihui bohui bh 柏喙 柏喙 baihui bohui bh",
+    "alias": "baihui bohui bh 柏喙",
     "alt_name": "Bibeak"
   },
   {
     "id": "char_204_platnm",
     "name": "白金",
-    "alias": "baijin bj 白金 白金 baijin bj",
+    "alias": "baijin bj 白金",
     "alt_name": "Platinum"
   },
   {
     "id": "char_1026_gvial2",
     "name": "百炼嘉维尔",
-    "alias": "bailianjiaweier bljwe 百煉嘉維爾 百煉嘉維爾 bailianjiaweier bljwe",
+    "alias": "bailianjiaweier bljwe 百煉嘉維爾",
     "alt_name": "Gavial the Invincible"
   },
   {
     "id": "char_128_plosis",
     "name": "白面鸮",
-    "alias": "baimianxiao bmx 白麵鴞 白麵鴞 baimianxiao bmx",
+    "alias": "baimianxiao bmx 白麵鴞",
     "alt_name": "Ptilopsis"
   },
   {
     "id": "char_325_bison",
     "name": "拜松",
-    "alias": "baisong bs 拜鬆 拜鬆 baisong bs",
+    "alias": "baisong bs 拜鬆",
     "alt_name": "Bison"
   },
   {
     "id": "char_4072_ironmn",
     "name": "白铁",
-    "alias": "baitie bt 白鐵 白鐵 baitie bt",
+    "alias": "baitie bt 白鐵",
     "alt_name": "Stainless"
   },
   {
     "id": "token_10027_ironmn_pile1",
     "name": "白铁™多功能平台",
-    "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台 白鐵™多功能平台 baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt",
+    "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
     "alt_name": "Stainless™ Multifunctional platform"
   },
   {
     "id": "char_118_yuki",
     "name": "白雪",
-    "alias": "baixue bx 白雪 白雪 baixue bx",
+    "alias": "baixue bx 白雪",
     "alt_name": "ShiraYuki"
   },
   {
     "id": "char_284_spot",
     "name": "斑点",
-    "alias": "bandian bd 斑點 斑點 bandian bd",
+    "alias": "bandian bd 斑點",
     "alt_name": "Spot"
   },
   {
     "id": "char_230_savage",
     "name": "暴行",
-    "alias": "baohang baoxing puhang puxing bh bx ph px 暴行 暴行 baohang baoxing puhang puxing bh bx ph px",
+    "alias": "baohang baoxing puhang puxing bh bx ph px 暴行",
     "alt_name": "Savage"
   },
   {
     "id": "char_388_mint",
     "name": "薄绿",
-    "alias": "baolv baolu bolv bolu bl 薄綠 薄綠 baolv bolv bl",
+    "alias": "baolv baolu bolv bolu bl 薄綠",
     "alt_name": "Mint"
   },
   {
     "id": "char_304_zebra",
     "name": "暴雨",
-    "alias": "baoyu puyu by py 暴雨 暴雨 baoyu puyu by py",
+    "alias": "baoyu puyu by py 暴雨",
     "alt_name": "Heavyrain"
   },
   {
     "id": "char_369_bena",
     "name": "贝娜",
-    "alias": "beina beinuo bn 貝娜 貝娜 beina beinuo bn",
+    "alias": "beina beinuo bn 貝娜",
     "alt_name": "Bena"
   },
   {
     "id": "char_265_sophia",
     "name": "鞭刃",
-    "alias": "bianren br 鞭刃 鞭刃 bianren br",
+    "alias": "bianren br 鞭刃",
     "alt_name": "Whislash"
   },
   {
     "id": "char_258_podego",
     "name": "波登可",
-    "alias": "bodengke bdk 波登可 波登可 bodengke bdk",
+    "alias": "bodengke bdk 波登可",
     "alt_name": "Podenco"
   },
   {
     "id": "char_4004_pudd",
     "name": "布丁",
-    "alias": "buding buzheng bd bz 布丁 布丁 buding buzheng bd bz",
+    "alias": "buding buzheng bd bz 布丁",
     "alt_name": "Pudding"
   },
   {
     "id": "char_356_broca",
     "name": "布洛卡",
-    "alias": "buluoka buluoqia blk blq 布洛卡 布洛卡 buluoka buluoqia blk blq",
+    "alias": "buluoka buluoqia blk blq 布洛卡",
     "alt_name": "Broca"
   },
   {
     "id": "char_286_cast3",
     "name": "Castle-3",
-    "alias": "Castle-3 Castle-3 Castle-3 Castle-3 Castle-3 Castle-3",
+    "alias": "Castle-3",
     "alt_name": "Castle-3"
   },
   {
     "id": "char_289_gyuki",
     "name": "缠丸",
-    "alias": "chanwan cw 纏丸 纏丸 chanwan cw",
+    "alias": "chanwan cw 纏丸",
     "alt_name": "Matoimaru"
   },
   {
     "id": "char_4047_pianst",
     "name": "车尔尼",
-    "alias": "cheerni juerni cen jen 車爾尼 車爾尼 cheerni juerni cen jen",
+    "alias": "cheerni juerni cen jen 車爾尼",
     "alt_name": "Czerny"
   },
   {
     "id": "char_010_chen",
     "name": "陈",
-    "alias": "chen c 陳 陳 chen c",
+    "alias": "chen c 陳",
     "alt_name": "Ch'en"
   },
   {
     "id": "char_377_gdglow",
     "name": "澄闪",
-    "alias": "chengshan dengshan cs ds 澄閃 澄閃 chengshan dengshan cs ds",
+    "alias": "chengshan dengshan cs ds 澄閃",
     "alt_name": "Goldenglow"
   },
   {
     "id": "char_1027_greyy2",
     "name": "承曦格雷伊",
-    "alias": "chengxigeleiyi cxgly 承曦格雷伊 承曦格雷伊 chengxigeleiyi cxgly",
+    "alias": "chengxigeleiyi cxgly 承曦格雷伊",
     "alt_name": "Greyy the Lightningbearer"
   },
   {
     "id": "char_475_akafyu",
     "name": "赤冬",
-    "alias": "chidong cd 赤冬 赤冬 chidong cd",
+    "alias": "chidong cd 赤冬",
     "alt_name": "Akafuyu"
   },
   {
     "id": "char_4065_judge",
     "name": "斥罪",
-    "alias": "chizui cz 斥罪 斥罪 chizui cz",
+    "alias": "chizui cz 斥罪",
     "alt_name": "Penance"
   },
   {
     "id": "char_4082_qiubai",
     "name": "仇白",
-    "alias": "choubai qiubai cb qb 仇白 仇白 choubai qiubai cb qb",
+    "alias": "choubai qiubai cb qb 仇白",
     "alt_name": "Qiubai"
   },
   {
     "id": "token_10001_deepcl_tentac",
     "name": "触手",
-    "alias": "chushou cs 觸手 觸手 chushou cs",
+    "alias": "chushou cs 觸手",
     "alt_name": "Tentacle"
   },
   {
     "id": "char_174_slbell",
     "name": "初雪",
-    "alias": "chuxue cx 初雪 初雪 chuxue cx",
+    "alias": "chuxue cx 初雪",
     "alt_name": "Pramanix"
   },
   {
     "id": "token_10008_cqbw_box",
     "name": "此面向敌",
-    "alias": "cimianxiangdi cmxd 此麵向敵 此麵向敵 cimianxiangdi cmxd",
+    "alias": "cimianxiangdi cmxd 此麵向敵",
     "alt_name": "F.T.E"
   },
   {
     "id": "char_1031_slent2",
     "name": "淬羽赫默",
-    "alias": "cuiyuhemo cyhm 淬羽赫默 淬羽赫默 cuiyuhemo cyhm",
+    "alias": "cuiyuhemo cyhm 淬羽赫默",
     "alt_name": "Silence the Paradigmatic"
   },
   {
     "id": "char_362_saga",
     "name": "嵯峨",
-    "alias": "cuoe ce 嵯峨 嵯峨 cuoe ce",
+    "alias": "cuoe ce 嵯峨",
     "alt_name": "Saga"
   },
   {
     "id": "char_157_dagda",
     "name": "达格达",
-    "alias": "dageda dgd 達格達 達格達 dageda dgd",
+    "alias": "dageda dgd 達格達",
     "alt_name": "Dagda"
   },
   {
     "id": "char_4032_provs",
     "name": "但书",
-    "alias": "danshu ds 但書 但書 danshu ds",
+    "alias": "danshu ds 但書",
     "alt_name": "Proviso"
   },
   {
     "id": "char_102_texas",
     "name": "德克萨斯",
-    "alias": "dekesasi dkss 德克薩斯 德克薩斯 dekesasi dkss",
+    "alias": "dekesasi dkss 德克薩斯",
     "alt_name": "Texas"
   },
   {
     "id": "char_183_skgoat",
     "name": "地灵",
-    "alias": "diling deling dl 地靈 地靈 diling deling dl",
+    "alias": "diling deling dl 地靈",
     "alt_name": "Earthspirit"
   },
   {
     "id": "char_452_bstalk",
     "name": "豆苗",
-    "alias": "doumiao dm 豆苗 豆苗 doumiao dm",
+    "alias": "doumiao dm 豆苗",
     "alt_name": "Beanstalk"
   },
   {
     "id": "char_130_doberm",
     "name": "杜宾",
-    "alias": "dubin db 杜賓 杜賓 dubin db",
+    "alias": "dubin db 杜賓",
     "alt_name": "Dobermann"
   },
   {
     "id": "char_501_durin",
     "name": "杜林",
-    "alias": "dulin dl 杜林 杜林 dulin dl",
+    "alias": "dulin dl 杜林",
     "alt_name": "Durin"
   },
   {
     "id": "char_294_ayer",
     "name": "断崖",
-    "alias": "duanya dy 斷崖 斷崖 duanya dy",
+    "alias": "duanya dy 斷崖",
     "alt_name": "Ayerscarpe"
   },
   {
     "id": "char_159_peacok",
     "name": "断罪者",
-    "alias": "duanzuizhe dzz 斷罪者 斷罪者 duanzuizhe dzz",
+    "alias": "duanzuizhe dzz 斷罪者",
     "alt_name": "Conviction"
   },
   {
     "id": "char_4083_chimes",
     "name": "铎铃",
-    "alias": "duoling dl 鐸鈴 鐸鈴 duoling dl",
+    "alias": "duoling dl 鐸鈴",
     "alt_name": "Wind Chimes"
   },
   {
     "id": "char_4048_doroth",
     "name": "多萝西",
-    "alias": "duoluoxi dlx 多蘿西 多蘿西 duoluoxi dlx",
+    "alias": "duoluoxi dlx 多蘿西",
     "alt_name": "Dorothy"
   },
   {
     "id": "char_271_spikes",
     "name": "芳汀",
-    "alias": "fangting ft 芳汀 芳汀 fangting ft",
+    "alias": "fangting ft 芳汀",
     "alt_name": "Arene"
   },
   {
     "id": "char_300_phenxi",
     "name": "菲亚梅塔",
-    "alias": "feiyameita fymt 菲亞梅塔 菲亞梅塔 feiyameita fymt",
+    "alias": "feiyameita fymt 菲亞梅塔",
     "alt_name": "Fiammetta"
   },
   {
     "id": "char_123_fang",
     "name": "芬",
-    "alias": "fen f 芬 芬 fen f",
+    "alias": "fen f 芬",
     "alt_name": "Fang"
   },
   {
     "id": "char_222_bpipe",
     "name": "风笛",
-    "alias": "fengdi fd 風笛 風笛 fengdi fd",
+    "alias": "fengdi fd 風笛",
     "alt_name": "Bagpipe"
   },
   {
     "id": "char_4016_kazema",
     "name": "风丸",
-    "alias": "fengwan fw 風丸 風丸 fengwan fw",
+    "alias": "fengwan fw 風丸",
     "alt_name": "Kazemaru"
   },
   {
     "id": "char_4093_frston",
     "name": "Friston-3",
-    "alias": "Friston-3 Friston-3 Friston-3 Friston-3 Friston-3 Friston-3",
+    "alias": "Friston-3",
     "alt_name": "Friston-3"
   },
   {
     "id": "char_106_franka",
     "name": "芙兰卡",
-    "alias": "fulanka fulanqia flk flq 芙蘭卡 芙蘭卡 fulanka fulanqia flk flq",
+    "alias": "fulanka fulanqia flk flq 芙蘭卡",
     "alt_name": "Franka"
   },
   {
     "id": "char_120_hibisc",
     "name": "芙蓉",
-    "alias": "furong fr 芙蓉 芙蓉 furong fr",
+    "alias": "furong fr 芙蓉",
     "alt_name": "Hibiscus"
   },
   {
     "id": "char_220_grani",
     "name": "格拉尼",
-    "alias": "gelani gln 格拉尼 格拉尼 gelani gln",
+    "alias": "gelani gln 格拉尼",
     "alt_name": "Grani"
   },
   {
     "id": "char_326_glacus",
     "name": "格劳克斯",
-    "alias": "gelaokesi glks 格勞克斯 格勞克斯 gelaokesi glks",
+    "alias": "gelaokesi glks 格勞克斯",
     "alt_name": "Glaucus"
   },
   {
     "id": "char_474_glady",
     "name": "歌蕾蒂娅",
-    "alias": "geleidiya gldy 歌蕾蒂婭 歌蕾蒂婭 geleidiya gldy",
+    "alias": "geleidiya gldy 歌蕾蒂婭",
     "alt_name": "Gladiia"
   },
   {
     "id": "char_253_greyy",
     "name": "格雷伊",
-    "alias": "geleiyi gly 格雷伊 格雷伊 geleiyi gly",
+    "alias": "geleiyi gly 格雷伊",
     "alt_name": "Greyy"
   },
   {
     "id": "token_10009_weedy_cannon",
     "name": "工程蓄水炮",
-    "alias": "gongchengxushuipao gongchengxushuibao gcxsp gcxsb 工程蓄水炮 工程蓄水炮 gongchengxushuipao gongchengxushuibao gcxsp gcxsb",
+    "alias": "gongchengxushuipao gongchengxushuibao gcxsp gcxsb 工程蓄水炮",
     "alt_name": "Cannon"
   },
   {
     "id": "token_10025_doroth_recttp",
     "name": "共振装置",
-    "alias": "gongzhenzhuangzhi gzzz 共振裝置 共振裝置 gongzhenzhuangzhi gzzz",
+    "alias": "gongzhenzhuangzhi gzzz 共振裝置",
     "alt_name": "Resonator"
   },
   {
     "id": "char_196_sunbr",
     "name": "古米",
-    "alias": "gumi gm 古米 古米 gumi gm",
+    "alias": "gumi gm 古米",
     "alt_name": "Гум"
   },
   {
     "id": "char_1023_ghost2",
     "name": "归溟幽灵鲨",
-    "alias": "guimingyoulingsha gmyls 歸溟幽靈鯊 歸溟幽靈鯊 guimingyoulingsha gmyls",
+    "alias": "guimingyoulingsha gmyls 歸溟幽靈鯊",
     "alt_name": "Specter the Unchained"
   },
   {
     "id": "char_4045_heidi",
     "name": "海蒂",
-    "alias": "haidi hd 海蒂 海蒂 haidi hd",
+    "alias": "haidi hd 海蒂",
     "alt_name": "Heidi"
   },
   {
     "id": "char_4066_highmo",
     "name": "海沫",
-    "alias": "haimo hm 海沫 海沫 haimo hm",
+    "alias": "haimo hm 海沫",
     "alt_name": "Highmore"
   },
   {
     "id": "char_1021_kroos2",
     "name": "寒芒克洛丝",
-    "alias": "hanmangkeluosi hmkls 寒芒克洛絲 寒芒克洛絲 hanmangkeluosi hmkls",
+    "alias": "hanmangkeluosi hmkls 寒芒克洛絲",
     "alt_name": "Kroos the Keen Glint"
   },
   {
     "id": "char_341_sntlla",
     "name": "寒檀",
-    "alias": "hantan ht 寒檀 寒檀 hantan ht",
+    "alias": "hantan ht 寒檀",
     "alt_name": "Santalla"
   },
   {
     "id": "char_4039_horn",
     "name": "号角",
-    "alias": "haojiao haojue hj 號角 號角 haojiao haojue hj",
+    "alias": "haojiao haojue hj 號角",
     "alt_name": "Horn"
   },
   {
     "id": "char_4041_chnut",
     "name": "褐果",
-    "alias": "heguo hg 褐果 褐果 heguo hg",
+    "alias": "heguo hg 褐果",
     "alt_name": "Chestnut"
   },
   {
     "id": "char_188_helage",
     "name": "赫拉格",
-    "alias": "helage hlg 赫拉格 赫拉格 helage hlg",
+    "alias": "helage hlg 赫拉格",
     "alt_name": "Hellagur"
   },
   {
     "id": "char_108_silent",
     "name": "赫默",
-    "alias": "hemo hm 赫默 赫默 hemo hm",
+    "alias": "hemo hm 赫默",
     "alt_name": "Silence"
   },
   {
     "id": "char_297_hamoni",
     "name": "和弦",
-    "alias": "hexian huoxian huxian hx 和弦 和弦 hexian huoxian huxian hx",
+    "alias": "hexian huoxian huxian hx 和弦",
     "alt_name": "Harmonie"
   },
   {
     "id": "char_340_shwaz",
     "name": "黑",
-    "alias": "hei h 黑 黑 hei h",
+    "alias": "hei h 黑",
     "alt_name": "Schwarz"
   },
   {
     "id": "char_4046_ebnhlz",
     "name": "黑键",
-    "alias": "heijian hj 黑鍵 黑鍵 heijian hj",
+    "alias": "heijian hj 黑鍵",
     "alt_name": "Ebenholz"
   },
   {
     "id": "char_500_noirc",
     "name": "黑角",
-    "alias": "heijiao heijue hj 黑角 黑角 heijiao heijue hj",
+    "alias": "heijiao heijue hj 黑角",
     "alt_name": "Noir Corne"
   },
   {
     "id": "char_144_red",
     "name": "红",
-    "alias": "honggong hg 紅 紅 honggong hg",
+    "alias": "honggong hg 紅",
     "alt_name": "Projekt Red"
   },
   {
     "id": "char_290_vigna",
     "name": "红豆",
-    "alias": "hongdou gongdou hd gd 紅豆 紅豆 hongdou gongdou hd gd",
+    "alias": "hongdou gongdou hd gd 紅豆",
     "alt_name": "Vigna"
   },
   {
     "id": "char_4055_bgsnow",
     "name": "鸿雪",
-    "alias": "hongxue hx 鴻雪 鴻雪 hongxue hx",
+    "alias": "hongxue hx 鴻雪",
     "alt_name": "Позёмка"
   },
   {
     "id": "char_190_clour",
     "name": "红云",
-    "alias": "hongyun gongyun hy gy 紅雲 紅雲 hongyun gongyun hy gy",
+    "alias": "hongyun gongyun hy gy 紅雲",
     "alt_name": "Vermeil"
   },
   {
     "id": "char_226_hmau",
     "name": "吽",
-    "alias": "houhongou ho 吽 吽 houhongou ho",
+    "alias": "houhongou ho 吽",
     "alt_name": "Hung"
   },
   {
     "id": "char_171_bldsk",
     "name": "华法琳",
-    "alias": "huafalin hfl 華法琳 華法琳 huafalin hfl",
+    "alias": "huafalin hfl 華法琳",
     "alt_name": "Warfarin"
   },
   {
     "id": "char_243_waaifu",
     "name": "槐琥",
-    "alias": "huaihu hh 槐琥 槐琥 huaihu hh",
+    "alias": "huaihu hh 槐琥",
     "alt_name": "Waai Fu"
   },
   {
     "id": "token_10003_cgbird_bird",
     "name": "幻影",
-    "alias": "huanying hy 幻影 幻影 huanying hy",
+    "alias": "huanying hy 幻影",
     "alt_name": "Cage"
   },
   {
     "id": "char_017_huang",
     "name": "煌",
-    "alias": "huang h 煌 煌 huang h",
+    "alias": "huang h 煌",
     "alt_name": "Blaze"
   },
   {
     "id": "char_431_ashlok",
     "name": "灰毫",
-    "alias": "huihao hh 灰毫 灰毫 huihao hh",
+    "alias": "huihao hh 灰毫",
     "alt_name": "Ashlock"
   },
   {
     "id": "char_367_swllow",
     "name": "灰喉",
-    "alias": "huihou hh 灰喉 灰喉 huihou hh",
+    "alias": "huihou hh 灰喉",
     "alt_name": "GreyThroat"
   },
   {
     "id": "char_456_ash",
     "name": "灰烬",
-    "alias": "huijin hj 灰燼 灰燼 huijin hj",
+    "alias": "huijin hj 灰燼",
     "alt_name": "Ash"
   },
   {
     "id": "char_4027_heyak",
     "name": "霍尔海雅",
-    "alias": "huoerhaiya hehy 霍爾海雅 霍爾海雅 huoerhaiya hehy",
+    "alias": "huoerhaiya hehy 霍爾海雅",
     "alt_name": "Ho'olheyak"
   },
   {
     "id": "char_1030_noirc2",
     "name": "火龙S黑角",
-    "alias": "huolongSheijiao huolongSheijue hlShj 火龍S黑角 火龍S黑角 huolongSheijiao huolongSheijue hlShj",
+    "alias": "huolongSheijiao huolongSheijue hlShj 火龍S黑角",
     "alt_name": "Rathalos S Noir Corne"
   },
   {
     "id": "char_493_firwhl",
     "name": "火哨",
-    "alias": "huoshao hs 火哨 火哨 huoshao hs",
+    "alias": "huoshao hs 火哨",
     "alt_name": "Firewhistle"
   },
   {
     "id": "char_163_hpsts",
     "name": "火神",
-    "alias": "huoshen hs 火神 火神 huoshen hs",
+    "alias": "huoshen hs 火神",
     "alt_name": "Vulcan"
   },
   {
     "id": "char_293_thorns",
     "name": "棘刺",
-    "alias": "jici jc 棘刺 棘刺 jici jc",
+    "alias": "jici jc 棘刺",
     "alt_name": "Thorns"
   },
   {
     "id": "char_422_aurora",
     "name": "极光",
-    "alias": "jiguang jg 極光 極光 jiguang jg",
+    "alias": "jiguang jg 極光",
     "alt_name": "Aurora"
   },
   {
     "id": "char_401_elysm",
     "name": "极境",
-    "alias": "jijing jj 極境 極境 jijing jj",
+    "alias": "jijing jj 極境",
     "alt_name": "Elysium"
   },
   {
     "id": "token_10004_otter_motter",
     "name": "机械水獭",
-    "alias": "jixieshuita jxst 機械水獺 機械水獺 jixieshuita jxst",
+    "alias": "jixieshuita jxst 機械水獺",
     "alt_name": "Mibo"
   },
   {
     "id": "char_1013_chen2",
     "name": "假日威龙陈",
-    "alias": "jiariweilongchen jrwlc 假日威龍陳 假日威龍陳 jiariweilongchen jrwlc",
+    "alias": "jiariweilongchen jrwlc 假日威龍陳",
     "alt_name": "Ch'en the Holungday"
   },
   {
     "id": "char_349_chiave",
     "name": "贾维",
-    "alias": "jiawei guwei jw gw 賈維 賈維 jiawei guwei jw gw",
+    "alias": "jiawei guwei jw gw 賈維",
     "alt_name": "Chiave"
   },
   {
     "id": "char_187_ccheal",
     "name": "嘉维尔",
-    "alias": "jiaweier jwe 嘉維爾 嘉維爾 jiaweier jwe",
+    "alias": "jiaweier jwe 嘉維爾",
     "alt_name": "Gavial"
   },
   {
     "id": "char_4036_forcer",
     "name": "见行者",
-    "alias": "jianhangzhe jianxingzhe xianhangzhe xianxingzhe jhz jxz xhz xxz 見行者 見行者 jianhangzhe jianxingzhe xianhangzhe xianxingzhe jhz jxz xhz xxz",
+    "alias": "jianhangzhe jianxingzhe xianhangzhe xianxingzhe jhz jxz xhz xxz 見行者",
     "alt_name": "Enforcer"
   },
   {
     "id": "char_260_durnar",
     "name": "坚雷",
-    "alias": "jianlei jl 堅雷 堅雷 jianlei jl",
+    "alias": "jianlei jl 堅雷",
     "alt_name": "Dur-nar"
   },
   {
     "id": "char_1028_texas2",
     "name": "缄默德克萨斯",
-    "alias": "jianmodekesasi jmdkss 緘默德克薩斯 緘默德克薩斯 jianmodekesasi jmdkss",
+    "alias": "jianmodekesasi jmdkss 緘默德克薩斯",
     "alt_name": "Texas the Omertosa"
   },
   {
     "id": "char_199_yak",
     "name": "角峰",
-    "alias": "jiaofeng juefeng jf 角峰 角峰 jiaofeng juefeng jf",
+    "alias": "jiaofeng juefeng jf 角峰",
     "alt_name": "Matterhorn"
   },
   {
     "id": "char_272_strong",
     "name": "孑",
-    "alias": "jie j 孑 孑 jie j",
+    "alias": "jie j 孑",
     "alt_name": "Jaye"
   },
   {
     "id": "char_347_jaksel",
     "name": "杰克",
-    "alias": "jieke jk 傑克 傑克 jieke jk",
+    "alias": "jieke jk 傑克",
     "alt_name": "Jackie"
   },
   {
     "id": "char_235_jesica",
     "name": "杰西卡",
-    "alias": "jiexika jiexiqia jxk jxq 傑西卡 傑西卡 jiexika jiexiqia jxk jxq",
+    "alias": "jiexika jiexiqia jxk jxq 傑西卡",
     "alt_name": "Jessica"
   },
   {
     "id": "char_4078_bdhkgt",
     "name": "截云",
-    "alias": "jieyun jy 截雲 截雲 jieyun jy",
+    "alias": "jieyun jy 截雲",
     "alt_name": "Jieyun"
   },
   {
     "id": "char_306_leizi",
     "name": "惊蛰",
-    "alias": "jingzhe jz 驚蟄 驚蟄 jingzhe jz",
+    "alias": "jingzhe jz 驚蟄",
     "alt_name": "Leizi"
   },
   {
     "id": "token_10007_phatom_twin",
     "name": "镜中虚影",
-    "alias": "jingzhongxuying jzxy 鏡中虛影 鏡中虛影 jingzhongxuying jzxy",
+    "alias": "jingzhongxuying jzxy 鏡中虛影",
     "alt_name": "The Mirror"
   },
   {
     "id": "token_10024_ebnhlz_rcube",
     "name": "旧日残影",
-    "alias": "jiuricanying jrcy 舊日殘影 舊日殘影 jiuricanying jrcy",
+    "alias": "jiuricanying jrcy 舊日殘影",
     "alt_name": "Old Day Remnants"
   },
   {
     "id": "char_4019_ncdeer",
     "name": "九色鹿",
-    "alias": "jiuselu jsl 九色鹿 九色鹿 jiuselu jsl",
+    "alias": "jiuselu jsl 九色鹿",
     "alt_name": "Nine-Colored Deer"
   },
   {
     "id": "char_328_cammou",
     "name": "卡达",
-    "alias": "kada qiada kd qd 卡達 卡達 kada qiada kd qd",
+    "alias": "kada qiada kd qd 卡達",
     "alt_name": "Click"
   },
   {
     "id": "char_214_kafka",
     "name": "卡夫卡",
-    "alias": "kafuka kafuqia qiafuka qiafuqia kfk kfq qfk qfq 卡夫卡 卡夫卡 kafuka kafuqia qiafuka qiafuqia kfk kfq qfk qfq",
+    "alias": "kafuka kafuqia qiafuka qiafuqia kfk kfq qfk qfq 卡夫卡",
     "alt_name": "Kafka"
   },
   {
     "id": "char_426_billro",
     "name": "卡涅利安",
-    "alias": "kanielian qianielian knla qnla 卡涅利安 卡涅利安 kanielian qianielian knla qnla",
+    "alias": "kanielian qianielian knla qnla 卡涅利安",
     "alt_name": "Carnelian"
   },
   {
     "id": "char_209_ardign",
     "name": "卡缇",
-    "alias": "kati qiati kt qt 卡緹 卡緹 kati qiati kt qt",
+    "alias": "kati qiati kt qt 卡緹",
     "alt_name": "Cardigan"
   },
   {
     "id": "char_003_kalts",
     "name": "凯尔希",
-    "alias": "kaierxi kex 凱爾希 凱爾希 kaierxi kex",
+    "alias": "kaierxi kex 凱爾希",
     "alt_name": "Kal'tsit"
   },
   {
     "id": "char_301_cutter",
     "name": "刻刀",
-    "alias": "kedao kd 刻刀 刻刀 kedao kd",
+    "alias": "kedao kd 刻刀",
     "alt_name": "Cutter"
   },
   {
     "id": "char_2013_cerber",
     "name": "刻俄柏",
-    "alias": "keebai keebo keb 刻俄柏 刻俄柏 keebai keebo keb",
+    "alias": "keebai keebo keb 刻俄柏",
     "alt_name": "Ceobe"
   },
   {
     "id": "token_10023_windft_wrench",
     "name": "可靠电池",
-    "alias": "kekaodianchi kkdc 可靠電池 可靠電池 kekaodianchi kkdc",
+    "alias": "kekaodianchi kkdc 可靠電池",
     "alt_name": "Reliable Battery"
   },
   {
     "id": "char_124_kroos",
     "name": "克洛丝",
-    "alias": "keluosi kls 克洛絲 克洛絲 keluosi kls",
+    "alias": "keluosi kls 克洛絲",
     "alt_name": "Kroos"
   },
   {
     "id": "char_201_moeshd",
     "name": "可颂",
-    "alias": "kesong ks 可頌 可頌 kesong ks",
+    "alias": "kesong ks 可頌",
     "alt_name": "Croissant"
   },
   {
     "id": "char_101_sora",
     "name": "空",
-    "alias": "kong k 空 空 kong k",
+    "alias": "kong k 空",
     "alt_name": "Sora"
   },
   {
     "id": "char_282_catap",
     "name": "空爆",
-    "alias": "kongbao kb 空爆 空爆 kongbao kb",
+    "alias": "kongbao kb 空爆",
     "alt_name": "Catapult"
   },
   {
     "id": "char_4015_spuria",
     "name": "空构",
-    "alias": "konggou kg 空構 空構 konggou kg",
+    "alias": "konggou kg 空構",
     "alt_name": "Spuria"
   },
   {
     "id": "char_332_archet",
     "name": "空弦",
-    "alias": "kongxian kx 空弦 空弦 kongxian kx",
+    "alias": "kongxian kx 空弦",
     "alt_name": "Archetto"
   },
   {
     "id": "char_405_absin",
     "name": "苦艾",
-    "alias": "kuai kuyi ka ky 苦艾 苦艾 kuai kuyi ka ky",
+    "alias": "kuai kuyi ka ky 苦艾",
     "alt_name": "Absinthe"
   },
   {
     "id": "char_250_phatom",
     "name": "傀影",
-    "alias": "kuiying guiying ky gy 傀影 傀影 kuiying guiying ky gy",
+    "alias": "kuiying guiying ky gy 傀影",
     "alt_name": "Phantom"
   },
   {
     "id": "char_140_whitew",
     "name": "拉普兰德",
-    "alias": "lapulande lpld 拉普蘭德 拉普蘭德 lapulande lpld",
+    "alias": "lapulande lpld 拉普蘭德",
     "alt_name": "Lappland"
   },
   {
     "id": "char_373_lionhd",
     "name": "莱恩哈特",
-    "alias": "laienhate leht 萊恩哈特 萊恩哈特 laienhate leht",
+    "alias": "laienhate leht 萊恩哈特",
     "alt_name": "Leonhardt"
   },
   {
     "id": "char_129_bluep",
     "name": "蓝毒",
-    "alias": "landu landai ld 藍毒 藍毒 landu landai ld",
+    "alias": "landu landai ld 藍毒",
     "alt_name": "Blue Poison"
   },
   {
     "id": "char_285_medic2",
     "name": "Lancet-2",
-    "alias": "Lancet-2 Lancet-2 Lancet-2 Lancet-2 Lancet-2 Lancet-2",
+    "alias": "Lancet-2",
     "alt_name": "Lancet-2"
   },
   {
     "id": "token_10028_vigil_wolf",
     "name": "狼群",
-    "alias": "langqun lq 狼群 狼群 langqun lq",
+    "alias": "langqun lq 狼群",
     "alt_name": "Vigil"
   },
   {
     "id": "char_322_lmlee",
     "name": "老鲤",
-    "alias": "laoli ll 老鯉 老鯉 laoli ll",
+    "alias": "laoli ll 老鯉",
     "alt_name": "Lee"
   },
   {
     "id": "char_107_liskam",
     "name": "雷蛇",
-    "alias": "leishe leiyi ls ly 雷蛇 雷蛇 leishe leiyi ls ly",
+    "alias": "leishe leiyi ls ly 雷蛇",
     "alt_name": "Liskarm"
   },
   {
     "id": "char_237_gravel",
     "name": "砾",
-    "alias": "li l 礫 礫 li l",
+    "alias": "li l 礫",
     "alt_name": "Gravel"
   },
   {
     "id": "trap_079_allydonq",
     "name": "猎潮的骑士",
-    "alias": "liechaodeqishi liechaodiqishi lcdqs 獵潮的騎士 獵潮的騎士 liechaodeqishi liechaodiqishi lcdqs",
+    "alias": "liechaodeqishi liechaodiqishi lcdqs 獵潮的騎士",
     "alt_name": "The Tide-hunt Knight"
   },
   {
     "id": "char_137_brownb",
     "name": "猎蜂",
-    "alias": "liefeng lf 獵蜂 獵蜂 liefeng lf",
+    "alias": "liefeng lf 獵蜂",
     "alt_name": "Beehunter"
   },
   {
     "id": "char_4080_lin",
     "name": "林",
-    "alias": "lin l 林 林 lin l",
+    "alias": "lin l 林",
     "alt_name": "Lin"
   },
   {
     "id": "char_115_headbr",
     "name": "凛冬",
-    "alias": "lindong ld 凜冬 凜冬 lindong ld",
+    "alias": "lindong ld 凜冬",
     "alt_name": "Зима"
   },
   {
     "id": "char_148_nearl",
     "name": "临光",
-    "alias": "linguang lg 臨光 臨光 linguang lg",
+    "alias": "linguang lg 臨光",
     "alt_name": "Nearl"
   },
   {
     "id": "char_4102_threye",
     "name": "凛视",
-    "alias": "linshi ls 凜視 凜視 linshi ls",
+    "alias": "linshi ls 凜視",
     "alt_name": "Valarqvin"
   },
   {
     "id": "char_2023_ling",
     "name": "令",
-    "alias": "ling l 令 令 ling l",
+    "alias": "ling l 令",
     "alt_name": "Ling"
   },
   {
     "id": "char_358_lisa",
     "name": "铃兰",
-    "alias": "linglan ll 鈴蘭 鈴蘭 linglan ll",
+    "alias": "linglan ll 鈴蘭",
     "alt_name": "Suzuran"
   },
   {
     "id": "char_192_falco",
     "name": "翎羽",
-    "alias": "lingyu ly 翎羽 翎羽 lingyu ly",
+    "alias": "lingyu ly 翎羽",
     "alt_name": "Plume"
   },
   {
     "id": "char_206_gnosis",
     "name": "灵知",
-    "alias": "lingzhi lz 靈知 靈知 lingzhi lz",
+    "alias": "lingzhi lz 靈知",
     "alt_name": "Gnosis"
   },
   {
     "id": "char_4042_lumen",
     "name": "流明",
-    "alias": "liuming lm 流明 流明 liuming lm",
+    "alias": "liuming lm 流明",
     "alt_name": "Lumen"
   },
   {
     "id": "token_10030_mlyss_wtrman",
     "name": "流形",
-    "alias": "liuxing lx 流形 流形 liuxing lx",
+    "alias": "liuxing lx 流形",
     "alt_name": "Flowing Shape"
   },
   {
     "id": "char_126_shotst",
     "name": "流星",
-    "alias": "liuxing lx 流星 流星 liuxing lx",
+    "alias": "liuxing lx 流星",
     "alt_name": "Meteor"
   },
   {
     "id": "char_486_takila",
     "name": "龙舌兰",
-    "alias": "longshelan lsl 龍舌蘭 龍舌蘭 longshelan lsl",
+    "alias": "longshelan lsl 龍舌蘭",
     "alt_name": "Tequila"
   },
   {
     "id": "token_10005_mgllan_drone3",
     "name": "龙腾.A",
-    "alias": "longteng.A lt.A 龍騰.A 龍騰.A longteng.A lt.A",
+    "alias": "longteng.A lt.A 龍騰.A",
     "alt_name": "DDF Type-A"
   },
   {
     "id": "token_10005_mgllan_drone1",
     "name": "龙腾.F",
-    "alias": "longteng.F lt.F 龍騰.F 龍騰.F longteng.F lt.F",
+    "alias": "longteng.F lt.F 龍騰.F",
     "alt_name": "DDF Type-F"
   },
   {
     "id": "token_10005_mgllan_drone2",
     "name": "龙腾.L",
-    "alias": "longteng.L lt.L 龍騰.L 龍騰.L longteng.L lt.L",
+    "alias": "longteng.L lt.L 龍騰.L",
     "alt_name": "DDF Type-L"
   },
   {
     "id": "char_433_windft",
     "name": "掠风",
-    "alias": "lvefeng lf 掠風 掠風 lvefeng lf",
+    "alias": "lvefeng lf 掠風",
     "alt_name": "Windflit"
   },
   {
     "id": "char_484_robrta",
     "name": "罗比菈塔",
-    "alias": "luobilata lblt 羅比菈塔 羅比菈塔 luobilata lblt",
+    "alias": "luobilata lblt 羅比菈塔",
     "alt_name": "Roberta"
   },
   {
     "id": "char_451_robin",
     "name": "罗宾",
-    "alias": "luobin lb 羅賓 羅賓 luobin lb",
+    "alias": "luobin lb 羅賓",
     "alt_name": "Robin"
   },
   {
     "id": "char_4040_rockr",
     "name": "洛洛",
-    "alias": "luoluo ll 洛洛 洛洛 luoluo ll",
+    "alias": "luoluo ll 洛洛",
     "alt_name": "Rockrock"
   },
   {
     "id": "char_4067_lolxh",
     "name": "罗小黑",
-    "alias": "luoxiaohei lxh 羅小黑 羅小黑 luoxiaohei lxh",
+    "alias": "luoxiaohei lxh 羅小黑",
     "alt_name": "Luo Xiaohei"
   },
   {
     "id": "char_4064_mlynar",
     "name": "玛恩纳",
-    "alias": "maenna men 瑪恩納 瑪恩納 maenna men",
+    "alias": "maenna men 瑪恩納",
     "alt_name": "Młynar"
   },
   {
     "id": "char_248_mgllan",
     "name": "麦哲伦",
-    "alias": "maizhelun mzl 麥哲倫 麥哲倫 maizhelun mzl",
+    "alias": "maizhelun mzl 麥哲倫",
     "alt_name": "Magallan"
   },
   {
     "id": "char_133_mm",
     "name": "梅",
-    "alias": "mei m 梅 梅 mei m",
+    "alias": "mei m 梅",
     "alt_name": "May"
   },
   {
     "id": "char_242_otter",
     "name": "梅尔",
-    "alias": "meier me 梅爾 梅爾 meier me",
+    "alias": "meier me 梅爾",
     "alt_name": "Mayer"
   },
   {
     "id": "char_4006_melnte",
     "name": "玫拉",
-    "alias": "meila ml 玫拉 玫拉 meila ml",
+    "alias": "meila ml 玫拉",
     "alt_name": "Melanite"
   },
   {
     "id": "char_208_melan",
     "name": "玫兰莎",
-    "alias": "meilansuo meilansha mls 玫蘭莎 玫蘭莎 meilansuo meilansha mls",
+    "alias": "meilansuo meilansha mls 玫蘭莎",
     "alt_name": "Melantha"
   },
   {
     "id": "char_391_rosmon",
     "name": "迷迭香",
-    "alias": "midiexiang mdx 迷迭香 迷迭香 midiexiang mdx",
+    "alias": "midiexiang mdx 迷迭香",
     "alt_name": "Rosmontis"
   },
   {
     "id": "char_122_beagle",
     "name": "米格鲁",
-    "alias": "migelu mgl 米格魯 米格魯 migelu mgl",
+    "alias": "migelu mgl 米格魯",
     "alt_name": "Beagle"
   },
   {
     "id": "char_344_beewax",
     "name": "蜜蜡",
-    "alias": "mila ml 蜜蠟 蜜蠟 mila ml",
+    "alias": "mila ml 蜜蠟",
     "alt_name": "Beeswax"
   },
   {
     "id": "char_449_glider",
     "name": "蜜莓",
-    "alias": "mimei mm 蜜莓 蜜莓 mimei mm",
+    "alias": "mimei mm 蜜莓",
     "alt_name": "Honeyberry"
   },
   {
     "id": "char_4017_puzzle",
     "name": "谜图",
-    "alias": "mitu mt 謎圖 謎圖 mitu mt",
+    "alias": "mitu mt 謎圖",
     "alt_name": "Puzzle"
   },
   {
     "id": "token_10021_blkngt_hypnos",
     "name": "眠兽",
-    "alias": "mianshou ms 眠獸 眠獸 mianshou ms",
+    "alias": "mianshou ms 眠獸",
     "alt_name": "Hypnos"
   },
   {
     "id": "char_4071_peper",
     "name": "明椒",
-    "alias": "mingjiao mj 明椒 明椒 mingjiao mj",
+    "alias": "mingjiao mj 明椒",
     "alt_name": "Paprika"
   },
   {
     "id": "char_154_morgan",
     "name": "摩根",
-    "alias": "mogen magen mg 摩根 摩根 mogen magen mg",
+    "alias": "mogen magen mg 摩根",
     "alt_name": "Morgan"
   },
   {
     "id": "char_213_mostma",
     "name": "莫斯提马",
-    "alias": "mositima mosidima musitima musidima mstm msdm 莫斯提馬 莫斯提馬 mositima mosidima musitima musidima mstm msdm",
+    "alias": "mositima mosidima musitima musidima mstm msdm 莫斯提馬",
     "alt_name": "Mostima"
   },
   {
     "id": "char_117_myrrh",
     "name": "末药",
-    "alias": "moyao my 末藥 末藥 moyao my",
+    "alias": "moyao my 末藥",
     "alt_name": "Myrrh"
   },
   {
     "id": "token_10002_kalts_mon3tr",
     "name": "Mon3tr",
-    "alias": "Mon3tr Mon3tr Mon3tr Mon3tr Mon3tr Mon3tr",
+    "alias": "Mon3tr",
     "alt_name": "Mon3tr"
   },
   {
     "id": "char_249_mlyss",
     "name": "缪尔赛思",
-    "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思 繆爾賽思 mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less",
+    "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思",
     "alt_name": "Muelsyse"
   },
   {
     "id": "char_185_frncat",
     "name": "慕斯",
-    "alias": "musi ms 慕斯 慕斯 musi ms",
+    "alias": "musi ms 慕斯",
     "alt_name": "Mousse"
   },
   {
     "id": "char_103_angel",
     "name": "能天使",
-    "alias": "nengtianshi naitianshi nts 能天使 能天使 nengtianshi naitianshi nts",
+    "alias": "nengtianshi naitianshi nts 能天使",
     "alt_name": "Exusiai"
   },
   {
     "id": "char_311_mudrok",
     "name": "泥岩",
-    "alias": "niyan ny 泥岩 泥岩 niyan ny",
+    "alias": "niyan ny 泥岩",
     "alt_name": "Mudrock"
   },
   {
     "id": "char_2014_nian",
     "name": "年",
-    "alias": "nian n 年 年 nian n",
+    "alias": "nian n 年",
     "alt_name": "Nian"
   },
   {
     "id": "char_485_pallas",
     "name": "帕拉斯",
-    "alias": "palasi pls 帕拉斯 帕拉斯 palasi pls",
+    "alias": "palasi pls 帕拉斯",
     "alt_name": "Pallas"
   },
   {
     "id": "token_10014_bstalk_crab",
     "name": "磐蟹护卫队",
-    "alias": "panxiehuweidui pxhwd 磐蟹護衛隊 磐蟹護衛隊 panxiehuweidui panxiehuweizhui pxhwd pxhwz",
+    "alias": "panxiehuweidui pxhwd 磐蟹護衛隊 panxiehuweizhui pxhwz",
     "alt_name": "M.C.G"
   },
   {
     "id": "char_381_bubble",
     "name": "泡泡",
-    "alias": "paopao pp 泡泡 泡泡 paopao pp",
+    "alias": "paopao pp 泡泡",
     "alt_name": "Bubble"
   },
   {
     "id": "char_281_popka",
     "name": "泡普卡",
-    "alias": "paopuka paopuqia ppk ppq 泡普卡 泡普卡 paopuka paopuqia ppk ppq",
+    "alias": "paopuka paopuqia ppk ppq 泡普卡",
     "alt_name": "Popukar"
   },
   {
     "id": "char_509_acast",
     "name": "Pith",
-    "alias": "Pith Pith Pith Pith Pith Pith",
+    "alias": "Pith",
     "alt_name": "Pith"
   },
   {
     "id": "char_145_prove",
     "name": "普罗旺斯",
-    "alias": "puluowangsi plws 普羅旺斯 普羅旺斯 puluowangsi plws",
+    "alias": "puluowangsi plws 普羅旺斯",
     "alt_name": "Provence"
   },
   {
     "id": "char_478_kirara",
     "name": "绮良",
-    "alias": "qiliang ql 綺良 綺良 qiliang ql",
+    "alias": "qiliang ql 綺良",
     "alt_name": "Kirara"
   },
   {
     "id": "char_1029_yato2",
     "name": "麒麟X夜刀",
-    "alias": "qilinXyedao qlXyd 麒麟X夜刀 麒麟X夜刀 qilinXyedao qlXyd",
+    "alias": "qilinXyedao qlXyd 麒麟X夜刀",
     "alt_name": "Kirin X Yato"
   },
   {
     "id": "char_4062_totter",
     "name": "铅踝",
-    "alias": "qianhuai yanhuai qh yh 鉛踝 鉛踝 qianhuai qh",
+    "alias": "qianhuai yanhuai qh yh 鉛踝",
     "alt_name": "Totter"
   },
   {
     "id": "char_479_sleach",
     "name": "琴柳",
-    "alias": "qinliu ql 琴柳 琴柳 qinliu ql",
+    "alias": "qinliu ql 琴柳",
     "alt_name": "Saileach"
   },
   {
     "id": "char_149_scave",
     "name": "清道夫",
-    "alias": "qingdaofu qdf 清道夫 清道夫 qingdaofu qdf",
+    "alias": "qingdaofu qdf 清道夫",
     "alt_name": "Scavenger"
   },
   {
     "id": "char_385_finlpp",
     "name": "清流",
-    "alias": "qingliu ql 清流 清流 qingliu ql",
+    "alias": "qingliu ql 清流",
     "alt_name": "Purestream"
   },
   {
     "id": "token_10018_robrta_mach",
     "name": "全自动造型仪",
-    "alias": "quanzidongzaoxingyi qzdzxy 全自動造型儀 全自動造型儀 quanzidongzaoxingyi qzdzxy",
+    "alias": "quanzidongzaoxingyi qzdzxy 全自動造型儀",
     "alt_name": "Making-up Machine"
   },
   {
     "id": "char_363_toddi",
     "name": "熔泉",
-    "alias": "rongquan rq 熔泉 熔泉 rongquan rq",
+    "alias": "rongquan rq 熔泉",
     "alt_name": "Toddifons"
   },
   {
     "id": "char_202_demkni",
     "name": "塞雷娅",
-    "alias": "saileiya seleiya sly 塞雷婭 塞雷婭 saileiya seleiya sly",
+    "alias": "saileiya seleiya sly 塞雷婭",
     "alt_name": "Saria"
   },
   {
     "id": "char_473_mberry",
     "name": "桑葚",
-    "alias": "sangshen ss 桑葚 桑葚 sangshen ss",
+    "alias": "sangshen ss 桑葚",
     "alt_name": "Mulberry"
   },
   {
     "id": "char_416_zumama",
     "name": "森蚺",
-    "alias": "senran sr 森蚺 森蚺 senran sr",
+    "alias": "senran sr 森蚺",
     "alt_name": "Eunectes"
   },
   {
     "id": "token_10011_beewax_oblisk",
     "name": "沙之碑",
-    "alias": "shazhibei szb 沙之碑 沙之碑 shazhibei szb",
+    "alias": "shazhibei szb 沙之碑",
     "alt_name": "Desert Obelisk"
   },
   {
     "id": "char_264_f12yin",
     "name": "山",
-    "alias": "shan s 山 山 shan s",
+    "alias": "shan s 山",
     "alt_name": "Mountain"
   },
   {
     "id": "char_457_blitz",
     "name": "闪击",
-    "alias": "shanji sj 閃擊 閃擊 shanji sj",
+    "alias": "shanji sj 閃擊",
     "alt_name": "Blitz"
   },
   {
     "id": "char_147_shining",
     "name": "闪灵",
-    "alias": "shanling sl 閃靈 閃靈 shanling sl",
+    "alias": "shanling sl 閃靈",
     "alt_name": "Shining"
   },
   {
     "id": "char_508_aguard",
     "name": "Sharp",
-    "alias": "Sharp Sharp Sharp Sharp Sharp Sharp",
+    "alias": "Sharp",
     "alt_name": "Sharp"
   },
   {
     "id": "char_379_sesa",
     "name": "慑砂",
-    "alias": "shesha ss 懾砂 懾砂 shesha ss",
+    "alias": "shesha ss 懾砂",
     "alt_name": "Sesa"
   },
   {
     "id": "char_150_snakek",
     "name": "蛇屠箱",
-    "alias": "shetuxiang yituxiang stx ytx 蛇屠箱 蛇屠箱 shetuxiang yituxiang stx ytx",
+    "alias": "shetuxiang yituxiang stx ytx 蛇屠箱",
     "alt_name": "Cuora"
   },
   {
     "id": "char_469_indigo",
     "name": "深靛",
-    "alias": "shendian sd 深靛 深靛 shendian sd",
+    "alias": "shendian sd 深靛",
     "alt_name": "Indigo"
   },
   {
     "id": "char_110_deepcl",
     "name": "深海色",
-    "alias": "shenhaise shs 深海色 深海色 shenhaise shs",
+    "alias": "shenhaise shs 深海色",
     "alt_name": "Deepcolor"
   },
   {
     "id": "char_1032_excu2",
     "name": "圣约送葬人",
-    "alias": "shengyuesongzangren shengyaosongzangren syszr 聖約送葬人 聖約送葬人 shengyuesongzangren shengyaosongzangren syszr",
+    "alias": "shengyuesongzangren shengyaosongzangren syszr 聖約送葬人",
     "alt_name": "Executor the Ex Foedere"
   },
   {
     "id": "char_210_stward",
     "name": "史都华德",
-    "alias": "shiduhuade shidouhuade sdhd 史都華德 史都華德 shiduhuade shidouhuade sdhd",
+    "alias": "shiduhuade shidouhuade sdhd 史都華德",
     "alt_name": "Steward"
   },
   {
     "id": "char_350_surtr",
     "name": "史尔特尔",
-    "alias": "shierteer sete 史爾特爾 史爾特爾 shierteer sete",
+    "alias": "shierteer sete 史爾特爾",
     "alt_name": "Surtr"
   },
   {
     "id": "char_308_swire",
     "name": "诗怀雅",
-    "alias": "shihuaiya shy 詩懷雅 詩懷雅 shihuaiya shy",
+    "alias": "shihuaiya shy 詩懷雅",
     "alt_name": "Swire"
   },
   {
     "id": "char_378_asbest",
     "name": "石棉",
-    "alias": "shimian danmian sm dm 石棉 石棉 shimian danmian sm dm",
+    "alias": "shimian danmian sm dm 石棉",
     "alt_name": "Asbestos"
   },
   {
     "id": "char_489_serum",
     "name": "蚀清",
-    "alias": "shiqing sq 蝕清 蝕清 shiqing sq",
+    "alias": "shiqing sq 蝕清",
     "alt_name": "Corroserum"
   },
   {
     "id": "char_241_panda",
     "name": "食铁兽",
-    "alias": "shitieshou sitieshou yitieshou sts yts 食鐵獸 食鐵獸 shitieshou sitieshou yitieshou sts yts",
+    "alias": "shitieshou sitieshou yitieshou sts yts 食鐵獸",
     "alt_name": "FEater"
   },
   {
     "id": "char_215_mantic",
     "name": "狮蝎",
-    "alias": "shixie sx 獅蠍 獅蠍 shixie sx",
+    "alias": "shixie sx 獅蠍",
     "alt_name": "Manticore"
   },
   {
     "id": "char_4063_quartz",
     "name": "石英",
-    "alias": "shiying danying sy dy 石英 石英 shiying danying sy dy",
+    "alias": "shiying danying sy dy 石英",
     "alt_name": "Quartz"
   },
   {
     "id": "char_158_milu",
     "name": "守林人",
-    "alias": "shoulinren slr 守林人 守林人 shoulinren slr",
+    "alias": "shoulinren slr 守林人",
     "alt_name": "Firewatch"
   },
   {
     "id": "char_458_rfrost",
     "name": "霜华",
-    "alias": "shuanghua sh 霜華 霜華 shuanghua sh",
+    "alias": "shuanghua sh 霜華",
     "alt_name": "Frost"
   },
   {
     "id": "char_193_frostl",
     "name": "霜叶",
-    "alias": "shuangye shuangxie sy sx 霜葉 霜葉 shuangye sy",
+    "alias": "shuangye shuangxie sy sx 霜葉",
     "alt_name": "Frostleaf"
   },
   {
     "id": "char_437_mizuki",
     "name": "水月",
-    "alias": "shuiyue sy 水月 水月 shuiyue sy",
+    "alias": "shuiyue sy 水月",
     "alt_name": "Mizuki"
   },
   {
     "id": "char_263_skadi",
     "name": "斯卡蒂",
-    "alias": "sikadi siqiadi skd sqd 斯卡蒂 斯卡蒂 sikadi siqiadi skd sqd",
+    "alias": "sikadi siqiadi skd sqd 斯卡蒂",
     "alt_name": "Skadi"
   },
   {
     "id": "token_10017_skadi2_dedant",
     "name": "斯卡蒂的海嗣",
-    "alias": "sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs 斯卡蒂的海嗣 斯卡蒂的海嗣 sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs",
+    "alias": "sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs 斯卡蒂的海嗣",
     "alt_name": "Skadi's seaborn"
   },
   {
     "id": "char_427_vigil",
     "name": "伺夜",
-    "alias": "siye ciye sy cy 伺夜 伺夜 siye ciye sy cy",
+    "alias": "siye ciye sy cy 伺夜",
     "alt_name": "Vigil"
   },
   {
     "id": "char_365_aprl",
     "name": "四月",
-    "alias": "siyue sy 四月 四月 siyue sy",
+    "alias": "siyue sy 四月",
     "alt_name": "April"
   },
   {
     "id": "char_440_pinecn",
     "name": "松果",
-    "alias": "songguo sg 鬆果 鬆果 songguo sg",
+    "alias": "songguo sg 鬆果",
     "alt_name": "Pinecone"
   },
   {
     "id": "char_279_excu",
     "name": "送葬人",
-    "alias": "songzangren szr 送葬人 送葬人 songzangren szr",
+    "alias": "songzangren szr 送葬人",
     "alt_name": "Executor"
   },
   {
     "id": "char_511_asnipe",
     "name": "Stormeye",
-    "alias": "Stormeye Stormeye Stormeye Stormeye Stormeye Stormeye",
+    "alias": "Stormeye",
     "alt_name": "Stormeye"
   },
   {
     "id": "char_298_susuro",
     "name": "苏苏洛",
-    "alias": "susuluo ssl 蘇蘇洛 蘇蘇洛 susuluo ssl",
+    "alias": "susuluo ssl 蘇蘇洛",
     "alt_name": "Sussurro"
   },
   {
     "id": "char_366_acdrop",
     "name": "酸糖",
-    "alias": "suantang st 酸糖 酸糖 suantang st",
+    "alias": "suantang st 酸糖",
     "alt_name": "Aciddrop"
   },
   {
     "id": "char_415_flint",
     "name": "燧石",
-    "alias": "suishi suidan ss sd 燧石 燧石 suishi suidan ss sd",
+    "alias": "suishi suidan ss sd 燧石",
     "alt_name": "Flint"
   },
   {
     "id": "char_4077_palico",
     "name": "泰拉大陆调查团",
-    "alias": "tailadalutiaochatuan tailadalutiaozhatuan tailadaludiaochatuan tailadaludiaozhatuan tailadaluzhouchatuan tailadaluzhouzhatuan tailadailutiaochatuan tailadailutiaozhatuan tailadailudiaochatuan tailadailudiaozhatuan tailadailuzhouchatuan tailadailuzhouzhatuan tailatailutiaochatuan tailatailutiaozhatuan tailatailudiaochatuan tailatailudiaozhatuan tailatailuzhouchatuan tailatailuzhouzhatuan tldltct tldltzt tldldct tldldzt tldlzct tldlzzt tltltct tltltzt tltldct tltldzt tltlzct tltlzzt 泰拉大陸調查團 泰拉大陸調查團 tailadaludiaochatuan tailadaludiaozhatuan tailadalutiaochatuan tailadalutiaozhatuan tailadailudiaochatuan tailadailudiaozhatuan tailadailutiaochatuan tailadailutiaozhatuan tailatailudiaochatuan tailatailudiaozhatuan tailatailutiaochatuan tailatailutiaozhatuan tldldct tldldzt tldltct tldltzt tltldct tltldzt tltltct tltltzt",
+    "alias": "tailadalutiaochatuan tailadalutiaozhatuan tailadaludiaochatuan tailadaludiaozhatuan tailadaluzhouchatuan tailadaluzhouzhatuan tailadailutiaochatuan tailadailutiaozhatuan tailadailudiaochatuan tailadailudiaozhatuan tailadailuzhouchatuan tailadailuzhouzhatuan tailatailutiaochatuan tailatailutiaozhatuan tailatailudiaochatuan tailatailudiaozhatuan tailatailuzhouchatuan tailatailuzhouzhatuan tldltct tldltzt tldldct tldldzt tldlzct tldlzzt tltltct tltltzt tltldct tltldzt tltlzct tltlzzt 泰拉大陸調查團",
     "alt_name": "Terra Research Commission"
   },
   {
     "id": "char_151_myrtle",
     "name": "桃金娘",
-    "alias": "taojinniang tjn 桃金娘 桃金娘 taojinniang tjn",
+    "alias": "taojinniang tjn 桃金娘",
     "alt_name": "Myrtle"
   },
   {
     "id": "char_411_tomimi",
     "name": "特米米",
-    "alias": "temimi tmm 特米米 特米米 temimi tmm",
+    "alias": "temimi tmm 特米米",
     "alt_name": "Tomimi"
   },
   {
     "id": "char_376_therex",
     "name": "THRM-EX",
-    "alias": "THRM-EX THRM-EX THRM-EX THRM-EX THRM-EX THRM-EX",
+    "alias": "THRM-EX",
     "alt_name": "Thermal-EX"
   },
   {
     "id": "char_2012_typhon",
     "name": "提丰",
-    "alias": "tifeng difeng tf df 提豐 提豐 tifeng difeng tf df",
+    "alias": "tifeng difeng tf df 提豐",
     "alt_name": "Typhon"
   },
   {
     "id": "char_166_skfire",
     "name": "天火",
-    "alias": "tianhuo th 天火 天火 tianhuo th",
+    "alias": "tianhuo th 天火",
     "alt_name": "Skyfire"
   },
   {
     "id": "char_181_flower",
     "name": "调香师",
-    "alias": "tiaoxiangshi diaoxiangshi zhouxiangshi txs dxs zxs 調香師 調香師 diaoxiangshi tiaoxiangshi dxs txs",
+    "alias": "tiaoxiangshi diaoxiangshi zhouxiangshi txs dxs zxs 調香師",
     "alt_name": "Perfumer"
   },
   {
     "id": "token_10027_ironmn_pile3",
     "name": "铁钳号·原型机",
-    "alias": "tieqianhao·yuanxingji tqh·yxj 鐵鉗號·原型機 鐵鉗號·原型機 tieqianhao·yuanxingji tqh·yxj",
+    "alias": "tieqianhao·yuanxingji tqh·yxj 鐵鉗號·原型機",
     "alt_name": "Prototype of Feist's Metal Crab"
   },
   {
     "id": "char_510_amedic",
     "name": "Touch",
-    "alias": "Touch Touch Touch Touch Touch Touch",
+    "alias": "Touch",
     "alt_name": "Touch"
   },
   {
     "id": "char_402_tuye",
     "name": "图耶",
-    "alias": "tuye ty 圖耶 圖耶 tuye ty",
+    "alias": "tuye ty 圖耶",
     "alt_name": "Tuye"
   },
   {
     "id": "char_112_siege",
     "name": "推进之王",
-    "alias": "tuijinzhiwang tjzw 推進之王 推進之王 tuijinzhiwang tjzw",
+    "alias": "tuijinzhiwang tjzw 推進之王",
     "alt_name": "Siege"
   },
   {
     "id": "char_4091_ulika",
     "name": "U-Official",
-    "alias": "U-Official U-Official U-Official U-Official U-Official U-Official",
+    "alias": "U-Official",
     "alt_name": "U-Official"
   },
   {
     "id": "char_113_cqbw",
     "name": "W",
-    "alias": "W W W W W W",
+    "alias": "W",
     "alt_name": "W"
   },
   {
     "id": "char_261_sddrag",
     "name": "苇草",
-    "alias": "weicao wc 葦草 葦草 weicao wc",
+    "alias": "weicao wc 葦草",
     "alt_name": "Reed"
   },
   {
     "id": "char_275_breeze",
     "name": "微风",
-    "alias": "weifeng wf 微風 微風 weifeng wf",
+    "alias": "weifeng wf 微風",
     "alt_name": "Breeze"
   },
   {
     "id": "char_400_weedy",
     "name": "温蒂",
-    "alias": "wendi wd 溫蒂 溫蒂 wendi wd",
+    "alias": "wendi wd 溫蒂",
     "alt_name": "Weedy"
   },
   {
     "id": "char_254_vodfox",
     "name": "巫恋",
-    "alias": "wulian wl 巫戀 巫戀 wulian wl",
+    "alias": "wulian wl 巫戀",
     "alt_name": "Shamare"
   },
   {
     "id": "char_455_nothin",
     "name": "乌有",
-    "alias": "wuyou wy 烏有 烏有 wuyou wy",
+    "alias": "wuyou wy 烏有",
     "alt_name": "Mr.Nothing"
   },
   {
     "id": "char_2015_dusk",
     "name": "夕",
-    "alias": "xi x 夕 夕 xi x",
+    "alias": "xi x 夕",
     "alt_name": "Dusk"
   },
   {
     "id": "char_348_ceylon",
     "name": "锡兰",
-    "alias": "xilan xl 錫蘭 錫蘭 xilan xl",
+    "alias": "xilan xl 錫蘭",
     "alt_name": "Ceylon"
   },
   {
     "id": "char_336_folivo",
     "name": "稀音",
-    "alias": "xiyin xy 稀音 稀音 xiyin xy",
+    "alias": "xiyin xy 稀音",
     "alt_name": "Scene"
   },
   {
     "id": "char_423_blemsh",
     "name": "瑕光",
-    "alias": "xiaguang xg 瑕光 瑕光 xiaguang xg",
+    "alias": "xiaguang xg 瑕光",
     "alt_name": "Blemishine"
   },
   {
     "id": "char_492_quercu",
     "name": "夏栎",
-    "alias": "xiali xiayue xl xy 夏櫟 夏櫟 xiali xiayue xl xy",
+    "alias": "xiali xiayue xl xy 夏櫟",
     "alt_name": "Quercus"
   },
   {
     "id": "char_240_wyvern",
     "name": "香草",
-    "alias": "xiangcao xc 香草 香草 xiangcao xc",
+    "alias": "xiangcao xc 香草",
     "alt_name": "Vanilla"
   },
   {
     "id": "char_497_ctable",
     "name": "晓歌",
-    "alias": "xiaoge xg 曉歌 曉歌 xiaoge xg",
+    "alias": "xiaoge xg 曉歌",
     "alt_name": "Cantabile"
   },
   {
     "id": "char_274_astesi",
     "name": "星极",
-    "alias": "xingji xj 星極 星極 xingji xj",
+    "alias": "xingji xj 星極",
     "alt_name": "Astesia"
   },
   {
     "id": "char_136_hsguma",
     "name": "星熊",
-    "alias": "xingxiong xx 星熊 星熊 xingxiong xx",
+    "alias": "xingxiong xx 星熊",
     "alt_name": "Hoshiguma"
   },
   {
     "id": "char_135_halo",
     "name": "星源",
-    "alias": "xingyuan xy 星源 星源 xingyuan xy",
+    "alias": "xingyuan xy 星源",
     "alt_name": "Astgenne"
   },
   {
     "id": "char_491_humus",
     "name": "休谟斯",
-    "alias": "xiumosi xumosi xms 休謨斯 休謨斯 xiumosi xumosi xms",
+    "alias": "xiumosi xumosi xms 休謨斯",
     "alt_name": "Humus"
   },
   {
     "id": "char_436_whispr",
     "name": "絮雨",
-    "alias": "xuyu xy 絮雨 絮雨 xuyu xy",
+    "alias": "xuyu xy 絮雨",
     "alt_name": "Whisperain"
   },
   {
     "id": "char_466_qanik",
     "name": "雪绒",
-    "alias": "xuerong xr 雪絨 雪絨 xuerong xr",
+    "alias": "xuerong xr 雪絨",
     "alt_name": "Qanipalaat"
   },
   {
     "id": "char_383_snsant",
     "name": "雪雉",
-    "alias": "xuezhi xz 雪雉 雪雉 xuezhi xz",
+    "alias": "xuezhi xz 雪雉",
     "alt_name": "Snowsant"
   },
   {
     "id": "char_503_rang",
     "name": "巡林者",
-    "alias": "xunlinzhe xlz 巡林者 巡林者 xunlinzhe xlz",
+    "alias": "xunlinzhe xlz 巡林者",
     "alt_name": "Rangers"
   },
   {
     "id": "char_198_blackd",
     "name": "讯使",
-    "alias": "xunshi xs 訊使 訊使 xunshi xs",
+    "alias": "xunshi xs 訊使",
     "alt_name": "Courier"
   },
   {
     "id": "char_173_slchan",
     "name": "崖心",
-    "alias": "yaxin yx 崖心 崖心 yaxin yx",
+    "alias": "yaxin yx 崖心",
     "alt_name": "Cliffheart"
   },
   {
     "id": "char_345_folnic",
     "name": "亚叶",
-    "alias": "yaye yaxie yy yx 亞葉 亞葉 yaye yy",
+    "alias": "yaye yaxie yy yx 亞葉",
     "alt_name": "Folinic"
   },
   {
     "id": "char_337_utage",
     "name": "宴",
-    "alias": "yan y 宴 宴 yan y",
+    "alias": "yan y 宴",
     "alt_name": "Utage"
   },
   {
     "id": "char_131_flameb",
     "name": "炎客",
-    "alias": "yanke yk 炎客 炎客 yanke yk",
+    "alias": "yanke yk 炎客",
     "alt_name": "Flamebringer"
   },
   {
     "id": "char_121_lava",
     "name": "炎熔",
-    "alias": "yanrong yr 炎熔 炎熔 yanrong yr",
+    "alias": "yanrong yr 炎熔",
     "alt_name": "Lava"
   },
   {
     "id": "char_420_flamtl",
     "name": "焰尾",
-    "alias": "yanwei yanyi yw yy 焰尾 焰尾 yanwei yanyi yw yy",
+    "alias": "yanwei yanyi yw yy 焰尾",
     "alt_name": "Flametail"
   },
   {
     "id": "char_1020_reed2",
     "name": "焰影苇草",
-    "alias": "yanyingweicao yywc 焰影葦草 焰影葦草 yanyingweicao yywc",
+    "alias": "yanyingweicao yywc 焰影葦草",
     "alt_name": "Reed The Flame Shadow"
   },
   {
     "id": "char_1011_lava2",
     "name": "炎狱炎熔",
-    "alias": "yanyuyanrong yyyr 炎獄炎熔 炎獄炎熔 yanyuyanrong yyyr",
+    "alias": "yanyuyanrong yyyr 炎獄炎熔",
     "alt_name": "Lava the Purgatory"
   },
   {
     "id": "char_464_cement",
     "name": "洋灰",
-    "alias": "yanghui yh 洋灰 洋灰 yanghui yh",
+    "alias": "yanghui yh 洋灰",
     "alt_name": "Cement"
   },
   {
     "id": "char_1014_nearl2",
     "name": "耀骑士临光",
-    "alias": "yaoqishilinguang yqslg 耀騎士臨光 耀騎士臨光 yaoqishilinguang yqslg",
+    "alias": "yaoqishilinguang yqslg 耀騎士臨光",
     "alt_name": "Nearl the Radiant Knight"
   },
   {
     "id": "char_476_blkngt",
     "name": "夜半",
-    "alias": "yeban yb 夜半 夜半 yeban yb",
+    "alias": "yeban yb 夜半",
     "alt_name": "Blacknight"
   },
   {
     "id": "char_502_nblade",
     "name": "夜刀",
-    "alias": "yedao yd 夜刀 夜刀 yedao yd",
+    "alias": "yedao yd 夜刀",
     "alt_name": "Yato"
   },
   {
     "id": "token_10029_slent2_protrb",
     "name": "夜灯",
-    "alias": "yedeng yd 夜燈 夜燈 yedeng yd",
+    "alias": "yedeng yd 夜燈",
     "alt_name": "Night Banisher"
   },
   {
     "id": "char_4013_kjera",
     "name": "耶拉",
-    "alias": "yela yl 耶拉 耶拉 yela yl",
+    "alias": "yela yl 耶拉",
     "alt_name": "Kjera"
   },
   {
     "id": "char_164_nightm",
     "name": "夜魔",
-    "alias": "yemo ym 夜魔 夜魔 yemo ym",
+    "alias": "yemo ym 夜魔",
     "alt_name": "Nightmare"
   },
   {
     "id": "char_141_nights",
     "name": "夜烟",
-    "alias": "yeyan yy 夜煙 夜煙 yeyan yy",
+    "alias": "yeyan yy 夜煙",
     "alt_name": "Haze"
   },
   {
     "id": "char_179_cgbird",
     "name": "夜莺",
-    "alias": "yeying yy 夜鶯 夜鶯 yeying yy",
+    "alias": "yeying yy 夜鶯",
     "alt_name": "Nightingale"
   },
   {
     "id": "char_496_wildmn",
     "name": "野鬃",
-    "alias": "yezong yz 野鬃 野鬃 yezong yz",
+    "alias": "yezong yz 野鬃",
     "alt_name": "Wild Mane"
   },
   {
     "id": "token_10010_folivo_car",
     "name": "移动摄影器",
-    "alias": "yidongsheyingqi yidongnieyingqi ydsyq ydnyq 移動攝影器 移動攝影器 yidongsheyingqi yidongnieyingqi ydsyq ydnyq",
+    "alias": "yidongsheyingqi yidongnieyingqi ydsyq ydnyq 移動攝影器",
     "alt_name": "M.P.M"
   },
   {
     "id": "char_134_ifrit",
     "name": "伊芙利特",
-    "alias": "yifulite yflt 伊芙利特 伊芙利特 yifulite yflt",
+    "alias": "yifulite yflt 伊芙利特",
     "alt_name": "Ifrit"
   },
   {
     "id": "char_472_pasngr",
     "name": "异客",
-    "alias": "yike yk 異客 異客 yike yk",
+    "alias": "yike yk 異客",
     "alt_name": "Passenger"
   },
   {
     "id": "token_10000_silent_healrb",
     "name": "医疗探机",
-    "alias": "yiliaotanji yltj 醫療探機 醫療探機 yiliaotanji yltj",
+    "alias": "yiliaotanji yltj 醫療探機",
     "alt_name": "Medical Drone"
   },
   {
     "id": "char_4087_ines",
     "name": "伊内丝",
-    "alias": "yineisi yinasi yns 伊內絲 伊內絲 yineisi yns",
+    "alias": "yineisi yinasi yns 伊內絲",
     "alt_name": "Ines"
   },
   {
     "id": "char_355_ethan",
     "name": "伊桑",
-    "alias": "yisang ys 伊桑 伊桑 yisang ys",
+    "alias": "yisang ys 伊桑",
     "alt_name": "Ethan"
   },
   {
     "id": "char_172_svrash",
     "name": "银灰",
-    "alias": "yinhui yh 銀灰 銀灰 yinhui yh",
+    "alias": "yinhui yh 銀灰",
     "alt_name": "SilverAsh"
   },
   {
     "id": "char_155_tiger",
     "name": "因陀罗",
-    "alias": "yintuoluo ytl 因陀羅 因陀羅 yintuoluo ytl",
+    "alias": "yintuoluo ytl 因陀羅",
     "alt_name": "Indra"
   },
   {
     "id": "char_498_inside",
     "name": "隐现",
-    "alias": "yinxian yx 隱現 隱現 yinxian yx",
+    "alias": "yinxian yx 隱現",
     "alt_name": "Insider"
   },
   {
     "id": "token_10016_rfrost_mine",
     "name": "迎宾踏垫",
-    "alias": "yingbintadian ybtd 迎賓踏墊 迎賓踏墊 yingbintadian ybtd",
+    "alias": "yingbintadian ybtd 迎賓踏墊",
     "alt_name": "Welcome Mat"
   },
   {
     "id": "char_143_ghost",
     "name": "幽灵鲨",
-    "alias": "youlingsha yls 幽靈鯊 幽靈鯊 youlingsha yls",
+    "alias": "youlingsha yls 幽靈鯊",
     "alt_name": "Specter"
   },
   {
     "id": "char_506_rmedic",
     "name": "预备干员-后勤",
-    "alias": "yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq 預備幹員-後勤 預備幹員-後勤 yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq",
+    "alias": "yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq 預備幹員-後勤",
     "alt_name": "Reserve (Logistic)"
   },
   {
     "id": "char_504_rguard",
     "name": "预备干员-近战",
-    "alias": "yubeiganyuan-jinzhan yubeiganyun-jinzhan ybgy-jz 預備幹員-近戰 預備幹員-近戰 yubeiganyuan-jinzhan yubeiganyun-jinzhan ybgy-jz",
+    "alias": "yubeiganyuan-jinzhan yubeiganyun-jinzhan ybgy-jz 預備幹員-近戰",
     "alt_name": "Reserve (Melee)"
   },
   {
     "id": "char_507_rsnipe",
     "name": "预备干员-狙击",
-    "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊 預備幹員-狙擊 yubeiganyuan-juji yubeiganyun-juji ybgy-jj",
+    "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
     "alt_name": "Reserve (Sniper)"
   },
   {
     "id": "char_505_rcast",
     "name": "预备干员-术师",
-    "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師 預備幹員-術師 yubeiganyuan-shushi yubeiganyun-shushi ybgy-ss",
+    "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
     "alt_name": "Reserve (Caster)"
   },
   {
     "id": "char_514_rdfend",
     "name": "预备干员-重装",
-    "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝 預備幹員-重裝 yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz",
+    "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
     "alt_name": "Reserve (Defender)"
   },
   {
     "id": "char_513_apionr",
     "name": "郁金香",
-    "alias": "yujinxiang yjx 鬱金香 鬱金香 yujinxiang yjx",
+    "alias": "yujinxiang yjx 鬱金香",
     "alt_name": "Tulip"
   },
   {
     "id": "char_421_crow",
     "name": "羽毛笔",
-    "alias": "yumaobi ymb 羽毛筆 羽毛筆 yumaobi ymb",
+    "alias": "yumaobi ymb 羽毛筆",
     "alt_name": "La Pluma"
   },
   {
     "id": "char_109_fmout",
     "name": "远山",
-    "alias": "yuanshan ys 遠山 遠山 yuanshan ys",
+    "alias": "yuanshan ys 遠山",
     "alt_name": "Gitano"
   },
   {
     "id": "char_430_fartth",
     "name": "远牙",
-    "alias": "yuanya yy 遠牙 遠牙 yuanya yy",
+    "alias": "yuanya yy 遠牙",
     "alt_name": "Fartooth"
   },
   {
     "id": "char_343_tknogi",
     "name": "月禾",
-    "alias": "yuehe yh 月禾 月禾 yuehe yh",
+    "alias": "yuehe yh 月禾",
     "alt_name": "Tsukinogi"
   },
   {
     "id": "char_283_midn",
     "name": "月见夜",
-    "alias": "yuejianye yuexianye yjy yxy 月見夜 月見夜 yuejianye yuexianye yjy yxy",
+    "alias": "yuejianye yuexianye yjy yxy 月見夜",
     "alt_name": "Midnight"
   },
   {
     "id": "char_219_meteo",
     "name": "陨星",
-    "alias": "yunxing yx 隕星 隕星 yunxing yx",
+    "alias": "yunxing yx 隕星",
     "alt_name": "Meteorite"
   },
   {
     "id": "char_197_poca",
     "name": "早露",
-    "alias": "zaolou zaolu zl 早露 早露 zaolou zaolu zl",
+    "alias": "zaolou zaolu zl 早露",
     "alt_name": "Роса"
   },
   {
     "id": "char_459_tachak",
     "name": "战车",
-    "alias": "zhanche zhanju zc zj 戰車 戰車 zhanche zhanju zc zj",
+    "alias": "zhanche zhanju zc zj 戰車",
     "alt_name": "Tachanka"
   },
   {
     "id": "char_195_glassb",
     "name": "真理",
-    "alias": "zhenli zl 真理 真理 zhenli zl",
+    "alias": "zhenli zl 真理",
     "alt_name": "Истина"
   },
   {
     "id": "char_4000_jnight",
     "name": "正义骑士号",
-    "alias": "zhengyiqishihao zyqsh 正義騎士號 正義騎士號 zhengyiqishihao zyqsh",
+    "alias": "zhengyiqishihao zyqsh 正義騎士號",
     "alt_name": "\"Justice Knight\""
   },
   {
     "id": "char_4054_malist",
     "name": "至简",
-    "alias": "zhijian zj 至簡 至簡 zhijian zj",
+    "alias": "zhijian zj 至簡",
     "alt_name": "Minimalist"
   },
   {
     "id": "token_10022_kazema_shadow",
     "name": "纸偶",
-    "alias": "zhiou zo 紙偶 紙偶 zhiou zo",
+    "alias": "zhiou zo 紙偶",
     "alt_name": "Kaminingyo"
   },
   {
     "id": "char_2024_chyue",
     "name": "重岳",
-    "alias": "zhongyue chongyue zy cy 重嶽 重嶽 zhongyue chongyue zy cy",
+    "alias": "zhongyue chongyue zy cy 重嶽",
     "alt_name": "Chongyue"
   },
   {
     "id": "char_333_sidero",
     "name": "铸铁",
-    "alias": "zhutie zt 鑄鐵 鑄鐵 zhutie zt",
+    "alias": "zhutie zt 鑄鐵",
     "alt_name": "Sideroca"
   },
   {
     "id": "char_1024_hbisc2",
     "name": "濯尘芙蓉",
-    "alias": "zhuochenfurong zhaochenfurong zcfr 濯塵芙蓉 濯塵芙蓉 zhuochenfurong zhaochenfurong zcfr",
+    "alias": "zhuochenfurong zhaochenfurong zcfr 濯塵芙蓉",
     "alt_name": "Hibiscus the Purifier"
   },
   {
     "id": "char_1012_skadi2",
     "name": "浊心斯卡蒂",
-    "alias": "zhuoxinsikadi zhuoxinsiqiadi zxskd zxsqd 濁心斯卡蒂 濁心斯卡蒂 zhuoxinsikadi zhuoxinsiqiadi zxskd zxsqd",
+    "alias": "zhuoxinsikadi zhuoxinsiqiadi zxskd zxsqd 濁心斯卡蒂",
     "alt_name": "Skadi the Corrupting Heart"
   },
   {
     "id": "char_278_orchid",
     "name": "梓兰",
-    "alias": "zilan zl 梓蘭 梓蘭 zilan zl",
+    "alias": "zilan zl 梓蘭",
     "alt_name": "Orchid"
   },
   {
     "id": "char_4014_lunacu",
     "name": "子月",
-    "alias": "ziyue zy 子月 子月 ziyue zy",
+    "alias": "ziyue zy 子月",
     "alt_name": "Lunacub"
   },
   {
     "id": "token_10006_vodfox_doll",
     "name": "诅咒娃娃",
-    "alias": "zuzhouwawa zzww 詛咒娃娃 詛咒娃娃 zuzhouwawa zzww",
+    "alias": "zuzhouwawa zzww 詛咒娃娃",
     "alt_name": "Curse Doll"
   }
 ]
