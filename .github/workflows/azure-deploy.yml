@@ -6,6 +6,10 @@ on:
       - main
       - dev
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy:
     timeout-minutes: 20
@@ -17,11 +21,11 @@ jobs:
       - name: Setup Node.js environment
         uses: actions/setup-node@v3
         with:
-          node-version: 16
-          cache: "yarn"
+          node-version-file: '.node-version'
+          cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
 
       - name: Build
         run: yarn build:azure
@@ -32,9 +36,9 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_BLUE_DESERT_0E46AFE00 }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: "upload"
-          production_branch: "main"
-          app_location: "dist"
-          api_location: ""
+          action: 'upload'
+          production_branch: 'main'
+          app_location: 'dist'
+          api_location: ''
           skip_app_build: true
           skip_api_build: true

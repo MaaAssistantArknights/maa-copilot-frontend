@@ -22,6 +22,7 @@ import { useAtom } from 'jotai'
 import { noop } from 'lodash-es'
 import { ComponentType, FC, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -42,9 +43,7 @@ import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
-import { toShortCode } from '../../models/shortCode'
 import { formatError } from '../../utils/error'
-import { snakeCaseKeysUnicode } from '../../utils/object'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
@@ -120,6 +119,19 @@ export const OperationViewer: ComponentType<{
     })
     const operation = data?.data
 
+    useEffect(() => {
+      // on finished loading, scroll to #fragment if any
+      if (operation) {
+        const fragment = window.location.hash
+        if (fragment) {
+          const el = document.querySelector(fragment)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' })
+          }
+        }
+      }
+    }, [operation])
+
     const levels = useLevels()?.data?.data || []
 
     const [auth] = useAtom(authAtom)
@@ -140,39 +152,6 @@ export const OperationViewer: ComponentType<{
         })
       }
     }, [error])
-
-    const handleCopyShortCode = () => {
-      const shortCode = toShortCode(operation.id)
-      navigator.clipboard.writeText(shortCode)
-
-      AppToaster.show({
-        message: '已复制神秘代码，前往 MAA 粘贴即可使用~',
-        intent: 'success',
-      })
-    }
-
-    const handleDownloadJSON = () => {
-      // pretty print the JSON
-      const json = JSON.stringify(
-        snakeCaseKeysUnicode(operationDoc, { deep: true }),
-        null,
-        2,
-      )
-      const blob = new Blob([json], {
-        type: 'application/json',
-      })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement('a')
-      link.href = url
-      link.download = `MAACopilot_${operationDoc.doc.title}.json`
-      link.click()
-      URL.revokeObjectURL(url)
-
-      AppToaster.show({
-        message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
-        intent: 'success',
-      })
-    }
 
     const handleRating = async (decision: OpRatingType) => {
       // cancel rating if already rated by the same type
@@ -220,7 +199,7 @@ export const OperationViewer: ComponentType<{
               className="ml-4"
               icon="download"
               text="下载原 JSON"
-              onClick={handleDownloadJSON}
+              onClick={() => handleDownloadJSON(operationDoc)}
             />
 
             <Button
@@ -228,7 +207,7 @@ export const OperationViewer: ComponentType<{
               icon="clipboard"
               text="复制神秘代码"
               intent="primary"
-              onClick={handleCopyShortCode}
+              onClick={() => handleCopyShortCode(operation)}
             />
           </>
         }
@@ -388,7 +367,9 @@ function OperationViewerInner({
 
       <div className="mb-6">
         <div>
-          <H4 className="mb-4">评论 ({operation.commentsCount})</H4>
+          <H4 className="mb-4" id="comment">
+            评论 ({operation.commentsCount})
+          </H4>
           <CommentArea operationId={operation.id} />
         </div>
       </div>
