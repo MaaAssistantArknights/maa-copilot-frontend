@@ -1,8 +1,8 @@
-name: scripts-update
+name: Update Embedded Resources
 
 on:
-  # schedule:
-  #   - cron: '0 0 * * *'
+  schedule:
+    - cron: '41 16 * * *'
   workflow_dispatch:
 
 permissions:
