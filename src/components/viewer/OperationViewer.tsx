@@ -119,6 +119,19 @@ export const OperationViewer: ComponentType<{
     })
     const operation = data?.data
 
+    useEffect(() => {
+      // on finished loading, scroll to #fragment if any
+      if (operation) {
+        const fragment = window.location.hash
+        if (fragment) {
+          const el = document.querySelector(fragment)
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth' })
+          }
+        }
+      }
+    }, [operation])
+
     const levels = useLevels()?.data?.data || []
 
     const [auth] = useAtom(authAtom)
@@ -354,7 +367,9 @@ function OperationViewerInner({
 
       <div className="mb-6">
         <div>
-          <H4 className="mb-4">评论 ({operation.commentsCount})</H4>
+          <H4 className="mb-4" id="comment">
+            评论 ({operation.commentsCount})
+          </H4>
           <CommentArea operationId={operation.id} />
         </div>
       </div>
