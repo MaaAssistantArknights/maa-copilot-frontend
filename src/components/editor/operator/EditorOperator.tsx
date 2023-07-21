@@ -15,7 +15,7 @@ type OperatorInfo = typeof OPERATORS[number]
 type PerformerItem = OperatorInfo | CopilotDocV1.Group
 
 const isOperator = (item: PerformerItem): item is OperatorInfo =>
-  !!(item as OperatorInfo).pron
+  !!(item as OperatorInfo).alias
 
 const findOperatorIdByName = (name: string) =>
   OPERATORS.find((el) => el.name === name)?.id ?? ''
@@ -23,7 +23,8 @@ const findOperatorIdByName = (name: string) =>
 const createArbitraryOperator = (name: string): OperatorInfo => ({
   id: findOperatorIdByName(name),
   name,
-  pron: '',
+  alias: '',
+  alt_name: '',
 })
 
 export const EditorOperatorName = <T extends FieldValues>({
@@ -55,7 +56,7 @@ export const EditorOperatorName = <T extends FieldValues>({
   const fuse = useMemo(
     () =>
       new Fuse(items, {
-        keys: ['name', 'pron'],
+        keys: ['name', 'alias', 'alt_name'],
         threshold: 0.3,
       }),
     [items],

@@ -82,6 +82,7 @@
     "npm-run-all2": "^6.0.2",
     "pinyin": "^3.0.0-alpha.5",
     "prettier": "^2.7.1",
+    "simplebig": "^0.0.3",
     "tailwindcss": "^3.1.4",
     "typescript": "^4.6.3",
     "vite": "^4.2.1"
