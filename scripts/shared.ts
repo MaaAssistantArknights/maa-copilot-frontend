@@ -1,29 +1,36 @@
 import { uniqBy } from 'lodash-es'
 import fetch from 'node-fetch'
 import pinyin from 'pinyin'
+import simplebig from 'simplebig'
+
+function pinyinify(name: string) {
+  return [
+    pinyin(name, {
+      compact: true,
+      heteronym: true,
+      style: pinyin.STYLE_NORMAL,
+    }),
+    pinyin(name, {
+      compact: true,
+      heteronym: true,
+      style: pinyin.STYLE_FIRST_LETTER,
+    }),
+  ].flatMap((py) => py.map((el) => el.join('')))
+}
 
 function transformOperatorName(name: string) {
-  const cleanedName = name.replace(/[”“"]/g, '')
+  const cleanedSimplifiedName = name.replace(/[”“"]/g, '')
 
-  const fullPinyin = pinyin(cleanedName, {
-    compact: true,
-    heteronym: true,
-    style: pinyin.STYLE_NORMAL,
-  })
-  const partialPinyin = pinyin(cleanedName, {
-    compact: true,
-    heteronym: true,
-    style: pinyin.STYLE_FIRST_LETTER,
-  })
+  const traditional = simplebig.s2t(name) as string
+  const cleanedTraditional = traditional.replace(/[”“"]/g, '')
   return {
     name,
-    pron:
-      //  in: [[['a', 'mi', 'ya'], ['e', 'mi', 'ya']], [['a', 'm', 'y'], ['e', 'm', 'y']]]
-      [fullPinyin, partialPinyin]
-        // out: ['amiya', 'emiya', 'amy', 'emy']
-        .flatMap((py) => py.map((el) => el.join('')))
-        // out: 'amiya emiya amy emy'
-        .join(' '),
+    alias: [
+      ...pinyinify(cleanedSimplifiedName),
+      traditional,
+      cleanedTraditional,
+      ...pinyinify(cleanedTraditional),
+    ].join(' '),
   }
 }
 
