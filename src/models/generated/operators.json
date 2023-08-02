@@ -1,21 +1,15 @@
 [
   {
-    "id": "token_10013_robin_mine",
-    "name": "\"夹子\"",
-    "alias": "jiazi gazi jz gz \"夾子\" 夾子",
-    "alt_name": "\"Clip\" Charge"
-  },
-  {
-    "id": "token_10015_dusk_drgn",
-    "name": "\"小自在\"",
-    "alias": "xiaozizai xzz \"小自在\" 小自在",
-    "alt_name": "Little Instinct"
-  },
-  {
     "id": "token_10026_bgsnow_subbow",
     "name": "“打字机”",
     "alias": "daziji dzj “打字機” 打字機",
     "alt_name": "Typewriters"
+  },
+  {
+    "id": "token_10013_robin_mine",
+    "name": "“夹子”",
+    "alias": "jiazi gazi jz gz “夾子” 夾子",
+    "alt_name": "\"Clip\" Charge"
   },
   {
     "id": "token_10020_ling_soul1",
@@ -34,6 +28,12 @@
     "name": "“逍遥”",
     "alias": "xiaoyao xy “逍遙” 逍遙",
     "alt_name": "Peripateticism"
+  },
+  {
+    "id": "token_10015_dusk_drgn",
+    "name": "“小自在”",
+    "alias": "xiaozizai xzz “小自在” 小自在",
+    "alt_name": "Little Instinct"
   },
   {
     "id": "token_10019_nearl2_sword",
@@ -240,6 +240,12 @@
     "alt_name": "Broca"
   },
   {
+    "id": "char_4106_bryota",
+    "name": "苍苔",
+    "alias": "cangtai ct 蒼苔",
+    "alt_name": "Bryophyta"
+  },
+  {
     "id": "char_286_cast3",
     "name": "Castle-3",
     "alias": "Castle-3",
@@ -304,6 +310,12 @@
     "name": "初雪",
     "alias": "chuxue cx 初雪",
     "alt_name": "Pramanix"
+  },
+  {
+    "id": "char_1016_agoat2",
+    "name": "纯烬艾雅法拉",
+    "alias": "chunjinaiyafala chunjinyiyafala cjayfl cjyyfl 純燼艾雅法拉",
+    "alt_name": "Eyjafjalla the Hvít Aska"
   },
   {
     "id": "token_10008_cqbw_box",
@@ -942,6 +954,12 @@
     "alt_name": "Nearl"
   },
   {
+    "id": "char_1033_swire2",
+    "name": "琳琅诗怀雅",
+    "alias": "linlangshihuaiya llshy 琳琅詩懷雅",
+    "alt_name": "Swire the Elegant Wit"
+  },
+  {
     "id": "char_4102_threye",
     "name": "凛视",
     "alias": "linshi ls 凜視",
@@ -1246,6 +1264,12 @@
     "name": "清流",
     "alias": "qingliu ql 清流",
     "alt_name": "Purestream"
+  },
+  {
+    "id": "char_488_buildr",
+    "name": "青枳",
+    "alias": "qingzhi qz 青枳",
+    "alt_name": "Poncirus"
   },
   {
     "id": "token_10018_robrta_mach",
@@ -1606,6 +1630,12 @@
     "name": "夏栎",
     "alias": "xiali xiayue xl xy 夏櫟",
     "alt_name": "Quercus"
+  },
+  {
+    "id": "token_10031_swire2_gdtrap",
+    "name": "香槟炸弹",
+    "alias": "xiangbinzhadan xiangbinzhatan xiangbingzhadan xiangbingzhatan xbzd xbzt 香檳炸彈",
+    "alt_name": "Champagne Bomb"
   },
   {
     "id": "char_240_wyvern",
