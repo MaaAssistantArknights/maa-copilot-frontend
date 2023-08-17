@@ -137,11 +137,16 @@ export const requestResetPasswordToken = (data: { email: string }) => {
 export interface ResetPasswordResponse {}
 
 export const requestResetPassword = (data: {
+  email: string
   token: string
   password: string
 }) => {
   return jsonRequest<Response<ResetPasswordResponse>>('/user/password/reset', {
     method: 'POST',
-    json: data,
+    json: {
+      email: data.email,
+      active_code: data.token,
+      password: data.password,
+    },
   })
 }
