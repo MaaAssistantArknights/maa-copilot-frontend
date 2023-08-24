@@ -1170,6 +1170,12 @@
     "alt_name": "Muelsyse"
   },
   {
+    "id": "char_512_aprot",
+    "name": "暮落",
+    "alias": "muluo mula mulao ml 暮落",
+    "alt_name": "Shalem"
+  },
+  {
     "id": "char_185_frncat",
     "name": "慕斯",
     "alias": "musi ms 慕斯",
