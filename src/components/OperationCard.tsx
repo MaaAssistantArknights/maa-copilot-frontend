@@ -87,7 +87,7 @@ export const OperationCard = ({
             />
           </Tooltip2>
           <div className="flex-1" />
-          <div className="flex flex-col items-end">
+          <div className="flex flex-col items-end whitespace-nowrap">
             <div className="w-full flex justify-end text-zinc-500">
               <div className="flex items-center mr-4">
                 <Icon icon="star" className="mr-1.5" />

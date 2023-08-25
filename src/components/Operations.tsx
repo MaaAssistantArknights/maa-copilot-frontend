@@ -23,7 +23,7 @@ export const Operations: ComponentType = withSuspensable(() => {
     orderBy: 'hot',
   })
   const debouncedSetQueryParams = useMemo(
-    () => debounce(setQueryParams, 250),
+    () => debounce(setQueryParams, 500),
     [],
   )
   const [authState] = useAtom(authAtom)

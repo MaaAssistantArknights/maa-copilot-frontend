@@ -38,7 +38,6 @@ const CHARACTER_TABLE_JSON_URL =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/character_table.json'
 
 const CHARACTER_BLOCKLIST = [
-  'char_512_aprot', // 暮落(集成战略)：It's just not gonna be there.
   'token_10012_rosmon_shield', // 迷迭香的战术装备：It's just not gonna be there.
 ]
 
