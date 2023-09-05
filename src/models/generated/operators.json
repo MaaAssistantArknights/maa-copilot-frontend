@@ -222,6 +222,12 @@
     "alt_name": "Whislash"
   },
   {
+    "id": "char_4104_coldst",
+    "name": "冰酿",
+    "alias": "bingniang bn 冰釀",
+    "alt_name": "Coldshot"
+  },
+  {
     "id": "char_258_podego",
     "name": "波登可",
     "alias": "bodengke bdk 波登可",
@@ -352,6 +358,12 @@
     "name": "德克萨斯",
     "alias": "dekesasi dkss 德克薩斯",
     "alt_name": "Texas"
+  },
+  {
+    "id": "char_1034_jesca2",
+    "name": "涤火杰西卡",
+    "alias": "dihuojiexika dihuojiexiqia dhjxk dhjxq 滌火傑西卡",
+    "alt_name": "Jessica the Liberated"
   },
   {
     "id": "char_183_skgoat",
@@ -670,6 +682,12 @@
     "name": "棘刺",
     "alias": "jici jc 棘刺",
     "alt_name": "Thorns"
+  },
+  {
+    "id": "token_10032_jesca2_jckshd",
+    "name": "机动盾牌",
+    "alias": "jidongdunpai jddp 機動盾牌",
+    "alt_name": "Mobile personnel shield"
   },
   {
     "id": "char_422_aurora",
@@ -1660,6 +1678,12 @@
     "name": "星极",
     "alias": "xingji xj 星極",
     "alt_name": "Astesia"
+  },
+  {
+    "id": "char_4105_almond",
+    "name": "杏仁",
+    "alias": "xingren xr 杏仁",
+    "alt_name": "Almond"
   },
   {
     "id": "char_136_hsguma",
