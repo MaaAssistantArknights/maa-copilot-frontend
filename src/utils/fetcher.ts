@@ -49,7 +49,7 @@ export const request = <T extends Response<unknown>>(
 
       .catch((err) => {
         console.error('Fetcher: got error', err)
-        return Promise.reject(new Error('网络错误，请检查网络连接并稍后重试'))
+        return Promise.reject(new Error('请求失败：服务器返回错误，请稍后再试'))
       })
       .then((res) => {
         if (
