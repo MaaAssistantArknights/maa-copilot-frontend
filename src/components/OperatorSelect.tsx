@@ -78,7 +78,11 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   }
 
   const add = (operation: OperatorInfo) => {
-    change([...new Set([...operators, { name: operation.name }])])
+    if (!operators.some((op) => op.name === operation.name)) {
+      change([...operators, { name: operation.name }])
+    } else {
+      remove(operation)
+    }
   }
 
   const remove = (operation: OperatorInfo) => {
