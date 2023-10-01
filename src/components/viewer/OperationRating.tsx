@@ -13,12 +13,30 @@ type PickedOperation = Pick<
   'notEnoughRating' | 'ratingRatio' | 'ratingLevel' | 'like' | 'dislike'
 >
 
-const GetLevelDescription = (operation: PickedOperation) => {
-  return `有${Math.round(
-    (operation.like / (operation.like + operation.dislike)) * 100,
-  )}%的人对本作业点了个赞（${operation.like}/${
-    operation.like + operation.dislike
-  }）`
+const GetLevelDescription: FC<{
+  operation: PickedOperation
+  layout?: 'horizontal' | 'vertical'
+}> = ({ operation, layout }) => {
+  return operation.notEnoughRating ? (
+    layout === 'vertical' ? (
+      <>还没有足够的评分</>
+    ) : (
+      <>评分不足</>
+    )
+  ) : (
+    <Tooltip2
+      className="!inline-block !mt-0"
+      interactionKind={Popover2InteractionKind.HOVER}
+      content={`有${Math.round(
+        (operation.like / (operation.like + operation.dislike)) * 100,
+      )}%的人为本作业点了个赞（${operation.like}/${
+        operation.like + operation.dislike
+      }）`}
+      position="bottom-left"
+    >
+      {ratingLevelToString(operation.ratingLevel)}
+    </Tooltip2>
+  )
 }
 
 export const OperationRating: FC<{
@@ -74,18 +92,7 @@ export const OperationRating: FC<{
           layout === 'horizontal' && !operation.notEnoughRating && 'mr-1.5',
         )}
       >
-        <Tooltip2
-          className="!inline-block !mt-0"
-          interactionKind={Popover2InteractionKind.HOVER}
-          content={GetLevelDescription(operation)}
-          position="bottom-left"
-        >
-          {operation.notEnoughRating
-            ? layout === 'vertical'
-              ? '还没有足够的评分'
-              : '评分不足'
-            : ratingLevelToString(operation.ratingLevel)}
-        </Tooltip2>
+        <GetLevelDescription layout={layout} operation={operation} />
       </div>
     </div>
   )
