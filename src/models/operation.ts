@@ -17,6 +17,8 @@ export interface Operation {
   ratingRatio: number
   ratingType: OpRatingType
   notEnoughRating: boolean
+  like: number
+  dislike: number
   commentsCount: number
 }
 
