@@ -259,20 +259,22 @@ export const EditorActionAdd = ({
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
         <EditorActionModule
-          title="执行条件" icon="stopwatch" className="font-bold" 
+          title="执行条件"
+          icon="stopwatch"
+          className="font-bold"
         >
-        <div className="flex flex-wrap">
-          <EditorActionExecPredicateKills control={control} />
-          <EditorActionExecPredicateCooling control={control} />
-        </div>
-        <div className="flex flex-wrap">
-          <EditorActionExecPredicateCosts control={control} />
-          <EditorActionExecPredicateCostChange control={control} />
-        </div>
-        <div className="flex flex-wrap">
-          <EditorActionPreDelay control={control} />
-          <EditorActionRearDelay control={control} />
-        </div>
+          <div className="flex flex-wrap">
+            <EditorActionExecPredicateKills control={control} />
+            <EditorActionExecPredicateCooling control={control} />
+          </div>
+          <div className="flex flex-wrap">
+            <EditorActionExecPredicateCosts control={control} />
+            <EditorActionExecPredicateCostChange control={control} />
+          </div>
+          <div className="flex flex-wrap">
+            <EditorActionPreDelay control={control} />
+            <EditorActionRearDelay control={control} />
+          </div>
         </EditorActionModule>
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
@@ -309,7 +311,7 @@ export const EditorActionAdd = ({
             />
           </div>
         </EditorActionModule>
-        
+
         <div className="mt-4 flex">
           <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
             {isNew ? '添加' : '保存'}
