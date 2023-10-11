@@ -19,9 +19,9 @@ const GetLevelDescription: FC<{
 }> = ({ operation, layout }) => {
   return operation.notEnoughRating ? (
     layout === 'vertical' ? (
-      <>还没有足够的评分</>
+      <span>还没有足够的评分</span>
     ) : (
-      <>评分不足</>
+      <span>评分不足</span>
     )
   ) : (
     <Tooltip2
