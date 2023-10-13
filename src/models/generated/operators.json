@@ -324,6 +324,12 @@
     "alt_name": "Eyjafjalla the Hvít Aska"
   },
   {
+    "id": "char_494_vendla",
+    "name": "刺玫",
+    "alias": "cimei cm 刺玫",
+    "alt_name": "Vendela"
+  },
+  {
     "id": "token_10008_cqbw_box",
     "name": "此面向敌",
     "alias": "cimianxiangdi cmxd 此麵向敵",
@@ -346,6 +352,12 @@
     "name": "达格达",
     "alias": "dageda dgd 達格達",
     "alt_name": "Dagda"
+  },
+  {
+    "id": "char_4110_delphn",
+    "name": "戴菲恩",
+    "alias": "daifeien dfe 戴菲恩",
+    "alt_name": "Delphine"
   },
   {
     "id": "char_4032_provs",
@@ -538,6 +550,12 @@
     "name": "号角",
     "alias": "haojiao haojue hj 號角",
     "alt_name": "Horn"
+  },
+  {
+    "id": "char_4088_hodrer",
+    "name": "赫德雷",
+    "alias": "hedelei hdl 赫德雷",
+    "alt_name": "Hoederer"
   },
   {
     "id": "char_4041_chnut",
@@ -1600,6 +1618,12 @@
     "name": "苇草",
     "alias": "weicao wc 葦草",
     "alt_name": "Reed"
+  },
+  {
+    "id": "char_4107_vrdant",
+    "name": "维荻",
+    "alias": "weidi wd 維荻",
+    "alt_name": "Verdant"
   },
   {
     "id": "char_275_breeze",
