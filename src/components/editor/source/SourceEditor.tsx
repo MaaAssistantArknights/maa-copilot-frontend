@@ -75,7 +75,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
         />
       }
     >
-      <div className="px-8 py-4 flex-grow flex flex-col bg-zinc-50">
+      <div className="px-8 py-4 flex-grow flex flex-col bg-zinc-50 dark:bg-slate-900 dark:text-white">
         <Callout
           className=" [&_h4]:text-sm"
           intent="primary"
@@ -103,7 +103,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
           </Tooltip2>
         </div>
         <textarea
-          className="mt-4 p-1 flex-grow bg-white text-xm font-mono resize-none focus:outline focus:outline-2 focus:outline-blue-300"
+          className="mt-4 p-1 flex-grow bg-white text-xm font-mono resize-none focus:outline focus:outline-2 focus:outline-blue-300 dark:bg-slate-900 dark:text-white"
           value={text}
           onChange={(e) => setText(e.target.value)}
           onBlur={(e) => handleChange(e.target.value)}

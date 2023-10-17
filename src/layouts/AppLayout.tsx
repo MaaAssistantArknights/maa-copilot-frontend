@@ -1,10 +1,11 @@
-import { Button, IconName, Tag } from '@blueprintjs/core'
+import { Button, IconName, Navbar, Tag } from '@blueprintjs/core'
 
 import { Link, NavLink } from 'react-router-dom'
 import { FCC } from 'types'
 
 import { AccountManager } from 'components/AccountManager'
 import { BackToTop } from 'components/BackToTop'
+import { ThemeSwitchButton } from 'components/ThemeSwitchButton'
 
 const LINKS: {
   to: string
@@ -23,10 +24,12 @@ const LINKS: {
   },
 ]
 
+// const darkMode = localStorage.getItem('darkMode') === 'true'
+
 export const AppLayout: FCC = ({ children }) => (
-  <div className="flex flex-col h-full w-full bg-zinc-50">
-    <nav className="flex w-full px-8 py-2 items-center bg-zinc-100 shadow fixed h-14 z-10 whitespace-nowrap overflow-x-auto overflow-y-hidden">
-      <Link to="/" className="flex items-center hover:no-underline">
+  <div className="flex flex-col h-full w-full bg-zinc-50 ">
+    <Navbar className="flex w-full px-8 py-2 items-center bg-zinc-100 shadow fixed h-14 z-10 whitespace-nowrap overflow-x-auto overflow-y-hidden">
+      <Link to="/" className="flex items-center hover:no-underline ">
         <div className="select-none text-lg font-bold leading-none">
           MAA Copilot
         </div>
@@ -54,10 +57,11 @@ export const AppLayout: FCC = ({ children }) => (
 
       <div className="flex-1" />
 
+      <ThemeSwitchButton />
       <AccountManager />
-    </nav>
+    </Navbar>
 
-    <div className="pt-14 pb-16">{children}</div>
+    <div className="docs-content-wrapper pt-14 pb-16">{children}</div>
 
     <BackToTop />
   </div>
