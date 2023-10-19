@@ -242,7 +242,7 @@ function FloatingMapHeader({
       className={clsx(
         className,
         HEADER_CLASS,
-        'flex items-center text-xs bg-gray-200',
+        'flex items-center text-xs bg-gray-200 dark:bg-slate-500',
         config.show ? 'cursor-move' : 'cursor-default',
       )}
       style={{ height: HEADER_HEIGHT }}

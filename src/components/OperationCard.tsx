@@ -60,7 +60,7 @@ export const OperationCard = ({
           </H4>
           <Tooltip2
             placement="bottom"
-            content={<div className="max-w-sm">下载原 JSON</div>}
+            content={<div className="max-w-sm dark:text-slate-900">下载原 JSON</div>}
           >
             <Button
               small
@@ -74,7 +74,7 @@ export const OperationCard = ({
           </Tooltip2>
           <Tooltip2
             placement="bottom"
-            content={<div className="max-w-sm">复制神秘代码</div>}
+            content={<div className="max-w-sm dark:text-slate-900">复制神秘代码</div>}
           >
             <Button
               small
