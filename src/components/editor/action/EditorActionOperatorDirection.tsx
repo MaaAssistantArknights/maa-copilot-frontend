@@ -7,7 +7,7 @@ import { SetOptional } from 'type-fest'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { operatorDirections } from '../../../models/operator'
+import {OperatorDirection, operatorDirections} from '../../../models/operator'
 import { FormField2 } from '../../FormField'
 
 interface EditorActionOperatorDirectionProps
@@ -41,8 +41,9 @@ export const EditorActionOperatorDirection = ({
       error={errors[name]}
       description="部署干员的干员朝向"
     >
-      <Select2
+      <Select2<OperatorDirection>
         filterable={false}
+        activeItem={selected}
         items={operatorDirections}
         itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
           <MenuItem

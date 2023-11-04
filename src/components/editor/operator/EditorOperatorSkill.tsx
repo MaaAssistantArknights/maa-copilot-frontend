@@ -12,7 +12,6 @@ interface EditorOperatorSkillChoice {
   title: string
   value: number | null
 }
-const EditorOperatorSkillSelect = Select2.ofType<EditorOperatorSkillChoice>()
 
 interface EditorOperatorSkillProps
   extends EditorFieldProps<CopilotDocV1.Operator, number> {}
@@ -52,8 +51,9 @@ export const EditorOperatorSkill = ({
   const selected = items.find((item) => item.value === (value ?? 1))
 
   return (
-    <EditorOperatorSkillSelect
+    <Select2<EditorOperatorSkillChoice>
       filterable={false}
+      activeItem={selected}
       items={items}
       itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
@@ -76,6 +76,6 @@ export const EditorOperatorSkill = ({
         onBlur={onBlur}
         ref={ref}
       />
-    </EditorOperatorSkillSelect>
+    </Select2>
   )
 }
