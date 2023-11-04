@@ -47,7 +47,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   submitOperator,
   submitGroup,
 }) => {
-  const activeItem =
+  const selectedItem =
     performerSelectItems.find((item) => item.value === mode) ||
     performerSelectItems[0]
 
@@ -59,20 +59,19 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
         items={performerSelectItems}
         className="ml-1"
         onItemSelect={(e) => onModeChange(e.value)}
-        itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
+        itemRenderer={(action, { handleClick, handleFocus }) => (
           <MenuItem
             key={action.value}
-            selected={modifiers.active}
+            selected={action.value === mode}
             onClick={handleClick}
             onFocus={handleFocus}
             text={action.label}
           />
         )}
-        activeItem={activeItem}
       >
         <Button
           large
-          text={activeItem.label}
+          text={selectedItem.label}
           rightIcon="double-caret-vertical"
         />
       </Select2>
