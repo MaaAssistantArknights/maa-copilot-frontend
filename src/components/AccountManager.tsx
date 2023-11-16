@@ -24,6 +24,7 @@ import { LoginPanel } from 'components/account/LoginPanel'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
+import { useCurrentSize } from 'utils/useCurrenSize'
 import { useNetworkState } from 'utils/useNetworkState'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
@@ -303,6 +304,7 @@ export const AccountAuthDialog: ComponentType<{
 export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
   const [open, setOpen] = useState(false)
   const [authState] = useAtom(authAtom)
+  const { isSM } = useCurrentSize()
 
   return (
     <>
@@ -318,7 +320,7 @@ export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
         </Popover2>
       ) : (
         <Button className="ml-auto" icon="user" onClick={() => setOpen(true)}>
-          登录 / 注册
+          {!isSM && '登录 / 注册'}
         </Button>
       )}
     </>
