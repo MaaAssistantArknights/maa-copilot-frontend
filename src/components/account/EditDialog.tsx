@@ -51,7 +51,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
                   <span className="ml-1">账户信息</span>
                 </div>
               }
-              panel={<InfoPanel />}
+              panel={<InfoPanel onClose={onClose} />}
             />
             <Tab
               id="password"
@@ -61,7 +61,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
                   <span className="ml-1">密码</span>
                 </div>
               }
-              panel={<PasswordPanel />}
+              panel={<PasswordPanel onClose={onClose} />}
             />
           </Tabs>
         </GlobalErrorBoundary>
@@ -70,7 +70,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
   )
 }
 
-const InfoPanel = () => {
+const InfoPanel = ({ onClose }) => {
   interface FormValues {
     username: string
   }
@@ -109,6 +109,7 @@ const InfoPanel = () => {
         intent: 'success',
         message: `更新成功`,
       })
+      onClose(false)
     } catch (e) {
       console.warn(e)
       setError('global' as any, { message: formatError(e) })
@@ -149,7 +150,7 @@ const InfoPanel = () => {
   )
 }
 
-const PasswordPanel = () => {
+const PasswordPanel = ({ onClose }) => {
   interface FormValues {
     original: string
     newPassword: string
@@ -182,6 +183,7 @@ const PasswordPanel = () => {
           intent: 'success',
           message: `更新成功`,
         })
+        onClose(false)
       } catch (e) {
         console.warn(e)
         setError('global' as any, { message: formatError(e) })
