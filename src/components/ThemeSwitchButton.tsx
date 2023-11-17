@@ -20,7 +20,6 @@ export const ThemeSwitchButton = () => {
   }, [theme])
   return (
     <Button
-      className="mr-4"
       onClick={handleThemeSwitch}
       icon={theme === 'dark' ? 'moon' : 'flash'}
     ></Button>
