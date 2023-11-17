@@ -70,6 +70,7 @@ export interface RegisterResponse {}
 
 export const requestRegister = (
   email: string,
+  registerToken: string,
   username: string,
   password: string,
 ) => {
@@ -77,10 +78,25 @@ export const requestRegister = (
     method: 'POST',
     json: {
       email,
+      register_token: registerToken,
       user_name: username,
       password,
     },
   })
+}
+
+export interface EmailToenResponse {}
+
+export const reqeustRegistrationToken = (email: string) => {
+  return jsonRequest<Response<EmailToenResponse>>(
+    '/user/sendRegistrationToken',
+    {
+      method: 'POST',
+      json: {
+        email,
+      },
+    },
+  )
 }
 
 export interface UpdateInfoResponse {}

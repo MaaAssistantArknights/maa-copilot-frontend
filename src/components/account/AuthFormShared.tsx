@@ -9,7 +9,7 @@ import {
 import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL } from 'utils/regexes'
 
-export type RuleKeys = 'email' | 'password' | 'username'
+export type RuleKeys = 'email' | 'password' | 'username' | 'registertoken'
 
 export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
   email: {
@@ -25,6 +25,11 @@ export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
     required: '用户名为必填项',
     minLength: { value: 4, message: '用户名长度不能小于 4 位' },
     maxLength: { value: 24, message: '用户名长度不能大于 24 位' },
+  },
+  registertoken: {
+    required: '邮箱验证码为必填项',
+    minLength: { value: 6, message: '邮箱验证码长度为 6 位' },
+    maxLength: { value: 6, message: '邮箱验证码长度为 6 位' },
   },
 }
 
@@ -73,7 +78,41 @@ export const AuthFormEmailField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText: register && '邮箱将需要链接确认',
+        helperText: register && '将通过发送邮件输入验证码确认',
+      }}
+    />
+  )
+}
+export const AuthRegistrationTokenField = <T extends FieldValues>({
+  label = '邮箱验证码',
+  control,
+  error,
+  field,
+  register,
+  autoComplete = '',
+  inputGroupProps,
+}: AuthFormFieldProps<T>) => {
+  return (
+    <FormField
+      label={label}
+      field={field}
+      control={control}
+      error={error}
+      ControllerProps={{
+        rules: rule.registertoken,
+        render: (renderProps) => (
+          <InputGroup
+            id={field}
+            placeholder="123456"
+            autoComplete={autoComplete}
+            {...renderProps.field}
+            value={renderProps.field.value || ''}
+            {...inputGroupProps?.(renderProps)}
+          />
+        ),
+      }}
+      FormGroupProps={{
+        helperText: register && '请输入邮件中的验证码',
       }}
     />
   )
