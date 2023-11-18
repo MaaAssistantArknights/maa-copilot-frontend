@@ -69,7 +69,7 @@ export const EditorOperatorName = <T extends FieldValues>({
         query ? fuse.search(query).map((el) => el.item) : items
       }
       fieldState={fieldState}
-      onReset={() => onChange(undefined)}
+      onReset={() => onChange('')}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
           key={item.name}
@@ -88,7 +88,7 @@ export const EditorOperatorName = <T extends FieldValues>({
         />
       )}
       onItemSelect={(item) => onChange(item.name)}
-      selectedItem={createArbitraryOperator(value as string)}
+      selectedItem={createArbitraryOperator((value || '') as string)}
       inputValueRenderer={(item) => item.name}
       createNewItemFromQuery={(query) => createArbitraryOperator(query)}
       createNewItemRenderer={(query, active, handleClick) => (
