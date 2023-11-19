@@ -70,7 +70,7 @@ export interface RegisterResponse {}
 
 export const requestRegister = (
   email: string,
-  registerToken: string,
+  registrationToken: string,
   username: string,
   password: string,
 ) => {
@@ -78,7 +78,7 @@ export const requestRegister = (
     method: 'POST',
     json: {
       email,
-      register_token: registerToken,
+      registration_token: registrationToken,
       user_name: username,
       password,
     },
