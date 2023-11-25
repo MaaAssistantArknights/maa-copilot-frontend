@@ -66,6 +66,11 @@ export namespace CopilotDocV1 {
     type: Type.SkillUsage
   }
 
+  export interface ActionSkillTimes extends ActionBase {
+    type: Type.SkillTimes
+    times: number
+  }
+
   export interface ActionUtil extends ActionBase {
     type: Type.SpeedUp | Type.Output | Type.SkillDaemon
   }
@@ -98,6 +103,7 @@ export namespace CopilotDocV1 {
     Skill = 'Skill',
     SkillDaemon = 'SkillDaemon',
     SkillUsage = 'SkillUsage',
+    SkillTimes = 'SkillTimes',
     SpeedUp = 'SpeedUp',
     MoveCamera = 'MoveCamera',
   }
@@ -129,9 +135,32 @@ export namespace CopilotDocV1 {
      */
     skill?: number
     skillUsage?: SkillUsageType
+    /**
+     * 技能使用次数，可选，默认为 1
+     */
+    skillTimes?: number
   }
 
-  export type SkillUsageType = 0 | 1 | 2 | 3
+  export enum SkillUsageType {
+    /**
+     * 不自动使用
+     */
+    None = 0,
+    /**
+     * 好了就用
+     */
+    ReadyToUse = 1,
+    /**
+     * 好了就用-指定次数
+     */
+    ReadyToUseTimes = 2,
+    /**
+     * 自动使用
+     */
+    Automatically = 3,
+  }
+
+  export type SkillTimes = number
 
   export interface Requirements {
     elite?: number
