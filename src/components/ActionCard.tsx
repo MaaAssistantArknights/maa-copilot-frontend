@@ -6,7 +6,7 @@ import { FCC } from 'types'
 
 import { CardTitle } from 'components/CardTitle'
 import { FactItem } from 'components/FactItem'
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 import { findActionType } from 'models/types'
 
 import {
@@ -59,7 +59,11 @@ export const ActionCard: FC<ActionCardProps> = ({
               dense
               title={findOperatorSkillUsage(action.skillUsage).title}
               icon="swap-horizontal"
-            />
+            >
+              {action.skillUsage ===
+                CopilotDocV1.SkillUsageType.ReadyToUseTimes &&
+                'skillTimes' in action && <span>{action.skillTimes}次</span>}
+            </FactItem>
           )}
 
           {'location' in action && action.location && (
