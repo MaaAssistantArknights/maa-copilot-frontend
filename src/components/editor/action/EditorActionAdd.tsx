@@ -29,6 +29,7 @@ import { CopilotDocV1 } from 'models/copilot.schema'
 import { useLevels } from '../../../apis/arknights'
 import { findLevelByStageName } from '../../../models/level'
 import { EditorOperatorName } from '../operator/EditorOperator'
+import { EditorOperatorSkillTimes } from '../operator/EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from '../operator/EditorOperatorSkillUsage'
 import {
   EditorActionPreDelay,
@@ -70,6 +71,7 @@ export const EditorActionAdd = ({
     reset,
     setError,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CopilotDocV1.Action>({
     defaultValues: defaultAction,
@@ -77,6 +79,7 @@ export const EditorActionAdd = ({
 
   const type = useWatch({ control, name: 'type' })
   const stageName = useWatch({ control: operationControl, name: 'stageName' })
+  const skillUsage = useWatch({ control, name: 'skillUsage' })
 
   const levels = useLevels().data?.data || []
   const level = useMemo(
@@ -103,6 +106,15 @@ export const EditorActionAdd = ({
       reset({ ...defaultMoveCameraAction })
     }
   }, [reset, action, type])
+
+  useEffect(() => {
+    setValue(
+      'skillTimes',
+      skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
+        ? (action as CopilotDocV1.ActionSkillUsage)?.skillTimes ?? 1
+        : undefined,
+    )
+  }, [skillUsage])
 
   const onSubmit = handleSubmit((values) => {
     if ('name' in values) {
@@ -222,7 +234,7 @@ export const EditorActionAdd = ({
         )}
 
         {type === 'SkillUsage' && (
-          <div className="flex">
+          <div className="flex gap-2">
             <FormField2
               label="技能用法"
               field="skillUsage"
@@ -238,6 +250,22 @@ export const EditorActionAdd = ({
                 defaultValue={0}
               />
             </FormField2>
+
+            {skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes && (
+              <FormField2
+                label="技能使用次数"
+                field="skillTimes"
+                error={
+                  (errors as FieldErrors<CopilotDocV1.ActionSkillUsage>)
+                    .skillTimes
+                }
+              >
+                <EditorOperatorSkillTimes
+                  control={control as Control<CopilotDocV1.ActionSkillUsage>}
+                  name="skillTimes"
+                />
+              </FormField2>
+            )}
           </div>
         )}
 

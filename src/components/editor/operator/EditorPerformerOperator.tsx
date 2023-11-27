@@ -10,12 +10,13 @@ import {
 
 import { CardTitle } from 'components/CardTitle'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FormField2 } from '../../FormField'
 import { EditorOperatorName } from './EditorOperator'
 import { EditorOperatorGroupSelect } from './EditorOperatorGroupSelect'
 import { EditorOperatorSkill } from './EditorOperatorSkill'
+import { EditorOperatorSkillTimes } from './EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from './EditorOperatorSkillUsage'
 
 export interface EditorOperatorFormValues extends CopilotDocV1.Operator {
@@ -50,6 +51,7 @@ export const EditorPerformerOperator = ({
     handleSubmit,
     setError,
     formState: { errors },
+    watch,
   } = useForm<EditorOperatorFormValues>()
 
   const findGroupByOperator = (operator?: CopilotDocV1.Operator) =>
@@ -71,6 +73,16 @@ export const EditorPerformerOperator = ({
   useEffect(() => {
     setValue('groupName', findGroupByOperator(getValues())?.name)
   }, [reset, getValues, groups])
+
+  const skillUsage = watch('skillUsage')
+  useEffect(() => {
+    setValue(
+      'skillTimes',
+      skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
+        ? operator?.skillTimes ?? 1
+        : undefined,
+    )
+  }, [skillUsage, setValue])
 
   const onSubmit: SubmitHandler<EditorOperatorFormValues> = (values) => {
     values.name = values.name.trim()
@@ -125,13 +137,8 @@ export const EditorPerformerOperator = ({
         />
       </FormField2>
 
-      <div className="flex flex-col lg:flex-row">
-        <FormField2
-          label="技能"
-          field="skill"
-          error={errors.skill}
-          className="mr-2"
-        >
+      <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
+        <FormField2 label="技能" field="skill" error={errors.skill}>
           <EditorOperatorSkill control={control} name="skill" />
         </FormField2>
 
@@ -142,6 +149,16 @@ export const EditorPerformerOperator = ({
         >
           <EditorOperatorSkillUsage control={control} name="skillUsage" />
         </FormField2>
+
+        {skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes && (
+          <FormField2
+            label="技能使用次数"
+            field="skillTimes"
+            error={errors.skillTimes}
+          >
+            <EditorOperatorSkillTimes control={control} name="skillTimes" />
+          </FormField2>
+        )}
       </div>
 
       <div className="flex">

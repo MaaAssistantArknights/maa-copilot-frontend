@@ -4,7 +4,7 @@ import clsx from 'clsx'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { OPERATORS, findOperatorSkillUsage } from '../../../models/operator'
+import { OPERATORS, getSkillUsageTitle } from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { OperatorAvatar } from './EditorOperator'
@@ -26,7 +26,10 @@ export const EditorOperatorItem = ({
   listeners,
 }: EditorOperatorItemProps) => {
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
-  const skillUsage = findOperatorSkillUsage(operator.skillUsage).title
+  const skillUsage = getSkillUsageTitle(
+    operator.skillUsage as CopilotDocV1.SkillUsageType,
+    operator.skillTimes,
+  )
 
   const skill = `${
     [null, '一', '二', '三'][operator.skill ?? 1] ?? '未知'
