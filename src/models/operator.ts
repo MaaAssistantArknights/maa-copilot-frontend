@@ -65,6 +65,16 @@ export function findOperatorSkillUsage(
   )
 }
 
+export function getSkillUsageTitle(
+  skillUsage: CopilotDocV1.SkillUsageType,
+  skillTimes?: CopilotDocV1.SkillTimes,
+) {
+  if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
+    return `好了就用（${skillTimes ? `${skillTimes}次` : '指定次数'}）`
+  }
+  return findOperatorSkillUsage(skillUsage).title
+}
+
 export interface OperatorDirection {
   icon?: IconName
   title: string

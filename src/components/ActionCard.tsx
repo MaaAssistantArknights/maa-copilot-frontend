@@ -9,10 +9,7 @@ import { FactItem } from 'components/FactItem'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { findActionType } from 'models/types'
 
-import {
-  findOperatorDirection,
-  findOperatorSkillUsage,
-} from '../models/operator'
+import { findOperatorDirection, getSkillUsageTitle } from '../models/operator'
 import { formatDuration } from '../utils/times'
 
 interface ActionCardProps {
@@ -57,13 +54,9 @@ export const ActionCard: FC<ActionCardProps> = ({
           {'skillUsage' in action && (
             <FactItem
               dense
-              title={findOperatorSkillUsage(action.skillUsage).title}
+              title={getSkillUsageTitle(action.skillUsage, action.skillTimes)}
               icon="swap-horizontal"
-            >
-              {action.skillUsage ===
-                CopilotDocV1.SkillUsageType.ReadyToUseTimes &&
-                'skillTimes' in action && <span>{action.skillTimes}次</span>}
-            </FactItem>
+            />
           )}
 
           {'location' in action && action.location && (
