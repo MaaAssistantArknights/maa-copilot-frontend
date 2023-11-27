@@ -64,11 +64,7 @@ export namespace CopilotDocV1 {
   export interface ActionSkillUsage extends ActionBase {
     skillUsage: SkillUsageType
     type: Type.SkillUsage
-  }
-
-  export interface ActionSkillTimes extends ActionBase {
-    type: Type.SkillTimes
-    times: number
+    skillTimes?: number
   }
 
   export interface ActionUtil extends ActionBase {
@@ -103,7 +99,6 @@ export namespace CopilotDocV1 {
     Skill = 'Skill',
     SkillDaemon = 'SkillDaemon',
     SkillUsage = 'SkillUsage',
-    SkillTimes = 'SkillTimes',
     SpeedUp = 'SpeedUp',
     MoveCamera = 'MoveCamera',
   }

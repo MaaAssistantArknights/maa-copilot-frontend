@@ -6,7 +6,7 @@ import type { CopilotDocV1 } from 'models/copilot.schema'
 import { NumericInput2 } from '../NumericInput2'
 
 export const EditorOperatorSkillTimes = <
-  T extends CopilotDocV1.Operator | CopilotDocV1.ActionSkillTimes,
+  T extends CopilotDocV1.Operator | CopilotDocV1.ActionSkillUsage,
 >({
   name,
   control,
