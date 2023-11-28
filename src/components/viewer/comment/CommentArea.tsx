@@ -297,13 +297,7 @@ const CommentActions = ({
           </p>
         </Alert>
       </div>
-      {replyTo === comment && (
-        <CommentForm
-          inputAutoFocus
-          className="mt-4"
-          placeholder={`回复 @${comment.uploader}:`}
-        />
-      )}
+      {replyTo === comment && <CommentForm inputAutoFocus className="mt-4" />}
     </div>
   )
 }
