@@ -98,7 +98,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
       <div className="md:w-1/2 md:mr-8 w-full">
         <EditorActionAdd
           control={control}
-          action={editingAction}
+          editingAction={editingAction}
           onSubmit={onSubmit}
           onCancel={() => setEditingAction(undefined)}
         />
