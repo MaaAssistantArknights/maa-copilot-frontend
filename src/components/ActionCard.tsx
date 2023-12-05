@@ -6,13 +6,10 @@ import { FCC } from 'types'
 
 import { CardTitle } from 'components/CardTitle'
 import { FactItem } from 'components/FactItem'
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 import { findActionType } from 'models/types'
 
-import {
-  findOperatorDirection,
-  findOperatorSkillUsage,
-} from '../models/operator'
+import { findOperatorDirection, getSkillUsageTitle } from '../models/operator'
 import { formatDuration } from '../utils/times'
 
 interface ActionCardProps {
@@ -57,7 +54,7 @@ export const ActionCard: FC<ActionCardProps> = ({
           {'skillUsage' in action && (
             <FactItem
               dense
-              title={findOperatorSkillUsage(action.skillUsage).title}
+              title={getSkillUsageTitle(action.skillUsage, action.skillTimes)}
               icon="swap-horizontal"
             />
           )}

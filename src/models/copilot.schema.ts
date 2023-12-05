@@ -64,6 +64,7 @@ export namespace CopilotDocV1 {
   export interface ActionSkillUsage extends ActionBase {
     skillUsage: SkillUsageType
     type: Type.SkillUsage
+    skillTimes?: number
   }
 
   export interface ActionUtil extends ActionBase {
@@ -129,9 +130,32 @@ export namespace CopilotDocV1 {
      */
     skill?: number
     skillUsage?: SkillUsageType
+    /**
+     * 技能使用次数，可选，默认为 1
+     */
+    skillTimes?: number
   }
 
-  export type SkillUsageType = 0 | 1 | 2 | 3
+  export enum SkillUsageType {
+    /**
+     * 不自动使用
+     */
+    None = 0,
+    /**
+     * 好了就用
+     */
+    ReadyToUse = 1,
+    /**
+     * 好了就用-指定次数
+     */
+    ReadyToUseTimes = 2,
+    /**
+     * 自动使用
+     */
+    Automatically = 3,
+  }
+
+  export type SkillTimes = number
 
   export interface Requirements {
     elite?: number

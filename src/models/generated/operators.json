@@ -522,6 +522,12 @@
     "alt_name": "Specter the Unchained"
   },
   {
+    "id": "char_4114_harold",
+    "name": "哈洛德",
+    "alias": "haluode hld 哈洛德",
+    "alt_name": "Harold"
+  },
+  {
     "id": "char_4045_heidi",
     "name": "海蒂",
     "alias": "haidi hd 海蒂",
@@ -742,6 +748,12 @@
     "name": "嘉维尔",
     "alias": "jiaweier jwe 嘉維爾",
     "alt_name": "Gavial"
+  },
+  {
+    "id": "char_4116_blkkgt",
+    "name": "锏",
+    "alias": "jian j 鐧",
+    "alt_name": "Degenbrecher"
   },
   {
     "id": "char_4036_forcer",
@@ -970,6 +982,12 @@
     "name": "猎蜂",
     "alias": "liefeng lf 獵蜂",
     "alt_name": "Beehunter"
+  },
+  {
+    "id": "char_194_leto",
+    "name": "烈夏",
+    "alias": "liexia lx 烈夏",
+    "alt_name": "Лето"
   },
   {
     "id": "char_4080_lin",
@@ -1398,6 +1416,12 @@
     "alt_name": "Deepcolor"
   },
   {
+    "id": "char_4109_baslin",
+    "name": "深律",
+    "alias": "shenlv sl 深律",
+    "alt_name": "Bassline"
+  },
+  {
     "id": "char_1032_excu2",
     "name": "圣约送葬人",
     "alias": "shengyuesongzangren shengyaosongzangren syszr 聖約送葬人",
@@ -1524,6 +1548,12 @@
     "alt_name": "Sussurro"
   },
   {
+    "id": "char_245_cello",
+    "name": "塑心",
+    "alias": "suxin sx 塑心",
+    "alt_name": "Virtuosa"
+  },
+  {
     "id": "char_366_acdrop",
     "name": "酸糖",
     "alias": "suantang st 酸糖",
@@ -1630,6 +1660,12 @@
     "name": "微风",
     "alias": "weifeng wf 微風",
     "alt_name": "Breeze"
+  },
+  {
+    "id": "char_4098_vvana",
+    "name": "薇薇安娜",
+    "alias": "weiweianna weiweiannuo wwan 薇薇安娜",
+    "alt_name": "Viviana"
   },
   {
     "id": "char_400_weedy",
@@ -1998,6 +2034,12 @@
     "alt_name": "Midnight"
   },
   {
+    "id": "char_4100_caper",
+    "name": "跃跃",
+    "alias": "yueyue yy 躍躍",
+    "alt_name": "Caper"
+  },
+  {
     "id": "char_219_meteo",
     "name": "陨星",
     "alias": "yunxing yx 隕星",
@@ -2014,6 +2056,12 @@
     "name": "战车",
     "alias": "zhanche zhanju zc zj 戰車",
     "alt_name": "Tachanka"
+  },
+  {
+    "id": "char_499_kaitou",
+    "name": "折光",
+    "alias": "zheguang sheguang zg sg 折光",
+    "alt_name": "Diamante"
   },
   {
     "id": "char_195_glassb",
@@ -2038,6 +2086,12 @@
     "name": "纸偶",
     "alias": "zhiou zo 紙偶",
     "alt_name": "Kaminingyo"
+  },
+  {
+    "id": "char_4011_lessng",
+    "name": "止颂",
+    "alias": "zhisong zs 止頌",
+    "alt_name": "Lessing"
   },
   {
     "id": "char_2024_chyue",

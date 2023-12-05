@@ -21,7 +21,7 @@ export interface CommentFormProps {
 export const CommentForm = ({
   className,
   primary,
-  placeholder = '发表一条评论吧',
+  placeholder = '发一条友善的评论吧',
   inputAutoFocus,
 }: CommentFormProps) => {
   const { operationId, replyTo, reload } = useContext(CommentAreaContext)
