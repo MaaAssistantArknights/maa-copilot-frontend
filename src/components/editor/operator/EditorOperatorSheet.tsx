@@ -1,7 +1,7 @@
-import { Button, ButtonProps, Drawer, Icon } from '@blueprintjs/core'
+import { Button, ButtonProps, Drawer, H1, Icon } from '@blueprintjs/core'
 
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import { favGroupAtom } from '../../../store/useFavGroups'
 import { SheetOperatorContainer } from './sheet/SheetOperator'
@@ -10,10 +10,13 @@ interface EditorOperatorSheetProps {}
 
 export const EditorOperatorSheet = () => {
   const { groups: favGroups } = useAtomValue(favGroupAtom)
+  const sheetContainer = useRef<HTMLDivElement>(null)
+  const backToTop = () =>
+    sheetContainer.current?.scrollTo({ top: 0, behavior: 'smooth' })
 
   return (
-    <div className="overflow-y-auto">
-      <SheetOperatorContainer />
+    <div className="overflow-y-auto" ref={sheetContainer}>
+      <SheetOperatorContainer backToTop={backToTop} />
       <div className="h-screen">2fadkshfkajj22</div>
     </div>
   )
@@ -35,10 +38,3 @@ export const EditorOperatorSheetTrigger = () => {
 interface ItemProps extends ButtonProps {
   title: string
 }
-
-const ButtonItem = ({ title, icon, ...buttonProps }: ItemProps) => (
-  <Button {...buttonProps} className="text-center">
-    <Icon icon={icon} />
-    <p>{title}</p>
-  </Button>
-)

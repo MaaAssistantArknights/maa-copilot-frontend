@@ -22,11 +22,14 @@ import {
 
 import { OperatorAvatar } from '../EditorOperator'
 
-interface SheetOperatorProp {}
-const SheetOperator = () => {
+interface SheetOperatorProp {
+  backToTop: () => void
+}
+const SheetOperator = ({ backToTop }: SheetOperatorProp) => {
   const defaultSubProf: SubProfession[] = [
     { id: 'all', name: '全部' },
     { id: 'fav', name: '收藏' },
+    { id: 'selected', name: '已选择' },
   ]
   const formattedProfessions = useMemo(
     () => [
@@ -47,6 +50,11 @@ const SheetOperator = () => {
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
+  const [choosenOperators, setChoosenOperators] = useState<OperatorInfo[]>([])
+
+  const checkOperatorState = (target: string) =>
+    choosenOperators.find((item) => item.id === target) ? true : false
+
   const formattedSubProfessions = useMemo(
     () => [...defaultSubProf, ...selectedProf.sub],
     [selectedProf],
@@ -62,31 +70,37 @@ const SheetOperator = () => {
 
   const operatorsGroupedBySubProf = useMemo(() => {
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
+    else if (selectedSubProf.id === 'selected')
+      return operatorsGroupedByProf.filter((item) =>
+        checkOperatorState(item.id),
+      )
     else
       return operatorsGroupedByProf.filter(
         (item) => item.subProf === selectedSubProf.id,
       )
   }, [selectedSubProf])
 
-  const checkOperatorState = (target: string) =>
-    choosenOperators.find((item) => item.id === target) ? true : false
-  const [choosenOperators, setChoosenOperators] = useState<OperatorInfo[]>([])
-
   return (
     <div className="flex">
       {operatorsGroupedBySubProf.length ? (
         <div className="flex flex-wrap flex-auto py-5 items-start content-start">
-          {operatorsGroupedBySubProf.map((item) => (
+          {operatorsGroupedBySubProf.map((operator) => (
             <div className="flex items-center w-1/4 mb-1 pl-1">
               <OperatorItem
-                selected={checkOperatorState(item.id)}
-                onClick={() =>
-                  setChoosenOperators([
-                    ...choosenOperators,
-                    OPERATORS.find((opItem) => opItem.id === item.id)!,
-                  ])
-                }
-                {...item}
+                selected={checkOperatorState(operator.id)}
+                onClick={() => {
+                  const choosenOperatorIndex = choosenOperators.findIndex(
+                    (item) => item.id === operator.id,
+                  )
+                  if (choosenOperatorIndex !== -1) {
+                    const choosenOperatorCopy = [...choosenOperators]
+                    choosenOperatorCopy.splice(choosenOperatorIndex, 1)
+                    setChoosenOperators(choosenOperatorCopy)
+                  } else {
+                    setChoosenOperators([...choosenOperators, operator])
+                  }
+                }}
+                {...operator}
               />
             </div>
           ))}
@@ -113,6 +127,7 @@ const SheetOperator = () => {
                 onClick={() => {
                   setSelectedProf(prof)
                   setSelectedSubProf(defaultSubProf[0])
+                  backToTop()
                 }}
               />
             ))}
@@ -126,7 +141,10 @@ const SheetOperator = () => {
                 key={subProf.id}
                 active={subProf.id === selectedSubProf.id}
                 minimal
-                onClick={() => setSelectedSubProf(subProf)}
+                onClick={() => {
+                  setSelectedSubProf(subProf)
+                  backToTop()
+                }}
               />
             ))}
           </div>
@@ -143,7 +161,7 @@ export const SheetOperatorContainer = ({
   const [operatorSheetIsOpen, setOperatorSheetState] = useState(true)
   return (
     <div>
-      <div className="flex items-center pl-1 mt-1">
+      <div className="flex items-center pl-1 my-5">
         <div className="flex items-center">
           <Icon icon="person" />
           <H4 className="p-0 m-0 ml-1">选择干员</H4>
@@ -189,7 +207,7 @@ const OperatorItem = ({
   return (
     <Card
       className={`flex flex-col justify-center items-center w-full p-0 relative cursor-pointer
-      ${selected ? 'scale-95' : undefined}`}
+      ${selected ? 'scale-95 bg-gray-200' : undefined}`}
       interactive={!selected}
       {...cardProps}
     >
@@ -197,9 +215,6 @@ const OperatorItem = ({
       <h3 className="font-bold leading-none text-nowrap text-center mt-3">
         {name}
       </h3>
-      {selected && (
-        <Icon icon="small-cross" className="absolute right-0 top-0" />
-      )}
     </Card>
   )
 }
