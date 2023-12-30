@@ -3,34 +3,43 @@ import {
   ButtonProps,
   Card,
   CardProps,
-  Collapse,
   Divider,
-  H4,
-  H6,
+  H3,
   Icon,
   NonIdealState,
 } from '@blueprintjs/core'
 
+import clsx from 'clsx'
 import { useMemo, useState } from 'react'
+import { UseFieldArrayRemove } from 'react-hook-form'
 
-import {
-  OPERATORS,
-  OperatorInfo,
-  PROFESSIONS,
-  SubProfession,
-} from 'models/generated/operators'
+import { CopilotDocV1 } from 'models/copilot.schema'
+import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 
 import { OperatorAvatar } from '../EditorOperator'
+import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 
-interface SheetOperatorProp {
-  backToTop: () => void
+type Operators = CopilotDocV1.Operator[]
+
+export interface SheetOperatorProps {
+  submitOperator: EditorPerformerOperatorProps['submit']
+  existedOperators: Operators
+  removeOperator: UseFieldArrayRemove
 }
-const SheetOperator = ({ backToTop }: SheetOperatorProp) => {
-  const defaultSubProf: SubProfession[] = [
-    { id: 'all', name: '全部' },
-    { id: 'fav', name: '收藏' },
-    { id: 'selected', name: '已选择' },
-  ]
+const SheetOperator = ({
+  submitOperator,
+  existedOperators,
+  removeOperator,
+}: SheetOperatorProps) => {
+  // TODO: 添加标记查询逻辑
+  const defaultSubProf = useMemo(
+    () => [
+      { id: 'all', name: '全部' },
+      { id: 'fav', name: '收藏' },
+      { id: 'selected', name: '已选择' },
+    ],
+    [],
+  )
   const formattedProfessions = useMemo(
     () => [
       {
@@ -50,10 +59,9 @@ const SheetOperator = ({ backToTop }: SheetOperatorProp) => {
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
-  const [choosenOperators, setChoosenOperators] = useState<OperatorInfo[]>([])
 
   const checkOperatorState = (target: string) =>
-    choosenOperators.find((item) => item.id === target) ? true : false
+    existedOperators.find((item) => item.name === target) ? true : false
 
   const formattedSubProfessions = useMemo(
     () => [...defaultSubProf, ...selectedProf.sub],
@@ -79,104 +87,93 @@ const SheetOperator = ({ backToTop }: SheetOperatorProp) => {
         (item) => item.subProf === selectedSubProf.id,
       )
   }, [selectedSubProf])
-
   return (
-    <div className="flex">
-      {operatorsGroupedBySubProf.length ? (
-        <div className="flex flex-wrap flex-auto py-5 items-start content-start">
-          {operatorsGroupedBySubProf.map((operator) => (
-            <div className="flex items-center w-1/4 mb-1 pl-1">
-              <OperatorItem
-                selected={checkOperatorState(operator.id)}
-                onClick={() => {
-                  const choosenOperatorIndex = choosenOperators.findIndex(
-                    (item) => item.id === operator.id,
-                  )
-                  if (choosenOperatorIndex !== -1) {
-                    const choosenOperatorCopy = [...choosenOperators]
-                    choosenOperatorCopy.splice(choosenOperatorIndex, 1)
-                    setChoosenOperators(choosenOperatorCopy)
-                  } else {
-                    setChoosenOperators([...choosenOperators, operator])
-                  }
-                }}
-                {...operator}
-              />
+    <form className="flex">
+      <div className="flex-auto">
+        <div className="sticky top-0 h-screen">
+          {operatorsGroupedBySubProf.length ? (
+            <div className="flex flex-wrap flex-col py-5 items-start content-start h-full overflow-x-auto">
+              {operatorsGroupedBySubProf.map((operator) => (
+                <div className="flex items-center w-1/4 mb-1 pl-1">
+                  <OperatorItem
+                    pinned={false}
+                    pinEventHandle={() => console.log('111')}
+                    selected={checkOperatorState(operator.name)}
+                    onClick={() => {
+                      const choosenOperatorIndex = existedOperators.findIndex(
+                        (item) => item.name === operator.name,
+                      )
+                      if (choosenOperatorIndex !== -1)
+                        removeOperator(choosenOperatorIndex)
+                      else
+                        submitOperator(operator, () => {
+                          console.log('error')
+                        })
+                    }}
+                    {...operator}
+                  />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      ) : (
-        <NonIdealState
-          description="暂无相关干员"
-          icon="issue"
-          title="无"
-          className="flex-auto my-auto"
-        />
-      )}
-      <Divider />
-      <div className="shrink-0 pt-1">
-        <div className="flex flex-row-reverse sticky top-0">
-          <div>
-            {formattedProfessions.map((prof) => (
-              <ButtonItem
-                title={prof.name}
-                icon="people"
-                minimal
-                key={prof.id}
-                active={prof.id === selectedProf.id}
-                onClick={() => {
-                  setSelectedProf(prof)
-                  setSelectedSubProf(defaultSubProf[0])
-                  backToTop()
-                }}
-              />
-            ))}
-          </div>
-          <div className="ml-1">
-            {formattedSubProfessions?.map((subProf) => (
-              <ButtonItem
-                title={subProf.name}
-                icon="people"
-                fill
-                key={subProf.id}
-                active={subProf.id === selectedSubProf.id}
-                minimal
-                onClick={() => {
-                  setSelectedSubProf(subProf)
-                  backToTop()
-                }}
-              />
-            ))}
-          </div>
+          ) : (
+            <NonIdealState
+              description="暂无相关干员"
+              icon="issue"
+              title="无"
+              className="flex-auto my-auto"
+            />
+          )}
         </div>
       </div>
-    </div>
+      <Divider />
+      <div className="flex flex-row-reverse pt-1 shrink-0">
+        <div>
+          {formattedProfessions.map((prof) => (
+            <ButtonItem
+              title={prof.name}
+              icon="people"
+              minimal
+              key={prof.id}
+              active={prof.id === selectedProf.id}
+              onClick={() => {
+                setSelectedProf(prof)
+                setSelectedSubProf(defaultSubProf[0])
+              }}
+            />
+          ))}
+        </div>
+        <div className="ml-1">
+          {formattedSubProfessions?.map((subProf) => (
+            <ButtonItem
+              title={subProf.name}
+              icon="people"
+              fill
+              key={subProf.id}
+              active={subProf.id === selectedSubProf.id}
+              minimal
+              onClick={() => setSelectedSubProf(subProf)}
+            />
+          ))}
+        </div>
+      </div>
+    </form>
   )
 }
 
-interface SheetOperatorContainerProp extends SheetOperatorProp {}
-export const SheetOperatorContainer = ({
-  ...SheetOperatorProps
-}: SheetOperatorContainerProp) => {
-  const [operatorSheetIsOpen, setOperatorSheetState] = useState(true)
+export const SheetOperatorContainer = (
+  sheetOperatorProp: SheetOperatorProps,
+) => {
+  console.log('update1')
   return (
     <div>
-      <div className="flex items-center pl-1 my-5">
+      <div className="flex items-center pl-3 my-5">
         <div className="flex items-center">
-          <Icon icon="person" />
-          <H4 className="p-0 m-0 ml-1">选择干员</H4>
+          <Icon icon="person" size={20} />
+          <H3 className="p-0 m-0 ml-3">选择干员</H3>
         </div>
-        <H6
-          className="p-0 m-0 ml-1 hover:underline cursor-pointer"
-          onClick={() => setOperatorSheetState(!operatorSheetIsOpen)}
-        >
-          {operatorSheetIsOpen ? '收起' : '展开'}
-        </H6>
       </div>
       <Divider />
-      <Collapse isOpen={operatorSheetIsOpen} keepChildrenMounted>
-        <SheetOperator {...SheetOperatorProps} />
-      </Collapse>
+      <SheetOperator {...sheetOperatorProp} />
     </div>
   )
 }
@@ -196,25 +193,42 @@ interface OperatorItemPorps extends CardProps {
   id: string
   name: string
   selected: boolean
+  pinned: boolean
+  pinEventHandle: () => void
 }
 
 const OperatorItem = ({
   id,
   selected,
   name,
+  pinned,
+  pinEventHandle,
   ...cardProps
 }: OperatorItemPorps) => {
   return (
     <Card
-      className={`flex flex-col justify-center items-center w-full p-0 relative cursor-pointer
-      ${selected ? 'scale-95 bg-gray-200' : undefined}`}
+      className={clsx(
+        'flex flex-col justify-center items-center w-full p-0 relative cursor-pointer',
+        selected && 'scale-95 bg-gray-200',
+      )}
       interactive={!selected}
       {...cardProps}
     >
       <OperatorAvatar id={id} size="large" />
-      <h3 className="font-bold leading-none text-nowrap text-center mt-3">
+      <h3 className="font-bold leading-none text-center mt-3 w-full truncate">
         {name}
       </h3>
+      <Icon
+        icon={pinned ? 'pin' : 'unpin'}
+        className={clsx(
+          'absolute top-1 right-0',
+          pinned ? '-rotate-45 transform-gpu' : 'text-gray-500',
+        )}
+        onClick={(e) => {
+          e.stopPropagation()
+          pinEventHandle()
+        }}
+      />
     </Card>
   )
 }

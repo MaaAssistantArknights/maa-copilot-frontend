@@ -338,7 +338,13 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
   return (
     <>
-      <EditorOperatorSheetTrigger />
+      <EditorOperatorSheetTrigger
+        submitOperator={submitOperator}
+        submitGroup={submitGroup}
+        existedOperators={operators}
+        existedGroups={groups}
+        removeOperator={removeOperator}
+      />
       <EditorPerformerAdd
         mode={editMode}
         operator={editingOperator}
