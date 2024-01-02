@@ -75,7 +75,6 @@ export const EditorPerformerOperator = ({
   const onSubmit: SubmitHandler<EditorOperatorFormValues> = (values) => {
     values.name = values.name.trim()
     values.groupName = values.groupName?.trim()
-    console.log(values)
     if (submit(values, setError)) {
       reset()
     }

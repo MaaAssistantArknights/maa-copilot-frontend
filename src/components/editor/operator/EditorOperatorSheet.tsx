@@ -1,7 +1,7 @@
 import { Button, Drawer } from '@blueprintjs/core'
 
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -20,14 +20,14 @@ type EditorOperatorSheet = SheetOperatorProps & {
 }
 
 const EditorOperatorSheet = (sheetOperatorProps: EditorOperatorSheet) => {
-  const { groups: favGroups } = useAtomValue(favGroupAtom)
-  // const sheetContainer = useRef<HTMLFormElement>(null)
-  // const backToTop = () =>
-  //   sheetContainer.current?.scrollTo({ top: 0, behavior: 'smooth' })
-  console.log('updated 0')
+  // const { groups: favGroups } = useAtomValue(favGroupAtom)
+  const sheetOperatorContainer = useMemo(
+    () => <SheetOperatorContainer {...sheetOperatorProps} />,
+    [sheetOperatorProps.existedOperators],
+  )
   return (
     <div className="overflow-y-auto">
-      <SheetOperatorContainer {...sheetOperatorProps} />
+      {sheetOperatorContainer}
       <div className="h-screen">2fadkshfkajj22</div>
     </div>
   )

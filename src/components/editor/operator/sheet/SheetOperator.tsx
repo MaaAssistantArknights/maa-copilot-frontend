@@ -8,10 +8,11 @@ import {
   Icon,
   NonIdealState,
 } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useMemo, useState } from 'react'
-import { UseFieldArrayRemove } from 'react-hook-form'
+import { UseFieldArrayRemove, useForm } from 'react-hook-form'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
@@ -19,11 +20,11 @@ import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 import { OperatorAvatar } from '../EditorOperator'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 
-type Operators = CopilotDocV1.Operator[]
+type Operator = CopilotDocV1.Operator
 
 export interface SheetOperatorProps {
   submitOperator: EditorPerformerOperatorProps['submit']
-  existedOperators: Operators
+  existedOperators: Operator[]
   removeOperator: UseFieldArrayRemove
 }
 const SheetOperator = ({
@@ -58,7 +59,7 @@ const SheetOperator = ({
   )
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
-  const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
+  const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[2])
 
   const checkOperatorState = (target: string) =>
     existedOperators.find((item) => item.name === target) ? true : false
@@ -80,41 +81,49 @@ const SheetOperator = ({
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
     else if (selectedSubProf.id === 'selected')
       return operatorsGroupedByProf.filter((item) =>
-        checkOperatorState(item.id),
+        checkOperatorState(item.name),
       )
     else
       return operatorsGroupedByProf.filter(
         (item) => item.subProf === selectedSubProf.id,
       )
-  }, [selectedSubProf])
+  }, [selectedSubProf, selectedProf])
+
   return (
-    <form className="flex">
+    <div className="flex">
       <div className="flex-auto">
         <div className="sticky top-0 h-screen">
           {operatorsGroupedBySubProf.length ? (
-            <div className="flex flex-wrap flex-col py-5 items-start content-start h-full overflow-x-auto">
-              {operatorsGroupedBySubProf.map((operator) => (
-                <div className="flex items-center w-1/4 mb-1 pl-1">
-                  <OperatorItem
-                    pinned={false}
-                    pinEventHandle={() => console.log('111')}
-                    selected={checkOperatorState(operator.name)}
-                    onClick={() => {
-                      const choosenOperatorIndex = existedOperators.findIndex(
-                        (item) => item.name === operator.name,
-                      )
-                      if (choosenOperatorIndex !== -1)
-                        removeOperator(choosenOperatorIndex)
-                      else
-                        submitOperator(operator, () => {
-                          console.log('error')
-                          // TODO: 链接表单数据
-                        })
-                    }}
-                    {...operator}
-                  />
-                </div>
-              ))}
+            <div
+              className="flex flex-wrap flex-col py-5 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
+              onWheel={(e) => (e.currentTarget.scrollLeft += e.deltaY)}
+            >
+              {operatorsGroupedBySubProf.map((operatorInfo) => {
+                const operatorDetail = existedOperators.find(
+                  (item) => item.name === operatorInfo.name,
+                )
+                return (
+                  <form className="flex items-center w-1/4 mb-1 px-0.5">
+                    <OperatorItem
+                      key={operatorInfo.name}
+                      pinned={false}
+                      pinEventHandle={() => console.log('111')}
+                      selected={checkOperatorState(operatorInfo.name)}
+                      onClick={() => {
+                        if (operatorDetail)
+                          removeOperator(
+                            existedOperators.findIndex(
+                              (item) => item._id === operatorDetail._id,
+                            ),
+                          )
+                        else submitOperator(operatorInfo, () => {})
+                      }}
+                      operator={operatorDetail}
+                      {...operatorInfo}
+                    />
+                  </form>
+                )
+              })}
             </div>
           ) : (
             <NonIdealState
@@ -157,27 +166,24 @@ const SheetOperator = ({
           ))}
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 
 export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
-) => {
-  console.log('update1')
-  return (
-    <div>
-      <div className="flex items-center pl-3 my-5">
-        <div className="flex items-center">
-          <Icon icon="person" size={20} />
-          <H3 className="p-0 m-0 ml-3">选择干员</H3>
-        </div>
+) => (
+  <div>
+    <div className="flex items-center pl-3 my-5">
+      <div className="flex items-center">
+        <Icon icon="person" size={20} />
+        <H3 className="p-0 m-0 ml-3">选择干员</H3>
       </div>
-      <Divider />
-      <SheetOperator {...sheetOperatorProp} />
     </div>
-  )
-}
+    <Divider />
+    <SheetOperator {...sheetOperatorProp} />
+  </div>
+)
 
 interface MenuItemProps extends ButtonProps {
   title: string
@@ -195,6 +201,7 @@ interface OperatorItemPorps extends CardProps {
   name: string
   selected: boolean
   pinned: boolean
+  operator?: Operator
   pinEventHandle: () => void
 }
 
@@ -204,25 +211,31 @@ const OperatorItem = ({
   name,
   pinned,
   pinEventHandle,
+  operator,
   ...cardProps
-}: OperatorItemPorps) => {
-  return (
-    <Card
-      className={clsx(
-        'flex flex-col justify-center items-center w-full p-0 relative cursor-pointer',
-        selected && 'scale-95 bg-gray-200',
-      )}
-      interactive={!selected}
-      {...cardProps}
+}: OperatorItemPorps) => (
+  <Card
+    className={clsx(
+      'flex flex-col justify-center items-center w-full p-0 relative cursor-pointer',
+      selected && 'scale-95 bg-gray-200',
+    )}
+    interactive={!selected}
+    {...cardProps}
+  >
+    <OperatorAvatar id={id} size="large" />
+    <h3 className="font-bold leading-none text-center mt-3 w-full truncate">
+      {name}
+    </h3>
+    <p>{`${operator?.skill || '未设置'}技能 · ${operator?.skillUsage || 0}`}</p>
+    <Tooltip2
+      content={`将 ${name} ${pinned ? '移出' : '添加至'}我的收藏`}
+      hoverOpenDelay={600}
+      className="absolute top-1 right-1"
     >
-      <OperatorAvatar id={id} size="large" />
-      <h3 className="font-bold leading-none text-center mt-3 w-full truncate">
-        {name}
-      </h3>
       <Icon
         icon={pinned ? 'pin' : 'unpin'}
         className={clsx(
-          'absolute top-1 right-0',
+          'hover:scale-150',
           pinned ? '-rotate-45 transform-gpu' : 'text-gray-500',
         )}
         onClick={(e) => {
@@ -230,6 +243,6 @@ const OperatorItem = ({
           pinEventHandle()
         }}
       />
-    </Card>
-  )
-}
+    </Tooltip2>
+  </Card>
+)
