@@ -41,7 +41,7 @@ export const EditorOperatorSheetTrigger = (sheetProps: EditorOperatorSheet) => {
       <Drawer isOpen={open} onClose={() => setOpen(false)}>
         <EditorOperatorSheet {...sheetProps} />
       </Drawer>
-      <Button onClick={() => setOpen(true)}>快捷编辑</Button>
+      <Button onClick={() => setOpen(true)} text="快捷编辑" />
     </>
   )
 }

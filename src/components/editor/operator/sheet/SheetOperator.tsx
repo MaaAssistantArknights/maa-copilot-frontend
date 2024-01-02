@@ -19,6 +19,7 @@ import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 
 import { OperatorAvatar } from '../EditorOperator'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
+import { SkillAboutTrigger } from './SkillAbout'
 
 type Operator = CopilotDocV1.Operator
 
@@ -226,7 +227,8 @@ const OperatorItem = ({
     <h3 className="font-bold leading-none text-center mt-3 w-full truncate">
       {name}
     </h3>
-    <p>{`${operator?.skill || '未设置'}技能 · ${operator?.skillUsage || 0}`}</p>
+    {/* <p>{`${operator?.skill || '未设置'}技能 · ${operator?.skillUsage || 0}`}</p> */}
+    <SkillAboutTrigger />
     <Tooltip2
       content={`将 ${name} ${pinned ? '移出' : '添加至'}我的收藏`}
       hoverOpenDelay={600}
