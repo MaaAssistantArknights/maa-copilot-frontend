@@ -12,14 +12,14 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useMemo, useState } from 'react'
-import { UseFieldArrayRemove, useForm } from 'react-hook-form'
+import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 
 import { OperatorAvatar } from '../EditorOperator'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
-import { SkillAboutTrigger } from './SkillAbout'
+import { EventType, SkillAboutProps, SkillAboutTrigger } from './SkillAbout'
 
 type Operator = CopilotDocV1.Operator
 
@@ -90,6 +90,27 @@ const SheetOperator = ({
       )
   }, [selectedSubProf, selectedProf])
 
+  const eventHandleProxy = (
+    type: EventType,
+    value: Operator,
+    setError?: UseFormSetError<CopilotDocV1.Operator>,
+  ) => {
+    switch (type) {
+      case 'box':
+        if (value._id)
+          removeOperator(
+            existedOperators.findIndex((item) => item._id === value._id),
+          )
+        else submitOperator(value, () => {})
+        break
+      case 'pin':
+        console.log('building')
+        break
+      case 'skill':
+        submitOperator(value, setError!)
+    }
+  }
+
   return (
     <div className="flex">
       <div className="flex-auto">
@@ -104,25 +125,16 @@ const SheetOperator = ({
                   (item) => item.name === operatorInfo.name,
                 )
                 return (
-                  <form className="flex items-center w-1/4 mb-1 px-0.5">
+                  <div className="flex items-center w-1/4 mb-1 px-0.5">
                     <OperatorItem
                       key={operatorInfo.name}
                       pinned={false}
-                      pinEventHandle={() => console.log('111')}
                       selected={checkOperatorState(operatorInfo.name)}
-                      onClick={() => {
-                        if (operatorDetail)
-                          removeOperator(
-                            existedOperators.findIndex(
-                              (item) => item._id === operatorDetail._id,
-                            ),
-                          )
-                        else submitOperator(operatorInfo, () => {})
-                      }}
+                      submitOperator={eventHandleProxy}
                       operator={operatorDetail}
                       {...operatorInfo}
                     />
-                  </form>
+                  </div>
                 )
               })}
             </div>
@@ -197,13 +209,11 @@ const ButtonItem = ({ title, icon, ...buttonProps }: MenuItemProps) => (
   </Button>
 )
 
-interface OperatorItemPorps extends CardProps {
+interface OperatorItemPorps extends CardProps, SkillAboutProps {
   id: string
   name: string
   selected: boolean
   pinned: boolean
-  operator?: Operator
-  pinEventHandle: () => void
 }
 
 const OperatorItem = ({
@@ -211,8 +221,8 @@ const OperatorItem = ({
   selected,
   name,
   pinned,
-  pinEventHandle,
   operator,
+  submitOperator,
   ...cardProps
 }: OperatorItemPorps) => (
   <Card
@@ -221,16 +231,18 @@ const OperatorItem = ({
       selected && 'scale-95 bg-gray-200',
     )}
     interactive={!selected}
+    onClick={() => submitOperator('box', operator || { name })}
     {...cardProps}
   >
     <OperatorAvatar id={id} size="large" />
     <h3 className="font-bold leading-none text-center mt-3 w-full truncate">
       {name}
     </h3>
-    {/* <p>{`${operator?.skill || '未设置'}技能 · ${operator?.skillUsage || 0}`}</p> */}
-    <SkillAboutTrigger />
+    <SkillAboutTrigger {...{ operator, submitOperator }} />
     <Tooltip2
-      content={`将 ${name} ${pinned ? '移出' : '添加至'}我的收藏`}
+      content={`将 ${name} ${
+        pinned ? '移出' : '添加至'
+      }我的收藏（会保留技能设置）`}
       hoverOpenDelay={600}
       className="absolute top-1 right-1"
     >
@@ -242,7 +254,7 @@ const OperatorItem = ({
         )}
         onClick={(e) => {
           e.stopPropagation()
-          pinEventHandle()
+          submitOperator('pin', operator || { name })
         }}
       />
     </Tooltip2>
