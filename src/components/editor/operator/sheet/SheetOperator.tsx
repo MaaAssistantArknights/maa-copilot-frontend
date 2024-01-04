@@ -70,9 +70,27 @@ const SheetOperator = ({
     [selectedProf],
   )
   const operatorsGroupedByProf = useMemo(() => {
-    if (selectedProf.id === 'all') return OPERATORS
+    // 处理自命名干员
+    const allOperators = [
+      ...OPERATORS,
+      ...existedOperators
+        .filter(
+          (item) => !OPERATORS.find((opItem) => opItem.name === item.name),
+        )
+        .map(({ name }) => {
+          return {
+            name,
+            id: name,
+            pron: '',
+            subProf: '',
+          }
+        }),
+    ]
+    if (selectedProf.id === 'all') return allOperators
     if (selectedProf.id === 'others')
-      return OPERATORS.filter((item) => item.subProf === 'notchar1')
+      return OPERATORS.filter(
+        (item) => item.subProf === 'notchar1' || !item.pron || !item.subProf,
+      )
     return OPERATORS.filter(
       (op) => !!selectedProf.sub.find((item) => item.id === op.subProf),
     )
@@ -107,10 +125,9 @@ const SheetOperator = ({
         console.log('building')
         break
       case 'skill':
-        submitOperator(value, setError!)
+        submitOperator(value, setError!, true)
     }
   }
-
   return (
     <div className="flex">
       <div className="flex-auto">

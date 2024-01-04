@@ -1,5 +1,6 @@
-import { Button, Icon } from '@blueprintjs/core'
+import { Button, Classes, H5, Icon, Intent, MenuItem } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
+import { Select2 } from '@blueprintjs/select'
 
 import clsx from 'clsx'
 import { useMemo, useState } from 'react'
@@ -12,7 +13,7 @@ import {
 } from 'components/editor/DetailedSelect'
 import { Operator } from 'models/arknights'
 import { CopilotDocV1 } from 'models/copilot.schema'
-import { operatorSkillUsages } from 'models/operator'
+import { operatorSkillUsages, operatorSkills } from 'models/operator'
 
 export type EventType = 'box' | 'pin' | 'skill'
 
@@ -24,68 +25,6 @@ export interface SkillAboutProps {
     setError?: UseFormSetError<CopilotDocV1.Operator>,
   ) => void
 }
-
-const SkillAboutForm = ({ operator, submitOperator }: SkillAboutProps) => {
-  const selectedAction = useMemo(
-    () => [...operatorSkillUsages].at(operator?.skillUsage || 0),
-    [operator?.skillUsage],
-  ) as DetailedSelectChoice
-  return (
-    <div>
-      <DetailedSelect
-        items={operatorSkillUsages as DetailedSelectItem[]}
-        onItemSelect={(item) => {
-          const tempOperator = { ...operator }
-          tempOperator.skillUsage = item.value as 1 | 2 | 3
-          submitOperator('skill', tempOperator as Operator)
-        }}
-        activeItem={selectedAction}
-      >
-        <Button
-          icon={selectedAction?.icon || 'slash'}
-          text={selectedAction ? selectedAction.title : '选择技能用法'}
-          rightIcon="double-caret-vertical"
-        />
-      </DetailedSelect>
-      <div>222</div>
-    </div>
-  )
-}
-
-// const SkillAboutForm = ({ operator, submitOperator }: SkillAboutProps) => {
-//   // const {}
-//   const selectedAction = useMemo(
-//     () => [...operatorSkillUsages].at(operator?.skillUsage || 0),
-//     [operator?.skillUsage],
-//   ) as DetailedSelectChoice
-
-//   const {
-//     control,
-//     reset,
-//     getValues,
-//     setValue,
-//     handleSubmit,
-//     setError,
-//     formState: { errors },
-//   } = useForm<EditorOperatorFormValues>({
-//     defaultValues: operator,
-//   })
-//   return (
-//     <form>
-//       <div className="flex flex-col lg:flex-row">
-//         <FormField2
-//           label="技能"
-//           field="skill"
-//           error={errors.skill}
-//           className="mr-2"
-//         >
-//           <EditorOperatorSkill control={control} name="skill" />
-//         </FormField2>
-//       </div>
-//       <div>222</div>
-//     </form>
-//   )
-// }
 
 export const SkillAboutTrigger = ({
   operator,
@@ -101,6 +40,82 @@ export const SkillAboutTrigger = ({
   const [skillUsage, setSkillUsage] = useState<CopilotDocV1.SkillUsageType>(
     operator?.skillUsage || 0,
   )
+  const submitHandle = () => {
+    const operatorCopy = { ...operator }
+    operatorCopy.skill = skill
+    operatorCopy.skillUsage = skillUsage
+    submitOperator('skill', operatorCopy as Operator)
+  }
+
+  const selectedSkillUsage = useMemo(
+    () => operatorSkillUsages[skillUsage],
+    [skillUsage],
+  ) as DetailedSelectChoice
+
+  const selectedSkill = useMemo(() => operatorSkills[skill - 1], [skill])
+
+  const skillUsageDetailSelect = useMemo(
+    () => (
+      <DetailedSelect
+        items={operatorSkillUsages as DetailedSelectItem[]}
+        onItemSelect={(item) => setSkillUsage(item.value as 0 | 1 | 2 | 3)}
+        activeItem={selectedSkillUsage}
+      >
+        <Button
+          icon={selectedSkillUsage?.icon || 'slash'}
+          text={selectedSkillUsage ? selectedSkillUsage.title : '选择技能用法'}
+          rightIcon="double-caret-vertical"
+        />
+      </DetailedSelect>
+    ),
+    [skillUsage],
+  )
+  const skillDetailSelect = useMemo(
+    () => (
+      <Select2
+        filterable={false}
+        items={[...operatorSkills]}
+        itemRenderer={(action, { handleClick, handleFocus, modifiers }) => (
+          <MenuItem
+            selected={modifiers.active}
+            key={action.value}
+            onClick={handleClick}
+            onFocus={handleFocus}
+            icon={action.icon}
+            text={action.title}
+          />
+        )}
+        onItemSelect={(item) => setSkill(item.value || 1)}
+      >
+        <Button
+          icon={selectedSkill.icon}
+          text={selectedSkill.title}
+          rightIcon="double-caret-vertical"
+        />
+      </Select2>
+    ),
+    [skill],
+  )
+  const submitButton = useMemo(
+    () => (
+      <Button
+        text="确认"
+        onClick={submitHandle}
+        className={Classes.POPOVER_DISMISS}
+      />
+    ),
+    [],
+  )
+
+  const skillAboutForm = (
+    <>
+      <div onClick={(e) => e.stopPropagation()} role="presentation">
+        {skillDetailSelect}
+        {skillUsageDetailSelect}
+      </div>
+      {submitButton}
+    </>
+  )
   const skillAboutTrigger = useMemo(
     () => (
       <Tooltip2
@@ -112,6 +127,7 @@ export const SkillAboutTrigger = ({
             'flex mt-3 text-gray-500',
             operator && 'hover:text-black',
           )}
+          role="presentation"
         >
           <Icon
             icon="small-info-sign"
@@ -119,22 +135,20 @@ export const SkillAboutTrigger = ({
             className="flex items-center"
           />
           <p className="text-xs">{`${operator?.skill || '未设置'}技能 ${
-            operator?.skillUsage ? '·' : ''
+            operator?.skillUsage !== undefined ? '·' : ''
           } `}</p>
-          {operator?.skillUsage && (
+          {operator?.skillUsage !== undefined && (
             <Icon
-              icon={
-                skillDic.find((item) => item.value === operator?.skillUsage)!
-                  .icon
-              }
+              icon={skillDic.find((item) => item.value === skillUsage)!.icon}
               className="flex items-center ml-1"
             />
           )}
         </div>
       </Tooltip2>
     ),
-    [operator],
+    [operator, skill, skillUsage],
   )
+
   return (
     <div
       onClick={(e) => {
@@ -142,10 +156,7 @@ export const SkillAboutTrigger = ({
       }}
       role="presentation"
     >
-      <Popover2
-        content={<SkillAboutForm {...{ operator, submitOperator }} />}
-        disabled={operator ? false : true}
-      >
+      <Popover2 content={skillAboutForm} disabled={operator ? false : true}>
         {skillAboutTrigger}
       </Popover2>
     </div>

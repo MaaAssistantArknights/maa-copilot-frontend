@@ -28,6 +28,7 @@ export interface EditorPerformerOperatorProps {
   submit: (
     values: EditorOperatorFormValues,
     setError: UseFormSetError<EditorOperatorFormValues>,
+    fromSheet?: boolean,
   ) => boolean
   onCancel: () => void
   categorySelector: JSX.Element

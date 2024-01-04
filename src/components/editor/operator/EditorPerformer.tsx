@@ -222,8 +222,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const submitOperator: EditorPerformerAddProps['submitOperator'] = (
     { groupName, ...operator },
     setError,
+    fromSheet,
   ) => {
     if (
+      !fromSheet &&
       operators.find(
         ({ _id, name }) => name === operator.name && _id !== operator._id,
       )
@@ -257,14 +259,14 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       }
     }
 
-    if (editingOperator) {
-      const existingOperator = findOperatorById(getId(editingOperator))
-
+    if (fromSheet || editingOperator) {
+      const existingOperator = fromSheet
+        ? operator
+        : findOperatorById(getId(editingOperator!))
       if (existingOperator) {
-        operator._id = getId(editingOperator)
+        operator._id = getId(existingOperator)
 
         const oldGroup = findGroupByOperator(existingOperator)
-
         if (oldGroup) {
           if (oldGroup === newGroup) {
             // replace existing operator in group
@@ -289,7 +291,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             removeOperator(operators.indexOf(existingOperator))
             addOperator()
           } else {
-            updateOperator(operators.indexOf(existingOperator), operator)
+            updateOperator(
+              operators.findIndex((item) => item._id === operator._id),
+              operator,
+            )
           }
         }
 
@@ -299,6 +304,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         return false
       }
     } else {
+      console.log(operator)
       operator._id = uniqueId()
       addOperator()
     }
