@@ -304,7 +304,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         return false
       }
     } else {
-      console.log(operator)
       operator._id = uniqueId()
       addOperator()
     }

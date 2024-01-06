@@ -1,11 +1,3 @@
-/*
- * @Author: Gemini2035 2530056984@qq.com
- * @Date: 2024-01-02 19:11:20
- * @LastEditors: Gemini2035 2530056984@qq.com
- * @LastEditTime: 2024-01-06 19:25:53
- * @FilePath: /maa-copilot-frontend/src/components/editor/operator/EditorSheet.tsx
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 import { Button, Drawer } from '@blueprintjs/core'
 
 import { useState } from 'react'
