@@ -1,4 +1,4 @@
-import { Button, Classes, H5, Icon, Intent, MenuItem } from '@blueprintjs/core'
+import { Button, Classes, H3, H4, Icon, MenuItem } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { Select2 } from '@blueprintjs/select'
 
@@ -109,9 +109,19 @@ export const SkillAboutTrigger = ({
 
   const skillAboutForm = (
     <>
-      <div onClick={(e) => e.stopPropagation()} role="presentation">
-        {skillDetailSelect}
-        {skillUsageDetailSelect}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        role="presentation"
+        className="flex items-center mb-3"
+      >
+        <div>
+          <p className="mb-1">技能</p>
+          {skillDetailSelect}
+        </div>
+        <div className="ml-3">
+          <p className="mb-1">技能用法</p>
+          {skillUsageDetailSelect}
+        </div>
       </div>
       {submitButton}
     </>
