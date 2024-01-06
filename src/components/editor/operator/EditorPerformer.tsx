@@ -28,12 +28,12 @@ import { FactItem } from '../../FactItem'
 import { Droppable, Sortable } from '../../dnd'
 import { EditorGroupItem } from './EditorGroupItem'
 import { EditorOperatorItem } from './EditorOperatorItem'
-import { EditorOperatorSheetTrigger } from './EditorOperatorSheet'
 import {
   EditorPerformerAdd,
   EditorPerformerAddProps,
   PerformerType,
 } from './EditorPerformerAdd'
+import { EditorSheetTrigger } from './EditorSheet'
 
 export interface EditorPerformerProps {
   control: Control<CopilotDocV1.Operation>
@@ -344,7 +344,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
   return (
     <>
-      <EditorOperatorSheetTrigger
+      <EditorSheetTrigger
         submitOperator={submitOperator}
         submitGroup={submitGroup}
         existedOperators={operators}

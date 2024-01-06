@@ -4,21 +4,23 @@ import {
   Card,
   CardProps,
   Divider,
-  H3,
   Icon,
   NonIdealState,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useAtom } from 'jotai'
 import { useMemo, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
+import { favOperatorAtom } from 'store/useFavOperators'
 
 import { OperatorAvatar } from '../EditorOperator'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
+import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { EventType, SkillAboutProps, SkillAboutTrigger } from './SkillAbout'
 
 type Operator = CopilotDocV1.Operator
@@ -33,7 +35,8 @@ const SheetOperator = ({
   existedOperators,
   removeOperator,
 }: SheetOperatorProps) => {
-  // TODO: 添加标记查询逻辑
+  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
+
   const defaultSubProf = useMemo(
     () => [
       { id: 'all', name: '全部' },
@@ -62,8 +65,11 @@ const SheetOperator = ({
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[2])
 
-  const checkOperatorState = (target: string) =>
+  const checkOperatorSelected = (target: string) =>
     existedOperators.find((item) => item.name === target) ? true : false
+
+  const checkOperatorPinned = (target: string) =>
+    favOperators.find((item) => item.name === target) ? true : false
 
   const formattedSubProfessions = useMemo(
     () => [...defaultSubProf, ...selectedProf.sub],
@@ -98,9 +104,13 @@ const SheetOperator = ({
 
   const operatorsGroupedBySubProf = useMemo(() => {
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
+    else if (selectedSubProf.id === 'fav')
+      return operatorsGroupedByProf.filter((item) =>
+        checkOperatorPinned(item.name),
+      )
     else if (selectedSubProf.id === 'selected')
       return operatorsGroupedByProf.filter((item) =>
-        checkOperatorState(item.name),
+        checkOperatorSelected(item.name),
       )
     else
       return operatorsGroupedByProf.filter(
@@ -114,18 +124,31 @@ const SheetOperator = ({
     setError?: UseFormSetError<CopilotDocV1.Operator>,
   ) => {
     switch (type) {
-      case 'box':
+      case 'box': {
         if (value._id)
           removeOperator(
             existedOperators.findIndex((item) => item._id === value._id),
           )
         else submitOperator(value, () => {})
         break
-      case 'pin':
-        console.log('building')
+      }
+      case 'pin': {
+        const favOperatorsCopy = [...favOperators]
+        if (checkOperatorPinned(value.name)) {
+          favOperatorsCopy.splice(
+            favOperators.findIndex((item) => item.name === value.name),
+            1,
+          )
+        } else {
+          favOperatorsCopy.push(value)
+        }
+        setFavOperators(favOperatorsCopy)
         break
-      case 'skill':
+      }
+      case 'skill': {
         submitOperator(value, setError!, true)
+        break
+      }
     }
   }
   return (
@@ -134,6 +157,7 @@ const SheetOperator = ({
         <div className="sticky top-0 h-screen">
           {operatorsGroupedBySubProf.length ? (
             <div
+              key="operatorContainer"
               className="flex flex-wrap flex-col py-5 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
               onWheel={(e) => (e.currentTarget.scrollLeft += e.deltaY)}
             >
@@ -145,8 +169,8 @@ const SheetOperator = ({
                   <div className="flex items-center w-1/4 mb-1 px-0.5">
                     <OperatorItem
                       key={operatorInfo.name}
-                      pinned={false}
-                      selected={checkOperatorState(operatorInfo.name)}
+                      pinned={checkOperatorPinned(operatorInfo.name)}
+                      selected={checkOperatorSelected(operatorInfo.name)}
                       submitOperator={eventHandleProxy}
                       operator={operatorDetail}
                       {...operatorInfo}
@@ -203,16 +227,9 @@ const SheetOperator = ({
 export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
 ) => (
-  <div>
-    <div className="flex items-center pl-3 my-5">
-      <div className="flex items-center">
-        <Icon icon="person" size={20} />
-        <H3 className="p-0 m-0 ml-3">选择干员</H3>
-      </div>
-    </div>
-    <Divider />
+  <SheetContainerSkeleton title="选择干员" icon="person">
     <SheetOperator {...sheetOperatorProp} />
-  </div>
+  </SheetContainerSkeleton>
 )
 
 interface MenuItemProps extends ButtonProps {

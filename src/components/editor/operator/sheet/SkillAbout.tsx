@@ -1,4 +1,4 @@
-import { Button, Classes, H3, H4, Icon, MenuItem } from '@blueprintjs/core'
+import { Button, Classes, Icon, MenuItem } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { Select2 } from '@blueprintjs/select'
 
@@ -45,6 +45,11 @@ export const SkillAboutTrigger = ({
     operatorCopy.skill = skill
     operatorCopy.skillUsage = skillUsage
     submitOperator('skill', operatorCopy as Operator)
+  }
+
+  const resetData = () => {
+    setSkill(operator!.skill!)
+    setSkillUsage(operator!.skillUsage!)
   }
 
   const selectedSkillUsage = useMemo(
@@ -96,16 +101,6 @@ export const SkillAboutTrigger = ({
     ),
     [skill],
   )
-  const submitButton = useMemo(
-    () => (
-      <Button
-        text="确认"
-        onClick={submitHandle}
-        className={Classes.POPOVER_DISMISS}
-      />
-    ),
-    [],
-  )
 
   const skillAboutForm = (
     <>
@@ -123,7 +118,11 @@ export const SkillAboutTrigger = ({
           {skillUsageDetailSelect}
         </div>
       </div>
-      {submitButton}
+      <Button
+        text="确认"
+        onClick={submitHandle}
+        className={Classes.POPOVER_DISMISS}
+      />
     </>
   )
   const skillAboutTrigger = useMemo(
@@ -166,7 +165,11 @@ export const SkillAboutTrigger = ({
       }}
       role="presentation"
     >
-      <Popover2 content={skillAboutForm} disabled={operator ? false : true}>
+      <Popover2
+        content={skillAboutForm}
+        disabled={operator ? false : true}
+        onClosed={resetData}
+      >
         {skillAboutTrigger}
       </Popover2>
     </div>
