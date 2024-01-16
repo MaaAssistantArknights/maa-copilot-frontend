@@ -30,13 +30,15 @@ export const OperationList: ComponentType<UseOperationsParams> =
 
       return (
         <>
-          {operationsWithDoc.map(({ operation, doc }) => (
-            <OperationCard
-              operation={operation}
-              operationDoc={doc}
-              key={operation.id}
-            />
-          ))}
+          <div className='grid gap-4' style={{ gridTemplateColumns: "repeat(auto-fill, minmax(20rem, 1fr)" }}>
+            {operationsWithDoc.map(({ operation, doc }) => (
+              <OperationCard
+                operation={operation}
+                operationDoc={doc}
+                key={operation.id}
+              />
+            ))}
+          </div>
 
           {isReachingEnd && operations.length === 0 && (
             <NonIdealState
