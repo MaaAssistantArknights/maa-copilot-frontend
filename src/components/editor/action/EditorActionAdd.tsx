@@ -65,6 +65,7 @@ export const EditorActionAdd = ({
 }: EditorActionAddProps) => {
   const isNew = !editingAction
   const operatorGroups = useWatch({ control: operationControl, name: 'groups' })
+  const operators = useWatch({ control: operationControl, name: 'opers' })
 
   const {
     control,
@@ -163,7 +164,7 @@ export const EditorActionAdd = ({
     setValue(
       'skillTimes',
       skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
-        ? (action as CopilotDocV1.ActionSkillUsage)?.skillTimes ?? 1
+        ? (editingAction as CopilotDocV1.ActionSkillUsage)?.skillTimes ?? 1
         : undefined,
     )
   }, [skillUsage])
@@ -248,6 +249,7 @@ export const EditorActionAdd = ({
               <EditorOperatorName
                 shouldUnregister
                 groups={operatorGroups}
+                operators={operators}
                 control={control}
                 name="name"
                 rules={{
