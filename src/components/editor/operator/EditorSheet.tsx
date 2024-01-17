@@ -24,7 +24,7 @@ export const EditorSheetTrigger = (sheetProps: EditorSheetProps) => {
 
   return (
     <>
-      <Drawer isOpen={open} onClose={() => setOpen(false)}>
+      <Drawer isOpen={open} onClose={() => setOpen(false)} size="55%">
         <EditorOperatorSheet {...sheetProps} />
       </Drawer>
       <Button onClick={() => setOpen(true)} text="快捷编辑" />

@@ -19,7 +19,7 @@ export type EventType = 'box' | 'pin' | 'skill'
 
 export interface SkillAboutProps {
   operator?: CopilotDocV1.Operator
-  submitOperator: (
+  submitOperator?: (
     type: EventType,
     value: CopilotDocV1.Operator,
     setError?: UseFormSetError<CopilotDocV1.Operator>,
@@ -44,12 +44,12 @@ export const SkillAboutTrigger = ({
     const operatorCopy = { ...operator }
     operatorCopy.skill = skill
     operatorCopy.skillUsage = skillUsage
-    submitOperator('skill', operatorCopy as Operator)
+    submitOperator!('skill', operatorCopy as Operator)
   }
 
   const resetData = () => {
-    setSkill(operator!.skill!)
-    setSkillUsage(operator!.skillUsage!)
+    setSkill(operator?.skill || 1)
+    setSkillUsage(operator?.skillUsage || 0)
   }
 
   const selectedSkillUsage = useMemo(
@@ -138,17 +138,13 @@ export const SkillAboutTrigger = ({
           )}
           role="presentation"
         >
-          <Icon
-            icon="small-info-sign"
-            size={12}
-            className="flex items-center"
-          />
+          <Icon icon="info-sign" size={12} className="flex items-center" />
           <p className="text-xs">{`${operator?.skill || '未设置'}技能 ${
             operator?.skillUsage !== undefined ? '·' : ''
           } `}</p>
           {operator?.skillUsage !== undefined && (
             <Icon
-              icon={skillDic.find((item) => item.value === skillUsage)!.icon}
+              icon={skillDic.find((item) => item.value === skillUsage)?.icon}
               className="flex items-center ml-1"
             />
           )}

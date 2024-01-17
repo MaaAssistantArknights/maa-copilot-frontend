@@ -314,20 +314,27 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const submitGroup: EditorPerformerAddProps['submitGroup'] = (
     group,
     setError,
+    fromSheet,
   ) => {
     if (
+      !fromSheet &&
       groups.find(({ _id, name }) => name === group.name && _id !== group._id)
     ) {
       setError('name', { message: '干员组已存在' })
       return false
     }
 
-    if (editingGroup) {
-      const existingGroup = findGroupById(getId(editingGroup))
+    if (editingGroup || fromSheet) {
+      const existingGroup = fromSheet
+        ? group
+        : findGroupById(getId(editingGroup!))
 
       if (existingGroup) {
-        group._id = getId(editingGroup)
-        updateGroup(groups.indexOf(existingGroup), group)
+        group._id = getId(existingGroup)
+        updateGroup(
+          groups.findIndex((item) => item.name === existingGroup.name),
+          group,
+        )
         setEditingGroup(undefined)
       } else {
         setError('global' as any, { message: '未能找到要更新的干员组' })
@@ -336,6 +343,13 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     } else {
       group._id = uniqueId()
       appendGroup(group)
+      if (group.opers?.length) {
+        group.opers.forEach((item) =>
+          removeOperator(
+            operators.findIndex((opItem) => opItem.name === item.name),
+          ),
+        )
+      }
     }
 
     return true
@@ -349,6 +363,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         existedOperators={operators}
         existedGroups={groups}
         removeOperator={removeOperator}
+        removeGroup={removeGroup}
       />
       <EditorPerformerAdd
         mode={editMode}

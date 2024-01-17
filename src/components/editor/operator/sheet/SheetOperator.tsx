@@ -1,46 +1,42 @@
 import {
   Button,
   ButtonProps,
-  Card,
-  CardProps,
   Divider,
   Icon,
+  Intent,
   NonIdealState,
 } from '@blueprintjs/core'
-import { Tooltip2 } from '@blueprintjs/popover2'
 
-import clsx from 'clsx'
-import { useAtom } from 'jotai'
 import { useMemo, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
+import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
-import { favOperatorAtom } from 'store/useFavOperators'
 
-import { OperatorAvatar } from '../EditorOperator'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
-import { EventType, SkillAboutProps, SkillAboutTrigger } from './SkillAbout'
+import { OperatorItem } from './SheetOperatorItem'
+import { EventType } from './SkillAbout'
 
 type Operator = CopilotDocV1.Operator
+type Group = CopilotDocV1.Group
 
 export interface SheetOperatorProps {
   submitOperator: EditorPerformerOperatorProps['submit']
   existedOperators: Operator[]
+  existedGroups: Group[]
   removeOperator: UseFieldArrayRemove
 }
 const SheetOperator = ({
   submitOperator,
   existedOperators,
   removeOperator,
+  existedGroups,
 }: SheetOperatorProps) => {
-  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
-
   const defaultSubProf = useMemo(
     () => [
       { id: 'all', name: '全部' },
-      { id: 'fav', name: '收藏' },
       { id: 'selected', name: '已选择' },
     ],
     [],
@@ -63,13 +59,19 @@ const SheetOperator = ({
   )
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
-  const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[2])
+  const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
 
-  const checkOperatorSelected = (target: string) =>
-    existedOperators.find((item) => item.name === target) ? true : false
-
-  const checkOperatorPinned = (target: string) =>
-    favOperators.find((item) => item.name === target) ? true : false
+  const checkOperatorSelected = (target: string) => {
+    if (existedOperators.find((item) => item.name === target)) return true
+    else {
+      return existedGroups
+        .map((item) => item.opers)
+        .flat()
+        .find((item) => item?.name === target)
+        ? true
+        : false
+    }
+  }
 
   const formattedSubProfessions = useMemo(
     () => [...defaultSubProf, ...selectedProf.sub],
@@ -94,20 +96,16 @@ const SheetOperator = ({
     ]
     if (selectedProf.id === 'all') return allOperators
     if (selectedProf.id === 'others')
-      return OPERATORS.filter(
+      return allOperators.filter(
         (item) => item.subProf === 'notchar1' || !item.pron || !item.subProf,
       )
-    return OPERATORS.filter(
+    return allOperators.filter(
       (op) => !!selectedProf.sub.find((item) => item.id === op.subProf),
     )
   }, [selectedProf])
 
   const operatorsGroupedBySubProf = useMemo(() => {
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
-    else if (selectedSubProf.id === 'fav')
-      return operatorsGroupedByProf.filter((item) =>
-        checkOperatorPinned(item.name),
-      )
     else if (selectedSubProf.id === 'selected')
       return operatorsGroupedByProf.filter((item) =>
         checkOperatorSelected(item.name),
@@ -125,24 +123,17 @@ const SheetOperator = ({
   ) => {
     switch (type) {
       case 'box': {
-        if (value._id)
-          removeOperator(
-            existedOperators.findIndex((item) => item._id === value._id),
-          )
+        if (checkOperatorSelected(value.name))
+          if (existedOperators.find((item) => item.name === value.name))
+            removeOperator(
+              existedOperators.findIndex((item) => item._id === value._id),
+            )
+          else
+            AppToaster.show({
+              message: '该干员已被编组',
+              intent: Intent.DANGER,
+            })
         else submitOperator(value, () => {})
-        break
-      }
-      case 'pin': {
-        const favOperatorsCopy = [...favOperators]
-        if (checkOperatorPinned(value.name)) {
-          favOperatorsCopy.splice(
-            favOperators.findIndex((item) => item.name === value.name),
-            1,
-          )
-        } else {
-          favOperatorsCopy.push(value)
-        }
-        setFavOperators(favOperatorsCopy)
         break
       }
       case 'skill': {
@@ -166,10 +157,11 @@ const SheetOperator = ({
                   (item) => item.name === operatorInfo.name,
                 )
                 return (
-                  <div className="flex items-center w-1/4 mb-1 px-0.5">
+                  <div
+                    className="flex items-center w-1/4 mb-1"
+                    key={operatorInfo.name}
+                  >
                     <OperatorItem
-                      key={operatorInfo.name}
-                      pinned={checkOperatorPinned(operatorInfo.name)}
                       selected={checkOperatorSelected(operatorInfo.name)}
                       submitOperator={eventHandleProxy}
                       operator={operatorDetail}
@@ -241,56 +233,4 @@ const ButtonItem = ({ title, icon, ...buttonProps }: MenuItemProps) => (
     <Icon icon={icon} />
     <p>{title}</p>
   </Button>
-)
-
-interface OperatorItemPorps extends CardProps, SkillAboutProps {
-  id: string
-  name: string
-  selected: boolean
-  pinned: boolean
-}
-
-const OperatorItem = ({
-  id,
-  selected,
-  name,
-  pinned,
-  operator,
-  submitOperator,
-  ...cardProps
-}: OperatorItemPorps) => (
-  <Card
-    className={clsx(
-      'flex flex-col justify-center items-center w-full p-0 relative cursor-pointer',
-      selected && 'scale-95 bg-gray-200',
-    )}
-    interactive={!selected}
-    onClick={() => submitOperator('box', operator || { name })}
-    {...cardProps}
-  >
-    <OperatorAvatar id={id} size="large" />
-    <h3 className="font-bold leading-none text-center mt-3 w-full truncate">
-      {name}
-    </h3>
-    <SkillAboutTrigger {...{ operator, submitOperator }} />
-    <Tooltip2
-      content={`将 ${name} ${
-        pinned ? '移出' : '添加至'
-      }我的收藏（会保留技能设置）`}
-      hoverOpenDelay={600}
-      className="absolute top-1 right-1"
-    >
-      <Icon
-        icon={pinned ? 'pin' : 'unpin'}
-        className={clsx(
-          'hover:scale-150',
-          pinned ? '-rotate-45 transform-gpu' : 'text-gray-500',
-        )}
-        onClick={(e) => {
-          e.stopPropagation()
-          submitOperator('pin', operator || { name })
-        }}
-      />
-    </Tooltip2>
-  </Card>
 )

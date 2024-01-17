@@ -20,6 +20,7 @@ export interface EditorPerformerGroupProps {
   submit: (
     group: CopilotDocV1.Group,
     setError: UseFormSetError<CopilotDocV1.Group>,
+    fromSheet?: boolean,
   ) => boolean
   onCancel: () => void
   categorySelector: JSX.Element
