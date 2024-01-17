@@ -158,7 +158,7 @@ const SheetOperator = ({
                 )
                 return (
                   <div
-                    className="flex items-center w-1/4 mb-1"
+                    className="flex items-center mb-1 w-32 px-0.5"
                     key={operatorInfo.name}
                   >
                     <OperatorItem

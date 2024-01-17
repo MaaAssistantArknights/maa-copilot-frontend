@@ -27,7 +27,7 @@ export const OperatorItem = ({
   return (
     <Card
       className={clsx(
-        'flex flex-col justify-center items-center w-full relative cursor-pointer mx-0.5',
+        'flex flex-col justify-center items-center w-full relative cursor-pointer',
         selected && 'scale-95 bg-gray-200',
       )}
       interactive={!selected}
