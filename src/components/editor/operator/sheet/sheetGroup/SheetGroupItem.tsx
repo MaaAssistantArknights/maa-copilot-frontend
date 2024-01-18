@@ -1,4 +1,12 @@
-import { Alert, Button, Card, Collapse, H6, Icon } from '@blueprintjs/core'
+import {
+  Alert,
+  Button,
+  Card,
+  Collapse,
+  H6,
+  Icon,
+  Intent,
+} from '@blueprintjs/core'
 
 import { useMemo, useState } from 'react'
 import { UseFormSetError, useForm } from 'react-hook-form'
@@ -70,34 +78,36 @@ export const GroupItem = ({
     const [editName, setEditName] = useState(groupInfo.name)
     const [nameEditState, setNameEditState] = useState(false)
     const [alertState, setAlertState] = useState(false)
-    const { register, handleSubmit, setError } = useForm<Group>()
+    const { register, handleSubmit, setError, reset } = useForm<Group>()
     const switchState = (target?: boolean) => {
       if (!editable) return
       setNameEditState(target || !nameEditState)
     }
     const blurHandle = () => {
       if (groupInfo.name !== editName) setAlertState(true)
+      setNameEditState(false)
     }
     const editCancel = () => {
-      setEditName(groupInfo.name)
       setNameEditState(false)
+      setEditName(groupInfo.name)
+      reset()
       setAlertState(false)
     }
     return (
       <>
-        {/* <Alert
+        <Alert
           onConfirm={() => setAlertState(false)}
+          intent={Intent.DANGER}
           onCancel={editCancel}
           confirmButtonText="取消"
           cancelButtonText="确认"
           isOpen={alertState}
         >
           <p>当前干员组名修改未保存，是否放弃修改？</p>
-        </Alert> */}
+        </Alert>
         <form
           className="flex items-center"
           onSubmit={handleSubmit(() => {
-            console.log({ ...groupInfo, name: editName })
             eventHandleProxy(
               'rename',
               { ...groupInfo, name: editName },
@@ -109,15 +119,21 @@ export const GroupItem = ({
           {nameEditState ? (
             <div className="flex items-center">
               <input
+                autoComplete="off"
                 type="text"
-                value={editName}
                 {...register('name', {
                   required: '请设置干员组名字',
                   onBlur: blurHandle,
+                  value: editName,
                   onChange: (e) => setEditName(e.target.value),
                 })}
               />
-              <Button minimal icon="tick" type="submit" />
+              <Button
+                minimal
+                icon="tick"
+                type="submit"
+                onMouseDown={(e) => e.preventDefault()}
+              />
             </div>
           ) : (
             <H6

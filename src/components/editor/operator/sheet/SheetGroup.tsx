@@ -59,16 +59,42 @@ const SheetGroup = ({
   }, [existedOperators])
   const checkGroupExisted = (target: string) =>
     existedGroups.find((item) => item.name === target) ? true : false
-  const checkGroupPinned = (target: string) =>
-    favGroups.find((item) => item.name === target) ? true : false
+  const checkGroupPinned = (target: Group) => {
+    const checkTarget = favGroups.find((item) => item.name === target.name)
+    if (checkTarget) {
+      if (checkTarget.opers?.length === target.opers?.length) {
+        for (const aItem of checkTarget.opers!) {
+          if (target.opers!.find((bItem) => bItem.name === aItem.name)) continue
+          else return false
+        }
+        return true
+      } else
+        return (checkTarget.opers?.length || 0) === (target.opers?.length || 0)
+    } else return false
+  }
   const eventHandleProxy = (
     type: EventType,
     value: Group,
     setError?: UseFormSetError<Group>,
   ) => {
+    const errHandle = setError || function () {}
     switch (type) {
       case 'add': {
-        submitGroup(value, () => {})
+        if (checkGroupPinned(value)) {
+          value.opers?.forEach((item) => {
+            existedGroups.forEach((groupItem) => {
+              const oldLength = groupItem.opers?.length || 0
+              if (oldLength) {
+                groupItem.opers = groupItem.opers?.filter(
+                  (operItem) => operItem.name !== item.name,
+                )
+                if (groupItem.opers?.length !== oldLength)
+                  submitGroup(groupItem, errHandle, true)
+              }
+            })
+          })
+        }
+        submitGroup(value, errHandle)
         break
       }
       case 'remove': {
@@ -76,14 +102,13 @@ const SheetGroup = ({
         break
       }
       case 'pin': {
-        if (checkGroupPinned(value.name))
+        if (checkGroupPinned(value))
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
         else setFavGroups([...favGroups, value])
         break
       }
       case 'rename': {
-        console.log(value)
-        submitGroup(value, () => {}, true)
+        submitGroup(value, errHandle, true)
         break
       }
       case 'opers': {
@@ -104,7 +129,7 @@ const SheetGroup = ({
                     groupInfo={item}
                     editable
                     exist={checkGroupExisted(item.name)}
-                    pinned={checkGroupPinned(item.name)}
+                    pinned={checkGroupPinned(item)}
                     eventHandleProxy={eventHandleProxy}
                   />
                 ))
@@ -123,7 +148,7 @@ const SheetGroup = ({
                     editable={false}
                     exist={checkGroupExisted(item.name)}
                     eventHandleProxy={eventHandleProxy}
-                    pinned={checkGroupPinned(item.name)}
+                    pinned={checkGroupPinned(item)}
                   />
                 ))
               : GroupNoData}
@@ -138,7 +163,7 @@ const SheetGroup = ({
                     editable={false}
                     exist={checkGroupExisted(item.name)}
                     eventHandleProxy={eventHandleProxy}
-                    pinned={checkGroupPinned(item.name)}
+                    pinned={checkGroupPinned(item)}
                   />
                 ))
               : GroupNoData}
