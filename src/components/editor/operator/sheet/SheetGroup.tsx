@@ -1,9 +1,10 @@
-import { Divider, NonIdealState } from '@blueprintjs/core'
+import { Divider, Intent, NonIdealState } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
 import { useMemo } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
+import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 import { favGroupAtom } from 'store/useFavGroups'
@@ -104,7 +105,14 @@ const SheetGroup = ({
       case 'pin': {
         if (checkGroupPinned(value))
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
-        else setFavGroups([...favGroups, value])
+        else {
+          if (favGroups.find(({ name }) => name === value.name)) {
+            AppToaster.show({
+              message: '干员组名冲突！',
+              intent: Intent.DANGER,
+            })
+          } else setFavGroups([...favGroups, { ...value }])
+        }
         break
       }
       case 'rename': {

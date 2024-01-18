@@ -119,6 +119,7 @@ export const GroupItem = ({
           {nameEditState ? (
             <div className="flex items-center">
               <input
+                className="ml-1 w-16"
                 autoComplete="off"
                 type="text"
                 {...register('name', {
