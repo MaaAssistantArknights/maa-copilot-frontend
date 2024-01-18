@@ -64,7 +64,7 @@ const SheetGroup = ({
   const eventHandleProxy = (
     type: EventType,
     value: Group,
-    setError?: UseFormSetError<CopilotDocV1.Operator>,
+    setError?: UseFormSetError<Group>,
   ) => {
     switch (type) {
       case 'add': {
@@ -79,6 +79,11 @@ const SheetGroup = ({
         if (checkGroupPinned(value.name))
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
         else setFavGroups([...favGroups, value])
+        break
+      }
+      case 'rename': {
+        console.log(value)
+        submitGroup(value, () => {}, true)
         break
       }
       case 'opers': {

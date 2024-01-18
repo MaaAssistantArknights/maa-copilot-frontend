@@ -1,7 +1,7 @@
-import { Button, Card, Collapse, Icon } from '@blueprintjs/core'
+import { Alert, Button, Card, Collapse, H6, Icon } from '@blueprintjs/core'
 
 import { useMemo, useState } from 'react'
-import { UseFormSetError } from 'react-hook-form'
+import { UseFormSetError, useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -10,7 +10,7 @@ import { OPERATORS } from 'models/generated/operators'
 import { OperatorItem } from '../SheetOperatorItem'
 
 export type Group = CopilotDocV1.Group
-export type EventType = 'add' | 'remove' | 'pin' | 'opers'
+export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename'
 
 interface GroupItemProps {
   groupInfo: Group
@@ -20,7 +20,7 @@ interface GroupItemProps {
   eventHandleProxy: (
     type: EventType,
     value: Group,
-    setError?: UseFormSetError<CopilotDocV1.Operator>,
+    setError?: UseFormSetError<Group>,
   ) => void
 }
 
@@ -66,11 +66,77 @@ export const GroupItem = ({
     [groupInfo.opers],
   )
 
+  const GroupTitle = () => {
+    const [editName, setEditName] = useState(groupInfo.name)
+    const [nameEditState, setNameEditState] = useState(false)
+    const [alertState, setAlertState] = useState(false)
+    const { register, handleSubmit, setError } = useForm<Group>()
+    const switchState = (target?: boolean) => {
+      if (!editable) return
+      setNameEditState(target || !nameEditState)
+    }
+    const blurHandle = () => {
+      if (groupInfo.name !== editName) setAlertState(true)
+    }
+    const editCancel = () => {
+      setEditName(groupInfo.name)
+      setNameEditState(false)
+      setAlertState(false)
+    }
+    return (
+      <>
+        {/* <Alert
+          onConfirm={() => setAlertState(false)}
+          onCancel={editCancel}
+          confirmButtonText="取消"
+          cancelButtonText="确认"
+          isOpen={alertState}
+        >
+          <p>当前干员组名修改未保存，是否放弃修改？</p>
+        </Alert> */}
+        <form
+          className="flex items-center"
+          onSubmit={handleSubmit(() => {
+            console.log({ ...groupInfo, name: editName })
+            eventHandleProxy(
+              'rename',
+              { ...groupInfo, name: editName },
+              setError,
+            )
+          })}
+        >
+          <Icon icon="people" />
+          {nameEditState ? (
+            <div className="flex items-center">
+              <input
+                type="text"
+                value={editName}
+                {...register('name', {
+                  required: '请设置干员组名字',
+                  onBlur: blurHandle,
+                  onChange: (e) => setEditName(e.target.value),
+                })}
+              />
+              <Button minimal icon="tick" type="submit" />
+            </div>
+          ) : (
+            <H6
+              className="ml-1 m-0 p-0"
+              onClick={() => switchState(true)}
+              title="修改干员组名"
+            >
+              {editName}
+            </H6>
+          )}
+        </form>
+      </>
+    )
+  }
+
   return (
     <Card interactive className="mt-1">
       <div className="flex items-center">
-        <Icon icon="people" />
-        <p className="ml-1">{groupInfo.name}</p>
+        <GroupTitle />
         <div className="ml-auto flex items-center">
           <Button
             minimal

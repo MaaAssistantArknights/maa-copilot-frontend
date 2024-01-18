@@ -331,8 +331,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
       if (existingGroup) {
         group._id = getId(existingGroup)
+        // console.log(groups.findIndex((item) => item._id === existingGroup._id))
         updateGroup(
-          groups.findIndex((item) => item.name === existingGroup.name),
+          groups.findIndex((item) => item._id === existingGroup._id),
           group,
         )
         setEditingGroup(undefined)
