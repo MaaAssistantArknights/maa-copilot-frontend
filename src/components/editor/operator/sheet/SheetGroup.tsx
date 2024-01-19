@@ -18,7 +18,8 @@ import { favGroupAtom } from 'store/useFavGroups'
 
 import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
-import { EventType, Group, GroupItem } from './sheetGroup/SheetGroupItem'
+import { GroupItem } from './sheetGroup/SheetGroupItem'
+import { EventType, Group } from './sheetGroup/SheetGroupOperatorSelect'
 
 type Operators = CopilotDocV1.Operator[]
 
@@ -138,7 +139,6 @@ const SheetGroup = ({
       }
     }
   }
-  // const myToaster = createRef<OverlayToaster>()
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
   const EditorGroupName = () => {
     const [groupName, setGroupName] = useState('')
@@ -184,6 +184,8 @@ const SheetGroup = ({
             {existedGroups.length
               ? existedGroups.map((item) => (
                   <GroupItem
+                    existedGroup={existedGroups}
+                    existedOperator={existedOperators}
                     groupInfo={item}
                     editable
                     exist={checkGroupExisted(item.name)}

@@ -9,27 +9,22 @@ import {
 } from '@blueprintjs/core'
 
 import { useMemo, useState } from 'react'
-import { UseFormSetError, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
-import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
 import { OperatorItem } from '../SheetOperatorItem'
+import {
+  Group,
+  SheetGroupOperatorSelectProp,
+  SheetGroupOperatorSelectTrigger,
+} from './SheetGroupOperatorSelect'
 
-export type Group = CopilotDocV1.Group
-export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename'
-
-interface GroupItemProps {
-  groupInfo: Group
+interface GroupItemProps extends SheetGroupOperatorSelectProp {
   editable: boolean
   exist: boolean
   pinned: boolean
-  eventHandleProxy: (
-    type: EventType,
-    value: Group,
-    setError?: UseFormSetError<Group>,
-  ) => void
 }
 
 export const GroupItem = ({
@@ -38,6 +33,7 @@ export const GroupItem = ({
   exist,
   pinned,
   eventHandleProxy,
+  ...rest
 }: GroupItemProps) => {
   const [showOperators, setShowOperators] = useState(editable)
   const createOrDeleteGroup = () => {
@@ -64,9 +60,11 @@ export const GroupItem = ({
         ))}
         {editable && (
           <div className="w-1/4 p-1">
-            <Card className="h-full flex items-center justify-center">
-              <Icon icon="plus" size={35} />
-            </Card>
+            <SheetGroupOperatorSelectTrigger
+              groupInfo={groupInfo}
+              eventHandleProxy={eventHandleProxy}
+              {...rest}
+            />
           </div>
         )}
       </div>
