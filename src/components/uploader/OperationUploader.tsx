@@ -63,7 +63,7 @@ const operationPatch = (operation: object, levels: Level[]): object => {
     if (matchStages.length === 1) {
       operation['stage_name'] = matchStages[0].levelId
     } else {
-      AppToaster.show({
+      AppToaster().show({
         message: `已找到 ${matchStages.length} 个关卡，跳过自动修正`,
         intent: 'warning',
       })
@@ -148,7 +148,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
     } finally {
       setIsUploading(false)
     }
-    AppToaster.show({
+    AppToaster().show({
       intent: 'success',
       message: '作业上传成功',
     })

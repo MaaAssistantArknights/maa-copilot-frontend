@@ -1,7 +1,14 @@
-import { Divider, Intent, NonIdealState } from '@blueprintjs/core'
+import {
+  Button,
+  Divider,
+  InputGroup,
+  Intent,
+  NonIdealState,
+  Position,
+} from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
@@ -81,21 +88,28 @@ const SheetGroup = ({
     const errHandle = setError || function () {}
     switch (type) {
       case 'add': {
-        if (checkGroupPinned(value)) {
-          value.opers?.forEach((item) => {
-            existedGroups.forEach((groupItem) => {
-              const oldLength = groupItem.opers?.length || 0
-              if (oldLength) {
-                groupItem.opers = groupItem.opers?.filter(
-                  (operItem) => operItem.name !== item.name,
-                )
-                if (groupItem.opers?.length !== oldLength)
-                  submitGroup(groupItem, errHandle, true)
-              }
-            })
+        if (checkGroupExisted(value.name)) {
+          AppToaster().show({
+            message: '干员组已存在！',
+            intent: Intent.DANGER,
           })
+        } else {
+          if (checkGroupPinned(value)) {
+            value.opers?.forEach((item) => {
+              existedGroups.forEach((groupItem) => {
+                const oldLength = groupItem.opers?.length || 0
+                if (oldLength) {
+                  groupItem.opers = groupItem.opers?.filter(
+                    (operItem) => operItem.name !== item.name,
+                  )
+                  if (groupItem.opers?.length !== oldLength)
+                    submitGroup(groupItem, errHandle, true)
+                }
+              })
+            })
+          }
+          submitGroup(value, errHandle)
         }
-        submitGroup(value, errHandle)
         break
       }
       case 'remove': {
@@ -107,7 +121,7 @@ const SheetGroup = ({
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
         else {
           if (favGroups.find(({ name }) => name === value.name)) {
-            AppToaster.show({
+            AppToaster().show({
               message: '干员组名冲突！',
               intent: Intent.DANGER,
             })
@@ -124,11 +138,47 @@ const SheetGroup = ({
       }
     }
   }
+  // const myToaster = createRef<OverlayToaster>()
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
-
+  const EditorGroupName = () => {
+    const [groupName, setGroupName] = useState('')
+    const addGroupHandle = () => {
+      if (!groupName) {
+        AppToaster({
+          position: Position.BOTTOM,
+        }).show({
+          message: '干员组名不能为空',
+          intent: Intent.DANGER,
+        })
+      } else eventHandleProxy('add', { name: groupName.trim() })
+    }
+    return (
+      <div className="flex px-3 items-center">
+        <InputGroup
+          type="text"
+          value={groupName}
+          placeholder="输入干员组名"
+          onChange={(e) => setGroupName(e.target.value)}
+          fill
+        />
+        <div className="flex items-center">
+          <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
+          <Button
+            minimal
+            icon="reset"
+            title="重置"
+            onClick={() => setGroupName('')}
+          />
+        </div>
+      </div>
+    )
+  }
   return (
     <div className="flex min-h-screen px-1">
       <div className="flex-1">
+        <SheetContainerSkeleton title="添加干员组" icon="add" mini>
+          <EditorGroupName />
+        </SheetContainerSkeleton>
         <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
           <div>
             {existedGroups.length

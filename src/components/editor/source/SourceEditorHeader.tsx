@@ -26,7 +26,7 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
   const handleCopy = () => {
     navigator.clipboard.writeText(text)
 
-    AppToaster.show({
+    AppToaster().show({
       message: '已复制 JSON 到剪贴板',
       intent: 'success',
     })
@@ -43,7 +43,7 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
     link.click()
     URL.revokeObjectURL(url)
 
-    AppToaster.show({
+    AppToaster().show({
       message: '已下载作业 JSON 文件',
       intent: 'success',
     })

@@ -129,7 +129,7 @@ const SheetOperator = ({
               existedOperators.findIndex((item) => item._id === value._id),
             )
           else
-            AppToaster.show({
+            AppToaster().show({
               message: '该干员已被编组',
               intent: Intent.DANGER,
             })

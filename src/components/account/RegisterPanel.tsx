@@ -34,7 +34,7 @@ export const RegisterPanel: FC<{
       (e: NetworkError) => `注册失败：${e.message}`,
       requestRegister(val.email, val.username, val.password),
     )
-    AppToaster.show({
+    AppToaster().show({
       intent: 'success',
       message: `已向注册邮箱发送验证邮件，请使用邮件内的验证链接进行验证`,
     })

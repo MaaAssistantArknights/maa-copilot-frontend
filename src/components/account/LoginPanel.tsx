@@ -41,7 +41,7 @@ export const LoginPanel: FC<{
       userId: res.data.userInfo.id,
       username,
     })
-    AppToaster.show({
+    AppToaster().show({
       intent: 'success',
       message: `登录成功。欢迎回来，${username}`,
     })

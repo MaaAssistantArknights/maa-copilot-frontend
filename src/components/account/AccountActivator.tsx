@@ -24,12 +24,12 @@ export const AccountActivator: FC<{
       .then(() => {
         finish(null)
 
-        AppToaster.show({
+        AppToaster().show({
           intent: 'success',
           message: '账号激活成功，欢迎使用 MAA Copilot',
         })
 
-        AppToaster.show({
+        AppToaster().show({
           intent: 'primary',
           message: '返回首页中...',
         })
