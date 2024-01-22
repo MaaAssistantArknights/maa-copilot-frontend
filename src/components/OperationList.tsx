@@ -1,15 +1,15 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
 import { UseOperationsParams, useOperations } from 'apis/query'
-import { ComponentType, useMemo } from 'react'
+import { ComponentType, ReactNode, useMemo } from 'react'
 
 import { toCopilotOperation } from '../models/converter'
 import { CopilotDocV1 } from '../models/copilot.schema'
 import { OperationListItem } from '../models/operation'
-import { OperationCard } from './OperationCard'
+import { NeoOperationCard, OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
 
-export const OperationList: ComponentType<UseOperationsParams> =
+export const OperationList: ComponentType<UseOperationsParams & { neoLayout?: boolean }> =
   withSuspensable(
     (props) => {
       const { operations, size, setSize, isValidating, isReachingEnd } =
@@ -28,17 +28,30 @@ export const OperationList: ComponentType<UseOperationsParams> =
         return { operation, doc }
       })
 
+      const { neoLayout = true } = props
+
+      let items: ReactNode = operationsWithDoc.map(({ operation, doc }) => (
+        <OperationCard
+          operation={operation}
+          operationDoc={doc}
+          key={operation.id}
+        />
+      ))
+      if (neoLayout) {
+        items = <div className='grid gap-4' style={{ gridTemplateColumns: "repeat(auto-fill, minmax(20rem, 1fr)" }}>
+          {operationsWithDoc.map(({ operation, doc }) => (
+            <NeoOperationCard
+              operation={operation}
+              operationDoc={doc}
+              key={operation.id}
+            />
+          ))}
+        </div>
+      }
+
       return (
         <>
-          <div className='grid gap-4' style={{ gridTemplateColumns: "repeat(auto-fill, minmax(20rem, 1fr)" }}>
-            {operationsWithDoc.map(({ operation, doc }) => (
-              <OperationCard
-                operation={operation}
-                operationDoc={doc}
-                key={operation.id}
-              />
-            ))}
-          </div>
+          {items}
 
           {isReachingEnd && operations.length === 0 && (
             <NonIdealState
