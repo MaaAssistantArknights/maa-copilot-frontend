@@ -32,9 +32,11 @@ export const EditorOperatorName = <T extends FieldValues>({
   name,
   control,
   rules,
+  operators,
   ...controllerProps
 }: EditorFieldProps<T, string> & {
   groups?: CopilotDocV1.Group[]
+  operators?: CopilotDocV1.Operator[]
 }) => {
   const entityName = useMemo(() => (groups ? '干员或干员组' : '干员'), [groups])
 
@@ -48,10 +50,25 @@ export const EditorOperatorName = <T extends FieldValues>({
     ...controllerProps,
   })
 
-  const items: PerformerItem[] = useMemo(
-    () => [...(groups || []), ...OPERATORS],
-    [groups],
-  )
+  const items: PerformerItem[] = useMemo(() => {
+    const _selectOperators: CopilotDocV1.Operator[] = operators || []
+    if (!_selectOperators.length) return [...(groups || []), ...OPERATORS]
+    // 已选择的名称做 set
+    const _selectedOperatorsNameSet = new Set<string>()
+    _selectOperators.forEach((v) => {
+      _selectedOperatorsNameSet.add(v.name)
+    })
+    // 已选择的
+    const _selectedOperators: OperatorInfo[] = []
+    // 过滤出未加入干员列表的干员，顺便插入已选择的列表
+    const _OPERATORS = OPERATORS.filter((v) => {
+      const has = _selectedOperatorsNameSet.has(v.name)
+      if (has) _selectedOperators.push(v)
+      return !has
+    })
+    // 干员组和已选择的放前面
+    return [...(groups || []), ..._selectedOperators, ..._OPERATORS]
+  }, [groups, operators])
 
   const fuse = useMemo(
     () =>
