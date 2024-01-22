@@ -30,15 +30,8 @@ export const OperationList: ComponentType<UseOperationsParams & { neoLayout?: bo
 
       const { neoLayout = true } = props
 
-      let items: ReactNode = operationsWithDoc.map(({ operation, doc }) => (
-        <OperationCard
-          operation={operation}
-          operationDoc={doc}
-          key={operation.id}
-        />
-      ))
-      if (neoLayout) {
-        items = <div className='grid gap-4' style={{ gridTemplateColumns: "repeat(auto-fill, minmax(20rem, 1fr)" }}>
+      const items: ReactNode = neoLayout ?
+        <div className='grid gap-4' style={{ gridTemplateColumns: "repeat(auto-fill, minmax(20rem, 1fr)" }}>
           {operationsWithDoc.map(({ operation, doc }) => (
             <NeoOperationCard
               operation={operation}
@@ -46,8 +39,14 @@ export const OperationList: ComponentType<UseOperationsParams & { neoLayout?: bo
               key={operation.id}
             />
           ))}
-        </div>
-      }
+        </div> :
+        operationsWithDoc.map(({ operation, doc }) => (
+          <OperationCard
+            operation={operation}
+            operationDoc={doc}
+            key={operation.id}
+          />
+        ))
 
       return (
         <>
