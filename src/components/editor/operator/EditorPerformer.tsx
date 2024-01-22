@@ -323,19 +323,16 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       setError('name', { message: '干员组已存在' })
       return false
     }
-
     if (editingGroup || fromSheet) {
       const existingGroup = fromSheet
         ? group
         : findGroupById(getId(editingGroup!))
-
       if (existingGroup) {
         group._id = getId(existingGroup)
         updateGroup(
           groups.findIndex((item) => item._id === existingGroup._id),
           group,
         )
-        // TODO: Check this part plz
         setEditingGroup(undefined)
       } else {
         setError('global' as any, { message: '未能找到要更新的干员组' })
@@ -345,11 +342,11 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       group._id = uniqueId()
       appendGroup(group)
       if (group.opers?.length) {
-        group.opers.forEach((item) =>
+        group.opers.forEach((item) => {
           removeOperator(
-            operators.findIndex((opItem) => opItem.name === item.name),
-          ),
-        )
+            operators.findIndex((opItem) => opItem._id === item._id),
+          )
+        })
       }
     }
 

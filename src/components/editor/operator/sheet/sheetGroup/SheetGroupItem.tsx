@@ -69,7 +69,7 @@ export const GroupItem = ({
         )}
       </div>
     ),
-    [groupInfo.opers],
+    [groupInfo.opers, rest],
   )
 
   const GroupTitle = () => {
