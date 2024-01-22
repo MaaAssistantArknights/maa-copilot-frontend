@@ -11,6 +11,7 @@ import ReactDOM from 'react-dom/client'
 import { Route, Routes } from 'react-router-dom'
 
 import { ViewPage } from 'pages/view'
+import { clearOutdatedSwrCache } from 'utils/swr-cache'
 
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
@@ -45,6 +46,8 @@ if (navigator.userAgent.includes('Win')) {
 } else {
   document.documentElement.classList.add('platform--non-windows')
 }
+
+clearOutdatedSwrCache()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
