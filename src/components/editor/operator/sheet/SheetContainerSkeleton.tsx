@@ -7,12 +7,15 @@ import {
   MaybeElement,
 } from '@blueprintjs/core'
 
+import clsx from 'clsx'
 import { ReactNode } from 'react'
 
 interface SheetContainerSkeletonProps {
   title: string
   icon: IconName | MaybeElement
   mini?: boolean
+  className?: string
+  rightOptions?: ReactNode
   children: ReactNode
 }
 
@@ -21,9 +24,11 @@ export const SheetContainerSkeleton = ({
   icon,
   children,
   mini,
+  rightOptions,
+  className,
 }: SheetContainerSkeletonProps) => (
-  <div>
-    <div className="flex items-center pl-3 my-5">
+  <div className={className}>
+    <div className={clsx('flex items-center pl-3', mini ? 'my-1' : 'my-5')}>
       <div className="flex items-center">
         <Icon icon={icon} size={mini ? 16 : 20} />
         {mini ? (
@@ -31,6 +36,7 @@ export const SheetContainerSkeleton = ({
         ) : (
           <H3 className="p-0 m-0 ml-3">{title}</H3>
         )}
+        {rightOptions}
       </div>
     </div>
     {!mini && <Divider />}

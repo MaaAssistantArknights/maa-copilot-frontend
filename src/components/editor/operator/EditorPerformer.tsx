@@ -335,6 +335,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           groups.findIndex((item) => item._id === existingGroup._id),
           group,
         )
+        // TODO: Check this part plz
         setEditingGroup(undefined)
       } else {
         setError('global' as any, { message: '未能找到要更新的干员组' })
