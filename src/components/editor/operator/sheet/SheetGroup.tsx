@@ -71,15 +71,31 @@ const SheetGroup = ({
   const checkGroupPinned = (target: Group) => {
     const checkTarget = favGroups.find((item) => item.name === target.name)
     if (checkTarget) {
-      if (checkTarget.opers?.length === target.opers?.length) {
+      if (!!checkTarget.opers?.length === !!target.opers?.length) {
         for (const aItem of checkTarget.opers!) {
           if (target.opers!.find((bItem) => bItem.name === aItem.name)) continue
           else return false
         }
         return true
-      } else
-        return (checkTarget.opers?.length || 0) === (target.opers?.length || 0)
+      } else return false
     } else return false
+  }
+  const changeOperatorOfOtherGroups = (
+    target: Operators | undefined,
+    errHandle: UseFormSetError<Group>,
+  ) => {
+    target?.forEach((item) => {
+      existedGroups.forEach((groupItem) => {
+        const oldLength = groupItem.opers?.length || 0
+        if (oldLength) {
+          groupItem.opers = groupItem.opers?.filter(
+            (operItem) => operItem.name !== item.name,
+          )
+          if (groupItem.opers?.length !== oldLength)
+            submitGroup(groupItem, errHandle, true)
+        }
+      })
+    })
   }
   const eventHandleProxy = (
     type: EventType,
@@ -95,20 +111,8 @@ const SheetGroup = ({
             intent: Intent.DANGER,
           })
         } else {
-          if (checkGroupPinned(value)) {
-            value.opers?.forEach((item) => {
-              existedGroups.forEach((groupItem) => {
-                const oldLength = groupItem.opers?.length || 0
-                if (oldLength) {
-                  groupItem.opers = groupItem.opers?.filter(
-                    (operItem) => operItem.name !== item.name,
-                  )
-                  if (groupItem.opers?.length !== oldLength)
-                    submitGroup(groupItem, errHandle, true)
-                }
-              })
-            })
-          }
+          if (checkGroupPinned(value))
+            changeOperatorOfOtherGroups(value.opers, errHandle)
           submitGroup(value, errHandle)
         }
         break
@@ -135,6 +139,9 @@ const SheetGroup = ({
         break
       }
       case 'opers': {
+        console.log(value)
+        changeOperatorOfOtherGroups(value.opers, errHandle)
+        submitGroup(value, errHandle, true)
         break
       }
     }

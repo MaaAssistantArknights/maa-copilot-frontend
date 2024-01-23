@@ -16,6 +16,7 @@ import { OPERATORS } from 'models/generated/operators'
 
 import { OperatorItem } from '../SheetOperatorItem'
 import {
+  CollapseButton,
   Group,
   SheetGroupOperatorSelectProp,
   SheetGroupOperatorSelectTrigger,
@@ -153,11 +154,8 @@ export const GroupItem = ({
       <div className="flex items-center">
         <GroupTitle />
         <div className="ml-auto flex items-center">
-          <Button
-            minimal
-            icon={showOperators ? 'remove' : 'add'}
-            title={`${showOperators ? '折叠' : '展开'}所包含干员`}
-            className="cursor-pointer"
+          <CollapseButton
+            isCollapse={showOperators}
             onClick={() => setShowOperators(!showOperators)}
           />
           {editable ? (
