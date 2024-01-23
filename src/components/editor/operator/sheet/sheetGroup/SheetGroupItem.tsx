@@ -8,7 +8,7 @@ import {
   Intent,
 } from '@blueprintjs/core'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
