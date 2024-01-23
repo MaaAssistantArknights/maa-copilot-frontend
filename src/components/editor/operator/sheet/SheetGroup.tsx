@@ -126,7 +126,7 @@ const SheetGroup = ({
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
         else {
           if (favGroups.find(({ name }) => name === value.name)) {
-            AppToaster().show({
+            AppToaster({ position: Position.BOTTOM }).show({
               message: '干员组名冲突！',
               intent: Intent.DANGER,
             })

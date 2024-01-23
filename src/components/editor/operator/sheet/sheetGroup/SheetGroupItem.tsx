@@ -8,7 +8,7 @@ import {
   Intent,
 } from '@blueprintjs/core'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
@@ -77,7 +77,14 @@ export const GroupItem = ({
     const [editName, setEditName] = useState(groupInfo.name)
     const [nameEditState, setNameEditState] = useState(false)
     const [alertState, setAlertState] = useState(false)
-    const { register, handleSubmit, setError, reset } = useForm<Group>()
+    const {
+      register,
+      handleSubmit,
+      setError,
+      reset,
+      formState: { errors },
+      setFocus,
+    } = useForm<Group>()
     const switchState = (target?: boolean) => {
       if (!editable) return
       setNameEditState(target || !nameEditState)
@@ -95,7 +102,11 @@ export const GroupItem = ({
     return (
       <>
         <Alert
-          onConfirm={() => setAlertState(false)}
+          onConfirm={() => {
+            setNameEditState(true)
+            setAlertState(false)
+            setFocus('name', { shouldSelect: true })
+          }}
           intent={Intent.DANGER}
           onCancel={editCancel}
           confirmButtonText="取消"
@@ -106,23 +117,24 @@ export const GroupItem = ({
         </Alert>
         <form
           className="flex items-center"
-          onSubmit={handleSubmit(() => {
+          onSubmit={handleSubmit(() =>
             eventHandleProxy(
               'rename',
               { ...groupInfo, name: editName },
               setError,
-            )
-          })}
+            ),
+          )}
         >
-          <Icon icon="people" />
+          <Icon icon="people" onClick={() => switchState(true)} />
           {nameEditState ? (
             <div className="flex items-center">
               <input
-                className="ml-1 w-16"
+                className="ml-1 w-full"
                 autoComplete="off"
+                placeholder={errors.name ? '干员组名不能为空' : ''}
                 type="text"
                 {...register('name', {
-                  required: '请设置干员组名字',
+                  required: true,
                   onBlur: blurHandle,
                   value: editName,
                   onChange: (e) => setEditName(e.target.value),
@@ -137,7 +149,7 @@ export const GroupItem = ({
             </div>
           ) : (
             <H6
-              className="ml-1 m-0 p-0"
+              className="ml-1 m-0 p-0 w-full"
               onClick={() => switchState(true)}
               title="修改干员组名"
             >

@@ -252,11 +252,11 @@ export const SheetGroupOperatorSelectTrigger = (
   sheetGroupOperatorSelectProp: SheetGroupOperatorSelectProp,
 ) => (
   <Popover2
-    className="h-full"
+    className="w-full h-full"
     content={<SheetGroupOperatorSelect {...sheetGroupOperatorSelectProp} />}
   >
     <Card className="h-full flex items-center justify-center">
-      <Icon icon="plus" size={35} />
+      <Icon icon="plus" size={35} className="my-2" />
     </Card>
   </Popover2>
 )
