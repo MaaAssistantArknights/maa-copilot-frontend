@@ -2,9 +2,11 @@ import {
   Button,
   ButtonProps,
   Divider,
+  H6,
   Icon,
   Intent,
   NonIdealState,
+  Position,
 } from '@blueprintjs/core'
 
 import { useMemo, useState } from 'react'
@@ -116,6 +118,11 @@ const SheetOperator = ({
       )
   }, [selectedSubProf, selectedProf])
 
+  const selectedAllState = useMemo(
+    () => !defaultSubProf.find(({ id }) => id === selectedSubProf.id),
+    [selectedSubProf],
+  )
+
   const eventHandleProxy = (
     type: EventType,
     value: Operator,
@@ -129,7 +136,7 @@ const SheetOperator = ({
               existedOperators.findIndex((item) => item._id === value._id),
             )
           else
-            AppToaster().show({
+            AppToaster({ position: Position.BOTTOM }).show({
               message: '该干员已被编组',
               intent: Intent.DANGER,
             })
@@ -142,10 +149,19 @@ const SheetOperator = ({
       }
     }
   }
+  const selectAll = () => {
+    operatorsGroupedBySubProf.forEach((item) => submitOperator(item, () => {}))
+  }
   return (
     <div className="flex relative">
-      {/* TODO: 施工中 */}
-      <div className="absolute bottom-full right-1">111</div>
+      {selectedAllState && (
+        <H6
+          className="absolute bottom-full right-0 p-3 cursor-pointer m-0"
+          onClick={selectAll}
+        >
+          全选
+        </H6>
+      )}
 
       <div className="flex-auto">
         <div className="sticky top-0 h-screen">
