@@ -181,8 +181,8 @@ const SheetGroup = ({
     )
   }
   return (
-    <div className="flex min-h-screen px-1">
-      <div className="flex-1">
+    <div className="flex px-1">
+      <div className="flex-1 sticky top-0 h-screen overflow-y-auto">
         <SheetContainerSkeleton title="添加干员组" icon="add" mini>
           <EditorGroupName />
         </SheetContainerSkeleton>
@@ -205,7 +205,7 @@ const SheetGroup = ({
         </SheetContainerSkeleton>
       </div>
       <Divider />
-      <div className="sticky top-0 flex-1">
+      <div className="flex-1">
         <SheetContainerSkeleton title="推荐分组" icon="thumbs-up" mini>
           <div>
             {defaultGroup.length

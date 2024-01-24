@@ -162,7 +162,7 @@ export const GroupItem = ({
   }
 
   return (
-    <Card interactive className="mt-1">
+    <Card interactive className="mt-1 mx-0.5">
       <div className="flex items-center">
         <GroupTitle />
         <div className="ml-auto flex items-center">

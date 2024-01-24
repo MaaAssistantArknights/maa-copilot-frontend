@@ -168,7 +168,7 @@ const SheetOperator = ({
           {operatorsGroupedBySubProf.length ? (
             <div
               key="operatorContainer"
-              className="flex flex-wrap flex-col py-5 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
+              className="flex flex-wrap flex-col py-1 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
               onWheel={(e) => (e.currentTarget.scrollLeft += e.deltaY)}
             >
               {operatorsGroupedBySubProf.map((operatorInfo) => {
@@ -177,7 +177,7 @@ const SheetOperator = ({
                 )
                 return (
                   <div
-                    className="flex items-center mb-1 w-32 px-0.5"
+                    className="flex items-center w-32 h-30 flex-0"
                     key={operatorInfo.name}
                   >
                     <OperatorItem
