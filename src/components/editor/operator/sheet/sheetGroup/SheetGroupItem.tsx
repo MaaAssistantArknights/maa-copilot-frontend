@@ -12,9 +12,11 @@ import { useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
+import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
 import { OperatorItem } from '../SheetOperatorItem'
+import { EventType } from '../SheetOperatorSkillAbout'
 import {
   CollapseButton,
   Group,
@@ -43,30 +45,42 @@ export const GroupItem = ({
     } else eventHandleProxy('add', groupInfo)
   }
 
+  const changeGroupedOperatorSkillHandle = (
+    type: EventType,
+    value: CopilotDocV1.Operator,
+  ) => {
+    if (type === 'skill') {
+      const groupInfoCopy = { ...groupInfo }
+      groupInfoCopy.opers![
+        groupInfoCopy.opers!.findIndex(({ _id }) => _id === value._id)
+      ] = value
+      eventHandleProxy('update', groupInfo)
+    }
+  }
+
   const Operators = useMemo(
     () => (
-      <div className="flex flex-wrap w-full pt-1">
+      <div className="w-full pt-1">
         {groupInfo.opers?.map((item) => (
-          <div className="w-1/4 p-1" key={item._id}>
-            <OperatorItem
-              id={
-                OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
-                  ?.id || ''
-              }
-              name={item.name}
-              selected={false}
-              interactive={false}
-            />
-          </div>
+          <OperatorItem
+            id={
+              OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
+                ?.id || ''
+            }
+            operator={item}
+            name={item.name}
+            selected={false}
+            interactive={false}
+            horizontal
+            submitOperator={changeGroupedOperatorSkillHandle}
+          />
         ))}
         {editable && (
-          <div className="w-1/4 p-1">
-            <SheetGroupOperatorSelectTrigger
-              groupInfo={groupInfo}
-              eventHandleProxy={eventHandleProxy}
-              {...rest}
-            />
-          </div>
+          <SheetGroupOperatorSelectTrigger
+            groupInfo={groupInfo}
+            eventHandleProxy={eventHandleProxy}
+            {...rest}
+          />
         )}
       </div>
     ),

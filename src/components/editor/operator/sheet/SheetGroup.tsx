@@ -139,8 +139,11 @@ const SheetGroup = ({
         break
       }
       case 'opers': {
-        console.log(value)
         changeOperatorOfOtherGroups(value.opers, errHandle)
+        submitGroup(value, errHandle, true)
+        break
+      }
+      case 'update': {
         submitGroup(value, errHandle, true)
         break
       }

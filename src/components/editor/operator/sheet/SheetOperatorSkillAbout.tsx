@@ -59,7 +59,7 @@ export const SkillAboutTrigger = ({
 
   const selectedSkill = useMemo(() => operatorSkills[skill - 1], [skill])
 
-  const skillUsageDetailSelect = useMemo(
+  const SkillUsageDetailSelect = useMemo(
     () => (
       <DetailedSelect
         items={operatorSkillUsages as DetailedSelectItem[]}
@@ -75,7 +75,7 @@ export const SkillAboutTrigger = ({
     ),
     [skillUsage],
   )
-  const skillDetailSelect = useMemo(
+  const SkillDetailSelect = useMemo(
     () => (
       <Select2
         filterable={false}
@@ -111,11 +111,11 @@ export const SkillAboutTrigger = ({
       >
         <div>
           <p className="mb-1">技能</p>
-          {skillDetailSelect}
+          {SkillDetailSelect}
         </div>
         <div className="ml-3">
           <p className="mb-1">技能用法</p>
-          {skillUsageDetailSelect}
+          {SkillUsageDetailSelect}
         </div>
       </div>
       <Button
@@ -136,7 +136,6 @@ export const SkillAboutTrigger = ({
             'flex mt-3 text-gray-500',
             operator && 'hover:text-black',
           )}
-          role="presentation"
         >
           <Icon icon="info-sign" size={12} className="flex items-center" />
           <p className="text-xs">{`${operator?.skill || '未设置'}技能 ${
@@ -144,7 +143,10 @@ export const SkillAboutTrigger = ({
           } `}</p>
           {operator?.skillUsage !== undefined && (
             <Icon
-              icon={skillDic.find((item) => item.value === skillUsage)?.icon}
+              icon={
+                skillDic.find((item) => item.value === operator?.skillUsage)
+                  ?.icon
+              }
               className="flex items-center ml-1"
             />
           )}
