@@ -19,7 +19,7 @@ import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorItem } from './SheetOperatorItem'
-import { EventType } from './SkillAbout'
+import { EventType } from './SheetOperatorSkillAbout'
 
 type Operator = CopilotDocV1.Operator
 type Group = CopilotDocV1.Group

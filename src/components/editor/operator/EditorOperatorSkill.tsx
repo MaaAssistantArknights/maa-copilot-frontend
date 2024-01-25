@@ -44,9 +44,7 @@ export const EditorOperatorSkill = ({
           text={action.title}
         />
       )}
-      onItemSelect={(item) => {
-        onChange(item.value)
-      }}
+      onItemSelect={(item) => onChange(item.value)}
     >
       <Button
         icon={selected?.icon}

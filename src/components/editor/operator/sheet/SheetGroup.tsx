@@ -73,7 +73,16 @@ const SheetGroup = ({
     if (checkTarget) {
       if (!!checkTarget.opers?.length === !!target.opers?.length) {
         for (const aItem of checkTarget.opers!) {
-          if (target.opers!.find((bItem) => bItem.name === aItem.name)) continue
+          if (
+            target.opers?.find((bItem) => {
+              for (const [key, value] of Object.entries(bItem)) {
+                if (aItem[key] === value) continue
+                return false
+              }
+              return true
+            })
+          )
+            continue
           else return false
         }
         return true
@@ -118,20 +127,14 @@ const SheetGroup = ({
         break
       }
       case 'remove': {
-        removeGroup(existedGroups.findIndex((item) => item._id === value._id))
+        removeGroup(existedGroups.findIndex((item) => item.name === value.name))
         break
       }
       case 'pin': {
-        if (checkGroupPinned(value))
-          setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
-        else {
-          if (favGroups.find(({ name }) => name === value.name)) {
-            AppToaster({ position: Position.BOTTOM }).show({
-              message: '干员组名冲突！',
-              intent: Intent.DANGER,
-            })
-          } else setFavGroups([...favGroups, { ...value }])
-        }
+        setFavGroups([
+          ...[...favGroups].filter(({ name }) => name !== value.name),
+          { ...value },
+        ])
         break
       }
       case 'rename': {
@@ -139,14 +142,18 @@ const SheetGroup = ({
         break
       }
       case 'opers': {
-        console.log(value)
         changeOperatorOfOtherGroups(value.opers, errHandle)
+        submitGroup(value, errHandle, true)
+        break
+      }
+      case 'update': {
         submitGroup(value, errHandle, true)
         break
       }
     }
   }
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
+
   const EditorGroupName = () => {
     const [groupName, setGroupName] = useState('')
     const addGroupHandle = () => {
@@ -189,8 +196,9 @@ const SheetGroup = ({
         <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
           <div>
             {existedGroups.length
-              ? existedGroups.map((item) => (
+              ? existedGroups.map((item, index) => (
                   <GroupItem
+                    key={index}
                     existedGroup={existedGroups}
                     existedOperator={existedOperators}
                     groupInfo={item}
@@ -209,8 +217,9 @@ const SheetGroup = ({
         <SheetContainerSkeleton title="推荐分组" icon="thumbs-up" mini>
           <div>
             {defaultGroup.length
-              ? defaultGroup.map((item) => (
+              ? defaultGroup.map((item, index) => (
                   <GroupItem
+                    key={index}
                     groupInfo={item}
                     editable={false}
                     exist={checkGroupExisted(item.name)}
@@ -224,9 +233,10 @@ const SheetGroup = ({
         <SheetContainerSkeleton title="收藏分组" icon="star" mini>
           <div>
             {favGroups.length
-              ? favGroups.map((item) => (
+              ? favGroups.map((item, index) => (
                   <GroupItem
                     groupInfo={item}
+                    key={index}
                     editable={false}
                     exist={checkGroupExisted(item.name)}
                     eventHandleProxy={eventHandleProxy}

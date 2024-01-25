@@ -224,12 +224,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     setError,
     fromSheet,
   ) => {
-    if (
-      !fromSheet &&
-      operators.find(
-        ({ _id, name }) => name === operator.name && _id !== operator._id,
-      )
-    ) {
+    if (!fromSheet && operators.find(({ name }) => name === operator.name)) {
       setError('name', { message: '干员已存在' })
       return false
     }
@@ -292,7 +287,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             addOperator()
           } else {
             updateOperator(
-              operators.findIndex((item) => item._id === operator._id),
+              operators.findIndex((item) => item.name === operator.name),
               operator,
             )
           }
@@ -316,10 +311,16 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     setError,
     fromSheet,
   ) => {
-    if (
-      !fromSheet &&
-      groups.find(({ _id, name }) => name === group.name && _id !== group._id)
-    ) {
+    const removeOperatorByArray = () => {
+      const matchNumbers: number[] = []
+      group.opers?.forEach((item) =>
+        matchNumbers.push(
+          operators.findIndex(({ name }) => name === item.name),
+        ),
+      )
+      removeOperator(matchNumbers.filter((item) => item !== -1))
+    }
+    if (!fromSheet && groups.find(({ name }) => name === group.name)) {
       setError('name', { message: '干员组已存在' })
       return false
     }
@@ -329,16 +330,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         : findGroupById(getId(editingGroup!))
       if (existingGroup) {
         group._id = getId(existingGroup)
-        if (fromSheet) {
-          const matchNumbers: number[] = []
-          group.opers?.forEach((item) => {
-            const index = operators.findIndex(({ name }) => name === item.name)
-            if (index !== -1) matchNumbers.push(index)
-          })
-          removeOperator(matchNumbers)
-        }
+        if (fromSheet) removeOperatorByArray()
         updateGroup(
-          groups.findIndex((item) => item._id === existingGroup._id),
+          groups.findIndex((item) => item.name === existingGroup.name),
           group,
         )
         setEditingGroup(undefined)
@@ -349,20 +343,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     } else {
       group._id = uniqueId()
       appendGroup(group)
-      if (group.opers?.length) {
-        const matchNumbers: number[] = []
-        group.opers.forEach((item) => {
-          matchNumbers.push(
-            operators.findIndex((opItem) => opItem._id === item._id),
-          )
-        })
-        removeOperator(matchNumbers)
-      }
+      if (group.opers?.length) removeOperatorByArray()
     }
-
     return true
   }
-
   return (
     <>
       <EditorSheetTrigger

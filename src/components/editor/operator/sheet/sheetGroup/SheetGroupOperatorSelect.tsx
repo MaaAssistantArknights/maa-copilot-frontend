@@ -22,7 +22,7 @@ import { OPERATORS } from 'models/generated/operators'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
 import { OperatorItem } from '../SheetOperatorItem'
 
-export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename'
+export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename' | 'update'
 
 export type Group = CopilotDocV1.Group
 type Operator = CopilotDocV1.Operator
@@ -252,11 +252,11 @@ export const SheetGroupOperatorSelectTrigger = (
   sheetGroupOperatorSelectProp: SheetGroupOperatorSelectProp,
 ) => (
   <Popover2
-    className="w-full h-full"
+    className="w-full mt-1"
     content={<SheetGroupOperatorSelect {...sheetGroupOperatorSelectProp} />}
   >
-    <Card className="h-full flex items-center justify-center">
-      <Icon icon="plus" size={35} className="my-2" />
+    <Card className="flex items-center justify-center">
+      <Icon icon="plus" size={30} />
     </Card>
   </Popover2>
 )
@@ -296,7 +296,7 @@ const OperatorPart = ({
   <div className="flex flex-wrap">
     {operators ? (
       operators?.map((item) => (
-        <div className="w-1/4 relative p-0.5">
+        <div className="w-1/4 relative p-0.5" key={item._id}>
           <OperatorItem
             id={OPERATORS.find(({ name }) => name === item.name)?.id || ''}
             name={item.name}
