@@ -287,7 +287,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             addOperator()
           } else {
             updateOperator(
-              operators.findIndex((item) => item._id === operator._id),
+              operators.findIndex(({ name }) => name === operator.name),
               operator,
             )
           }
@@ -343,19 +343,12 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     } else {
       group._id = uniqueId()
       appendGroup(group)
-      if (group.opers?.length) {
-        const matchNumbers: number[] = []
-        group.opers.forEach((item) => {
-          matchNumbers.push(
-            operators.findIndex((opItem) => opItem._id === item._id),
-          )
-        })
-        removeOperator(matchNumbers)
-      }
+      if (group.opers?.length) removeOperatorByArray()
     }
 
     return true
   }
+
   return (
     <>
       <EditorSheetTrigger

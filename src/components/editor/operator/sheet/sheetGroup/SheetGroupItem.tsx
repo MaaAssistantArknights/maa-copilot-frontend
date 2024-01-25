@@ -68,17 +68,18 @@ export const GroupItem = ({
     () => (
       <div className="w-full pt-1">
         {groupInfo.opers?.map((item) => (
-          <div className="w-1/4 p-1" key={item._id}>
-            <OperatorItem
-              id={
-                OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
-                  ?.id || ''
-              }
-              name={item.name}
-              selected={false}
-              interactive={false}
-            />
-          </div>
+          <OperatorItem
+            id={
+              OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
+                ?.id || ''
+            }
+            operator={item}
+            name={item.name}
+            selected={false}
+            interactive={false}
+            horizontal
+            submitOperator={changeGroupedOperatorSkillHandle}
+          />
         ))}
         {editable && (
           <SheetGroupOperatorSelectTrigger

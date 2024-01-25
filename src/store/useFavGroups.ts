@@ -14,6 +14,7 @@ const favGroupCoreAtom = atomWithLocalStorage<FavGroupState[], FavGroupState[]>(
   'maa-copilot-fav-groups',
   [],
 )
+
 export const favGroupAtom = atom(
   (get) =>
     get(favGroupCoreAtom).find(

@@ -21,6 +21,7 @@ const EditorOperatorSheet = (sheetProps: EditorSheetProps) => {
 
 export const EditorSheetTrigger = (sheetProps: EditorSheetProps) => {
   const [open, setOpen] = useState(false)
+
   return (
     <>
       <Drawer isOpen={open} onClose={() => setOpen(false)} size="55%">

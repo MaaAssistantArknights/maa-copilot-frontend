@@ -127,14 +127,18 @@ const SheetGroup = ({
         break
       }
       case 'remove': {
-        removeGroup(existedGroups.findIndex((item) => item.name === value.name))
+        removeGroup(existedGroups.findIndex((item) => item._id === value._id))
         break
       }
       case 'pin': {
-        setFavGroups([
-          ...[...favGroups].filter(({ name }) => name !== value.name),
-          { ...value },
-        ])
+        if (checkGroupPinned(value))
+          setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
+        else {
+          setFavGroups([
+            ...[...favGroups].filter(({ name }) => name !== value.name),
+            { ...value },
+          ])
+        }
         break
       }
       case 'rename': {
@@ -153,7 +157,6 @@ const SheetGroup = ({
     }
   }
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
-
   const EditorGroupName = () => {
     const [groupName, setGroupName] = useState('')
     const addGroupHandle = () => {
