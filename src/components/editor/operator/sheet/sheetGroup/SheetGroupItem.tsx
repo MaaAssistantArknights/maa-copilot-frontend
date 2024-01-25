@@ -38,6 +38,12 @@ export const GroupItem = ({
   eventHandleProxy,
   ...rest
 }: GroupItemProps) => {
+  // TODO: 施工中
+  // TODO: 查找为什么出现id的原因
+  // const pinLog = useMemo(() => {
+  //   if (pinned) return true
+  //   return pinLog
+  // }, [pinned])
   const [showOperators, setShowOperators] = useState(editable)
   const createOrDeleteGroup = () => {
     if (exist) {
@@ -50,11 +56,11 @@ export const GroupItem = ({
     value: CopilotDocV1.Operator,
   ) => {
     if (type === 'skill') {
-      const groupInfoCopy = { ...groupInfo }
+      const groupInfoCopy = JSON.parse(JSON.stringify(groupInfo))
       groupInfoCopy.opers![
-        groupInfoCopy.opers!.findIndex(({ _id }) => _id === value._id)
+        groupInfoCopy.opers!.findIndex(({ name }) => name === value.name)
       ] = value
-      eventHandleProxy('update', groupInfo)
+      eventHandleProxy('update', groupInfoCopy)
     }
   }
 
