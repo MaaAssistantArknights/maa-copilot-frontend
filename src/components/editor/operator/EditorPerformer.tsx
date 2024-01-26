@@ -249,11 +249,8 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           ...newGroup,
           opers: [...(newGroup.opers || []), operator],
         })
-      } else {
-        appendOperator(operator)
-      }
+      } else appendOperator(operator)
     }
-
     if (fromSheet || editingOperator) {
       const existingOperator = fromSheet
         ? operator
@@ -302,7 +299,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       operator._id = uniqueId()
       addOperator()
     }
-
     return true
   }
 
@@ -332,7 +328,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         group._id = getId(existingGroup)
         if (fromSheet) removeOperatorByArray()
         updateGroup(
-          groups.findIndex(({ name }) => name === existingGroup.name),
+          groups.findIndex(({ _id }) => _id === existingGroup._id),
           group,
         )
         setEditingGroup(undefined)
@@ -348,7 +344,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
     return true
   }
-
   return (
     <>
       <EditorSheetTrigger

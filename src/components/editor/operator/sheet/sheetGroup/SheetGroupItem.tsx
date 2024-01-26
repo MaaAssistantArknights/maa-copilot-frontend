@@ -1,15 +1,7 @@
-import {
-  Alert,
-  Button,
-  Card,
-  Collapse,
-  H6,
-  Icon,
-  Intent,
-} from '@blueprintjs/core'
+import { Alert, Button, Card, Collapse, Icon, Intent } from '@blueprintjs/core'
 
-import { useMemo, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { useMemo, useRef, useState } from 'react'
+import { UseFormSetError, useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -39,7 +31,6 @@ export const GroupItem = ({
   ...rest
 }: GroupItemProps) => {
   // TODO: 施工中
-  // TODO: 查找为什么出现id的原因
   // const pinLog = useMemo(() => {
   //   if (pinned) return true
   //   return pinLog
@@ -62,6 +53,13 @@ export const GroupItem = ({
       ] = value
       eventHandleProxy('update', groupInfoCopy)
     }
+  }
+
+  const renameEventHandle = (
+    name: string,
+    errorHandle: UseFormSetError<Group>,
+  ) => {
+    eventHandleProxy('rename', { ...groupInfo, name }, errorHandle)
   }
 
   const Operators = useMemo(
@@ -93,98 +91,14 @@ export const GroupItem = ({
     [groupInfo.opers, rest],
   )
 
-  const GroupTitle = () => {
-    const [editName, setEditName] = useState(groupInfo.name)
-    const [nameEditState, setNameEditState] = useState(false)
-    const [alertState, setAlertState] = useState(false)
-    const {
-      register,
-      handleSubmit,
-      setError,
-      reset,
-      formState: { errors },
-      setFocus,
-    } = useForm<Group>()
-    const switchState = (target?: boolean) => {
-      if (!editable) return
-      setNameEditState(target || !nameEditState)
-    }
-    const blurHandle = () => {
-      if (groupInfo.name !== editName) setAlertState(true)
-      setNameEditState(false)
-    }
-    const editCancel = () => {
-      setNameEditState(false)
-      setEditName(groupInfo.name)
-      reset()
-      setAlertState(false)
-    }
-    return (
-      <>
-        <Alert
-          onConfirm={() => {
-            setNameEditState(true)
-            setAlertState(false)
-            setFocus('name', { shouldSelect: true })
-          }}
-          intent={Intent.DANGER}
-          onCancel={editCancel}
-          confirmButtonText="取消"
-          cancelButtonText="确认"
-          isOpen={alertState}
-        >
-          <p>当前干员组名修改未保存，是否放弃修改？</p>
-        </Alert>
-        <form
-          className="flex items-center"
-          onSubmit={handleSubmit(() =>
-            eventHandleProxy(
-              'rename',
-              { ...groupInfo, name: editName },
-              setError,
-            ),
-          )}
-        >
-          <Icon icon="people" onClick={() => switchState(true)} />
-          {nameEditState ? (
-            <div className="flex items-center">
-              <input
-                className="ml-1 w-full"
-                autoComplete="off"
-                placeholder={errors.name ? '干员组名不能为空' : ''}
-                type="text"
-                {...register('name', {
-                  required: true,
-                  onBlur: blurHandle,
-                  value: editName,
-                  onChange: (e) => setEditName(e.target.value),
-                })}
-              />
-              <Button
-                minimal
-                icon="tick"
-                type="submit"
-                onMouseDown={(e) => e.preventDefault()}
-              />
-            </div>
-          ) : (
-            <H6
-              className="ml-1 m-0 p-0 w-full"
-              onClick={() => switchState(true)}
-              title="修改干员组名"
-            >
-              {editName}
-            </H6>
-          )}
-        </form>
-      </>
-    )
-  }
-
   return (
     <Card interactive className="mt-1 mx-0.5">
       <div className="flex items-center">
-        <GroupTitle />
+        <GroupTitle
+          groupTitle={groupInfo.name}
+          editable={editable}
+          renameSubmit={renameEventHandle}
+        />
         <div className="ml-auto flex items-center">
           <CollapseButton
             isCollapse={showOperators}
@@ -215,5 +129,124 @@ export const GroupItem = ({
       </div>
       <Collapse isOpen={showOperators}>{Operators}</Collapse>
     </Card>
+  )
+}
+
+const GroupTitle = ({
+  groupTitle,
+  editable,
+  renameSubmit,
+}: {
+  editable: boolean
+  renameSubmit: (newName: string, errorHandle: UseFormSetError<Group>) => void
+  groupTitle: string
+}) => {
+  const [editName, setEditName] = useState(groupTitle)
+  const [nameEditState, setNameEditState] = useState(false)
+  const [alertState, setAlertState] = useState(false)
+  const {
+    register,
+    handleSubmit,
+    setError,
+    reset,
+    formState: { errors },
+  } = useForm<Group>()
+  const ignoreBlur = useRef(false)
+  const blurHandle = () => {
+    if (!ignoreBlur.current) {
+      if (groupTitle !== editName) setAlertState(true)
+      setNameEditState(false)
+    } else ignoreBlur.current = false
+  }
+  const editCancel = () => {
+    setNameEditState(false)
+    setEditName(groupTitle)
+    reset()
+    setAlertState(false)
+  }
+  const inputRef = useRef<HTMLInputElement | null>(null)
+  const { ref, ...registerRest } = register('name', {
+    required: true,
+    onBlur: blurHandle,
+    value: editName,
+    onChange: (e) => setEditName(e.target.value),
+  })
+  const editContinue = () => {
+    setNameEditState(true)
+    setAlertState(false)
+    inputRef.current?.focus()
+  }
+  const NameIcon = useMemo(() => <Icon icon="people" />, [])
+  const EditAlert = useMemo(
+    () => (
+      <Alert
+        onConfirm={editContinue}
+        intent={Intent.DANGER}
+        onCancel={editCancel}
+        confirmButtonText="取消"
+        cancelButtonText="确认"
+        isOpen={alertState}
+      >
+        <p>当前干员组名修改未保存，是否放弃修改？</p>
+      </Alert>
+    ),
+    [alertState],
+  )
+  const NameInput = useMemo(
+    () => (
+      <input
+        title="修改干员组名称"
+        className="ml-1 w-full bg-transparent text-xs"
+        autoComplete="off"
+        disabled={!editable}
+        onFocus={() => setNameEditState(true)}
+        placeholder={errors.name ? '干员组名不能为空' : ''}
+        type="text"
+        ref={(e) => {
+          ref(e)
+          inputRef.current = e
+        }}
+        onKeyDown={(e) => {
+          if (e.key.toLowerCase() === 'enter') e.preventDefault()
+        }}
+        {...registerRest}
+      />
+    ),
+    [groupTitle, editName, errors],
+  )
+  const SubmitButton = useMemo(
+    () => (
+      <>
+        {nameEditState && (
+          <Button
+            minimal
+            icon="tick"
+            type="submit"
+            onMouseDown={(e) => e.preventDefault()}
+          />
+        )}
+      </>
+    ),
+    [nameEditState],
+  )
+  return (
+    <>
+      {EditAlert}
+      <form
+        className="flex items-center"
+        onSubmit={handleSubmit(() => {
+          ignoreBlur.current = true
+          renameSubmit(editName, setError)
+          setNameEditState(false)
+          inputRef.current?.blur()
+        })}
+      >
+        <div className="flex items-center w-full">
+          {NameIcon}
+          {NameInput}
+          {SubmitButton}
+        </div>
+      </form>
+    </>
   )
 }

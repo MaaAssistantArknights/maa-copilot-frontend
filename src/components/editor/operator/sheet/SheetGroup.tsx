@@ -21,12 +21,12 @@ import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupItem } from './sheetGroup/SheetGroupItem'
 import { EventType, Group } from './sheetGroup/SheetGroupOperatorSelect'
 
-type Operators = CopilotDocV1.Operator[]
+type Operator = CopilotDocV1.Operator
 
 export interface SheetGroupProps {
   submitGroup: EditorPerformerGroupProps['submit']
   existedGroups: Group[]
-  existedOperators: Operators
+  existedOperators: Operator[]
   removeGroup: UseFieldArrayRemove
 }
 
@@ -71,12 +71,17 @@ const SheetGroup = ({
   const checkGroupPinned = (target: Group) => {
     const checkTarget = favGroups.find((item) => item.name === target.name)
     if (checkTarget) {
-      if (!!checkTarget.opers?.length === !!target.opers?.length) {
+      if ((checkTarget.opers?.length || 0) === (target.opers?.length || 0)) {
+        const ignoreKeyDic = ['_id', 'id']
         for (const aItem of checkTarget.opers!) {
           if (
             target.opers?.find((bItem) => {
               for (const [key, value] of Object.entries(bItem)) {
-                if (aItem[key] === value) continue
+                if (
+                  ignoreKeyDic.find((item) => item === key) ||
+                  value === aItem[key]
+                )
+                  continue
                 return false
               }
               return true
@@ -90,7 +95,7 @@ const SheetGroup = ({
     } else return false
   }
   const changeOperatorOfOtherGroups = (
-    target: Operators | undefined,
+    target: Operator[] | undefined,
     errHandle: UseFormSetError<Group>,
   ) => {
     target?.forEach((item) => {

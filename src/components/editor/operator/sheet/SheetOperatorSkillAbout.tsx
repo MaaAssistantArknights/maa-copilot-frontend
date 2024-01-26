@@ -102,7 +102,7 @@ export const SkillAboutTrigger = ({
     [skill],
   )
 
-  const skillAboutForm = (
+  const SkillAboutForm = (
     <>
       <div
         onClick={(e) => e.stopPropagation()}
@@ -125,7 +125,7 @@ export const SkillAboutTrigger = ({
       />
     </>
   )
-  const skillAboutTrigger = useMemo(
+  const SkillAboutTrigger = useMemo(
     () => (
       <Tooltip2
         content="点击进行技能相关设置"
@@ -164,11 +164,11 @@ export const SkillAboutTrigger = ({
       role="presentation"
     >
       <Popover2
-        content={skillAboutForm}
+        content={SkillAboutForm}
         disabled={operator ? false : true}
         onClosed={resetData}
       >
-        {skillAboutTrigger}
+        {SkillAboutTrigger}
       </Popover2>
     </div>
   )
