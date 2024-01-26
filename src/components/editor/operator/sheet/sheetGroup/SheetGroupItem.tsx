@@ -30,11 +30,6 @@ export const GroupItem = ({
   eventHandleProxy,
   ...rest
 }: GroupItemProps) => {
-  // TODO: 施工中
-  // const pinLog = useMemo(() => {
-  //   if (pinned) return true
-  //   return pinLog
-  // }, [pinned])
   const [showOperators, setShowOperators] = useState(editable)
   const createOrDeleteGroup = () => {
     if (exist) {

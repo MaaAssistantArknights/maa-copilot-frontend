@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Divider,
   InputGroup,
@@ -36,6 +37,8 @@ const SheetGroup = ({
   existedOperators,
   removeGroup,
 }: SheetGroupProps) => {
+  const [coverGroup, setCoverGroup] = useState<Group>()
+
   const defaultGroup = useMemo<Group[]>(() => {
     const result: CopilotDocV1.Group[] = []
     PROFESSIONS.forEach((proItem) => {
@@ -66,6 +69,7 @@ const SheetGroup = ({
       })
     return result
   }, [existedOperators])
+
   const checkGroupExisted = (target: string) =>
     existedGroups.find((item) => item.name === target) ? true : false
   const checkGroupPinned = (target: Group) => {
@@ -94,6 +98,8 @@ const SheetGroup = ({
       } else return false
     } else return false
   }
+  const checkSamePinned = (target: string) =>
+    favGroups.find(({ name }) => name === target) ? true : false
   const changeOperatorOfOtherGroups = (
     target: Operator[] | undefined,
     errHandle: UseFormSetError<Group>,
@@ -111,6 +117,13 @@ const SheetGroup = ({
       })
     })
   }
+
+  const updateFavGroup = (value: Group) =>
+    setFavGroups([
+      ...[...favGroups].filter(({ name }) => name !== value.name),
+      { ...value },
+    ])
+
   const eventHandleProxy = (
     type: EventType,
     value: Group,
@@ -139,10 +152,8 @@ const SheetGroup = ({
         if (checkGroupPinned(value))
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
         else {
-          setFavGroups([
-            ...[...favGroups].filter(({ name }) => name !== value.name),
-            { ...value },
-          ])
+          if (checkSamePinned(value.name)) setCoverGroup(value)
+          else updateFavGroup(value)
         }
         break
       }
@@ -196,66 +207,78 @@ const SheetGroup = ({
     )
   }
   return (
-    <div className="flex px-1">
-      <div className="flex-1 sticky top-0 h-screen overflow-y-auto">
-        <SheetContainerSkeleton title="添加干员组" icon="add" mini>
-          <EditorGroupName />
-        </SheetContainerSkeleton>
-        <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
-          <div>
-            {existedGroups.length
-              ? existedGroups.map((item, index) => (
-                  <GroupItem
-                    key={index}
-                    existedGroup={existedGroups}
-                    existedOperator={existedOperators}
-                    groupInfo={item}
-                    editable
-                    exist={checkGroupExisted(item.name)}
-                    pinned={checkGroupPinned(item)}
-                    eventHandleProxy={eventHandleProxy}
-                  />
-                ))
-              : GroupNoData}
-          </div>
-        </SheetContainerSkeleton>
+    <>
+      <Alert
+        isOpen={!!coverGroup}
+        confirmButtonText="确定"
+        cancelButtonText="取消"
+        onConfirm={() => updateFavGroup(coverGroup as Group)}
+        onClose={() => setCoverGroup(undefined)}
+      >
+        {/* TODO: 美化UI、优化更新 */}
+        <p>收藏干员组：是否对干员组 {coverGroup?.name} 进行覆盖操作</p>
+      </Alert>
+      <div className="flex px-1">
+        <div className="flex-1 sticky top-0 h-screen overflow-y-auto">
+          <SheetContainerSkeleton title="添加干员组" icon="add" mini>
+            <EditorGroupName />
+          </SheetContainerSkeleton>
+          <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
+            <div>
+              {existedGroups.length
+                ? existedGroups.map((item, index) => (
+                    <GroupItem
+                      key={index}
+                      existedGroup={existedGroups}
+                      existedOperator={existedOperators}
+                      groupInfo={item}
+                      editable
+                      exist={checkGroupExisted(item.name)}
+                      pinned={checkGroupPinned(item)}
+                      eventHandleProxy={eventHandleProxy}
+                    />
+                  ))
+                : GroupNoData}
+            </div>
+          </SheetContainerSkeleton>
+        </div>
+        <Divider />
+        <div className="flex-1">
+          <SheetContainerSkeleton title="推荐分组" icon="thumbs-up" mini>
+            <div>
+              {defaultGroup.length
+                ? defaultGroup.map((item, index) => (
+                    <GroupItem
+                      key={index}
+                      groupInfo={item}
+                      editable={false}
+                      exist={checkGroupExisted(item.name)}
+                      eventHandleProxy={eventHandleProxy}
+                      pinned={checkGroupPinned(item)}
+                    />
+                  ))
+                : GroupNoData}
+            </div>
+          </SheetContainerSkeleton>
+          <SheetContainerSkeleton title="收藏分组" icon="star" mini>
+            <div>
+              {favGroups.length
+                ? favGroups.map((item, index) => (
+                    <GroupItem
+                      key={index}
+                      groupInfo={item}
+                      editable={false}
+                      exist={checkGroupExisted(item.name)}
+                      eventHandleProxy={eventHandleProxy}
+                      pinned={checkGroupPinned(item)}
+                    />
+                  ))
+                : GroupNoData}
+            </div>
+          </SheetContainerSkeleton>
+        </div>
       </div>
-      <Divider />
-      <div className="flex-1">
-        <SheetContainerSkeleton title="推荐分组" icon="thumbs-up" mini>
-          <div>
-            {defaultGroup.length
-              ? defaultGroup.map((item, index) => (
-                  <GroupItem
-                    key={index}
-                    groupInfo={item}
-                    editable={false}
-                    exist={checkGroupExisted(item.name)}
-                    eventHandleProxy={eventHandleProxy}
-                    pinned={checkGroupPinned(item)}
-                  />
-                ))
-              : GroupNoData}
-          </div>
-        </SheetContainerSkeleton>
-        <SheetContainerSkeleton title="收藏分组" icon="star" mini>
-          <div>
-            {favGroups.length
-              ? favGroups.map((item, index) => (
-                  <GroupItem
-                    key={index}
-                    groupInfo={item}
-                    editable={false}
-                    exist={checkGroupExisted(item.name)}
-                    eventHandleProxy={eventHandleProxy}
-                    pinned={checkGroupPinned(item)}
-                  />
-                ))
-              : GroupNoData}
-          </div>
-        </SheetContainerSkeleton>
-      </div>
-    </div>
+    </>
   )
 }
 
