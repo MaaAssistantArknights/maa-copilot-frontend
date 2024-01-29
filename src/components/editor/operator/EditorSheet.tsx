@@ -1,6 +1,6 @@
-import { Button, Drawer } from '@blueprintjs/core'
+import { Button, Drawer, DrawerSize } from '@blueprintjs/core'
 
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { SheetGroupContainer, SheetGroupProps } from './sheet/SheetGroup'
 import {
@@ -21,11 +21,15 @@ const EditorOperatorSheet = (sheetProps: EditorSheetProps) => {
 
 export const EditorSheetTrigger = (sheetProps: EditorSheetProps) => {
   const [open, setOpen] = useState(false)
-
+  const miniMedia = useMemo(() => window.innerWidth < 600, [])
   return (
     <>
-      <Drawer isOpen={open} onClose={() => setOpen(false)} size="55%">
-        <EditorOperatorSheet {...sheetProps} />
+      <Drawer
+        isOpen={open}
+        onClose={() => setOpen(false)}
+        size={miniMedia ? DrawerSize.LARGE : '55%'}
+      >
+        <EditorOperatorSheet {...sheetProps} miniMedia={miniMedia} />
       </Drawer>
       <Button onClick={() => setOpen(true)} text="快捷编辑" />
     </>

@@ -9,6 +9,7 @@ import {
   Position,
 } from '@blueprintjs/core'
 
+import clsx from 'clsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
@@ -29,12 +30,14 @@ export interface SheetOperatorProps {
   existedOperators: Operator[]
   existedGroups: Group[]
   removeOperator: UseFieldArrayRemove
+  miniMedia?: boolean
 }
 const SheetOperator = ({
   submitOperator,
   existedOperators,
   removeOperator,
   existedGroups,
+  miniMedia,
 }: SheetOperatorProps) => {
   const defaultSubProf = useMemo(
     () => [
@@ -153,6 +156,42 @@ const SheetOperator = ({
     operatorsGroupedBySubProf.forEach((item) => submitOperator(item, () => {}))
   }
 
+  const ProfSelect = useMemo(
+    () => (
+      <div className="flex flex-row-reverse pt-1 shrink-0">
+        <div>
+          {formattedProfessions.map((prof) => (
+            <ButtonItem
+              title={prof.name}
+              icon="people"
+              key={prof.id}
+              active={prof.id === selectedProf.id}
+              miniMedia={!!miniMedia}
+              onClick={() => {
+                setSelectedProf(prof)
+                setSelectedSubProf(defaultSubProf[0])
+              }}
+            />
+          ))}
+        </div>
+        <div className="ml-1">
+          {formattedSubProfessions?.map((subProf) => (
+            <ButtonItem
+              title={subProf.name}
+              miniMedia={!!miniMedia}
+              icon="people"
+              fill
+              key={subProf.id}
+              active={subProf.id === selectedSubProf.id}
+              onClick={() => setSelectedSubProf(subProf)}
+            />
+          ))}
+        </div>
+      </div>
+    ),
+    [selectedSubProf, selectedProf],
+  )
+
   // optimization of operators' list
   const [sliceIndex, setSliceIndex] = useState(50)
   const sliceTimer = useRef<number | undefined>(undefined)
@@ -219,36 +258,7 @@ const SheetOperator = ({
         </div>
       </div>
       <Divider />
-      <div className="flex flex-row-reverse pt-1 shrink-0">
-        <div>
-          {formattedProfessions.map((prof) => (
-            <ButtonItem
-              title={prof.name}
-              icon="people"
-              minimal
-              key={prof.id}
-              active={prof.id === selectedProf.id}
-              onClick={() => {
-                setSelectedProf(prof)
-                setSelectedSubProf(defaultSubProf[0])
-              }}
-            />
-          ))}
-        </div>
-        <div className="ml-1">
-          {formattedSubProfessions?.map((subProf) => (
-            <ButtonItem
-              title={subProf.name}
-              icon="people"
-              fill
-              key={subProf.id}
-              active={subProf.id === selectedSubProf.id}
-              minimal
-              onClick={() => setSelectedSubProf(subProf)}
-            />
-          ))}
-        </div>
-      </div>
+      {ProfSelect}
     </div>
   )
 }
@@ -263,11 +273,17 @@ export const SheetOperatorContainer = (
 
 interface MenuItemProps extends ButtonProps {
   title: string
+  miniMedia: boolean
 }
 
-const ButtonItem = ({ title, icon, ...buttonProps }: MenuItemProps) => (
-  <Button {...buttonProps} className="text-center">
+const ButtonItem = ({
+  title,
+  icon,
+  miniMedia,
+  ...buttonProps
+}: MenuItemProps) => (
+  <Button {...buttonProps} className="text-center" minimal>
     <Icon icon={icon} />
-    <p>{title}</p>
+    <p className={clsx(miniMedia && 'w-5 truncate')}>{title}</p>
   </Button>
 )
