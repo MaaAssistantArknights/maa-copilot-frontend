@@ -29,7 +29,7 @@ export const wrapErrorMessage = <T>(
           return options
       }
     })()
-    AppToaster().show(config)
+    AppToaster.show(config)
     return Promise.reject(error)
   })
 }

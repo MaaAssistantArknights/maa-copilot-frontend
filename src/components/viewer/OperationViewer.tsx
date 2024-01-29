@@ -57,7 +57,7 @@ const ManageMenu: FC<{
     } finally {
       setLoading(false)
     }
-    AppToaster().show({
+    AppToaster.show({
       intent: 'success',
       message: `删除成功`,
     })
@@ -123,7 +123,7 @@ export const OperationViewer: ComponentType<{
 
     const handleCopyShortCode = () => {
       if (!operation?.id) {
-        AppToaster().show({
+        AppToaster.show({
           message: '获取作业失败',
           intent: 'danger',
         })
@@ -133,7 +133,7 @@ export const OperationViewer: ComponentType<{
       const shortCode = toShortCode(operation.id)
       navigator.clipboard.writeText(shortCode)
 
-      AppToaster().show({
+      AppToaster.show({
         message: '已复制神秘代码，前往 MAA 粘贴即可使用~',
         intent: 'success',
       })
@@ -142,7 +142,7 @@ export const OperationViewer: ComponentType<{
     const handleDownloadJSON = () => {
       const content = operation?.content
       if (!content) {
-        AppToaster().show({
+        AppToaster.show({
           message: '获取作业失败',
           intent: 'danger',
         })
@@ -159,7 +159,7 @@ export const OperationViewer: ComponentType<{
       link.click()
       URL.revokeObjectURL(url)
 
-      AppToaster().show({
+      AppToaster.show({
         message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
         intent: 'success',
       })
