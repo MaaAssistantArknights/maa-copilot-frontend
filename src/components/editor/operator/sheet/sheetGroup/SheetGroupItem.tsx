@@ -136,7 +136,7 @@ const GroupTitle = ({
   renameSubmit: (newName: string, errorHandle: UseFormSetError<Group>) => void
   groupTitle: string
 }) => {
-  const [editName, setEditName] = useState(groupTitle)
+  const [editName, setEditName] = useState('')
   const [nameEditState, setNameEditState] = useState(false)
   const [alertState, setAlertState] = useState(false)
   const {
@@ -195,7 +195,7 @@ const GroupTitle = ({
         autoComplete="off"
         disabled={!editable}
         onFocus={() => setNameEditState(true)}
-        placeholder={errors.name ? '干员组名不能为空' : ''}
+        placeholder={errors.name ? '干员组名不能为空' : groupTitle}
         type="text"
         ref={(e) => {
           ref(e)
@@ -207,7 +207,7 @@ const GroupTitle = ({
         {...registerRest}
       />
     ),
-    [groupTitle, editName, errors],
+    [groupTitle, editName, errors.name],
   )
   const SubmitButton = useMemo(
     () => (

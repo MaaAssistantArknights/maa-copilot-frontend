@@ -80,7 +80,7 @@ const SheetGroupOperatorSelect = ({
     () => (
       <div className="flex flex-wrap">
         {groupInfo.opers?.map((item) => (
-          <div className="w-1/4 relative p-0.5">
+          <div className="w-1/4 relative p-0.5" key={item.name}>
             <OperatorItem
               id={
                 OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
@@ -100,7 +100,7 @@ const SheetGroupOperatorSelect = ({
     () => (
       <div className="flex flex-wrap">
         {existedOperator?.map((item) => (
-          <div className="w-1/4 relative p-0.5">
+          <div className="w-1/4 relative p-0.5" key={item.name}>
             <OperatorItem
               id={
                 OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
