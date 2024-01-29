@@ -2,6 +2,7 @@ import {
   Alert,
   Button,
   Divider,
+  H5,
   InputGroup,
   Intent,
   NonIdealState,
@@ -206,18 +207,28 @@ const SheetGroup = ({
       </div>
     )
   }
-  return (
-    <>
+  const FavCoverAlert = useMemo(
+    () => (
       <Alert
         isOpen={!!coverGroup}
-        confirmButtonText="确定"
-        cancelButtonText="取消"
+        confirmButtonText="是"
+        cancelButtonText="否"
+        icon="error"
+        intent={Intent.WARNING}
         onConfirm={() => updateFavGroup(coverGroup as Group)}
         onClose={() => setCoverGroup(undefined)}
       >
-        {/* TODO: 美化UI、优化更新 */}
-        <p>收藏干员组：是否对干员组 {coverGroup?.name} 进行覆盖操作</p>
+        <div>
+          <H5>收藏干员组: </H5>
+          <p>检测到同名的已收藏干员组 {coverGroup?.name}，是否覆盖？</p>
+        </div>
       </Alert>
+    ),
+    [coverGroup?.name],
+  )
+  return (
+    <>
+      {FavCoverAlert}
       <div className="flex px-1">
         <div className="flex-1 sticky top-0 h-screen overflow-y-auto">
           <SheetContainerSkeleton title="添加干员组" icon="add" mini>

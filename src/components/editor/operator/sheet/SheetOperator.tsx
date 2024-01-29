@@ -90,7 +90,7 @@ const SheetOperator = ({
         .map(({ name }) => {
           return {
             name,
-            id: name,
+            id: '',
             pron: '',
             subProf: '',
           }
@@ -168,17 +168,17 @@ const SheetOperator = ({
           {operatorsGroupedBySubProf.length ? (
             <div
               key="operatorContainer"
-              className="flex flex-wrap flex-col py-1 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
+              className="flex flex-wrap flex-col p-1 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
               onWheel={(e) => (e.currentTarget.scrollLeft += e.deltaY)}
             >
-              {operatorsGroupedBySubProf.map((operatorInfo) => {
+              {operatorsGroupedBySubProf.map((operatorInfo, index) => {
                 const operatorDetail = existedOperators.find(
-                  (item) => item.name === operatorInfo.name,
+                  ({ name }) => name === operatorInfo.name,
                 )
                 return (
                   <div
                     className="flex items-center w-32 h-30 flex-0"
-                    key={operatorInfo.name}
+                    key={index}
                   >
                     <OperatorItem
                       selected={checkOperatorSelected(operatorInfo.name)}
