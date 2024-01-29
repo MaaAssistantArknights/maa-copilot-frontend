@@ -1,5 +1,6 @@
 import { Alert, Button, Card, Collapse, Icon, Intent } from '@blueprintjs/core'
 
+import clsx from 'clsx'
 import { useMemo, useRef, useState } from 'react'
 import { UseFormSetError, useForm } from 'react-hook-form'
 
@@ -139,13 +140,8 @@ const GroupTitle = ({
   const [editName, setEditName] = useState('')
   const [nameEditState, setNameEditState] = useState(false)
   const [alertState, setAlertState] = useState(false)
-  const {
-    register,
-    handleSubmit,
-    setError,
-    reset,
-    formState: { errors },
-  } = useForm<Group>()
+  const { register, handleSubmit, setError, reset } = useForm<Group>()
+  // handle differ pri of capture events
   const ignoreBlur = useRef(false)
   const blurHandle = () => {
     if (!ignoreBlur.current) {
@@ -161,7 +157,6 @@ const GroupTitle = ({
   }
   const inputRef = useRef<HTMLInputElement | null>(null)
   const { ref, ...registerRest } = register('name', {
-    required: true,
     onBlur: blurHandle,
     value: editName,
     onChange: (e) => setEditName(e.target.value),
@@ -191,11 +186,14 @@ const GroupTitle = ({
     () => (
       <input
         title="修改干员组名称"
-        className="ml-1 w-full bg-transparent text-xs"
+        className={clsx(
+          'ml-1 w-full bg-transparent text-xs',
+          !editable && 'placeholder:text-current',
+        )}
         autoComplete="off"
         disabled={!editable}
         onFocus={() => setNameEditState(true)}
-        placeholder={errors.name ? '干员组名不能为空' : groupTitle}
+        placeholder={groupTitle}
         type="text"
         ref={(e) => {
           ref(e)
@@ -207,7 +205,7 @@ const GroupTitle = ({
         {...registerRest}
       />
     ),
-    [groupTitle, editName, errors.name],
+    [groupTitle, editName],
   )
   const SubmitButton = useMemo(
     () => (
@@ -231,7 +229,7 @@ const GroupTitle = ({
         className="flex items-center"
         onSubmit={handleSubmit(() => {
           ignoreBlur.current = true
-          renameSubmit(editName, setError)
+          renameSubmit(editName || groupTitle, setError)
           setNameEditState(false)
           inputRef.current?.blur()
         })}

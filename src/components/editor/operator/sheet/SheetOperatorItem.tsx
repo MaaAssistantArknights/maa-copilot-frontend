@@ -26,6 +26,7 @@ export const OperatorItem = ({
     () => typeof submitOperator !== 'function',
     [submitOperator],
   )
+
   return (
     <Card
       className={clsx(
@@ -41,15 +42,17 @@ export const OperatorItem = ({
       }
       {...cardProps}
     >
-      <OperatorAvatar id={id} size="large" />
-      <p
-        className={clsx(
-          'font-bold leading-none text-center mt-3 truncate',
-          horizontal && 'mt-0 ml-1 mr-auto',
-        )}
-      >
-        {name}
-      </p>
+      <>
+        <OperatorAvatar id={id} size="large" />
+        <p
+          className={clsx(
+            'font-bold leading-none text-center mt-3 truncate',
+            horizontal && 'mt-0 ml-1 mr-auto',
+          )}
+        >
+          {name}
+        </p>
+      </>
       {!readOnly && <SkillAboutTrigger {...{ operator, submitOperator }} />}
     </Card>
   )

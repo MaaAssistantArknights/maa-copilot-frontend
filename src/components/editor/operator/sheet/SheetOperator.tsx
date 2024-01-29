@@ -9,7 +9,7 @@ import {
   Position,
 } from '@blueprintjs/core'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
@@ -136,7 +136,7 @@ const SheetOperator = ({
               existedOperators.findIndex((item) => item._id === value._id),
             )
           else
-            AppToaster({ position: Position.BOTTOM_LEFT }).show({
+            AppToaster({ position: Position.BOTTOM }).show({
               message: '该干员已被编组',
               intent: Intent.DANGER,
             })
@@ -152,6 +152,22 @@ const SheetOperator = ({
   const selectAll = () => {
     operatorsGroupedBySubProf.forEach((item) => submitOperator(item, () => {}))
   }
+
+  // optimization of operators' list
+  const [sliceIndex, setSliceIndex] = useState(50)
+  const sliceTimer = useRef<number | undefined>(undefined)
+  useEffect(() => {
+    if (operatorsGroupedByProf.length > sliceIndex)
+      sliceTimer.current = window.setTimeout(
+        () => setSliceIndex(operatorsGroupedBySubProf.length),
+        100,
+      )
+    else {
+      clearTimeout(sliceTimer.current)
+      setSliceIndex(50)
+    }
+  }, [operatorsGroupedBySubProf.length])
+
   return (
     <div className="flex relative">
       {selectedAllState && (
@@ -171,24 +187,26 @@ const SheetOperator = ({
               className="flex flex-wrap flex-col p-1 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
               onWheel={(e) => (e.currentTarget.scrollLeft += e.deltaY)}
             >
-              {operatorsGroupedBySubProf.map((operatorInfo, index) => {
-                const operatorDetail = existedOperators.find(
-                  ({ name }) => name === operatorInfo.name,
-                )
-                return (
-                  <div
-                    className="flex items-center w-32 h-30 flex-0"
-                    key={index}
-                  >
-                    <OperatorItem
-                      selected={checkOperatorSelected(operatorInfo.name)}
-                      submitOperator={eventHandleProxy}
-                      operator={operatorDetail}
-                      {...operatorInfo}
-                    />
-                  </div>
-                )
-              })}
+              {operatorsGroupedBySubProf
+                .slice(0, sliceIndex)
+                .map((operatorInfo, index) => {
+                  const operatorDetail = existedOperators.find(
+                    ({ name }) => name === operatorInfo.name,
+                  )
+                  return (
+                    <div
+                      className="flex items-center w-32 h-30 flex-0"
+                      key={index}
+                    >
+                      <OperatorItem
+                        selected={checkOperatorSelected(operatorInfo.name)}
+                        submitOperator={eventHandleProxy}
+                        operator={operatorDetail}
+                        {...operatorInfo}
+                      />
+                    </div>
+                  )
+                })}
             </div>
           ) : (
             <NonIdealState
