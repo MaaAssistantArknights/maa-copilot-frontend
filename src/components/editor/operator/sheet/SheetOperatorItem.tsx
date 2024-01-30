@@ -27,6 +27,29 @@ export const OperatorItem = ({
     [submitOperator],
   )
 
+  const Avatar = useMemo(() => <OperatorAvatar id={id} size="large" />, [id])
+  const OperatorName = useMemo(
+    () => (
+      <p
+        className={clsx(
+          'font-bold leading-none text-center mt-3 truncate',
+          horizontal && 'mt-0 ml-1 mr-auto',
+        )}
+      >
+        {name}
+      </p>
+    ),
+    [name],
+  )
+  const OperatorSkill = useMemo(
+    () => (
+      <>
+        {!readOnly && <SkillAboutTrigger {...{ operator, submitOperator }} />}
+      </>
+    ),
+    [readOnly, operator],
+  )
+
   return (
     <Card
       className={clsx(
@@ -43,17 +66,10 @@ export const OperatorItem = ({
       {...cardProps}
     >
       <>
-        <OperatorAvatar id={id} size="large" />
-        <p
-          className={clsx(
-            'font-bold leading-none text-center mt-3 truncate',
-            horizontal && 'mt-0 ml-1 mr-auto',
-          )}
-        >
-          {name}
-        </p>
+        {Avatar}
+        {OperatorName}
       </>
-      {!readOnly && <SkillAboutTrigger {...{ operator, submitOperator }} />}
+      {OperatorSkill}
     </Card>
   )
 }
