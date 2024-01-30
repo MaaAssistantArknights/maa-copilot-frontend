@@ -108,7 +108,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
           await requestOperationUpdate(id, JSON.stringify(operation))
         }
 
-        AppToaster().show({
+        AppToaster.show({
           intent: 'success',
           message: `作业${submitAction}成功`,
         })

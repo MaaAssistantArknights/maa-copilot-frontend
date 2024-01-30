@@ -6,7 +6,6 @@ import {
   InputGroup,
   Intent,
   NonIdealState,
-  Position,
 } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
@@ -134,7 +133,7 @@ const SheetGroup = ({
     switch (type) {
       case 'add': {
         if (checkGroupExisted(value.name)) {
-          AppToaster().show({
+          AppToaster.show({
             message: '干员组已存在！',
             intent: Intent.DANGER,
           })
@@ -178,9 +177,7 @@ const SheetGroup = ({
     const [groupName, setGroupName] = useState('')
     const addGroupHandle = () => {
       if (!groupName) {
-        AppToaster({
-          position: Position.BOTTOM,
-        }).show({
+        AppToaster.show({
           message: '干员组名不能为空',
           intent: Intent.DANGER,
         })

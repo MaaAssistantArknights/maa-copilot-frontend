@@ -141,11 +141,11 @@ const GroupTitle = ({
   const [nameEditState, setNameEditState] = useState(false)
   const [alertState, setAlertState] = useState(false)
   const { register, handleSubmit, setError, reset } = useForm<Group>()
-  // handle differ pri of capture events
+  // handle differ priority of capture events
   const ignoreBlur = useRef(false)
   const blurHandle = () => {
     if (!ignoreBlur.current) {
-      if (groupTitle !== editName) setAlertState(true)
+      if (groupTitle !== editName && !groupTitle) setAlertState(true)
       setNameEditState(false)
     } else ignoreBlur.current = false
   }

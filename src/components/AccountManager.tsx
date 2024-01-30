@@ -55,7 +55,7 @@ const ActivationDialog: FC<{
       requestActivation(code),
     )
 
-    AppToaster().show({
+    AppToaster.show({
       message: '激活成功',
       intent: 'success',
     })
@@ -135,7 +135,7 @@ const ActivationCodeRequestButton: FC = () => {
     )
       .then(() => {
         finish(null)
-        AppToaster().show({
+        AppToaster.show({
           message: '激活码已发送至您的邮箱',
           intent: 'success',
         })
@@ -157,7 +157,7 @@ const AccountMenu: FC = () => {
 
   const handleLogout = () => {
     setAuthState({})
-    AppToaster().show({
+    AppToaster.show({
       intent: 'success',
       message: '已退出登录',
     })

@@ -6,7 +6,6 @@ import {
   Icon,
   Intent,
   NonIdealState,
-  Position,
 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
@@ -69,12 +68,10 @@ const SheetOperator = ({
   const checkOperatorSelected = (target: string) => {
     if (existedOperators.find((item) => item.name === target)) return true
     else {
-      return existedGroups
+      return !!existedGroups
         .map((item) => item.opers)
         .flat()
         .find((item) => item?.name === target)
-        ? true
-        : false
     }
   }
 
@@ -139,7 +136,7 @@ const SheetOperator = ({
               existedOperators.findIndex((item) => item._id === value._id),
             )
           else
-            AppToaster({ position: Position.BOTTOM }).show({
+            AppToaster.show({
               message: '该干员已被编组',
               intent: Intent.DANGER,
             })
@@ -192,7 +189,7 @@ const SheetOperator = ({
     [selectedSubProf, selectedProf],
   )
 
-  // optimization of operators' list
+  // optimization of operators' list use simple delay slice
   const [sliceIndex, setSliceIndex] = useState(50)
   const sliceTimer = useRef<number | undefined>(undefined)
   useEffect(() => {
