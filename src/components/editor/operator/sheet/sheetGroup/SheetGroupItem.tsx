@@ -63,6 +63,7 @@ export const GroupItem = ({
       <div className="w-full pt-1">
         {groupInfo.opers?.map((item) => (
           <OperatorItem
+            key={item.name}
             id={
               OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
                 ?.id || ''

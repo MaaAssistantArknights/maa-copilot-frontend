@@ -204,9 +204,9 @@ const SheetGroup = ({
           <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
             <div>
               {existedGroups.length
-                ? existedGroups.map((item, index) => (
+                ? existedGroups.map((item) => (
                     <GroupItem
-                      key={index}
+                      key={item.name}
                       existedGroup={existedGroups}
                       existedOperator={existedOperators}
                       groupInfo={item}
@@ -225,9 +225,9 @@ const SheetGroup = ({
           <SheetContainerSkeleton title="推荐分组" icon="thumbs-up" mini>
             <div>
               {defaultGroup.length
-                ? defaultGroup.map((item, index) => (
+                ? defaultGroup.map((item) => (
                     <GroupItem
-                      key={index}
+                      key={item.name}
                       groupInfo={item}
                       editable={false}
                       exist={checkGroupExisted(item.name)}
@@ -241,9 +241,9 @@ const SheetGroup = ({
           <SheetContainerSkeleton title="收藏分组" icon="star" mini>
             <div>
               {favGroups.length
-                ? favGroups.map((item, index) => (
+                ? favGroups.map((item) => (
                     <GroupItem
-                      key={index}
+                      key={item.name}
                       groupInfo={item}
                       editable={false}
                       exist={checkGroupExisted(item.name)}
