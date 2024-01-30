@@ -20,7 +20,7 @@ export const FileImporter: FC<{ onImport: (content: string) => void }> = ({
       onImport(await file.text())
     } catch (e) {
       console.warn('Failed to read file:', e)
-      AppToaster().show({
+      AppToaster.show({
         message: '无法读取文件',
         intent: 'danger',
       })
