@@ -145,7 +145,7 @@ const GroupTitle = ({
   const ignoreBlur = useRef(false)
   const blurHandle = () => {
     if (!ignoreBlur.current) {
-      if (groupTitle !== editName && !groupTitle) setAlertState(true)
+      if (groupTitle !== editName && editName) setAlertState(true)
       setNameEditState(false)
     } else ignoreBlur.current = false
   }

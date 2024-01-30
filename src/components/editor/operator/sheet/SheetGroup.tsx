@@ -173,37 +173,7 @@ const SheetGroup = ({
     }
   }
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
-  const EditorGroupName = () => {
-    const [groupName, setGroupName] = useState('')
-    const addGroupHandle = () => {
-      if (!groupName) {
-        AppToaster.show({
-          message: '干员组名不能为空',
-          intent: Intent.DANGER,
-        })
-      } else eventHandleProxy('add', { name: groupName.trim() })
-    }
-    return (
-      <div className="flex px-3 items-center">
-        <InputGroup
-          type="text"
-          value={groupName}
-          placeholder="输入干员组名"
-          onChange={(e) => setGroupName(e.target.value)}
-          fill
-        />
-        <div className="flex items-center">
-          <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
-          <Button
-            minimal
-            icon="reset"
-            title="重置"
-            onClick={() => setGroupName('')}
-          />
-        </div>
-      </div>
-    )
-  }
+
   const FavCoverAlert = useMemo(
     () => (
       <Alert
@@ -211,7 +181,7 @@ const SheetGroup = ({
         confirmButtonText="是"
         cancelButtonText="否"
         icon="error"
-        intent={Intent.WARNING}
+        intent={Intent.DANGER}
         onConfirm={() => updateFavGroup(coverGroup as Group)}
         onClose={() => setCoverGroup(undefined)}
       >
@@ -229,7 +199,7 @@ const SheetGroup = ({
       <div className="flex px-1">
         <div className="flex-1 sticky top-0 h-screen overflow-y-auto">
           <SheetContainerSkeleton title="添加干员组" icon="add" mini>
-            <EditorGroupName />
+            <EditorGroupName {...{ eventHandleProxy }} />
           </SheetContainerSkeleton>
           <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
             <div>
@@ -287,6 +257,50 @@ const SheetGroup = ({
         </div>
       </div>
     </>
+  )
+}
+
+const EditorGroupName = ({
+  eventHandleProxy,
+}: {
+  eventHandleProxy: (
+    type: EventType,
+    value: Group,
+    setError?: UseFormSetError<Group> | undefined,
+  ) => void
+}) => {
+  const [groupName, setGroupName] = useState('')
+  const addGroupHandle = () => {
+    if (!groupName) {
+      AppToaster.show({
+        message: '干员组名不能为空',
+        intent: Intent.DANGER,
+      })
+    } else {
+      eventHandleProxy('add', { name: groupName.trim() })
+      setGroupName('')
+    }
+  }
+
+  return (
+    <div className="flex px-3 items-center">
+      <InputGroup
+        type="text"
+        value={groupName}
+        placeholder="输入干员组名"
+        onChange={(e) => setGroupName(e.target.value)}
+        fill
+      />
+      <div className="flex items-center">
+        <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
+        <Button
+          minimal
+          icon="reset"
+          title="重置"
+          onClick={() => setGroupName('')}
+        />
+      </div>
+    </div>
   )
 }
 

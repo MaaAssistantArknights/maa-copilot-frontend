@@ -150,7 +150,9 @@ const SheetOperator = ({
     }
   }
   const selectAll = () => {
-    operatorsGroupedBySubProf.forEach((item) => submitOperator(item, () => {}))
+    operatorsGroupedBySubProf.forEach((item) => {
+      submitOperator(item, () => {})
+    })
   }
 
   const ProfSelect = useMemo(
