@@ -16,6 +16,8 @@ import {
 } from 'react-hook-form'
 import { WithChildren } from 'types'
 
+import { formatError } from '../utils/error'
+
 export interface FormFieldRenderProps<
   T extends FieldValues,
   P extends Path<T>,
@@ -68,7 +70,7 @@ export const FormField = <T extends FieldValues, P extends Path<T>>({
           )}
           {error && (
             <Tag minimal intent="danger" className="float-right">
-              {error.message}
+              {formatError(error)}
             </Tag>
           )}
         </span>
@@ -132,7 +134,7 @@ export const FormField2 = <T extends FieldValues>({
           {asterisk && <span className="ml-1 text-slate-600">*</span>}
           {error && (
             <Tag minimal intent="danger" className="float-right">
-              {error.message || error}
+              {formatError(error)}
             </Tag>
           )}
         </div>

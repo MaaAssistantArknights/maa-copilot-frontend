@@ -1,6 +1,6 @@
 import { IconName } from '@blueprintjs/core'
 
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
   DetailedSelectChoice,
@@ -8,8 +8,11 @@ import {
   isChoice,
 } from '../components/editor/DetailedSelect'
 import { EditorOperatorSkillChoice } from '../components/editor/operator/EditorOperatorSkill'
+import OPERATORS from '../models/generated/operators.json'
 
-const defaultSkillUsage: CopilotDocV1.SkillUsageType = 0
+export { OPERATORS }
+
+const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 
 export type DetailedOperatorSkillUsage = DetailedSelectChoice
 
@@ -38,7 +41,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'disable',
     title: '不自动使用',
-    value: 0,
+    value: CopilotDocV1.SkillUsageType.None,
     description:
       '不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作',
   },
@@ -46,21 +49,21 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'automatic-updates',
     title: '好了就用',
-    value: 1,
+    value: CopilotDocV1.SkillUsageType.ReadyToUse,
     description: '有多少次用多少次，例如：棘刺 3 技能、桃金娘 1 技能等',
   },
   {
     type: 'choice',
     icon: 'circle',
-    title: '好了就用（一次）',
-    value: 2,
-    description: '仅使用一次，例如：山 2 技能',
+    title: '好了就用（指定次数）',
+    value: CopilotDocV1.SkillUsageType.ReadyToUseTimes,
+    description: '默认仅使用一次，例如：山 2 技能',
   },
   {
     type: 'choice',
     icon: 'predictive-analysis',
     title: '自动判断使用时机',
-    value: 3,
+    value: CopilotDocV1.SkillUsageType.Automatically,
     description: '(锐意开发中) 画饼.jpg',
     disabled: true,
   },
@@ -81,6 +84,16 @@ export function findOperatorSkillUsage(
     operatorSkillUsages.filter(isChoice).find((item) => item.value === value) ||
     unknownSkillUsage
   )
+}
+
+export function getSkillUsageTitle(
+  skillUsage: CopilotDocV1.SkillUsageType,
+  skillTimes?: CopilotDocV1.SkillTimes,
+) {
+  if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
+    return `好了就用（${skillTimes ? `${skillTimes}次` : '指定次数'}）`
+  }
+  return findOperatorSkillUsage(skillUsage).title
 }
 
 export interface OperatorDirection {

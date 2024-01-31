@@ -7,7 +7,7 @@ export interface OperationUploadResponse {
   id: string
 }
 
-export const requestGetOperation = (id: string) => {
+export const requestGetOperation = (id: Operation['id']) => {
   return jsonRequest<Response<Operation>>('/copilot/get/' + id)
 }
 
@@ -20,7 +20,10 @@ export const requestOperationUpload = (content: string) => {
   })
 }
 
-export const requestOperationUpdate = (id: string, content: string) => {
+export const requestOperationUpdate = (
+  id: Operation['id'],
+  content: string,
+) => {
   return jsonRequest<Response<OperationUploadResponse>>('/copilot/update', {
     method: 'POST',
     json: {
@@ -30,7 +33,7 @@ export const requestOperationUpdate = (id: string, content: string) => {
   })
 }
 
-export const requestDeleteOperation = (id: string) => {
+export const requestDeleteOperation = (id: Operation['id']) => {
   return jsonRequest<Response<OperationUploadResponse>>(`/copilot/delete`, {
     method: 'POST',
     json: {

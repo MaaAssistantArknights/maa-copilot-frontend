@@ -17,13 +17,14 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import { requestActivation, requestActivationCode } from 'apis/auth'
 import { useAtom } from 'jotai'
-import { ComponentType, FC, useMemo, useState } from 'react'
-import { useController, useForm } from 'react-hook-form'
+import { ComponentType, FC, useMemo, useRef, useState } from 'react'
+import { FieldValues, useController, useForm } from 'react-hook-form'
 
 import { LoginPanel } from 'components/account/LoginPanel'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { authAtom } from 'store/auth'
 import { NetworkError } from 'utils/fetcher'
+import { useCurrentSize } from 'utils/useCurrenSize'
 import { useNetworkState } from 'utils/useNetworkState'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
@@ -33,6 +34,7 @@ import {
   withGlobalErrorBoundary,
 } from './GlobalErrorBoundary'
 import { AppToaster } from './Toaster'
+import { EditDialog } from './account/EditDialog'
 import { RegisterPanel } from './account/RegisterPanel'
 
 interface ActivationFormValues {
@@ -49,11 +51,20 @@ const ActivationDialog: FC<{
     formState: { errors, isValid, isDirty, isSubmitting },
   } = useForm<ActivationFormValues>()
 
+  const [authState, setAuthState] = useAtom(authAtom)
+  const latestAuthState = useRef(authState)
+  latestAuthState.current = authState
+
   const onSubmit = async ({ code }) => {
     await wrapErrorMessage(
       (e: NetworkError) => `激活失败：${e.message}`,
       requestActivation(code),
     )
+
+    setAuthState({
+      ...latestAuthState.current,
+      activated: true,
+    })
 
     AppToaster.show({
       message: '激活成功',
@@ -98,7 +109,10 @@ const ActivationDialog: FC<{
   )
 }
 
-const ActivationInputGroup = <T,>({ name, control }: EditorFieldProps<T>) => {
+const ActivationInputGroup = <T extends FieldValues>({
+  name,
+  control,
+}: EditorFieldProps<T>) => {
   const {
     field: { onChange, onBlur, ref },
   } = useController({
@@ -108,19 +122,21 @@ const ActivationInputGroup = <T,>({ name, control }: EditorFieldProps<T>) => {
   })
 
   return (
-    <InputGroup
-      large
-      rightElement={<ActivationCodeRequestButton />}
-      leftIcon="lock"
-      onChange={onChange}
-      onBlur={onBlur}
-      placeholder="请输入您的激活码"
-      ref={ref}
-      className="font-mono"
-      autoComplete="off"
-      // eslint-disable-next-line jsx-a11y/no-autofocus
-      autoFocus
-    />
+    <div className="flex">
+      <InputGroup
+        large
+        leftIcon="lock"
+        onChange={onChange}
+        onBlur={onBlur}
+        placeholder="请输入您的激活码"
+        ref={ref}
+        className="flex-grow font-mono"
+        autoComplete="off"
+        // eslint-disable-next-line jsx-a11y/no-autofocus
+        autoFocus
+      />
+      <ActivationCodeRequestButton />
+    </div>
   )
 }
 
@@ -154,6 +170,7 @@ const AccountMenu: FC = () => {
   const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   const [activationDialogOpen, setActivationDialogOpen] = useState(false)
+  const [editDialogOpen, setEditDialogOpen] = useState(false)
 
   const handleLogout = () => {
     setAuthState({})
@@ -199,10 +216,19 @@ const AccountMenu: FC = () => {
         onClose={() => setActivationDialogOpen(false)}
       />
 
+      <EditDialog
+        isOpen={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+      />
+
       <Menu>
-        {/* <MenuItem icon="edit" text="修改用户名" />
-        <MenuItem icon="key" text="修改密码" />
-        <MenuDivider /> */}
+        <MenuItem
+          shouldDismissPopover={false}
+          icon="edit"
+          text="修改信息..."
+          onClick={() => setEditDialogOpen(true)}
+        />
+        <MenuDivider />
         {menuItems}
 
         {menuItems.length > 0 && <MenuDivider />}
@@ -211,7 +237,7 @@ const AccountMenu: FC = () => {
           shouldDismissPopover={false}
           intent="danger"
           icon="log-out"
-          text="退出登录..."
+          text="退出登录"
           onClick={() => setLogoutDialogOpen(true)}
         />
       </Menu>
@@ -232,12 +258,12 @@ export const AccountAuthDialog: ComponentType<{
       isOpen={open}
       onClose={onClose}
     >
-      <div className="flex flex-col px-4 pt-2">
+      <div className="flex flex-col p-4 pt-2">
         <GlobalErrorBoundary>
           <Tabs
             // renderActiveTabPanelOnly: avoid autocomplete on inactive panel
             renderActiveTabPanelOnly={true}
-            id="account-manager-tabs"
+            id="account-auto-tabs"
             onChange={(tab) => {
               setActiveTab(tab)
             }}
@@ -278,6 +304,7 @@ export const AccountAuthDialog: ComponentType<{
 export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
   const [open, setOpen] = useState(false)
   const [authState] = useAtom(authAtom)
+  const { isSM } = useCurrentSize()
 
   return (
     <>
@@ -293,7 +320,7 @@ export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
         </Popover2>
       ) : (
         <Button className="ml-auto" icon="user" onClick={() => setOpen(true)}>
-          登录 / 注册
+          {!isSM && '登录 / 注册'}
         </Button>
       )}
     </>

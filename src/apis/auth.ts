@@ -1,9 +1,11 @@
 import { Response } from 'models/network'
 import { jsonRequest } from 'utils/fetcher'
 
-export interface LoginResponse {
+export interface UserCredentials {
   token: string
   validBefore: string
+  refreshToken: string
+  refreshTokenValidBefore: string
   userInfo: UserInfo
 }
 
@@ -16,6 +18,8 @@ export interface UserInfo {
   uploadCount: number
 }
 
+export interface LoginResponse extends UserCredentials {}
+
 export const requestLogin = (email: string, password: string) => {
   return jsonRequest<Response<LoginResponse>>('/user/login', {
     method: 'POST',
@@ -23,6 +27,19 @@ export const requestLogin = (email: string, password: string) => {
       email,
       password,
     },
+  })
+}
+
+export interface RefreshResponse extends UserCredentials {}
+
+export const requestRefresh = (token: string, refreshToken: string) => {
+  return jsonRequest<Response<RefreshResponse>>('/user/refresh', {
+    method: 'POST',
+    json: {
+      access_token: token,
+      refresh_token: refreshToken,
+    },
+    noToken: true,
   })
 }
 
@@ -53,6 +70,7 @@ export interface RegisterResponse {}
 
 export const requestRegister = (
   email: string,
+  registrationToken: string,
   username: string,
   password: string,
 ) => {
@@ -60,8 +78,91 @@ export const requestRegister = (
     method: 'POST',
     json: {
       email,
+      registration_token: registrationToken,
       user_name: username,
       password,
+    },
+  })
+}
+
+export interface EmailToenResponse {}
+
+export const reqeustRegistrationToken = (email: string) => {
+  return jsonRequest<Response<EmailToenResponse>>(
+    '/user/sendRegistrationToken',
+    {
+      method: 'POST',
+      json: {
+        email,
+      },
+    },
+  )
+}
+
+export interface UpdateInfoResponse {}
+
+export const requestUpdateInfo = ({
+  email,
+  username,
+}: {
+  email?: string
+  username?: string
+}) => {
+  return jsonRequest<Response<UpdateInfoResponse>>('/user/update/info', {
+    method: 'POST',
+    json: {
+      email,
+      user_name: username,
+    },
+  })
+}
+
+export interface UpdatePasswordResponse {}
+
+export const requestUpdatePassword = ({
+  original,
+  newPassword,
+}: {
+  original?: string
+  newPassword?: string
+}) => {
+  return jsonRequest<Response<UpdatePasswordResponse>>(
+    '/user/update/password',
+    {
+      method: 'POST',
+      json: {
+        original_password: original,
+        new_password: newPassword,
+      },
+    },
+  )
+}
+
+export interface ResetPasswordTokenResponse {}
+
+export const requestResetPasswordToken = (data: { email: string }) => {
+  return jsonRequest<Response<ResetPasswordTokenResponse>>(
+    '/user/password/reset_request',
+    {
+      method: 'POST',
+      json: data,
+    },
+  )
+}
+
+export interface ResetPasswordResponse {}
+
+export const requestResetPassword = (data: {
+  email: string
+  token: string
+  password: string
+}) => {
+  return jsonRequest<Response<ResetPasswordResponse>>('/user/password/reset', {
+    method: 'POST',
+    json: {
+      email: data.email,
+      active_code: data.token,
+      password: data.password,
     },
   })
 }

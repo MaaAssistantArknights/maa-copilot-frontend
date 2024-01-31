@@ -8,7 +8,8 @@ dayjs.locale('zh-cn')
 export type DayjsInput = string | number | dayjs.Dayjs | Date | null | undefined
 
 export function formatRelativeTime(input: DayjsInput) {
-  return dayjs(input).fromNow()
+  input = dayjs(input)
+  return +input > +dayjs() ? input.toNow() : input.fromNow()
 }
 
 export function formatDateTime(input: DayjsInput) {

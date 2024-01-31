@@ -28,14 +28,15 @@ export const Suspensable: FCC<SuspensableProps> = ({
 
   return (
     <ErrorBoundary
-      fallback={({ resetError: _resetError }) => {
+      fallback={({ resetError: _resetError, error }) => {
         resetError.current = _resetError
 
         return (
           <NonIdealState
             icon="issue"
             title="加载失败"
-            description={fetcher && '数据加载失败，请尝试重试'}
+            description={fetcher ? '数据加载失败，请尝试' : error.message}
+            className="py-8"
             action={
               fetcher && (
                 <Button

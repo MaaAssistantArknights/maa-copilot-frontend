@@ -2,7 +2,7 @@ import { Button } from '@blueprintjs/core'
 
 import { isEqual } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
-import { DeepPartial, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
 
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
@@ -27,14 +27,18 @@ import {
 import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { MinimumRequired } from '../models/operation'
+import { formatError } from '../utils/error'
 import { NetworkError } from '../utils/fetcher'
 
-const defaultOperation: DeepPartial<CopilotDocV1.Operation> = {
+const defaultOperation: CopilotDocV1.Operation = {
   minimumRequired: MinimumRequired.V4_0_0,
+  stageName: '',
   // the following fields will immediately be set when passed into useForm, even if they are not set by default.
   // so we manually set them in order to check the dirtiness when determining whether the form should be autosaved.
   actions: [],
-  doc: {},
+  doc: {
+    title: '',
+  },
   groups: [],
   opers: [],
 }
@@ -49,7 +53,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
     const isNew = !id
     const submitAction = isNew ? '发布' : '更新'
 
-    const apiOperation = useOperation(id).data?.data
+    const apiOperation = useOperation({ id, suspense: true }).data?.data
 
     const form = useForm<CopilotDocV1.Operation>({
       // set form values by fetched data, or an empty operation by default
@@ -102,10 +106,33 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
           return
         }
 
-        if (isNew) {
-          await requestOperationUpload(JSON.stringify(operation))
-        } else {
-          await requestOperationUpdate(id, JSON.stringify(operation))
+        try {
+          if (isNew) {
+            await requestOperationUpload(JSON.stringify(operation))
+          } else {
+            await requestOperationUpdate(id, JSON.stringify(operation))
+          }
+        } catch (e) {
+          // handle a special error
+          if (
+            e instanceof Error &&
+            e.message.includes('is less than or equal to 0')
+          ) {
+            const actionWithNegativeCostChanges =
+              operation.actions?.findIndex(
+                (action) => (action?.cost_changes as number) < 0,
+              ) ?? -1
+
+            if (actionWithNegativeCostChanges !== -1) {
+              throw new Error(
+                `目前暂不支持上传费用变化量为负数的动作（第${
+                  actionWithNegativeCostChanges + 1
+                }个动作）`,
+              )
+            }
+          }
+
+          throw e
         }
 
         AppToaster.show({
@@ -117,7 +144,7 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
           message:
             e instanceof NetworkError
               ? `作业${submitAction}失败：${e.message}`
-              : (e as Error).message || String(e),
+              : formatError(e),
         })
       } finally {
         setUploading(false)

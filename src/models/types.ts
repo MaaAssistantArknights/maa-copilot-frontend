@@ -83,7 +83,17 @@ export const ACTION_TYPES: ActionType[] = [
     title: '进入子弹时间',
     value: CopilotDocV1.Type.BulletTime,
     alternativeValue: '子弹时间',
-    description: `执行后将点击任意干员，进入 1/5 速度状态；再进行任意动作会恢复正常速度`,
+    description: `执行后将点击任意干员，进入 1/5 速度状态；再进行任意动作会恢复正常速度。下一个任务必须是“部署”、“技能”、“撤退”其中之一，此时会提前点开该干员，等待满足条件后再执行。`,
+    group: '作战控制',
+  },
+  {
+    type: 'choice',
+    icon: 'camera',
+    accent: accent.blue,
+    title: '移动相机',
+    value: CopilotDocV1.Type.MoveCamera,
+    alternativeValue: '移动相机',
+    description: `仅用于引航者试炼模式中切换区域`,
     group: '作战控制',
   },
   {
@@ -106,6 +116,12 @@ export const ACTION_TYPES: ActionType[] = [
     description: `对作战没有实际作用，仅用于输出描述内容（用来做字幕之类的）`,
     group: '杂项',
   },
+]
+
+export const validTypesFollowingBulletTime = [
+  CopilotDocV1.Type.Deploy,
+  CopilotDocV1.Type.Skill,
+  CopilotDocV1.Type.Retreat,
 ]
 
 const notFoundActionType: ActionType = {

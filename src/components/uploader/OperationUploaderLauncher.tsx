@@ -23,7 +23,7 @@ export const OperationUploaderLauncher: FC = () => {
         icon="cloud-upload"
         onClick={() => setUploaderActive(true)}
       >
-        上传已有作业
+        上传本地作业
       </Button>
     </>
   )

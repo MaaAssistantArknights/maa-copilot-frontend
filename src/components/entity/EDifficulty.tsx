@@ -74,6 +74,7 @@ export const EDifficulty: FC<{
   if (difficulty & OpDifficultyBitFlag.REGULAR) {
     children.push(
       <DifficultyTag
+        key="regular"
         tooltip={descriptions.regular.description}
         content={descriptions.regular.title}
       />,
@@ -83,6 +84,7 @@ export const EDifficulty: FC<{
   if (difficulty & OpDifficultyBitFlag.HARD) {
     children.push(
       <DifficultyTag
+        key="hard"
         tooltip={descriptions.hard.description}
         content={descriptions.hard.title}
         hardLevel
@@ -90,5 +92,5 @@ export const EDifficulty: FC<{
     )
   }
 
-  return <span className="[&>*]:mr-1 [&>*:last-child]:mr-0">{children}</span>
+  return <span className="ml-1">{children}</span>
 }

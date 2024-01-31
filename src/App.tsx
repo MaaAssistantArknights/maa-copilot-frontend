@@ -6,6 +6,7 @@ import { Effects } from 'components/Effects'
 import { GlobalErrorBoundary } from './components/GlobalErrorBoundary'
 import { FCC } from './types'
 import { request } from './utils/fetcher'
+import { localStorageProvider, swrCacheMiddleware } from './utils/swr-cache'
 
 export const App: FCC = ({ children }) => {
   return (
@@ -14,10 +15,11 @@ export const App: FCC = ({ children }) => {
       <SWRConfig
         value={{
           fetcher: request,
-          suspense: true,
+          provider: localStorageProvider,
           focusThrottleInterval: 1000 * 60,
           errorRetryInterval: 1000 * 3,
           errorRetryCount: 3,
+          use: [swrCacheMiddleware],
         }}
       >
         <GlobalErrorBoundary>

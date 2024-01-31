@@ -1,3 +1,5 @@
+import { OpDifficulty } from './operation'
+
 /**
  * MAA Copilot 战斗协议 v1
  */
@@ -12,6 +14,7 @@ export namespace CopilotDocV1 {
      * 必填。除危机合约外，均为关卡中文名
      */
     stageName: string
+    difficulty?: OpDifficulty
   }
 
   export type OperationSnakeCased =
@@ -23,6 +26,7 @@ export namespace CopilotDocV1 {
     // Action common optional fields
     doc?: string
     docColor?: string
+    costs?: number
     costChanges?: number
     kills?: number
     cooling?: number
@@ -39,38 +43,45 @@ export namespace CopilotDocV1 {
     type: Type.Deploy
   }
 
-  export type ActionSkillOrRetreat = ActionBase &
+  export type ActionSkillOrRetreatOrBulletTime = ActionBase &
     (
       | {
           // location: any[]
           // should be
           location: [number, number]
           name?: string
-          type: Type.Skill | Type.Retreat
+          type: Type.Skill | Type.Retreat | Type.BulletTime
         }
       | {
           // location?: any[]
           // should be
           location?: [number, number]
           name: string
-          type: Type.Skill | Type.Retreat
+          type: Type.Skill | Type.Retreat | Type.BulletTime
         }
     )
 
   export interface ActionSkillUsage extends ActionBase {
     skillUsage: SkillUsageType
     type: Type.SkillUsage
+    skillTimes?: number
   }
 
   export interface ActionUtil extends ActionBase {
-    type: Type.SpeedUp | Type.BulletTime | Type.Output | Type.SkillDaemon
+    type: Type.SpeedUp | Type.Output | Type.SkillDaemon
+  }
+
+  export interface ActionMoveCamera extends ActionBase {
+    type: Type.MoveCamera
+    distance: [number, number]
   }
 
   export type Action =
     | ActionDeploy
-    | ActionSkillOrRetreat
+    | ActionSkillOrRetreatOrBulletTime
     | ActionSkillUsage
     | ActionUtil
+    | ActionMoveCamera
 
   export enum Direction {
     Down = 'Down',
@@ -89,6 +100,7 @@ export namespace CopilotDocV1 {
     SkillDaemon = 'SkillDaemon',
     SkillUsage = 'SkillUsage',
     SpeedUp = 'SpeedUp',
+    MoveCamera = 'MoveCamera',
   }
 
   export interface Doc {
@@ -118,9 +130,32 @@ export namespace CopilotDocV1 {
      */
     skill?: number
     skillUsage?: SkillUsageType
+    /**
+     * 技能使用次数，可选，默认为 1
+     */
+    skillTimes?: number
   }
 
-  export type SkillUsageType = 0 | 1 | 2 | 3
+  export enum SkillUsageType {
+    /**
+     * 不自动使用
+     */
+    None = 0,
+    /**
+     * 好了就用
+     */
+    ReadyToUse = 1,
+    /**
+     * 好了就用-指定次数
+     */
+    ReadyToUseTimes = 2,
+    /**
+     * 自动使用
+     */
+    Automatically = 3,
+  }
+
+  export type SkillTimes = number
 
   export interface Requirements {
     elite?: number

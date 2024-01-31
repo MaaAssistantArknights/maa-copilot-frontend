@@ -5,7 +5,7 @@ import Fuse from 'fuse.js'
 import { compact } from 'lodash-es'
 import { FC, useMemo, useRef } from 'react'
 
-import { OPERATORS } from '../models/generated/operators'
+import { OPERATORS } from '../models/operator'
 import { OperatorAvatar } from './editor/operator/EditorOperator'
 
 interface OperatorSelectProps {
@@ -38,14 +38,19 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   const fuse = useMemo(
     () =>
       new Fuse(OPERATORS, {
-        keys: ['name', 'pron'],
+        keys: ['name', 'alias', 'alt_name'],
         threshold: 0.3,
       }),
     [],
   )
 
   const selectedItems = useMemo(
-    () => OPERATORS.filter((el) => operators.find((op) => op.name === el.name)),
+    () =>
+      compact(
+        operators.map(({ name }) =>
+          OPERATORS.find((item) => item.name === name),
+        ),
+      ),
     [operators],
   )
 
@@ -73,7 +78,11 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   }
 
   const add = (operation: OperatorInfo) => {
-    change([...new Set([...operators, { name: operation.name }])])
+    if (!operators.some((op) => op.name === operation.name)) {
+      change([...operators, { name: operation.name }])
+    } else {
+      remove(operation)
+    }
   }
 
   const remove = (operation: OperatorInfo) => {
@@ -107,9 +116,6 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
         return fuse.search(query).map((el) => el.item)
       }}
       selectedItems={selectedItems}
-      popoverContentProps={{
-        className: 'max-h-64 overflow-auto',
-      }}
       placeholder="包含或排除干员"
       noResults={<MenuItem disabled text={`没有匹配的干员`} />}
       tagInputProps={{
@@ -126,6 +132,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
           }
         },
       }}
+      resetOnSelect={true}
       tagRenderer={(item) => item.name}
       popoverProps={{
         placement: 'bottom-start',

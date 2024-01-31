@@ -1,5 +1,6 @@
 import { Icon as BlueprintIcon, Card } from '@blueprintjs/core'
 import simpleIconsGitHub from '@iconify/icons-simple-icons/github'
+import simpleIconsQQ from '@iconify/icons-simple-icons/tencentqq'
 import { Icon as IconifyIcon } from '@iconify/react'
 
 import { ComponentType } from 'react'
@@ -9,6 +10,8 @@ import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { Operations } from 'components/Operations'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
+
+import { AnnPanel } from '../components/announcement/AnnPanel'
 
 const SOCIAL_LINKS = [
   {
@@ -32,7 +35,7 @@ const SOCIAL_LINKS = [
     icon: (
       <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
     ),
-    href: 'https://github.com/MaaAssistantArknights/MaaCopilotServer',
+    href: 'https://github.com/MaaAssistantArknights/MaaBackendCenter',
     label: '后端 GitHub Repo',
   },
   {
@@ -42,11 +45,21 @@ const SOCIAL_LINKS = [
     href: 'https://github.com/MaaAssistantArknights/MaaAssistantArknights',
     label: 'MAA GitHub Repo',
   },
+  {
+    icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
+    href: 'https://jq.qq.com/?_wv=1027&k=ElimpMzQ',
+    label: '作业制作者交流群：1169188429',
+  },
+  {
+    icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
+    href: 'https://ota.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
+    label: '作业分享群',
+  },
 ]
 
 export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   return (
-    <div className="flex flex-col md:flex-row px-8 mt-8 container mx-auto">
+    <div className="flex flex-col md:flex-row px-8 mt-8 max-w-[96rem] mx-auto">
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8">
         <Operations />
       </div>
@@ -60,6 +73,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
 
           <OperationUploaderLauncher />
         </Card>
+
+        <AnnPanel className="mb-4" />
 
         <div className="flex flex-wrap leading-relaxed mb-8">
           {SOCIAL_LINKS.map((link) => (

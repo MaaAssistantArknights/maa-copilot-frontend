@@ -1,12 +1,12 @@
 import { compact, uniqueId } from 'lodash-es'
 import { DeepPartial, FieldArrayWithId } from 'react-hook-form'
-import snakeCaseKeys from 'snakecase-keys'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { MinimumRequired } from 'models/operation'
 
 import { findOperatorDirection } from '../../models/operator'
 import { findActionType } from '../../models/types'
+import { snakeCaseKeysUnicode } from '../../utils/object'
 
 /**
  * Creates an operation that can be used in editor. Used for importing.
@@ -75,7 +75,7 @@ export function toMaaOperation(
     delete (item as Partial<FieldArrayWithId>).id
   })
 
-  return snakeCaseKeys(operation, { deep: true })
+  return snakeCaseKeysUnicode(operation, { deep: true })
 }
 
 /**

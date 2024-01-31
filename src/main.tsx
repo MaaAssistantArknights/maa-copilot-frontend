@@ -10,6 +10,8 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Route, Routes } from 'react-router-dom'
 
+import { ViewPage } from 'pages/view'
+
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
@@ -22,8 +24,14 @@ import './styles/index.css'
 
 Sentry.init({
   dsn: 'https://0a2bb44996194bb7aff8d0e32dcacb55@o1299554.ingest.sentry.io/6545242',
-  integrations: [new BrowserTracing()],
+  integrations: [new BrowserTracing(), new Sentry.Replay()],
   tracesSampleRate: 0.05,
+
+  replaysSessionSampleRate: 0.001,
+  replaysOnErrorSampleRate: 0.1,
+
+  debug: import.meta.env.DEV,
+
   enabled: import.meta.env.PROD,
   beforeSend: (event) => {
     if (import.meta.env.DEV) return null
@@ -46,6 +54,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<IndexPage />} />
           <Route path="/create/:id" element={<CreatePage />} />
           <Route path="/create" element={<CreatePage />} />
+          <Route path="/operation/:id" element={<ViewPage />} />
           <Route path="/account/activation" element={<AccountActivatePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

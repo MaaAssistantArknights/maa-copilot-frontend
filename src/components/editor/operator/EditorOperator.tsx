@@ -9,12 +9,13 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { OPERATORS, OperatorInfo } from 'models/generated/operators'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
+// import { OPERATORS } from '../../../models/operator'
 import { Suggest } from '../../Suggest'
 
 type PerformerItem = OperatorInfo | CopilotDocV1.Group
 
 const isOperator = (item: PerformerItem): item is OperatorInfo =>
-  !!(item as OperatorInfo).pron
+  !!(item as OperatorInfo).alias
 
 const findOperatorIdByName = (name: string) =>
   OPERATORS.find((el) => el.name === name)?.id ?? ''
@@ -22,6 +23,8 @@ const findOperatorIdByName = (name: string) =>
 const createArbitraryOperator = (name: string): OperatorInfo => ({
   id: findOperatorIdByName(name),
   name,
+  alias: '',
+  alt_name: '',
   pron: '',
   subProf: '',
 })
@@ -55,7 +58,7 @@ export const EditorOperatorName = <T extends FieldValues>({
   const fuse = useMemo(
     () =>
       new Fuse(items, {
-        keys: ['name', 'pron'],
+        keys: ['name', 'alias', 'alt_name'],
         threshold: 0.3,
       }),
     [items],
@@ -68,7 +71,7 @@ export const EditorOperatorName = <T extends FieldValues>({
         query ? fuse.search(query).map((el) => el.item) : items
       }
       fieldState={fieldState}
-      onReset={() => onChange(undefined)}
+      onReset={() => onChange('')}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
           key={item.name}
@@ -87,7 +90,7 @@ export const EditorOperatorName = <T extends FieldValues>({
         />
       )}
       onItemSelect={(item) => onChange(item.name)}
-      selectedItem={createArbitraryOperator(value as string)}
+      selectedItem={createArbitraryOperator((value || '') as string)}
       inputValueRenderer={(item) => item.name}
       createNewItemFromQuery={(query) => createArbitraryOperator(query)}
       createNewItemRenderer={(query, active, handleClick) => (
@@ -99,9 +102,6 @@ export const EditorOperatorName = <T extends FieldValues>({
           selected={active}
         />
       )}
-      popoverContentProps={{
-        className: 'max-h-64 overflow-auto',
-      }}
       noResults={<MenuItem disabled text={`没有匹配的${entityName}`} />}
       inputProps={{
         placeholder: `${entityName}名`,

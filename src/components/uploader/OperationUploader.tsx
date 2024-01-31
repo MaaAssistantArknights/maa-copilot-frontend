@@ -1,157 +1,140 @@
 import {
-  Button,
+  AnchorButton,
   Callout,
   FileInput,
   FormGroup,
   H4,
   Icon,
+  Spinner,
+  SpinnerSize,
+  Tag,
 } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
-import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 import { useLevels } from 'apis/arknights'
 import { requestOperationUpload } from 'apis/copilotOperation'
 import { ComponentType, useState } from 'react'
+import { useList } from 'react-use'
 
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
-import { copilotSchemaValidator } from 'models/copilot.schema.validator'
-import type { Level } from 'models/operation'
-import { NetworkError } from 'utils/fetcher'
-import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
-// TODO: json schema validation
-// ajv can work properly with http://json-schema.org/draft-07/schema
-// and copilot backend server need to use draft-6
+import { CopilotDocV1 } from '../../models/copilot.schema'
+import { formatError } from '../../utils/error'
+import { parseOperationFile, patchOperation, validateOperation } from './utils'
 
-const operationPatch = (operation: object, levels: Level[]): object => {
-  // this part is quite dirty, do not use in other parts
-  // backend compatibility of minimum_required
-  if (
-    !operation['minimum_required'] ||
-    operation['minimum_required'] === 'v4.0'
-  ) {
-    operation['minimum_required'] = 'v4.0.0'
-  }
-
-  if (!operation['doc']) {
-    operation['doc'] = operation['doc'] ?? {}
-  }
-
-  // title
-  if (!operation['doc']['title'] || operation['doc']['title'] === '') {
-    operation['doc']['title'] = operation['stage_name']
-  }
-
-  // description
-  if (!operation['doc']['details'] || operation['doc']['details'] === '') {
-    operation['doc']['details'] = `作业 ${operation['stage_name']}`
-  }
-
-  // i18n compatibility of level id
-  if (
-    !(operation['stage_name'] as string).match('^[a-z/_0-9-]*$') ||
-    (operation['stage_name'] as string).indexOf('/') === -1
-  ) {
-    const matchStages = levels.filter((stage) => {
-      return (
-        stage.name === operation['stage_name'] ||
-        // catThree contains the stage code, e.g. 1-7
-        stage.catThree === operation['stage_name']
-      )
-    })
-    if (matchStages.length === 1) {
-      operation['stage_name'] = matchStages[0].levelId
-    } else {
-      AppToaster.show({
-        message: `已找到 ${matchStages.length} 个关卡，跳过自动修正`,
-        intent: 'warning',
-      })
-    }
-  }
-
-  // i18n compatibility of char id
-  // pending for now
-  return operation
+interface FileEntry {
+  file: File
+  error?: string
+  operation?: CopilotDocV1.OperationSnakeCased
+  uploaded?: boolean
 }
 
 export const OperationUploader: ComponentType = withSuspensable(() => {
-  const [filename, setFilename] = useState(null as string | null)
-  const [error, setErrors] = useState(null as string[] | null)
-  const [operation, setOperation] = useState(null as object | null)
+  const [files, { set: setFiles, update: updateFileWhere }] =
+    useList<FileEntry>([])
+
+  const [globalErrors, setGlobalErrors] = useState(null as string[] | null)
+  const [isProcessing, setIsProcessing] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
 
-  const { data: levelsData, error: levelError } = useLevels()
+  // reasons are in the order of keys
+  const nonUploadableReason = Object.entries({
+    ['正在上传，请等待']: isUploading,
+    ['正在解析文件，请等待']: isProcessing,
+    ['请选择文件']: !files.length,
+    ['文件列表中包含已上传的文件，请重新选择']: files.some(
+      (file) => file.uploaded,
+    ),
+    ['文件存在错误，请修改内容']: files.some((file) => file.error),
+    ['存在错误，请排查问题']: globalErrors?.length,
+  }).find(([, value]) => value)?.[0]
+
+  const isUploadable = !nonUploadableReason
+
+  const { data: levelsData, error: levelError } = useLevels({ suspense: true })
   const levels = levelsData?.data
 
   // make eslint happy: we got Suspense out there
   if (!levels) return null
 
   if (levelError) {
-    setErrors([levelError.message])
+    setGlobalErrors([levelError.message])
   }
 
-  const handleFileUpload = async (event: React.FormEvent<HTMLInputElement>) => {
-    setErrors(null)
-    setOperation(null)
+  const handleFileSelect = async (event: React.FormEvent<HTMLInputElement>) => {
+    setGlobalErrors(null)
 
-    const file = event.currentTarget.files?.[0]
-    if (file) {
-      setFilename(file.name)
-      if (file.type !== 'application/json') {
-        setErrors(['请选择 JSON 文件'])
-        return
+    if (event.currentTarget.files?.length) {
+      setIsProcessing(true)
+
+      const toFileEntry = async (file: File): Promise<FileEntry> => {
+        const entry: FileEntry = { file }
+
+        try {
+          let content = await parseOperationFile(file)
+          content = patchOperation(content, levels)
+
+          validateOperation(content)
+
+          entry.operation = content
+        } catch (e) {
+          entry.error = formatError(e)
+          console.warn(e)
+        }
+
+        return entry
       }
 
-      const fileText = await file.text()
-      let operationObject: object
-      try {
-        operationObject = JSON.parse(fileText)
-      } catch (e) {
-        const err = e as Error
-        setErrors(['请选择合法的 JSON 文件：JSON 解析失败：' + err.message])
-        return
-      }
-
-      const patchedOperation = operationPatch(operationObject, levels)
-      console.log('patchedOperation', patchedOperation)
-
-      const jsonSchemaValidation = copilotSchemaValidator.validate(
-        'copilot',
-        operationObject,
-      )
-      console.log(
-        'jsonSchemaValidationResult',
-        jsonSchemaValidation,
-        'errors',
-        copilotSchemaValidator.errors,
+      setFiles(
+        await Promise.all(Array.from(event.currentTarget.files, toFileEntry)),
       )
 
-      if (!jsonSchemaValidation && copilotSchemaValidator.errors) {
-        ajvLocalizeZh(copilotSchemaValidator.errors)
-        setErrors([
-          copilotSchemaValidator.errorsText(copilotSchemaValidator.errors),
-        ])
-        return
-      }
-      setOperation(patchedOperation)
+      setIsProcessing(false)
+    } else {
+      setFiles([])
     }
   }
 
   const handleOperationSubmit = async () => {
+    if (!isUploadable || !files.length) {
+      return
+    }
+
     setIsUploading(true)
     try {
-      await wrapErrorMessage(
-        (e: NetworkError) => `作业上传失败：${e.message}`,
-        requestOperationUpload(JSON.stringify(operation)),
+      let successCount = 0
+
+      await Promise.allSettled(
+        files.map((file) =>
+          requestOperationUpload(JSON.stringify(file.operation))
+            .then(() => {
+              successCount++
+              updateFileWhere((candidate) => candidate === file, {
+                ...file,
+                uploaded: true,
+              })
+            })
+            .catch((e) => {
+              console.warn(e)
+              updateFileWhere((candidate) => candidate === file, {
+                ...file,
+                error: `上传失败：${formatError(e)}`,
+              })
+            }),
+        ),
       )
+
+      const errorCount = files.length - successCount
+
+      AppToaster.show({
+        intent: 'success',
+        message: `作业上传完成：成功 ${successCount} 个，失败 ${errorCount} 个`,
+      })
     } finally {
       setIsUploading(false)
     }
-    AppToaster.show({
-      intent: 'success',
-      message: '作业上传成功',
-    })
   }
 
   return (
@@ -159,50 +142,104 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
       title={
         <>
           <Icon icon="cloud-upload" />
-          <span className="ml-2 mr-4">上传已有作业</span>
+          <span className="ml-2 mr-4">上传本地作业</span>
         </>
       }
     >
       <div className="h-full overflow-auto py-4 px-8 pt-8 mr-0.5 leading-relaxed">
-        <H4>上传已有作业</H4>
+        <H4>上传本地作业</H4>
 
-        <p>本功能仅限于上传已有的作业文件。</p>
-
-        <p>若需要创建新的作业，还请期待作业编辑器完工。</p>
+        <p>
+          若需要在上传前进行编辑，请在作业编辑器的
+          <Tag minimal className="mx-1">
+            编辑 JSON
+          </Tag>
+          处导入作业
+        </p>
 
         <FormGroup
           className="mt-4"
           label={<span className="font-bold">选择作业文件</span>}
           labelFor="file-input"
-          labelInfo="仅支持 .json 文件"
+          labelInfo="仅支持 .json 文件，可多选"
         >
           <FileInput
             large
             fill
-            text={filename ?? '选择文件...'}
-            onInputChange={handleFileUpload}
+            disabled={isUploading || isProcessing}
+            buttonText="浏览"
+            text={files.length ? `${files.length} 个文件` : '选择文件...'}
+            inputProps={{
+              accept: '.json',
+              multiple: true,
+            }}
+            onInputChange={handleFileSelect}
           />
         </FormGroup>
 
-        {error && (
+        <Tooltip2
+          fill
+          className="mt-4"
+          placement="top"
+          disabled={!nonUploadableReason}
+          content={nonUploadableReason}
+        >
+          {(() => {
+            const settledCount = files.filter(
+              (file) => file.uploaded || file.error,
+            ).length
+
+            return (
+              // do not use <Button> because its disabled state does not work well with Tooltip
+              <AnchorButton
+                large
+                fill
+                disabled={!isUploadable}
+                icon={
+                  isUploading ? (
+                    <Spinner
+                      size={SpinnerSize.SMALL}
+                      value={settledCount / files.length}
+                    />
+                  ) : (
+                    'cloud-upload'
+                  )
+                }
+                onClick={handleOperationSubmit}
+              >
+                {isUploading ? `${settledCount}/${files.length}` : '上传'}
+              </AnchorButton>
+            )
+          })()}
+        </Tooltip2>
+
+        {globalErrors && (
           <Callout className="mt-4" intent="danger" icon="error" title="错误">
-            {error.map((error) => (
+            {globalErrors.map((error) => (
               <li key={error}>{error}</li>
             ))}
           </Callout>
         )}
 
-        <Button
-          className="mt-4"
-          large
-          fill
-          disabled={operation === null || error !== null || isUploading}
-          loading={isUploading}
-          icon="form"
-          onClick={handleOperationSubmit}
-        >
-          验证并上传
-        </Button>
+        {!!files.length && <div className="mt-4 font-bold">文件详情</div>}
+        {files.map(({ file, uploaded, error, operation }, index) => (
+          <Callout
+            className="mt-2"
+            title={file.name}
+            key={index}
+            intent={uploaded ? 'success' : error ? 'danger' : 'none'}
+            icon={
+              !uploaded && !error
+                ? 'document'
+                : undefined /* use default icons */
+            }
+          >
+            <p className="text-black/60">
+              {operation ? operation.doc.title || '无标题' : null}
+            </p>
+            {error && <p className="text-red-500">{error}</p>}
+          </Callout>
+        ))}
       </div>
     </OperationDrawer>
   )

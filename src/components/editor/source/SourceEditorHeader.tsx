@@ -3,6 +3,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import { FC, useState } from 'react'
 
+import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { AppToaster } from '../../Toaster'
 import { FileImporter } from './FileImporter'
 import { ShortCodeImporter } from './ShortCodeImporter'
@@ -33,13 +34,20 @@ export const SourceEditorHeader: FC<SourceEditorHeaderProps> = ({
   }
 
   const handleDownload = () => {
+    let title: string | undefined
+    try {
+      title = (JSON.parse(text) as CopilotDocV1.Operation).doc.title
+    } catch (e) {
+      console.warn(e)
+    }
+
     const blob = new Blob([text], {
       type: 'application/json',
     })
     const url = URL.createObjectURL(blob)
     const link = document.createElement('a')
     link.href = url
-    link.download = `MAACopilot_作业.json`
+    link.download = `MAACopilot_${title || '未命名'}.json`
     link.click()
     URL.revokeObjectURL(url)
 

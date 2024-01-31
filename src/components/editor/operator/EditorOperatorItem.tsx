@@ -4,8 +4,7 @@ import clsx from 'clsx'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { OPERATORS } from '../../../models/generated/operators'
-import { findOperatorSkillUsage } from '../../../models/operator'
+import { OPERATORS, getSkillUsageTitle } from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { OperatorAvatar } from './EditorOperator'
@@ -27,7 +26,10 @@ export const EditorOperatorItem = ({
   listeners,
 }: EditorOperatorItemProps) => {
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
-  const skillUsage = findOperatorSkillUsage(operator.skillUsage).title
+  const skillUsage = getSkillUsageTitle(
+    operator.skillUsage as CopilotDocV1.SkillUsageType,
+    operator.skillTimes,
+  )
 
   const skill = `${
     [null, '一', '二', '三'][operator.skill ?? 1] ?? '未知'
@@ -40,6 +42,7 @@ export const EditorOperatorItem = ({
         'flex items-start',
         editing && 'bg-gray-100',
         isDragging && 'opacity-30',
+        'h-[72px] w-[calc(4.5*72px)]',
       )}
     >
       <Icon
@@ -51,7 +54,7 @@ export const EditorOperatorItem = ({
       <OperatorAvatar id={id} size="large" />
       <div className="ml-4 flex-grow">
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
-        <div className="text-gray-400">{skill}</div>
+        <div className="text-gray-400 text-xs">{skill}</div>
       </div>
 
       <CardEditOption active={editing} onClick={onEdit} />

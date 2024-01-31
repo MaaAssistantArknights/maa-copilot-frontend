@@ -94,63 +94,67 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
   }
 
   return (
-    <div>
-      <EditorActionAdd
-        control={control}
-        action={editingAction}
-        onSubmit={onSubmit}
-        onCancel={() => setEditingAction(undefined)}
-      />
+    <div className="flex flex-wrap md:flex-nowrap min-h-[calc(100vh-6rem)]">
+      <div className="md:w-1/2 md:mr-8 w-full">
+        <EditorActionAdd
+          control={control}
+          editingAction={editingAction}
+          onSubmit={onSubmit}
+          onCancel={() => setEditingAction(undefined)}
+        />
+      </div>
 
-      <div className="p-2 -mx-2">
-        <DndContext
-          sensors={sensors}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-          onDragCancel={handleDragEnd}
-        >
-          <SortableContext
-            items={actions.map(getId)}
-            strategy={verticalListSortingStrategy}
+      <div className="  md:w-1/2 w-full">
+        <div className="overflow-auto h-[calc(100vh-6rem)] p-2 pt-0 pb-8 -mx-2">
+          <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            onDragCancel={handleDragEnd}
           >
-            <ul>
-              {actions.map((action, i) => (
-                <li key={getId(action)} className="mt-2">
-                  <Sortable id={getId(action)}>
-                    {(attrs) => (
-                      <EditorActionItem
-                        action={action}
-                        editing={isEditing(action)}
-                        onEdit={() =>
-                          setEditingAction(
-                            isEditing(action) ? undefined : action,
-                          )
-                        }
-                        onDuplicate={() => handleDuplicate(i)}
-                        onRemove={() => remove(i)}
-                        {...attrs}
-                      />
-                    )}
-                  </Sortable>
-                </li>
-              ))}
-            </ul>
-          </SortableContext>
+            <SortableContext
+              items={actions.map(getId)}
+              strategy={verticalListSortingStrategy}
+            >
+              <ul>
+                {actions.map((action, i) => (
+                  <li key={getId(action)} className="mt-2">
+                    <Sortable id={getId(action)}>
+                      {(attrs) => (
+                        <EditorActionItem
+                          action={action}
+                          editing={isEditing(action)}
+                          onEdit={() =>
+                            setEditingAction(
+                              isEditing(action) ? undefined : action,
+                            )
+                          }
+                          onDuplicate={() => handleDuplicate(i)}
+                          onRemove={() => remove(i)}
+                          {...attrs}
+                        />
+                      )}
+                    </Sortable>
+                  </li>
+                ))}
+              </ul>
+            </SortableContext>
 
-          <DragOverlay>
-            {draggingAction && (
-              <EditorActionItem
-                editing={isEditing(draggingAction)}
-                action={draggingAction}
-              />
-            )}
-          </DragOverlay>
-        </DndContext>
+            <DragOverlay>
+              {draggingAction && (
+                <EditorActionItem
+                  editing={isEditing(draggingAction)}
+                  action={draggingAction}
+                />
+              )}
+            </DragOverlay>
+          </DndContext>
 
-        {actions.length === 0 && (
-          <NonIdealState title="暂无动作" className="my-4" icon="inbox" />
-        )}
+          {actions.length === 0 && (
+            <NonIdealState title="暂无动作" className="" icon="inbox" />
+          )}
+        </div>
       </div>
     </div>
   )

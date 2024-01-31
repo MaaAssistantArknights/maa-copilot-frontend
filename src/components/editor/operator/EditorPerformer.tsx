@@ -345,28 +345,30 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     return true
   }
   return (
-    <>
-      <EditorSheetTrigger
-        submitOperator={submitOperator}
-        submitGroup={submitGroup}
-        existedOperators={operators}
-        existedGroups={groups}
-        removeOperator={removeOperator}
-        removeGroup={removeGroup}
-      />
-      <EditorPerformerAdd
-        mode={editMode}
-        operator={editingOperator}
-        group={editingGroup}
-        groups={groups}
-        onModeChange={setEditMode}
-        onCancel={() => {
-          setEditingOperator(undefined)
-          setEditingGroup(undefined)
-        }}
-        submitOperator={submitOperator}
-        submitGroup={submitGroup}
-      />
+    <div className="flex flex-wrap md:flex-nowrap">
+      <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
+        <EditorSheetTrigger
+          submitOperator={submitOperator}
+          submitGroup={submitGroup}
+          existedOperators={operators}
+          existedGroups={groups}
+          removeOperator={removeOperator}
+          removeGroup={removeGroup}
+        />
+        <EditorPerformerAdd
+          mode={editMode}
+          operator={editingOperator}
+          group={editingGroup}
+          groups={groups}
+          onModeChange={setEditMode}
+          onCancel={() => {
+            setEditingOperator(undefined)
+            setEditingGroup(undefined)
+          }}
+          submitOperator={submitOperator}
+          submitGroup={submitGroup}
+        />
+      </div>
       <div className="p-2 -mx-2 relative">
         <DndContext
           sensors={sensors}
@@ -377,16 +379,15 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         >
           <Droppable id={nonGroupedContainerId}>
             <FactItem title="干员" icon="person" className="font-bold" />
-
             {operators.length === 0 && <NonIdealState title="暂无干员" />}
 
             <SortableContext
               items={operators.map(getId)}
               strategy={verticalListSortingStrategy}
             >
-              <ul>
+              <ul className="flex flex-wrap">
                 {operators.map((operator) => (
-                  <li className="mt-2" key={getId(operator)}>
+                  <li className="mt-2 mr-2" key={getId(operator)}>
                     <Sortable id={getId(operator)} data={{ type: 'operator' }}>
                       {(attrs) => (
                         <EditorOperatorItem
@@ -425,9 +426,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             items={groups.map(getId)}
             strategy={verticalListSortingStrategy}
           >
-            <ul>
+            <ul className="flex flex-wrap">
               {groups.map((group) => (
-                <li className="mt-2" key={getId(group)}>
+                <li className="mt-4 mr-4" key={getId(group)}>
                   <Sortable id={getId(group)} data={{ type: 'group' }}>
                     {(attrs) => (
                       <EditorGroupItem
@@ -480,6 +481,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           </DragOverlay>
         </DndContext>
       </div>
-    </>
+    </div>
   )
 }
