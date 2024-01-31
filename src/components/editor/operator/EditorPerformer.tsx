@@ -369,40 +369,97 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           submitGroup={submitGroup}
         />
       </div>
-      <div className="p-2 -mx-2 relative">
-        <DndContext
-          sensors={sensors}
-          onDragStart={handleDragStart}
-          onDragOver={handleDragOver}
-          onDragEnd={handleDragEnd}
-          onDragCancel={handleDragEnd}
-        >
-          <Droppable id={nonGroupedContainerId}>
-            <FactItem title="干员" icon="person" className="font-bold" />
-            {operators.length === 0 && <NonIdealState title="暂无干员" />}
+      <div className="w-full md:w-2/3 pb-8">
+        <div className="p-2 -mx-2 relative">
+          <DndContext
+            sensors={sensors}
+            onDragStart={handleDragStart}
+            onDragOver={handleDragOver}
+            onDragEnd={handleDragEnd}
+            onDragCancel={handleDragEnd}
+          >
+            <Droppable id={nonGroupedContainerId}>
+              <FactItem title="干员" icon="person" className="font-bold" />
+              {operators.length === 0 && <NonIdealState title="暂无干员" />}
+
+              <SortableContext
+                items={operators.map(getId)}
+                strategy={verticalListSortingStrategy}
+              >
+                <ul className="flex flex-wrap">
+                  {operators.map((operator) => (
+                    <li className="mt-2 mr-2" key={getId(operator)}>
+                      <Sortable
+                        id={getId(operator)}
+                        data={{ type: 'operator' }}
+                      >
+                        {(attrs) => (
+                          <EditorOperatorItem
+                            operator={operator}
+                            editing={isOperatorEditing(operator)}
+                            onEdit={() =>
+                              setEditingOperator(
+                                isOperatorEditing(operator)
+                                  ? undefined
+                                  : operator,
+                              )
+                            }
+                            onRemove={() =>
+                              removeOperator(operators.indexOf(operator))
+                            }
+                            {...attrs}
+                          />
+                        )}
+                      </Sortable>
+                    </li>
+                  ))}
+                </ul>
+              </SortableContext>
+            </Droppable>
+
+            <FactItem title="干员组" icon="people" className="font-bold mt-8" />
+
+            {groups.length === 0 && (
+              // extra div container: NonIdealState is using height: 100% which causes unexpected overflow
+              <div className="relative">
+                <NonIdealState title="暂无干员组" />
+              </div>
+            )}
 
             <SortableContext
-              items={operators.map(getId)}
+              items={groups.map(getId)}
               strategy={verticalListSortingStrategy}
             >
               <ul className="flex flex-wrap">
-                {operators.map((operator) => (
-                  <li className="mt-2 mr-2" key={getId(operator)}>
-                    <Sortable id={getId(operator)} data={{ type: 'operator' }}>
+                {groups.map((group) => (
+                  <li className="mt-4 mr-4" key={getId(group)}>
+                    <Sortable id={getId(group)} data={{ type: 'group' }}>
                       {(attrs) => (
-                        <EditorOperatorItem
-                          operator={operator}
-                          editing={isOperatorEditing(operator)}
+                        <EditorGroupItem
+                          group={group}
+                          editing={isGroupEditing(group)}
                           onEdit={() =>
+                            setEditingGroup(
+                              isGroupEditing(group) ? undefined : group,
+                            )
+                          }
+                          onRemove={() => removeGroup(groups.indexOf(group))}
+                          getOperatorId={getId}
+                          isOperatorEditing={isOperatorEditing}
+                          onOperatorEdit={(operator) =>
                             setEditingOperator(
                               isOperatorEditing(operator)
                                 ? undefined
                                 : operator,
                             )
                           }
-                          onRemove={() =>
-                            removeOperator(operators.indexOf(operator))
-                          }
+                          onOperatorRemove={(operatorIndexInGroup) => {
+                            const groupIndex = groups.indexOf(group)
+                            if (operatorIndexInGroup > -1) {
+                              group.opers?.splice(operatorIndexInGroup, 1)
+                            }
+                            updateGroup(groupIndex, group)
+                          }}
                           {...attrs}
                         />
                       )}
@@ -411,75 +468,25 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
                 ))}
               </ul>
             </SortableContext>
-          </Droppable>
 
-          <FactItem title="干员组" icon="people" className="font-bold mt-8" />
-
-          {groups.length === 0 && (
-            // extra div container: NonIdealState is using height: 100% which causes unexpected overflow
-            <div className="relative">
-              <NonIdealState title="暂无干员组" />
-            </div>
-          )}
-
-          <SortableContext
-            items={groups.map(getId)}
-            strategy={verticalListSortingStrategy}
-          >
-            <ul className="flex flex-wrap">
-              {groups.map((group) => (
-                <li className="mt-4 mr-4" key={getId(group)}>
-                  <Sortable id={getId(group)} data={{ type: 'group' }}>
-                    {(attrs) => (
-                      <EditorGroupItem
-                        group={group}
-                        editing={isGroupEditing(group)}
-                        onEdit={() =>
-                          setEditingGroup(
-                            isGroupEditing(group) ? undefined : group,
-                          )
-                        }
-                        onRemove={() => removeGroup(groups.indexOf(group))}
-                        getOperatorId={getId}
-                        isOperatorEditing={isOperatorEditing}
-                        onOperatorEdit={(operator) =>
-                          setEditingOperator(
-                            isOperatorEditing(operator) ? undefined : operator,
-                          )
-                        }
-                        onOperatorRemove={(operatorIndexInGroup) => {
-                          const groupIndex = groups.indexOf(group)
-                          if (operatorIndexInGroup > -1) {
-                            group.opers?.splice(operatorIndexInGroup, 1)
-                          }
-                          updateGroup(groupIndex, group)
-                        }}
-                        {...attrs}
-                      />
-                    )}
-                  </Sortable>
-                </li>
-              ))}
-            </ul>
-          </SortableContext>
-
-          <DragOverlay>
-            {draggingOperator && (
-              <EditorOperatorItem
-                editing={isOperatorEditing(draggingOperator)}
-                operator={draggingOperator}
-              />
-            )}
-            {draggingGroup && (
-              <EditorGroupItem
-                group={draggingGroup}
-                editing={isGroupEditing(draggingGroup)}
-                isOperatorEditing={isOperatorEditing}
-                getOperatorId={getId}
-              />
-            )}
-          </DragOverlay>
-        </DndContext>
+            <DragOverlay>
+              {draggingOperator && (
+                <EditorOperatorItem
+                  editing={isOperatorEditing(draggingOperator)}
+                  operator={draggingOperator}
+                />
+              )}
+              {draggingGroup && (
+                <EditorGroupItem
+                  group={draggingGroup}
+                  editing={isGroupEditing(draggingGroup)}
+                  isOperatorEditing={isOperatorEditing}
+                  getOperatorId={getId}
+                />
+              )}
+            </DragOverlay>
+          </DndContext>
+        </div>
       </div>
     </div>
   )

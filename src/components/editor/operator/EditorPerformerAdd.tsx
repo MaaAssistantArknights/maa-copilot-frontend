@@ -14,7 +14,7 @@ import {
   EditorPerformerOperatorProps,
 } from './EditorPerformerOperator'
 
-export type PerformerType = 'operator' | 'group' | 'sheet'
+export type PerformerType = 'operator' | 'group'
 
 export interface EditorPerformerAddProps {
   mode: PerformerType

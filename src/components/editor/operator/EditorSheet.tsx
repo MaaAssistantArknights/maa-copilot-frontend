@@ -2,6 +2,8 @@ import { Button, Drawer, DrawerSize } from '@blueprintjs/core'
 
 import { useMemo, useState } from 'react'
 
+import { CopilotDocV1 } from 'models/copilot.schema'
+
 import { SheetGroupContainer, SheetGroupProps } from './sheet/SheetGroup'
 import {
   SheetOperatorContainer,
@@ -9,6 +11,8 @@ import {
 } from './sheet/SheetOperator'
 
 type EditorSheetProps = SheetOperatorProps & SheetGroupProps
+export type Group = CopilotDocV1.Group
+export type Operator = CopilotDocV1.Operator
 
 const EditorOperatorSheet = (sheetProps: EditorSheetProps) => {
   return (
@@ -31,7 +35,7 @@ export const EditorSheetTrigger = (sheetProps: EditorSheetProps) => {
       >
         <EditorOperatorSheet {...sheetProps} miniMedia={miniMedia} />
       </Drawer>
-      <Button onClick={() => setOpen(true)} text="快捷编辑" />
+      <Button onClick={() => setOpen(true)} text="快捷编辑" fill />
     </>
   )
 }

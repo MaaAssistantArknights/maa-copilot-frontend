@@ -5,10 +5,10 @@ import {
   H5,
   InputGroup,
   Intent,
-  NonIdealState,
 } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
+import { isEqual, omit } from 'lodash-es'
 import { useMemo, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
 
@@ -18,9 +18,12 @@ import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 import { favGroupAtom } from 'store/useFavGroups'
 
 import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
+import { Group } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
+import { GroupNoData } from './SheetNoneData'
 import { GroupItem } from './sheetGroup/SheetGroupItem'
-import { EventType, Group } from './sheetGroup/SheetGroupOperatorSelect'
+
+export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename' | 'update'
 
 type Operator = CopilotDocV1.Operator
 
@@ -71,24 +74,21 @@ const SheetGroup = ({
   }, [existedOperators])
 
   const checkGroupExisted = (target: string) =>
-    existedGroups.find((item) => item.name === target) ? true : false
-  const checkGroupPinned = (target: Group) => {
+    !!existedGroups.find((item) => item.name === target)
+  const checkGroupPinned = (
+    target: Group,
+    ignoreKeyDic: string[] = ['_id', 'id'],
+  ) => {
     const checkTarget = favGroups.find((item) => item.name === target.name)
     if (checkTarget) {
       if ((checkTarget.opers?.length || 0) === (target.opers?.length || 0)) {
-        const ignoreKeyDic = ['_id', 'id']
         for (const aItem of checkTarget.opers!) {
           if (
             target.opers?.find((bItem) => {
-              for (const [key, value] of Object.entries(bItem)) {
-                if (
-                  ignoreKeyDic.find((item) => item === key) ||
-                  value === aItem[key]
-                )
-                  continue
-                return false
-              }
-              return true
+              return isEqual(
+                omit(aItem, ignoreKeyDic),
+                omit(bItem, ignoreKeyDic),
+              )
             })
           )
             continue
@@ -97,9 +97,14 @@ const SheetGroup = ({
         return true
       } else return false
     } else return false
+    // return isEqualWith(checkTarget, target, (value1, value2, key) => {
+    //   if (ignoreKeyDic.find((item) => item === key)) return true
+    //   else {
+    //   }
+    // })
   }
   const checkSamePinned = (target: string) =>
-    favGroups.find(({ name }) => name === target) ? true : false
+    !!favGroups.find(({ name }) => name === target)
   const changeOperatorOfOtherGroups = (
     target: Operator[] | undefined,
     errHandle: UseFormSetError<Group>,
@@ -117,13 +122,11 @@ const SheetGroup = ({
       })
     })
   }
-
   const updateFavGroup = (value: Group) =>
     setFavGroups([
       ...[...favGroups].filter(({ name }) => name !== value.name),
       { ...value },
     ])
-
   const eventHandleProxy = (
     type: EventType,
     value: Group,
@@ -172,6 +175,7 @@ const SheetGroup = ({
       }
     }
   }
+
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
 
   const FavCoverAlert = useMemo(
@@ -193,6 +197,7 @@ const SheetGroup = ({
     ),
     [coverGroup?.name],
   )
+
   return (
     <>
       {FavCoverAlert}
@@ -270,6 +275,7 @@ const EditorGroupName = ({
   ) => void
 }) => {
   const [groupName, setGroupName] = useState('')
+
   const addGroupHandle = () => {
     if (!groupName) {
       AppToaster.show({
@@ -282,8 +288,8 @@ const EditorGroupName = ({
     }
   }
 
-  return (
-    <div className="flex px-3 items-center">
+  const InputPart = useMemo(
+    () => (
       <InputGroup
         type="text"
         value={groupName}
@@ -291,6 +297,11 @@ const EditorGroupName = ({
         onChange={(e) => setGroupName(e.target.value)}
         fill
       />
+    ),
+    [groupName],
+  )
+  const OperationButton = useMemo(
+    () => (
       <div className="flex items-center">
         <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
         <Button
@@ -300,6 +311,14 @@ const EditorGroupName = ({
           onClick={() => setGroupName('')}
         />
       </div>
+    ),
+    [addGroupHandle],
+  )
+
+  return (
+    <div className="flex px-3 items-center">
+      {InputPart}
+      {OperationButton}
     </div>
   )
 }
@@ -309,5 +328,3 @@ export const SheetGroupContainer = (sheetGroupProps: SheetGroupProps) => (
     <SheetGroup {...sheetGroupProps} />
   </SheetContainerSkeleton>
 )
-
-const GroupNoData = <NonIdealState title="暂无干员组" />

@@ -5,7 +5,6 @@ import {
   H6,
   Icon,
   Intent,
-  NonIdealState,
 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
@@ -17,12 +16,11 @@ import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/generated/operators'
 
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
+import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
+import { OperatorNoData } from './SheetNoneData'
 import { OperatorItem } from './SheetOperatorItem'
 import { EventType } from './SheetOperatorSkillAbout'
-
-type Operator = CopilotDocV1.Operator
-type Group = CopilotDocV1.Group
 
 export interface SheetOperatorProps {
   submitOperator: EditorPerformerOperatorProps['submit']
@@ -191,6 +189,22 @@ const SheetOperator = ({
     [selectedSubProf, selectedProf],
   )
 
+  const SelectAll = useMemo(
+    () => (
+      <>
+        {selectedAllState && (
+          <H6
+            className="absolute bottom-full right-0 p-3 cursor-pointer m-0"
+            onClick={selectAll}
+          >
+            全选
+          </H6>
+        )}
+      </>
+    ),
+    [selectedAllState, selectAll],
+  )
+
   // optimization of operators' list use simple delay slice
   const [sliceIndex, setSliceIndex] = useState(50)
   const sliceTimer = useRef<number | undefined>(undefined)
@@ -208,15 +222,7 @@ const SheetOperator = ({
 
   return (
     <div className="flex relative">
-      {selectedAllState && (
-        <H6
-          className="absolute bottom-full right-0 p-3 cursor-pointer m-0"
-          onClick={selectAll}
-        >
-          全选
-        </H6>
-      )}
-
+      {SelectAll}
       <div className="flex-auto">
         <div className="sticky top-0 h-screen">
           {operatorsGroupedBySubProf.length ? (
@@ -247,12 +253,7 @@ const SheetOperator = ({
                 })}
             </div>
           ) : (
-            <NonIdealState
-              description="暂无相关干员"
-              icon="issue"
-              title="无"
-              className="flex-auto my-auto"
-            />
+            OperatorNoData
           )}
         </div>
       </div>

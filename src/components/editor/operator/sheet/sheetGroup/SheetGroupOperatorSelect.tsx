@@ -16,16 +16,12 @@ import clsx from 'clsx'
 import { useMemo, useState } from 'react'
 import { UseFormSetError } from 'react-hook-form'
 
-import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
+import { Group, Operator } from '../../EditorSheet'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
+import { EventType } from '../SheetGroup'
 import { OperatorItem } from '../SheetOperatorItem'
-
-export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename' | 'update'
-
-export type Group = CopilotDocV1.Group
-type Operator = CopilotDocV1.Operator
 
 export interface SheetGroupOperatorSelectProp {
   existedOperator?: Operator[]
@@ -55,7 +51,7 @@ const SheetGroupOperatorSelect = ({
     [existedGroup],
   )
   const checkGroupedOperator = (target: string) =>
-    groupInfoOperators.find(({ name }) => name === target) ? true : false
+    !!groupInfoOperators.find(({ name }) => name === target)
   const groupedOperatorHandle = (target: Operator) => {
     if (checkGroupedOperator(target.name))
       setGroupInfoOperators(

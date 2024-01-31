@@ -8,11 +8,12 @@ import { CardDeleteOption } from 'components/editor/CardOptions'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS } from 'models/generated/operators'
 
+import { Group } from '../../EditorSheet'
+import { OperatorNoData } from '../SheetNoneData'
 import { OperatorItem } from '../SheetOperatorItem'
 import { EventType } from '../SheetOperatorSkillAbout'
 import {
   CollapseButton,
-  Group,
   SheetGroupOperatorSelectProp,
   SheetGroupOperatorSelectTrigger,
 } from './SheetGroupOperatorSelect'
@@ -32,17 +33,18 @@ export const GroupItem = ({
   ...rest
 }: GroupItemProps) => {
   const [showOperators, setShowOperators] = useState(editable)
+
   const createOrDeleteGroup = () => {
     if (exist) {
       if (editable) eventHandleProxy('remove', groupInfo)
     } else eventHandleProxy('add', groupInfo)
   }
-
   const changeGroupedOperatorSkillHandle = (
     type: EventType,
     value: CopilotDocV1.Operator,
   ) => {
     if (type === 'skill') {
+      // deep copy
       const groupInfoCopy = JSON.parse(JSON.stringify(groupInfo))
       groupInfoCopy.opers![
         groupInfoCopy.opers!.findIndex(({ name }) => name === value.name)
@@ -50,7 +52,6 @@ export const GroupItem = ({
       eventHandleProxy('update', groupInfoCopy)
     }
   }
-
   const renameEventHandle = (
     name: string,
     errorHandle: UseFormSetError<Group>,
@@ -58,73 +59,90 @@ export const GroupItem = ({
     eventHandleProxy('rename', { ...groupInfo, name }, errorHandle)
   }
 
-  const Operators = useMemo(
+  const OperatorsPart = useMemo(
     () => (
-      <div className="w-full pt-1">
-        {groupInfo.opers?.map((item) => (
-          <OperatorItem
-            key={item.name}
-            id={
-              OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
-                ?.id || ''
-            }
-            operator={item}
-            name={item.name}
-            selected={false}
-            interactive={false}
-            horizontal
-            submitOperator={changeGroupedOperatorSkillHandle}
+      <Collapse isOpen={showOperators}>
+        <div className="w-full pt-1">
+          {groupInfo.opers?.length
+            ? groupInfo.opers?.map((item) => (
+                <OperatorItem
+                  key={item.name}
+                  id={
+                    OPERATORS.find(
+                      (opInfoitem) => opInfoitem.name === item.name,
+                    )?.id || ''
+                  }
+                  operator={item}
+                  name={item.name}
+                  selected={false}
+                  interactive={false}
+                  horizontal
+                  submitOperator={changeGroupedOperatorSkillHandle}
+                />
+              ))
+            : !editable && OperatorNoData}
+          {editable && (
+            <SheetGroupOperatorSelectTrigger
+              groupInfo={groupInfo}
+              eventHandleProxy={eventHandleProxy}
+              {...rest}
+            />
+          )}
+        </div>
+      </Collapse>
+    ),
+    [showOperators, groupInfo.opers, rest],
+  )
+  const GroupName = useMemo(
+    () => (
+      <GroupTitle
+        groupTitle={groupInfo.name}
+        editable={editable}
+        renameSubmit={renameEventHandle}
+      />
+    ),
+    [groupInfo.name],
+  )
+  const GroupOperations = useMemo(
+    () => (
+      <div className="ml-auto flex items-center">
+        <CollapseButton
+          isCollapse={showOperators}
+          onClick={() => setShowOperators(!showOperators)}
+        />
+        {editable ? (
+          <CardDeleteOption
+            className="cursor-pointer"
+            onClick={createOrDeleteGroup}
           />
-        ))}
+        ) : (
+          <Button
+            minimal
+            icon={exist ? 'tick' : 'arrow-left'}
+            title={exist ? '已选择' : '使用该推荐分组'}
+            onClick={createOrDeleteGroup}
+          />
+        )}
         {editable && (
-          <SheetGroupOperatorSelectTrigger
-            groupInfo={groupInfo}
-            eventHandleProxy={eventHandleProxy}
-            {...rest}
+          <Button
+            minimal
+            icon={pinned ? 'star' : 'star-empty'}
+            title={pinned ? `从收藏移除` : `添加至收藏`}
+            onClick={() => eventHandleProxy('pin', groupInfo)}
           />
         )}
       </div>
     ),
-    [groupInfo.opers, rest],
+    [showOperators, pinned, exist],
   )
 
   return (
     <Card interactive className="mt-1 mx-0.5">
       <div className="flex items-center">
-        <GroupTitle
-          groupTitle={groupInfo.name}
-          editable={editable}
-          renameSubmit={renameEventHandle}
-        />
-        <div className="ml-auto flex items-center">
-          <CollapseButton
-            isCollapse={showOperators}
-            onClick={() => setShowOperators(!showOperators)}
-          />
-          {editable ? (
-            <CardDeleteOption
-              className="cursor-pointer"
-              onClick={createOrDeleteGroup}
-            />
-          ) : (
-            <Button
-              minimal
-              icon={exist ? 'tick' : 'arrow-left'}
-              title={exist ? '已选择' : '使用该推荐分组'}
-              onClick={createOrDeleteGroup}
-            />
-          )}
-          {editable && (
-            <Button
-              minimal
-              icon={pinned ? 'star' : 'star-empty'}
-              title={pinned ? `从收藏移除` : `添加至收藏`}
-              onClick={() => eventHandleProxy('pin', groupInfo)}
-            />
-          )}
-        </div>
+        {GroupName}
+        {GroupOperations}
       </div>
-      <Collapse isOpen={showOperators}>{Operators}</Collapse>
+      {OperatorsPart}
     </Card>
   )
 }
