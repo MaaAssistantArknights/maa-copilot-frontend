@@ -24,6 +24,8 @@ export interface OperatorInfo {
   name: string
   pron: string
   subProf: string
+  alias: string,
+  alt_name: string
 }
 
 export interface Profession {

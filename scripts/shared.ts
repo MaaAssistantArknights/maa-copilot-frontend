@@ -1,7 +1,8 @@
 import { access } from 'fs/promises'
-import { uniqBy } from 'lodash-es'
+import { uniq, uniqBy } from 'lodash-es'
 import fetch from 'node-fetch'
-import pinyin from 'pinyin'
+import { pinyin } from 'pinyin'
+import simplebig from 'simplebig'
 
 type Profession = { id: string; name: string }
 type Professions = (Profession & { sub: Profession[] })[]
@@ -15,8 +16,26 @@ export async function fileExists(file: string) {
   }
 }
 
+function pinyinify(name: string) {
+  return [
+    pinyin(name, {
+      compact: true,
+      heteronym: true,
+      style: pinyin.STYLE_NORMAL,
+    }),
+    pinyin(name, {
+      compact: true,
+      heteronym: true,
+      style: pinyin.STYLE_FIRST_LETTER,
+    }),
+  ].flatMap((py) => py.map((el) => el.join('')))
+}
+
 function transformOperatorName(name: string) {
   const cleanedName = name.replace(/[”“"]/g, '')
+
+  const traditional = simplebig.s2t(name) as string
+  const cleanedTraditional = traditional.replace(/[”“"]/g, '')
 
   const fullPinyin = pinyin(cleanedName, {
     segment: true,
@@ -32,6 +51,12 @@ function transformOperatorName(name: string) {
       fullPinyin.flatMap((el) => el).join(''),
       partialPinyin.flatMap((el) => el).join(''),
     ].join(' '),
+    alias: uniq([
+      ...pinyinify(cleanedName),
+      traditional,
+      cleanedTraditional,
+      ...pinyinify(cleanedTraditional),
+    ]).join(' '),
   }
 }
 
