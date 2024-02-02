@@ -15,6 +15,7 @@ import {
 import {
   requestDeleteComment,
   requestRateComment,
+  requestTopComment,
   useComments,
 } from '../../../apis/comment'
 import {
@@ -142,7 +143,12 @@ const MainComment = ({
   children?: ReactNode
 }) => {
   return (
-    <Card className={clsx(className)}>
+    <Card
+      className={clsx(
+        className,
+        comment.topping && 'shadow-[0_0_0_1px_#2d72d2]',
+      )}
+    >
       <div>
         <CommentHeader comment={comment} />
         <CommentContent comment={comment} />
@@ -189,21 +195,34 @@ const SubComment = ({
 
 const CommentHeader = ({
   className,
-  comment: { uploader, uploaderId, uploadTime },
+  comment,
 }: {
   className?: string
   comment: CommentInfo
 }) => {
+  const { uploader, uploaderId, uploadTime } = comment
+  const topping = isMainComment(comment) ? comment.topping : false
   const [{ userId }] = useAtom(authAtom)
 
   return (
-    <div className={clsx(className, 'mb-2 flex items-center text-xs')}>
+    <div
+      className={clsx(
+        className,
+        'mb-2 flex items-center text-xs',
+        'leading-[20px]', // 在无 <Tag> 时保持高度一致
+      )}
+    >
       <div className={clsx('mr-2', userId === uploaderId && 'font-bold')}>
         {uploader}
       </div>
       <div className="text-slate-500" title={formatDateTime(uploadTime)}>
         {formatRelativeTime(uploadTime)}
       </div>
+      {topping && (
+        <Tag minimal className="ml-2" intent="primary" icon="pin">
+          置顶
+        </Tag>
+      )}
     </div>
   )
 }
@@ -268,6 +287,9 @@ const CommentActions = ({
         >
           回复
         </Button>
+        {userId === comment.uploaderId && isMainComment(comment) && (
+          <CommentTopButton comment={comment} />
+        )}
         {userId === comment.uploaderId && (
           <Button
             minimal
@@ -345,5 +367,37 @@ const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
         onClick={() => rate(CommentRating.Dislike)}
       />
     </>
+  )
+}
+
+const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
+  const { commentId, topping } = comment
+  const { reload } = useContext(CommentAreaContext)
+
+  const [pending, setPending] = useState(false)
+
+  const top = async () => {
+    if (pending) {
+      return
+    }
+
+    setPending(true)
+
+    try {
+      await wrapErrorMessage(
+        (e) => '置顶失败：' + formatError(e),
+        requestTopComment(commentId, !topping),
+      )
+
+      reload()
+    } finally {
+      setPending(false)
+    }
+  }
+
+  return (
+    <Button minimal small className="!font-normal !text-[13px]" onClick={top}>
+      {topping ? '取消置顶' : '置顶'}
+    </Button>
   )
 }
