@@ -33,21 +33,6 @@ export function isCustomLevel(level: Level): boolean {
   return customLevelKey in level
 }
 
-export function withoutUnusedLevels(levels: Level[]) {
-  const unusedKeywords = [
-    // 引航者试炼
-    'bossrush',
-    // 肉鸽
-    'roguelike',
-    // 保全派驻
-    'legion',
-  ]
-  return levels.filter(
-    (level) =>
-      !unusedKeywords.some((keyword) => level.levelId.includes(keyword)),
-  )
-}
-
 export function isHardMode(stageId: string) {
   return stageId.endsWith(HARD_MODE_SUFFIX)
 }

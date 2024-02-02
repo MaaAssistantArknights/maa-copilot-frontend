@@ -4,7 +4,6 @@ import type { Operator, Version } from 'models/arknights'
 import type { Response } from 'models/network'
 import type { Level } from 'models/operation'
 
-import { withoutUnusedLevels } from '../models/level'
 import { request } from '../utils/fetcher'
 
 const ONE_DAY = 1000 * 60 * 60 * 24
@@ -26,7 +25,29 @@ export const useLevels = ({ suspense }: { suspense?: boolean } = {}) => {
     fetcher: async (input: string, init?: RequestInit) => {
       const res = await request<LevelResponse>(input, init)
 
-      res.data = withoutUnusedLevels(res.data)
+      const stageIds = new Set<string>()
+
+      res.data = res.data.filter((level) => {
+        if (
+          // 引航者试炼
+          level.levelId.includes('bossrush') ||
+          // 肉鸽
+          level.levelId.includes('roguelike') ||
+          // 保全派驻
+          level.levelId.includes('legion')
+        ) {
+          return false
+        }
+
+        if (stageIds.has(level.stageId)) {
+          console.warn('Duplicate level removed:', level.stageId, level.name)
+          return false
+        }
+
+        stageIds.add(level.stageId)
+
+        return true
+      })
 
       return res
     },
