@@ -1,16 +1,13 @@
 import { Button, Callout, InputGroup } from '@blueprintjs/core'
 
 import { useEffect } from 'react'
-import {
-  FieldErrors,
-  SubmitHandler,
-  UseFormSetError,
-  useForm,
-} from 'react-hook-form'
+import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
 
 import { CardTitle } from 'components/CardTitle'
 import { FormField } from 'components/FormField'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
+import { FormError } from 'components/editor/FormError'
+import { FormSubmitButton } from 'components/editor/FormSubmitButton'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FactItem } from '../../FactItem'
@@ -57,8 +54,6 @@ export const EditorPerformerGroup = ({
     }
   }
 
-  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex items-center mb-4">
@@ -96,9 +91,9 @@ export const EditorPerformerGroup = ({
       />
 
       <div className="flex">
-        <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
+        <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
           {isNew ? '添加' : '保存'}
-        </Button>
+        </FormSubmitButton>
 
         {!isNew && (
           <Button icon="cross" className="ml-2" onClick={onCancel}>
@@ -107,11 +102,7 @@ export const EditorPerformerGroup = ({
         )}
       </div>
 
-      {globalError && (
-        <Callout intent="danger" className="mt-2">
-          {globalError}
-        </Callout>
-      )}
+      <FormError errors={errors} />
     </form>
   )
 }

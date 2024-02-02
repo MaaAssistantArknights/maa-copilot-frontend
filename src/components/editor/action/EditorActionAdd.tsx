@@ -14,6 +14,8 @@ import {
 import { CardTitle } from 'components/CardTitle'
 import { FormField, FormField2 } from 'components/FormField'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
+import { FormError } from 'components/editor/FormError'
+import { FormSubmitButton } from 'components/editor/FormSubmitButton'
 import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
 import {
   EditorActionExecPredicateCooling,
@@ -181,8 +183,6 @@ export const EditorActionAdd = ({
       reset(resettingValues)
     }
   })
-
-  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 
   return (
     <form onSubmit={onSubmit}>
@@ -395,9 +395,9 @@ export const EditorActionAdd = ({
         </EditorActionModule>
 
         <div className="mt-4 flex">
-          <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
+          <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
             {isNew ? '添加' : '保存'}
-          </Button>
+          </FormSubmitButton>
 
           {!isNew && (
             <Button icon="cross" className="ml-2" onClick={onCancel}>
@@ -406,11 +406,7 @@ export const EditorActionAdd = ({
           )}
         </div>
 
-        {globalError && (
-          <Callout intent="danger" className="mt-2">
-            {globalError}
-          </Callout>
-        )}
+        <FormError errors={errors} />
       </Card>
     </form>
   )
