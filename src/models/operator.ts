@@ -7,13 +7,42 @@ import {
   DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
-import OPERATORS from '../models/generated/operators.json'
 
-export { OPERATORS }
+export { OPERATORS, PROFESSIONS } from '../models/generated/operators'
+
+export type {
+  OperatorInfo,
+  Profession,
+  SubProfession,
+} from '../models/generated/operators'
 
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 
 export type DetailedOperatorSkillUsage = DetailedSelectChoice
+
+export interface EditorOperatorSkillChoice {
+  icon?: IconName
+  title: string
+  value: number | null
+}
+
+export const operatorSkills: readonly EditorOperatorSkillChoice[] = [
+  {
+    icon: 'cog',
+    title: '一技能',
+    value: 1,
+  },
+  {
+    icon: 'cog',
+    title: '二技能',
+    value: 2,
+  },
+  {
+    icon: 'cog',
+    title: '三技能',
+    value: 3,
+  },
+]
 
 export const operatorSkillUsages: readonly DetailedSelectItem[] = [
   {

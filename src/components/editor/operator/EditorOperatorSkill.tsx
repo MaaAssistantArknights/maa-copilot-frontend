@@ -1,4 +1,4 @@
-import { Button, IconName, MenuItem } from '@blueprintjs/core'
+import { Button, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 
 import { useMemo } from 'react'
@@ -6,12 +6,7 @@ import { useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
-
-interface EditorOperatorSkillChoice {
-  icon?: IconName
-  title: string
-  value: number | null
-}
+import { EditorOperatorSkillChoice, operatorSkills } from 'models/operator'
 
 interface EditorOperatorSkillProps
   extends EditorFieldProps<CopilotDocV1.Operator, number> {}
@@ -28,23 +23,7 @@ export const EditorOperatorSkill = ({
   })
 
   const items = useMemo<EditorOperatorSkillChoice[]>(
-    () => [
-      {
-        icon: 'cog',
-        title: '一技能',
-        value: 1,
-      },
-      {
-        icon: 'cog',
-        title: '二技能',
-        value: 2,
-      },
-      {
-        icon: 'cog',
-        title: '三技能',
-        value: 3,
-      },
-    ],
+    () => [...operatorSkills],
     [],
   )
 
