@@ -10,11 +10,7 @@ import {
 
 export { OPERATORS, PROFESSIONS } from '../models/generated/operators'
 
-export type {
-  OperatorInfo,
-  Profession,
-  SubProfession,
-} from '../models/generated/operators'
+export type { OperatorInfo, Profession } from '../models/generated/operators'
 
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 

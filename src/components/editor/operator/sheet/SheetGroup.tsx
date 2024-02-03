@@ -45,7 +45,7 @@ const SheetGroup = ({
   const defaultGroup = useMemo<Group[]>(() => {
     const result: CopilotDocV1.Group[] = []
     PROFESSIONS.forEach((proItem) => {
-      proItem.sub.forEach((subProItem) => {
+      proItem.sub?.forEach((subProItem) => {
         const operators = existedOperators.filter(
           (opItem) =>
             OPERATORS.find((opInfoItem) => opInfoItem.name === opItem.name)

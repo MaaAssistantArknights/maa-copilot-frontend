@@ -1,4 +1,3 @@
-// future feature
 import { mkdir, writeFile } from 'fs/promises'
 import fetch from 'node-fetch'
 
@@ -8,7 +7,6 @@ const outDir = 'public/assets/prof-icons'
 
 async function getSubProfIconsFromPrtsWiki() {
   console.info('fetching all sub-profession icons from prts wiki...')
-
   const baseUrl = `https://prts.wiki/api.php?action=query&list=allimages&aiprefix=职业分支图标&ailimit=500&format=json`
   const resp = (await (await fetch(baseUrl)).json()) as any
   const results = resp.query.allimages
@@ -43,7 +41,7 @@ async function main() {
     }
     const expectFileAt = `${outDir}/${id}.png`
     if (await fileExists(expectFileAt)) {
-      // console.log(`${name}: already exists`)
+      console.log(`${name}: already exists`)
       continue
     }
     console.log(`Downloading ${name} from ${url}...`)

@@ -74,7 +74,7 @@ const SheetOperator = ({
   }
 
   const formattedSubProfessions = useMemo(
-    () => [...defaultSubProf, ...selectedProf.sub],
+    () => [...defaultSubProf, ...(selectedProf.sub || [])],
     [selectedProf],
   )
   const operatorsGroupedByProf = useMemo(() => {
@@ -100,7 +100,7 @@ const SheetOperator = ({
         (item) => item.subProf === 'notchar1' || !item.pron || !item.subProf,
       )
     return allOperators.filter(
-      (op) => !!selectedProf.sub.find((item) => item.id === op.subProf),
+      (op) => !!selectedProf.sub?.find((item) => item.id === op.subProf),
     )
   }, [selectedProf])
 
@@ -160,10 +160,11 @@ const SheetOperator = ({
           {formattedProfessions.map((prof) => (
             <ButtonItem
               title={prof.name}
-              icon="people"
               key={prof.id}
               active={prof.id === selectedProf.id}
               miniMedia={!!miniMedia}
+              isSub={false}
+              id={prof.id}
               onClick={() => {
                 setSelectedProf(prof)
                 setSelectedSubProf(defaultSubProf[0])
@@ -174,9 +175,10 @@ const SheetOperator = ({
         <div className="ml-1">
           {formattedSubProfessions?.map((subProf) => (
             <ButtonItem
+              id={subProf.id}
+              isSub={false}
               title={subProf.name}
               miniMedia={!!miniMedia}
-              icon="people"
               fill
               key={subProf.id}
               active={subProf.id === selectedSubProf.id}
@@ -274,16 +276,31 @@ export const SheetOperatorContainer = (
 interface MenuItemProps extends ButtonProps {
   title: string
   miniMedia: boolean
+  id: string
+  isSub: boolean
 }
 
 const ButtonItem = ({
   title,
-  icon,
   miniMedia,
+  id,
+  isSub,
   ...buttonProps
 }: MenuItemProps) => (
   <Button {...buttonProps} className="text-center" minimal>
-    <Icon icon={icon} />
+    {isSub && id !== 'all' && id !== 'selected' ? (
+      <img
+        className="rounded-md object-cover bp4-elevation-1 w-5 m-auto"
+        src={'/assets/prof-icons/' + id + '.png'}
+        alt={id}
+        loading="lazy"
+      />
+    ) : (
+      <Icon
+        icon="people"
+        className="flex items-center justify-center font-bold text-2xl text-slate-300 select-none"
+      />
+    )}
     <p className={clsx(miniMedia && 'w-5 truncate')}>{title}</p>
   </Button>
 )

@@ -13,12 +13,7 @@ export interface OperatorInfo {
 export interface Profession {
   id: string
   name: string
-  sub: SubProfession[]
-}
-
-export interface SubProfession {
-  id: string
-  name: string
+  sub?: Profession[]
 }
 
 export const OPERATORS: OperatorInfo[] = JSON.parse(

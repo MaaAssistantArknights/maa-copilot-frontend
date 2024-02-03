@@ -24,19 +24,14 @@ export interface OperatorInfo {
   name: string
   pron: string
   subProf: string
-  alias: string,
+  alias: string
   alt_name: string
 }
 
 export interface Profession {
   id: string
   name: string
-  sub: SubProfession[]
-}
-
-export interface SubProfession {
-  id: string
-  name: string
+  sub?: Profession[]
 }
 
 export const OPERATORS: OperatorInfo[] = ${toRuntimeJSON(operators)};
