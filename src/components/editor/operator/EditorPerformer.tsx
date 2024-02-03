@@ -224,7 +224,11 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     setError,
     fromSheet,
   ) => {
-    if (!fromSheet && operators.find(({ name }) => name === operator.name)) {
+    if (
+      operators.find(
+        ({ name, _id }) => name === operator.name && _id !== operator._id,
+      )
+    ) {
       setError('name', { message: '干员已存在' })
       return false
     }
@@ -317,7 +321,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       )
       removeOperator(matchNumbers.filter((item) => item !== -1))
     }
-    if (!fromSheet && groups.find(({ name }) => name === group.name)) {
+    if (
+      groups.find(({ name, _id }) => name === group.name && _id !== group._id)
+    ) {
       setError('name', { message: '干员组已存在' })
       return false
     }
