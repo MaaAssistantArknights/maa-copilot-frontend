@@ -16,8 +16,6 @@ import clsx from 'clsx'
 import { useMemo, useState } from 'react'
 import { UseFormSetError } from 'react-hook-form'
 
-import { OPERATORS } from 'models/operator'
-
 import { Group, Operator } from '../../EditorSheet'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
 import { EventType } from '../SheetGroup'
@@ -78,10 +76,6 @@ const SheetGroupOperatorSelect = ({
         {groupInfo.opers?.map((item) => (
           <div className="w-1/4 relative p-0.5" key={item.name}>
             <OperatorItem
-              id={
-                OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
-                  ?.id || ''
-              }
               name={item.name}
               selected={checkGroupedOperator(item.name)}
               onClick={() => groupedOperatorHandle(item)}
@@ -98,10 +92,6 @@ const SheetGroupOperatorSelect = ({
         {existedOperator?.map((item) => (
           <div className="w-1/4 relative p-0.5" key={item.name}>
             <OperatorItem
-              id={
-                OPERATORS.find((opInfoitem) => opInfoitem.name === item.name)
-                  ?.id || ''
-              }
               name={item.name}
               selected={checkGroupedOperator(item.name)}
               onClick={() => groupedOperatorHandle(item)}
@@ -294,7 +284,6 @@ const OperatorPart = ({
       operators?.map((item) => (
         <div className="w-1/4 relative p-0.5" key={item._id}>
           <OperatorItem
-            id={OPERATORS.find(({ name }) => name === item.name)?.id || ''}
             name={item.name}
             selected={selectCheckHandle(item.name)}
             onClick={() => selectClickHandle(item)}

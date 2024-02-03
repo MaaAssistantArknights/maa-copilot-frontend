@@ -233,9 +233,9 @@ const SheetOperator = ({
             >
               {operatorsGroupedBySubProf
                 .slice(0, sliceIndex)
-                .map((operatorInfo, index) => {
+                .map(({ name: operatorInfoName }, index) => {
                   const operatorDetail = existedOperators.find(
-                    ({ name }) => name === operatorInfo.name,
+                    ({ name }) => name === operatorInfoName,
                   )
                   return (
                     <div
@@ -243,10 +243,10 @@ const SheetOperator = ({
                       key={index}
                     >
                       <OperatorItem
-                        selected={checkOperatorSelected(operatorInfo.name)}
+                        selected={checkOperatorSelected(operatorInfoName)}
                         submitOperator={eventHandleProxy}
                         operator={operatorDetail}
-                        {...operatorInfo}
+                        name={operatorInfoName}
                       />
                     </div>
                   )

@@ -7,16 +7,14 @@ import { OperatorAvatar } from '../EditorOperator'
 import { SkillAboutProps, SkillAboutTrigger } from './SheetOperatorSkillAbout'
 
 export interface OperatorItemPorps extends CardProps, SkillAboutProps {
-  id: string
   name: string
   selected: boolean
   horizontal?: boolean
 }
 
 export const OperatorItem = ({
-  id,
-  selected,
   name,
+  selected,
   operator,
   submitOperator,
   horizontal,
@@ -26,8 +24,10 @@ export const OperatorItem = ({
     () => typeof submitOperator !== 'function',
     [submitOperator],
   )
-
-  const Avatar = useMemo(() => <OperatorAvatar id={id} size="large" />, [id])
+  const Avatar = useMemo(
+    () => <OperatorAvatar name={name} size="large" />,
+    [name],
+  )
   const OperatorName = useMemo(
     () => (
       <p

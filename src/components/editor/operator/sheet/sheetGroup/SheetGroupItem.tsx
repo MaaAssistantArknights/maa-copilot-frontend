@@ -6,7 +6,6 @@ import { UseFormSetError, useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
 import { CopilotDocV1 } from 'models/copilot.schema'
-import { OPERATORS } from 'models/operator'
 
 import { Group } from '../../EditorSheet'
 import { OperatorNoData } from '../SheetNoneData'
@@ -67,11 +66,6 @@ export const GroupItem = ({
             ? groupInfo.opers?.map((item) => (
                 <OperatorItem
                   key={item.name}
-                  id={
-                    OPERATORS.find(
-                      (opInfoitem) => opInfoitem.name === item.name,
-                    )?.id || ''
-                  }
                   operator={item}
                   name={item.name}
                   selected={false}

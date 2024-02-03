@@ -124,10 +124,7 @@ export const SkillAboutTrigger = ({
   )
   const SkillAboutTrigger = useMemo(
     () => (
-      <Tooltip2
-        content="点击进行技能相关设置"
-        disabled={operator ? false : true}
-      >
+      <Tooltip2 content="点击进行技能相关设置" disabled={!!operator}>
         <div
           className={clsx(
             'flex mt-3 text-gray-500 items-center text-xs',
@@ -157,7 +154,6 @@ export const SkillAboutTrigger = ({
     ),
     [operator],
   )
-
   return (
     <div
       onClick={(e) => {
@@ -165,7 +161,7 @@ export const SkillAboutTrigger = ({
       }}
       role="presentation"
     >
-      <Popover2 content={SkillAboutForm} disabled={!!operator}>
+      <Popover2 content={SkillAboutForm} disabled={!operator}>
         {SkillAboutTrigger}
       </Popover2>
     </div>
