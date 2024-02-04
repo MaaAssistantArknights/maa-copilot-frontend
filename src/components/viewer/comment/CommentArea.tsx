@@ -1,7 +1,8 @@
 import { Alert, Button, Card, H4, NonIdealState, Tag } from '@blueprintjs/core'
 
+import { useOperation } from 'apis/query'
 import clsx from 'clsx'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { find } from 'lodash-es'
 import {
   ReactNode,
@@ -58,6 +59,14 @@ export const CommentArea = withSuspensable(function ViewerComments({
       suspense: true,
     })
 
+  const auth = useAtomValue(authAtom)
+  const operation = useOperation({ id: operationId }).data?.data
+  // FIXME: 用户名可以重名，这里会让重名用户都显示置顶按钮，需要等后端支持 operation.uploaderId 后再修复
+  const operationOwned =
+    !!operation?.uploader &&
+    !!auth.username &&
+    operation.uploader === auth.username
+
   const [replyTo, setReplyTo] = useState<CommentInfo>()
 
   // clear replyTo if it's not in comments
@@ -86,6 +95,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
             key={comment.commentId}
             className="mt-3"
             comment={comment}
+            operationOwned={operationOwned}
           >
             {comment.subCommentsInfos.map((sub) => (
               <SubComment
@@ -136,10 +146,12 @@ export const CommentArea = withSuspensable(function ViewerComments({
 const MainComment = ({
   className,
   comment,
+  operationOwned,
   children,
 }: {
   className?: string
   comment: MainCommentInfo
+  operationOwned?: boolean
   children?: ReactNode
 }) => {
   return (
@@ -152,7 +164,7 @@ const MainComment = ({
       <div>
         <CommentHeader comment={comment} />
         <CommentContent comment={comment} />
-        <CommentActions comment={comment} />
+        <CommentActions comment={comment} operationOwned={operationOwned} />
       </div>
       {children}
     </Card>
@@ -240,9 +252,11 @@ const CommentContent = ({
 const CommentActions = ({
   className,
   comment,
+  operationOwned,
 }: {
   className?: string
   comment: CommentInfo
+  operationOwned?: boolean
 }) => {
   const [{ userId }] = useAtom(authAtom)
   const { replyTo, setReplyTo, reload } = useContext(CommentAreaContext)
@@ -287,7 +301,7 @@ const CommentActions = ({
         >
           回复
         </Button>
-        {userId === comment.uploaderId && isMainComment(comment) && (
+        {operationOwned && isMainComment(comment) && (
           <CommentTopButton comment={comment} />
         )}
         {userId === comment.uploaderId && (
