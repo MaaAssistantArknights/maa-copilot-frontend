@@ -60,6 +60,7 @@ export const EditorActionDocColor = ({
         onItemSelect={(item) => {
           onChange(item.value)
         }}
+        resetOnSelect={true}
       >
         <Button rightIcon="double-caret-vertical" onBlur={onBlur} ref={ref}>
           <Icon icon="full-circle" color={selected?.value} />

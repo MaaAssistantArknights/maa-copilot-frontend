@@ -117,3 +117,13 @@ export const requestRateComment = (
     },
   })
 }
+
+export const requestTopComment = (commentId: string, topping: boolean) => {
+  return jsonRequest<Response<string>>('/comments/topping', {
+    method: 'POST',
+    json: {
+      comment_id: commentId,
+      topping,
+    },
+  })
+}

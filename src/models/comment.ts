@@ -7,6 +7,7 @@ export interface MainCommentInfo {
   message: string
   uploadTime: string
   like: number
+  topping: boolean
   subCommentsInfos: SubCommentInfo[]
 }
 

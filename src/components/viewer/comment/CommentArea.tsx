@@ -1,7 +1,8 @@
 import { Alert, Button, Card, H4, NonIdealState, Tag } from '@blueprintjs/core'
 
+import { useOperation } from 'apis/query'
 import clsx from 'clsx'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { find } from 'lodash-es'
 import {
   ReactNode,
@@ -15,6 +16,7 @@ import {
 import {
   requestDeleteComment,
   requestRateComment,
+  requestTopComment,
   useComments,
 } from '../../../apis/comment'
 import {
@@ -57,6 +59,14 @@ export const CommentArea = withSuspensable(function ViewerComments({
       suspense: true,
     })
 
+  const auth = useAtomValue(authAtom)
+  const operation = useOperation({ id: operationId }).data?.data
+  // FIXME: 用户名可以重名，这里会让重名用户都显示置顶按钮，需要等后端支持 operation.uploaderId 后再修复
+  const operationOwned =
+    !!operation?.uploader &&
+    !!auth.username &&
+    operation.uploader === auth.username
+
   const [replyTo, setReplyTo] = useState<CommentInfo>()
 
   // clear replyTo if it's not in comments
@@ -85,6 +95,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
             key={comment.commentId}
             className="mt-3"
             comment={comment}
+            operationOwned={operationOwned}
           >
             {comment.subCommentsInfos.map((sub) => (
               <SubComment
@@ -135,18 +146,25 @@ export const CommentArea = withSuspensable(function ViewerComments({
 const MainComment = ({
   className,
   comment,
+  operationOwned,
   children,
 }: {
   className?: string
   comment: MainCommentInfo
+  operationOwned?: boolean
   children?: ReactNode
 }) => {
   return (
-    <Card className={clsx(className)}>
+    <Card
+      className={clsx(
+        className,
+        comment.topping && 'shadow-[0_0_0_1px_#2d72d2]',
+      )}
+    >
       <div>
         <CommentHeader comment={comment} />
         <CommentContent comment={comment} />
-        <CommentActions comment={comment} />
+        <CommentActions comment={comment} operationOwned={operationOwned} />
       </div>
       {children}
     </Card>
@@ -189,21 +207,34 @@ const SubComment = ({
 
 const CommentHeader = ({
   className,
-  comment: { uploader, uploaderId, uploadTime },
+  comment,
 }: {
   className?: string
   comment: CommentInfo
 }) => {
+  const { uploader, uploaderId, uploadTime } = comment
+  const topping = isMainComment(comment) ? comment.topping : false
   const [{ userId }] = useAtom(authAtom)
 
   return (
-    <div className={clsx(className, 'mb-2 flex items-center text-xs')}>
+    <div
+      className={clsx(
+        className,
+        'mb-2 flex items-center text-xs',
+        'leading-[20px]', // 在无 <Tag> 时保持高度一致
+      )}
+    >
       <div className={clsx('mr-2', userId === uploaderId && 'font-bold')}>
         {uploader}
       </div>
       <div className="text-slate-500" title={formatDateTime(uploadTime)}>
         {formatRelativeTime(uploadTime)}
       </div>
+      {topping && (
+        <Tag minimal className="ml-2" intent="primary" icon="pin">
+          置顶
+        </Tag>
+      )}
     </div>
   )
 }
@@ -221,9 +252,11 @@ const CommentContent = ({
 const CommentActions = ({
   className,
   comment,
+  operationOwned,
 }: {
   className?: string
   comment: CommentInfo
+  operationOwned?: boolean
 }) => {
   const [{ userId }] = useAtom(authAtom)
   const { replyTo, setReplyTo, reload } = useContext(CommentAreaContext)
@@ -268,6 +301,9 @@ const CommentActions = ({
         >
           回复
         </Button>
+        {operationOwned && isMainComment(comment) && (
+          <CommentTopButton comment={comment} />
+        )}
         {userId === comment.uploaderId && (
           <Button
             minimal
@@ -345,5 +381,37 @@ const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
         onClick={() => rate(CommentRating.Dislike)}
       />
     </>
+  )
+}
+
+const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
+  const { commentId, topping } = comment
+  const { reload } = useContext(CommentAreaContext)
+
+  const [pending, setPending] = useState(false)
+
+  const top = async () => {
+    if (pending) {
+      return
+    }
+
+    setPending(true)
+
+    try {
+      await wrapErrorMessage(
+        (e) => '置顶失败：' + formatError(e),
+        requestTopComment(commentId, !topping),
+      )
+
+      reload()
+    } finally {
+      setPending(false)
+    }
+  }
+
+  return (
+    <Button minimal small className="!font-normal !text-[13px]" onClick={top}>
+      {topping ? '取消置顶' : '置顶'}
+    </Button>
   )
 }

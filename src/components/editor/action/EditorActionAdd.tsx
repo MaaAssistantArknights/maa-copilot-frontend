@@ -14,6 +14,8 @@ import {
 import { CardTitle } from 'components/CardTitle'
 import { FormField, FormField2 } from 'components/FormField'
 import { EditorResetButton } from 'components/editor/EditorResetButton'
+import { FormError } from 'components/editor/FormError'
+import { FormSubmitButton } from 'components/editor/FormSubmitButton'
 import { EditorActionDocColor } from 'components/editor/action/EditorActionDocColor'
 import {
   EditorActionExecPredicateCooling,
@@ -45,7 +47,7 @@ export interface EditorActionAddProps {
     setError: UseFormSetError<CopilotDocV1.Action>,
   ) => boolean
   onCancel: () => void
-  action?: CopilotDocV1.Action
+  editingAction?: CopilotDocV1.Action
 }
 
 const defaultAction: DeepPartial<CopilotDocV1.Action> = {
@@ -59,12 +61,13 @@ const defaultMoveCameraAction: DeepPartial<CopilotDocV1.ActionMoveCamera> = {
 
 export const EditorActionAdd = ({
   control: operationControl,
-  action,
+  editingAction,
   onSubmit: _onSubmit,
   onCancel,
 }: EditorActionAddProps) => {
-  const isNew = !action
+  const isNew = !editingAction
   const operatorGroups = useWatch({ control: operationControl, name: 'groups' })
+  const operators = useWatch({ control: operationControl, name: 'opers' })
 
   const {
     control,
@@ -91,27 +94,79 @@ export const EditorActionAdd = ({
     ...defaultAction,
     // to prevent layout jumping, we persist the action type on reset
     type,
-
     ...(type === 'MoveCamera' ? defaultMoveCameraAction : null),
   }
 
   useEffect(() => {
-    reset(action || resettingValues)
-  }, [reset, action])
+    if (editingAction) {
+      if ('type' in editingAction) {
+        setValue('type', editingAction.type)
+      }
+      // 修复切换type的时候，数据丢失的问题
+      // 原因：因为切换type的时候会触发页面绘制，导致form和对应的item组件丢失绑定，
+      // 当重置时没办法正常清空item组件内部的值。
+      // 放入setTimeout中，延迟赋值，就可以避免丢失绑定的问题
+      setTimeout(() => {
+        // 修复先点击“部署”动作的编辑按钮，再连续点击“二倍速”动作的编辑按钮，“部署”的数据丢失
+        // 原因：通过reset方式赋值给form，相当于将action变量跟form绑定，
+        // 当再通过reset(undefined)后，会将action的值置为null，
+        // 通过setValue的方式，不会将action和form绑定
+        if ('doc' in editingAction) {
+          setValue('doc', editingAction.doc)
+        }
+        if ('docColor' in editingAction) {
+          setValue('docColor', editingAction.docColor)
+        }
+        if ('costs' in editingAction) {
+          setValue('costs', editingAction.costs)
+        }
+        if ('costChanges' in editingAction) {
+          setValue('costChanges', editingAction.costChanges)
+        }
+        if ('kills' in editingAction) {
+          setValue('kills', editingAction.kills)
+        }
+        if ('cooling' in editingAction) {
+          setValue('cooling', editingAction.cooling)
+        }
+        if ('preDelay' in editingAction) {
+          setValue('preDelay', editingAction.preDelay)
+        }
+        if ('rearDelay' in editingAction) {
+          setValue('rearDelay', editingAction.rearDelay)
+        }
+        if ('name' in editingAction) {
+          setValue('name', editingAction.name)
+        }
+        if ('direction' in editingAction) {
+          setValue('direction', editingAction.direction)
+        }
+        if ('location' in editingAction) {
+          setValue('location', editingAction.location)
+        }
+        if ('skillUsage' in editingAction) {
+          setValue('skillUsage', editingAction.skillUsage)
+        }
+        if ('distance' in editingAction) {
+          setValue('distance', editingAction.distance)
+        }
+      }, 0)
+    } else {
+      reset(resettingValues)
+    }
+  }, [editingAction])
 
   useEffect(() => {
-    // fill in default values for MoveCamera
-    if (type === 'MoveCamera' && !action) {
-      // looks like the passed object will be mutated somehow
-      reset({ ...defaultMoveCameraAction })
+    if (type === 'MoveCamera') {
+      reset(resettingValues)
     }
-  }, [reset, action, type])
+  }, [type])
 
   useEffect(() => {
     setValue(
       'skillTimes',
       skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
-        ? (action as CopilotDocV1.ActionSkillUsage)?.skillTimes ?? 1
+        ? (editingAction as CopilotDocV1.ActionSkillUsage)?.skillTimes ?? 1
         : undefined,
     )
   }, [skillUsage])
@@ -128,8 +183,6 @@ export const EditorActionAdd = ({
       reset(resettingValues)
     }
   })
-
-  const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 
   return (
     <form onSubmit={onSubmit}>
@@ -196,6 +249,7 @@ export const EditorActionAdd = ({
               <EditorOperatorName
                 shouldUnregister
                 groups={operatorGroups}
+                operators={operators}
                 control={control}
                 name="name"
                 rules={{
@@ -341,9 +395,9 @@ export const EditorActionAdd = ({
         </EditorActionModule>
 
         <div className="mt-4 flex">
-          <Button intent="primary" type="submit" icon={isNew ? 'add' : 'edit'}>
+          <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
             {isNew ? '添加' : '保存'}
-          </Button>
+          </FormSubmitButton>
 
           {!isNew && (
             <Button icon="cross" className="ml-2" onClick={onCancel}>
@@ -352,11 +406,7 @@ export const EditorActionAdd = ({
           )}
         </div>
 
-        {globalError && (
-          <Callout intent="danger" className="mt-2">
-            {globalError}
-          </Callout>
-        )}
+        <FormError errors={errors} />
       </Card>
     </form>
   )
