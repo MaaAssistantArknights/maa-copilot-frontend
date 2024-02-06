@@ -1,11 +1,4 @@
-import {
-  Divider,
-  H3,
-  H4,
-  Icon,
-  IconName,
-  MaybeElement,
-} from '@blueprintjs/core'
+import { Divider, H3, Icon, IconName, MaybeElement } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { ReactNode, useMemo } from 'react'
@@ -31,11 +24,9 @@ export const SheetContainerSkeleton = ({
     () => (
       <>
         <Icon icon={icon} size={mini ? 16 : 20} />
-        {mini ? (
-          <H4 className="p-0 m-0 ml-3">{title}</H4>
-        ) : (
-          <H3 className="p-0 m-0 ml-3">{title}</H3>
-        )}
+        <H3 className={clsx('p-0 m-0 ml-3 truncate', mini && '!text-lg')}>
+          {title}
+        </H3>
       </>
     ),
     [mini],
