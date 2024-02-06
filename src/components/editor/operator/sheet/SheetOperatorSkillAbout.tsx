@@ -54,7 +54,6 @@ export const SkillAboutTrigger = ({
   )
 
   const submitHandle = ({ skill, skillTimes, skillUsage }: Operator) => {
-    console.log(needSkillTime ? skillTimes || 1 : undefined)
     submitOperator!('skill', {
       ...operator!,
       ...{

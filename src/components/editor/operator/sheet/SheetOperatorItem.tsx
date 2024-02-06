@@ -10,6 +10,7 @@ export interface OperatorItemPorps extends CardProps, SkillAboutProps {
   name: string
   selected: boolean
   horizontal?: boolean
+  scaleDisable?: boolean
 }
 
 export const OperatorItem = ({
@@ -18,6 +19,7 @@ export const OperatorItem = ({
   operator,
   submitOperator,
   horizontal,
+  scaleDisable,
   ...cardProps
 }: OperatorItemPorps) => {
   const readOnly = useMemo(
@@ -44,7 +46,9 @@ export const OperatorItem = ({
   const OperatorSkill = useMemo(
     () => (
       <>
-        {!readOnly && <SkillAboutTrigger {...{ operator, submitOperator }} />}
+        {!readOnly && selected && (
+          <SkillAboutTrigger {...{ operator, submitOperator }} />
+        )}
       </>
     ),
     [readOnly, operator],
@@ -54,7 +58,7 @@ export const OperatorItem = ({
     <Card
       className={clsx(
         'flex items-center w-full h-full relative cursor-pointer',
-        selected && 'scale-90 bg-gray-200',
+        selected && !scaleDisable && 'scale-90 bg-gray-200',
         !horizontal && 'flex-col justify-center',
       )}
       interactive={!selected}

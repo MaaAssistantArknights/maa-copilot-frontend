@@ -5,9 +5,9 @@ import { fileExists, getOperators } from './shared'
 
 const outDir = 'public/assets/prof-icons'
 
-async function getSubProfIconsFromPrtsWiki() {
+async function getProfIconsFromPrtsWiki() {
   console.info('fetching all sub-profession icons from prts wiki...')
-  const baseUrl = `https://prts.wiki/api.php?action=query&list=allimages&aiprefix=职业分支图标&ailimit=500&format=json`
+  const baseUrl = `https://prts.wiki/api.php?action=query&format=json&list=allimages&continue=-%7C%7C&aiprefix=%E5%9B%BE%E6%A0%87_%E8%81%8C%E4%B8%9A_%E9%80%8F%E6%98%8E_`
   const resp = (await (await fetch(baseUrl)).json()) as any
   const results = resp.query.allimages
 
@@ -26,15 +26,15 @@ async function main() {
 
   const [{ professions }, files] = await Promise.all([
     getOperators(),
-    getSubProfIconsFromPrtsWiki(),
+    getProfIconsFromPrtsWiki(),
   ])
 
   console.info('all metadata fetched.')
 
-  const subProfs = professions.flatMap((p) => p.sub)
-
-  for (const { id, name } of subProfs) {
-    const url = files.find((el) => el.name === `职业分支图标_${name}.png`)?.url
+  for (const { id, name } of professions) {
+    const url = files.find(
+      (el) => el.name === `图标_职业_透明_${name}.png`,
+    )?.url
     if (!url) {
       console.error(`${name}: cannot found icon`)
       continue

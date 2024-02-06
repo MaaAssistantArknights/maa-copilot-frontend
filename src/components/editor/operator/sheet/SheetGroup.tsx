@@ -324,7 +324,7 @@ const EditorGroupName = ({
 }
 
 export const SheetGroupContainer = (sheetGroupProps: SheetGroupProps) => (
-  <SheetContainerSkeleton title="设置分组" icon="people">
+  <SheetContainerSkeleton title="设置干员组" icon="people">
     <SheetGroup {...sheetGroupProps} />
   </SheetContainerSkeleton>
 )

@@ -14,7 +14,7 @@
     "lint:fix": "npm-run-all --parallel lint:fix:eslint lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix src/**/*",
     "lint:fix:prettier": "prettier --write src/**/*",
-    "scripts:update": "npm-run-all --parallel scripts:update-operators scripts:update-operator-avatars",
+    "scripts:update": "npm-run-all --parallel scripts:update-operators scripts:update-operator-avatars scripts:update-prof-icons",
     "scripts:update-operators": "yarn install && esno scripts/update-operators.ts",
     "scripts:update-operator-avatars": "yarn install && esno scripts/update-operator-avatars.ts",
     "scripts:update-prof-icons": "yarn install && esno scripts/update-prof-icons.ts"

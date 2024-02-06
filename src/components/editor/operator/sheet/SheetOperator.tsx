@@ -1,11 +1,4 @@
-import {
-  Button,
-  ButtonProps,
-  Divider,
-  H6,
-  Icon,
-  Intent,
-} from '@blueprintjs/core'
+import { Button, Divider, H4, H5, H6, Intent } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
@@ -29,6 +22,9 @@ export interface SheetOperatorProps {
   removeOperator: UseFieldArrayRemove
   miniMedia?: boolean
 }
+
+const paginationSize = 60
+
 const SheetOperator = ({
   submitOperator,
   existedOperators,
@@ -36,21 +32,15 @@ const SheetOperator = ({
   existedGroups,
   miniMedia,
 }: SheetOperatorProps) => {
-  const defaultSubProf = useMemo(
-    () => [
-      { id: 'all', name: '全部' },
-      { id: 'selected', name: '已选择' },
-    ],
-    [],
-  )
-  const formattedProfessions = useMemo(
+  const operatorScrollRef = useRef<HTMLDivElement>(null)
+
+  const defaultProf = useMemo(
     () => [
       {
         id: 'all',
         name: '全部',
         sub: [],
       },
-      ...PROFESSIONS,
       {
         id: 'others',
         name: '其它',
@@ -59,6 +49,17 @@ const SheetOperator = ({
     ],
     [],
   )
+  const defaultSubProf = useMemo(
+    () => [
+      { id: 'all', name: '全部' },
+      { id: 'selected', name: '已选择' },
+    ],
+    [],
+  )
+  const formattedProfessions = useMemo(() => {
+    const [all, ...other] = defaultProf
+    return [all, ...PROFESSIONS, ...other]
+  }, [])
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
@@ -153,44 +154,6 @@ const SheetOperator = ({
     })
   }
 
-  const ProfSelect = useMemo(
-    () => (
-      <div className="flex flex-row-reverse pt-1 shrink-0">
-        <div>
-          {formattedProfessions.map((prof) => (
-            <ButtonItem
-              title={prof.name}
-              key={prof.id}
-              active={prof.id === selectedProf.id}
-              miniMedia={!!miniMedia}
-              isSub={false}
-              id={prof.id}
-              onClick={() => {
-                setSelectedProf(prof)
-                setSelectedSubProf(defaultSubProf[0])
-              }}
-            />
-          ))}
-        </div>
-        <div className="ml-1">
-          {formattedSubProfessions?.map((subProf) => (
-            <ButtonItem
-              id={subProf.id}
-              isSub={false}
-              title={subProf.name}
-              miniMedia={!!miniMedia}
-              fill
-              key={subProf.id}
-              active={subProf.id === selectedSubProf.id}
-              onClick={() => setSelectedSubProf(subProf)}
-            />
-          ))}
-        </div>
-      </div>
-    ),
-    [selectedSubProf, selectedProf],
-  )
-
   const SelectAll = useMemo(
     () => (
       <>
@@ -207,41 +170,134 @@ const SheetOperator = ({
     [selectedAllState, selectAll],
   )
 
-  // optimization of operators' list use simple delay slice
-  const [sliceIndex, setSliceIndex] = useState(50)
-  const sliceTimer = useRef<number | undefined>(undefined)
-  useEffect(() => {
-    if (operatorsGroupedByProf.length > sliceIndex)
-      sliceTimer.current = window.setTimeout(
-        () => setSliceIndex(operatorsGroupedBySubProf.length),
-        100,
-      )
-    else {
-      clearTimeout(sliceTimer.current)
-      setSliceIndex(50)
-    }
-  }, [operatorsGroupedBySubProf.length])
+  // pagination about
+  const [pageIndex, setPageIndex] = useState(0)
+  const [lastIndex, noMore, backToTop, canEclipse] = useMemo(() => {
+    const lastIndex = (pageIndex + 1) * paginationSize
+    return [
+      lastIndex,
+      lastIndex >= operatorsGroupedBySubProf.length,
+      lastIndex > paginationSize,
+      operatorsGroupedBySubProf.length > paginationSize,
+    ]
+  }, [pageIndex, operatorsGroupedBySubProf.length])
+
+  const resetPaginationState = () => {
+    setPageIndex(0)
+    operatorScrollRef?.current?.scrollIntoView()
+  }
+
+  useEffect(resetPaginationState, [selectedProf, selectedSubProf])
+
+  const BackToTop = useMemo(
+    () =>
+      backToTop && (
+        <Button
+          className="absolute right-3 bottom-3"
+          minimal
+          icon="symbol-triangle-up"
+          title="回到顶部"
+          onClick={resetPaginationState}
+        />
+      ),
+    [backToTop],
+  )
+
+  const ShowMoreButton = useMemo(
+    () => (
+      <div className="flex items-center justify-center pt-3 cursor-default">
+        {noMore ? (
+          <>
+            <H6>已经展示全部干员了</H6>
+            {canEclipse && (
+              <H6
+                className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
+                onClick={resetPaginationState}
+              >
+                收起
+              </H6>
+            )}
+          </>
+        ) : (
+          <H6
+            className="cursor-pointer mx-auto text-sm text-gray-500 hover:text-inherit hover:underline"
+            onClick={() => setPageIndex(pageIndex + 1)}
+          >
+            显示更多干员
+          </H6>
+        )}
+      </div>
+    ),
+    [noMore, canEclipse, pageIndex],
+  )
+
+  const ProfSelect = useMemo(
+    () => (
+      <div className="flex flex-row-reverse h-screen sticky top-0 relative">
+        <div className="h-full flex flex-col mr-0.5 w-12">
+          {formattedProfessions.map((prof) => (
+            <div
+              key={prof.id}
+              className="grow cursor-pointer relative flex justify-center items-center"
+              title={prof.name}
+              onClick={() => setSelectedProf(prof)}
+              role="presentation"
+            >
+              {defaultProf.find(({ id }) => id === prof.id) ? (
+                <H5>{prof.name}</H5>
+              ) : (
+                <img
+                  className="invert dark:invert-0"
+                  src={'/assets/prof-icons/' + prof.id + '.png'}
+                  alt={prof.name}
+                  title={prof.name}
+                />
+              )}
+              {prof.id === selectedProf.id && (
+                <div className="h-full w-1 bg-black dark:bg-white absolute top-0 right-full rounded" />
+              )}
+            </div>
+          ))}
+        </div>
+        <Divider />
+        <div className="mr-1 h-full flex flex-col justify-center items-end">
+          {formattedSubProfessions?.map((subProf) => (
+            <H4
+              key={subProf.id}
+              className={clsx(
+                'truncate cursor-pointer my-3 opacity-50 hover:underline hover:text-black hover:opacity-75',
+                subProf.id === selectedSubProf.id && 'opacity-100 underline',
+              )}
+              onClick={() => setSelectedSubProf(subProf)}
+            >
+              {subProf.name}
+            </H4>
+          ))}
+        </div>
+        {BackToTop}
+      </div>
+    ),
+    [selectedSubProf, selectedProf, backToTop],
+  )
 
   return (
-    <div className="flex relative">
-      {SelectAll}
-      <div className="flex-auto">
-        <div className="sticky top-0 h-screen">
-          {operatorsGroupedBySubProf.length ? (
+    <div className="flex h-full">
+      <div className="flex-auto px-2" ref={operatorScrollRef}>
+        {operatorsGroupedBySubProf.length ? (
+          <>
             <div
               key="operatorContainer"
-              className="flex flex-wrap flex-col p-1 items-start content-start h-full min-h-500px overflow-x-auto overscroll-contain"
-              onWheel={(e) => (e.currentTarget.scrollLeft += e.deltaY)}
+              className="flex flex-wrap items-start content-start overscroll-contain relative"
             >
               {operatorsGroupedBySubProf
-                .slice(0, sliceIndex)
+                .slice(0, lastIndex)
                 .map(({ name: operatorInfoName }, index) => {
                   const operatorDetail = existedOperators.find(
                     ({ name }) => name === operatorInfoName,
                   )
                   return (
                     <div
-                      className="flex items-center w-32 h-30 flex-0"
+                      className="flex items-center w-32 h-32 flex-0"
                       key={index}
                     >
                       <OperatorItem
@@ -254,12 +310,13 @@ const SheetOperator = ({
                   )
                 })}
             </div>
-          ) : (
-            OperatorNoData
-          )}
-        </div>
+            {ShowMoreButton}
+          </>
+        ) : (
+          OperatorNoData
+        )}
       </div>
-      <Divider />
+      {/* <Divider /> */}
       {ProfSelect}
     </div>
   )
@@ -268,39 +325,9 @@ const SheetOperator = ({
 export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
 ) => (
-  <SheetContainerSkeleton title="选择干员" icon="person">
-    <SheetOperator {...sheetOperatorProp} />
-  </SheetContainerSkeleton>
-)
-
-interface MenuItemProps extends ButtonProps {
-  title: string
-  miniMedia: boolean
-  id: string
-  isSub: boolean
-}
-
-const ButtonItem = ({
-  title,
-  miniMedia,
-  id,
-  isSub,
-  ...buttonProps
-}: MenuItemProps) => (
-  <Button {...buttonProps} className="text-center" minimal>
-    {isSub && id !== 'all' && id !== 'selected' ? (
-      <img
-        className="rounded-md object-cover bp4-elevation-1 w-5 m-auto"
-        src={'/assets/prof-icons/' + id + '.png'}
-        alt={id}
-        loading="lazy"
-      />
-    ) : (
-      <Icon
-        icon="people"
-        className="flex items-center justify-center font-bold text-2xl text-slate-300 select-none"
-      />
-    )}
-    <p className={clsx(miniMedia && 'w-5 truncate')}>{title}</p>
-  </Button>
+  <div>
+    <SheetContainerSkeleton title="选择干员" icon="person">
+      <SheetOperator {...sheetOperatorProp} />
+    </SheetContainerSkeleton>
+  </div>
 )

@@ -1,4 +1,14 @@
-import { Alert, Button, Card, Collapse, Icon, Intent } from '@blueprintjs/core'
+import {
+  Alert,
+  Button,
+  Card,
+  Collapse,
+  Icon,
+  Intent,
+  Menu,
+  MenuItem,
+} from '@blueprintjs/core'
+import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useMemo, useRef, useState } from 'react'
@@ -68,7 +78,8 @@ export const GroupItem = ({
                   key={item.name}
                   operator={item}
                   name={item.name}
-                  selected={false}
+                  selected
+                  scaleDisable
                   interactive={false}
                   horizontal
                   submitOperator={changeGroupedOperatorSkillHandle}
@@ -97,8 +108,10 @@ export const GroupItem = ({
     ),
     [groupInfo.name],
   )
-  const GroupOperations = useMemo(
-    () => (
+  const GroupOperations = useMemo(() => {
+    const pinText = pinned ? `从收藏移除` : `添加至收藏`
+    const pinIcon = pinned ? 'star' : 'star-empty'
+    return (
       <div className="ml-auto flex items-center">
         <CollapseButton
           isCollapse={showOperators}
@@ -117,21 +130,27 @@ export const GroupItem = ({
             onClick={createOrDeleteGroup}
           />
         )}
-        {editable && (
-          <Button
-            minimal
-            icon={pinned ? 'star' : 'star-empty'}
-            title={pinned ? `从收藏移除` : `添加至收藏`}
-            onClick={() => eventHandleProxy('pin', groupInfo)}
-          />
+        {(editable || pinned) && (
+          <Popover2
+            content={
+              <Menu className="p-0">
+                <MenuItem
+                  text={pinText}
+                  icon={pinIcon}
+                  onClick={() => eventHandleProxy('pin', groupInfo)}
+                />
+              </Menu>
+            }
+          >
+            <Button minimal icon={pinIcon} title={pinText} />
+          </Popover2>
         )}
       </div>
-    ),
-    [showOperators, pinned, exist],
-  )
+    )
+  }, [showOperators, pinned, exist])
 
   return (
-    <Card interactive className="mt-1 mx-0.5">
+    <Card interactive={!exist} className="mt-1 mx-0.5">
       <div className="flex items-center">
         {GroupName}
         {GroupOperations}
