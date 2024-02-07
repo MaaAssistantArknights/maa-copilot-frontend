@@ -1,6 +1,6 @@
 import { Button, Drawer, DrawerSize } from '@blueprintjs/core'
 
-import { useMemo, useState } from 'react'
+import { FC, useMemo, useState } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -21,7 +21,7 @@ const EditorOperatorSheet = (sheetProps: EditorSheetProps) => (
   </article>
 )
 
-export const EditorSheetTrigger = (sheetProps: EditorSheetProps) => {
+export const EditorSheetTrigger: FC<EditorSheetProps> = (sheetProps) => {
   const [open, setOpen] = useState(false)
   const miniMedia = useMemo(() => window.innerWidth < 600, [])
   return (

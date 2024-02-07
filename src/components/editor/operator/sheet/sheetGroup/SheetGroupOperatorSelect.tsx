@@ -13,8 +13,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useMemo, useState } from 'react'
-import { UseFormSetError } from 'react-hook-form'
+import { FC, useMemo, useState } from 'react'
 
 import { Group, Operator } from '../../EditorSheet'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
@@ -25,11 +24,7 @@ export interface SheetGroupOperatorSelectProp {
   existedOperator?: Operator[]
   existedGroup?: Group[]
   groupInfo: Group
-  eventHandleProxy: (
-    type: EventType,
-    value: Group,
-    setError?: UseFormSetError<Group>,
-  ) => void
+  eventHandleProxy: (type: EventType, value: Group) => void
 }
 
 const SheetGroupOperatorSelect = ({
@@ -234,9 +229,9 @@ const SheetGroupOperatorSelect = ({
   )
 }
 
-export const SheetGroupOperatorSelectTrigger = (
-  sheetGroupOperatorSelectProp: SheetGroupOperatorSelectProp,
-) => (
+export const SheetGroupOperatorSelectTrigger: FC<
+  SheetGroupOperatorSelectProp
+> = (sheetGroupOperatorSelectProp) => (
   <Popover2
     className="w-full mt-1"
     content={<SheetGroupOperatorSelect {...sheetGroupOperatorSelectProp} />}
