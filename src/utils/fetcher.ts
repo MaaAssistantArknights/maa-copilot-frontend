@@ -4,15 +4,15 @@ import unfetch from 'unfetch'
 
 import { Response } from 'models/network'
 
-import { envUseProductionApi } from './envvar'
-
 const fetch = window.fetch || unfetch
 
 export class NetworkError extends Error {}
 
-const baseURL = envUseProductionApi
-  ? 'https://prts.maa.plus'
-  : 'http://localhost:5259'
+if (!import.meta.env.VITE_API) {
+  throw new Error('env var VITE_API is not set')
+}
+
+const baseURL = import.meta.env.VITE_API as string
 
 export const FETCHER_CONFIG: {
   apiToken?: () => Promise<string | undefined>
