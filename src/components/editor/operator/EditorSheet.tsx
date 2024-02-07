@@ -14,14 +14,12 @@ type EditorSheetProps = SheetOperatorProps & SheetGroupProps
 export type Group = CopilotDocV1.Group
 export type Operator = CopilotDocV1.Operator
 
-const EditorOperatorSheet = (sheetProps: EditorSheetProps) => {
-  return (
-    <div className="overflow-y-auto">
-      <SheetOperatorContainer {...sheetProps} />
-      <SheetGroupContainer {...sheetProps} />
-    </div>
-  )
-}
+const EditorOperatorSheet = (sheetProps: EditorSheetProps) => (
+  <article className="overflow-y-auto">
+    <SheetOperatorContainer {...sheetProps} />
+    <SheetGroupContainer {...sheetProps} />
+  </article>
+)
 
 export const EditorSheetTrigger = (sheetProps: EditorSheetProps) => {
   const [open, setOpen] = useState(false)

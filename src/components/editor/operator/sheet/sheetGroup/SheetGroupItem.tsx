@@ -108,7 +108,8 @@ export const GroupItem = ({
     ),
     [groupInfo.name],
   )
-  const GroupOperations = useMemo(() => {
+
+  const GroupActions = useMemo(() => {
     const pinText = pinned ? `从收藏移除` : `添加至收藏`
     const pinIcon = pinned ? 'star' : 'star-empty'
     return (
@@ -132,6 +133,7 @@ export const GroupItem = ({
         )}
         {(editable || pinned) && (
           <Popover2
+            disabled={!pinned}
             content={
               <Menu className="p-0">
                 <MenuItem
@@ -142,18 +144,25 @@ export const GroupItem = ({
               </Menu>
             }
           >
-            <Button minimal icon={pinIcon} title={pinText} />
+            <Button
+              minimal
+              icon={pinIcon}
+              title={pinText}
+              onClick={
+                pinned ? undefined : () => eventHandleProxy('pin', groupInfo)
+              }
+            />
           </Popover2>
         )}
       </div>
     )
-  }, [showOperators, pinned, exist])
+  }, [showOperators, pinned, exist, eventHandleProxy])
 
   return (
     <Card interactive={!exist} className="mt-1 mx-0.5">
       <div className="flex items-center">
         {GroupName}
-        {GroupOperations}
+        {GroupActions}
       </div>
       {OperatorsPart}
     </Card>

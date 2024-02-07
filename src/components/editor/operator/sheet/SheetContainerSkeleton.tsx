@@ -32,15 +32,15 @@ export const SheetContainerSkeleton = ({
     [mini],
   )
   return (
-    <div className={className}>
-      <div className={clsx('flex items-center pl-3', mini ? 'my-1' : 'my-5')}>
-        <div className="flex items-center">
-          {StaticTitle}
-          {rightOptions}
-        </div>
-      </div>
+    <section className={className}>
+      <header
+        className={clsx('flex items-center pl-3', mini ? 'my-1' : 'my-5')}
+      >
+        {StaticTitle}
+        {rightOptions}
+      </header>
       {!mini && <Divider />}
       {children}
-    </div>
+    </section>
   )
 }
