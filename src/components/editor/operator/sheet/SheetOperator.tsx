@@ -257,7 +257,7 @@ const SheetOperator = ({
             className="cursor-pointer mx-auto text-sm text-gray-500 hover:text-inherit hover:underline"
             onClick={() => setPageIndex(pageIndex + 1)}
           >
-            显示更多干员
+            显示更多干员({operatorsGroupedBySubProf.length - lastIndex})
           </H6>
         )}
       </div>
@@ -384,9 +384,7 @@ const SheetOperator = ({
 export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
 ) => (
-  <div>
-    <SheetContainerSkeleton title="选择干员" icon="person">
-      <SheetOperator {...sheetOperatorProp} />
-    </SheetContainerSkeleton>
-  </div>
+  <SheetContainerSkeleton title="选择干员" icon="person">
+    <SheetOperator {...sheetOperatorProp} />
+  </SheetContainerSkeleton>
 )
