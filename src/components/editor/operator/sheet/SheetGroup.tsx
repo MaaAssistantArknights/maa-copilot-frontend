@@ -171,38 +171,8 @@ const SheetGroup = ({
 
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
 
-  const FavCoverAlert = useMemo(
-    () => (
-      <Alert
-        isOpen={!!coverGroup}
-        confirmButtonText="是"
-        cancelButtonText="否"
-        icon="error"
-        intent={Intent.DANGER}
-        onConfirm={() => updateFavGroup(coverGroup as Group)}
-        onClose={() => setCoverGroup(undefined)}
-      >
-        <div>
-          <H5>收藏干员组: </H5>
-          <p>检测到同名的已收藏干员组 {coverGroup?.name}，是否覆盖？</p>
-        </div>
-      </Alert>
-    ),
-    [coverGroup?.name],
-  )
-
-  const GroupCount = useMemo(
-    () => (
-      <H6 className="my-2 text-center">
-        已显示全部 {existedGroups.length} 个干员组
-      </H6>
-    ),
-    [existedGroups.length],
-  )
-
   return (
     <>
-      {FavCoverAlert}
       <div className="flex px-1">
         <div className="flex-1 sticky top-0 h-screen flex flex-col">
           <div className="grow overflow-y-auto">
@@ -230,7 +200,9 @@ const SheetGroup = ({
                         eventHandleProxy={eventHandleProxy}
                       />
                     ))}
-                    {GroupCount}
+                    <H6 className="my-2 text-center">
+                      已显示全部 {existedGroups.length} 个干员组
+                    </H6>
                   </>
                 ) : (
                   GroupNoData
@@ -275,6 +247,20 @@ const SheetGroup = ({
           </SheetContainerSkeleton>
         </div>
       </div>
+      <Alert
+        isOpen={!!coverGroup}
+        confirmButtonText="是"
+        cancelButtonText="否"
+        icon="error"
+        intent={Intent.DANGER}
+        onConfirm={() => updateFavGroup(coverGroup as Group)}
+        onClose={() => setCoverGroup(undefined)}
+      >
+        <div>
+          <H5>收藏干员组: </H5>
+          <p>检测到同名的已收藏干员组 {coverGroup?.name}，是否覆盖？</p>
+        </div>
+      </Alert>
     </>
   )
 }
@@ -298,8 +284,8 @@ const EditorGroupName = ({
     }
   }
 
-  const InputPart = useMemo(
-    () => (
+  return (
+    <div className="flex px-3 items-center">
       <InputGroup
         type="text"
         value={groupName}
@@ -307,11 +293,6 @@ const EditorGroupName = ({
         onChange={(e) => setGroupName(e.target.value)}
         fill
       />
-    ),
-    [groupName],
-  )
-  const OperationButton = useMemo(
-    () => (
       <div className="flex items-center">
         <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
         <Button
@@ -321,14 +302,6 @@ const EditorGroupName = ({
           onClick={() => setGroupName('')}
         />
       </div>
-    ),
-    [addGroupHandle],
-  )
-
-  return (
-    <div className="flex px-3 items-center">
-      {InputPart}
-      {OperationButton}
     </div>
   )
 }

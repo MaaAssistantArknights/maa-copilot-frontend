@@ -22,37 +22,7 @@ export const OperatorItem = ({
   scaleDisable,
   ...cardProps
 }: OperatorItemPorps) => {
-  const readOnly = useMemo(
-    () => typeof submitOperator !== 'function',
-    [submitOperator],
-  )
-  const Avatar = useMemo(
-    () => <OperatorAvatar name={name} size="large" />,
-    [name],
-  )
-  const OperatorName = useMemo(
-    () => (
-      <p
-        className={clsx(
-          'font-bold leading-none text-center mt-3 truncate',
-          horizontal && 'mt-0 ml-1 mr-auto',
-        )}
-      >
-        {name}
-      </p>
-    ),
-    [name],
-  )
-  const OperatorSkill = useMemo(
-    () => (
-      <>
-        {!readOnly && selected && (
-          <SkillAboutTrigger {...{ operator, submitOperator }} />
-        )}
-      </>
-    ),
-    [readOnly, operator],
-  )
+  const readOnly = useMemo(() => typeof submitOperator !== 'function', [])
 
   return (
     <Card
@@ -70,10 +40,19 @@ export const OperatorItem = ({
       {...cardProps}
     >
       <>
-        {Avatar}
-        {OperatorName}
+        <OperatorAvatar name={name} size="large" />
+        <p
+          className={clsx(
+            'font-bold leading-none text-center mt-3 truncate',
+            horizontal && 'mt-0 ml-1 mr-auto',
+          )}
+        >
+          {name}
+        </p>
       </>
-      {OperatorSkill}
+      {!readOnly && selected && (
+        <SkillAboutTrigger {...{ operator, submitOperator }} />
+      )}
     </Card>
   )
 }

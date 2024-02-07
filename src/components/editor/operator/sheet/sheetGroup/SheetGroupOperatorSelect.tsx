@@ -65,72 +65,118 @@ const SheetGroupOperatorSelect = ({
     })
   }
 
-  const GroupedOperatorsPart = useMemo(
-    () => (
-      <div className="flex flex-wrap">
-        {groupInfo.opers?.map((item) => (
-          <div className="w-1/4 relative p-0.5" key={item.name}>
-            <OperatorItem
-              name={item.name}
-              selected={checkGroupedOperator(item.name)}
-              onClick={() => groupedOperatorHandle(item)}
+  return (
+    <SheetContainerSkeleton title="选择干员" icon="select">
+      <div className="max-h-96 overflow-y-auto overflow-x-hidden">
+        <SheetContainerSkeleton
+          title="已选择"
+          icon="person"
+          mini
+          className="w-96"
+          rightOptions={
+            <CollapseButton
+              isCollapse={selectedCloseState}
+              onClick={() => setSelectedCloseState(!selectedCloseState)}
+              disabled={!groupInfo.opers}
             />
-          </div>
-        ))}
-      </div>
-    ),
-    [groupInfo.opers, groupInfoOperators],
-  )
-  const NoneGroupedOperatorsPart = useMemo(
-    () => (
-      <div className="flex flex-wrap">
-        {existedOperator?.map((item) => (
-          <div className="w-1/4 relative p-0.5" key={item.name}>
-            <OperatorItem
-              name={item.name}
-              selected={checkGroupedOperator(item.name)}
-              onClick={() => groupedOperatorHandle(item)}
-            />
-          </div>
-        ))}
-      </div>
-    ),
-    [existedOperator, groupInfoOperators],
-  )
-  const OtherGroupedOperatorsPart = useMemo(
-    () => (
-      <div>
-        {otherGroupInfo?.map((item) => {
-          return (
-            <div key={item.name}>
-              <div className="flex flex-row-reverse items-center">
-                <H6 className="p-0 m-0">{item.name}</H6>
-                <Button
-                  minimal
-                  icon="arrow-top-left"
-                  title="全选"
-                  onClick={() =>
-                    setGroupInfoOperators([
-                      ...groupInfoOperators,
-                      ...(item.opers || []),
-                    ])
-                  }
-                />
+          }
+        >
+          {groupInfo.opers?.length ? (
+            <Collapse isOpen={selectedCloseState}>
+              <div className="flex flex-wrap">
+                {groupInfo.opers?.map((item) => (
+                  <div className="w-1/4 relative p-0.5" key={item.name}>
+                    <OperatorItem
+                      name={item.name}
+                      selected={checkGroupedOperator(item.name)}
+                      onClick={() => groupedOperatorHandle(item)}
+                    />
+                  </div>
+                ))}
               </div>
-              <OperatorPart
-                operators={item.opers}
-                selectCheckHandle={checkGroupedOperator}
-                selectClickHandle={groupedOperatorHandle}
-              />
-            </div>
-          )
-        })}
+            </Collapse>
+          ) : (
+            <NonIdealState title="暂无干员" />
+          )}
+        </SheetContainerSkeleton>
+        <SheetContainerSkeleton
+          title="未分组干员"
+          icon="person"
+          mini
+          className="w-96"
+          rightOptions={
+            <CollapseButton
+              isCollapse={noneGroupedCloseState}
+              onClick={() => setNoneGroupedCloseState(!noneGroupedCloseState)}
+              disabled={!existedOperator?.length}
+            />
+          }
+        >
+          {existedOperator?.length ? (
+            <Collapse isOpen={noneGroupedCloseState}>
+              <div className="flex flex-wrap">
+                {existedOperator?.map((item) => (
+                  <div className="w-1/4 relative p-0.5" key={item.name}>
+                    <OperatorItem
+                      name={item.name}
+                      selected={checkGroupedOperator(item.name)}
+                      onClick={() => groupedOperatorHandle(item)}
+                    />
+                  </div>
+                ))}
+              </div>
+            </Collapse>
+          ) : (
+            <NonIdealState title="暂无干员" />
+          )}
+        </SheetContainerSkeleton>
+        <SheetContainerSkeleton
+          title="其它干员组干员"
+          icon="people"
+          mini
+          rightOptions={
+            <CollapseButton
+              isCollapse={groupCloseState}
+              onClick={() => setGroupCloseState(!groupCloseState)}
+              disabled={!otherGroupInfo?.length}
+            />
+          }
+        >
+          {(existedGroup?.length || 0) > 1 ? (
+            <Collapse isOpen={groupCloseState}>
+              <div>
+                {otherGroupInfo?.map((item) => {
+                  return (
+                    <div key={item.name}>
+                      <div className="flex flex-row-reverse items-center">
+                        <H6 className="p-0 m-0">{item.name}</H6>
+                        <Button
+                          minimal
+                          icon="arrow-top-left"
+                          title="全选"
+                          onClick={() =>
+                            setGroupInfoOperators([
+                              ...groupInfoOperators,
+                              ...(item.opers || []),
+                            ])
+                          }
+                        />
+                      </div>
+                      <OperatorPart
+                        operators={item.opers}
+                        selectCheckHandle={checkGroupedOperator}
+                        selectClickHandle={groupedOperatorHandle}
+                      />
+                    </div>
+                  )
+                })}
+              </div>
+            </Collapse>
+          ) : (
+            <NonIdealState title="暂无干员" />
+          )}
+        </SheetContainerSkeleton>
       </div>
-    ),
-    [otherGroupInfo, groupInfoOperators],
-  )
-  const ButtonGroup = useMemo(
-    () => (
       <div className="flex mt-3">
         <Button
           text="确认"
@@ -155,76 +201,6 @@ const SheetGroupOperatorSelect = ({
           <Button intent={Intent.DANGER} className="ml-1" text="重置" />
         </Popover2>
       </div>
-    ),
-    [groupInfoOperators],
-  )
-  return (
-    <SheetContainerSkeleton title="选择干员" icon="select">
-      <div className="max-h-96 overflow-y-auto overflow-x-hidden">
-        <SheetContainerSkeleton
-          title="已选择"
-          icon="person"
-          mini
-          className="w-96"
-          rightOptions={
-            <CollapseButton
-              isCollapse={selectedCloseState}
-              onClick={() => setSelectedCloseState(!selectedCloseState)}
-              disabled={!groupInfo.opers}
-            />
-          }
-        >
-          {groupInfo.opers?.length ? (
-            <Collapse isOpen={selectedCloseState}>
-              {GroupedOperatorsPart}
-            </Collapse>
-          ) : (
-            <NonIdealState title="暂无干员" />
-          )}
-        </SheetContainerSkeleton>
-        <SheetContainerSkeleton
-          title="未分组干员"
-          icon="person"
-          mini
-          className="w-96"
-          rightOptions={
-            <CollapseButton
-              isCollapse={noneGroupedCloseState}
-              onClick={() => setNoneGroupedCloseState(!noneGroupedCloseState)}
-              disabled={!existedOperator?.length}
-            />
-          }
-        >
-          {existedOperator?.length ? (
-            <Collapse isOpen={noneGroupedCloseState}>
-              {NoneGroupedOperatorsPart}
-            </Collapse>
-          ) : (
-            <NonIdealState title="暂无干员" />
-          )}
-        </SheetContainerSkeleton>
-        <SheetContainerSkeleton
-          title="其它干员组干员"
-          icon="people"
-          mini
-          rightOptions={
-            <CollapseButton
-              isCollapse={groupCloseState}
-              onClick={() => setGroupCloseState(!groupCloseState)}
-              disabled={!otherGroupInfo?.length}
-            />
-          }
-        >
-          {(existedGroup?.length || 0) > 1 ? (
-            <Collapse isOpen={groupCloseState}>
-              {OtherGroupedOperatorsPart}
-            </Collapse>
-          ) : (
-            <NonIdealState title="暂无干员" />
-          )}
-        </SheetContainerSkeleton>
-      </div>
-      {ButtonGroup}
     </SheetContainerSkeleton>
   )
 }
@@ -233,7 +209,7 @@ export const SheetGroupOperatorSelectTrigger: FC<
   SheetGroupOperatorSelectProp
 > = (sheetGroupOperatorSelectProp) => (
   <Popover2
-    className="w-full mt-1"
+    className="w-full mt-1 cursor-pointer"
     content={<SheetGroupOperatorSelect {...sheetGroupOperatorSelectProp} />}
   >
     <Card className="flex items-center justify-center">

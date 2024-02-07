@@ -64,26 +64,6 @@ export const SkillAboutTrigger = ({
     })
   }
 
-  const SkillHelp = useMemo(
-    () => (
-      <Tooltip2
-        content={
-          <div className="ml-1 flex">
-            <p className="text-xs">若不进行任何设置，将使用默认值:</p>
-            <div className="mx-1 text-xs font-bold">
-              <p>一技能</p>
-              <p>不自动使用</p>
-              <p>技能使用次数: 1次</p>
-            </div>
-          </div>
-        }
-        className="ml-1"
-      >
-        <Icon icon="help" />
-      </Tooltip2>
-    ),
-    [],
-  )
   const SkillAboutForm = (
     <form onSubmit={handleSubmit((value) => submitHandle(value))}>
       <div onClick={(e) => e.stopPropagation()} role="presentation">
@@ -117,42 +97,54 @@ export const SkillAboutTrigger = ({
       </div>
       <div className="flex items-center">
         <Button text="确定" type="submit" className={Classes.POPOVER_DISMISS} />
-        {SkillHelp}
+        <Tooltip2
+          content={
+            <div className="ml-1 flex">
+              <p className="text-xs">若不进行任何设置，将使用默认值:</p>
+              <div className="mx-1 text-xs font-bold">
+                <p>一技能</p>
+                <p>不自动使用</p>
+                <p>技能使用次数: 1次</p>
+              </div>
+            </div>
+          }
+          className="ml-1"
+        >
+          <Icon icon="help" />
+        </Tooltip2>
       </div>
     </form>
   )
-  const SkillAboutTrigger = useMemo(
-    () => (
-      <Tooltip2 content="点击进行技能相关设置" disabled={!!operator}>
-        <div
-          className={clsx(
-            'flex mt-3 text-gray-500 items-center text-xs',
-            operator && 'hover:text-black',
-          )}
-        >
-          <Icon icon="info-sign" size={12} className="flex items-center" />
-          <p>
-            {operator?.skill || '未设置'}技能{' '}
-            {operator?.skillUsage !== undefined ? '·' : ''}
-          </p>
-          {operator?.skillUsage !== undefined && (
-            <div className="relative">
-              <Icon
-                icon={
-                  skillDic.find((item) => item.value === operator?.skillUsage)
-                    ?.icon
-                }
-                className="flex items-center ml-1"
-                size={12}
-              />
-            </div>
-          )}
-          {!!operator?.skillTimes && <p> x{operator.skillTimes}</p>}
-        </div>
-      </Tooltip2>
-    ),
-    [operator],
+  const SkillAboutTrigger = (
+    <Tooltip2 content="点击进行技能相关设置" disabled={!!operator}>
+      <div
+        className={clsx(
+          'flex mt-3 text-gray-500 items-center text-xs',
+          operator && 'hover:text-black',
+        )}
+      >
+        <Icon icon="info-sign" size={12} className="flex items-center" />
+        <p>
+          {operator?.skill || '未设置'}技能{' '}
+          {operator?.skillUsage !== undefined ? '·' : ''}
+        </p>
+        {operator?.skillUsage !== undefined && (
+          <div className="relative">
+            <Icon
+              icon={
+                skillDic.find((item) => item.value === operator?.skillUsage)
+                  ?.icon
+              }
+              className="flex items-center ml-1"
+              size={12}
+            />
+          </div>
+        )}
+        {!!operator?.skillTimes && <p> x{operator.skillTimes}</p>}
+      </div>
+    </Tooltip2>
   )
+
   return (
     <div
       onClick={(e) => {

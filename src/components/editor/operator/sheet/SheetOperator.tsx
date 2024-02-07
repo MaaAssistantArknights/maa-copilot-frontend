@@ -75,16 +75,6 @@ const SheetOperator = ({
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
 
-  const checkOperatorSelected = (target: string) => {
-    if (existedOperators.find((item) => item.name === target)) return true
-    else {
-      return !!existedGroups
-        .map((item) => item.opers)
-        .flat()
-        .find((item) => item?.name === target)
-    }
-  }
-
   const [formattedSubProfessions, operatorsGroupedByProf] = useMemo(
     () => [
       // handle other operators
@@ -124,6 +114,16 @@ const SheetOperator = ({
         (item) => item.subProf === selectedSubProf.id,
       )
   }, [selectedSubProf, selectedProf])
+
+  const checkOperatorSelected = (target: string) => {
+    if (existedOperators.find((item) => item.name === target)) return true
+    else {
+      return !!existedGroups
+        .map((item) => item.opers)
+        .flat()
+        .find((item) => item?.name === target)
+    }
+  }
 
   const eventHandleProxy = (
     type: EventType,
@@ -171,19 +171,6 @@ const SheetOperator = ({
 
   useEffect(resetPaginationState, [selectedProf, selectedSubProf])
 
-  const BackToTop = useMemo(
-    () => (
-      <Button
-        minimal
-        icon="symbol-triangle-up"
-        disabled={!backToTop}
-        title={backToTop ? '回到顶部' : undefined}
-        onClick={resetPaginationState}
-      />
-    ),
-    [backToTop],
-  )
-
   const selectAll = () => {
     operatorsGroupedBySubProf.forEach((item) => {
       submitOperator(item, () => {})
@@ -199,82 +186,77 @@ const SheetOperator = ({
     removeOperator(deleteIndexList)
   }
 
-  const SelectButtons = useMemo(() => {
-    const [selectAllState, cancelAllState] = [
+  const [selectAllState, cancelAllState] = useMemo(
+    () => [
       !operatorsGroupedBySubProf.every(({ name }) =>
         checkOperatorSelected(name),
       ),
       operatorsGroupedBySubProf.some(({ name }) => checkOperatorSelected(name)),
-    ]
-    return (
-      <>
-        <Button
-          minimal
-          icon="circle"
-          disabled={!cancelAllState}
-          title={`取消选择全部${existedOperators.length}位干员`}
-          onClick={cancelAll}
-        />
-        <Button
-          minimal
-          icon="selection"
-          title={
-            selectAllState
-              ? `全选${operatorsGroupedBySubProf.length}位干员`
-              : undefined
-          }
-          disabled={!selectAllState}
-          onClick={selectAll}
-        />
-      </>
-    )
-  }, [operatorsGroupedBySubProf, existedOperators])
+    ],
+    [operatorsGroupedBySubProf, existedOperators],
+  )
 
   const ActionList = (
     <div className="absolute bottom-0">
-      {SelectButtons}
-      {BackToTop}
+      <Button
+        minimal
+        icon="circle"
+        disabled={!cancelAllState}
+        title={`取消选择全部${existedOperators.length}位干员`}
+        onClick={cancelAll}
+      />
+      <Button
+        minimal
+        icon="selection"
+        title={
+          selectAllState
+            ? `全选${operatorsGroupedBySubProf.length}位干员`
+            : undefined
+        }
+        disabled={!selectAllState}
+        onClick={selectAll}
+      />
+      <Button
+        minimal
+        icon="symbol-triangle-up"
+        disabled={!backToTop}
+        title={backToTop ? '回到顶部' : undefined}
+        onClick={resetPaginationState}
+      />
     </div>
   )
 
-  const ShowMoreButton = useMemo(
-    () => (
-      <div className="flex items-center justify-center pt-3 cursor-default">
-        {noMore ? (
-          <>
-            <H6>已经展示全部干员了({operatorsGroupedBySubProf.length})</H6>
-            {canEclipse && (
-              <H6
-                className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
-                onClick={resetPaginationState}
-              >
-                收起
-              </H6>
-            )}
-          </>
-        ) : (
-          <H6
-            className="cursor-pointer mx-auto text-sm text-gray-500 hover:text-inherit hover:underline"
-            onClick={() => setPageIndex(pageIndex + 1)}
-          >
-            显示更多干员(剩余{operatorsGroupedBySubProf.length - lastIndex})
-          </H6>
-        )}
-      </div>
-    ),
-    [noMore, canEclipse, pageIndex, operatorsGroupedBySubProf.length],
+  const ShowMoreButton = (
+    <div className="flex items-center justify-center pt-3 cursor-default">
+      {noMore ? (
+        <>
+          <H6>已经展示全部干员了({operatorsGroupedBySubProf.length})</H6>
+          {canEclipse && (
+            <H6
+              className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
+              onClick={resetPaginationState}
+            >
+              收起
+            </H6>
+          )}
+        </>
+      ) : (
+        <H6
+          className="cursor-pointer mx-auto text-sm text-gray-500 hover:text-inherit hover:underline"
+          onClick={() => setPageIndex(pageIndex + 1)}
+        >
+          显示更多干员(剩余{operatorsGroupedBySubProf.length - lastIndex})
+        </H6>
+      )}
+    </div>
   )
 
-  const ProfSelectProf = useMemo(() => {
-    const ClassesManager = {
-      profButton: miniMedia ? 'w-6' : 'w-12',
-      specialProfButton: miniMedia ? '!text-xs truncate' : '',
-    }
-    return (
+  const ProfSelect = (
+    <div className="flex flex-row-reverse h-screen sticky top-0 relative">
       <div
         className={clsx(
           'h-full flex flex-col mr-0.5',
-          ClassesManager.profButton,
+          miniMedia ? 'w-6' : 'w-12',
         )}
       >
         {formattedProfessions.map((prof) => (
@@ -289,7 +271,9 @@ const SheetOperator = ({
             role="presentation"
           >
             {defaultProf.find(({ id }) => id === prof.id) ? (
-              <H5 className={ClassesManager.specialProfButton}>{prof.name}</H5>
+              <H5 className={clsx(miniMedia && '!text-xs truncate')}>
+                {prof.name}
+              </H5>
             ) : (
               <img
                 className="invert dark:invert-0"
@@ -304,29 +288,6 @@ const SheetOperator = ({
           </div>
         ))}
       </div>
-    )
-  }, [selectedProf])
-
-  const ProfSelectSubProf = useMemo(
-    () =>
-      formattedSubProfessions?.map((subProf) => (
-        <H4
-          key={subProf.id}
-          className={clsx(
-            'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-            subProf.id === selectedSubProf.id && '!opacity-100 underline',
-          )}
-          onClick={() => setSelectedSubProf(subProf)}
-        >
-          {subProf.name}
-        </H4>
-      )),
-    [selectedProf, selectedSubProf],
-  )
-
-  const ProfSelect = (
-    <div className="flex flex-row-reverse h-screen sticky top-0 relative">
-      {ProfSelectProf}
       <Divider className="mr-0" />
       <div
         className={clsx(
@@ -334,7 +295,20 @@ const SheetOperator = ({
           miniMedia ? 'absolute right-full' : 'relative',
         )}
       >
-        {ProfSelectSubProf}
+        <div>
+          {formattedSubProfessions?.map((subProf) => (
+            <H4
+              key={subProf.id}
+              className={clsx(
+                'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
+                subProf.id === selectedSubProf.id && '!opacity-100 underline',
+              )}
+              onClick={() => setSelectedSubProf(subProf)}
+            >
+              {subProf.name}
+            </H4>
+          ))}
+        </div>
         {ActionList}
       </div>
     </div>
