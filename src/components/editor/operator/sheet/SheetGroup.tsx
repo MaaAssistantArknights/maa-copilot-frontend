@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   H5,
+  H6,
   InputGroup,
   Intent,
 } from '@blueprintjs/core'
@@ -11,7 +12,6 @@ import { useAtom } from 'jotai'
 import { isEqual, omit } from 'lodash-es'
 import { useMemo, useState } from 'react'
 import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
-import { useEvent } from 'react-use'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -200,16 +200,34 @@ const SheetGroup = ({
     [coverGroup?.name],
   )
 
+  const GroupCount = useMemo(
+    () => (
+      <H6 className="my-2 text-center">
+        已显示全部 {existedGroups.length} 个干员组
+      </H6>
+    ),
+    [existedGroups.length],
+  )
+
   return (
     <>
       {FavCoverAlert}
       <div className="flex px-1">
-        <div className="flex-1 sticky top-0 max-h-screen flex flex-col">
-          <div className="grow h-full overflow-y-auto py-1">
-            <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
+        <div className="flex-1 sticky top-0 h-screen flex flex-col">
+          <div className="grow overflow-y-auto">
+            <SheetContainerSkeleton
+              title="添加干员组"
+              icon="add"
+              mini
+              className="sticky top-0 z-10 backdrop-blur-lg py-1"
+            >
+              <EditorGroupName {...{ eventHandleProxy }} />
+            </SheetContainerSkeleton>
+            <SheetContainerSkeleton title="已设置的干员组" icon="cog" mini>
               <div>
-                {existedGroups.length
-                  ? existedGroups.map((item) => (
+                {existedGroups.length ? (
+                  <>
+                    {existedGroups.map((item) => (
                       <GroupItem
                         key={item.name}
                         existedGroup={existedGroups}
@@ -220,14 +238,15 @@ const SheetGroup = ({
                         pinned={checkGroupPinned(item)}
                         eventHandleProxy={eventHandleProxy}
                       />
-                    ))
-                  : GroupNoData}
+                    ))}
+                    {GroupCount}
+                  </>
+                ) : (
+                  GroupNoData
+                )}
               </div>
             </SheetContainerSkeleton>
           </div>
-          <SheetContainerSkeleton title="添加干员组" icon="add" mini>
-            <EditorGroupName {...{ eventHandleProxy }} />
-          </SheetContainerSkeleton>
         </div>
         <Divider />
         <div className="flex-1">
