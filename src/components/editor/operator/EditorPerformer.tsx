@@ -229,7 +229,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         ({ name, _id }) => name === operator.name && _id !== operator._id,
       )
     ) {
-      setError('name', { message: '干员已存在' })
+      setError?.('name', { message: '干员已存在' })
       return false
     }
 
@@ -297,7 +297,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
         setEditingOperator(undefined)
       } else {
-        setError('global' as any, { message: '未能找到要更新的干员' })
+        setError?.('global' as any, { message: '未能找到要更新的干员' })
         return false
       }
     } else {
@@ -324,7 +324,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     if (
       groups.find(({ name, _id }) => name === group.name && _id !== group._id)
     ) {
-      setError('name', { message: '干员组已存在' })
+      setError?.('name', { message: '干员组已存在' })
       return false
     }
     if (editingGroup || fromSheet) {
@@ -340,7 +340,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         )
         setEditingGroup(undefined)
       } else {
-        setError('global' as any, { message: '未能找到要更新的干员组' })
+        setError?.('global' as any, { message: '未能找到要更新的干员组' })
         return false
       }
     } else {

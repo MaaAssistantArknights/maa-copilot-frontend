@@ -257,7 +257,7 @@ const SheetOperator = ({
             className="cursor-pointer mx-auto text-sm text-gray-500 hover:text-inherit hover:underline"
             onClick={() => setPageIndex(pageIndex + 1)}
           >
-            显示更多干员({operatorsGroupedBySubProf.length - lastIndex})
+            显示更多干员(剩余{operatorsGroupedBySubProf.length - lastIndex})
           </H6>
         )}
       </div>
@@ -313,8 +313,8 @@ const SheetOperator = ({
         <H4
           key={subProf.id}
           className={clsx(
-            'truncate cursor-pointer my-3 opacity-50 hover:underline hover:text-black hover:opacity-75',
-            subProf.id === selectedSubProf.id && 'opacity-100 underline',
+            'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
+            subProf.id === selectedSubProf.id && '!opacity-100 underline',
           )}
           onClick={() => setSelectedSubProf(subProf)}
         >

@@ -12,7 +12,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useMemo, useRef, useState } from 'react'
-import { UseFormSetError, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -61,11 +61,8 @@ export const GroupItem = ({
       eventHandleProxy('update', groupInfoCopy)
     }
   }
-  const renameEventHandle = (
-    name: string,
-    errorHandle: UseFormSetError<Group>,
-  ) => {
-    eventHandleProxy('rename', { ...groupInfo, name }, errorHandle)
+  const renameEventHandle = (name: string) => {
+    eventHandleProxy('rename', { ...groupInfo, name })
   }
 
   const OperatorsPart = useMemo(
@@ -175,13 +172,13 @@ const GroupTitle = ({
   renameSubmit,
 }: {
   editable: boolean
-  renameSubmit: (newName: string, errorHandle: UseFormSetError<Group>) => void
+  renameSubmit: (newName: string) => void
   groupTitle: string
 }) => {
   const [editName, setEditName] = useState('')
   const [nameEditState, setNameEditState] = useState(false)
   const [alertState, setAlertState] = useState(false)
-  const { register, handleSubmit, setError, reset } = useForm<Group>()
+  const { register, handleSubmit, reset } = useForm<Group>()
   // handle differ priority of capture events
   const ignoreBlur = useRef(false)
   const blurHandle = () => {
@@ -270,7 +267,7 @@ const GroupTitle = ({
         className="flex items-center"
         onSubmit={handleSubmit(() => {
           ignoreBlur.current = true
-          renameSubmit(editName || groupTitle, setError)
+          renameSubmit(editName || groupTitle)
           setNameEditState(false)
           inputRef.current?.blur()
         })}

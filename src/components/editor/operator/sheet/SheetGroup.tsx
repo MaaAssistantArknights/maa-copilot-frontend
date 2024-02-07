@@ -3,15 +3,15 @@ import {
   Button,
   Divider,
   H5,
+  H6,
   InputGroup,
   Intent,
 } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
 import { isEqual, omit } from 'lodash-es'
-import { useMemo, useState } from 'react'
-import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
-import { useEvent } from 'react-use'
+import { FC, useMemo, useState } from 'react'
+import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -106,10 +106,7 @@ const SheetGroup = ({
   }
   const checkSamePinned = (target: string) =>
     !!favGroups.find(({ name }) => name === target)
-  const changeOperatorOfOtherGroups = (
-    target: Operator[] | undefined,
-    errHandle: UseFormSetError<Group>,
-  ) => {
+  const changeOperatorOfOtherGroups = (target: Operator[] | undefined) => {
     target?.forEach((item) => {
       existedGroups.forEach((groupItem) => {
         const oldLength = groupItem.opers?.length || 0
@@ -118,7 +115,7 @@ const SheetGroup = ({
             (operItem) => operItem.name !== item.name,
           )
           if (groupItem.opers?.length !== oldLength)
-            submitGroup(groupItem, errHandle, true)
+            submitGroup(groupItem, undefined, true)
         }
       })
     })
@@ -129,12 +126,7 @@ const SheetGroup = ({
       { ...value },
     ])
 
-  const eventHandleProxy = (
-    type: EventType,
-    value: Group,
-    setError?: UseFormSetError<Group>,
-  ) => {
-    const errHandle = setError || function () {}
+  const eventHandleProxy = (type: EventType, value: Group) => {
     switch (type) {
       case 'add': {
         if (checkGroupExisted(value.name)) {
@@ -143,9 +135,8 @@ const SheetGroup = ({
             intent: Intent.DANGER,
           })
         } else {
-          if (checkGroupPinned(value))
-            changeOperatorOfOtherGroups(value.opers, errHandle)
-          submitGroup(value, errHandle)
+          if (checkGroupPinned(value)) changeOperatorOfOtherGroups(value.opers)
+          submitGroup(value)
         }
         break
       }
@@ -163,16 +154,16 @@ const SheetGroup = ({
         break
       }
       case 'rename': {
-        submitGroup(value, errHandle, true)
+        submitGroup(value, undefined, true)
         break
       }
       case 'opers': {
-        changeOperatorOfOtherGroups(value.opers, errHandle)
-        submitGroup(value, errHandle, true)
+        changeOperatorOfOtherGroups(value.opers)
+        submitGroup(value, undefined, true)
         break
       }
       case 'update': {
-        submitGroup(value, errHandle, true)
+        submitGroup(value, undefined, true)
         break
       }
     }
@@ -200,16 +191,34 @@ const SheetGroup = ({
     [coverGroup?.name],
   )
 
+  const GroupCount = useMemo(
+    () => (
+      <H6 className="my-2 text-center">
+        已显示全部 {existedGroups.length} 个干员组
+      </H6>
+    ),
+    [existedGroups.length],
+  )
+
   return (
     <>
       {FavCoverAlert}
       <div className="flex px-1">
-        <div className="flex-1 sticky top-0 max-h-screen flex flex-col">
-          <div className="grow h-full overflow-y-auto py-1">
-            <SheetContainerSkeleton title="已设置的分组" icon="cog" mini>
+        <div className="flex-1 sticky top-0 h-screen flex flex-col">
+          <div className="grow overflow-y-auto">
+            <SheetContainerSkeleton
+              title="添加干员组"
+              icon="add"
+              mini
+              className="sticky top-0 z-10 backdrop-blur-lg py-1"
+            >
+              <EditorGroupName {...{ eventHandleProxy }} />
+            </SheetContainerSkeleton>
+            <SheetContainerSkeleton title="已设置的干员组" icon="cog" mini>
               <div>
-                {existedGroups.length
-                  ? existedGroups.map((item) => (
+                {existedGroups.length ? (
+                  <>
+                    {existedGroups.map((item) => (
                       <GroupItem
                         key={item.name}
                         existedGroup={existedGroups}
@@ -220,14 +229,15 @@ const SheetGroup = ({
                         pinned={checkGroupPinned(item)}
                         eventHandleProxy={eventHandleProxy}
                       />
-                    ))
-                  : GroupNoData}
+                    ))}
+                    {GroupCount}
+                  </>
+                ) : (
+                  GroupNoData
+                )}
               </div>
             </SheetContainerSkeleton>
           </div>
-          <SheetContainerSkeleton title="添加干员组" icon="add" mini>
-            <EditorGroupName {...{ eventHandleProxy }} />
-          </SheetContainerSkeleton>
         </div>
         <Divider />
         <div className="flex-1">
@@ -272,11 +282,7 @@ const SheetGroup = ({
 const EditorGroupName = ({
   eventHandleProxy,
 }: {
-  eventHandleProxy: (
-    type: EventType,
-    value: Group,
-    setError?: UseFormSetError<Group> | undefined,
-  ) => void
+  eventHandleProxy: (type: EventType, value: Group) => void
 }) => {
   const [groupName, setGroupName] = useState('')
 
@@ -327,7 +333,7 @@ const EditorGroupName = ({
   )
 }
 
-export const SheetGroupContainer = (sheetGroupProps: SheetGroupProps) => (
+export const SheetGroupContainer: FC<SheetGroupProps> = (sheetGroupProps) => (
   <SheetContainerSkeleton title="设置干员组" icon="people">
     <SheetGroup {...sheetGroupProps} />
   </SheetContainerSkeleton>
