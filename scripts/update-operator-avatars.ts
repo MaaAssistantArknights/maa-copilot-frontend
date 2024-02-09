@@ -1,5 +1,6 @@
 import { access, writeFile } from 'fs/promises'
 import fetch from 'node-fetch'
+
 import { getOperatorNames } from './shared'
 
 async function fileExists(file: string) {

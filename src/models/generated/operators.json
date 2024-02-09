@@ -618,6 +618,12 @@
     "alt_name": "Vigna"
   },
   {
+    "id": "char_4023_rfalcn",
+    "name": "红隼",
+    "alias": "hongsun gongsun hs gs 紅隼",
+    "alt_name": "Kestrel"
+  },
+  {
     "id": "char_4055_bgsnow",
     "name": "鸿雪",
     "alias": "hongxue hx 鴻雪",
@@ -934,6 +940,12 @@
     "name": "莱恩哈特",
     "alias": "laienhate leht 萊恩哈特",
     "alt_name": "Leonhardt"
+  },
+  {
+    "id": "char_4117_ray",
+    "name": "莱伊",
+    "alias": "laiyi ly 萊伊",
+    "alt_name": "Ray"
   },
   {
     "id": "char_129_bluep",
@@ -1362,6 +1374,12 @@
     "alt_name": "Eunectes"
   },
   {
+    "id": "token_10034_ray_sndbst",
+    "name": "沙地兽",
+    "alias": "shadishou shadeshou sds 沙地獸",
+    "alt_name": "Sandbeast"
+  },
+  {
     "id": "token_10011_beewax_oblisk",
     "name": "沙之碑",
     "alias": "shazhibei szb 沙之碑",
@@ -1480,6 +1498,12 @@
     "name": "守林人",
     "alias": "shoulinren slr 守林人",
     "alt_name": "Firewatch"
+  },
+  {
+    "id": "char_2025_shu",
+    "name": "黍",
+    "alias": "shu s 黍",
+    "alt_name": "Shu"
   },
   {
     "id": "char_458_rfrost",
@@ -1644,6 +1668,12 @@
     "alt_name": "W"
   },
   {
+    "id": "char_4119_wanqin",
+    "name": "万顷",
+    "alias": "wanqing moqing wq mq 萬頃",
+    "alt_name": "Wanqing"
+  },
+  {
     "id": "char_261_sddrag",
     "name": "苇草",
     "alias": "weicao wc 葦草",
@@ -1672,6 +1702,12 @@
     "name": "温蒂",
     "alias": "wendi wd 溫蒂",
     "alt_name": "Weedy"
+  },
+  {
+    "id": "char_4081_warmy",
+    "name": "温米",
+    "alias": "wenmi wm 溫米",
+    "alt_name": "Warmy"
   },
   {
     "id": "char_254_vodfox",
@@ -1732,6 +1768,12 @@
     "name": "晓歌",
     "alias": "xiaoge xg 曉歌",
     "alt_name": "Cantabile"
+  },
+  {
+    "id": "char_4122_grabds",
+    "name": "小满",
+    "alias": "xiaoman xm 小滿",
+    "alt_name": "Grain Buds"
   },
   {
     "id": "char_274_astesi",
@@ -2134,5 +2176,11 @@
     "name": "诅咒娃娃",
     "alias": "zuzhouwawa zzww 詛咒娃娃",
     "alt_name": "Curse Doll"
+  },
+  {
+    "id": "char_4121_zuole",
+    "name": "左乐",
+    "alias": "zuole zuoyue zuoyao zuolao zl zy 左樂",
+    "alt_name": "Zuo Le"
   }
 ]
