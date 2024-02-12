@@ -37,14 +37,6 @@ function transformOperatorName(name: string) {
   const traditional = simplebig.s2t(name) as string
   const cleanedTraditional = traditional.replace(/[”“"]/g, '')
 
-  const fullPinyin = pinyin(cleanedName, {
-    segment: true,
-    style: pinyin.STYLE_NORMAL,
-  })
-  const partialPinyin = pinyin(cleanedName, {
-    segment: true,
-    style: pinyin.STYLE_FIRST_LETTER,
-  })
   return {
     name,
     alias: uniq([
