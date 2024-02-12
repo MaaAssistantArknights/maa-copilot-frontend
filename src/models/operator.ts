@@ -8,13 +8,26 @@ import {
   isChoice,
 } from '../components/editor/DetailedSelect'
 
-export { OPERATORS, PROFESSIONS } from '../models/generated/operators'
-
-export type { OperatorInfo, Profession } from '../models/generated/operators'
+export { OPERATORS, PROFESSIONS } from '../models/generated/operators.json'
 
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 
 export type DetailedOperatorSkillUsage = DetailedSelectChoice
+
+export interface OperatorInfo {
+  id: string
+  name: string
+  pron: string
+  subProf: string
+  alias: string
+  alt_name: string
+}
+
+export interface Profession {
+  id: string
+  name: string
+  sub?: Profession[]
+}
 
 export const operatorSkillUsages: readonly DetailedSelectItem[] = [
   {

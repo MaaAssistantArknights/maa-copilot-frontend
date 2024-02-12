@@ -47,10 +47,6 @@ function transformOperatorName(name: string) {
   })
   return {
     name,
-    pron: [
-      fullPinyin.flatMap((el) => el).join(''),
-      partialPinyin.flatMap((el) => el).join(''),
-    ].join(' '),
     alias: uniq([
       ...pinyinify(cleanedName),
       traditional,
