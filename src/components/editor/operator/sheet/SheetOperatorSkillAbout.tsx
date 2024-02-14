@@ -2,7 +2,6 @@ import { Button, Classes, Icon } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useMemo } from 'react'
 import { UseFormSetError, useForm } from 'react-hook-form'
 
 import { FormField2 } from 'components/FormField'
@@ -27,17 +26,12 @@ export interface SkillAboutProps {
   ) => void
 }
 
+const skillDic = operatorSkillUsages as DetailedSelectChoice[]
+
 export const SkillAboutTrigger = ({
   operator,
   submitOperator,
 }: SkillAboutProps) => {
-  const skillDic = useMemo(() => {
-    return ([...operatorSkillUsages] as DetailedSelectChoice[]).map((item) => ({
-      value: item.value,
-      icon: item.icon,
-    }))
-  }, [])
-
   const {
     control,
     handleSubmit,
@@ -48,10 +42,7 @@ export const SkillAboutTrigger = ({
   })
 
   const skillUsage = watch('skillUsage')
-  const needSkillTime = useMemo(
-    () => skillUsage === needSkillTimeType,
-    [skillUsage],
-  )
+  const needSkillTime = skillUsage === needSkillTimeType
 
   const submitHandle = ({ skill, skillTimes, skillUsage }: Operator) => {
     submitOperator!('skill', {

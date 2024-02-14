@@ -114,6 +114,7 @@ export async function getOperators() {
           id: id,
           subProf: op.subProfessionId,
           ...transformOperatorName(op.name),
+          alt_name: op.appellation,
         },
       ]
     }),

@@ -20,8 +20,31 @@ export interface SheetOperatorProps {
   existedOperators: Operator[]
   existedGroups: Group[]
   removeOperator: UseFieldArrayRemove
-  miniMedia?: boolean
 }
+
+const defaultProf = [
+  {
+    id: 'all',
+    name: '全部',
+    sub: [],
+  },
+  {
+    id: 'others',
+    name: '其它',
+    sub: [],
+  },
+]
+
+const defaultSubProf = [
+  { id: 'all', name: '全部' },
+  { id: 'selected', name: '已选择' },
+]
+
+const formattedProfessions = [
+  defaultProf[0],
+  ...PROFESSIONS,
+  ...defaultProf.slice(1),
+]
 
 const paginationSize = 60
 
@@ -30,78 +53,45 @@ const SheetOperator = ({
   existedOperators,
   removeOperator,
   existedGroups,
-  miniMedia,
 }: SheetOperatorProps) => {
-  // media warning
-  useEffect(() => {
-    return () => {
-      if (miniMedia)
-        AppToaster.show({
-          intent: 'warning',
-          message: '推荐使用大屏幕进行编辑(宽度>600px)!',
-        })
-    }
-  }, [])
-
   const operatorScrollRef = useRef<HTMLDivElement>(null)
-
-  const defaultProf = useMemo(
-    () => [
-      {
-        id: 'all',
-        name: '全部',
-        sub: [],
-      },
-      {
-        id: 'others',
-        name: '其它',
-        sub: [],
-      },
-    ],
-    [],
-  )
-  const defaultSubProf = useMemo(
-    () => [
-      { id: 'all', name: '全部' },
-      { id: 'selected', name: '已选择' },
-    ],
-    [],
-  )
-  const formattedProfessions = useMemo(() => {
-    const [all, ...other] = defaultProf
-    return [all, ...PROFESSIONS, ...other]
-  }, [])
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
 
   const [formattedSubProfessions, operatorsGroupedByProf] = useMemo(
     () => [
-      // handle other operators
+      // handle customize operators
       [...defaultSubProf, ...(selectedProf.sub || [])],
       [
-        ...OPERATORS,
         ...existedOperators
-          .filter(
-            (item) => !OPERATORS.find((opItem) => opItem.name === item.name),
-          )
+          .filter((item) => !OPERATORS.find(({ name }) => name === item.name))
           .map(({ name }) => {
             return {
               name,
-              id: '',
-              pron: '',
               subProf: '',
             }
           }),
+        ...OPERATORS,
       ].filter((item) => {
-        if (selectedProf.id === defaultSubProf[0].id) return true
-        else if (selectedProf.id === defaultSubProf[1].id)
-          return item.subProf === 'notchar1' || !item.pron || !item.subProf
-        else return !!selectedProf.sub?.find((op) => op.id === item.subProf)
+        if (selectedProf.id === defaultProf[0].id) return true
+        else if (selectedProf.id === defaultProf[1].id) {
+          return item.subProf === 'notchar1' || !item.subProf
+        } else return !!selectedProf.sub?.find((op) => op.id === item.subProf)
       }),
     ],
-    [selectedProf],
+    [selectedProf, existedOperators],
   )
+
+  const checkOperatorSelected = (target: string) => {
+    if (existedOperators.find((item) => item.name === target)) return true
+    else {
+      return !!existedGroups
+        .map((item) => item.opers)
+        .flat()
+        .find((item) => item?.name === target)
+    }
+  }
 
   const operatorsGroupedBySubProf = useMemo(() => {
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
@@ -113,17 +103,7 @@ const SheetOperator = ({
       return operatorsGroupedByProf.filter(
         (item) => item.subProf === selectedSubProf.id,
       )
-  }, [selectedSubProf, selectedProf])
-
-  const checkOperatorSelected = (target: string) => {
-    if (existedOperators.find((item) => item.name === target)) return true
-    else {
-      return !!existedGroups
-        .map((item) => item.opers)
-        .flat()
-        .find((item) => item?.name === target)
-    }
-  }
+  }, [selectedSubProf, operatorsGroupedByProf])
 
   const eventHandleProxy = (
     type: EventType,
@@ -154,15 +134,8 @@ const SheetOperator = ({
 
   // pagination about
   const [pageIndex, setPageIndex] = useState(0)
-  const [lastIndex, noMore, backToTop, canEclipse] = useMemo(() => {
-    const lastIndex = (pageIndex + 1) * paginationSize
-    return [
-      lastIndex,
-      lastIndex >= operatorsGroupedBySubProf.length,
-      lastIndex > paginationSize,
-      operatorsGroupedBySubProf.length > paginationSize,
-    ]
-  }, [pageIndex, operatorsGroupedBySubProf.length])
+  const lastIndex = (pageIndex + 1) * paginationSize
+  const backToTop = lastIndex > paginationSize
 
   const resetPaginationState = () => {
     setPageIndex(0)
@@ -186,34 +159,26 @@ const SheetOperator = ({
     removeOperator(deleteIndexList)
   }
 
-  const [selectAllState, cancelAllState] = useMemo(
-    () => [
-      !operatorsGroupedBySubProf.every(({ name }) =>
-        checkOperatorSelected(name),
-      ),
-      operatorsGroupedBySubProf.some(({ name }) => checkOperatorSelected(name)),
-    ],
-    [operatorsGroupedBySubProf, existedOperators],
-  )
-
   const ActionList = (
     <div className="absolute bottom-0">
       <Button
         minimal
         icon="circle"
-        disabled={!cancelAllState}
+        disabled={
+          !operatorsGroupedBySubProf.some(({ name }) =>
+            checkOperatorSelected(name),
+          )
+        }
         title={`取消选择全部${existedOperators.length}位干员`}
         onClick={cancelAll}
       />
       <Button
         minimal
         icon="selection"
-        title={
-          selectAllState
-            ? `全选${operatorsGroupedBySubProf.length}位干员`
-            : undefined
-        }
-        disabled={!selectAllState}
+        title={`全选${operatorsGroupedBySubProf.length}位干员`}
+        disabled={operatorsGroupedBySubProf.every(({ name }) =>
+          checkOperatorSelected(name),
+        )}
         onClick={selectAll}
       />
       <Button
@@ -228,10 +193,10 @@ const SheetOperator = ({
 
   const ShowMoreButton = (
     <div className="flex items-center justify-center pt-3 cursor-default">
-      {noMore ? (
+      {lastIndex >= operatorsGroupedBySubProf.length ? (
         <>
           <H6>已经展示全部干员了({operatorsGroupedBySubProf.length})</H6>
-          {canEclipse && (
+          {operatorsGroupedBySubProf.length > paginationSize && (
             <H6
               className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
               onClick={resetPaginationState}
@@ -253,12 +218,7 @@ const SheetOperator = ({
 
   const ProfSelect = (
     <div className="flex flex-row-reverse h-screen sticky top-0 relative">
-      <div
-        className={clsx(
-          'h-full flex flex-col mr-0.5',
-          miniMedia ? 'w-6' : 'w-12',
-        )}
-      >
+      <div className="h-full flex flex-col mr-0.5 w-6 sm:w-12">
         {formattedProfessions.map((prof) => (
           <div
             key={prof.id}
@@ -271,9 +231,7 @@ const SheetOperator = ({
             role="presentation"
           >
             {defaultProf.find(({ id }) => id === prof.id) ? (
-              <H5 className={clsx(miniMedia && '!text-xs truncate')}>
-                {prof.name}
-              </H5>
+              <H5 className="!text-xs sm:!text-base truncate">{prof.name}</H5>
             ) : (
               <img
                 className="invert dark:invert-0"
@@ -289,12 +247,7 @@ const SheetOperator = ({
         ))}
       </div>
       <Divider className="mr-0" />
-      <div
-        className={clsx(
-          'mr-1 h-full flex flex-col justify-center items-end',
-          miniMedia ? 'absolute right-full' : 'relative',
-        )}
-      >
+      <div className="mr-1 h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
         <div>
           {formattedSubProfessions?.map((subProf) => (
             <H4

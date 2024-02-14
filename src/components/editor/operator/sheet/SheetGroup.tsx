@@ -9,7 +9,7 @@ import {
 } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
-import { isEqual, omit } from 'lodash-es'
+import { isEqual, isEqualWith, omit } from 'lodash-es'
 import { FC, useMemo, useState } from 'react'
 import { UseFieldArrayRemove } from 'react-hook-form'
 
@@ -82,27 +82,18 @@ const SheetGroup = ({
   ) => {
     const checkTarget = favGroups.find((item) => item.name === target.name)
     if (checkTarget) {
-      if ((checkTarget.opers?.length || 0) === (target.opers?.length || 0)) {
-        for (const aItem of checkTarget.opers!) {
-          if (
-            target.opers?.find((bItem) => {
-              return isEqual(
-                omit(aItem, ignoreKeyDic),
-                omit(bItem, ignoreKeyDic),
-              )
-            })
-          )
-            continue
-          else return false
-        }
-        return true
-      } else return false
-    } else return false
-    // return isEqualWith(checkTarget, target, (value1, value2, key) => {
-    //   if (ignoreKeyDic.find((item) => item === key)) return true
-    //   else {
-    //   }
-    // })
+      return isEqualWith(
+        omit(checkTarget, ignoreKeyDic),
+        omit(target, ignoreKeyDic),
+        ({ opers: aOpers }, { opers: bOpers }) =>
+          isEqual(
+            aOpers.map((item) => omit(item, ignoreKeyDic)),
+            bOpers.map((item) => omit(item, ignoreKeyDic)),
+          ),
+      )
+    } else {
+      return false
+    }
   }
   const checkSamePinned = (target: string) =>
     !!favGroups.find(({ name }) => name === target)
@@ -111,11 +102,11 @@ const SheetGroup = ({
       existedGroups.forEach((groupItem) => {
         const oldLength = groupItem.opers?.length || 0
         if (oldLength) {
-          groupItem.opers = groupItem.opers?.filter(
+          const opers = groupItem.opers?.filter(
             (operItem) => operItem.name !== item.name,
           )
-          if (groupItem.opers?.length !== oldLength)
-            submitGroup(groupItem, undefined, true)
+          if (opers?.length !== oldLength)
+            submitGroup({ ...groupItem, ...{ opers } }, undefined, true)
         }
       })
     })
@@ -273,13 +264,14 @@ const EditorGroupName = ({
   const [groupName, setGroupName] = useState('')
 
   const addGroupHandle = () => {
-    if (!groupName) {
+    const name = groupName.trim()
+    if (!name) {
       AppToaster.show({
         message: '干员组名不能为空',
         intent: Intent.DANGER,
       })
     } else {
-      eventHandleProxy('add', { name: groupName.trim() })
+      eventHandleProxy('add', { name })
       setGroupName('')
     }
   }

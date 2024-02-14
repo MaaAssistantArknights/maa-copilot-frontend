@@ -1,6 +1,6 @@
 import { Button, Drawer, DrawerSize } from '@blueprintjs/core'
 
-import { FC, useMemo, useState } from 'react'
+import { FC, useState } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -23,15 +23,15 @@ const EditorOperatorSheet = (sheetProps: EditorSheetProps) => (
 
 export const EditorSheetTrigger: FC<EditorSheetProps> = (sheetProps) => {
   const [open, setOpen] = useState(false)
-  const miniMedia = useMemo(() => window.innerWidth < 600, [])
   return (
     <>
       <Drawer
         isOpen={open}
         onClose={() => setOpen(false)}
-        size={miniMedia ? DrawerSize.LARGE : '55%'}
+        size={DrawerSize.LARGE}
+        className="max-w-[900px]"
       >
-        <EditorOperatorSheet {...sheetProps} miniMedia={miniMedia} />
+        <EditorOperatorSheet {...sheetProps} />
       </Drawer>
       <Button onClick={() => setOpen(true)} text="快捷编辑" fill />
     </>

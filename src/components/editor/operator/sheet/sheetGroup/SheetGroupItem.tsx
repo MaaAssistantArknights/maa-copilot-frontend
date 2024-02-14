@@ -12,7 +12,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useMemo, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
@@ -79,6 +79,7 @@ export const GroupItem = ({
                 scaleDisable
                 interactive={false}
                 horizontal
+                readOnly={!exist}
                 submitOperator={changeGroupedOperatorSkillHandle}
               />
             ))
@@ -94,13 +95,8 @@ export const GroupItem = ({
     </Collapse>
   )
 
-  const [pinText, pinIcon] = useMemo(
-    () => [
-      pinned ? `从收藏分组中移除` : `添加至收藏分组`,
-      (pinned ? 'star' : 'star-empty') as IconName,
-    ],
-    [pinned],
-  )
+  const pinText = pinned ? `从收藏分组中移除` : `添加至收藏分组`
+  const pinIcon: IconName = pinned ? 'star' : 'star-empty'
 
   return (
     <Card interactive={!exist} className="mt-1 mx-0.5">

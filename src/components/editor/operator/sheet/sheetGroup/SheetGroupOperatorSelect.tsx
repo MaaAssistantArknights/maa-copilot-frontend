@@ -13,7 +13,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { FC, useMemo, useState } from 'react'
+import { FC, useState } from 'react'
 
 import { Group, Operator } from '../../EditorSheet'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
@@ -36,12 +36,8 @@ const SheetGroupOperatorSelect = ({
   const [groupInfoOperators, setGroupInfoOperators] = useState(
     groupInfo.opers || [],
   )
-  const otherGroupInfo = useMemo(
-    () =>
-      existedGroup?.filter(
-        (item) => item._id !== groupInfo._id && item.opers?.length,
-      ),
-    [existedGroup],
+  const otherGroupInfo = existedGroup?.filter(
+    (item) => item._id !== groupInfo._id && item.opers?.length,
   )
   const checkGroupedOperator = (target: string) =>
     !!groupInfoOperators.find(({ name }) => name === target)
@@ -77,7 +73,7 @@ const SheetGroupOperatorSelect = ({
             <CollapseButton
               isCollapse={selectedCloseState}
               onClick={() => setSelectedCloseState(!selectedCloseState)}
-              disabled={!groupInfo.opers}
+              disabled={!groupInfo.opers?.length}
             />
           }
         >
@@ -90,6 +86,7 @@ const SheetGroupOperatorSelect = ({
                       name={item.name}
                       selected={checkGroupedOperator(item.name)}
                       onClick={() => groupedOperatorHandle(item)}
+                      readOnly
                     />
                   </div>
                 ))}
@@ -121,6 +118,7 @@ const SheetGroupOperatorSelect = ({
                       name={item.name}
                       selected={checkGroupedOperator(item.name)}
                       onClick={() => groupedOperatorHandle(item)}
+                      readOnly
                     />
                   </div>
                 ))}
@@ -251,13 +249,14 @@ const OperatorPart = ({
   selectClickHandle,
 }: OperatorPartProp) => (
   <div className="flex flex-wrap">
-    {operators ? (
+    {operators?.length ? (
       operators?.map((item) => (
         <div className="w-1/4 relative p-0.5" key={item._id}>
           <OperatorItem
             name={item.name}
             selected={selectCheckHandle(item.name)}
             onClick={() => selectClickHandle(item)}
+            readOnly
           />
         </div>
       ))

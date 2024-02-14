@@ -17,7 +17,6 @@ export type DetailedOperatorSkillUsage = DetailedSelectChoice
 export interface OperatorInfo {
   id: string
   name: string
-  pron: string
   subProf: string
   alias: string
   alt_name: string
