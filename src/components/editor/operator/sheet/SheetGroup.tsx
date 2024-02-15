@@ -16,15 +16,17 @@ import { UseFieldArrayRemove } from 'react-hook-form'
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
-import { favGroupAtom } from 'store/useFavGroups'
+import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
 
 import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
-import { Group } from '../EditorSheet'
+import {
+  Group,
+  GroupEventType,
+  SheetSubmitEventHandleType,
+} from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
 import { GroupItem } from './sheetGroup/SheetGroupItem'
-
-export type EventType = 'add' | 'remove' | 'pin' | 'opers' | 'rename' | 'update'
 
 type Operator = CopilotDocV1.Operator
 
@@ -34,6 +36,8 @@ export interface SheetGroupProps {
   existedOperators: Operator[]
   removeGroup: UseFieldArrayRemove
 }
+
+export type GroupEventHandleType = SheetSubmitEventHandleType<GroupEventType>
 
 const SheetGroup = ({
   submitGroup,
@@ -78,13 +82,13 @@ const SheetGroup = ({
     !!existedGroups.find((item) => item.name === target)
   const checkGroupPinned = (
     target: Group,
-    ignoreKeyDic: string[] = ['_id', 'id'],
+    ignoreKey: string[] = ignoreKeyDic,
   ) => {
     const checkTarget = favGroups.find((item) => item.name === target.name)
     if (checkTarget) {
       return isEqualWith(
-        omit(checkTarget, ignoreKeyDic),
-        omit(target, ignoreKeyDic),
+        checkTarget,
+        omit(target, ignoreKey),
         ({ opers: aOpers }, { opers: bOpers }) =>
           isEqual(
             aOpers.map((item) => omit(item, ignoreKeyDic)),
@@ -117,9 +121,9 @@ const SheetGroup = ({
       { ...value },
     ])
 
-  const eventHandleProxy = (type: EventType, value: Group) => {
+  const eventHandleProxy: GroupEventHandleType = (type, value) => {
     switch (type) {
-      case 'add': {
+      case GroupEventType.ADD: {
         if (checkGroupExisted(value.name)) {
           AppToaster.show({
             message: '干员组已存在！',
@@ -127,15 +131,15 @@ const SheetGroup = ({
           })
         } else {
           if (checkGroupPinned(value)) changeOperatorOfOtherGroups(value.opers)
-          submitGroup(value)
+          submitGroup(value, undefined, true)
         }
         break
       }
-      case 'remove': {
+      case GroupEventType.REMOVE: {
         removeGroup(existedGroups.findIndex((item) => item._id === value._id))
         break
       }
-      case 'pin': {
+      case GroupEventType.PIN: {
         if (checkGroupPinned(value))
           setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
         else {
@@ -144,16 +148,16 @@ const SheetGroup = ({
         }
         break
       }
-      case 'rename': {
+      case GroupEventType.RENAME: {
         submitGroup(value, undefined, true)
         break
       }
-      case 'opers': {
+      case GroupEventType.OPERS: {
         changeOperatorOfOtherGroups(value.opers)
         submitGroup(value, undefined, true)
         break
       }
-      case 'update': {
+      case GroupEventType.UPDATE: {
         submitGroup(value, undefined, true)
         break
       }
@@ -259,7 +263,7 @@ const SheetGroup = ({
 const EditorGroupName = ({
   eventHandleProxy,
 }: {
-  eventHandleProxy: (type: EventType, value: Group) => void
+  eventHandleProxy: GroupEventHandleType
 }) => {
   const [groupName, setGroupName] = useState('')
 
@@ -271,7 +275,7 @@ const EditorGroupName = ({
         intent: Intent.DANGER,
       })
     } else {
-      eventHandleProxy('add', { name })
+      eventHandleProxy(GroupEventType.ADD, { name })
       setGroupName('')
     }
   }

@@ -15,16 +15,16 @@ import { Popover2 } from '@blueprintjs/popover2'
 import clsx from 'clsx'
 import { FC, useState } from 'react'
 
-import { Group, Operator } from '../../EditorSheet'
+import { Group, GroupEventType, Operator } from '../../EditorSheet'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
-import { EventType } from '../SheetGroup'
+import { GroupEventHandleType } from '../SheetGroup'
 import { OperatorItem } from '../SheetOperatorItem'
 
 export interface SheetGroupOperatorSelectProp {
   existedOperator?: Operator[]
   existedGroup?: Group[]
   groupInfo: Group
-  eventHandleProxy: (type: EventType, value: Group) => void
+  eventHandleProxy: GroupEventHandleType
 }
 
 const SheetGroupOperatorSelect = ({
@@ -55,7 +55,7 @@ const SheetGroupOperatorSelect = ({
     setGroupInfoOperators(groupInfo.opers || [])
   }
   const submitHandle = () => {
-    eventHandleProxy('opers', {
+    eventHandleProxy(GroupEventType.OPERS, {
       ...groupInfo,
       ...{ opers: groupInfoOperators },
     })

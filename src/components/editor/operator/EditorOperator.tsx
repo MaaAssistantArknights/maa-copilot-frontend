@@ -25,7 +25,6 @@ const createArbitraryOperator = (name: string): OperatorInfo => ({
   name,
   alias: '',
   alt_name: '',
-  pron: '',
   subProf: '',
 })
 

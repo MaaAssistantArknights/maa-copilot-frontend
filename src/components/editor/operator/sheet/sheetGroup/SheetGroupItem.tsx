@@ -16,12 +16,10 @@ import { useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
-import { CopilotDocV1 } from 'models/copilot.schema'
 
-import { Group } from '../../EditorSheet'
+import { Group, GroupEventType, OperatorEventType } from '../../EditorSheet'
 import { OperatorNoData } from '../SheetNoneData'
 import { OperatorItem } from '../SheetOperatorItem'
-import { EventType } from '../SheetOperatorSkillAbout'
 import {
   CollapseButton,
   SheetGroupOperatorSelectProp,
@@ -46,24 +44,24 @@ export const GroupItem = ({
 
   const createOrDeleteGroup = () => {
     if (exist) {
-      if (editable) eventHandleProxy('remove', groupInfo)
-    } else eventHandleProxy('add', groupInfo)
+      if (editable) eventHandleProxy(GroupEventType.REMOVE, groupInfo)
+    } else eventHandleProxy(GroupEventType.ADD, groupInfo)
   }
   const changeGroupedOperatorSkillHandle = (
-    type: EventType,
-    value: CopilotDocV1.Operator,
+    type: OperatorEventType,
+    value: Group,
   ) => {
-    if (type === 'skill') {
+    if (type === OperatorEventType.SKILL) {
       // deep copy
       const groupInfoCopy = JSON.parse(JSON.stringify(groupInfo))
       groupInfoCopy.opers![
         groupInfoCopy.opers!.findIndex(({ name }) => name === value.name)
       ] = value
-      eventHandleProxy('update', groupInfoCopy)
+      eventHandleProxy(GroupEventType.UPDATE, groupInfoCopy)
     }
   }
   const renameEventHandle = (name: string) => {
-    eventHandleProxy('rename', { ...groupInfo, name })
+    eventHandleProxy(GroupEventType.RENAME, { ...groupInfo, name })
   }
 
   const OperatorsPart = (
@@ -132,7 +130,9 @@ export const GroupItem = ({
                   <MenuItem
                     text={pinText}
                     icon={pinIcon}
-                    onClick={() => eventHandleProxy('pin', groupInfo)}
+                    onClick={() =>
+                      eventHandleProxy(GroupEventType.PIN, groupInfo)
+                    }
                   />
                 </Menu>
               }
@@ -142,7 +142,9 @@ export const GroupItem = ({
                 icon={pinIcon}
                 title={pinText}
                 onClick={
-                  pinned ? undefined : () => eventHandleProxy('pin', groupInfo)
+                  pinned
+                    ? undefined
+                    : () => eventHandleProxy?.(GroupEventType.PIN, groupInfo)
                 }
               />
             </Popover2>

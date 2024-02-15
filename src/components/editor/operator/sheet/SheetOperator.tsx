@@ -2,18 +2,21 @@ import { Button, Divider, H4, H5, H6, Intent } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { UseFieldArrayRemove, UseFormSetError } from 'react-hook-form'
+import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
-import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
 
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
-import { Group, Operator } from '../EditorSheet'
+import {
+  Group,
+  Operator,
+  OperatorEventType,
+  SheetSubmitEventHandleType,
+} from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
 import { OperatorItem } from './SheetOperatorItem'
-import { EventType } from './SheetOperatorSkillAbout'
 
 export interface SheetOperatorProps {
   submitOperator: EditorPerformerOperatorProps['submit']
@@ -21,6 +24,9 @@ export interface SheetOperatorProps {
   existedGroups: Group[]
   removeOperator: UseFieldArrayRemove
 }
+
+export type OperatorEventHandleType =
+  SheetSubmitEventHandleType<OperatorEventType>
 
 const defaultProf = [
   {
@@ -85,12 +91,11 @@ const SheetOperator = ({
 
   const checkOperatorSelected = (target: string) => {
     if (existedOperators.find((item) => item.name === target)) return true
-    else {
+    else
       return !!existedGroups
         .map((item) => item.opers)
         .flat()
         .find((item) => item?.name === target)
-    }
   }
 
   const operatorsGroupedBySubProf = useMemo(() => {
@@ -105,13 +110,9 @@ const SheetOperator = ({
       )
   }, [selectedSubProf, operatorsGroupedByProf])
 
-  const eventHandleProxy = (
-    type: EventType,
-    value: Operator,
-    setError?: UseFormSetError<CopilotDocV1.Operator>,
-  ) => {
+  const eventHandleProxy: OperatorEventHandleType = (type, value) => {
     switch (type) {
-      case 'box': {
+      case OperatorEventType.BOX: {
         if (checkOperatorSelected(value.name))
           if (existedOperators.find((item) => item.name === value.name))
             removeOperator(
@@ -122,11 +123,12 @@ const SheetOperator = ({
               message: '该干员已被编组',
               intent: Intent.DANGER,
             })
-        else submitOperator(value, () => {})
+        else submitOperator(value, undefined, true)
+
         break
       }
-      case 'skill': {
-        submitOperator(value, setError!, true)
+      case OperatorEventType.SKILL: {
+        submitOperator(value, undefined, true)
         break
       }
     }

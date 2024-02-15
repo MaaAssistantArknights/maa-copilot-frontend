@@ -3,6 +3,7 @@ import { Card, CardProps } from '@blueprintjs/core'
 import clsx from 'clsx'
 
 import { OperatorAvatar } from '../EditorOperator'
+import { OperatorEventType } from '../EditorSheet'
 import { SkillAboutProps, SkillAboutTrigger } from './SheetOperatorSkillAbout'
 
 export interface OperatorItemPorps extends CardProps, SkillAboutProps {
@@ -30,8 +31,8 @@ export const OperatorItem = ({
       !horizontal && 'flex-col justify-center',
     )}
     interactive={!selected}
-    onClick={
-      readOnly ? undefined : () => submitOperator!('box', operator || { name })
+    onClick={() =>
+      submitOperator?.(OperatorEventType.BOX, operator || { name })
     }
     {...cardProps}
   >

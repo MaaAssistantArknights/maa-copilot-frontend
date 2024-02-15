@@ -256,7 +256,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       } else appendOperator(operator)
     }
 
-    if (fromSheet || editingOperator) {
+    if ((fromSheet && operator._id) || editingOperator) {
       const existingOperator = fromSheet
         ? operator
         : findOperatorById(getId(editingOperator!))
@@ -312,22 +312,20 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     setError,
     fromSheet,
   ) => {
-    const removeOperatorByArray = () => {
-      const matchNumbers: number[] = []
-      group.opers?.forEach((item) =>
-        matchNumbers.push(
-          operators.findIndex(({ name }) => name === item.name),
-        ),
+    const removeOperatorByArray = () =>
+      removeOperator(
+        group.opers
+          ?.map((item) => operators.findIndex(({ name }) => name === item.name))
+          .filter((item) => item !== -1),
       )
-      removeOperator(matchNumbers.filter((item) => item !== -1))
-    }
+
     if (
       groups.find(({ name, _id }) => name === group.name && _id !== group._id)
     ) {
       setError?.('name', { message: '干员组已存在' })
       return false
     }
-    if (editingGroup || fromSheet) {
+    if (editingGroup || (fromSheet && group._id)) {
       const existingGroup = fromSheet
         ? group
         : findGroupById(getId(editingGroup!))

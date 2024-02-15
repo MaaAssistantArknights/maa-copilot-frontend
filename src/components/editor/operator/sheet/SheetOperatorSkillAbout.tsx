@@ -2,7 +2,7 @@ import { Button, Classes, Icon } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { UseFormSetError, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 
 import { FormField2 } from 'components/FormField'
 import { DetailedSelectChoice } from 'components/editor/DetailedSelect'
@@ -12,18 +12,14 @@ import { operatorSkillUsages } from 'models/operator'
 import { EditorOperatorSkill } from '../EditorOperatorSkill'
 import { EditorOperatorSkillTimes } from '../EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from '../EditorOperatorSkillUsage'
-import { Operator } from '../EditorSheet'
+import { Operator, OperatorEventType } from '../EditorSheet'
+import { OperatorEventHandleType } from './SheetOperator'
 
-export type EventType = 'box' | 'pin' | 'skill'
 const needSkillTimeType = CopilotDocV1.SkillUsageType.ReadyToUseTimes
 
 export interface SkillAboutProps {
   operator?: CopilotDocV1.Operator
-  submitOperator?: (
-    type: EventType,
-    value: CopilotDocV1.Operator,
-    setError?: UseFormSetError<CopilotDocV1.Operator>,
-  ) => void
+  submitOperator?: OperatorEventHandleType
 }
 
 const skillDic = operatorSkillUsages as DetailedSelectChoice[]
@@ -45,7 +41,7 @@ export const SkillAboutTrigger = ({
   const needSkillTime = skillUsage === needSkillTimeType
 
   const submitHandle = ({ skill, skillTimes, skillUsage }: Operator) => {
-    submitOperator!('skill', {
+    submitOperator?.(OperatorEventType.SKILL, {
       ...operator!,
       ...{
         skill: skill || 1,
