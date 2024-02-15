@@ -18,7 +18,7 @@ import { OperatorEventHandleType } from './SheetOperator'
 const needSkillTimeType = CopilotDocV1.SkillUsageType.ReadyToUseTimes
 
 export interface SkillAboutProps {
-  operator?: CopilotDocV1.Operator
+  operator?: Operator
   submitOperator?: OperatorEventHandleType
 }
 

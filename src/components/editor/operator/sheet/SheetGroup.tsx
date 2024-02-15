@@ -14,7 +14,6 @@ import { FC, useMemo, useState } from 'react'
 import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
-import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
 
@@ -22,13 +21,12 @@ import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
 import {
   Group,
   GroupEventType,
+  Operator,
   SheetSubmitEventHandleType,
 } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
 import { GroupItem } from './sheetGroup/SheetGroupItem'
-
-type Operator = CopilotDocV1.Operator
 
 export interface SheetGroupProps {
   submitGroup: EditorPerformerGroupProps['submit']
@@ -48,7 +46,7 @@ const SheetGroup = ({
   const [coverGroup, setCoverGroup] = useState<Group>()
 
   const defaultGroup = useMemo<Group[]>(() => {
-    const result: CopilotDocV1.Group[] = []
+    const result: Group[] = []
     PROFESSIONS.forEach((proItem) => {
       proItem.sub?.forEach((subProItem) => {
         const operators = existedOperators.filter(
