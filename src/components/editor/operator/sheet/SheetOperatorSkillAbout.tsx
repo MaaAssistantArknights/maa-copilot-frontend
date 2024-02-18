@@ -12,21 +12,20 @@ import { operatorSkillUsages } from 'models/operator'
 import { EditorOperatorSkill } from '../EditorOperatorSkill'
 import { EditorOperatorSkillTimes } from '../EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from '../EditorOperatorSkillUsage'
-import { Operator, OperatorEventType } from '../EditorSheet'
-import { OperatorEventHandleType } from './SheetOperator'
+import { Operator } from '../EditorSheet'
 
 const needSkillTimeType = CopilotDocV1.SkillUsageType.ReadyToUseTimes
 
 export interface SkillAboutProps {
   operator?: Operator
-  submitOperator?: OperatorEventHandleType
+  onSkillChange?: (value: Operator) => void
 }
 
 const skillDic = operatorSkillUsages as DetailedSelectChoice[]
 
 export const SkillAboutTrigger = ({
   operator,
-  submitOperator,
+  onSkillChange,
 }: SkillAboutProps) => {
   const {
     control,
@@ -40,19 +39,19 @@ export const SkillAboutTrigger = ({
   const skillUsage = watch('skillUsage')
   const needSkillTime = skillUsage === needSkillTimeType
 
-  const submitHandle = ({ skill, skillTimes, skillUsage }: Operator) => {
-    submitOperator?.(OperatorEventType.SKILL, {
-      ...operator!,
-      ...{
-        skill: skill || 1,
-        skillUsage: skillUsage || 0,
-        skillTimes: needSkillTime ? skillTimes || 1 : undefined,
-      },
-    })
-  }
-
   const SkillAboutForm = (
-    <form onSubmit={handleSubmit((value) => submitHandle(value))}>
+    <form
+      onSubmit={handleSubmit(({ skill, skillTimes, skillUsage }) =>
+        onSkillChange?.({
+          ...operator!,
+          ...{
+            skill: skill || 1,
+            skillUsage: skillUsage || 0,
+            skillTimes: needSkillTime ? skillTimes || 1 : undefined,
+          },
+        }),
+      )}
+    >
       <div onClick={(e) => e.stopPropagation()} role="presentation">
         <div className="flex flex-wrap">
           <FormField2

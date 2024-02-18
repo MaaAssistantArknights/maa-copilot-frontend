@@ -14,25 +14,6 @@ type EditorSheetProps = SheetOperatorProps & SheetGroupProps
 export type Group = CopilotDocV1.Group
 export type Operator = CopilotDocV1.Operator
 
-export enum OperatorEventType {
-  BOX,
-  SKILL,
-}
-export enum GroupEventType {
-  ADD,
-  REMOVE,
-  PIN,
-  OPERS,
-  RENAME,
-  UPDATE,
-}
-export type SheetSubmitEventHandleType<
-  eventType extends OperatorEventType | GroupEventType,
-> = (
-  type: eventType,
-  value: eventType extends OperatorEventType ? Operator : Group,
-) => void
-
 const EditorOperatorSheet = (sheetProps: EditorSheetProps) => (
   <article className="overflow-y-auto">
     <SheetOperatorContainer {...sheetProps} />

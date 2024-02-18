@@ -18,12 +18,7 @@ import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
 
 import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
-import {
-  Group,
-  GroupEventType,
-  Operator,
-  SheetSubmitEventHandleType,
-} from '../EditorSheet'
+import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
 import { GroupItem } from './sheetGroup/SheetGroupItem'
@@ -35,7 +30,54 @@ export interface SheetGroupProps {
   removeGroup: UseFieldArrayRemove
 }
 
-export type GroupEventHandleType = SheetSubmitEventHandleType<GroupEventType>
+export interface GroupListModifyProp {
+  groupAddHandle?: (value: Group) => void
+  groupRemoveHandle?: (_id: string) => void
+  groupPinHandle?: (value: Group) => void
+  groupUpdateHandle?: (value: Group) => void
+}
+
+const EditorGroupName = ({
+  groupAddHandle,
+}: {
+  groupAddHandle: GroupListModifyProp['groupAddHandle']
+}) => {
+  const [groupName, setGroupName] = useState('')
+
+  const addGroupHandle = () => {
+    const name = groupName.trim()
+    if (!name) {
+      AppToaster.show({
+        message: '干员组名不能为空',
+        intent: Intent.DANGER,
+      })
+    } else {
+      groupAddHandle?.({ name })
+      setGroupName('')
+    }
+  }
+
+  return (
+    <div className="flex px-3 items-center">
+      <InputGroup
+        type="text"
+        value={groupName}
+        placeholder="输入干员组名"
+        onChange={(e) => setGroupName(e.target.value)}
+        fill
+      />
+      <div className="flex items-center">
+        <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
+        <Button
+          minimal
+          icon="reset"
+          title="重置"
+          onClick={() => setGroupName('')}
+        />
+      </div>
+    </div>
+  )
+}
 
 const SheetGroup = ({
   submitGroup,
@@ -116,47 +158,31 @@ const SheetGroup = ({
       { ...value },
     ])
 
-  const eventHandleProxy: GroupEventHandleType = (type, value) => {
-    switch (type) {
-      case GroupEventType.ADD: {
-        if (checkGroupExisted(value.name)) {
-          AppToaster.show({
-            message: '干员组已存在！',
-            intent: Intent.DANGER,
-          })
-        } else {
-          if (checkGroupPinned(value)) changeOperatorOfOtherGroups(value.opers)
-          submitGroup(value, undefined, true)
-        }
-        break
-      }
-      case GroupEventType.REMOVE: {
-        removeGroup(existedGroups.findIndex((item) => item._id === value._id))
-        break
-      }
-      case GroupEventType.PIN: {
-        if (checkGroupPinned(value))
-          setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
-        else {
-          if (checkSamePinned(value.name)) setCoverGroup(value)
-          else updateFavGroup(value)
-        }
-        break
-      }
-      case GroupEventType.RENAME: {
-        submitGroup(value, undefined, true)
-        break
-      }
-      case GroupEventType.OPERS: {
-        changeOperatorOfOtherGroups(value.opers)
-        submitGroup(value, undefined, true)
-        break
-      }
-      case GroupEventType.UPDATE: {
-        submitGroup(value, undefined, true)
-        break
-      }
+  const groupAddHandle = (value: Group) => {
+    if (checkGroupExisted(value.name)) {
+      AppToaster.show({
+        message: '干员组已存在！',
+        intent: Intent.DANGER,
+      })
+    } else {
+      if (checkGroupPinned(value)) changeOperatorOfOtherGroups(value.opers)
+      submitGroup(value, undefined, true)
     }
+  }
+  const groupRemoveHandle = (_id: string) => {
+    removeGroup(existedGroups.findIndex((item) => item._id === _id))
+  }
+  const groupPinHandle = (value: Group) => {
+    if (checkGroupPinned(value))
+      setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
+    else {
+      if (checkSamePinned(value.name)) setCoverGroup(value)
+      else updateFavGroup(value)
+    }
+  }
+  const groupUpdateHandle = (value: Group) => {
+    changeOperatorOfOtherGroups(value.opers)
+    submitGroup(value, undefined, true)
   }
 
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
@@ -172,7 +198,7 @@ const SheetGroup = ({
               mini
               className="sticky top-0 z-10 backdrop-blur-lg py-1"
             >
-              <EditorGroupName {...{ eventHandleProxy }} />
+              <EditorGroupName {...{ groupAddHandle }} />
             </SheetContainerSkeleton>
             <SheetContainerSkeleton title="已设置的干员组" icon="cog" mini>
               <div>
@@ -184,10 +210,11 @@ const SheetGroup = ({
                         existedGroup={existedGroups}
                         existedOperator={existedOperators}
                         groupInfo={item}
-                        editable
                         exist={checkGroupExisted(item.name)}
                         pinned={checkGroupPinned(item)}
-                        eventHandleProxy={eventHandleProxy}
+                        groupRemoveHandle={groupRemoveHandle}
+                        groupPinHandle={groupPinHandle}
+                        groupUpdateHandle={groupUpdateHandle}
                       />
                     ))}
                     <H6 className="my-2 text-center">
@@ -210,9 +237,8 @@ const SheetGroup = ({
                     <GroupItem
                       key={item.name}
                       groupInfo={item}
-                      editable={false}
                       exist={checkGroupExisted(item.name)}
-                      eventHandleProxy={eventHandleProxy}
+                      groupAddHandle={groupAddHandle}
                       pinned={false}
                     />
                   ))
@@ -226,9 +252,9 @@ const SheetGroup = ({
                     <GroupItem
                       key={item.name}
                       groupInfo={item}
-                      editable={false}
                       exist={checkGroupExisted(item.name)}
-                      eventHandleProxy={eventHandleProxy}
+                      groupAddHandle={groupAddHandle}
+                      groupPinHandle={groupPinHandle}
                       pinned
                     />
                   ))
@@ -252,48 +278,6 @@ const SheetGroup = ({
         </div>
       </Alert>
     </>
-  )
-}
-
-const EditorGroupName = ({
-  eventHandleProxy,
-}: {
-  eventHandleProxy: GroupEventHandleType
-}) => {
-  const [groupName, setGroupName] = useState('')
-
-  const addGroupHandle = () => {
-    const name = groupName.trim()
-    if (!name) {
-      AppToaster.show({
-        message: '干员组名不能为空',
-        intent: Intent.DANGER,
-      })
-    } else {
-      eventHandleProxy(GroupEventType.ADD, { name })
-      setGroupName('')
-    }
-  }
-
-  return (
-    <div className="flex px-3 items-center">
-      <InputGroup
-        type="text"
-        value={groupName}
-        placeholder="输入干员组名"
-        onChange={(e) => setGroupName(e.target.value)}
-        fill
-      />
-      <div className="flex items-center">
-        <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
-        <Button
-          minimal
-          icon="reset"
-          title="重置"
-          onClick={() => setGroupName('')}
-        />
-      </div>
-    </div>
   )
 }
 

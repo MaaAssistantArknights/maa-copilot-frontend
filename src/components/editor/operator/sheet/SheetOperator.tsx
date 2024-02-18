@@ -8,12 +8,7 @@ import { AppToaster } from 'components/Toaster'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
 
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
-import {
-  Group,
-  Operator,
-  OperatorEventType,
-  SheetSubmitEventHandleType,
-} from '../EditorSheet'
+import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
 import { OperatorItem } from './SheetOperatorItem'
@@ -24,9 +19,6 @@ export interface SheetOperatorProps {
   existedGroups: Group[]
   removeOperator: UseFieldArrayRemove
 }
-
-export type OperatorEventHandleType =
-  SheetSubmitEventHandleType<OperatorEventType>
 
 const defaultProf = [
   {
@@ -113,28 +105,22 @@ const SheetOperator = ({
       )
   }, [selectedSubProf, operatorsGroupedByProf, checkOperatorSelected])
 
-  const eventHandleProxy: OperatorEventHandleType = (type, value) => {
-    switch (type) {
-      case OperatorEventType.BOX: {
-        if (checkOperatorSelected(value.name))
-          if (existedOperators.find((item) => item.name === value.name))
-            removeOperator(
-              existedOperators.findIndex((item) => item._id === value._id),
-            )
-          else
-            AppToaster.show({
-              message: '该干员已被编组',
-              intent: Intent.DANGER,
-            })
-        else submitOperator(value, undefined, true)
+  const operatorSelectHandle = (operatorName: string) => {
+    if (checkOperatorSelected(operatorName))
+      if (existedOperators.find((item) => item.name === operatorName))
+        removeOperator(
+          existedOperators.findIndex(({ name }) => name === operatorName),
+        )
+      else
+        AppToaster.show({
+          message: `干员 ${operatorName} 已被编组`,
+          intent: Intent.DANGER,
+        })
+    else submitOperator({ name: operatorName }, undefined, true)
+  }
 
-        break
-      }
-      case OperatorEventType.SKILL: {
-        submitOperator(value, undefined, true)
-        break
-      }
-    }
+  const operatorSkillHandle = (value: Operator) => {
+    submitOperator(value, undefined, true)
   }
 
   // pagination about
@@ -294,9 +280,10 @@ const SheetOperator = ({
                     >
                       <OperatorItem
                         selected={checkOperatorSelected(operatorInfoName)}
-                        submitOperator={eventHandleProxy}
+                        onSkillChange={operatorSkillHandle}
                         operator={operatorDetail}
                         name={operatorInfoName}
+                        onClick={() => operatorSelectHandle(operatorInfoName)}
                       />
                     </div>
                   )

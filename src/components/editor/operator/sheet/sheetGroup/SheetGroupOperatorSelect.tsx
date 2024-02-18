@@ -15,23 +15,23 @@ import { Popover2 } from '@blueprintjs/popover2'
 import clsx from 'clsx'
 import { FC, useState } from 'react'
 
-import { Group, GroupEventType, Operator } from '../../EditorSheet'
+import { Group, Operator } from '../../EditorSheet'
 import { SheetContainerSkeleton } from '../SheetContainerSkeleton'
-import { GroupEventHandleType } from '../SheetGroup'
+import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorItem } from '../SheetOperatorItem'
 
 export interface SheetGroupOperatorSelectProp {
   existedOperator?: Operator[]
   existedGroup?: Group[]
   groupInfo: Group
-  eventHandleProxy: GroupEventHandleType
+  groupUpdateHandle?: GroupListModifyProp['groupUpdateHandle']
 }
 
 const SheetGroupOperatorSelect = ({
   existedGroup,
   existedOperator,
+  groupUpdateHandle,
   groupInfo,
-  eventHandleProxy,
 }: SheetGroupOperatorSelectProp) => {
   const [groupInfoOperators, setGroupInfoOperators] = useState(
     groupInfo.opers || [],
@@ -53,12 +53,6 @@ const SheetGroupOperatorSelect = ({
   const [noneGroupedCloseState, setNoneGroupedCloseState] = useState(true)
   const resetHandle = () => {
     setGroupInfoOperators(groupInfo.opers || [])
-  }
-  const submitHandle = () => {
-    eventHandleProxy(GroupEventType.OPERS, {
-      ...groupInfo,
-      ...{ opers: groupInfoOperators },
-    })
   }
 
   return (
@@ -179,7 +173,12 @@ const SheetGroupOperatorSelect = ({
         <Button
           text="确认"
           className={Classes.POPOVER_DISMISS}
-          onClick={submitHandle}
+          onClick={() =>
+            groupUpdateHandle?.({
+              ...groupInfo,
+              ...{ opers: groupInfoOperators },
+            })
+          }
         />
         <Popover2
           captureDismiss

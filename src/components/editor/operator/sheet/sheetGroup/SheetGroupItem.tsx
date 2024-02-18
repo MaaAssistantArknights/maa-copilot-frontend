@@ -17,7 +17,8 @@ import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
 
-import { Group, GroupEventType, OperatorEventType } from '../../EditorSheet'
+import { Group, Operator } from '../../EditorSheet'
+import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorNoData } from '../SheetNoneData'
 import { OperatorItem } from '../SheetOperatorItem'
 import {
@@ -26,42 +27,36 @@ import {
   SheetGroupOperatorSelectTrigger,
 } from './SheetGroupOperatorSelect'
 
-interface GroupItemProps extends SheetGroupOperatorSelectProp {
-  editable: boolean
+export interface GroupItemProps
+  extends SheetGroupOperatorSelectProp,
+    GroupListModifyProp {
   exist: boolean
   pinned: boolean
 }
 
 export const GroupItem = ({
   groupInfo,
-  editable,
   exist,
   pinned,
-  eventHandleProxy,
+  groupAddHandle,
+  groupRemoveHandle,
+  groupPinHandle,
+  groupUpdateHandle,
   ...rest
 }: GroupItemProps) => {
+  const editable = typeof groupRemoveHandle === 'function'
   const [showOperators, setShowOperators] = useState(editable)
 
-  const createOrDeleteGroup = () => {
-    if (exist) {
-      if (editable) eventHandleProxy(GroupEventType.REMOVE, groupInfo)
-    } else eventHandleProxy(GroupEventType.ADD, groupInfo)
-  }
-  const changeGroupedOperatorSkillHandle = (
-    type: OperatorEventType,
-    value: Group,
-  ) => {
-    if (type === OperatorEventType.SKILL) {
-      // deep copy
-      const groupInfoCopy = JSON.parse(JSON.stringify(groupInfo))
-      groupInfoCopy.opers![
-        groupInfoCopy.opers!.findIndex(({ name }) => name === value.name)
-      ] = value
-      eventHandleProxy(GroupEventType.UPDATE, groupInfoCopy)
-    }
-  }
-  const renameEventHandle = (name: string) => {
-    eventHandleProxy(GroupEventType.RENAME, { ...groupInfo, name })
+  const renameEventHandle = (name: string) =>
+    groupUpdateHandle?.({ ...groupInfo, name })
+
+  const changeGroupedOperatorSkillHandle = (value: Operator) => {
+    // deep copy
+    const groupInfoCopy = JSON.parse(JSON.stringify(groupInfo))
+    groupInfoCopy.opers![
+      groupInfoCopy.opers!.findIndex(({ name }) => name === value.name)
+    ] = value
+    groupUpdateHandle?.(groupInfoCopy)
   }
 
   const OperatorsPart = (
@@ -78,14 +73,14 @@ export const GroupItem = ({
                 interactive={false}
                 horizontal
                 readOnly={!exist}
-                submitOperator={changeGroupedOperatorSkillHandle}
+                onSkillChange={changeGroupedOperatorSkillHandle}
               />
             ))
           : !editable && OperatorNoData}
         {editable && (
           <SheetGroupOperatorSelectTrigger
             groupInfo={groupInfo}
-            eventHandleProxy={eventHandleProxy}
+            groupUpdateHandle={groupUpdateHandle}
             {...rest}
           />
         )}
@@ -112,14 +107,14 @@ export const GroupItem = ({
           {editable ? (
             <CardDeleteOption
               className="cursor-pointer"
-              onClick={createOrDeleteGroup}
+              onClick={() => groupRemoveHandle?.(groupInfo._id || '')}
             />
           ) : (
             <Button
               minimal
               icon={exist ? 'tick' : 'arrow-left'}
               title={exist ? '已选择' : '使用该推荐分组'}
-              onClick={createOrDeleteGroup}
+              onClick={() => groupAddHandle?.(groupInfo)}
             />
           )}
           {(editable || pinned) && (
@@ -130,9 +125,7 @@ export const GroupItem = ({
                   <MenuItem
                     text={pinText}
                     icon={pinIcon}
-                    onClick={() =>
-                      eventHandleProxy(GroupEventType.PIN, groupInfo)
-                    }
+                    onClick={() => groupPinHandle?.(groupInfo)}
                   />
                 </Menu>
               }
@@ -141,11 +134,7 @@ export const GroupItem = ({
                 minimal
                 icon={pinIcon}
                 title={pinText}
-                onClick={
-                  pinned
-                    ? undefined
-                    : () => eventHandleProxy?.(GroupEventType.PIN, groupInfo)
-                }
+                onClick={pinned ? undefined : () => groupPinHandle?.(groupInfo)}
               />
             </Popover2>
           )}

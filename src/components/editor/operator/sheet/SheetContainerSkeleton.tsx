@@ -3,13 +3,13 @@ import { Divider, H3, Icon, IconName, MaybeElement } from '@blueprintjs/core'
 import clsx from 'clsx'
 import { ReactNode } from 'react'
 
-interface SheetContainerSkeletonProps {
+export interface SheetContainerSkeletonProps {
   title: string
   icon: IconName | MaybeElement
   mini?: boolean
   className?: string
   rightOptions?: ReactNode
-  children: ReactNode
+  children?: ReactNode
 }
 
 export const SheetContainerSkeleton = ({
