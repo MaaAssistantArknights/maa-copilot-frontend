@@ -1,7 +1,7 @@
 import { Button, Divider, H4, H5, H6, Intent } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
@@ -89,14 +89,17 @@ const SheetOperator = ({
     [selectedProf, existedOperators],
   )
 
-  const checkOperatorSelected = (target: string) => {
-    if (existedOperators.find((item) => item.name === target)) return true
-    else
-      return !!existedGroups
-        .map((item) => item.opers)
-        .flat()
-        .find((item) => item?.name === target)
-  }
+  const checkOperatorSelected = useCallback(
+    (target: string) => {
+      if (existedOperators.find((item) => item.name === target)) return true
+      else
+        return !!existedGroups
+          .map((item) => item.opers)
+          .flat()
+          .find((item) => item?.name === target)
+    },
+    [existedOperators, existedGroups],
+  )
 
   const operatorsGroupedBySubProf = useMemo(() => {
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
@@ -108,7 +111,7 @@ const SheetOperator = ({
       return operatorsGroupedByProf.filter(
         (item) => item.subProf === selectedSubProf.id,
       )
-  }, [selectedSubProf, operatorsGroupedByProf])
+  }, [selectedSubProf, operatorsGroupedByProf, checkOperatorSelected])
 
   const eventHandleProxy: OperatorEventHandleType = (type, value) => {
     switch (type) {

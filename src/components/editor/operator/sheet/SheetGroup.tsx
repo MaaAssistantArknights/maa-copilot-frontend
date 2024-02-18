@@ -74,23 +74,20 @@ const SheetGroup = ({
         opers: otherOperators,
       })
     return result
-  }, [existedOperators])
+  }, [existedOperators, existedGroups])
 
   const checkGroupExisted = (target: string) =>
     !!existedGroups.find((item) => item.name === target)
-  const checkGroupPinned = (
-    target: Group,
-    ignoreKey: string[] = ignoreKeyDic,
-  ) => {
+  const checkGroupPinned = (target: Group, ignoreKey?: string[]) => {
     const checkTarget = favGroups.find((item) => item.name === target.name)
     if (checkTarget) {
       return isEqualWith(
         checkTarget,
-        omit(target, ignoreKey),
+        omit(target, [...(ignoreKey || ignoreKeyDic)]),
         ({ opers: aOpers }, { opers: bOpers }) =>
           isEqual(
-            aOpers.map((item) => omit(item, ignoreKeyDic)),
-            bOpers.map((item) => omit(item, ignoreKeyDic)),
+            aOpers.map((item) => omit(item, [...(ignoreKey || ignoreKeyDic)])),
+            bOpers.map((item) => omit(item, [...(ignoreKey || ignoreKeyDic)])),
           ),
       )
     } else {
