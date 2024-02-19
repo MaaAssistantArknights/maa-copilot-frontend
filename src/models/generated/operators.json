@@ -1240,18 +1240,18 @@
       "alt_name": "Lumen"
     },
     {
-      "id": "char_126_shotst",
-      "subProf": "fastshot",
-      "name": "流星",
-      "alias": "liuxing lx 流星",
-      "alt_name": "Meteor"
-    },
-    {
       "id": "token_10030_mlyss_wtrman",
       "subProf": "notchar1",
       "name": "流形",
       "alias": "liuxing lx 流形",
       "alt_name": "Flowing Shape"
+    },
+    {
+      "id": "char_126_shotst",
+      "subProf": "fastshot",
+      "name": "流星",
+      "alias": "liuxing lx 流星",
+      "alt_name": "Meteor"
     },
     {
       "id": "char_486_takila",
