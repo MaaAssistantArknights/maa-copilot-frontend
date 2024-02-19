@@ -4,7 +4,7 @@ import {
   Card,
   FormGroup,
   InputGroup,
-  Switch
+  Switch,
 } from '@blueprintjs/core'
 
 import { UseOperationsParams } from 'apis/query'
@@ -14,8 +14,8 @@ import { ComponentType, useMemo, useState } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
-
 import { neoLayoutAtom } from 'store/pref'
+
 import { authAtom } from '../store/auth'
 import { OperatorSelect } from './OperatorSelect'
 import { withSuspensable } from './Suspensable'
@@ -89,7 +89,10 @@ export const Operations: ComponentType = withSuspensable(() => {
             }
           />
         </FormGroup>
-        <FormGroup label="排序" contentClassName="flex flex-wrap gap-y-2 gap-x-2">
+        <FormGroup
+          label="排序"
+          contentClassName="flex flex-wrap gap-y-2 gap-x-2"
+        >
           <ButtonGroup>
             <Button
               icon="flame"
@@ -134,9 +137,12 @@ export const Operations: ComponentType = withSuspensable(() => {
             </Button>
           )}
 
-          <Switch checked={neoLayout} onChange={(e) => {
-            setNeoLayout((e.target as HTMLInputElement).checked)
-          }}>
+          <Switch
+            checked={neoLayout}
+            onChange={(e) => {
+              setNeoLayout((e.target as HTMLInputElement).checked)
+            }}
+          >
             启用新版布局
           </Switch>
         </FormGroup>

@@ -1,14 +1,16 @@
 import { writeFile } from 'node:fs/promises'
 import process from 'process'
 
-import { getOperatorNames } from './shared'
+import { getOperators } from './shared'
 
 async function main() {
-  console.info('Fetching character_table.json...')
-  const names = await getOperatorNames()
+  console.info('Fetching operators...')
+  const { operators, professions } = await getOperators()
 
-  console.info('Parsing character_table.json...')
-  const content = JSON.stringify(names, null, 2)
+  const content = JSON.stringify({
+    OPERATORS: operators,
+    PROFESSIONS: professions,
+  })
 
   console.info('Writing to operators.json...')
   await writeFile('src/models/generated/operators.json', content)

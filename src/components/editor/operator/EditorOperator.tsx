@@ -25,6 +25,7 @@ const createArbitraryOperator = (name: string): OperatorInfo => ({
   name,
   alias: '',
   alt_name: '',
+  subProf: '',
 })
 
 export const EditorOperatorName = <T extends FieldValues>({
