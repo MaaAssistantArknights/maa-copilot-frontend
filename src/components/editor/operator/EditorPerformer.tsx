@@ -33,6 +33,7 @@ import {
   EditorPerformerAddProps,
   PerformerType,
 } from './EditorPerformerAdd'
+import { EditorSheetTrigger } from './EditorSheet'
 
 export interface EditorPerformerProps {
   control: Control<CopilotDocV1.Operation>
@@ -221,13 +222,14 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const submitOperator: EditorPerformerAddProps['submitOperator'] = (
     { groupName, ...operator },
     setError,
+    fromSheet,
   ) => {
     if (
       operators.find(
-        ({ _id, name }) => name === operator.name && _id !== operator._id,
+        ({ name, _id }) => name === operator.name && _id !== operator._id,
       )
     ) {
-      setError('name', { message: '干员已存在' })
+      setError?.('name', { message: '干员已存在' })
       return false
     }
 
@@ -251,19 +253,17 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           ...newGroup,
           opers: [...(newGroup.opers || []), operator],
         })
-      } else {
-        appendOperator(operator)
-      }
+      } else appendOperator(operator)
     }
 
-    if (editingOperator) {
-      const existingOperator = findOperatorById(getId(editingOperator))
-
+    if ((fromSheet && operator._id) || editingOperator) {
+      const existingOperator = fromSheet
+        ? operator
+        : findOperatorById(getId(editingOperator!))
       if (existingOperator) {
-        operator._id = getId(editingOperator)
+        operator._id = getId(existingOperator)
 
         const oldGroup = findGroupByOperator(existingOperator)
-
         if (oldGroup) {
           if (oldGroup === newGroup) {
             // replace existing operator in group
@@ -288,48 +288,63 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             removeOperator(operators.indexOf(existingOperator))
             addOperator()
           } else {
-            updateOperator(operators.indexOf(existingOperator), operator)
+            updateOperator(
+              operators.findIndex(({ name }) => name === operator.name),
+              operator,
+            )
           }
         }
 
         setEditingOperator(undefined)
       } else {
-        setError('global' as any, { message: '未能找到要更新的干员' })
+        setError?.('global' as any, { message: '未能找到要更新的干员' })
         return false
       }
     } else {
       operator._id = uniqueId()
       addOperator()
     }
-
     return true
   }
 
   const submitGroup: EditorPerformerAddProps['submitGroup'] = (
     group,
     setError,
+    fromSheet,
   ) => {
+    const removeOperatorByArray = () =>
+      removeOperator(
+        group.opers
+          ?.map((item) => operators.findIndex(({ name }) => name === item.name))
+          .filter((item) => item !== -1),
+      )
+
     if (
-      groups.find(({ _id, name }) => name === group.name && _id !== group._id)
+      groups.find(({ name, _id }) => name === group.name && _id !== group._id)
     ) {
-      setError('name', { message: '干员组已存在' })
+      setError?.('name', { message: '干员组已存在' })
       return false
     }
-
-    if (editingGroup) {
-      const existingGroup = findGroupById(getId(editingGroup))
-
+    if (editingGroup || (fromSheet && group._id)) {
+      const existingGroup = fromSheet
+        ? group
+        : findGroupById(getId(editingGroup!))
       if (existingGroup) {
-        group._id = getId(editingGroup)
-        updateGroup(groups.indexOf(existingGroup), group)
+        group._id = getId(existingGroup)
+        if (fromSheet) removeOperatorByArray()
+        updateGroup(
+          groups.findIndex(({ _id }) => _id === existingGroup._id),
+          group,
+        )
         setEditingGroup(undefined)
       } else {
-        setError('global' as any, { message: '未能找到要更新的干员组' })
+        setError?.('global' as any, { message: '未能找到要更新的干员组' })
         return false
       }
     } else {
       group._id = uniqueId()
       appendGroup(group)
+      if (group.opers?.length) removeOperatorByArray()
     }
 
     return true
@@ -339,6 +354,14 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     <>
       <div className="flex flex-wrap md:flex-nowrap">
         <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
+          <EditorSheetTrigger
+            submitOperator={submitOperator}
+            submitGroup={submitGroup}
+            existedOperators={operators}
+            existedGroups={groups}
+            removeOperator={removeOperator}
+            removeGroup={removeGroup}
+          />
           <EditorPerformerAdd
             mode={editMode}
             operator={editingOperator}
