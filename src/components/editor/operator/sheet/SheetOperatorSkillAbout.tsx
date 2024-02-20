@@ -13,12 +13,13 @@ import { EditorOperatorSkill } from '../EditorOperatorSkill'
 import { EditorOperatorSkillTimes } from '../EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from '../EditorOperatorSkillUsage'
 import { Operator } from '../EditorSheet'
+import { OperatorModifyProps } from './SheetOperator'
 
 const needSkillTimeType = CopilotDocV1.SkillUsageType.ReadyToUseTimes
 
 export interface SkillAboutProps {
   operator?: Operator
-  onSkillChange?: (value: Operator) => void
+  onSkillChange?: OperatorModifyProps['operatorSkillHandle']
 }
 
 const skillDic = operatorSkillUsages as DetailedSelectChoice[]

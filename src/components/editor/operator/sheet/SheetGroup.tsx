@@ -158,7 +158,7 @@ const SheetGroup = ({
       { ...value },
     ])
 
-  const groupAddHandle = (value: Group) => {
+  const groupAddHandle: GroupListModifyProp['groupAddHandle'] = (value) => {
     if (checkGroupExisted(value.name)) {
       AppToaster.show({
         message: '干员组已存在！',
@@ -169,10 +169,10 @@ const SheetGroup = ({
       submitGroup(value, undefined, true)
     }
   }
-  const groupRemoveHandle = (_id: string) => {
+  const groupRemoveHandle: GroupListModifyProp['groupRemoveHandle'] = (_id) => {
     removeGroup(existedGroups.findIndex((item) => item._id === _id))
   }
-  const groupPinHandle = (value: Group) => {
+  const groupPinHandle: GroupListModifyProp['groupPinHandle'] = (value) => {
     if (checkGroupPinned(value))
       setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
     else {
@@ -180,7 +180,9 @@ const SheetGroup = ({
       else updateFavGroup(value)
     }
   }
-  const groupUpdateHandle = (value: Group) => {
+  const groupUpdateHandle: GroupListModifyProp['groupUpdateHandle'] = (
+    value,
+  ) => {
     changeOperatorOfOtherGroups(value.opers)
     submitGroup(value, undefined, true)
   }
