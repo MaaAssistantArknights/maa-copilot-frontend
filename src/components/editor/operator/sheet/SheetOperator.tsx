@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
+import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
@@ -125,11 +126,23 @@ const SheetOperator = ({
       ),
     )
 
-  const updateFavOperator = (value: Operator) =>
+  const updateFavOperator = (value: Operator) => {
+    const { skill, skillUsage, skillTimes, ...rest } = value
+    const formattedValue = {
+      ...rest,
+      skill: skill || 1,
+      skillUsage: skillUsage || 0,
+      skillTimes:
+        skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
+          ? skillTimes || 1
+          : undefined,
+    }
     setFavOperators([
-      ...[...favOperators].filter(({ name }) => name !== value.name),
-      { ...value },
+      ...[...favOperators].filter(({ name }) => name !== formattedValue.name),
+      { ...formattedValue },
     ])
+    submitOperator(formattedValue, undefined, true)
+  }
 
   const operatorPinHandle: OperatorModifyProps['operatorPinHandle'] = (
     value,
