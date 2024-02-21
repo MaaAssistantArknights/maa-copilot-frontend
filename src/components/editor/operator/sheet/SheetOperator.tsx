@@ -1,11 +1,16 @@
-import { Button, Divider, H4, H5, H6, Intent } from '@blueprintjs/core'
+import { Alert, Button, Divider, H4, H5, H6, Intent } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import { useAtom } from 'jotai'
+import { isEqual, omit } from 'lodash'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
+import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
+import { ignoreKeyDic } from 'store/useFavGroups'
+import { favOperatorAtom } from 'store/useFavOperators'
 
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 import { Group, Operator } from '../EditorSheet'
@@ -20,10 +25,21 @@ export interface SheetOperatorProps {
   removeOperator: UseFieldArrayRemove
 }
 
+export interface OperatorModifyProps {
+  operatorPinHandle?: (value: Operator) => void
+  operatorSelectHandle?: (value: string) => void
+  operatorSkillHandle?: (value: Operator) => void
+}
+
 const defaultProf = [
   {
     id: 'all',
     name: '全部',
+    sub: [],
+  },
+  {
+    id: 'fav',
+    name: '收藏',
     sub: [],
   },
   {
@@ -39,9 +55,9 @@ const defaultSubProf = [
 ]
 
 const formattedProfessions = [
-  defaultProf[0],
+  ...defaultProf.slice(0, defaultProf.length - 1),
   ...PROFESSIONS,
-  ...defaultProf.slice(1),
+  ...defaultProf.slice(defaultProf.length - 1),
 ]
 
 const paginationSize = 60
@@ -56,6 +72,12 @@ const SheetOperator = ({
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
+  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
+  const [coverOperator, setCoverOperator] = useState<Operator>()
+
+  const favOperatorFindByName = (target: string) => {
+    return !!favOperators.find(({ name }) => name === target)
+  }
 
   const [formattedSubProfessions, operatorsGroupedByProf] = useMemo(
     () => [
@@ -73,12 +95,14 @@ const SheetOperator = ({
         ...OPERATORS,
       ].filter((item) => {
         if (selectedProf.id === defaultProf[0].id) return true
-        else if (selectedProf.id === defaultProf[1].id) {
+        if (selectedProf.id === defaultProf[1].id)
+          return favOperatorFindByName(item.name)
+        else if (selectedProf.id === defaultProf[2].id) {
           return item.subProf === 'notchar1' || !item.subProf
         } else return !!selectedProf.sub?.find((op) => op.id === item.subProf)
       }),
     ],
-    [selectedProf, existedOperators],
+    [selectedProf, existedOperators, favOperators],
   )
 
   const checkOperatorSelected = useCallback(
@@ -93,6 +117,46 @@ const SheetOperator = ({
     [existedOperators, existedGroups],
   )
 
+  const checkOperatorPinned = (target: Operator, ignoreKey = ignoreKeyDic) =>
+    isEqual(
+      omit(target, [...ignoreKey]),
+      omit(
+        favOperators.find(({ name }) => name === target.name),
+        [...ignoreKey],
+      ),
+    )
+
+  const updateFavOperator = (value: Operator) => {
+    const { skill, skillUsage, skillTimes, ...rest } = value
+    const formattedValue = {
+      ...rest,
+      skill: skill || 1,
+      skillUsage: skillUsage || 0,
+      skillTimes:
+        skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
+          ? skillTimes || 1
+          : undefined,
+    }
+    setFavOperators([
+      ...[...favOperators].filter(({ name }) => name !== formattedValue.name),
+      { ...formattedValue },
+    ])
+    submitOperator(formattedValue, undefined, true)
+  }
+
+  const operatorPinHandle: OperatorModifyProps['operatorPinHandle'] = (
+    value,
+  ) => {
+    if (checkOperatorPinned(value))
+      setFavOperators(
+        [...favOperators].filter(({ name }) => name !== value.name),
+      )
+    else {
+      if (favOperatorFindByName(value.name)) setCoverOperator(value)
+      else updateFavOperator(value)
+    }
+  }
+
   const operatorsGroupedBySubProf = useMemo(() => {
     if (selectedSubProf.id === 'all') return operatorsGroupedByProf
     else if (selectedSubProf.id === 'selected')
@@ -105,7 +169,9 @@ const SheetOperator = ({
       )
   }, [selectedSubProf, operatorsGroupedByProf, checkOperatorSelected])
 
-  const operatorSelectHandle = (operatorName: string) => {
+  const operatorSelectHandle: OperatorModifyProps['operatorSelectHandle'] = (
+    operatorName,
+  ) => {
     if (checkOperatorSelected(operatorName))
       if (existedOperators.find((item) => item.name === operatorName))
         removeOperator(
@@ -116,10 +182,19 @@ const SheetOperator = ({
           message: `干员 ${operatorName} 已被编组`,
           intent: Intent.DANGER,
         })
-    else submitOperator({ name: operatorName }, undefined, true)
+    else
+      submitOperator(
+        favOperators.find(({ name }) => name === operatorName) || {
+          name: operatorName,
+        },
+        undefined,
+        true,
+      )
   }
 
-  const operatorSkillHandle = (value: Operator) => {
+  const operatorSkillHandle: OperatorModifyProps['operatorSkillHandle'] = (
+    value,
+  ) => {
     submitOperator(value, undefined, true)
   }
 
@@ -259,44 +334,70 @@ const SheetOperator = ({
   )
 
   return (
-    <div className="flex h-full">
-      <div className="flex-auto px-1" ref={operatorScrollRef}>
-        {operatorsGroupedBySubProf.length ? (
-          <>
-            <div
-              key="operatorContainer"
-              className="flex flex-wrap items-start content-start overscroll-contain relative"
-            >
-              {operatorsGroupedBySubProf
-                .slice(0, lastIndex)
-                .map(({ name: operatorInfoName }, index) => {
-                  const operatorDetail = existedOperators.find(
-                    ({ name }) => name === operatorInfoName,
-                  )
-                  return (
-                    <div
-                      className="flex items-center w-32 h-32 flex-0"
-                      key={index}
-                    >
-                      <OperatorItem
-                        selected={checkOperatorSelected(operatorInfoName)}
-                        onSkillChange={operatorSkillHandle}
-                        operator={operatorDetail}
-                        name={operatorInfoName}
-                        onClick={() => operatorSelectHandle(operatorInfoName)}
-                      />
-                    </div>
-                  )
-                })}
-            </div>
-            {ShowMoreButton}
-          </>
-        ) : (
-          OperatorNoData
-        )}
+    <>
+      <div className="flex h-full">
+        <div className="flex-auto px-1" ref={operatorScrollRef}>
+          {operatorsGroupedBySubProf.length ? (
+            <>
+              <div
+                key="operatorContainer"
+                className="flex flex-wrap items-start content-start overscroll-contain relative"
+              >
+                {operatorsGroupedBySubProf
+                  .slice(0, lastIndex)
+                  .map(({ name: operatorInfoName }, index) => {
+                    const operatorDetail = existedOperators.find(
+                      ({ name }) => name === operatorInfoName,
+                    )
+                    return (
+                      <div
+                        className="flex items-center w-32 h-32 flex-0"
+                        key={index}
+                      >
+                        <OperatorItem
+                          selected={checkOperatorSelected(operatorInfoName)}
+                          pinned={checkOperatorPinned(
+                            operatorDetail || { name: operatorInfoName },
+                          )}
+                          onSkillChange={operatorSkillHandle}
+                          operator={operatorDetail}
+                          name={operatorInfoName}
+                          onClick={() => operatorSelectHandle(operatorInfoName)}
+                          onPinHandle={
+                            existedOperators.find(
+                              ({ name }) => name === operatorInfoName,
+                            )
+                              ? operatorPinHandle
+                              : undefined
+                          }
+                        />
+                      </div>
+                    )
+                  })}
+              </div>
+              {ShowMoreButton}
+            </>
+          ) : (
+            OperatorNoData
+          )}
+        </div>
+        {ProfSelect}
       </div>
-      {ProfSelect}
-    </div>
+      <Alert
+        isOpen={!!coverOperator}
+        confirmButtonText="是"
+        cancelButtonText="否"
+        icon="error"
+        intent={Intent.DANGER}
+        onConfirm={() => updateFavOperator(coverOperator as Group)}
+        onClose={() => setCoverOperator(undefined)}
+      >
+        <div>
+          <H5>收藏: </H5>
+          <p>检测到同名的已收藏干员 {coverOperator?.name}，是否覆盖？</p>
+        </div>
+      </Alert>
+    </>
   )
 }
 
