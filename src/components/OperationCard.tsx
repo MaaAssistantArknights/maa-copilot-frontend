@@ -7,7 +7,7 @@ import {
   H4,
   H5,
   Icon,
-  Tag
+  Tag,
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
@@ -55,10 +55,12 @@ export const NeoOperationCard = ({
         className="flex flex-col gap-2"
         onClick={() => setDrawerOpen(true)}
       >
-
         {/* title */}
         <div className="flex gap-1">
-          <Tooltip2 content={operationDoc.doc.title} className='flex-1 whitespace-nowrap overflow-hidden text-ellipsis'>
+          <Tooltip2
+            content={operationDoc.doc.title}
+            className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
+          >
             <H4 className="p-0 m-0 whitespace-nowrap overflow-hidden text-ellipsis">
               {operationDoc.doc.title}
             </H4>
@@ -66,9 +68,7 @@ export const NeoOperationCard = ({
           <Tooltip2
             placement="bottom"
             content={
-              <div className="max-w-sm dark:text-slate-900">
-                下载原 JSON
-              </div>
+              <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
             }
           >
             <Button
@@ -83,9 +83,7 @@ export const NeoOperationCard = ({
           <Tooltip2
             placement="bottom"
             content={
-              <div className="max-w-sm dark:text-slate-900">
-                复制神秘代码
-              </div>
+              <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
             }
           >
             <Button
@@ -100,12 +98,18 @@ export const NeoOperationCard = ({
         </div>
         <div className="flex items-center text-slate-900">
           <div className="flex flex-wrap">
-            <NeoELevel level={findLevelByStageName(levels, operationDoc.stageName) ||
-              createCustomLevel(operationDoc.stageName)} />
-            <EDifficulty difficulty={operationDoc.difficulty ?? OpDifficulty.UNKNOWN} />
+            <NeoELevel
+              level={
+                findLevelByStageName(levels, operationDoc.stageName) ||
+                createCustomLevel(operationDoc.stageName)
+              }
+            />
+            <EDifficulty
+              difficulty={operationDoc.difficulty ?? OpDifficulty.UNKNOWN}
+            />
           </div>
         </div>
-        <div className='flex-1 flex flex-col gap-2 justify-center'>
+        <div className="flex-1 flex flex-col gap-2 justify-center">
           <div className="text-gray-700 leading-normal">
             <Paragraphs
               content={operationDoc.doc.details}
@@ -120,7 +124,7 @@ export const NeoOperationCard = ({
           </div>
         </div>
 
-        <div className='flex'>
+        <div className="flex">
           <div className="flex items-center gap-1.5">
             <Icon icon="star" />
             <OperationRating
@@ -129,7 +133,7 @@ export const NeoOperationCard = ({
               layout="horizontal"
             />
           </div>
-          <div className='flex-1' />
+          <div className="flex-1" />
 
           <Tooltip2 placement="top" content={`访问量：${operation.views}`}>
             <div>
@@ -139,7 +143,7 @@ export const NeoOperationCard = ({
           </Tooltip2>
         </div>
 
-        <div className='flex'>
+        <div className="flex">
           <div>
             <Icon icon="time" className="mr-1.5" />
             <RelativeTime
@@ -147,7 +151,7 @@ export const NeoOperationCard = ({
               moment={operation.uploadTime}
             />
           </div>
-          <div className='flex-1' />
+          <div className="flex-1" />
           <div className="text-zinc-500">
             <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
               <div>

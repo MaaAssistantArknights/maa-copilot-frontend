@@ -71,11 +71,10 @@ export const EditorActionDistance = ({
     >
       <div className="flex">
         <NumericInput2
-          intOnly
           selectAllOnFocus
           className="mr-2"
           placeholder="X 距离"
-          minorStepSize={0.5}
+          stepSize={0.5}
           onValueChange={(value) => onChange(transform.fromX(value))}
           onBlur={onBlur}
           value={value?.[0]?.toString() ?? ''}
@@ -88,10 +87,9 @@ export const EditorActionDistance = ({
         />
 
         <NumericInput2
-          intOnly
           selectAllOnFocus
           placeholder="Y 距离"
-          minorStepSize={0.5}
+          stepSize={0.5}
           onValueChange={(value) => onChange(transform.fromY(value))}
           onBlur={onBlur}
           value={value?.[1]?.toString() ?? ''}

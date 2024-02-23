@@ -25,7 +25,8 @@ export interface EditorPerformerOperatorProps {
   groups: CopilotDocV1.Group[]
   submit: (
     values: EditorOperatorFormValues,
-    setError: UseFormSetError<EditorOperatorFormValues>,
+    setError?: UseFormSetError<EditorOperatorFormValues>,
+    fromSheet?: boolean,
   ) => boolean
   onCancel: () => void
   categorySelector: JSX.Element

@@ -22,6 +22,7 @@ export const EditorOperatorSkillTimes = <
 
   return (
     <NumericInput2
+      intOnly
       defaultValue={0}
       onValueChange={(val) => onChange(Math.min(val, 100))}
       onBlur={onBlur}

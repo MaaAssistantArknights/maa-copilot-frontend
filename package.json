@@ -14,9 +14,10 @@
     "lint:fix": "npm-run-all --parallel lint:fix:eslint lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix src/**/*",
     "lint:fix:prettier": "prettier --write src/**/*",
-    "scripts:update": "npm-run-all --parallel scripts:update-operators scripts:update-operator-avatars",
-    "scripts:update-operators": "yarn install && esno scripts/update-operators.ts",
-    "scripts:update-operator-avatars": "yarn install && esno scripts/update-operator-avatars.ts"
+    "scripts:update": "yarn install && npm-run-all --parallel scripts:update-operators scripts:update-operator-avatars scripts:update-prof-icons",
+    "scripts:update-operators": "esno scripts/update-operators.ts",
+    "scripts:update-operator-avatars": "esno scripts/update-operator-avatars.ts",
+    "scripts:update-prof-icons": "yarn install && esno scripts/update-prof-icons.ts"
   },
   "dependencies": {
     "@blueprintjs/core": "^4.15.1",
@@ -76,7 +77,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-prettier": "^4.2.1",
-    "esno": "^0.16.3",
+    "esno": "^4.0.0",
     "less": "^4.1.2",
     "node-fetch": "^3.2.6",
     "npm-run-all2": "^6.0.2",
