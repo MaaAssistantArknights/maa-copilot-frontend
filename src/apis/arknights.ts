@@ -29,8 +29,6 @@ export const useLevels = ({ suspense }: { suspense?: boolean } = {}) => {
 
       res.data = res.data.filter((level) => {
         if (
-          // 引航者试炼
-          level.levelId.includes('bossrush') ||
           // 肉鸽
           level.levelId.includes('roguelike') ||
           // 保全派驻
