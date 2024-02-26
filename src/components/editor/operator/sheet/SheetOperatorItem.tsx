@@ -51,7 +51,7 @@ export const OperatorItem = ({
           {name}
         </p>
       </>
-      {!horizontal && selected && (
+      {!horizontal && selected && onPinHandle && (
         <div
           className="absolute top-2 right-2"
           onClick={(e) => e.stopPropagation()}
