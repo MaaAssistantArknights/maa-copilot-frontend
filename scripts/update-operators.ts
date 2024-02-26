@@ -1,6 +1,6 @@
 import { writeFile } from 'node:fs/promises'
-import process from 'process'
 import * as prettier from 'prettier'
+import process from 'process'
 
 import { getOperators } from './shared'
 
