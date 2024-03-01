@@ -4,6 +4,7 @@
   "tabWidth": 2,
   "semi": false,
   "arrowParens": "always",
+  "plugins": ["@trivago/prettier-plugin-sort-imports"],
   "importOrder": [
     "^@.*/(.*)$",
     "<THIRD_PARTY_MODULES>",
