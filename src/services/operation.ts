@@ -1,14 +1,15 @@
 import { AppToaster } from 'components/Toaster'
 
 import { CopilotDocV1 } from '../models/copilot.schema'
-import { OperationListItem } from '../models/operation'
+import { Operation } from '../models/operation'
 import { toShortCode } from '../models/shortCode'
 import { snakeCaseKeysUnicode } from '../utils/object'
 
 export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   // pretty print the JSON
   const json = JSON.stringify(
-    snakeCaseKeysUnicode(operationDoc, { deep: true }),
+    // 类型对不上 https://github.com/bendrucker/snakecase-keys/issues/138
+    snakeCaseKeysUnicode(operationDoc as any),
     null,
     2,
   )
@@ -28,7 +29,7 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   })
 }
 
-export const handleCopyShortCode = (operation: OperationListItem) => {
+export const handleCopyShortCode = (operation: Operation) => {
   const shortCode = toShortCode(operation.id)
   navigator.clipboard.writeText(shortCode)
 

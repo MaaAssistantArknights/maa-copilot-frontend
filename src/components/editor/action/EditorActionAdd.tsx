@@ -28,7 +28,7 @@ import { EditorActionOperatorLocation } from 'components/editor/action/EditorAct
 import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTypeSelect'
 import { CopilotDocV1 } from 'models/copilot.schema'
 
-import { useLevels } from '../../../apis/arknights'
+import { useLevels } from '../../../apis/level'
 import { findLevelByStageName } from '../../../models/level'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillTimes } from '../operator/EditorOperatorSkillTimes'
@@ -84,7 +84,7 @@ export const EditorActionAdd = ({
   const stageName = useWatch({ control: operationControl, name: 'stageName' })
   const skillUsage = useWatch({ control, name: 'skillUsage' })
 
-  const levels = useLevels().data?.data || []
+  const { data: levels } = useLevels()
   const level = useMemo(
     () => findLevelByStageName(levels, stageName),
     [levels, stageName],

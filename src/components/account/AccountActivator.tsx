@@ -6,7 +6,7 @@ import { FC, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { AppToaster } from 'components/Toaster'
-import { NetworkError } from 'utils/fetcher'
+import { NetworkError } from 'utils/error'
 import { useNetworkState } from 'utils/useNetworkState'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 

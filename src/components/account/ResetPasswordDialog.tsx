@@ -1,14 +1,10 @@
 import { Button, Callout, Dialog, InputGroup } from '@blueprintjs/core'
 
+import { resetPassword, sendResetPasswordEmail } from 'apis/auth'
 import { FC, useState } from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
 
-import {
-  requestResetPassword,
-  requestResetPasswordToken,
-} from '../../apis/auth'
-import { formatError } from '../../utils/error'
-import { NetworkError } from '../../utils/fetcher'
+import { NetworkError, formatError } from '../../utils/error'
 import { useNetworkState } from '../../utils/useNetworkState'
 import { wrapErrorMessage } from '../../utils/wrapErrorMessage'
 import { FormField } from '../FormField'
@@ -43,7 +39,11 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
 
   const onSubmit = handleSubmit(async (values) => {
     try {
-      await requestResetPassword(values)
+      await resetPassword({
+        email: values.email,
+        activeCode: values.token,
+        password: values.password,
+      })
 
       AppToaster.show({
         intent: 'success',
@@ -148,7 +148,7 @@ const RequestTokenButton = ({
     start()
     wrapErrorMessage(
       (e: NetworkError) => `获取验证码失败：${e.message}`,
-      requestResetPasswordToken({ email }),
+      sendResetPasswordEmail({ email }),
     )
       .then(() => {
         finish(null)

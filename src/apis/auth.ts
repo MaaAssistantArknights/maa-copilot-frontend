@@ -1,45 +1,75 @@
 import { Response } from 'models/network'
 import { jsonRequest } from 'utils/fetcher'
+import { UserApi } from 'utils/maa-copilot-client'
 
-export interface UserCredentials {
-  token: string
-  validBefore: string
-  refreshToken: string
-  refreshTokenValidBefore: string
-  userInfo: UserInfo
+export async function sendRegistrationEmail(req: { email: string }) {
+  await new UserApi({ sendToken: 'never' }).sendRegistrationToken({
+    sendRegistrationTokenDTO: req,
+  })
 }
 
-export interface UserInfo {
-  id: string
-  userName: string
-  role: string
-  activated: boolean
-  favoriteLists: Record<string, any>
-  uploadCount: number
-}
-
-export interface LoginResponse extends UserCredentials {}
-
-export const requestLogin = (email: string, password: string) => {
-  return jsonRequest<Response<LoginResponse>>('/user/login', {
-    method: 'POST',
-    json: {
-      email,
-      password,
+export async function register(req: {
+  email: string
+  registrationToken: string
+  username: string
+  password: string
+}) {
+  await new UserApi({ sendToken: 'never' }).register({
+    registerDTO: {
+      ...req,
+      userName: req.username,
     },
   })
 }
 
-export interface RefreshResponse extends UserCredentials {}
+export async function login(req: { email: string; password: string }) {
+  const res = await new UserApi({
+    sendToken: 'never',
+    requireData: true,
+  }).login({
+    loginDTO: req,
+  })
+  return res.data
+}
 
-export const requestRefresh = (token: string, refreshToken: string) => {
-  return jsonRequest<Response<RefreshResponse>>('/user/refresh', {
-    method: 'POST',
-    json: {
-      access_token: token,
-      refresh_token: refreshToken,
+export async function refreshAccessToken(req: { refreshToken: string }) {
+  const res = await new UserApi({
+    sendToken: 'never',
+    requireData: true,
+  }).refresh({
+    refreshReq: req,
+  })
+  return res.data
+}
+
+export async function updateUserInfo(req: { username: string }) {
+  await new UserApi().updateInfo({
+    userInfoUpdateDTO: {
+      userName: req.username,
     },
-    noToken: true,
+  })
+}
+
+export async function updatePassword(req: {
+  originalPassword: string
+  newPassword: string
+}) {
+  await new UserApi().updatePassword({ passwordUpdateDTO: req })
+}
+
+export async function sendResetPasswordEmail(req: { email: string }) {
+  await new UserApi({ sendToken: 'never' }).passwordResetRequest({
+    passwordResetVCodeDTO: req,
+  })
+}
+
+export function resetPassword(req: {
+  email: string
+  activeCode: string
+  password: string
+}) {
+  return new UserApi({ sendToken: 'never' }).passwordReset({
+    passwordResetDTO: req,
   })
 }
 
@@ -64,105 +94,4 @@ export const requestActivationCode = () => {
       json: {},
     },
   )
-}
-
-export interface RegisterResponse {}
-
-export const requestRegister = (
-  email: string,
-  registrationToken: string,
-  username: string,
-  password: string,
-) => {
-  return jsonRequest<Response<RegisterResponse>>('/user/register', {
-    method: 'POST',
-    json: {
-      email,
-      registration_token: registrationToken,
-      user_name: username,
-      password,
-    },
-  })
-}
-
-export interface EmailToenResponse {}
-
-export const reqeustRegistrationToken = (email: string) => {
-  return jsonRequest<Response<EmailToenResponse>>(
-    '/user/sendRegistrationToken',
-    {
-      method: 'POST',
-      json: {
-        email,
-      },
-    },
-  )
-}
-
-export interface UpdateInfoResponse {}
-
-export const requestUpdateInfo = ({
-  email,
-  username,
-}: {
-  email?: string
-  username?: string
-}) => {
-  return jsonRequest<Response<UpdateInfoResponse>>('/user/update/info', {
-    method: 'POST',
-    json: {
-      email,
-      user_name: username,
-    },
-  })
-}
-
-export interface UpdatePasswordResponse {}
-
-export const requestUpdatePassword = ({
-  original,
-  newPassword,
-}: {
-  original?: string
-  newPassword?: string
-}) => {
-  return jsonRequest<Response<UpdatePasswordResponse>>(
-    '/user/update/password',
-    {
-      method: 'POST',
-      json: {
-        original_password: original,
-        new_password: newPassword,
-      },
-    },
-  )
-}
-
-export interface ResetPasswordTokenResponse {}
-
-export const requestResetPasswordToken = (data: { email: string }) => {
-  return jsonRequest<Response<ResetPasswordTokenResponse>>(
-    '/user/password/reset_request',
-    {
-      method: 'POST',
-      json: data,
-    },
-  )
-}
-
-export interface ResetPasswordResponse {}
-
-export const requestResetPassword = (data: {
-  email: string
-  token: string
-  password: string
-}) => {
-  return jsonRequest<Response<ResetPasswordResponse>>('/user/password/reset', {
-    method: 'POST',
-    json: {
-      email: data.email,
-      active_code: data.token,
-      password: data.password,
-    },
-  })
 }

@@ -16,9 +16,9 @@ import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
-import { OpDifficulty, OperationListItem } from 'models/operation'
+import { OpDifficulty, Operation } from 'models/operation'
 
-import { useLevels } from '../apis/arknights'
+import { useLevels } from '../apis/level'
 import { CopilotDocV1 } from '../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
@@ -30,10 +30,10 @@ export const NeoOperationCard = ({
   operation,
   operationDoc,
 }: {
-  operation: OperationListItem
+  operation: Operation
   operationDoc: CopilotDocV1.Operation
 }) => {
-  const levels = useLevels()?.data?.data || []
+  const { data: levels } = useLevels()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
@@ -170,10 +170,10 @@ export const OperationCard = ({
   operation,
   operationDoc,
 }: {
-  operation: OperationListItem
+  operation: Operation
   operationDoc: CopilotDocV1.Operation
 }) => {
-  const levels = useLevels()?.data?.data || []
+  const { data: levels } = useLevels()
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
