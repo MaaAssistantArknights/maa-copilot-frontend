@@ -1,16 +1,21 @@
+import { getDefaultStore } from 'jotai/vanilla'
 import { BrowserRouter } from 'react-router-dom'
 import { SWRConfig } from 'swr'
 
-import { Effects } from 'components/Effects'
+import { authAtom } from 'store/auth'
+import { TokenManager } from 'utils/token-manager'
 
 import { GlobalErrorBoundary } from './components/GlobalErrorBoundary'
 import { FCC } from './types'
 import { request } from './utils/fetcher'
 
+// jotai 在没有 Provider 时会使用默认的 store
+TokenManager.setAuthGetter(() => getDefaultStore().get(authAtom))
+TokenManager.setAuthSetter((v) => getDefaultStore().set(authAtom, v))
+
 export const App: FCC = ({ children }) => {
   return (
     <>
-      <Effects />
       <SWRConfig
         value={{
           fetcher: request,

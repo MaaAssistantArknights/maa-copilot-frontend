@@ -7,7 +7,7 @@ import {
   Switch,
 } from '@blueprintjs/core'
 
-import { UseOperationsParams } from 'apis/query'
+import { UseOperationsParams } from 'apis/operation'
 import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'

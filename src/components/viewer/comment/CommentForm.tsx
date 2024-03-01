@@ -1,9 +1,9 @@
 import { Button, Card, Checkbox, TextArea } from '@blueprintjs/core'
 
+import { sendComment } from 'apis/comment'
 import clsx from 'clsx'
 import { useContext, useState } from 'react'
 
-import { requestAddComment } from '../../../apis/comment'
 import { MAX_COMMENT_LENGTH } from '../../../models/comment'
 import { formatError } from '../../../utils/error'
 import { wrapErrorMessage } from '../../../utils/wrapErrorMessage'
@@ -51,12 +51,16 @@ export const CommentForm = ({
         (async () => {
           if (primary) {
             // this comment is a main comment and does not reply to others
-            await requestAddComment(message, operationId)
+            await sendComment({ message, operationId })
           } else {
             if (!replyTo) {
               throw new Error('要回复的评论不存在')
             }
-            await requestAddComment(message, operationId, replyTo?.commentId)
+            await sendComment({
+              message,
+              operationId,
+              fromCommentId: replyTo?.commentId,
+            })
           }
         })(),
       )

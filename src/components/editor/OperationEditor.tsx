@@ -11,7 +11,7 @@ import {
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { useLevels } from 'apis/arknights'
+import { useLevels } from 'apis/level'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
@@ -65,14 +65,11 @@ export const StageNameInput: FC<{
 
   // we are going to manually handle loading state so we could show the skeleton state easily,
   // without swapping the actual element.
-  const { data, error: _levelError, isValidating } = useLevels()
-  const loading = isValidating && !data
-  const levelError =
-    _levelError && (data ? '更新关卡失败：' : '') + formatError(_levelError)
+  const { data, error: levelError, isLoading } = useLevels()
 
   const levels = useMemo(
     () =>
-      data?.data
+      data
         // to simplify the list, we only show levels in normal mode
         .filter((level) => !isHardMode(level.stageId))
         .sort((a, b) => a.levelId.localeCompare(b.levelId)) || [],
@@ -120,7 +117,7 @@ export const StageNameInput: FC<{
     <FormField2
       label="关卡"
       field="stageName"
-      error={levelError || fieldState.error}
+      error={levelError ? formatError(levelError) : fieldState.error}
       asterisk
       FormGroupProps={{
         helperText: (
@@ -140,8 +137,8 @@ export const StageNameInput: FC<{
           }
           fieldState={fieldState}
           onReset={() => onChange('')}
-          className={clsx('flex-grow mr-2', loading && 'bp4-skeleton')}
-          disabled={loading}
+          className={clsx('flex-grow mr-2', isLoading && 'bp4-skeleton')}
+          disabled={isLoading}
           itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
             <MenuItem
               key={item.stageId}
@@ -198,7 +195,7 @@ const DifficultyPicker: FC<{
   })
 
   const stageName = useWatch({ control, name: 'stageName' })
-  const levels = useLevels().data?.data || []
+  const { data: levels } = useLevels()
   const invalid = useMemo(
     () => !hasHardMode(levels, stageName),
     [levels, stageName],
@@ -259,7 +256,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   },
   toolbar,
 }) => {
-  const levels = useLevels().data?.data || []
+  const { data: levels } = useLevels()
 
   const stageName = watch('stageName')
 

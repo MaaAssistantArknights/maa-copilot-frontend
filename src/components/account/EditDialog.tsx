@@ -8,7 +8,7 @@ import {
   Tabs,
 } from '@blueprintjs/core'
 
-import { requestUpdateInfo, requestUpdatePassword } from 'apis/auth'
+import { updatePassword, updateUserInfo } from 'apis/auth'
 import { useAtom } from 'jotai'
 import { FC, useEffect, useState } from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
@@ -98,7 +98,7 @@ const InfoPanel = ({ onClose }) => {
 
   const onSubmit = handleSubmit(async ({ username }) => {
     try {
-      await requestUpdateInfo({ username })
+      await updateUserInfo({ username })
 
       setAuth({
         ...latestAuth.current,
@@ -177,7 +177,7 @@ const PasswordPanel = ({ onClose }) => {
       }
 
       try {
-        await requestUpdatePassword({ original, newPassword })
+        await updatePassword({ originalPassword: original, newPassword })
 
         AppToaster.show({
           intent: 'success',

@@ -11,8 +11,8 @@ import {
 } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { useLevels } from 'apis/arknights'
-import { requestOperationUpload } from 'apis/copilotOperation'
+import { useLevels } from 'apis/level'
+import { createOperation } from 'apis/operation'
 import { ComponentType, useState } from 'react'
 import { useList } from 'react-use'
 
@@ -53,11 +53,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
 
   const isUploadable = !nonUploadableReason
 
-  const { data: levelsData, error: levelError } = useLevels({ suspense: true })
-  const levels = levelsData?.data
-
-  // make eslint happy: we got Suspense out there
-  if (!levels) return null
+  const { data: levels, error: levelError } = useLevels({ suspense: true })
 
   if (levelError) {
     setGlobalErrors([levelError.message])
@@ -108,7 +104,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
 
       await Promise.allSettled(
         files.map((file) =>
-          requestOperationUpload(JSON.stringify(file.operation))
+          createOperation({ content: JSON.stringify(file.operation) })
             .then(() => {
               successCount++
               updateFileWhere((candidate) => candidate === file, {

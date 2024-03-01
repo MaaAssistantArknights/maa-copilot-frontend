@@ -1,11 +1,11 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
-import { UseOperationsParams, useOperations } from 'apis/query'
+import { UseOperationsParams, useOperations } from 'apis/operation'
 import { ComponentType, ReactNode, useMemo } from 'react'
 
 import { toCopilotOperation } from '../models/converter'
 import { CopilotDocV1 } from '../models/copilot.schema'
-import { OperationListItem } from '../models/operation'
+import { Operation } from '../models/operation'
 import { NeoOperationCard, OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
 
@@ -13,14 +13,16 @@ export const OperationList: ComponentType<
   UseOperationsParams & { neoLayout?: boolean }
 > = withSuspensable(
   (props) => {
-    const { operations, size, setSize, isValidating, isReachingEnd } =
-      useOperations({ ...props, suspense: true })
+    const { operations, setSize, isValidating, isReachingEnd } = useOperations({
+      ...props,
+      suspense: true,
+    })
 
     const docCache = useMemo(
-      () => new WeakMap<OperationListItem, CopilotDocV1.Operation>(),
+      () => new WeakMap<Operation, CopilotDocV1.Operation>(),
       [],
     )
-    const operationsWithDoc = operations.map((operation) => {
+    const operationsWithDoc = operations?.map((operation) => {
       let doc = docCache.get(operation)
       if (!doc) {
         doc = toCopilotOperation(operation)
@@ -36,7 +38,7 @@ export const OperationList: ComponentType<
         className="grid gap-4"
         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr)' }}
       >
-        {operationsWithDoc.map(({ operation, doc }) => (
+        {operationsWithDoc?.map(({ operation, doc }) => (
           <NeoOperationCard
             operation={operation}
             operationDoc={doc}
@@ -45,7 +47,7 @@ export const OperationList: ComponentType<
         ))}
       </div>
     ) : (
-      operationsWithDoc.map(({ operation, doc }) => (
+      operationsWithDoc?.map(({ operation, doc }) => (
         <OperationCard
           operation={operation}
           operationDoc={doc}
@@ -58,7 +60,7 @@ export const OperationList: ComponentType<
       <>
         {items}
 
-        {isReachingEnd && operations.length === 0 && (
+        {isReachingEnd && operations?.length === 0 && (
           <NonIdealState
             icon="slash"
             title="没有找到任何作业"
@@ -66,7 +68,7 @@ export const OperationList: ComponentType<
           />
         )}
 
-        {isReachingEnd && operations.length !== 0 && (
+        {isReachingEnd && operations?.length !== 0 && (
           <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
             已经到底了哦 (ﾟ▽ﾟ)/
           </div>
@@ -80,13 +82,13 @@ export const OperationList: ComponentType<
             className="mt-2"
             large
             fill
-            onClick={() => setSize(size + 1)}
+            onClick={() => setSize((size) => size + 1)}
           />
         )}
       </>
     )
   },
   {
-    retryOnChange: ['orderBy', 'document', 'levelKeyword', 'operator'],
+    retryOnChange: ['orderBy', 'keyword', 'levelKeyword', 'operator'],
   },
 )

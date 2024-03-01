@@ -1,37 +1,8 @@
-export interface PaginatedResponse<T> {
-  hasNext: boolean
-  page: number
-  total: number
-  data: T[]
-}
+import { ArkLevelInfo, CopilotInfo } from 'maa-copilot-client'
 
-export interface Operation {
-  id: string | number
-  content: string
-  uploadTime: string
-  uploader: string
-  views: number
-  hotScore: number
-  available: boolean
-  ratingLevel: number // integer in [0, 10]
-  ratingRatio: number
-  ratingType: OpRatingType
-  notEnoughRating: boolean
-  like: number
-  dislike: number
-  commentsCount: number
-}
+export type Operation = CopilotInfo
 
-export interface Level {
-  catOne: string
-  catTwo: string
-  catThree: string
-  name: string
-  levelId: string
-  stageId: string
-  width: number
-  height: number
-}
+export type Level = ArkLevelInfo
 
 export enum OpRatingType {
   None = 0,
@@ -49,14 +20,6 @@ export enum OpDifficulty {
 export enum OpDifficultyBitFlag {
   REGULAR = 1,
   HARD = 2,
-}
-
-// exists for historical reasons
-export type OperationListItem = Operation
-
-export interface OperationGroup {
-  name: string
-  operators: string[]
 }
 
 export enum MinimumRequired {

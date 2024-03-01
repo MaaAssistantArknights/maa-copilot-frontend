@@ -1,9 +1,9 @@
 import { Button, Dialog, InputGroup, MenuItem } from '@blueprintjs/core'
 
+import { getOperation } from 'apis/operation'
 import { FC, useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
 
-import { requestGetOperation } from '../../../apis/copilotOperation'
 import { parseShortCode } from '../../../models/shortCode'
 import { formatError } from '../../../utils/error'
 import { FormField2 } from '../../FormField'
@@ -39,13 +39,13 @@ export const ShortCodeImporter: FC<{
     try {
       setPending(true)
 
-      const id = parseShortCode(code)
+      const id = +(parseShortCode(code) || NaN)
 
-      if (!id) {
+      if (!isNaN(id)) {
         throw new Error('无效的神秘代码')
       }
 
-      let operationContent = (await requestGetOperation(id)).data.content
+      let operationContent = (await getOperation({ id })).content
 
       // prettify JSON
       operationContent = JSON.stringify(JSON.parse(operationContent), null, 2)

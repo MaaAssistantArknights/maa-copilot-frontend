@@ -1,13 +1,13 @@
 import { Button } from '@blueprintjs/core'
 
-import { requestLogin } from 'apis/auth'
-import { useAtom } from 'jotai'
+import { login } from 'apis/auth'
+import { useSetAtom } from 'jotai'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
 import { authAtom, fromCredentials } from 'store/auth'
-import { NetworkError } from 'utils/fetcher'
+import { NetworkError } from 'utils/error'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { AuthFormEmailField, AuthFormPasswordField } from './AuthFormShared'
@@ -29,17 +29,17 @@ export const LoginPanel: FC<{
     handleSubmit,
     formState: { errors, isValid, isDirty, isSubmitting },
   } = useForm<LoginFormValues>()
-  const [, setAuthState] = useAtom(authAtom)
+  const setAuthState = useSetAtom(authAtom)
 
-  const onSubmit = async (val: LoginFormValues) => {
+  const onSubmit = async ({ email, password }: LoginFormValues) => {
     const res = await wrapErrorMessage(
       (e: NetworkError) => `登录失败：${e.message}`,
-      requestLogin(val.email, val.password),
+      login({ email, password }),
     )
-    setAuthState(fromCredentials(res.data))
+    setAuthState(fromCredentials(res))
     AppToaster.show({
       intent: 'success',
-      message: `登录成功。欢迎回来，${res.data.userInfo.userName}`,
+      message: `登录成功。欢迎回来，${res.userInfo.userName}`,
     })
     onComplete()
   }

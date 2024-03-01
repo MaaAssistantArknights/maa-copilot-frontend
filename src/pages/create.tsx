@@ -10,10 +10,10 @@ import { OperationEditor } from 'components/editor/OperationEditor'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
-  requestOperationUpdate,
-  requestOperationUpload,
-} from '../apis/copilotOperation'
-import { useOperation } from '../apis/query'
+  createOperation,
+  updateOperation,
+  useOperation,
+} from '../apis/operation'
 import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
 import { patchOperation, toMaaOperation } from '../components/editor/converter'
@@ -27,8 +27,7 @@ import {
 import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
 import { MinimumRequired } from '../models/operation'
-import { formatError } from '../utils/error'
-import { NetworkError } from '../utils/fetcher'
+import { NetworkError, formatError } from '../utils/error'
 
 const defaultOperation: CopilotDocV1.Operation = {
   minimumRequired: MinimumRequired.V4_0_0,
@@ -48,12 +47,13 @@ const isDirty = (operation: CopilotDocV1.Operation) =>
 
 export const CreatePage: ComponentType = withGlobalErrorBoundary(
   withSuspensable(() => {
-    const { id } = useParams()
+    const params = useParams()
+    const id = params.id ? +params.id : undefined
 
     const isNew = !id
     const submitAction = isNew ? '发布' : '更新'
 
-    const apiOperation = useOperation({ id, suspense: true }).data?.data
+    const apiOperation = useOperation({ id, suspense: true }).data
 
     const form = useForm<CopilotDocV1.Operation>({
       // set form values by fetched data, or an empty operation by default
@@ -108,9 +108,9 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
 
         try {
           if (isNew) {
-            await requestOperationUpload(JSON.stringify(operation))
+            await createOperation({ content: JSON.stringify(operation) })
           } else {
-            await requestOperationUpdate(id, JSON.stringify(operation))
+            await updateOperation({ id, content: JSON.stringify(operation) })
           }
         } catch (e) {
           // handle a special error
