@@ -78,6 +78,13 @@
       "alt_name": "Shaw"
     },
     {
+      "id": "char_4123_ela",
+      "subProf": "traper",
+      "name": "艾拉",
+      "alias": "aila yila al yl 艾拉",
+      "alt_name": "Ela"
+    },
+    {
       "id": "char_4043_erato",
       "subProf": "siegesniper",
       "name": "埃拉托",
@@ -426,6 +433,13 @@
       "name": "但书",
       "alias": "danshu ds 但書",
       "alt_name": "Proviso"
+    },
+    {
+      "id": "char_4126_fuze",
+      "subProf": "centurion",
+      "name": "导火索",
+      "alias": "daohuosuo dhs 導火索",
+      "alt_name": "Fuze"
     },
     {
       "id": "char_102_texas",
@@ -1135,6 +1149,13 @@
       "alt_name": "Lee"
     },
     {
+      "id": "token_10033_ela_grzmot",
+      "subProf": "notchar1",
+      "name": "雷鸣地雷",
+      "alias": "leimingdilei leimingdelei lmdl 雷鳴地雷",
+      "alt_name": "GRZMOT Mine"
+    },
+    {
       "id": "char_107_liskam",
       "subProf": "shotprotector",
       "name": "雷蛇",
@@ -1765,6 +1786,13 @@
       "alt_name": "Frostleaf"
     },
     {
+      "id": "char_4124_iana",
+      "subProf": "dollkeeper",
+      "name": "双月",
+      "alias": "shuangyue sy 雙月",
+      "alt_name": "Iana"
+    },
+    {
       "id": "char_437_mizuki",
       "subProf": "stalker",
       "name": "水月",
@@ -2302,6 +2330,13 @@
       "name": "伊桑",
       "alias": "yisang ys 伊桑",
       "alt_name": "Ethan"
+    },
+    {
+      "id": "char_4125_rdoc",
+      "subProf": "instructor",
+      "name": "医生",
+      "alias": "yisheng ys 醫生",
+      "alt_name": "Doc"
     },
     {
       "id": "char_172_svrash",
