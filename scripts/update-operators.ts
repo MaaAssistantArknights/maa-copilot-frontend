@@ -14,7 +14,8 @@ async function main() {
   })
 
   const prettierConfig = await prettier.resolveConfig(process.cwd())
-  const formatted = prettier.format(content, {
+  console.log(prettierConfig)
+  const formatted = await prettier.format(content, {
     ...prettierConfig,
     parser: 'json',
   })
