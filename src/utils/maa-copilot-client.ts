@@ -130,14 +130,22 @@ function createConfiguration(options?: ApiOptions) {
             throw new UnauthorizedError()
           }
 
-          if (response.status < 200 || response.status >= 300) {
-            const body = await response.text()
+          if (!response.ok) {
+            let message: string | undefined
 
             try {
-              throw new ApiError(JSON.parse(body).message)
+              const contentType = response.headers.get('content-type')
+
+              if (contentType?.includes('application/json')) {
+                message = (await response.json()).message
+              } else if (contentType?.includes('text/')) {
+                message = await response.text()
+              }
             } catch {
-              throw new ApiError()
+              // ignore
             }
+
+            throw new ApiError(message)
           }
 
           ;(response as ExtendedResponse).config = config
