@@ -108,12 +108,15 @@ export async function getOperators() {
           })
         }
       }
-
       return [
         {
           id: id,
           subProf: op.subProfessionId,
           ...transformOperatorName(op.name),
+          rarity:
+            op.subProfessionId === 'notchar1'
+              ? 0
+              : Number(op.rarity?.split('TIER_').join('') || 0),
           alt_name: op.appellation,
         },
       ]

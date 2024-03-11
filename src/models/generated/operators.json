@@ -5,6 +5,7 @@
       "subProf": "notchar1",
       "name": "“打字机”",
       "alias": "daziji dzj “打字機” 打字機",
+      "rarity": 0,
       "alt_name": "Typewriters"
     },
     {
@@ -12,6 +13,7 @@
       "subProf": "notchar1",
       "name": "“夹子”",
       "alias": "jiazi gazi jz gz “夾子” 夾子",
+      "rarity": 0,
       "alt_name": "\"Clip\" Charge"
     },
     {
@@ -19,6 +21,7 @@
       "subProf": "notchar1",
       "name": "“清平”",
       "alias": "qingping qp “清平” 清平",
+      "rarity": 0,
       "alt_name": "Tranquility"
     },
     {
@@ -26,6 +29,7 @@
       "subProf": "notchar1",
       "name": "“弦惊”",
       "alias": "xianjing xj “弦驚” 弦驚",
+      "rarity": 0,
       "alt_name": "Thunderer"
     },
     {
@@ -33,6 +37,7 @@
       "subProf": "notchar1",
       "name": "“逍遥”",
       "alias": "xiaoyao xy “逍遙” 逍遙",
+      "rarity": 0,
       "alt_name": "Peripateticism"
     },
     {
@@ -40,6 +45,7 @@
       "subProf": "notchar1",
       "name": "“小自在”",
       "alias": "xiaozizai xzz “小自在” 小自在",
+      "rarity": 0,
       "alt_name": "Little Instinct"
     },
     {
@@ -47,6 +53,7 @@
       "subProf": "notchar1",
       "name": "“耀阳”",
       "alias": "yaoyang yy “耀陽” 耀陽",
+      "rarity": 0,
       "alt_name": "Blazing Sun"
     },
     {
@@ -54,6 +61,7 @@
       "subProf": "splashcaster",
       "name": "12F",
       "alias": "12F",
+      "rarity": 2,
       "alt_name": "12F"
     },
     {
@@ -61,6 +69,7 @@
       "subProf": "geek",
       "name": "阿",
       "alias": "ae 阿",
+      "rarity": 6,
       "alt_name": "Aak"
     },
     {
@@ -68,6 +77,7 @@
       "subProf": "corecaster",
       "name": "阿米娅",
       "alias": "amiya emiya amy emy 阿米婭",
+      "rarity": 5,
       "alt_name": "Amiya"
     },
     {
@@ -75,6 +85,7 @@
       "subProf": "pusher",
       "name": "阿消",
       "alias": "axiao exiao ax ex 阿消",
+      "rarity": 4,
       "alt_name": "Shaw"
     },
     {
@@ -82,6 +93,7 @@
       "subProf": "traper",
       "name": "艾拉",
       "alias": "aila yila al yl 艾拉",
+      "rarity": 6,
       "alt_name": "Ela"
     },
     {
@@ -89,6 +101,7 @@
       "subProf": "siegesniper",
       "name": "埃拉托",
       "alias": "ailatuo alt 埃拉托",
+      "rarity": 5,
       "alt_name": "Erato"
     },
     {
@@ -96,6 +109,7 @@
       "subProf": "sword",
       "name": "艾丽妮",
       "alias": "ailini yilini aln yln 艾麗妮",
+      "rarity": 6,
       "alt_name": "Irene"
     },
     {
@@ -103,6 +117,7 @@
       "subProf": "mystic",
       "name": "爱丽丝",
       "alias": "ailisi als 愛麗絲",
+      "rarity": 5,
       "alt_name": "Iris"
     },
     {
@@ -110,6 +125,7 @@
       "subProf": "centurion",
       "name": "艾丝黛尔",
       "alias": "aisidaier yisidaier asde ysde 艾絲黛爾",
+      "rarity": 4,
       "alt_name": "Estelle"
     },
     {
@@ -117,6 +133,7 @@
       "subProf": "corecaster",
       "name": "艾雅法拉",
       "alias": "aiyafala yiyafala ayfl yyfl 艾雅法拉",
+      "rarity": 6,
       "alt_name": "Eyjafjalla"
     },
     {
@@ -124,6 +141,7 @@
       "subProf": "longrange",
       "name": "安比尔",
       "alias": "anbier abe 安比爾",
+      "rarity": 4,
       "alt_name": "Ambriel"
     },
     {
@@ -131,6 +149,7 @@
       "subProf": "fastshot",
       "name": "安德切尔",
       "alias": "andeqieer adqe 安德切爾",
+      "rarity": 3,
       "alt_name": "Adnachiel"
     },
     {
@@ -138,6 +157,7 @@
       "subProf": "slower",
       "name": "安洁莉娜",
       "alias": "anjielina anjielinuo ajln 安潔莉娜",
+      "rarity": 6,
       "alt_name": "Angelina"
     },
     {
@@ -145,6 +165,7 @@
       "subProf": "physician",
       "name": "安赛尔",
       "alias": "ansaier ase 安賽爾",
+      "rarity": 3,
       "alt_name": "Ansel"
     },
     {
@@ -152,6 +173,7 @@
       "subProf": "hookmaster",
       "name": "暗索",
       "alias": "ansuo as 暗索",
+      "rarity": 4,
       "alt_name": "Rope"
     },
     {
@@ -159,6 +181,7 @@
       "subProf": "longrange",
       "name": "安哲拉",
       "alias": "anzhela azl 安哲拉",
+      "rarity": 5,
       "alt_name": "Andreana"
     },
     {
@@ -166,6 +189,7 @@
       "subProf": "reaperrange",
       "name": "奥斯塔",
       "alias": "aosita yusita ast yst 奧斯塔",
+      "rarity": 5,
       "alt_name": "Aosta"
     },
     {
@@ -173,6 +197,7 @@
       "subProf": "sword",
       "name": "柏喙",
       "alias": "baihui bohui bh 柏喙",
+      "rarity": 5,
       "alt_name": "Bibeak"
     },
     {
@@ -180,6 +205,7 @@
       "subProf": "fastshot",
       "name": "白金",
       "alias": "baijin bj 白金",
+      "rarity": 5,
       "alt_name": "Platinum"
     },
     {
@@ -187,6 +213,7 @@
       "subProf": "centurion",
       "name": "百炼嘉维尔",
       "alias": "bailianjiaweier bljwe 百煉嘉維爾",
+      "rarity": 6,
       "alt_name": "Gavial the Invincible"
     },
     {
@@ -194,6 +221,7 @@
       "subProf": "ringhealer",
       "name": "白面鸮",
       "alias": "baimianxiao bmx 白麵鴞",
+      "rarity": 5,
       "alt_name": "Ptilopsis"
     },
     {
@@ -201,6 +229,7 @@
       "subProf": "protector",
       "name": "拜松",
       "alias": "baisong bs 拜鬆",
+      "rarity": 5,
       "alt_name": "Bison"
     },
     {
@@ -208,6 +237,7 @@
       "subProf": "craftsman",
       "name": "白铁",
       "alias": "baitie bt 白鐵",
+      "rarity": 6,
       "alt_name": "Stainless"
     },
     {
@@ -215,6 +245,7 @@
       "subProf": "notchar1",
       "name": "白铁™多功能平台",
       "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
+      "rarity": 0,
       "alt_name": "Stainless™ Multifunctional platform"
     },
     {
@@ -222,6 +253,7 @@
       "subProf": "aoesniper",
       "name": "白雪",
       "alias": "baixue bx 白雪",
+      "rarity": 4,
       "alt_name": "ShiraYuki"
     },
     {
@@ -229,6 +261,7 @@
       "subProf": "guardian",
       "name": "斑点",
       "alias": "bandian bd 斑點",
+      "rarity": 3,
       "alt_name": "Spot"
     },
     {
@@ -236,6 +269,7 @@
       "subProf": "centurion",
       "name": "暴行",
       "alias": "baohang baoxing puhang puxing bh bx ph px 暴行",
+      "rarity": 5,
       "alt_name": "Savage"
     },
     {
@@ -243,6 +277,7 @@
       "subProf": "phalanx",
       "name": "薄绿",
       "alias": "baolv baolu bolv bolu bl 薄綠",
+      "rarity": 5,
       "alt_name": "Mint"
     },
     {
@@ -250,6 +285,7 @@
       "subProf": "protector",
       "name": "暴雨",
       "alias": "baoyu puyu by py 暴雨",
+      "rarity": 5,
       "alt_name": "Heavyrain"
     },
     {
@@ -257,6 +293,7 @@
       "subProf": "dollkeeper",
       "name": "贝娜",
       "alias": "beina beinuo bn 貝娜",
+      "rarity": 5,
       "alt_name": "Bena"
     },
     {
@@ -264,6 +301,7 @@
       "subProf": "instructor",
       "name": "鞭刃",
       "alias": "bianren br 鞭刃",
+      "rarity": 5,
       "alt_name": "Whislash"
     },
     {
@@ -271,6 +309,7 @@
       "subProf": "hunter",
       "name": "冰酿",
       "alias": "bingniang bn 冰釀",
+      "rarity": 5,
       "alt_name": "Coldshot"
     },
     {
@@ -278,6 +317,7 @@
       "subProf": "slower",
       "name": "波登可",
       "alias": "bodengke bdk 波登可",
+      "rarity": 4,
       "alt_name": "Podenco"
     },
     {
@@ -285,6 +325,7 @@
       "subProf": "chain",
       "name": "布丁",
       "alias": "buding buzheng bd bz 布丁",
+      "rarity": 4,
       "alt_name": "Pudding"
     },
     {
@@ -292,6 +333,7 @@
       "subProf": "centurion",
       "name": "布洛卡",
       "alias": "buluoka buluoqia blk blq 布洛卡",
+      "rarity": 5,
       "alt_name": "Broca"
     },
     {
@@ -299,6 +341,7 @@
       "subProf": "instructor",
       "name": "苍苔",
       "alias": "cangtai ct 蒼苔",
+      "rarity": 5,
       "alt_name": "Bryophyta"
     },
     {
@@ -306,6 +349,7 @@
       "subProf": "fearless",
       "name": "Castle-3",
       "alias": "Castle-3",
+      "rarity": 1,
       "alt_name": "Castle-3"
     },
     {
@@ -313,6 +357,7 @@
       "subProf": "fearless",
       "name": "缠丸",
       "alias": "chanwan cw 纏丸",
+      "rarity": 4,
       "alt_name": "Matoimaru"
     },
     {
@@ -320,6 +365,7 @@
       "subProf": "artsprotector",
       "name": "车尔尼",
       "alias": "cheerni juerni cen jen 車爾尼",
+      "rarity": 5,
       "alt_name": "Czerny"
     },
     {
@@ -327,6 +373,7 @@
       "subProf": "sword",
       "name": "陈",
       "alias": "chen c 陳",
+      "rarity": 6,
       "alt_name": "Ch'en"
     },
     {
@@ -334,6 +381,7 @@
       "subProf": "funnel",
       "name": "澄闪",
       "alias": "chengshan dengshan cs ds 澄閃",
+      "rarity": 6,
       "alt_name": "Goldenglow"
     },
     {
@@ -341,6 +389,7 @@
       "subProf": "bombarder",
       "name": "承曦格雷伊",
       "alias": "chengxigeleiyi cxgly 承曦格雷伊",
+      "rarity": 5,
       "alt_name": "Greyy the Lightningbearer"
     },
     {
@@ -348,6 +397,7 @@
       "subProf": "musha",
       "name": "赤冬",
       "alias": "chidong cd 赤冬",
+      "rarity": 5,
       "alt_name": "Akafuyu"
     },
     {
@@ -355,6 +405,7 @@
       "subProf": "unyield",
       "name": "斥罪",
       "alias": "chizui cz 斥罪",
+      "rarity": 6,
       "alt_name": "Penance"
     },
     {
@@ -362,6 +413,7 @@
       "subProf": "lord",
       "name": "仇白",
       "alias": "choubai qiubai cb qb 仇白",
+      "rarity": 6,
       "alt_name": "Qiubai"
     },
     {
@@ -369,6 +421,7 @@
       "subProf": "notchar1",
       "name": "触手",
       "alias": "chushou cs 觸手",
+      "rarity": 0,
       "alt_name": "Tentacle"
     },
     {
@@ -376,6 +429,7 @@
       "subProf": "underminer",
       "name": "初雪",
       "alias": "chuxue cx 初雪",
+      "rarity": 5,
       "alt_name": "Pramanix"
     },
     {
@@ -383,6 +437,7 @@
       "subProf": "wandermedic",
       "name": "纯烬艾雅法拉",
       "alias": "chunjinaiyafala chunjinyiyafala cjayfl cjyyfl 純燼艾雅法拉",
+      "rarity": 6,
       "alt_name": "Eyjafjalla the Hvít Aska"
     },
     {
@@ -390,6 +445,7 @@
       "subProf": "incantationmedic",
       "name": "刺玫",
       "alias": "cimei cm 刺玫",
+      "rarity": 5,
       "alt_name": "Vendela"
     },
     {
@@ -397,6 +453,7 @@
       "subProf": "notchar1",
       "name": "此面向敌",
       "alias": "cimianxiangdi cmxd 此麵向敵",
+      "rarity": 0,
       "alt_name": "F.T.E"
     },
     {
@@ -404,6 +461,7 @@
       "subProf": "blessing",
       "name": "淬羽赫默",
       "alias": "cuiyuhemo cyhm 淬羽赫默",
+      "rarity": 6,
       "alt_name": "Silence the Paradigmatic"
     },
     {
@@ -411,6 +469,7 @@
       "subProf": "pioneer",
       "name": "嵯峨",
       "alias": "cuoe ce 嵯峨",
+      "rarity": 6,
       "alt_name": "Saga"
     },
     {
@@ -418,6 +477,7 @@
       "subProf": "fighter",
       "name": "达格达",
       "alias": "dageda dgd 達格達",
+      "rarity": 5,
       "alt_name": "Dagda"
     },
     {
@@ -425,6 +485,7 @@
       "subProf": "mystic",
       "name": "戴菲恩",
       "alias": "daifeien dfe 戴菲恩",
+      "rarity": 5,
       "alt_name": "Delphine"
     },
     {
@@ -432,6 +493,7 @@
       "subProf": "slower",
       "name": "但书",
       "alias": "danshu ds 但書",
+      "rarity": 5,
       "alt_name": "Proviso"
     },
     {
@@ -439,6 +501,7 @@
       "subProf": "centurion",
       "name": "导火索",
       "alias": "daohuosuo dhs 導火索",
+      "rarity": 5,
       "alt_name": "Fuze"
     },
     {
@@ -446,6 +509,7 @@
       "subProf": "pioneer",
       "name": "德克萨斯",
       "alias": "dekesasi dkss 德克薩斯",
+      "rarity": 5,
       "alt_name": "Texas"
     },
     {
@@ -453,6 +517,7 @@
       "subProf": "shotprotector",
       "name": "涤火杰西卡",
       "alias": "dihuojiexika dihuojiexiqia dhjxk dhjxq 滌火傑西卡",
+      "rarity": 6,
       "alt_name": "Jessica the Liberated"
     },
     {
@@ -460,6 +525,7 @@
       "subProf": "slower",
       "name": "地灵",
       "alias": "diling deling dl 地靈",
+      "rarity": 4,
       "alt_name": "Earthspirit"
     },
     {
@@ -467,6 +533,7 @@
       "subProf": "tactician",
       "name": "豆苗",
       "alias": "doumiao dm 豆苗",
+      "rarity": 4,
       "alt_name": "Beanstalk"
     },
     {
@@ -474,6 +541,7 @@
       "subProf": "instructor",
       "name": "杜宾",
       "alias": "dubin db 杜賓",
+      "rarity": 4,
       "alt_name": "Dobermann"
     },
     {
@@ -481,6 +549,7 @@
       "subProf": "corecaster",
       "name": "杜林",
       "alias": "dulin dl 杜林",
+      "rarity": 2,
       "alt_name": "Durin"
     },
     {
@@ -488,6 +557,7 @@
       "subProf": "lord",
       "name": "断崖",
       "alias": "duanya dy 斷崖",
+      "rarity": 5,
       "alt_name": "Ayerscarpe"
     },
     {
@@ -495,6 +565,7 @@
       "subProf": "fearless",
       "name": "断罪者",
       "alias": "duanzuizhe dzz 斷罪者",
+      "rarity": 4,
       "alt_name": "Conviction"
     },
     {
@@ -502,6 +573,7 @@
       "subProf": "crusher",
       "name": "铎铃",
       "alias": "duoling dl 鐸鈴",
+      "rarity": 5,
       "alt_name": "Wind Chimes"
     },
     {
@@ -509,6 +581,7 @@
       "subProf": "traper",
       "name": "多萝西",
       "alias": "duoluoxi dlx 多蘿西",
+      "rarity": 6,
       "alt_name": "Dorothy"
     },
     {
@@ -516,6 +589,7 @@
       "subProf": "lord",
       "name": "芳汀",
       "alias": "fangting ft 芳汀",
+      "rarity": 4,
       "alt_name": "Arene"
     },
     {
@@ -523,6 +597,7 @@
       "subProf": "aoesniper",
       "name": "菲亚梅塔",
       "alias": "feiyameita fymt 菲亞梅塔",
+      "rarity": 6,
       "alt_name": "Fiammetta"
     },
     {
@@ -530,6 +605,7 @@
       "subProf": "pioneer",
       "name": "芬",
       "alias": "fen f 芬",
+      "rarity": 3,
       "alt_name": "Fang"
     },
     {
@@ -537,6 +613,7 @@
       "subProf": "charger",
       "name": "风笛",
       "alias": "fengdi fd 風笛",
+      "rarity": 6,
       "alt_name": "Bagpipe"
     },
     {
@@ -544,6 +621,7 @@
       "subProf": "dollkeeper",
       "name": "风丸",
       "alias": "fengwan fw 風丸",
+      "rarity": 5,
       "alt_name": "Kazemaru"
     },
     {
@@ -551,6 +629,7 @@
       "subProf": "protector",
       "name": "Friston-3",
       "alias": "Friston-3",
+      "rarity": 1,
       "alt_name": "Friston-3"
     },
     {
@@ -558,6 +637,7 @@
       "subProf": "fearless",
       "name": "芙兰卡",
       "alias": "fulanka fulanqia flk flq 芙蘭卡",
+      "rarity": 5,
       "alt_name": "Franka"
     },
     {
@@ -565,6 +645,7 @@
       "subProf": "physician",
       "name": "芙蓉",
       "alias": "furong fr 芙蓉",
+      "rarity": 3,
       "alt_name": "Hibiscus"
     },
     {
@@ -572,6 +653,7 @@
       "subProf": "charger",
       "name": "格拉尼",
       "alias": "gelani gln 格拉尼",
+      "rarity": 5,
       "alt_name": "Grani"
     },
     {
@@ -579,6 +661,7 @@
       "subProf": "slower",
       "name": "格劳克斯",
       "alias": "gelaokesi glks 格勞克斯",
+      "rarity": 5,
       "alt_name": "Glaucus"
     },
     {
@@ -586,6 +669,7 @@
       "subProf": "hookmaster",
       "name": "歌蕾蒂娅",
       "alias": "geleidiya gldy 歌蕾蒂婭",
+      "rarity": 6,
       "alt_name": "Gladiia"
     },
     {
@@ -593,6 +677,7 @@
       "subProf": "splashcaster",
       "name": "格雷伊",
       "alias": "geleiyi gly 格雷伊",
+      "rarity": 4,
       "alt_name": "Greyy"
     },
     {
@@ -600,6 +685,7 @@
       "subProf": "notchar1",
       "name": "工程蓄水炮",
       "alias": "gongchengxushuipao gongchengxushuibao gcxsp gcxsb 工程蓄水炮",
+      "rarity": 0,
       "alt_name": "Cannon"
     },
     {
@@ -607,6 +693,7 @@
       "subProf": "notchar1",
       "name": "共振装置",
       "alias": "gongzhenzhuangzhi gzzz 共振裝置",
+      "rarity": 0,
       "alt_name": "Resonator"
     },
     {
@@ -614,6 +701,7 @@
       "subProf": "guardian",
       "name": "古米",
       "alias": "gumi gm 古米",
+      "rarity": 4,
       "alt_name": "Гум"
     },
     {
@@ -621,6 +709,7 @@
       "subProf": "dollkeeper",
       "name": "归溟幽灵鲨",
       "alias": "guimingyoulingsha gmyls 歸溟幽靈鯊",
+      "rarity": 6,
       "alt_name": "Specter the Unchained"
     },
     {
@@ -628,6 +717,7 @@
       "subProf": "wandermedic",
       "name": "哈洛德",
       "alias": "haluode hld 哈洛德",
+      "rarity": 5,
       "alt_name": "Harold"
     },
     {
@@ -635,6 +725,7 @@
       "subProf": "bard",
       "name": "海蒂",
       "alias": "haidi hd 海蒂",
+      "rarity": 5,
       "alt_name": "Heidi"
     },
     {
@@ -642,6 +733,7 @@
       "subProf": "reaper",
       "name": "海沫",
       "alias": "haimo hm 海沫",
+      "rarity": 5,
       "alt_name": "Highmore"
     },
     {
@@ -649,6 +741,7 @@
       "subProf": "fastshot",
       "name": "寒芒克洛丝",
       "alias": "hanmangkeluosi hmkls 寒芒克洛絲",
+      "rarity": 5,
       "alt_name": "Kroos the Keen Glint"
     },
     {
@@ -656,6 +749,7 @@
       "subProf": "splashcaster",
       "name": "寒檀",
       "alias": "hantan ht 寒檀",
+      "rarity": 5,
       "alt_name": "Santalla"
     },
     {
@@ -663,6 +757,7 @@
       "subProf": "fortress",
       "name": "号角",
       "alias": "haojiao haojue hj 號角",
+      "rarity": 6,
       "alt_name": "Horn"
     },
     {
@@ -670,6 +765,7 @@
       "subProf": "crusher",
       "name": "赫德雷",
       "alias": "hedelei hdl 赫德雷",
+      "rarity": 6,
       "alt_name": "Hoederer"
     },
     {
@@ -677,6 +773,7 @@
       "subProf": "wandermedic",
       "name": "褐果",
       "alias": "heguo hg 褐果",
+      "rarity": 4,
       "alt_name": "Chestnut"
     },
     {
@@ -684,6 +781,7 @@
       "subProf": "musha",
       "name": "赫拉格",
       "alias": "helage hlg 赫拉格",
+      "rarity": 6,
       "alt_name": "Hellagur"
     },
     {
@@ -691,6 +789,7 @@
       "subProf": "physician",
       "name": "赫默",
       "alias": "hemo hm 赫默",
+      "rarity": 5,
       "alt_name": "Silence"
     },
     {
@@ -698,6 +797,7 @@
       "subProf": "mystic",
       "name": "和弦",
       "alias": "hexian huoxian huxian hx 和弦",
+      "rarity": 5,
       "alt_name": "Harmonie"
     },
     {
@@ -705,6 +805,7 @@
       "subProf": "closerange",
       "name": "黑",
       "alias": "hei h 黑",
+      "rarity": 6,
       "alt_name": "Schwarz"
     },
     {
@@ -712,6 +813,7 @@
       "subProf": "mystic",
       "name": "黑键",
       "alias": "heijian hj 黑鍵",
+      "rarity": 6,
       "alt_name": "Ebenholz"
     },
     {
@@ -719,6 +821,7 @@
       "subProf": "protector",
       "name": "黑角",
       "alias": "heijiao heijue hj 黑角",
+      "rarity": 2,
       "alt_name": "Noir Corne"
     },
     {
@@ -726,6 +829,7 @@
       "subProf": "executor",
       "name": "红",
       "alias": "honggong hg 紅",
+      "rarity": 5,
       "alt_name": "Projekt Red"
     },
     {
@@ -733,6 +837,7 @@
       "subProf": "charger",
       "name": "红豆",
       "alias": "hongdou gongdou hd gd 紅豆",
+      "rarity": 4,
       "alt_name": "Vigna"
     },
     {
@@ -740,6 +845,7 @@
       "subProf": "pioneer",
       "name": "红隼",
       "alias": "hongsun gongsun hs gs 紅隼",
+      "rarity": 5,
       "alt_name": "Kestrel"
     },
     {
@@ -747,6 +853,7 @@
       "subProf": "closerange",
       "name": "鸿雪",
       "alias": "hongxue hx 鴻雪",
+      "rarity": 6,
       "alt_name": "Позёмка"
     },
     {
@@ -754,6 +861,7 @@
       "subProf": "fastshot",
       "name": "红云",
       "alias": "hongyun gongyun hy gy 紅雲",
+      "rarity": 4,
       "alt_name": "Vermeil"
     },
     {
@@ -761,6 +869,7 @@
       "subProf": "guardian",
       "name": "吽",
       "alias": "houhongou ho 吽",
+      "rarity": 5,
       "alt_name": "Hung"
     },
     {
@@ -768,6 +877,7 @@
       "subProf": "physician",
       "name": "华法琳",
       "alias": "huafalin hfl 華法琳",
+      "rarity": 5,
       "alt_name": "Warfarin"
     },
     {
@@ -775,6 +885,7 @@
       "subProf": "executor",
       "name": "槐琥",
       "alias": "huaihu hh 槐琥",
+      "rarity": 5,
       "alt_name": "Waai Fu"
     },
     {
@@ -782,6 +893,7 @@
       "subProf": "notchar1",
       "name": "幻影",
       "alias": "huanying hy 幻影",
+      "rarity": 0,
       "alt_name": "Cage"
     },
     {
@@ -789,6 +901,7 @@
       "subProf": "centurion",
       "name": "煌",
       "alias": "huang h 煌",
+      "rarity": 6,
       "alt_name": "Blaze"
     },
     {
@@ -796,6 +909,7 @@
       "subProf": "fortress",
       "name": "灰毫",
       "alias": "huihao hh 灰毫",
+      "rarity": 5,
       "alt_name": "Ashlock"
     },
     {
@@ -803,6 +917,7 @@
       "subProf": "fastshot",
       "name": "灰喉",
       "alias": "huihou hh 灰喉",
+      "rarity": 5,
       "alt_name": "GreyThroat"
     },
     {
@@ -810,6 +925,7 @@
       "subProf": "fastshot",
       "name": "灰烬",
       "alias": "huijin hj 灰燼",
+      "rarity": 6,
       "alt_name": "Ash"
     },
     {
@@ -817,6 +933,7 @@
       "subProf": "corecaster",
       "name": "霍尔海雅",
       "alias": "huoerhaiya hehy 霍爾海雅",
+      "rarity": 6,
       "alt_name": "Ho'olheyak"
     },
     {
@@ -824,6 +941,7 @@
       "subProf": "musha",
       "name": "火龙S黑角",
       "alias": "huolongSheijiao huolongSheijue hlShj 火龍S黑角",
+      "rarity": 5,
       "alt_name": "Rathalos S Noir Corne"
     },
     {
@@ -831,6 +949,7 @@
       "subProf": "fortress",
       "name": "火哨",
       "alias": "huoshao hs 火哨",
+      "rarity": 5,
       "alt_name": "Firewhistle"
     },
     {
@@ -838,6 +957,7 @@
       "subProf": "unyield",
       "name": "火神",
       "alias": "huoshen hs 火神",
+      "rarity": 5,
       "alt_name": "Vulcan"
     },
     {
@@ -845,6 +965,7 @@
       "subProf": "lord",
       "name": "棘刺",
       "alias": "jici jc 棘刺",
+      "rarity": 6,
       "alt_name": "Thorns"
     },
     {
@@ -852,6 +973,7 @@
       "subProf": "notchar1",
       "name": "机动盾牌",
       "alias": "jidongdunpai jddp 機動盾牌",
+      "rarity": 0,
       "alt_name": "Mobile personnel shield"
     },
     {
@@ -859,6 +981,7 @@
       "subProf": "duelist",
       "name": "极光",
       "alias": "jiguang jg 極光",
+      "rarity": 5,
       "alt_name": "Aurora"
     },
     {
@@ -866,6 +989,7 @@
       "subProf": "bearer",
       "name": "极境",
       "alias": "jijing jj 極境",
+      "rarity": 5,
       "alt_name": "Elysium"
     },
     {
@@ -873,6 +997,7 @@
       "subProf": "notchar1",
       "name": "机械水獭",
       "alias": "jixieshuita jxst 機械水獺",
+      "rarity": 0,
       "alt_name": "Mibo"
     },
     {
@@ -880,6 +1005,7 @@
       "subProf": "reaperrange",
       "name": "假日威龙陈",
       "alias": "jiariweilongchen jrwlc 假日威龍陳",
+      "rarity": 6,
       "alt_name": "Ch'en the Holungday"
     },
     {
@@ -887,6 +1013,7 @@
       "subProf": "pioneer",
       "name": "贾维",
       "alias": "jiawei guwei jw gw 賈維",
+      "rarity": 5,
       "alt_name": "Chiave"
     },
     {
@@ -894,6 +1021,7 @@
       "subProf": "physician",
       "name": "嘉维尔",
       "alias": "jiaweier jwe 嘉維爾",
+      "rarity": 4,
       "alt_name": "Gavial"
     },
     {
@@ -901,6 +1029,7 @@
       "subProf": "sword",
       "name": "锏",
       "alias": "jian j 鐧",
+      "rarity": 6,
       "alt_name": "Degenbrecher"
     },
     {
@@ -908,6 +1037,7 @@
       "subProf": "pusher",
       "name": "见行者",
       "alias": "jianhangzhe jianxingzhe xianhangzhe xianxingzhe jhz jxz xhz xxz 見行者",
+      "rarity": 5,
       "alt_name": "Enforcer"
     },
     {
@@ -915,6 +1045,7 @@
       "subProf": "artsprotector",
       "name": "坚雷",
       "alias": "jianlei jl 堅雷",
+      "rarity": 4,
       "alt_name": "Dur-nar"
     },
     {
@@ -922,6 +1053,7 @@
       "subProf": "executor",
       "name": "缄默德克萨斯",
       "alias": "jianmodekesasi jmdkss 緘默德克薩斯",
+      "rarity": 6,
       "alt_name": "Texas the Omertosa"
     },
     {
@@ -929,6 +1061,7 @@
       "subProf": "protector",
       "name": "角峰",
       "alias": "jiaofeng juefeng jf 角峰",
+      "rarity": 4,
       "alt_name": "Matterhorn"
     },
     {
@@ -936,6 +1069,7 @@
       "subProf": "merchant",
       "name": "孑",
       "alias": "jie j 孑",
+      "rarity": 4,
       "alt_name": "Jaye"
     },
     {
@@ -943,6 +1077,7 @@
       "subProf": "fighter",
       "name": "杰克",
       "alias": "jieke jk 傑克",
+      "rarity": 4,
       "alt_name": "Jackie"
     },
     {
@@ -950,6 +1085,7 @@
       "subProf": "fastshot",
       "name": "杰西卡",
       "alias": "jiexika jiexiqia jxk jxq 傑西卡",
+      "rarity": 4,
       "alt_name": "Jessica"
     },
     {
@@ -957,6 +1093,7 @@
       "subProf": "aoesniper",
       "name": "截云",
       "alias": "jieyun jy 截雲",
+      "rarity": 5,
       "alt_name": "Jieyun"
     },
     {
@@ -964,6 +1101,7 @@
       "subProf": "chain",
       "name": "惊蛰",
       "alias": "jingzhe jz 驚蟄",
+      "rarity": 5,
       "alt_name": "Leizi"
     },
     {
@@ -971,6 +1109,7 @@
       "subProf": "executor",
       "name": "镜中虚影",
       "alias": "jingzhongxuying jzxy 鏡中虛影",
+      "rarity": 6,
       "alt_name": "The Mirror"
     },
     {
@@ -978,6 +1117,7 @@
       "subProf": "notchar1",
       "name": "旧日残影",
       "alias": "jiuricanying jrcy 舊日殘影",
+      "rarity": 0,
       "alt_name": "Old Day Remnants"
     },
     {
@@ -985,6 +1125,7 @@
       "subProf": "blessing",
       "name": "九色鹿",
       "alias": "jiuselu jsl 九色鹿",
+      "rarity": 5,
       "alt_name": "Nine-Colored Deer"
     },
     {
@@ -992,6 +1133,7 @@
       "subProf": "funnel",
       "name": "卡达",
       "alias": "kada qiada kd qd 卡達",
+      "rarity": 4,
       "alt_name": "Click"
     },
     {
@@ -999,6 +1141,7 @@
       "subProf": "executor",
       "name": "卡夫卡",
       "alias": "kafuka kafuqia qiafuka qiafuqia kfk kfq qfk qfq 卡夫卡",
+      "rarity": 5,
       "alt_name": "Kafka"
     },
     {
@@ -1006,6 +1149,7 @@
       "subProf": "phalanx",
       "name": "卡涅利安",
       "alias": "kanielian qianielian knla qnla 卡涅利安",
+      "rarity": 6,
       "alt_name": "Carnelian"
     },
     {
@@ -1013,6 +1157,7 @@
       "subProf": "protector",
       "name": "卡缇",
       "alias": "kati qiati kt qt 卡緹",
+      "rarity": 3,
       "alt_name": "Cardigan"
     },
     {
@@ -1020,6 +1165,7 @@
       "subProf": "physician",
       "name": "凯尔希",
       "alias": "kaierxi kex 凱爾希",
+      "rarity": 6,
       "alt_name": "Kal'tsit"
     },
     {
@@ -1027,6 +1173,7 @@
       "subProf": "sword",
       "name": "刻刀",
       "alias": "kedao kd 刻刀",
+      "rarity": 4,
       "alt_name": "Cutter"
     },
     {
@@ -1034,6 +1181,7 @@
       "subProf": "corecaster",
       "name": "刻俄柏",
       "alias": "keebai keebo keb 刻俄柏",
+      "rarity": 6,
       "alt_name": "Ceobe"
     },
     {
@@ -1041,6 +1189,7 @@
       "subProf": "notchar1",
       "name": "可靠电池",
       "alias": "kekaodianchi kkdc 可靠電池",
+      "rarity": 0,
       "alt_name": "Reliable Battery"
     },
     {
@@ -1048,6 +1197,7 @@
       "subProf": "fastshot",
       "name": "克洛丝",
       "alias": "keluosi kls 克洛絲",
+      "rarity": 3,
       "alt_name": "Kroos"
     },
     {
@@ -1055,6 +1205,7 @@
       "subProf": "protector",
       "name": "可颂",
       "alias": "kesong ks 可頌",
+      "rarity": 5,
       "alt_name": "Croissant"
     },
     {
@@ -1062,6 +1213,7 @@
       "subProf": "bard",
       "name": "空",
       "alias": "kong k 空",
+      "rarity": 5,
       "alt_name": "Sora"
     },
     {
@@ -1069,6 +1221,7 @@
       "subProf": "aoesniper",
       "name": "空爆",
       "alias": "kongbao kb 空爆",
+      "rarity": 3,
       "alt_name": "Catapult"
     },
     {
@@ -1076,6 +1229,7 @@
       "subProf": "geek",
       "name": "空构",
       "alias": "konggou kg 空構",
+      "rarity": 5,
       "alt_name": "Spuria"
     },
     {
@@ -1083,6 +1237,7 @@
       "subProf": "fastshot",
       "name": "空弦",
       "alias": "kongxian kx 空弦",
+      "rarity": 6,
       "alt_name": "Archetto"
     },
     {
@@ -1090,6 +1245,7 @@
       "subProf": "corecaster",
       "name": "苦艾",
       "alias": "kuai kuyi ka ky 苦艾",
+      "rarity": 5,
       "alt_name": "Absinthe"
     },
     {
@@ -1097,6 +1253,7 @@
       "subProf": "executor",
       "name": "傀影",
       "alias": "kuiying guiying ky gy 傀影",
+      "rarity": 6,
       "alt_name": "Phantom"
     },
     {
@@ -1104,6 +1261,7 @@
       "subProf": "lord",
       "name": "拉普兰德",
       "alias": "lapulande lpld 拉普蘭德",
+      "rarity": 5,
       "alt_name": "Lappland"
     },
     {
@@ -1111,6 +1269,7 @@
       "subProf": "splashcaster",
       "name": "莱恩哈特",
       "alias": "laienhate leht 萊恩哈特",
+      "rarity": 5,
       "alt_name": "Leonhardt"
     },
     {
@@ -1118,6 +1277,7 @@
       "subProf": "hunter",
       "name": "莱伊",
       "alias": "laiyi ly 萊伊",
+      "rarity": 6,
       "alt_name": "Ray"
     },
     {
@@ -1125,6 +1285,7 @@
       "subProf": "fastshot",
       "name": "蓝毒",
       "alias": "landu landai ld 藍毒",
+      "rarity": 5,
       "alt_name": "Blue Poison"
     },
     {
@@ -1132,6 +1293,7 @@
       "subProf": "physician",
       "name": "Lancet-2",
       "alias": "Lancet-2",
+      "rarity": 1,
       "alt_name": "Lancet-2"
     },
     {
@@ -1139,6 +1301,7 @@
       "subProf": "notchar1",
       "name": "狼群",
       "alias": "langqun lq 狼群",
+      "rarity": 0,
       "alt_name": "Vigil"
     },
     {
@@ -1146,6 +1309,7 @@
       "subProf": "merchant",
       "name": "老鲤",
       "alias": "laoli ll 老鯉",
+      "rarity": 6,
       "alt_name": "Lee"
     },
     {
@@ -1153,6 +1317,7 @@
       "subProf": "notchar1",
       "name": "雷鸣地雷",
       "alias": "leimingdilei leimingdelei lmdl 雷鳴地雷",
+      "rarity": 0,
       "alt_name": "GRZMOT Mine"
     },
     {
@@ -1160,6 +1325,7 @@
       "subProf": "shotprotector",
       "name": "雷蛇",
       "alias": "leishe leiyi ls ly 雷蛇",
+      "rarity": 5,
       "alt_name": "Liskarm"
     },
     {
@@ -1167,6 +1333,7 @@
       "subProf": "executor",
       "name": "砾",
       "alias": "li l 礫",
+      "rarity": 4,
       "alt_name": "Gravel"
     },
     {
@@ -1174,6 +1341,7 @@
       "subProf": "pioneer",
       "name": "猎潮的骑士",
       "alias": "liechaodeqishi liechaodiqishi lcdqs 獵潮的騎士",
+      "rarity": 1,
       "alt_name": "The Tide-hunt Knight"
     },
     {
@@ -1181,6 +1349,7 @@
       "subProf": "fighter",
       "name": "猎蜂",
       "alias": "liefeng lf 獵蜂",
+      "rarity": 4,
       "alt_name": "Beehunter"
     },
     {
@@ -1188,6 +1357,7 @@
       "subProf": "lord",
       "name": "烈夏",
       "alias": "liexia lx 烈夏",
+      "rarity": 5,
       "alt_name": "Лето"
     },
     {
@@ -1195,6 +1365,7 @@
       "subProf": "phalanx",
       "name": "林",
       "alias": "lin l 林",
+      "rarity": 6,
       "alt_name": "Lin"
     },
     {
@@ -1202,6 +1373,7 @@
       "subProf": "pioneer",
       "name": "凛冬",
       "alias": "lindong ld 凜冬",
+      "rarity": 5,
       "alt_name": "Зима"
     },
     {
@@ -1209,6 +1381,7 @@
       "subProf": "guardian",
       "name": "临光",
       "alias": "linguang lg 臨光",
+      "rarity": 5,
       "alt_name": "Nearl"
     },
     {
@@ -1216,6 +1389,7 @@
       "subProf": "merchant",
       "name": "琳琅诗怀雅",
       "alias": "linlangshihuaiya llshy 琳琅詩懷雅",
+      "rarity": 6,
       "alt_name": "Swire the Elegant Wit"
     },
     {
@@ -1223,6 +1397,7 @@
       "subProf": "ritualist",
       "name": "凛视",
       "alias": "linshi ls 凜視",
+      "rarity": 5,
       "alt_name": "Valarqvin"
     },
     {
@@ -1230,6 +1405,7 @@
       "subProf": "summoner",
       "name": "令",
       "alias": "ling l 令",
+      "rarity": 6,
       "alt_name": "Ling"
     },
     {
@@ -1237,6 +1413,7 @@
       "subProf": "slower",
       "name": "铃兰",
       "alias": "linglan ll 鈴蘭",
+      "rarity": 6,
       "alt_name": "Suzuran"
     },
     {
@@ -1244,6 +1421,7 @@
       "subProf": "charger",
       "name": "翎羽",
       "alias": "lingyu ly 翎羽",
+      "rarity": 3,
       "alt_name": "Plume"
     },
     {
@@ -1251,6 +1429,7 @@
       "subProf": "underminer",
       "name": "灵知",
       "alias": "lingzhi lz 靈知",
+      "rarity": 6,
       "alt_name": "Gnosis"
     },
     {
@@ -1258,27 +1437,31 @@
       "subProf": "healer",
       "name": "流明",
       "alias": "liuming lm 流明",
+      "rarity": 6,
       "alt_name": "Lumen"
-    },
-    {
-      "id": "token_10030_mlyss_wtrman",
-      "subProf": "notchar1",
-      "name": "流形",
-      "alias": "liuxing lx 流形",
-      "alt_name": "Flowing Shape"
     },
     {
       "id": "char_126_shotst",
       "subProf": "fastshot",
       "name": "流星",
       "alias": "liuxing lx 流星",
+      "rarity": 4,
       "alt_name": "Meteor"
+    },
+    {
+      "id": "token_10030_mlyss_wtrman",
+      "subProf": "notchar1",
+      "name": "流形",
+      "alias": "liuxing lx 流形",
+      "rarity": 0,
+      "alt_name": "Flowing Shape"
     },
     {
       "id": "char_486_takila",
       "subProf": "librator",
       "name": "龙舌兰",
       "alias": "longshelan lsl 龍舌蘭",
+      "rarity": 5,
       "alt_name": "Tequila"
     },
     {
@@ -1286,6 +1469,7 @@
       "subProf": "notchar1",
       "name": "龙腾.A",
       "alias": "longteng.A lt.A 龍騰.A",
+      "rarity": 0,
       "alt_name": "DDF Type-A"
     },
     {
@@ -1293,6 +1477,7 @@
       "subProf": "notchar1",
       "name": "龙腾.F",
       "alias": "longteng.F lt.F 龍騰.F",
+      "rarity": 0,
       "alt_name": "DDF Type-F"
     },
     {
@@ -1300,6 +1485,7 @@
       "subProf": "notchar1",
       "name": "龙腾.L",
       "alias": "longteng.L lt.L 龍騰.L",
+      "rarity": 0,
       "alt_name": "DDF Type-L"
     },
     {
@@ -1307,6 +1493,7 @@
       "subProf": "craftsman",
       "name": "掠风",
       "alias": "lvefeng lf 掠風",
+      "rarity": 5,
       "alt_name": "Windflit"
     },
     {
@@ -1314,6 +1501,7 @@
       "subProf": "craftsman",
       "name": "罗比菈塔",
       "alias": "luobilata lblt 羅比菈塔",
+      "rarity": 4,
       "alt_name": "Roberta"
     },
     {
@@ -1321,6 +1509,7 @@
       "subProf": "traper",
       "name": "罗宾",
       "alias": "luobin lb 羅賓",
+      "rarity": 5,
       "alt_name": "Robin"
     },
     {
@@ -1328,6 +1517,7 @@
       "subProf": "funnel",
       "name": "洛洛",
       "alias": "luoluo ll 洛洛",
+      "rarity": 5,
       "alt_name": "Rockrock"
     },
     {
@@ -1335,6 +1525,7 @@
       "subProf": "lord",
       "name": "罗小黑",
       "alias": "luoxiaohei lxh 羅小黑",
+      "rarity": 4,
       "alt_name": "Luo Xiaohei"
     },
     {
@@ -1342,6 +1533,7 @@
       "subProf": "librator",
       "name": "玛恩纳",
       "alias": "maenna men 瑪恩納",
+      "rarity": 6,
       "alt_name": "Młynar"
     },
     {
@@ -1349,6 +1541,7 @@
       "subProf": "summoner",
       "name": "麦哲伦",
       "alias": "maizhelun mzl 麥哲倫",
+      "rarity": 6,
       "alt_name": "Magallan"
     },
     {
@@ -1356,6 +1549,7 @@
       "subProf": "fastshot",
       "name": "梅",
       "alias": "mei m 梅",
+      "rarity": 4,
       "alt_name": "May"
     },
     {
@@ -1363,6 +1557,7 @@
       "subProf": "summoner",
       "name": "梅尔",
       "alias": "meier me 梅爾",
+      "rarity": 5,
       "alt_name": "Mayer"
     },
     {
@@ -1370,6 +1565,7 @@
       "subProf": "closerange",
       "name": "玫拉",
       "alias": "meila ml 玫拉",
+      "rarity": 5,
       "alt_name": "Melanite"
     },
     {
@@ -1377,6 +1573,7 @@
       "subProf": "fearless",
       "name": "玫兰莎",
       "alias": "meilansuo meilansha mls 玫蘭莎",
+      "rarity": 3,
       "alt_name": "Melantha"
     },
     {
@@ -1384,6 +1581,7 @@
       "subProf": "bombarder",
       "name": "迷迭香",
       "alias": "midiexiang mdx 迷迭香",
+      "rarity": 6,
       "alt_name": "Rosmontis"
     },
     {
@@ -1391,6 +1589,7 @@
       "subProf": "protector",
       "name": "米格鲁",
       "alias": "migelu mgl 米格魯",
+      "rarity": 3,
       "alt_name": "Beagle"
     },
     {
@@ -1398,6 +1597,7 @@
       "subProf": "phalanx",
       "name": "蜜蜡",
       "alias": "mila ml 蜜蠟",
+      "rarity": 5,
       "alt_name": "Beeswax"
     },
     {
@@ -1405,6 +1605,7 @@
       "subProf": "wandermedic",
       "name": "蜜莓",
       "alias": "mimei mm 蜜莓",
+      "rarity": 5,
       "alt_name": "Honeyberry"
     },
     {
@@ -1412,6 +1613,7 @@
       "subProf": "agent",
       "name": "谜图",
       "alias": "mitu mt 謎圖",
+      "rarity": 5,
       "alt_name": "Puzzle"
     },
     {
@@ -1419,6 +1621,7 @@
       "subProf": "notchar1",
       "name": "眠兽",
       "alias": "mianshou ms 眠獸",
+      "rarity": 0,
       "alt_name": "Hypnos"
     },
     {
@@ -1426,6 +1629,7 @@
       "subProf": "chainhealer",
       "name": "明椒",
       "alias": "mingjiao mj 明椒",
+      "rarity": 5,
       "alt_name": "Paprika"
     },
     {
@@ -1433,6 +1637,7 @@
       "subProf": "fearless",
       "name": "摩根",
       "alias": "mogen magen mg 摩根",
+      "rarity": 5,
       "alt_name": "Morgan"
     },
     {
@@ -1440,6 +1645,7 @@
       "subProf": "splashcaster",
       "name": "莫斯提马",
       "alias": "mositima mosidima musitima musidima mstm msdm 莫斯提馬",
+      "rarity": 6,
       "alt_name": "Mostima"
     },
     {
@@ -1447,6 +1653,7 @@
       "subProf": "physician",
       "name": "末药",
       "alias": "moyao my 末藥",
+      "rarity": 4,
       "alt_name": "Myrrh"
     },
     {
@@ -1454,6 +1661,7 @@
       "subProf": "notchar1",
       "name": "Mon3tr",
       "alias": "Mon3tr",
+      "rarity": 0,
       "alt_name": "Mon3tr"
     },
     {
@@ -1461,6 +1669,7 @@
       "subProf": "tactician",
       "name": "缪尔赛思",
       "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思",
+      "rarity": 6,
       "alt_name": "Muelsyse"
     },
     {
@@ -1468,6 +1677,7 @@
       "subProf": "artsfghter",
       "name": "慕斯",
       "alias": "musi ms 慕斯",
+      "rarity": 4,
       "alt_name": "Mousse"
     },
     {
@@ -1475,6 +1685,7 @@
       "subProf": "fastshot",
       "name": "能天使",
       "alias": "nengtianshi naitianshi nts 能天使",
+      "rarity": 6,
       "alt_name": "Exusiai"
     },
     {
@@ -1482,6 +1693,7 @@
       "subProf": "unyield",
       "name": "泥岩",
       "alias": "niyan ny 泥岩",
+      "rarity": 6,
       "alt_name": "Mudrock"
     },
     {
@@ -1489,6 +1701,7 @@
       "subProf": "protector",
       "name": "年",
       "alias": "nian n 年",
+      "rarity": 6,
       "alt_name": "Nian"
     },
     {
@@ -1496,6 +1709,7 @@
       "subProf": "instructor",
       "name": "帕拉斯",
       "alias": "palasi pls 帕拉斯",
+      "rarity": 6,
       "alt_name": "Pallas"
     },
     {
@@ -1503,6 +1717,7 @@
       "subProf": "notchar1",
       "name": "磐蟹护卫队",
       "alias": "panxiehuweidui pxhwd 磐蟹護衛隊 panxiehuweizhui pxhwz",
+      "rarity": 0,
       "alt_name": "M.C.G"
     },
     {
@@ -1510,6 +1725,7 @@
       "subProf": "protector",
       "name": "泡泡",
       "alias": "paopao pp 泡泡",
+      "rarity": 4,
       "alt_name": "Bubble"
     },
     {
@@ -1517,6 +1733,7 @@
       "subProf": "centurion",
       "name": "泡普卡",
       "alias": "paopuka paopuqia ppk ppq 泡普卡",
+      "rarity": 3,
       "alt_name": "Popukar"
     },
     {
@@ -1524,6 +1741,7 @@
       "subProf": "splashcaster",
       "name": "Pith",
       "alias": "Pith",
+      "rarity": 5,
       "alt_name": "Pith"
     },
     {
@@ -1531,6 +1749,7 @@
       "subProf": "closerange",
       "name": "普罗旺斯",
       "alias": "puluowangsi plws 普羅旺斯",
+      "rarity": 5,
       "alt_name": "Provence"
     },
     {
@@ -1538,6 +1757,7 @@
       "subProf": "stalker",
       "name": "绮良",
       "alias": "qiliang ql 綺良",
+      "rarity": 5,
       "alt_name": "Kirara"
     },
     {
@@ -1545,6 +1765,7 @@
       "subProf": "executor",
       "name": "麒麟R夜刀",
       "alias": "qilinRyedao qlRyd 麒麟R夜刀",
+      "rarity": 6,
       "alt_name": "Kirin R Yato"
     },
     {
@@ -1552,6 +1773,7 @@
       "subProf": "siegesniper",
       "name": "铅踝",
       "alias": "qianhuai yanhuai qh yh 鉛踝",
+      "rarity": 4,
       "alt_name": "Totter"
     },
     {
@@ -1559,6 +1781,7 @@
       "subProf": "bearer",
       "name": "琴柳",
       "alias": "qinliu ql 琴柳",
+      "rarity": 6,
       "alt_name": "Saileach"
     },
     {
@@ -1566,6 +1789,7 @@
       "subProf": "pioneer",
       "name": "清道夫",
       "alias": "qingdaofu qdf 清道夫",
+      "rarity": 4,
       "alt_name": "Scavenger"
     },
     {
@@ -1573,6 +1797,7 @@
       "subProf": "healer",
       "name": "清流",
       "alias": "qingliu ql 清流",
+      "rarity": 4,
       "alt_name": "Purestream"
     },
     {
@@ -1580,6 +1805,7 @@
       "subProf": "pioneer",
       "name": "青枳",
       "alias": "qingzhi qz 青枳",
+      "rarity": 5,
       "alt_name": "Poncirus"
     },
     {
@@ -1587,6 +1813,7 @@
       "subProf": "notchar1",
       "name": "全自动造型仪",
       "alias": "quanzidongzaoxingyi qzdzxy 全自動造型儀",
+      "rarity": 0,
       "alt_name": "Making-up Machine"
     },
     {
@@ -1594,6 +1821,7 @@
       "subProf": "siegesniper",
       "name": "熔泉",
       "alias": "rongquan rq 熔泉",
+      "rarity": 5,
       "alt_name": "Toddifons"
     },
     {
@@ -1601,6 +1829,7 @@
       "subProf": "guardian",
       "name": "塞雷娅",
       "alias": "saileiya seleiya sly 塞雷婭",
+      "rarity": 6,
       "alt_name": "Saria"
     },
     {
@@ -1608,6 +1837,7 @@
       "subProf": "wandermedic",
       "name": "桑葚",
       "alias": "sangshen ss 桑葚",
+      "rarity": 5,
       "alt_name": "Mulberry"
     },
     {
@@ -1615,6 +1845,7 @@
       "subProf": "duelist",
       "name": "森蚺",
       "alias": "senran sr 森蚺",
+      "rarity": 6,
       "alt_name": "Eunectes"
     },
     {
@@ -1622,6 +1853,7 @@
       "subProf": "notchar1",
       "name": "沙地兽",
       "alias": "shadishou shadeshou sds 沙地獸",
+      "rarity": 0,
       "alt_name": "Sandbeast"
     },
     {
@@ -1629,6 +1861,7 @@
       "subProf": "notchar1",
       "name": "沙之碑",
       "alias": "shazhibei szb 沙之碑",
+      "rarity": 0,
       "alt_name": "Desert Obelisk"
     },
     {
@@ -1636,6 +1869,7 @@
       "subProf": "fighter",
       "name": "山",
       "alias": "shan s 山",
+      "rarity": 6,
       "alt_name": "Mountain"
     },
     {
@@ -1643,6 +1877,7 @@
       "subProf": "shotprotector",
       "name": "闪击",
       "alias": "shanji sj 閃擊",
+      "rarity": 5,
       "alt_name": "Blitz"
     },
     {
@@ -1650,6 +1885,7 @@
       "subProf": "physician",
       "name": "闪灵",
       "alias": "shanling sl 閃靈",
+      "rarity": 6,
       "alt_name": "Shining"
     },
     {
@@ -1657,6 +1893,7 @@
       "subProf": "fearless",
       "name": "Sharp",
       "alias": "Sharp",
+      "rarity": 5,
       "alt_name": "Sharp"
     },
     {
@@ -1664,6 +1901,7 @@
       "subProf": "aoesniper",
       "name": "慑砂",
       "alias": "shesha ss 懾砂",
+      "rarity": 5,
       "alt_name": "Sesa"
     },
     {
@@ -1671,6 +1909,7 @@
       "subProf": "protector",
       "name": "蛇屠箱",
       "alias": "shetuxiang yituxiang stx ytx 蛇屠箱",
+      "rarity": 4,
       "alt_name": "Cuora"
     },
     {
@@ -1678,6 +1917,7 @@
       "subProf": "mystic",
       "name": "深靛",
       "alias": "shendian sd 深靛",
+      "rarity": 4,
       "alt_name": "Indigo"
     },
     {
@@ -1685,6 +1925,7 @@
       "subProf": "summoner",
       "name": "深海色",
       "alias": "shenhaise shs 深海色",
+      "rarity": 4,
       "alt_name": "Deepcolor"
     },
     {
@@ -1692,6 +1933,7 @@
       "subProf": "guardian",
       "name": "深律",
       "alias": "shenlv sl 深律",
+      "rarity": 5,
       "alt_name": "Bassline"
     },
     {
@@ -1699,6 +1941,7 @@
       "subProf": "reaper",
       "name": "圣约送葬人",
       "alias": "shengyuesongzangren shengyaosongzangren syszr 聖約送葬人",
+      "rarity": 6,
       "alt_name": "Executor the Ex Foedere"
     },
     {
@@ -1706,6 +1949,7 @@
       "subProf": "corecaster",
       "name": "史都华德",
       "alias": "shiduhuade shidouhuade sdhd 史都華德",
+      "rarity": 3,
       "alt_name": "Steward"
     },
     {
@@ -1713,6 +1957,7 @@
       "subProf": "artsfghter",
       "name": "史尔特尔",
       "alias": "shierteer sete 史爾特爾",
+      "rarity": 6,
       "alt_name": "Surtr"
     },
     {
@@ -1720,6 +1965,7 @@
       "subProf": "instructor",
       "name": "诗怀雅",
       "alias": "shihuaiya shy 詩懷雅",
+      "rarity": 5,
       "alt_name": "Swire"
     },
     {
@@ -1727,6 +1973,7 @@
       "subProf": "artsprotector",
       "name": "石棉",
       "alias": "shimian danmian sm dm 石棉",
+      "rarity": 5,
       "alt_name": "Asbestos"
     },
     {
@@ -1734,6 +1981,7 @@
       "subProf": "blastcaster",
       "name": "蚀清",
       "alias": "shiqing sq 蝕清",
+      "rarity": 5,
       "alt_name": "Corroserum"
     },
     {
@@ -1741,6 +1989,7 @@
       "subProf": "pusher",
       "name": "食铁兽",
       "alias": "shitieshou sitieshou yitieshou sts yts 食鐵獸",
+      "rarity": 5,
       "alt_name": "FEater"
     },
     {
@@ -1748,6 +1997,7 @@
       "subProf": "stalker",
       "name": "狮蝎",
       "alias": "shixie sx 獅蠍",
+      "rarity": 5,
       "alt_name": "Manticore"
     },
     {
@@ -1755,6 +2005,7 @@
       "subProf": "crusher",
       "name": "石英",
       "alias": "shiying danying sy dy 石英",
+      "rarity": 4,
       "alt_name": "Quartz"
     },
     {
@@ -1762,6 +2013,7 @@
       "subProf": "longrange",
       "name": "守林人",
       "alias": "shoulinren slr 守林人",
+      "rarity": 5,
       "alt_name": "Firewatch"
     },
     {
@@ -1769,6 +2021,7 @@
       "subProf": "guardian",
       "name": "黍",
       "alias": "shu s 黍",
+      "rarity": 6,
       "alt_name": "Shu"
     },
     {
@@ -1776,6 +2029,7 @@
       "subProf": "traper",
       "name": "霜华",
       "alias": "shuanghua sh 霜華",
+      "rarity": 5,
       "alt_name": "Frost"
     },
     {
@@ -1783,6 +2037,7 @@
       "subProf": "lord",
       "name": "霜叶",
       "alias": "shuangye shuangxie sy sx 霜葉",
+      "rarity": 4,
       "alt_name": "Frostleaf"
     },
     {
@@ -1790,6 +2045,7 @@
       "subProf": "dollkeeper",
       "name": "双月",
       "alias": "shuangyue sy 雙月",
+      "rarity": 5,
       "alt_name": "Iana"
     },
     {
@@ -1797,6 +2053,7 @@
       "subProf": "stalker",
       "name": "水月",
       "alias": "shuiyue sy 水月",
+      "rarity": 6,
       "alt_name": "Mizuki"
     },
     {
@@ -1804,6 +2061,7 @@
       "subProf": "fearless",
       "name": "斯卡蒂",
       "alias": "sikadi siqiadi skd sqd 斯卡蒂",
+      "rarity": 6,
       "alt_name": "Skadi"
     },
     {
@@ -1811,6 +2069,7 @@
       "subProf": "notchar1",
       "name": "斯卡蒂的海嗣",
       "alias": "sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs 斯卡蒂的海嗣",
+      "rarity": 0,
       "alt_name": "Skadi's seaborn"
     },
     {
@@ -1818,6 +2077,7 @@
       "subProf": "tactician",
       "name": "伺夜",
       "alias": "siye ciye sy cy 伺夜",
+      "rarity": 6,
       "alt_name": "Vigil"
     },
     {
@@ -1825,6 +2085,7 @@
       "subProf": "fastshot",
       "name": "四月",
       "alias": "siyue sy 四月",
+      "rarity": 5,
       "alt_name": "April"
     },
     {
@@ -1832,6 +2093,7 @@
       "subProf": "reaperrange",
       "name": "松果",
       "alias": "songguo sg 鬆果",
+      "rarity": 4,
       "alt_name": "Pinecone"
     },
     {
@@ -1839,6 +2101,7 @@
       "subProf": "reaperrange",
       "name": "送葬人",
       "alias": "songzangren szr 送葬人",
+      "rarity": 5,
       "alt_name": "Executor"
     },
     {
@@ -1846,6 +2109,7 @@
       "subProf": "fastshot",
       "name": "Stormeye",
       "alias": "Stormeye",
+      "rarity": 5,
       "alt_name": "Stormeye"
     },
     {
@@ -1853,6 +2117,7 @@
       "subProf": "physician",
       "name": "苏苏洛",
       "alias": "susuluo ssl 蘇蘇洛",
+      "rarity": 4,
       "alt_name": "Sussurro"
     },
     {
@@ -1860,6 +2125,7 @@
       "subProf": "ritualist",
       "name": "塑心",
       "alias": "suxin sx 塑心",
+      "rarity": 6,
       "alt_name": "Virtuosa"
     },
     {
@@ -1867,6 +2133,7 @@
       "subProf": "closerange",
       "name": "酸糖",
       "alias": "suantang st 酸糖",
+      "rarity": 4,
       "alt_name": "Aciddrop"
     },
     {
@@ -1874,6 +2141,7 @@
       "subProf": "fighter",
       "name": "燧石",
       "alias": "suishi suidan ss sd 燧石",
+      "rarity": 5,
       "alt_name": "Flint"
     },
     {
@@ -1881,6 +2149,7 @@
       "subProf": "bombarder",
       "name": "泰拉大陆调查团",
       "alias": "tailadalutiaochatuan tailadalutiaozhatuan tailadaludiaochatuan tailadaludiaozhatuan tailadaluzhouchatuan tailadaluzhouzhatuan tailadailutiaochatuan tailadailutiaozhatuan tailadailudiaochatuan tailadailudiaozhatuan tailadailuzhouchatuan tailadailuzhouzhatuan tailatailutiaochatuan tailatailutiaozhatuan tailatailudiaochatuan tailatailudiaozhatuan tailatailuzhouchatuan tailatailuzhouzhatuan tldltct tldltzt tldldct tldldzt tldlzct tldlzzt tltltct tltltzt tltldct tltldzt tltlzct tltlzzt 泰拉大陸調查團",
+      "rarity": 1,
       "alt_name": "Terra Research Commission"
     },
     {
@@ -1888,6 +2157,7 @@
       "subProf": "bearer",
       "name": "桃金娘",
       "alias": "taojinniang tjn 桃金娘",
+      "rarity": 4,
       "alt_name": "Myrtle"
     },
     {
@@ -1895,6 +2165,7 @@
       "subProf": "corecaster",
       "name": "特米米",
       "alias": "temimi tmm 特米米",
+      "rarity": 5,
       "alt_name": "Tomimi"
     },
     {
@@ -1902,6 +2173,7 @@
       "subProf": "executor",
       "name": "THRM-EX",
       "alias": "THRM-EX",
+      "rarity": 1,
       "alt_name": "Thermal-EX"
     },
     {
@@ -1909,6 +2181,7 @@
       "subProf": "siegesniper",
       "name": "提丰",
       "alias": "tifeng difeng tf df 提豐",
+      "rarity": 6,
       "alt_name": "Typhon"
     },
     {
@@ -1916,6 +2189,7 @@
       "subProf": "splashcaster",
       "name": "天火",
       "alias": "tianhuo th 天火",
+      "rarity": 5,
       "alt_name": "Skyfire"
     },
     {
@@ -1923,6 +2197,7 @@
       "subProf": "ringhealer",
       "name": "调香师",
       "alias": "tiaoxiangshi diaoxiangshi zhouxiangshi txs dxs zxs 調香師",
+      "rarity": 4,
       "alt_name": "Perfumer"
     },
     {
@@ -1930,6 +2205,7 @@
       "subProf": "notchar1",
       "name": "铁钳号·原型机",
       "alias": "tieqianhao·yuanxingji tqh·yxj 鐵鉗號·原型機",
+      "rarity": 0,
       "alt_name": "Prototype of Feist's Metal Crab"
     },
     {
@@ -1937,6 +2213,7 @@
       "subProf": "physician",
       "name": "Touch",
       "alias": "Touch",
+      "rarity": 5,
       "alt_name": "Touch"
     },
     {
@@ -1944,6 +2221,7 @@
       "subProf": "physician",
       "name": "图耶",
       "alias": "tuye ty 圖耶",
+      "rarity": 5,
       "alt_name": "Tuye"
     },
     {
@@ -1951,6 +2229,7 @@
       "subProf": "pioneer",
       "name": "推进之王",
       "alias": "tuijinzhiwang tjzw 推進之王",
+      "rarity": 6,
       "alt_name": "Siege"
     },
     {
@@ -1958,6 +2237,7 @@
       "subProf": "bard",
       "name": "U-Official",
       "alias": "U-Official",
+      "rarity": 1,
       "alt_name": "U-Official"
     },
     {
@@ -1965,6 +2245,7 @@
       "subProf": "aoesniper",
       "name": "W",
       "alias": "W",
+      "rarity": 6,
       "alt_name": "W"
     },
     {
@@ -1972,6 +2253,7 @@
       "subProf": "bearer",
       "name": "万顷",
       "alias": "wanqing moqing wq mq 萬頃",
+      "rarity": 5,
       "alt_name": "Wanqing"
     },
     {
@@ -1979,6 +2261,7 @@
       "subProf": "charger",
       "name": "苇草",
       "alias": "weicao wc 葦草",
+      "rarity": 5,
       "alt_name": "Reed"
     },
     {
@@ -1986,6 +2269,7 @@
       "subProf": "dollkeeper",
       "name": "维荻",
       "alias": "weidi wd 維荻",
+      "rarity": 4,
       "alt_name": "Verdant"
     },
     {
@@ -1993,6 +2277,7 @@
       "subProf": "ringhealer",
       "name": "微风",
       "alias": "weifeng wf 微風",
+      "rarity": 5,
       "alt_name": "Breeze"
     },
     {
@@ -2000,6 +2285,7 @@
       "subProf": "artsfghter",
       "name": "薇薇安娜",
       "alias": "weiweianna weiweiannuo wwan 薇薇安娜",
+      "rarity": 6,
       "alt_name": "Viviana"
     },
     {
@@ -2007,6 +2293,7 @@
       "subProf": "pusher",
       "name": "温蒂",
       "alias": "wendi wd 溫蒂",
+      "rarity": 6,
       "alt_name": "Weedy"
     },
     {
@@ -2014,6 +2301,7 @@
       "subProf": "primcaster",
       "name": "温米",
       "alias": "wenmi wm 溫米",
+      "rarity": 5,
       "alt_name": "Warmy"
     },
     {
@@ -2021,6 +2309,7 @@
       "subProf": "underminer",
       "name": "巫恋",
       "alias": "wulian wl 巫戀",
+      "rarity": 5,
       "alt_name": "Shamare"
     },
     {
@@ -2028,6 +2317,7 @@
       "subProf": "merchant",
       "name": "乌有",
       "alias": "wuyou wy 烏有",
+      "rarity": 5,
       "alt_name": "Mr.Nothing"
     },
     {
@@ -2035,6 +2325,7 @@
       "subProf": "splashcaster",
       "name": "夕",
       "alias": "xi x 夕",
+      "rarity": 6,
       "alt_name": "Dusk"
     },
     {
@@ -2042,6 +2333,7 @@
       "subProf": "healer",
       "name": "锡兰",
       "alias": "xilan xl 錫蘭",
+      "rarity": 5,
       "alt_name": "Ceylon"
     },
     {
@@ -2049,6 +2341,7 @@
       "subProf": "summoner",
       "name": "稀音",
       "alias": "xiyin xy 稀音",
+      "rarity": 5,
       "alt_name": "Scene"
     },
     {
@@ -2056,6 +2349,7 @@
       "subProf": "guardian",
       "name": "瑕光",
       "alias": "xiaguang xg 瑕光",
+      "rarity": 6,
       "alt_name": "Blemishine"
     },
     {
@@ -2063,6 +2357,7 @@
       "subProf": "blessing",
       "name": "夏栎",
       "alias": "xiali xiayue xl xy 夏櫟",
+      "rarity": 5,
       "alt_name": "Quercus"
     },
     {
@@ -2070,6 +2365,7 @@
       "subProf": "notchar1",
       "name": "香槟炸弹",
       "alias": "xiangbinzhadan xiangbinzhatan xiangbingzhadan xiangbingzhatan xbzd xbzt 香檳炸彈",
+      "rarity": 0,
       "alt_name": "Champagne Bomb"
     },
     {
@@ -2077,6 +2373,7 @@
       "subProf": "pioneer",
       "name": "香草",
       "alias": "xiangcao xc 香草",
+      "rarity": 3,
       "alt_name": "Vanilla"
     },
     {
@@ -2084,6 +2381,7 @@
       "subProf": "agent",
       "name": "晓歌",
       "alias": "xiaoge xg 曉歌",
+      "rarity": 5,
       "alt_name": "Cantabile"
     },
     {
@@ -2091,6 +2389,7 @@
       "subProf": "slower",
       "name": "小满",
       "alias": "xiaoman xm 小滿",
+      "rarity": 5,
       "alt_name": "Grain Buds"
     },
     {
@@ -2098,6 +2397,7 @@
       "subProf": "artsfghter",
       "name": "星极",
       "alias": "xingji xj 星極",
+      "rarity": 5,
       "alt_name": "Astesia"
     },
     {
@@ -2105,6 +2405,7 @@
       "subProf": "hookmaster",
       "name": "杏仁",
       "alias": "xingren xr 杏仁",
+      "rarity": 5,
       "alt_name": "Almond"
     },
     {
@@ -2112,6 +2413,7 @@
       "subProf": "protector",
       "name": "星熊",
       "alias": "xingxiong xx 星熊",
+      "rarity": 6,
       "alt_name": "Hoshiguma"
     },
     {
@@ -2119,6 +2421,7 @@
       "subProf": "chain",
       "name": "星源",
       "alias": "xingyuan xy 星源",
+      "rarity": 5,
       "alt_name": "Astgenne"
     },
     {
@@ -2126,6 +2429,7 @@
       "subProf": "reaper",
       "name": "休谟斯",
       "alias": "xiumosi xumosi xms 休謨斯",
+      "rarity": 4,
       "alt_name": "Humus"
     },
     {
@@ -2133,6 +2437,7 @@
       "subProf": "healer",
       "name": "絮雨",
       "alias": "xuyu xy 絮雨",
+      "rarity": 5,
       "alt_name": "Whisperain"
     },
     {
@@ -2140,6 +2445,7 @@
       "subProf": "corecaster",
       "name": "雪绒",
       "alias": "xuerong xr 雪絨",
+      "rarity": 5,
       "alt_name": "Qanipalaat"
     },
     {
@@ -2147,6 +2453,7 @@
       "subProf": "hookmaster",
       "name": "雪雉",
       "alias": "xuezhi xz 雪雉",
+      "rarity": 5,
       "alt_name": "Snowsant"
     },
     {
@@ -2154,6 +2461,7 @@
       "subProf": "fastshot",
       "name": "巡林者",
       "alias": "xunlinzhe xlz 巡林者",
+      "rarity": 2,
       "alt_name": "Rangers"
     },
     {
@@ -2161,6 +2469,7 @@
       "subProf": "pioneer",
       "name": "讯使",
       "alias": "xunshi xs 訊使",
+      "rarity": 4,
       "alt_name": "Courier"
     },
     {
@@ -2168,6 +2477,7 @@
       "subProf": "hookmaster",
       "name": "崖心",
       "alias": "yaxin yx 崖心",
+      "rarity": 5,
       "alt_name": "Cliffheart"
     },
     {
@@ -2175,6 +2485,7 @@
       "subProf": "physician",
       "name": "亚叶",
       "alias": "yaye yaxie yy yx 亞葉",
+      "rarity": 5,
       "alt_name": "Folinic"
     },
     {
@@ -2182,6 +2493,7 @@
       "subProf": "musha",
       "name": "宴",
       "alias": "yan y 宴",
+      "rarity": 4,
       "alt_name": "Utage"
     },
     {
@@ -2189,6 +2501,7 @@
       "subProf": "fearless",
       "name": "炎客",
       "alias": "yanke yk 炎客",
+      "rarity": 5,
       "alt_name": "Flamebringer"
     },
     {
@@ -2196,6 +2509,7 @@
       "subProf": "splashcaster",
       "name": "炎熔",
       "alias": "yanrong yr 炎熔",
+      "rarity": 3,
       "alt_name": "Lava"
     },
     {
@@ -2203,6 +2517,7 @@
       "subProf": "pioneer",
       "name": "焰尾",
       "alias": "yanwei yanyi yw yy 焰尾",
+      "rarity": 6,
       "alt_name": "Flametail"
     },
     {
@@ -2210,6 +2525,7 @@
       "subProf": "incantationmedic",
       "name": "焰影苇草",
       "alias": "yanyingweicao yywc 焰影葦草",
+      "rarity": 6,
       "alt_name": "Reed The Flame Shadow"
     },
     {
@@ -2217,6 +2533,7 @@
       "subProf": "splashcaster",
       "name": "炎狱炎熔",
       "alias": "yanyuyanrong yyyr 炎獄炎熔",
+      "rarity": 5,
       "alt_name": "Lava the Purgatory"
     },
     {
@@ -2224,6 +2541,7 @@
       "subProf": "duelist",
       "name": "洋灰",
       "alias": "yanghui yh 洋灰",
+      "rarity": 5,
       "alt_name": "Cement"
     },
     {
@@ -2231,6 +2549,7 @@
       "subProf": "fearless",
       "name": "耀骑士临光",
       "alias": "yaoqishilinguang yqslg 耀騎士臨光",
+      "rarity": 6,
       "alt_name": "Nearl the Radiant Knight"
     },
     {
@@ -2238,6 +2557,7 @@
       "subProf": "tactician",
       "name": "夜半",
       "alias": "yeban yb 夜半",
+      "rarity": 5,
       "alt_name": "Blacknight"
     },
     {
@@ -2245,6 +2565,7 @@
       "subProf": "pioneer",
       "name": "夜刀",
       "alias": "yedao yd 夜刀",
+      "rarity": 2,
       "alt_name": "Yato"
     },
     {
@@ -2252,6 +2573,7 @@
       "subProf": "notchar1",
       "name": "夜灯",
       "alias": "yedeng yd 夜燈",
+      "rarity": 0,
       "alt_name": "Night Banisher"
     },
     {
@@ -2259,6 +2581,7 @@
       "subProf": "funnel",
       "name": "耶拉",
       "alias": "yela yl 耶拉",
+      "rarity": 5,
       "alt_name": "Kjera"
     },
     {
@@ -2266,6 +2589,7 @@
       "subProf": "corecaster",
       "name": "夜魔",
       "alias": "yemo ym 夜魔",
+      "rarity": 5,
       "alt_name": "Nightmare"
     },
     {
@@ -2273,6 +2597,7 @@
       "subProf": "corecaster",
       "name": "夜烟",
       "alias": "yeyan yy 夜煙",
+      "rarity": 4,
       "alt_name": "Haze"
     },
     {
@@ -2280,6 +2605,7 @@
       "subProf": "ringhealer",
       "name": "夜莺",
       "alias": "yeying yy 夜鶯",
+      "rarity": 6,
       "alt_name": "Nightingale"
     },
     {
@@ -2287,6 +2613,7 @@
       "subProf": "charger",
       "name": "野鬃",
       "alias": "yezong yz 野鬃",
+      "rarity": 5,
       "alt_name": "Wild Mane"
     },
     {
@@ -2294,6 +2621,7 @@
       "subProf": "notchar1",
       "name": "移动摄影器",
       "alias": "yidongsheyingqi yidongnieyingqi ydsyq ydnyq 移動攝影器",
+      "rarity": 0,
       "alt_name": "M.P.M"
     },
     {
@@ -2301,6 +2629,7 @@
       "subProf": "blastcaster",
       "name": "伊芙利特",
       "alias": "yifulite yflt 伊芙利特",
+      "rarity": 6,
       "alt_name": "Ifrit"
     },
     {
@@ -2308,6 +2637,7 @@
       "subProf": "chain",
       "name": "异客",
       "alias": "yike yk 異客",
+      "rarity": 6,
       "alt_name": "Passenger"
     },
     {
@@ -2315,6 +2645,7 @@
       "subProf": "notchar1",
       "name": "医疗探机",
       "alias": "yiliaotanji yltj 醫療探機",
+      "rarity": 0,
       "alt_name": "Medical Drone"
     },
     {
@@ -2322,6 +2653,7 @@
       "subProf": "agent",
       "name": "伊内丝",
       "alias": "yineisi yinasi yns 伊內絲",
+      "rarity": 6,
       "alt_name": "Ines"
     },
     {
@@ -2329,6 +2661,7 @@
       "subProf": "stalker",
       "name": "伊桑",
       "alias": "yisang ys 伊桑",
+      "rarity": 4,
       "alt_name": "Ethan"
     },
     {
@@ -2336,6 +2669,7 @@
       "subProf": "instructor",
       "name": "医生",
       "alias": "yisheng ys 醫生",
+      "rarity": 5,
       "alt_name": "Doc"
     },
     {
@@ -2343,6 +2677,7 @@
       "subProf": "lord",
       "name": "银灰",
       "alias": "yinhui yh 銀灰",
+      "rarity": 6,
       "alt_name": "SilverAsh"
     },
     {
@@ -2350,6 +2685,7 @@
       "subProf": "fighter",
       "name": "因陀罗",
       "alias": "yintuoluo ytl 因陀羅",
+      "rarity": 5,
       "alt_name": "Indra"
     },
     {
@@ -2357,6 +2693,7 @@
       "subProf": "fastshot",
       "name": "隐现",
       "alias": "yinxian yx 隱現",
+      "rarity": 5,
       "alt_name": "Insider"
     },
     {
@@ -2364,6 +2701,7 @@
       "subProf": "notchar1",
       "name": "迎宾踏垫",
       "alias": "yingbintadian ybtd 迎賓踏墊",
+      "rarity": 0,
       "alt_name": "Welcome Mat"
     },
     {
@@ -2371,6 +2709,7 @@
       "subProf": "centurion",
       "name": "幽灵鲨",
       "alias": "youlingsha yls 幽靈鯊",
+      "rarity": 5,
       "alt_name": "Specter"
     },
     {
@@ -2378,6 +2717,7 @@
       "subProf": "physician",
       "name": "预备干员-后勤",
       "alias": "yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq 預備幹員-後勤",
+      "rarity": 3,
       "alt_name": "Reserve (Logistic)"
     },
     {
@@ -2385,6 +2725,7 @@
       "subProf": "pioneer",
       "name": "预备干员-近战",
       "alias": "yubeiganyuan-jinzhan yubeiganyun-jinzhan ybgy-jz 預備幹員-近戰",
+      "rarity": 3,
       "alt_name": "Reserve (Melee)"
     },
     {
@@ -2392,6 +2733,7 @@
       "subProf": "fastshot",
       "name": "预备干员-狙击",
       "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
+      "rarity": 3,
       "alt_name": "Reserve (Sniper)"
     },
     {
@@ -2399,6 +2741,7 @@
       "subProf": "corecaster",
       "name": "预备干员-术师",
       "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
+      "rarity": 3,
       "alt_name": "Reserve (Caster)"
     },
     {
@@ -2406,6 +2749,7 @@
       "subProf": "protector",
       "name": "预备干员-重装",
       "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
+      "rarity": 3,
       "alt_name": "Reserve (Defender)"
     },
     {
@@ -2413,6 +2757,7 @@
       "subProf": "pioneer",
       "name": "郁金香",
       "alias": "yujinxiang yjx 鬱金香",
+      "rarity": 5,
       "alt_name": "Tulip"
     },
     {
@@ -2420,6 +2765,7 @@
       "subProf": "reaper",
       "name": "羽毛笔",
       "alias": "yumaobi ymb 羽毛筆",
+      "rarity": 5,
       "alt_name": "La Pluma"
     },
     {
@@ -2427,6 +2773,7 @@
       "subProf": "splashcaster",
       "name": "远山",
       "alias": "yuanshan ys 遠山",
+      "rarity": 4,
       "alt_name": "Gitano"
     },
     {
@@ -2434,6 +2781,7 @@
       "subProf": "longrange",
       "name": "远牙",
       "alias": "yuanya yy 遠牙",
+      "rarity": 6,
       "alt_name": "Fartooth"
     },
     {
@@ -2441,6 +2789,7 @@
       "subProf": "blessing",
       "name": "月禾",
       "alias": "yuehe yh 月禾",
+      "rarity": 5,
       "alt_name": "Tsukinogi"
     },
     {
@@ -2448,6 +2797,7 @@
       "subProf": "lord",
       "name": "月见夜",
       "alias": "yuejianye yuexianye yjy yxy 月見夜",
+      "rarity": 3,
       "alt_name": "Midnight"
     },
     {
@@ -2455,6 +2805,7 @@
       "subProf": "loopshooter",
       "name": "跃跃",
       "alias": "yueyue yy 躍躍",
+      "rarity": 4,
       "alt_name": "Caper"
     },
     {
@@ -2462,6 +2813,7 @@
       "subProf": "aoesniper",
       "name": "陨星",
       "alias": "yunxing yx 隕星",
+      "rarity": 5,
       "alt_name": "Meteorite"
     },
     {
@@ -2469,6 +2821,7 @@
       "subProf": "siegesniper",
       "name": "早露",
       "alias": "zaolou zaolu zl 早露",
+      "rarity": 6,
       "alt_name": "Роса"
     },
     {
@@ -2476,6 +2829,7 @@
       "subProf": "sword",
       "name": "战车",
       "alias": "zhanche zhanju zc zj 戰車",
+      "rarity": 5,
       "alt_name": "Tachanka"
     },
     {
@@ -2483,6 +2837,7 @@
       "subProf": "primcaster",
       "name": "折光",
       "alias": "zheguang sheguang zg sg 折光",
+      "rarity": 5,
       "alt_name": "Diamante"
     },
     {
@@ -2490,6 +2845,7 @@
       "subProf": "slower",
       "name": "真理",
       "alias": "zhenli zl 真理",
+      "rarity": 5,
       "alt_name": "Истина"
     },
     {
@@ -2497,6 +2853,7 @@
       "subProf": "fastshot",
       "name": "正义骑士号",
       "alias": "zhengyiqishihao zyqsh 正義騎士號",
+      "rarity": 1,
       "alt_name": "\"Justice Knight\""
     },
     {
@@ -2504,6 +2861,7 @@
       "subProf": "funnel",
       "name": "至简",
       "alias": "zhijian zj 至簡",
+      "rarity": 5,
       "alt_name": "Minimalist"
     },
     {
@@ -2511,6 +2869,7 @@
       "subProf": "notchar1",
       "name": "纸偶",
       "alias": "zhiou zo 紙偶",
+      "rarity": 0,
       "alt_name": "Kaminingyo"
     },
     {
@@ -2518,6 +2877,7 @@
       "subProf": "fearless",
       "name": "止颂",
       "alias": "zhisong zs 止頌",
+      "rarity": 6,
       "alt_name": "Lessing"
     },
     {
@@ -2525,6 +2885,7 @@
       "subProf": "fighter",
       "name": "重岳",
       "alias": "zhongyue chongyue zy cy 重嶽",
+      "rarity": 6,
       "alt_name": "Chongyue"
     },
     {
@@ -2532,6 +2893,7 @@
       "subProf": "artsfghter",
       "name": "铸铁",
       "alias": "zhutie zt 鑄鐵",
+      "rarity": 5,
       "alt_name": "Sideroca"
     },
     {
@@ -2539,6 +2901,7 @@
       "subProf": "incantationmedic",
       "name": "濯尘芙蓉",
       "alias": "zhuochenfurong zhaochenfurong zcfr 濯塵芙蓉",
+      "rarity": 5,
       "alt_name": "Hibiscus the Purifier"
     },
     {
@@ -2546,6 +2909,7 @@
       "subProf": "bard",
       "name": "浊心斯卡蒂",
       "alias": "zhuoxinsikadi zhuoxinsiqiadi zxskd zxsqd 濁心斯卡蒂",
+      "rarity": 6,
       "alt_name": "Skadi the Corrupting Heart"
     },
     {
@@ -2553,6 +2917,7 @@
       "subProf": "slower",
       "name": "梓兰",
       "alias": "zilan zl 梓蘭",
+      "rarity": 3,
       "alt_name": "Orchid"
     },
     {
@@ -2560,6 +2925,7 @@
       "subProf": "longrange",
       "name": "子月",
       "alias": "ziyue zy 子月",
+      "rarity": 5,
       "alt_name": "Lunacub"
     },
     {
@@ -2567,6 +2933,7 @@
       "subProf": "notchar1",
       "name": "诅咒娃娃",
       "alias": "zuzhouwawa zzww 詛咒娃娃",
+      "rarity": 0,
       "alt_name": "Curse Doll"
     },
     {
@@ -2574,6 +2941,7 @@
       "subProf": "musha",
       "name": "左乐",
       "alias": "zuole zuoyue zuoyao zuolao zl zy 左樂",
+      "rarity": 6,
       "alt_name": "Zuo Le"
     }
   ],

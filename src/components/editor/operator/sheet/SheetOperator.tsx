@@ -1,4 +1,6 @@
 import { Alert, Button, Divider, H4, H5, H6, Intent } from '@blueprintjs/core'
+import { Popover2 } from '@blueprintjs/popover2'
+import { POPOVER2_DISMISS } from '@blueprintjs/popover2/lib/esm/classes'
 
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
@@ -61,6 +63,9 @@ const formattedProfessions = [
 ]
 
 const paginationSize = 60
+const defaultRarityFilter = Array.from(
+  new Array(Math.max(...OPERATORS.map(({ rarity }) => rarity)) + 1).keys(),
+).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
 
 const SheetOperator = ({
   submitOperator,
@@ -72,6 +77,8 @@ const SheetOperator = ({
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
+  const [operatorRarity, setOperatorRarity] = useState(defaultRarityFilter)
+  const [rarityReverse, setRarityReverse] = useState(false)
   const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
   const [coverOperator, setCoverOperator] = useState<Operator>()
 
@@ -90,6 +97,7 @@ const SheetOperator = ({
             return {
               name,
               subProf: '',
+              rarity: 0,
             }
           }),
         ...OPERATORS,
@@ -157,17 +165,43 @@ const SheetOperator = ({
     }
   }
 
+  const getOperatorRarity = (target: string) =>
+    operatorsGroupedByProf.find((item) => item.name === target)!.rarity
+
   const operatorsGroupedBySubProf = useMemo(() => {
-    if (selectedSubProf.id === 'all') return operatorsGroupedByProf
+    let result: Operator[] = []
+    if (selectedSubProf.id === 'all') result = operatorsGroupedByProf
     else if (selectedSubProf.id === 'selected')
-      return operatorsGroupedByProf.filter((item) =>
+      result = operatorsGroupedByProf.filter((item) =>
         checkOperatorSelected(item.name),
       )
     else
-      return operatorsGroupedByProf.filter(
+      result = operatorsGroupedByProf.filter(
         (item) => item.subProf === selectedSubProf.id,
       )
-  }, [selectedSubProf, operatorsGroupedByProf, checkOperatorSelected])
+
+    result = result
+      .filter(({ name }) => {
+        return (
+          operatorRarity.findIndex(
+            (rarity) => getOperatorRarity(name) === rarity,
+          ) !== -1
+        )
+      })
+      .sort(
+        ({ name: aName }, { name: bName }) =>
+          getOperatorRarity(bName) - getOperatorRarity(aName),
+      )
+
+    return rarityReverse ? result.reverse() : result
+  }, [
+    selectedSubProf,
+    operatorsGroupedByProf,
+    checkOperatorSelected,
+    operatorRarity,
+    rarityReverse,
+    getOperatorRarity,
+  ])
 
   const operatorSelectHandle: OperatorModifyProps['operatorSelectHandle'] = (
     operatorName,
@@ -227,6 +261,20 @@ const SheetOperator = ({
 
   const ActionList = (
     <div className="absolute bottom-0">
+      <Popover2
+        content={
+          <RaritySelector
+            {...{
+              operatorRarity,
+              setOperatorRarity,
+              rarityReverse,
+              setRarityReverse,
+            }}
+          />
+        }
+      >
+        <Button minimal icon="filter-list" />
+      </Popover2>
       <Button
         minimal
         icon="circle"
@@ -321,6 +369,7 @@ const SheetOperator = ({
               className={clsx(
                 'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
                 subProf.id === selectedSubProf.id && '!opacity-100 underline',
+                subProf.name.length > 3 && '!text-base',
               )}
               onClick={() => setSelectedSubProf(subProf)}
             >
@@ -351,7 +400,7 @@ const SheetOperator = ({
                     )
                     return (
                       <div
-                        className="flex items-center w-32 h-32 flex-0"
+                        className="flex items-center flex-0 w-32 h-32"
                         key={index}
                       >
                         <OperatorItem
@@ -398,6 +447,81 @@ const SheetOperator = ({
         </div>
       </Alert>
     </>
+  )
+}
+
+const RaritySelector = ({
+  operatorRarity,
+  setOperatorRarity,
+  rarityReverse,
+  setRarityReverse,
+}: {
+  operatorRarity: number[]
+  setOperatorRarity: (target: number[]) => void
+  rarityReverse: boolean
+  setRarityReverse: (target: boolean) => void
+}) => {
+  const selectClass = 'scale-90'
+  const [rarity, setRarity] = useState<number[]>(operatorRarity)
+  const [reverse, setReverse] = useState<boolean>(rarityReverse)
+
+  const resetFilter = () => {
+    setRarity(defaultRarityFilter)
+    setReverse(false)
+  }
+  const submitFilter = () => {
+    setOperatorRarity(rarity)
+    setRarityReverse(reverse)
+  }
+
+  return (
+    <div>
+      <div className="flex items-center">
+        <H5 className="m-0 mr-1">按干员稀有度展示</H5>
+        <Button icon="reset" minimal title="重置选择" onClick={resetFilter} />
+      </div>
+      <div className="flex my-1">
+        {Array(7)
+          .fill(0)
+          .map((_, index) => {
+            const isSelect = rarity.findIndex((item) => item === index) !== -1
+            return (
+              <Button
+                key={index}
+                active={isSelect}
+                text={index}
+                minimal
+                className={clsx(isSelect && selectClass)}
+                onClick={() =>
+                  isSelect
+                    ? setRarity([...rarity].filter((item) => item !== index))
+                    : setRarity([...rarity, index])
+                }
+              />
+            )
+          })}
+      </div>
+      <div className="flex">
+        <Button
+          minimal
+          icon="arrow-up"
+          className={clsx(!reverse && selectClass)}
+          active={!reverse}
+          onClick={() => setReverse(false)}
+          title="按从下至上升序排列"
+        />
+        <Button
+          minimal
+          icon="arrow-down"
+          className={clsx(reverse && selectClass)}
+          active={reverse}
+          onClick={() => setReverse(true)}
+          title="按从下至上降序排列"
+        />
+      </div>
+      <Divider />
+      <Button text="确认" className={POPOVER2_DISMISS} onClick={submitFilter} />
+    </div>
   )
 }
 
