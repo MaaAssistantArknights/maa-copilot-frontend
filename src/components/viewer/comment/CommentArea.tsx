@@ -156,8 +156,6 @@ const MainComment = ({
   comment: MainCommentInfo
   children?: ReactNode
 }) => {
-  const { operationOwned } = useContext(CommentAreaContext)
-
   return (
     <Card
       className={clsx(
@@ -168,7 +166,7 @@ const MainComment = ({
       <div>
         <CommentHeader comment={comment} />
         <CommentContent comment={comment} />
-        <CommentActions comment={comment} operationOwned={operationOwned} />
+        <CommentActions comment={comment} />
       </div>
       {children}
     </Card>
@@ -256,14 +254,13 @@ const CommentContent = ({
 const CommentActions = ({
   className,
   comment,
-  operationOwned,
 }: {
   className?: string
   comment: CommentInfo
-  operationOwned?: boolean
 }) => {
   const [{ userId }] = useAtom(authAtom)
-  const { replyTo, setReplyTo, reload } = useContext(CommentAreaContext)
+  const { operationOwned, replyTo, setReplyTo, reload } =
+    useContext(CommentAreaContext)
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [pending, setPending] = useState(false)
@@ -301,14 +298,14 @@ const CommentActions = ({
           small
           className="!font-normal !text-[13px]"
           active={replyTo === comment}
-          onClick={() => setReplyTo(replyTo !== comment ? comment : undefined)}
+          onClick={() => setReplyTo(replyTo === comment ? undefined : comment)}
         >
           回复
         </Button>
         {operationOwned && isMainComment(comment) && (
           <CommentTopButton comment={comment} />
         )}
-        {userId === comment.uploaderId && (
+        {(operationOwned || userId === comment.uploaderId) && (
           <Button
             minimal
             small
