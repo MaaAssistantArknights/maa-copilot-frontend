@@ -84,6 +84,7 @@ export async function sendComment(req: {
     commentsAddDTO: {
       message: req.message,
       copilotId: req.operationId,
+      fromCommentId: req.fromCommentId,
       notification: false,
     },
   })
