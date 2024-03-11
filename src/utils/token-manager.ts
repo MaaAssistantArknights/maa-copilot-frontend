@@ -4,10 +4,10 @@ import { noop } from 'lodash-es'
 import { AuthState, fromCredentials } from 'store/auth'
 import {
   InvalidTokenError,
+  NetworkError,
   TokenExpiredError,
   UnauthorizedError,
 } from 'utils/error'
-import { NetworkError } from 'utils/fetcher'
 
 export namespace TokenManager {
   let getAuth: () => AuthState = () => ({})

@@ -1,5 +1,3 @@
-import { Response } from 'models/network'
-import { jsonRequest } from 'utils/fetcher'
 import { UserApi } from 'utils/maa-copilot-client'
 
 export async function sendRegistrationEmail(req: { email: string }) {
@@ -71,27 +69,4 @@ export function resetPassword(req: {
   return new UserApi({ sendToken: 'never' }).passwordReset({
     passwordResetDTO: req,
   })
-}
-
-export interface ActivationResponse {}
-
-export const requestActivation = (code: string) => {
-  return jsonRequest<Response<ActivationResponse>>('/user/activate', {
-    method: 'POST',
-    json: {
-      token: code,
-    },
-  })
-}
-
-export interface ActivationCodeResponse {}
-
-export const requestActivationCode = () => {
-  return jsonRequest<Response<ActivationCodeResponse>>(
-    '/user/activate/request',
-    {
-      method: 'POST',
-      json: {},
-    },
-  )
 }
