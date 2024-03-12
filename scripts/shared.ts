@@ -123,7 +123,7 @@ export async function getOperators() {
     }),
     (el) => el.name,
   ).sort((a, b) => {
-    return pinyin.compare(a.name, b.name) || a.id.localeCompare(b.id)
+    return pinyin.compare(a.name, b.name) || a.id.localeCompare(b.id, 'zh')
   })
   return {
     professions,
