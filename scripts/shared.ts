@@ -123,7 +123,14 @@ export async function getOperators() {
     }),
     (el) => el.name,
   ).sort((a, b) => {
-    return pinyin.compare(a.name, b.name) || a.id.localeCompare(b.id, 'zh')
+    // 默认的 pinyin.compare() 没有传入 locale 参数，导致在不同的系统上有不同的排序结果，
+    // 所以这里手动实现一下，并带上 locale
+    // https://github.com/MaaAssistantArknights/maa-copilot-frontend/pull/265
+    const pinyinA = String(pinyin(a.name))
+    const pinyinB = String(pinyin(b.name))
+    return (
+      pinyinA.localeCompare(pinyinB, 'zh') || a.id.localeCompare(b.id, 'en')
+    )
   })
   return {
     professions,
