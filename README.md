@@ -4,6 +4,8 @@ MAA 作业站前端！
 
 ## 开发流程
 
+后端接口文档：https://maa-docker.kkdy.tech/swagger-ui/index.html
+
 该仓库的主分支为 `dev`，线上分支为 `main`，代码合并到 `main` 后将会自动部署到线上
 
 在自己的 fork 上开发完成后请提交 PR 到 `dev` 分支，由管理员合并
@@ -12,15 +14,9 @@ MAA 作业站前端！
 
 ## 环境变量
 
-环境变量在 `.env` 文件内定义，你也可以创建 `.env.local` 来覆盖 `.env` 的配置
+环境变量定义在 `.env` `.dev.development` 文件内
 
-```ini
-# 使用线上的后端 API，否则使用本地开发服务器
-VITE_USE_PRODUCTION_API=true
-
-# 地图服务器，如果正在对地图进行本地开发请改为例如 http://localhost:3001
-VITE_THERESA_SERVER=https://theresa.wiki
-```
+你可以创建 `.env.development.local` 文件来覆盖环境变量，优先级为 `.env.development.local` > `.env.development` > `.env`
 
 ## 命令
 

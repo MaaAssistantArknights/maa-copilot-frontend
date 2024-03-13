@@ -1,11 +1,11 @@
 import { Button } from '@blueprintjs/core'
 
-import { reqeustRegistrationToken, requestRegister } from 'apis/auth'
+import { register, sendRegistrationEmail } from 'apis/auth'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
-import { NetworkError } from 'utils/fetcher'
+import { NetworkError } from 'utils/error'
 import { REGEX_EMAIL } from 'utils/regexes'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
@@ -38,12 +38,12 @@ export const RegisterPanel: FC<{
   const onSubmit = async (val: RegisterFormValues) => {
     await wrapErrorMessage(
       (e: NetworkError) => `注册失败：${e.message}`,
-      requestRegister(
-        val.email,
-        val.registrationToken,
-        val.username,
-        val.password,
-      ),
+      register({
+        email: val.email,
+        registrationToken: val.registrationToken,
+        username: val.username,
+        password: val.password,
+      }),
     )
     AppToaster.show({
       intent: 'success',
@@ -76,7 +76,7 @@ export const RegisterPanel: FC<{
     }
     await wrapErrorMessage(
       (e: NetworkError) => `发送失败：${e.message}`,
-      reqeustRegistrationToken(val.email),
+      sendRegistrationEmail({ email: val.email }),
     )
     AppToaster.show({
       intent: 'success',

@@ -1,6 +1,6 @@
 import { Alert, Button, Card, H4, NonIdealState, Tag } from '@blueprintjs/core'
 
-import { useOperation } from 'apis/query'
+import { useOperation } from 'apis/operation'
 import clsx from 'clsx'
 import { useAtom, useAtomValue } from 'jotai'
 import { find } from 'lodash-es'
@@ -14,9 +14,9 @@ import {
 } from 'react'
 
 import {
-  requestDeleteComment,
-  requestRateComment,
-  requestTopComment,
+  deleteComment,
+  rateComment,
+  topComment,
   useComments,
 } from '../../../apis/comment'
 import {
@@ -43,6 +43,7 @@ interface CommentAreaProps {
 
 interface CommentAreaContext {
   operationId: Operation['id']
+  operationOwned: boolean
   replyTo?: CommentInfo
   setReplyTo: (replyTo?: CommentInfo) => void
   reload: () => void
@@ -60,7 +61,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
     })
 
   const auth = useAtomValue(authAtom)
-  const operation = useOperation({ id: operationId }).data?.data
+  const operation = useOperation({ id: operationId }).data
   // FIXME: 用户名可以重名，这里会让重名用户都显示置顶按钮，需要等后端支持 operation.uploaderId 后再修复
   const operationOwned =
     !!operation?.uploader &&
@@ -71,7 +72,10 @@ export const CommentArea = withSuspensable(function ViewerComments({
 
   // clear replyTo if it's not in comments
   useEffect(() => {
-    if (replyTo && !traverseComments(comments, (c) => c === replyTo)) {
+    if (
+      replyTo &&
+      (!comments || !traverseComments(comments, (c) => c === replyTo))
+    ) {
       setReplyTo(undefined)
     }
   }, [replyTo, comments])
@@ -79,23 +83,23 @@ export const CommentArea = withSuspensable(function ViewerComments({
   const contextValue = useMemo(
     () => ({
       operationId,
+      operationOwned,
       replyTo,
       setReplyTo,
       reload: () => mutate(),
     }),
-    [operationId, replyTo, setReplyTo],
+    [operationId, operationOwned, replyTo, setReplyTo, mutate],
   )
 
   return (
     <CommentAreaContext.Provider value={contextValue}>
       <div>
         <CommentForm primary className="mb-6" />
-        {comments.map((comment) => (
+        {comments?.map((comment) => (
           <MainComment
             key={comment.commentId}
             className="mt-3"
             comment={comment}
-            operationOwned={operationOwned}
           >
             {comment.subCommentsInfos.map((sub) => (
               <SubComment
@@ -113,7 +117,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
             ))}
           </MainComment>
         ))}
-        {isReachingEnd && comments.length === 0 && (
+        {isReachingEnd && !comments?.length && (
           <NonIdealState
             icon="comment"
             title="还没有评论，发一条评论鼓励作者吧！"
@@ -121,7 +125,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
           />
         )}
 
-        {isReachingEnd && comments.length !== 0 && (
+        {isReachingEnd && !!comments?.length && (
           <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
             已经到底了哦 (ﾟ▽ﾟ)/
           </div>
@@ -146,12 +150,10 @@ export const CommentArea = withSuspensable(function ViewerComments({
 const MainComment = ({
   className,
   comment,
-  operationOwned,
   children,
 }: {
   className?: string
   comment: MainCommentInfo
-  operationOwned?: boolean
   children?: ReactNode
 }) => {
   return (
@@ -164,7 +166,7 @@ const MainComment = ({
       <div>
         <CommentHeader comment={comment} />
         <CommentContent comment={comment} />
-        <CommentActions comment={comment} operationOwned={operationOwned} />
+        <CommentActions comment={comment} />
       </div>
       {children}
     </Card>
@@ -252,14 +254,13 @@ const CommentContent = ({
 const CommentActions = ({
   className,
   comment,
-  operationOwned,
 }: {
   className?: string
   comment: CommentInfo
-  operationOwned?: boolean
 }) => {
   const [{ userId }] = useAtom(authAtom)
-  const { replyTo, setReplyTo, reload } = useContext(CommentAreaContext)
+  const { operationOwned, replyTo, setReplyTo, reload } =
+    useContext(CommentAreaContext)
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [pending, setPending] = useState(false)
@@ -274,7 +275,7 @@ const CommentActions = ({
     try {
       await wrapErrorMessage(
         (e) => '评分失败：' + formatError(e),
-        requestDeleteComment(comment.commentId),
+        deleteComment({ commentId: comment.commentId }),
       )
 
       reload()
@@ -297,14 +298,14 @@ const CommentActions = ({
           small
           className="!font-normal !text-[13px]"
           active={replyTo === comment}
-          onClick={() => setReplyTo(replyTo !== comment ? comment : undefined)}
+          onClick={() => setReplyTo(replyTo === comment ? undefined : comment)}
         >
           回复
         </Button>
         {operationOwned && isMainComment(comment) && (
           <CommentTopButton comment={comment} />
         )}
-        {userId === comment.uploaderId && (
+        {(operationOwned || userId === comment.uploaderId) && (
           <Button
             minimal
             small
@@ -354,7 +355,7 @@ const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
     try {
       await wrapErrorMessage(
         (e) => '评分失败：' + formatError(e),
-        requestRateComment(commentId, rating),
+        rateComment({ commentId, rating }),
       )
 
       reload()
@@ -400,7 +401,7 @@ const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
     try {
       await wrapErrorMessage(
         (e) => '置顶失败：' + formatError(e),
-        requestTopComment(commentId, !topping),
+        topComment({ commentId, topping: !topping }),
       )
 
       reload()

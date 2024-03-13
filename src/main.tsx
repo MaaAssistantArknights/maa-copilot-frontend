@@ -16,7 +16,6 @@ import { clearOutdatedSwrCache } from 'utils/swr-cache'
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
-import { AccountActivatePage } from './pages/account/activate'
 import { CreatePage } from './pages/create'
 import { IndexPage } from './pages/index'
 import './styles/blueprint.less'
@@ -58,7 +57,6 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/create/:id" element={<CreatePage />} />
           <Route path="/create" element={<CreatePage />} />
           <Route path="/operation/:id" element={<ViewPage />} />
-          <Route path="/account/activation" element={<AccountActivatePage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppLayout>

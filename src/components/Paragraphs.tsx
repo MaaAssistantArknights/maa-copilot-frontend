@@ -28,7 +28,7 @@ export const Paragraphs: FC<{
 
   const child = (
     <div
-      className="text-gray-700 leading-normal"
+      className="text-gray-700 dark:[&_p]:text-gray-300 dark:[&_div]:text-gray-300 dark:[&_span]:text-gray-300 leading-normal"
       style={{
         maxHeight: limitHeight,
         overflow: 'hidden',

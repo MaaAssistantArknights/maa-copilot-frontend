@@ -15,9 +15,7 @@ import {
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { ErrorBoundary } from '@sentry/react'
 
-import { requestDeleteOperation } from 'apis/copilotOperation'
-import { useOperation } from 'apis/query'
-import { apiPostRating } from 'apis/rating'
+import { deleteOperation, rateOperation, useOperation } from 'apis/operation'
 import { useAtom } from 'jotai'
 import { noop } from 'lodash-es'
 import { ComponentType, FC, useEffect, useMemo, useState } from 'react'
@@ -35,15 +33,14 @@ import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OpRatingType, Operation } from 'models/operation'
 import { authAtom } from 'store/auth'
-import { NetworkError } from 'utils/fetcher'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
-import { useLevels } from '../../apis/arknights'
+import { useLevels } from '../../apis/level'
 import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
-import { formatError } from '../../utils/error'
+import { NetworkError, formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
@@ -59,7 +56,7 @@ const ManageMenu: FC<{
     try {
       await wrapErrorMessage(
         (e: NetworkError) => `删除失败：${e.message}`,
-        requestDeleteOperation(operation.id),
+        deleteOperation({ id: operation.id }),
       )
     } finally {
       setLoading(false)
@@ -113,11 +110,14 @@ export const OperationViewer: ComponentType<{
   onCloseDrawer: () => void
 }> = withSuspensable(
   function OperationViewer({ operationId, onCloseDrawer }) {
-    const { data, error, mutate } = useOperation({
+    const {
+      data: operation,
+      error,
+      mutate,
+    } = useOperation({
       id: operationId,
       suspense: true,
     })
-    const operation = data?.data
 
     useEffect(() => {
       // on finished loading, scroll to #fragment if any
@@ -132,7 +132,7 @@ export const OperationViewer: ComponentType<{
       }
     }, [operation])
 
-    const levels = useLevels()?.data?.data || []
+    const { data: levels } = useLevels()
 
     const [auth] = useAtom(authAtom)
 
@@ -162,7 +162,10 @@ export const OperationViewer: ComponentType<{
       wrapErrorMessage(
         (e: NetworkError) => `提交评分失败：${e.message}`,
         mutate(async (val) => {
-          await apiPostRating(operationId, decision)
+          await rateOperation({
+            id: operationId,
+            rating: decision,
+          })
           return val
         }),
       ).catch(noop)
@@ -404,9 +407,11 @@ function OperationViewerInnerDetails({
                 <H5 className="text-gray-800 font-bold">{group.name}</H5>
 
                 <div className="flex flex-col">
-                  {group.opers?.filter(Boolean).map((operator) => (
-                    <OperatorCard key={operator.name} operator={operator} />
-                  ))}
+                  {group.opers
+                    ?.filter(Boolean)
+                    .map((operator) => (
+                      <OperatorCard key={operator.name} operator={operator} />
+                    ))}
 
                   {group.opers?.filter(Boolean).length === 0 && (
                     <EmptyOperator description="干员组中并未添加干员" />
