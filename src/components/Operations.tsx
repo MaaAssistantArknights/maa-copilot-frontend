@@ -57,7 +57,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             onChange={(e) =>
               debouncedSetQueryParams((old) => ({
                 ...old,
-                document: e.target.value.trim(),
+                keyword: e.target.value.trim(),
               }))
             }
             onBlur={() => debouncedSetQueryParams.flush()}
