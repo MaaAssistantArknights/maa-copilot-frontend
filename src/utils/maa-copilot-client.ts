@@ -10,7 +10,12 @@ import {
 } from 'maa-copilot-client'
 import { SetRequired } from 'type-fest'
 
-import { ApiError, InvalidTokenError, UnauthorizedError } from 'utils/error'
+import {
+  ApiError,
+  InvalidTokenError,
+  NetworkError,
+  UnauthorizedError,
+} from 'utils/error'
 import { TokenManager } from 'utils/token-manager'
 
 declare module 'maa-copilot-client' {
@@ -150,6 +155,11 @@ function createConfiguration(options?: ApiOptions) {
 
           ;(response as ExtendedResponse).config = config
           return response
+        },
+
+        // 只会在 fetch() reject 的时候触发
+        async onError() {
+          throw new NetworkError()
         },
       },
     ],
