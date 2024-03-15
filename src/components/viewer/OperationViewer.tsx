@@ -17,7 +17,6 @@ import { ErrorBoundary } from '@sentry/react'
 
 import { deleteOperation, rateOperation, useOperation } from 'apis/operation'
 import { useAtom } from 'jotai'
-import { noop } from 'lodash-es'
 import { ComponentType, FC, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
@@ -40,7 +39,7 @@ import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
-import { NetworkError, formatError } from '../../utils/error'
+import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
@@ -55,18 +54,20 @@ const ManageMenu: FC<{
     setLoading(true)
     try {
       await wrapErrorMessage(
-        (e: NetworkError) => `删除失败：${e.message}`,
+        (e) => `删除失败：${formatError(e)}`,
         deleteOperation({ id: operation.id }),
       )
+      AppToaster.show({
+        intent: 'success',
+        message: `删除成功`,
+      })
+      setDeleteDialogOpen(false)
+      onUpdate()
+    } catch (e) {
+      console.warn(e)
     } finally {
       setLoading(false)
     }
-    AppToaster.show({
-      intent: 'success',
-      message: `删除成功`,
-    })
-    setDeleteDialogOpen(false)
-    onUpdate()
   }
 
   return (
@@ -160,7 +161,7 @@ export const OperationViewer: ComponentType<{
       }
 
       wrapErrorMessage(
-        (e: NetworkError) => `提交评分失败：${e.message}`,
+        (e) => `提交评分失败：${formatError(e)}`,
         mutate(async (val) => {
           await rateOperation({
             id: operationId,
@@ -168,7 +169,7 @@ export const OperationViewer: ComponentType<{
           })
           return val
         }),
-      ).catch(noop)
+      ).catch(console.warn)
     }
 
     return (

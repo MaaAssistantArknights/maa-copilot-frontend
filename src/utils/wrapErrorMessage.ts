@@ -2,7 +2,7 @@ import { IToastProps } from '@blueprintjs/core'
 
 import { AppToaster } from 'components/Toaster'
 
-export type MessageFormatter = (error: any) => string
+export type MessageFormatter = (error: unknown) => string
 
 const defaultMessageProps: Partial<IToastProps> = {
   intent: 'danger',

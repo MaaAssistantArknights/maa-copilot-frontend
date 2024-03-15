@@ -45,36 +45,34 @@ export const CommentForm = ({
 
     setIsSubmitting(true)
 
-    try {
-      await wrapErrorMessage(
-        (e) => '发表评论失败：' + formatError(e),
-        (async () => {
-          if (primary) {
-            // this comment is a main comment and does not reply to others
-            await sendComment({ message, operationId })
-          } else {
-            if (!replyTo) {
-              throw new Error('要回复的评论不存在')
-            }
-            await sendComment({
-              message,
-              operationId,
-              fromCommentId: replyTo?.commentId,
-            })
+    await wrapErrorMessage(
+      (e) => '发表评论失败：' + formatError(e),
+      (async () => {
+        if (primary) {
+          // this comment is a main comment and does not reply to others
+          await sendComment({ message, operationId })
+        } else {
+          if (!replyTo) {
+            throw new Error('要回复的评论不存在')
           }
-        })(),
-      )
+          await sendComment({
+            message,
+            operationId,
+            fromCommentId: replyTo?.commentId,
+          })
+        }
 
-      AppToaster.show({
-        intent: 'success',
-        message: `发表成功`,
-      })
+        AppToaster.show({
+          intent: 'success',
+          message: `发表成功`,
+        })
 
-      setMessage('')
-      reload()
-    } finally {
-      setIsSubmitting(false)
-    }
+        setMessage('')
+      })(),
+    ).catch(console.warn)
+
+    reload()
+    setIsSubmitting(false)
   }
 
   return (

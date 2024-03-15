@@ -4,7 +4,7 @@ import { resetPassword, sendResetPasswordEmail } from 'apis/auth'
 import { FC, useState } from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
 
-import { NetworkError, formatError } from '../../utils/error'
+import { formatError } from '../../utils/error'
 import { useNetworkState } from '../../utils/useNetworkState'
 import { wrapErrorMessage } from '../../utils/wrapErrorMessage'
 import { FormField } from '../FormField'
@@ -147,7 +147,7 @@ const RequestTokenButton = ({
   const handleClick = () => {
     start()
     wrapErrorMessage(
-      (e: NetworkError) => `获取验证码失败：${e.message}`,
+      (e) => `获取验证码失败：${formatError(e)}`,
       sendResetPasswordEmail({ email }),
     )
       .then(() => {
