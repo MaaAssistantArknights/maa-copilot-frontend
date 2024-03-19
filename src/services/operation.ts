@@ -1,7 +1,6 @@
 import { AppToaster } from 'components/Toaster'
 
 import { CopilotDocV1 } from '../models/copilot.schema'
-import { Operation } from '../models/operation'
 import { toShortCode } from '../models/shortCode'
 import { snakeCaseKeysUnicode } from '../utils/object'
 
@@ -29,7 +28,7 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   })
 }
 
-export const handleCopyShortCode = (operation: Operation) => {
+export const handleCopyShortCode = (operation: { id: number }) => {
   const shortCode = toShortCode(operation.id)
   navigator.clipboard.writeText(shortCode)
 

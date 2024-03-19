@@ -18,6 +18,9 @@ export const OperationList: ComponentType<
       suspense: true,
     })
 
+    // make TS happy: we got Suspense out there
+    if (!operations) throw new Error('unreachable')
+
     const docCache = useMemo(
       () => new WeakMap<Operation, CopilotDocV1.Operation>(),
       [],
@@ -38,7 +41,7 @@ export const OperationList: ComponentType<
         className="grid gap-4"
         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr)' }}
       >
-        {operationsWithDoc?.map(({ operation, doc }) => (
+        {operationsWithDoc.map(({ operation, doc }) => (
           <NeoOperationCard
             operation={operation}
             operationDoc={doc}
@@ -47,7 +50,7 @@ export const OperationList: ComponentType<
         ))}
       </div>
     ) : (
-      operationsWithDoc?.map(({ operation, doc }) => (
+      operationsWithDoc.map(({ operation, doc }) => (
         <OperationCard
           operation={operation}
           operationDoc={doc}
@@ -60,7 +63,7 @@ export const OperationList: ComponentType<
       <>
         {items}
 
-        {isReachingEnd && operations?.length === 0 && (
+        {isReachingEnd && operations.length === 0 && (
           <NonIdealState
             icon="slash"
             title="没有找到任何作业"
@@ -68,7 +71,7 @@ export const OperationList: ComponentType<
           />
         )}
 
-        {isReachingEnd && operations?.length !== 0 && (
+        {isReachingEnd && operations.length !== 0 && (
           <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
             已经到底了哦 (ﾟ▽ﾟ)/
           </div>
