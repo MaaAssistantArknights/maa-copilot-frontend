@@ -4,6 +4,7 @@ import {
   CommentAreaApi,
   Configuration,
   CopilotControllerApi,
+  CopilotSetApi,
   CopilotUserApi,
   JSONApiResponse,
   querystring,
@@ -87,6 +88,13 @@ export class CommentApi<
 export class OperationApi<
   T extends ApiOptions,
 > extends (CopilotControllerApi as WithOptions<CopilotControllerApi>)<T> {
+  constructor(options?: ValidateOptions<T>) {
+    super(createConfiguration(options as T))
+  }
+}
+export class OperationSetApi<
+  T extends ApiOptions,
+> extends (CopilotSetApi as WithOptions<CopilotSetApi>)<T> {
   constructor(options?: ValidateOptions<T>) {
     super(createConfiguration(options as T))
   }

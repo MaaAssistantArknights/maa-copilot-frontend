@@ -138,7 +138,7 @@ export const OperationViewer: ComponentType<{
     const [auth] = useAtom(authAtom)
 
     // make eslint happy: we got Suspense out there
-    if (!operation) return null
+    if (!operation) throw new Error('unreachable')
 
     const operationDoc = useMemo(
       () => toCopilotOperation(operation),
