@@ -15,6 +15,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:react/jsx-runtime',
+    "plugin:react-hooks/recommended"
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -35,6 +36,7 @@ module.exports = {
     'react/self-closing-comp': 'error',
     'no-unused-vars': 'off',
     eqeqeq: 'error',
+    "react-hooks/exhaustive-deps": "error",
   },
   settings: {
     react: {
