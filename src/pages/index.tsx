@@ -7,6 +7,7 @@ import { ComponentType } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
+import { OperationDrawer } from 'components/OperationDrawer'
 import { Operations } from 'components/Operations'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
@@ -96,6 +97,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
           ))}
         </div>
       </div>
+
+      <OperationDrawer />
     </div>
   )
 })

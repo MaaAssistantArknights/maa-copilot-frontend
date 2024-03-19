@@ -1,19 +1,9 @@
-import {
-  Button,
-  Card,
-  Drawer,
-  DrawerSize,
-  Elevation,
-  H4,
-  H5,
-  Icon,
-  Tag,
-} from '@blueprintjs/core'
+import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { useState } from 'react'
 import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
+import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
@@ -24,7 +14,6 @@ import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
-import { OperationViewer } from './viewer/OperationViewer'
 
 export const NeoOperationCard = ({
   operation,
@@ -34,26 +23,13 @@ export const NeoOperationCard = ({
   operationDoc: CopilotDocV1.Operation
 }) => {
   const { data: levels } = useLevels()
-  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <>
-      <Drawer
-        size={DrawerSize.LARGE}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <OperationViewer
-          operationId={operation.id}
-          onCloseDrawer={() => setDrawerOpen(false)}
-        />
-      </Drawer>
-
+    <ReLink search={{ op: operation.id }}>
       <Card
         interactive={true}
         elevation={Elevation.TWO}
         className="flex flex-col gap-2"
-        onClick={() => setDrawerOpen(true)}
       >
         {/* title */}
         <div className="flex gap-1">
@@ -162,7 +138,7 @@ export const NeoOperationCard = ({
           </div>
         </div>
       </Card>
-    </>
+    </ReLink>
   )
 }
 
@@ -174,26 +150,13 @@ export const OperationCard = ({
   operationDoc: CopilotDocV1.Operation
 }) => {
   const { data: levels } = useLevels()
-  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <>
-      <Drawer
-        size={DrawerSize.LARGE}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <OperationViewer
-          operationId={operation.id}
-          onCloseDrawer={() => setDrawerOpen(false)}
-        />
-      </Drawer>
-
+    <ReLink search={{ op: operation.id }}>
       <Card
         interactive={true}
         elevation={Elevation.TWO}
         className="mb-4 sm:mb-2 last:mb-0"
-        onClick={() => setDrawerOpen(true)}
       >
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
@@ -303,7 +266,7 @@ export const OperationCard = ({
           </div>
         </div>
       </Card>
-    </>
+    </ReLink>
   )
 }
 
