@@ -1,11 +1,8 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
 import { UseOperationsParams, useOperations } from 'apis/operation'
-import { ComponentType, ReactNode, useMemo } from 'react'
+import { ComponentType, ReactNode } from 'react'
 
-import { toCopilotOperation } from '../models/converter'
-import { CopilotDocV1 } from '../models/copilot.schema'
-import { Operation } from '../models/operation'
 import { NeoOperationCard, OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
 
@@ -21,19 +18,6 @@ export const OperationList: ComponentType<
     // make TS happy: we got Suspense out there
     if (!operations) throw new Error('unreachable')
 
-    const docCache = useMemo(
-      () => new WeakMap<Operation, CopilotDocV1.Operation>(),
-      [],
-    )
-    const operationsWithDoc = operations?.map((operation) => {
-      let doc = docCache.get(operation)
-      if (!doc) {
-        doc = toCopilotOperation(operation)
-        docCache.set(operation, doc)
-      }
-      return { operation, doc }
-    })
-
     const { neoLayout = true } = props
 
     const items: ReactNode = neoLayout ? (
@@ -41,21 +25,13 @@ export const OperationList: ComponentType<
         className="grid gap-4"
         style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr)' }}
       >
-        {operationsWithDoc.map(({ operation, doc }) => (
-          <NeoOperationCard
-            operation={operation}
-            operationDoc={doc}
-            key={operation.id}
-          />
+        {operations.map((operation) => (
+          <NeoOperationCard operation={operation} key={operation.id} />
         ))}
       </div>
     ) : (
-      operationsWithDoc.map(({ operation, doc }) => (
-        <OperationCard
-          operation={operation}
-          operationDoc={doc}
-          key={operation.id}
-        />
+      operations.map((operation) => (
+        <OperationCard operation={operation} key={operation.id} />
       ))
     )
 

@@ -1,6 +1,10 @@
 import { ArkLevelInfo, CopilotInfo } from 'maa-copilot-client'
 
-export type Operation = CopilotInfo
+import { CopilotDocV1 } from 'models/copilot.schema'
+
+export type Operation = CopilotInfo & {
+  parsedContent: CopilotDocV1.Operation
+}
 
 export type Level = ArkLevelInfo
 

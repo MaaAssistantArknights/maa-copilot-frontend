@@ -1,8 +1,9 @@
-import { CopilotPageInfo, QueriesCopilotRequest } from 'maa-copilot-client'
+import { QueriesCopilotRequest } from 'maa-copilot-client'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
-import { OpRatingType } from 'models/operation'
+import { toCopilotOperation } from 'models/converter'
+import { OpRatingType, Operation } from 'models/operation'
 import { OperationApi } from 'utils/maa-copilot-client'
 
 export type OrderBy = 'views' | 'hot' | 'id'
@@ -34,7 +35,7 @@ export function useOperations({
     setSize,
     isValidating,
   } = useSWRInfinite(
-    (pageIndex, previousPage: CopilotPageInfo) => {
+    (pageIndex, previousPage: { hasNext: boolean }) => {
       if (disabled) {
         return null
       }
@@ -61,7 +62,16 @@ export function useOperations({
         sendToken: req.uploaderId === 'me' ? 'always' : 'never',
         requireData: true,
       }).queriesCopilot(req)
-      return res.data
+
+      const parsedOperations: Operation[] = res.data.data.map((operation) => ({
+        ...operation,
+        parsedContent: toCopilotOperation(operation),
+      }))
+
+      return {
+        ...res.data,
+        data: parsedOperations,
+      }
     },
     {
       suspense,
@@ -94,12 +104,16 @@ export function useOperation({ id, suspense }: UseOperationParams) {
   )
 }
 
-export async function getOperation(req: { id: number }) {
+export async function getOperation(req: { id: number }): Promise<Operation> {
   const res = await new OperationApi({
     sendToken: 'optional', // 如果有 token 会用来获取用户是否点赞
     requireData: true,
   }).getCopilotById(req)
-  return res.data
+
+  return {
+    ...res.data,
+    parsedContent: toCopilotOperation(res.data),
+  }
 }
 
 export async function createOperation(req: { content: string }) {
