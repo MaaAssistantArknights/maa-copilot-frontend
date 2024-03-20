@@ -9,19 +9,12 @@ import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
 
 import { useLevels } from '../apis/level'
-import { CopilotDocV1 } from '../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
 
-export const NeoOperationCard = ({
-  operation,
-  operationDoc,
-}: {
-  operation: Operation
-  operationDoc: CopilotDocV1.Operation
-}) => {
+export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
@@ -34,11 +27,11 @@ export const NeoOperationCard = ({
         {/* title */}
         <div className="flex gap-1">
           <Tooltip2
-            content={operationDoc.doc.title}
+            content={operation.parsedContent.doc.title}
             className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
           >
             <H4 className="p-0 m-0 whitespace-nowrap overflow-hidden text-ellipsis">
-              {operationDoc.doc.title}
+              {operation.parsedContent.doc.title}
             </H4>
           </Tooltip2>
           <Tooltip2
@@ -52,7 +45,7 @@ export const NeoOperationCard = ({
               icon="download"
               onClick={(e) => {
                 e.stopPropagation()
-                handleDownloadJSON(operationDoc)
+                handleDownloadJSON(operation.parsedContent)
               }}
             />
           </Tooltip2>
@@ -76,19 +69,23 @@ export const NeoOperationCard = ({
           <div className="flex flex-wrap">
             <NeoELevel
               level={
-                findLevelByStageName(levels, operationDoc.stageName) ||
-                createCustomLevel(operationDoc.stageName)
+                findLevelByStageName(
+                  levels,
+                  operation.parsedContent.stageName,
+                ) || createCustomLevel(operation.parsedContent.stageName)
               }
             />
             <EDifficulty
-              difficulty={operationDoc.difficulty ?? OpDifficulty.UNKNOWN}
+              difficulty={
+                operation.parsedContent.difficulty ?? OpDifficulty.UNKNOWN
+              }
             />
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-2 justify-center">
           <div className="text-gray-700 leading-normal">
             <Paragraphs
-              content={operationDoc.doc.details}
+              content={operation.parsedContent.doc.details}
               limitHeight={21 * 13.5} // 13 lines, 21px per line; the extra 0.5 line is intentional so the `mask` effect is obvious
             />
           </div>
@@ -96,7 +93,7 @@ export const NeoOperationCard = ({
             <div className="text-sm text-zinc-600 mb-2 font-bold">
               干员/干员组
             </div>
-            <OperatorTags operationDoc={operationDoc} />
+            <OperatorTags operation={operation} />
           </div>
         </div>
 
@@ -142,13 +139,7 @@ export const NeoOperationCard = ({
   )
 }
 
-export const OperationCard = ({
-  operation,
-  operationDoc,
-}: {
-  operation: Operation
-  operationDoc: CopilotDocV1.Operation
-}) => {
+export const OperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
@@ -163,7 +154,7 @@ export const OperationCard = ({
           <div className="flex flex-col gap-3">
             <div className="flex gap-2">
               <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
-                {operationDoc.doc.title}
+                {operation.parsedContent.doc.title}
               </H4>
               <Tooltip2
                 placement="bottom"
@@ -178,7 +169,7 @@ export const OperationCard = ({
                   icon="download"
                   onClick={(e) => {
                     e.stopPropagation()
-                    handleDownloadJSON(operationDoc)
+                    handleDownloadJSON(operation.parsedContent)
                   }}
                 />
               </Tooltip2>
@@ -203,10 +194,12 @@ export const OperationCard = ({
             <H5 className="flex items-center text-slate-900 -mt-3">
               <EDifficultyLevel
                 level={
-                  findLevelByStageName(levels, operationDoc.stageName) ||
-                  createCustomLevel(operationDoc.stageName)
+                  findLevelByStageName(
+                    levels,
+                    operation.parsedContent.stageName,
+                  ) || createCustomLevel(operation.parsedContent.stageName)
                 }
-                difficulty={operationDoc.difficulty}
+                difficulty={operation.parsedContent.difficulty}
               />
             </H5>
           </div>
@@ -254,7 +247,7 @@ export const OperationCard = ({
           <div className="text-gray-700 leading-normal md:w-1/2">
             {/* <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div> */}
             <Paragraphs
-              content={operationDoc.doc.details}
+              content={operation.parsedContent.doc.details}
               limitHeight={21 * 13.5} // 13 lines, 21px per line; the extra 0.5 line is intentional so the `mask` effect is obvious
             />
           </div>
@@ -262,7 +255,7 @@ export const OperationCard = ({
             <div className="text-sm text-zinc-600 mb-2 font-bold">
               干员/干员组
             </div>
-            <OperatorTags operationDoc={operationDoc} />
+            <OperatorTags operation={operation} />
           </div>
         </div>
       </Card>
@@ -270,11 +263,9 @@ export const OperationCard = ({
   )
 }
 
-const OperatorTags = ({
-  operationDoc: { opers, groups },
-}: {
-  operationDoc: CopilotDocV1.Operation
-}) => {
+const OperatorTags = ({ operation }: { operation: Operation }) => {
+  const { opers, groups } = operation.parsedContent
+
   return opers?.length || groups?.length ? (
     <div>
       {opers?.map(({ name, skill }, index) => (
