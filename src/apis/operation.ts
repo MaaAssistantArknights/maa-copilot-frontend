@@ -9,11 +9,12 @@ import { OperationApi } from 'utils/maa-copilot-client'
 export type OrderBy = 'views' | 'hot' | 'id'
 
 export interface UseOperationsParams {
-  orderBy: OrderBy
+  orderBy?: OrderBy
   descending?: boolean
   keyword?: string
   levelKeyword?: string
   operator?: string
+  operationIds?: number[]
   byMyself?: boolean
 
   disabled?: boolean
@@ -26,6 +27,7 @@ export function useOperations({
   keyword,
   levelKeyword,
   operator,
+  operationIds,
   byMyself,
   disabled,
   suspense,
@@ -53,6 +55,7 @@ export function useOperations({
           operator,
           orderBy,
           desc: descending,
+          copilotIds: operationIds,
           uploaderId: byMyself ? 'me' : undefined,
         } satisfies QueriesCopilotRequest,
       ]

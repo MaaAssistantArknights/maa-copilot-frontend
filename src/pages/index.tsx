@@ -7,8 +7,8 @@ import { ComponentType } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
-import { OperationDrawer } from 'components/OperationDrawer'
 import { Operations } from 'components/Operations'
+import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
 

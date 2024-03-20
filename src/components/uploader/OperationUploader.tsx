@@ -18,7 +18,7 @@ import { useList } from 'react-use'
 
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { DrawerLayout } from 'components/drawer/DrawerLayout'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { formatError } from '../../utils/error'
@@ -134,7 +134,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
   }
 
   return (
-    <OperationDrawer
+    <DrawerLayout
       title={
         <>
           <Icon icon="cloud-upload" />
@@ -237,6 +237,6 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
           </Callout>
         ))}
       </div>
-    </OperationDrawer>
+    </DrawerLayout>
   )
 })

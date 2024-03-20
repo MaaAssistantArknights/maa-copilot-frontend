@@ -18,7 +18,7 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
-    <ReLink search={{ op: operation.id }}>
+    <ReLink search={{ op: operation.id }} className="no-underline">
       <Card
         interactive={true}
         elevation={Elevation.TWO}
@@ -143,12 +143,11 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
-    <ReLink search={{ op: operation.id }}>
-      <Card
-        interactive={true}
-        elevation={Elevation.TWO}
-        className="mb-4 sm:mb-2 last:mb-0"
-      >
+    <ReLink
+      search={{ op: operation.id }}
+      className="block mb-4 sm:mb-2 last:mb-0 no-underline"
+    >
+      <Card interactive={true} elevation={Elevation.TWO}>
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
           <div className="flex flex-col gap-3">

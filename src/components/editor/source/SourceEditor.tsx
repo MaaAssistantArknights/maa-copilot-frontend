@@ -7,7 +7,7 @@ import { UseFormReturn } from 'react-hook-form'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { useAfterRender } from '../../../utils/useAfterRender'
-import { OperationDrawer } from '../../drawer/OperationDrawer'
+import { DrawerLayout } from '../../drawer/DrawerLayout'
 import { toEditableOperation, toMaaOperation } from '../converter'
 import { SourceEditorHeader } from './SourceEditorHeader'
 
@@ -64,7 +64,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
   }
 
   return (
-    <OperationDrawer
+    <DrawerLayout
       title={
         <SourceEditorHeader
           text={text}
@@ -109,6 +109,6 @@ export const SourceEditor: FC<SourceEditorProps> = ({
           onBlur={(e) => handleChange(e.target.value)}
         />
       </div>
-    </OperationDrawer>
+    </DrawerLayout>
   )
 }
