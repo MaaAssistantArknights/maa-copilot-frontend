@@ -1,17 +1,9 @@
-import {
-  Button,
-  Card,
-  Drawer,
-  DrawerSize,
-  Elevation,
-  H4,
-  Icon,
-} from '@blueprintjs/core'
+import { Button, Card, Elevation, H4, Icon } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { useState } from 'react'
 import { handleCopyShortCode } from 'services/operation'
 
+import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationSetListItem } from 'models/operation-set'
 
@@ -22,26 +14,12 @@ export const NeoOperationSetCard = ({
 }: {
   operationSet: OperationSetListItem
 }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-
   return (
-    <>
-      <Drawer
-        size={DrawerSize.LARGE}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        {/* <OperationSetViewer
-          operationSetId={operationSet.id}
-          onCloseDrawer={() => setDrawerOpen(false)}
-        /> */}
-      </Drawer>
-
+    <ReLink search={{ opset: operationSet.id }} className="no-underline">
       <Card
         interactive={true}
         elevation={Elevation.TWO}
         className="flex flex-col gap-2"
-        onClick={() => setDrawerOpen(true)}
       >
         {/* title */}
         <div className="flex gap-1">
@@ -97,7 +75,7 @@ export const NeoOperationSetCard = ({
           </div>
         </div>
       </Card>
-    </>
+    </ReLink>
   )
 }
 
@@ -106,27 +84,12 @@ export const OperationSetCard = ({
 }: {
   operationSet: OperationSetListItem
 }) => {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-
   return (
-    <>
-      <Drawer
-        size={DrawerSize.LARGE}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        {/* <OperationSetViewer
-          operationSetId={operationSet.id}
-          onCloseDrawer={() => setDrawerOpen(false)}
-        /> */}
-      </Drawer>
-
-      <Card
-        interactive={true}
-        elevation={Elevation.TWO}
-        className="mb-4 sm:mb-2 last:mb-0"
-        onClick={() => setDrawerOpen(true)}
-      >
+    <ReLink
+      search={{ opset: operationSet.id }}
+      className="block mb-4 sm:mb-2 last:mb-0 no-underline"
+    >
+      <Card interactive={true} elevation={Elevation.TWO}>
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
           <div className="flex flex-col gap-3">
@@ -190,6 +153,6 @@ export const OperationSetCard = ({
           </div>
         </div>
       </Card>
-    </>
+    </ReLink>
   )
 }

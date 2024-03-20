@@ -26,7 +26,7 @@ import { Paragraphs } from 'components/Paragraphs'
 import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { DrawerLayout } from 'components/drawer/DrawerLayout'
 import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
@@ -167,7 +167,7 @@ export const OperationViewer: ComponentType<{
     }
 
     return (
-      <OperationDrawer
+      <DrawerLayout
         title={
           <>
             <Icon icon="document" />
@@ -226,7 +226,7 @@ export const OperationViewer: ComponentType<{
             handleRating={handleRating}
           />
         </ErrorBoundary>
-      </OperationDrawer>
+      </DrawerLayout>
     )
   },
   {
