@@ -215,12 +215,8 @@ export const Operations: ComponentType = withSuspensable(() => {
       </Card>
 
       <div className="tabular-nums">
-        {listMode === 'operation' && (
-          <OperationList {...queryParams} neoLayout={neoLayout} />
-        )}
-        {listMode === 'operationSet' && (
-          <OperationSetList {...queryParams} neoLayout={neoLayout} />
-        )}
+        {listMode === 'operation' && <OperationList {...queryParams} />}
+        {listMode === 'operationSet' && <OperationSetList {...queryParams} />}
       </div>
     </>
   )
