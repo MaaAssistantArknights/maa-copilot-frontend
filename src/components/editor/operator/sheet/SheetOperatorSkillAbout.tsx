@@ -1,4 +1,4 @@
-import { Button, Classes, H6, Icon, Text } from '@blueprintjs/core'
+import { Button, Classes, Icon } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
