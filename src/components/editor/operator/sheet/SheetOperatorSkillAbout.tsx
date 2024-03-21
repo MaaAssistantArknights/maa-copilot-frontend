@@ -1,4 +1,4 @@
-import { Button, Classes, Icon } from '@blueprintjs/core'
+import { Button, Classes, H6, Icon, Text } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
@@ -85,16 +85,7 @@ export const SkillAboutTrigger = ({
       <div className="flex items-center">
         <Button text="确定" type="submit" className={Classes.POPOVER_DISMISS} />
         <Tooltip2
-          content={
-            <div className="ml-1 flex">
-              <p className="text-xs">若不进行任何设置，将使用默认值:</p>
-              <div className="mx-1 text-xs font-bold">
-                <p>一技能</p>
-                <p>不自动使用</p>
-                <p>技能使用次数: 1次</p>
-              </div>
-            </div>
-          }
+          content='若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)'
           className="ml-1"
         >
           <Icon icon="help" />
