@@ -34,6 +34,44 @@ export const Operations: ComponentType = withSuspensable(() => {
     'operation',
   )
 
+  const filterNode = (
+    <FormGroup label="筛选" contentClassName="flex flex-wrap">
+      <ButtonGroup className="mr-2">
+        <Button
+          icon="document"
+          active={listMode === 'operation'}
+          onClick={() => setListMode('operation')}
+        >
+          作业
+        </Button>
+        <Button
+          icon="folder-close"
+          active={listMode === 'operationSet'}
+          onClick={() => setListMode('operationSet')}
+        >
+          作业集
+        </Button>
+      </ButtonGroup>
+
+      {!!authState.token && (
+        <Button
+          className=""
+          icon="user"
+          title="只显示我发布的作品"
+          active={queryParams.byMyself}
+          onClick={() => {
+            setQueryParams((old) => ({
+              ...old,
+              byMyself: !old.byMyself,
+            }))
+          }}
+        >
+          看看我的
+        </Button>
+      )}
+    </FormGroup>
+  )
+
   return (
     <>
       <Card className="flex flex-col mb-4">
@@ -108,36 +146,7 @@ export const Operations: ComponentType = withSuspensable(() => {
               </FormGroup>
             </div>
             <div className="flex flex-col">
-              <FormGroup label="筛选" contentClassName="flex flex-wrap">
-                <ButtonGroup className="mr-2">
-                  <Button icon="document" active>
-                    作业
-                  </Button>
-                  <Button
-                    icon="folder-close"
-                    onClick={() => setListMode('operationSet')}
-                  >
-                    作业集
-                  </Button>
-                </ButtonGroup>
-
-                {!!authState.token && (
-                  <Button
-                    className=""
-                    icon="user"
-                    title="只显示我发布的作业"
-                    active={queryParams.byMyself}
-                    onClick={() => {
-                      setQueryParams((old) => ({
-                        ...old,
-                        byMyself: !old.byMyself,
-                      }))
-                    }}
-                  >
-                    看看我的
-                  </Button>
-                )}
-              </FormGroup>
+              {filterNode}
               <FormGroup label="排序" className="mt-auto">
                 <ButtonGroup>
                   <Button
@@ -195,21 +204,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                 />
               </FormGroup>
             </div>
-            <div className="flex flex-col">
-              <FormGroup label="筛选" contentClassName="flex flex-wrap">
-                <ButtonGroup className="mr-2">
-                  <Button
-                    icon="document"
-                    onClick={() => setListMode('operation')}
-                  >
-                    作业
-                  </Button>
-                  <Button icon="folder-close" active>
-                    作业集
-                  </Button>
-                </ButtonGroup>
-              </FormGroup>
-            </div>
+            <div className="flex flex-col">{filterNode}</div>
           </div>
         )}
       </Card>

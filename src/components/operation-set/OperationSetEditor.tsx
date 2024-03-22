@@ -64,7 +64,7 @@ export function OperationSetEditorDialog({
   return (
     <Dialog
       title={isEdit ? '编辑作业集' : '创建作业集'}
-      icon="applications"
+      icon="folder-close"
       isOpen={isOpen}
       onClose={onClose}
       {...props}
