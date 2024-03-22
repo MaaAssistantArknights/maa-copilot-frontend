@@ -15,7 +15,6 @@ import { ErrorBoundary } from '@sentry/react'
 import { deleteOperationSet, useOperationSet } from 'apis/operation-set'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { handleCopyShortCode } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
@@ -25,6 +24,7 @@ import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
 import { DrawerLayout } from 'components/drawer/DrawerLayout'
+import { OperationSetEditorDialog } from 'components/operation-set/OperationSetEditor'
 import { OperationSet } from 'models/operation-set'
 import { authAtom } from 'store/auth'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
@@ -36,6 +36,7 @@ const ManageMenu: FC<{
   onUpdate: () => void
 }> = ({ operationSet, onUpdate }) => {
   const [loading, setLoading] = useState(false)
+  const [editorOpen, setEditorOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
   const handleDelete = async () => {
@@ -75,13 +76,19 @@ const ManageMenu: FC<{
         <p>确定要删除作业集吗？</p>
       </Alert>
 
+      <OperationSetEditorDialog
+        operationSet={operationSet}
+        isOpen={editorOpen}
+        onClose={() => setEditorOpen(false)}
+      />
+
       <Menu>
-        <Link
-          className="hover:[color:inherit] hover:no-underline"
-          to={`/create/${operationSet.id}`}
-        >
-          <MenuItem icon="edit" text="修改作业集" />
-        </Link>
+        <MenuItem
+          icon="edit"
+          text="编辑作业集..."
+          shouldDismissPopover={false}
+          onClick={() => setEditorOpen(true)}
+        />
         <MenuItem
           icon="delete"
           intent="danger"
@@ -140,7 +147,7 @@ export const OperationSetViewer: ComponentType<{
 
             <div className="flex-1" />
 
-            {operationSet.creatorId === auth.username && (
+            {operationSet.creatorId === auth.userId && (
               <Popover2
                 content={
                   <ManageMenu

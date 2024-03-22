@@ -1,22 +1,24 @@
 import {
   Button,
   Callout,
+  Checkbox,
   Dialog,
   DialogProps,
   InputGroup,
-  Switch,
   TextArea,
 } from '@blueprintjs/core'
 
-import { createOperationSet } from 'apis/operation-set'
+import { createOperationSet, updateOperationSet } from 'apis/operation-set'
 import { useState } from 'react'
 import { Controller, UseFormSetError, useForm } from 'react-hook-form'
 
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
+import { OperationSet } from 'models/operation-set'
 import { formatError } from 'utils/error'
 
 interface OperationSetEditorDialogProps extends DialogProps {
+  operationSet?: OperationSet
   isOpen: boolean
   onClose: () => void
 }
@@ -24,38 +26,56 @@ interface OperationSetEditorDialogProps extends DialogProps {
 export function OperationSetEditorDialog({
   isOpen,
   onClose,
+  operationSet,
   ...props
 }: OperationSetEditorDialogProps) {
-  const onSubmit: FormProps['onSubmit'] = async (values) => {
-    await createOperationSet({
-      name: values.name,
-      description: values.description,
-      status: values.public ? 'PUBLIC' : 'PRIVATE',
-      operationIds: [],
-    })
+  const isEdit = !!operationSet
 
-    AppToaster.show({
-      intent: 'success',
-      message: `创建作业集成功`,
-    })
+  const onSubmit: FormProps['onSubmit'] = async (values) => {
+    if (isEdit) {
+      await updateOperationSet({
+        id: operationSet!.id,
+        name: values.name,
+        description: values.description,
+        status: values.status,
+      })
+
+      AppToaster.show({
+        intent: 'success',
+        message: `更新作业集成功`,
+      })
+    } else {
+      await createOperationSet({
+        name: values.name,
+        description: values.description,
+        status: values.status,
+        operationIds: [],
+      })
+
+      AppToaster.show({
+        intent: 'success',
+        message: `创建作业集成功`,
+      })
+    }
 
     onClose()
   }
 
   return (
     <Dialog
-      title="创建作业集"
+      title={isEdit ? '编辑作业集' : '创建作业集'}
       icon="applications"
       isOpen={isOpen}
       onClose={onClose}
       {...props}
     >
-      <OperationSetForm onSubmit={onSubmit} />
+      <OperationSetForm operationSet={operationSet} onSubmit={onSubmit} />
     </Dialog>
   )
 }
 
 interface FormProps {
+  operationSet?: OperationSet
   onSubmit: (
     values: FormValues,
     setError: UseFormSetError<FormValues>,
@@ -65,10 +85,10 @@ interface FormProps {
 interface FormValues {
   name: string
   description: string
-  public: boolean
+  status: 'PUBLIC' | 'PRIVATE'
 }
 
-function OperationSetForm({ onSubmit }: FormProps) {
+function OperationSetForm({ operationSet, onSubmit }: FormProps) {
   const [globalError, setGlobalError] = useState<string>()
 
   const {
@@ -77,10 +97,10 @@ function OperationSetForm({ onSubmit }: FormProps) {
     setError,
     formState: { errors, isDirty, isSubmitting },
   } = useForm<FormValues>({
-    defaultValues: {
+    defaultValues: operationSet || {
       name: '',
       description: '',
-      public: false,
+      status: 'PRIVATE',
     },
   })
 
@@ -127,13 +147,18 @@ function OperationSetForm({ onSubmit }: FormProps) {
       />
 
       <Controller
-        name="public"
+        name="status"
         control={control}
         render={({ field }) => (
-          <Switch
+          <Checkbox
             {...field}
             value={undefined}
-            checked={field.value}
+            checked={field.value === 'PUBLIC'}
+            onChange={(e) =>
+              field.onChange(
+                (e.target as HTMLInputElement).checked ? 'PUBLIC' : 'PRIVATE',
+              )
+            }
             label="对所有人可见"
           />
         )}
