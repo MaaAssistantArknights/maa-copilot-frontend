@@ -1,3 +1,4 @@
+import { useAtomValue } from 'jotai'
 import {
   CopilotSetPageRes,
   CopilotSetQuery,
@@ -6,12 +7,14 @@ import {
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
+import { authAtom } from 'store/auth'
 import { OperationSetApi } from 'utils/maa-copilot-client'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
 export interface UseOperationSetsParams {
   keyword?: string
+  byMyself?: boolean
 
   disabled?: boolean
   suspense?: boolean
@@ -19,11 +22,15 @@ export interface UseOperationSetsParams {
 
 export function useOperationSets({
   keyword,
+  byMyself,
   disabled,
   suspense,
 }: UseOperationSetsParams) {
+  const { userId } = useAtomValue(authAtom)
+
   const {
     data: pages,
+    error,
     setSize,
     isValidating,
   } = useSWRInfinite(
@@ -41,6 +48,7 @@ export function useOperationSets({
           limit: 50,
           page: pageIndex + 1,
           keyword,
+          creatorId: byMyself ? userId : undefined,
         } satisfies CopilotSetQuery,
       ]
     },
@@ -62,7 +70,8 @@ export function useOperationSets({
 
   return {
     operationSets,
-    setSize,
+    error,
+    refresh: () => setSize(1),
     isValidating,
     isReachingEnd,
   }
@@ -116,4 +125,28 @@ export async function updateOperationSet(req: {
 
 export async function deleteOperationSet(req: { id: number }) {
   await new OperationSetApi().deleteCopilotSet({ commonIdReqLong: req })
+}
+
+export async function addToOperationSet(req: {
+  operationSetId: number
+  operationIds: number[]
+}) {
+  await new OperationSetApi().addCopilotIds({
+    copilotSetModCopilotsReq: {
+      id: req.operationSetId,
+      copilotIds: req.operationIds,
+    },
+  })
+}
+
+export async function removeFromOperationSet(req: {
+  operationSetId: number
+  operationIds: number[]
+}) {
+  await new OperationSetApi().removeCopilotIds({
+    copilotSetModCopilotsReq: {
+      id: req.operationSetId,
+      copilotIds: req.operationIds,
+    },
+  })
 }

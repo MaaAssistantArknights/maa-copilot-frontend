@@ -5,6 +5,7 @@ import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
+import { AddToOperationSetButton } from 'components/operation-set/AddToOperationSet'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
 
@@ -24,46 +25,16 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
         elevation={Elevation.TWO}
         className="flex flex-col gap-2"
       >
-        {/* title */}
-        <div className="flex gap-1">
+        <div className="flex">
           <Tooltip2
             content={operation.parsedContent.doc.title}
-            className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
+            className="grow flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
           >
             <H4 className="p-0 m-0 whitespace-nowrap overflow-hidden text-ellipsis">
               {operation.parsedContent.doc.title}
             </H4>
           </Tooltip2>
-          <Tooltip2
-            placement="bottom"
-            content={
-              <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
-            }
-          >
-            <Button
-              small
-              icon="download"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleDownloadJSON(operation.parsedContent)
-              }}
-            />
-          </Tooltip2>
-          <Tooltip2
-            placement="bottom"
-            content={
-              <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
-            }
-          >
-            <Button
-              small
-              icon="clipboard"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleCopyShortCode(operation)
-              }}
-            />
-          </Tooltip2>
+          <CardActions operation={operation} />
         </div>
         <div className="flex items-center text-slate-900">
           <div className="flex flex-wrap">
@@ -155,40 +126,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
               <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
                 {operation.parsedContent.doc.title}
               </H4>
-              <Tooltip2
-                placement="bottom"
-                content={
-                  <div className="max-w-sm dark:text-slate-900">
-                    下载原 JSON
-                  </div>
-                }
-              >
-                <Button
-                  small
-                  icon="download"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleDownloadJSON(operation.parsedContent)
-                  }}
-                />
-              </Tooltip2>
-              <Tooltip2
-                placement="bottom"
-                content={
-                  <div className="max-w-sm dark:text-slate-900">
-                    复制神秘代码
-                  </div>
-                }
-              >
-                <Button
-                  small
-                  icon="clipboard"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleCopyShortCode(operation)
-                  }}
-                />
-              </Tooltip2>
+              <CardActions operation={operation} />
             </div>
             <H5 className="flex items-center text-slate-900 -mt-3">
               <EDifficultyLevel
@@ -289,5 +227,57 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
     </div>
   ) : (
     <div className="text-gray-500">无记录</div>
+  )
+}
+
+const CardActions = ({ operation }: { operation: Operation }) => {
+  return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div
+      className="flex gap-1"
+      onClick={(e) => {
+        // 避免点击按钮时触发卡片的链接跳转
+        e.stopPropagation()
+      }}
+    >
+      <Tooltip2
+        placement="bottom"
+        content={
+          <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
+        }
+      >
+        <Button
+          small
+          icon="download"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDownloadJSON(operation.parsedContent)
+          }}
+        />
+      </Tooltip2>
+      <Tooltip2
+        placement="bottom"
+        content={
+          <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
+        }
+      >
+        <Button
+          small
+          icon="clipboard"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleCopyShortCode(operation)
+          }}
+        />
+      </Tooltip2>
+      <Tooltip2
+        placement="bottom"
+        content={
+          <div className="max-w-sm dark:text-slate-900">添加到作业集</div>
+        }
+      >
+        <AddToOperationSetButton small icon="plus" operationId={operation.id} />
+      </Tooltip2>
+    </div>
   )
 }
