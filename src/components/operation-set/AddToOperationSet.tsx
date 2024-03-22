@@ -68,7 +68,7 @@ export function AddToOperationSet({
 }: AddToOperationSetProps) {
   const {
     operationSets,
-    refresh,
+    setSize,
     error: listError,
   } = useOperationSets({
     byMyself: true,
@@ -215,7 +215,7 @@ export function AddToOperationSet({
         isOpen={editorOpen}
         onClose={() => {
           setEditorOpen(false)
-          refresh()
+          setSize(1)
         }}
       />
     </>

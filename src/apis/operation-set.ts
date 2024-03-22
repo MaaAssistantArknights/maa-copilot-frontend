@@ -71,7 +71,7 @@ export function useOperationSets({
   return {
     operationSets,
     error,
-    refresh: () => setSize(1),
+    setSize,
     isValidating,
     isReachingEnd,
   }
