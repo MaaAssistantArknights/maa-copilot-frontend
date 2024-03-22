@@ -61,6 +61,12 @@ export function useOperations({
       ]
     },
     async ([, req]) => {
+      // 如果指定了 id 列表，但是列表为空，就直接返回空数据。不然要是直接传空列表，就相当于没有这个参数，
+      // 会导致后端返回所有数据
+      if (req.copilotIds?.length === 0) {
+        return { data: [], hasNext: false }
+      }
+
       const res = await new OperationApi({
         sendToken: req.uploaderId === 'me' ? 'always' : 'never',
         requireData: true,
