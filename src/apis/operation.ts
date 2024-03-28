@@ -33,6 +33,7 @@ export function useOperations({
   suspense,
 }: UseOperationsParams) {
   const {
+    error,
     data: pages,
     setSize,
     isValidating,
@@ -93,6 +94,7 @@ export function useOperations({
   const operations = pages?.map((page) => page.data).flat()
 
   return {
+    error,
     operations,
     setSize,
     isValidating,

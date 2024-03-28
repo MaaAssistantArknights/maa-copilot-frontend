@@ -4,13 +4,23 @@ import {
   Checkbox,
   Dialog,
   DialogProps,
+  Icon,
   InputGroup,
+  NonIdealState,
   TextArea,
 } from '@blueprintjs/core'
 
-import { createOperationSet, updateOperationSet } from 'apis/operation-set'
-import { useState } from 'react'
+import { useOperations } from 'apis/operation'
+import {
+  addToOperationSet,
+  createOperationSet,
+  removeFromOperationSet,
+  updateOperationSet,
+} from 'apis/operation-set'
+import clsx from 'clsx'
+import { Ref, useCallback, useImperativeHandle, useRef, useState } from 'react'
 import { Controller, UseFormSetError, useForm } from 'react-hook-form'
+import { useSWRConfig } from 'swr'
 
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
@@ -31,32 +41,90 @@ export function OperationSetEditorDialog({
 }: OperationSetEditorDialogProps) {
   const isEdit = !!operationSet
 
-  const onSubmit: FormProps['onSubmit'] = async (values) => {
-    if (isEdit) {
-      await updateOperationSet({
-        id: operationSet!.id,
-        name: values.name,
-        description: values.description,
-        status: values.status,
-      })
+  const { mutate } = useSWRConfig()
 
-      AppToaster.show({
-        intent: 'success',
-        message: `更新作业集成功`,
-      })
-    } else {
-      await createOperationSet({
-        name: values.name,
-        description: values.description,
-        status: values.status,
-        operationIds: [],
-      })
+  const onSubmit: FormProps['onSubmit'] = async ({
+    name,
+    description,
+    status,
+    idsToAdd,
+    idsToRemove,
+  }) => {
+    const updateInfo = async () => {
+      if (isEdit) {
+        await updateOperationSet({
+          id: operationSet!.id,
+          name,
+          description,
+          status,
+        })
 
-      AppToaster.show({
-        intent: 'success',
-        message: `创建作业集成功`,
+        AppToaster.show({
+          intent: 'success',
+          message: `更新作业集成功`,
+        })
+      } else {
+        await createOperationSet({
+          name,
+          description,
+          status,
+          operationIds: [],
+        })
+
+        AppToaster.show({
+          intent: 'success',
+          message: `创建作业集成功`,
+        })
+      }
+
+      mutate((key) => {
+        if (Array.isArray(key)) {
+          // 作业集列表
+          if (key[0] === 'operationSets') {
+            return true
+          }
+          // 作业集详情
+          if (
+            key[0] === 'operationSet' &&
+            operationSet &&
+            key.includes(operationSet.id)
+          ) {
+            return true
+          }
+        }
+        return false
       })
     }
+
+    const addOperations = async () => {
+      if (operationSet && idsToAdd?.length) {
+        await addToOperationSet({
+          operationSetId: operationSet.id,
+          operationIds: idsToAdd,
+        })
+
+        AppToaster.show({
+          intent: 'success',
+          message: `添加作业成功`,
+        })
+      }
+    }
+
+    const removeOperations = async () => {
+      if (operationSet && idsToRemove?.length) {
+        await removeFromOperationSet({
+          operationSetId: operationSet.id,
+          operationIds: idsToRemove,
+        })
+
+        AppToaster.show({
+          intent: 'success',
+          message: `移除作业成功`,
+        })
+      }
+    }
+
+    await Promise.all([updateInfo(), addOperations(), removeOperations()])
 
     onClose()
   }
@@ -65,11 +133,16 @@ export function OperationSetEditorDialog({
     <Dialog
       title={isEdit ? '编辑作业集' : '创建作业集'}
       icon="folder-close"
+      className="w-auto"
       isOpen={isOpen}
       onClose={onClose}
       {...props}
     >
-      <OperationSetForm operationSet={operationSet} onSubmit={onSubmit} />
+      <OperationSetForm
+        key={operationSet?.id}
+        operationSet={operationSet}
+        onSubmit={onSubmit}
+      />
     </Dialog>
   )
 }
@@ -86,9 +159,15 @@ interface FormValues {
   name: string
   description: string
   status: 'PUBLIC' | 'PRIVATE'
+
+  idsToAdd?: number[]
+  idsToRemove?: number[]
 }
 
 function OperationSetForm({ operationSet, onSubmit }: FormProps) {
+  const isEdit = !!operationSet
+
+  const operationSelectorRef = useRef<OperationSelectorRef>(null)
   const [globalError, setGlobalError] = useState<string>()
 
   const {
@@ -106,7 +185,13 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
 
   const localOnSubmit = handleSubmit(async (values) => {
     try {
-      await onSubmit(values, setError)
+      await onSubmit(
+        {
+          ...values,
+          ...operationSelectorRef.current?.getValues(),
+        },
+        setError,
+      )
     } catch (e) {
       console.warn(e)
       setGlobalError(formatError(e))
@@ -114,65 +199,99 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
   })
 
   return (
-    <form className="p-4" onSubmit={localOnSubmit}>
-      <FormField
-        label="标题"
-        field="name"
-        control={control}
-        error={errors.name}
-        ControllerProps={{
-          rules: { required: '标题不能为空' },
-          render: (renderProps) => (
-            <InputGroup
-              {...renderProps.field}
-              value={renderProps.field.value || ''}
-            />
-          ),
-        }}
-      />
-
-      <FormField
-        label="描述"
-        field="description"
-        control={control}
-        error={errors.description}
-        ControllerProps={{
-          render: (renderProps) => (
-            <TextArea
-              {...renderProps.field}
-              value={renderProps.field.value || ''}
-            />
-          ),
-        }}
-      />
-
-      <Controller
-        name="status"
-        control={control}
-        render={({ field }) => (
-          <Checkbox
-            {...field}
-            value={undefined}
-            checked={field.value === 'PUBLIC'}
-            onChange={(e) =>
-              field.onChange(
-                (e.target as HTMLInputElement).checked ? 'PUBLIC' : 'PRIVATE',
-              )
-            }
-            label="对所有人可见"
-          />
+    <div className="p-4 w-[500px] lg:w-[1000px] max-w-[100vw] max-h-[calc(100vh-20rem)] overflow-y-auto">
+      <div className="gap-4 flex flex-wrap-reverse lg:flex-nowrap">
+        {isEdit && (
+          <div className="grow basis-full flex flex-col border-t lg:border-t-0 lg:border-r border-slate-200">
+            {operationSet.copilotIds.length > 0 ? (
+              <>
+                <div className="grow">
+                  <OperationSelector
+                    operationSet={operationSet}
+                    ref={operationSelectorRef}
+                  />
+                </div>
+              </>
+            ) : (
+              <NonIdealState
+                className="grow"
+                icon="helicopter"
+                description="还没有添加作业哦(￣▽￣)"
+              />
+            )}
+          </div>
         )}
-      />
 
-      <div className="mt-6 flex justify-end">
+        <form className="grow basis-full" onSubmit={localOnSubmit}>
+          <FormField
+            label="标题"
+            field="name"
+            control={control}
+            error={errors.name}
+            ControllerProps={{
+              rules: { required: '标题不能为空' },
+              render: (renderProps) => (
+                <InputGroup
+                  {...renderProps.field}
+                  value={renderProps.field.value || ''}
+                />
+              ),
+            }}
+          />
+
+          <FormField
+            label="描述"
+            field="description"
+            control={control}
+            error={errors.description}
+            ControllerProps={{
+              render: (renderProps) => (
+                <TextArea
+                  {...renderProps.field}
+                  value={renderProps.field.value || ''}
+                />
+              ),
+            }}
+          />
+
+          <Controller
+            name="status"
+            control={control}
+            render={({ field }) => (
+              <Checkbox
+                {...field}
+                value={undefined}
+                checked={field.value === 'PUBLIC'}
+                onChange={(e) =>
+                  field.onChange(
+                    (e.target as HTMLInputElement).checked
+                      ? 'PUBLIC'
+                      : 'PRIVATE',
+                  )
+                }
+                label="对所有人可见"
+              />
+            )}
+          />
+        </form>
+      </div>
+
+      <div className="mt-6 flex items-end">
+        {isEdit && (
+          <div className="text-xs text-gray-500">
+            <Icon icon="info-sign" /> 修改后请点击保存按钮
+          </div>
+        )}
+
         <Button
           disabled={!isDirty || isSubmitting}
           intent="primary"
           loading={isSubmitting}
           type="submit"
           icon="floppy-disk"
+          className="ml-auto"
         >
-          提交
+          {isEdit ? '保存' : '创建'}
         </Button>
       </div>
 
@@ -181,6 +300,90 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           {globalError}
         </Callout>
       )}
-    </form>
+    </div>
+  )
+}
+
+interface OperationSelectorProps {
+  operationSet: OperationSet
+
+  // 这个组件做成受控组件的话，输入输出比较难处理，所以做成非受控组件，用 ref 获取值
+  ref: Ref<OperationSelectorRef>
+}
+
+interface OperationSelectorRef {
+  getValues(): { idsToAdd: number[]; idsToRemove: number[] }
+}
+
+function OperationSelector({ operationSet, ref }: OperationSelectorProps) {
+  const { operations, error } = useOperations({
+    operationIds: operationSet.copilotIds,
+  })
+
+  const [checkboxOverrides, setCheckboxOverrides] = useState(
+    {} as Record<number, boolean>,
+  )
+
+  const alreadyAdded = useCallback(
+    (operationId: number) => operationSet.copilotIds.includes(operationId),
+    [operationSet.copilotIds],
+  )
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      getValues() {
+        const idsToAdd: number[] = []
+        const idsToRemove: number[] = []
+
+        Object.entries(checkboxOverrides).forEach(([idKey, checked]) => {
+          const id = +idKey
+          if (isNaN(id)) return
+
+          if (checked && !alreadyAdded(id)) {
+            idsToAdd.push(id)
+          } else if (!checked && alreadyAdded(id)) {
+            idsToRemove.push(id)
+          }
+        })
+
+        return { idsToAdd, idsToRemove }
+      },
+    }),
+    [checkboxOverrides, alreadyAdded],
+  )
+
+  return (
+    <div className="py-2">
+      {error && (
+        <Callout intent="danger" icon="error" title="错误">
+          {formatError(error)}
+        </Callout>
+      )}
+
+      {operations?.map(({ id, parsedContent }) => (
+        <div key={id}>
+          <Checkbox
+            large
+            className={clsx(
+              'flex items-center m-0 p-2 !pl-10 hover:bg-slate-200',
+              checkboxOverrides[id] !== undefined &&
+                checkboxOverrides[id] !== alreadyAdded(id) &&
+                'font-bold',
+            )}
+            checked={checkboxOverrides[id] ?? alreadyAdded(id)}
+            onChange={(e) => {
+              const checked = (e.target as HTMLInputElement).checked
+              setCheckboxOverrides((prev) => ({ ...prev, [id]: checked }))
+            }}
+          >
+            <div className="tabular-nums text-slate-500">{id}:&nbsp;</div>
+            <div className="truncate text-ellipsis">
+              {parsedContent.doc.title}
+            </div>
+          </Checkbox>
+        </div>
+      ))}
+    </div>
   )
 }

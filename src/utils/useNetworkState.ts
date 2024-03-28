@@ -1,8 +1,10 @@
 import { useState } from 'react'
 
+import { formatError } from 'utils/error'
+
 export interface NetworkState {
   loading: boolean
-  error: Error | null
+  error: string | null
 }
 
 export const useNetworkState = (initialLoading?: boolean) => {
@@ -13,8 +15,13 @@ export const useNetworkState = (initialLoading?: boolean) => {
 
   const start = () => setNetworkState({ loading: true, error: null })
 
-  const finish = (error: Error | null) =>
-    setNetworkState({ loading: false, error })
+  const finish = (error?: unknown) => {
+    if (error === null || error === undefined) {
+      setNetworkState({ loading: false, error: null })
+    } else {
+      setNetworkState({ loading: false, error: formatError(error) })
+    }
+  }
 
   return {
     networkState,
