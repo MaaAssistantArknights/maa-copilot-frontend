@@ -57,8 +57,11 @@ export const NeoOperationSetCard = ({
         </div>
 
         <div className="flex">
-          <div>
-            <Icon icon="time" className="mr-1.5" />
+          <div className="flex items-center text-zinc-500">
+            <Icon icon="document" className="mr-1" />
+            <span>{operationSet.copilotIds.length}份作业</span>
+
+            <Icon icon="time" className="ml-4 mr-1" />
             <RelativeTime
               Tooltip2Props={{ placement: 'top' }}
               moment={operationSet.createTime}
@@ -122,8 +125,11 @@ export const OperationSetCard = ({
           {/* meta */}
           <div className="flex flex-col flex-1 gap-y-1.5 gap-x-4">
             <div className="flex flex-wrap sm:justify-end items-center gap-x-4 gap-y-1 text-zinc-500">
-              <div>
-                <Icon icon="time" className="mr-1.5" />
+              <div className="flex items-center text-zinc-500">
+                <Icon icon="document" className="mr-1" />
+                <span>{operationSet.copilotIds.length}份作业</span>
+
+                <Icon icon="time" className="ml-4 mr-1" />
                 <RelativeTime
                   Tooltip2Props={{ placement: 'top' }}
                   moment={operationSet.createTime}

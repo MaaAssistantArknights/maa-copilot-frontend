@@ -247,7 +247,9 @@ function OperationSetViewerInnerDetails({
 }) {
   return (
     <div className="flex flex-col">
-      <H5 className="mb-4 text-slate-600">作业列表</H5>
+      <H5 className="mb-4 text-slate-600">
+        作业列表({operationSet.copilotIds.length})
+      </H5>
       <div className="flex flex-col mb-4">
         <OperationList operationIds={operationSet.copilotIds} />
       </div>
