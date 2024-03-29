@@ -51,11 +51,12 @@ export function useOperationSets({
           keyword,
           creatorId: byMyself ? userId : undefined,
         } satisfies CopilotSetQuery,
+        byMyself,
       ]
     },
-    async ([, req]) => {
+    async ([, req, byMyself]) => {
       const res = await new OperationSetApi({
-        sendToken: 'optional', // 如果有 token 会用来获取私有作业集
+        sendToken: byMyself ? 'always' : 'optional', // 如果有 token 会用来获取自己的作业集
         requireData: true,
       }).querySets({ copilotSetQuery: req })
       return res.data
