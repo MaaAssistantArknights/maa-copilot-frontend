@@ -41,9 +41,9 @@ export const ShortCodeImporter: FC<{
     try {
       setPending(true)
 
-      const id = +(parseShortCode(code) || NaN)
+      const id = parseShortCode(code)
 
-      if (!isNaN(id)) {
+      if (!id) {
         throw new Error('无效的神秘代码')
       }
 
