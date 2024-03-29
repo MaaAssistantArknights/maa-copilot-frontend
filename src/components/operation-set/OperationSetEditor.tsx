@@ -16,11 +16,12 @@ import {
   createOperationSet,
   removeFromOperationSet,
   updateOperationSet,
+  useRefreshOperationSet,
+  useRefreshOperationSets,
 } from 'apis/operation-set'
 import clsx from 'clsx'
 import { Ref, useCallback, useImperativeHandle, useRef, useState } from 'react'
 import { Controller, UseFormSetError, useForm } from 'react-hook-form'
-import { useSWRConfig } from 'swr'
 
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
@@ -41,7 +42,8 @@ export function OperationSetEditorDialog({
 }: OperationSetEditorDialogProps) {
   const isEdit = !!operationSet
 
-  const { mutate } = useSWRConfig()
+  const refreshOperationSets = useRefreshOperationSets()
+  const refreshOperationSet = useRefreshOperationSet()
 
   const onSubmit: FormProps['onSubmit'] = async ({
     name,
@@ -77,23 +79,11 @@ export function OperationSetEditorDialog({
         })
       }
 
-      mutate((key) => {
-        if (Array.isArray(key)) {
-          // 作业集列表
-          if (key[0] === 'operationSets') {
-            return true
-          }
-          // 作业集详情
-          if (
-            key[0] === 'operationSet' &&
-            operationSet &&
-            key.includes(operationSet.id)
-          ) {
-            return true
-          }
-        }
-        return false
-      })
+      refreshOperationSets()
+
+      if (operationSet) {
+        refreshOperationSet(operationSet.id)
+      }
     }
 
     const addOperations = async () => {
@@ -199,7 +189,13 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
   })
 
   return (
-    <div className="p-4 w-[500px] lg:w-[1000px] max-w-[100vw] max-h-[calc(100vh-20rem)] overflow-y-auto">
+    <form
+      className={clsx(
+        'p-4 w-[500px] max-w-[100vw] max-h-[calc(100vh-20rem)] overflow-y-auto',
+        isEdit && 'lg:w-[1000px]',
+      )}
+      onSubmit={localOnSubmit}
+    >
       <div className="gap-4 flex flex-wrap-reverse lg:flex-nowrap">
         {isEdit && (
           <div className="grow basis-full flex flex-col border-t lg:border-t-0 lg:border-r border-slate-200">
@@ -222,7 +218,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           </div>
         )}
 
-        <form className="grow basis-full" onSubmit={localOnSubmit}>
+        <div className="grow basis-full">
           <FormField
             label="标题"
             field="name"
@@ -273,7 +269,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
               />
             )}
           />
-        </form>
+        </div>
       </div>
 
       <div className="mt-6 flex items-end">
@@ -300,7 +296,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           {globalError}
         </Callout>
       )}
-    </div>
+    </form>
   )
 }
 

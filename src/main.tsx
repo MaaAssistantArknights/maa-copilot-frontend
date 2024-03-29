@@ -11,7 +11,7 @@ import ReactDOM from 'react-dom/client'
 import { Route, Routes } from 'react-router-dom'
 
 import { ViewPage } from 'pages/view'
-import { clearOutdatedSwrCache } from 'utils/swr-cache'
+import { clearOutdatedSwrCache } from 'utils/swr'
 
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'

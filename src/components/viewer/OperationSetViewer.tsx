@@ -12,7 +12,11 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 import { ErrorBoundary } from '@sentry/react'
 
-import { deleteOperationSet, useOperationSet } from 'apis/operation-set'
+import {
+  deleteOperationSet,
+  useOperationSet,
+  useRefreshOperationSets,
+} from 'apis/operation-set'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { handleCopyShortCode } from 'services/operation'
@@ -35,6 +39,8 @@ const ManageMenu: FC<{
   operationSet: OperationSet
   onUpdate: () => void
 }> = ({ operationSet, onUpdate }) => {
+  const refreshOperationSets = useRefreshOperationSets()
+
   const [loading, setLoading] = useState(false)
   const [editorOpen, setEditorOpen] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
@@ -46,6 +52,9 @@ const ManageMenu: FC<{
         (e) => `删除失败：${formatError(e)}`,
         deleteOperationSet({ id: operationSet.id }),
       )
+
+      refreshOperationSets()
+
       AppToaster.show({
         intent: 'success',
         message: `删除成功`,

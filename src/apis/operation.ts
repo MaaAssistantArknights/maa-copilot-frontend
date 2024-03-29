@@ -5,6 +5,7 @@ import useSWRInfinite from 'swr/infinite'
 import { toCopilotOperation } from 'models/converter'
 import { OpRatingType, Operation } from 'models/operation'
 import { OperationApi } from 'utils/maa-copilot-client'
+import { useSWRRefresh } from 'utils/swr'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
@@ -102,6 +103,11 @@ export function useOperations({
   }
 }
 
+export function useRefreshOperations() {
+  const refresh = useSWRRefresh()
+  return () => refresh((key) => key.includes('operations'))
+}
+
 interface UseOperationParams {
   id?: number
   suspense?: boolean
@@ -113,6 +119,12 @@ export function useOperation({ id, suspense }: UseOperationParams) {
     () => getOperation({ id: id! }),
     { suspense },
   )
+}
+
+export function useRefreshOperation() {
+  const refresh = useSWRRefresh()
+  return (id: number) =>
+    refresh((key) => key.includes('operation') && key.includes(String(id)))
 }
 
 export async function getOperation(req: { id: number }): Promise<Operation> {

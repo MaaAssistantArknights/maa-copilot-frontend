@@ -9,6 +9,7 @@ import useSWRInfinite from 'swr/infinite'
 
 import { authAtom } from 'store/auth'
 import { OperationSetApi } from 'utils/maa-copilot-client'
+import { useSWRRefresh } from 'utils/swr'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
@@ -77,6 +78,11 @@ export function useOperationSets({
   }
 }
 
+export function useRefreshOperationSets() {
+  const refresh = useSWRRefresh()
+  return () => refresh((key) => key.includes('operationSets'))
+}
+
 interface UseOperationSetParams {
   id?: number
   suspense?: boolean
@@ -88,6 +94,12 @@ export function useOperationSet({ id, suspense }: UseOperationSetParams) {
     () => getOperationSet({ id: id! }),
     { suspense },
   )
+}
+
+export function useRefreshOperationSet() {
+  const refresh = useSWRRefresh()
+  return (id: number) =>
+    refresh((key) => key.includes('operationSet') && key.includes(String(id)))
 }
 
 export async function getOperationSet(req: { id: number }) {

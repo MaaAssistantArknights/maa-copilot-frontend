@@ -15,7 +15,12 @@ import {
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { ErrorBoundary } from '@sentry/react'
 
-import { deleteOperation, rateOperation, useOperation } from 'apis/operation'
+import {
+  deleteOperation,
+  rateOperation,
+  useOperation,
+  useRefreshOperations,
+} from 'apis/operation'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -46,6 +51,8 @@ const ManageMenu: FC<{
   operation: Operation
   onUpdate: () => void
 }> = ({ operation, onUpdate }) => {
+  const refreshOperations = useRefreshOperations()
+
   const [loading, setLoading] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
@@ -56,6 +63,9 @@ const ManageMenu: FC<{
         (e) => `删除失败：${formatError(e)}`,
         deleteOperation({ id: operation.id }),
       )
+
+      refreshOperations()
+
       AppToaster.show({
         intent: 'success',
         message: `删除成功`,
