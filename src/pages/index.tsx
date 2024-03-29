@@ -10,6 +10,7 @@ import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { Operations } from 'components/Operations'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 import { OperationEditorLauncher } from 'components/editor/OperationEditorLauncher'
+import { OperationSetEditorLauncher } from 'components/operation-set/OperationSetEditor'
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
 
 import { AnnPanel } from '../components/announcement/AnnPanel'
@@ -71,8 +72,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
           </CardTitle>
 
           <OperationEditorLauncher />
-
           <OperationUploaderLauncher />
+          <OperationSetEditorLauncher />
         </Card>
 
         <AnnPanel className="mb-4" />

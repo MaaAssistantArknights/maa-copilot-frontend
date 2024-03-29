@@ -28,6 +28,22 @@ import { AppToaster } from 'components/Toaster'
 import { OperationSet } from 'models/operation-set'
 import { formatError } from 'utils/error'
 
+export function OperationSetEditorLauncher() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  return (
+    <>
+      <Button large fill icon="folder-close" onClick={() => setIsOpen(true)}>
+        创建作业集
+      </Button>
+      <OperationSetEditorDialog
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
+    </>
+  )
+}
+
 interface OperationSetEditorDialogProps extends DialogProps {
   operationSet?: OperationSet
   isOpen: boolean
@@ -212,7 +228,13 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
               <NonIdealState
                 className="grow"
                 icon="helicopter"
-                description="还没有添加作业哦(￣▽￣)"
+                description={
+                  <>
+                    还没有添加作业哦(￣▽￣)
+                    <br />
+                    请从作业列表中添加
+                  </>
+                }
               />
             )}
           </div>
