@@ -1,4 +1,4 @@
-import { Button, Card, Elevation, H4, Icon } from '@blueprintjs/core'
+import { Button, Card, Elevation, H4, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import { handleCopyShortCode } from 'services/operation'
@@ -28,6 +28,9 @@ export const NeoOperationSetCard = ({
             className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
           >
             <H4 className="p-0 m-0 whitespace-nowrap overflow-hidden text-ellipsis">
+              {operationSet.status === 'PRIVATE' && (
+                <Tag className="mr-1">私有</Tag>
+              )}
               {operationSet.name}
             </H4>
           </Tooltip2>

@@ -5,6 +5,7 @@ import {
   Checkbox,
   Dialog,
   NonIdealState,
+  Tag,
 } from '@blueprintjs/core'
 
 import {
@@ -165,17 +166,15 @@ export function AddToOperationSet({
         )}
 
         <div className="max-h-[calc(100vh-20rem)] overflow-y-auto">
-          {operationSetList?.map(({ id, name, copilotIds }) => (
+          {operationSetList?.map(({ id, name, copilotIds, status }) => (
             <div key={id}>
               <Checkbox
-                large
                 className={clsx(
                   'block m-0 p-2 !pl-10 hover:bg-slate-200',
                   checkboxOverrides[id] !== undefined &&
                     checkboxOverrides[id] !== alreadyAdded(id) &&
                     'font-bold',
                 )}
-                label={name}
                 checked={
                   checkboxOverrides[id] ?? copilotIds.includes(operationId)
                 }
@@ -183,7 +182,14 @@ export function AddToOperationSet({
                   const checked = (e.target as HTMLInputElement).checked
                   setCheckboxOverrides((prev) => ({ ...prev, [id]: checked }))
                 }}
-              />
+              >
+                {status === 'PRIVATE' && (
+                  <Tag minimal className="mr-1">
+                    私有
+                  </Tag>
+                )}
+                {name}
+              </Checkbox>
             </div>
           ))}
         </div>

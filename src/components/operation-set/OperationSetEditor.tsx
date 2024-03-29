@@ -360,7 +360,6 @@ function OperationSelector({ operationSet, ref }: OperationSelectorProps) {
       {operations?.map(({ id, parsedContent }) => (
         <div key={id}>
           <Checkbox
-            large
             className={clsx(
               'flex items-center m-0 p-2 !pl-10 hover:bg-slate-200',
               checkboxOverrides[id] !== undefined &&
