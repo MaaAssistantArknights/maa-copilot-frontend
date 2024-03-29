@@ -69,6 +69,8 @@ export function AddToOperationSet({
 }: AddToOperationSetProps) {
   const {
     operationSets,
+    isReachingEnd,
+    isValidating,
     setSize,
     error: listError,
   } = useOperationSets({
@@ -192,6 +194,18 @@ export function AddToOperationSet({
               </Checkbox>
             </div>
           ))}
+
+          {!isReachingEnd && (
+            <Button
+              minimal
+              small
+              loading={isValidating}
+              text="加载更多"
+              icon="more"
+              className="mt-2 ml-1.5"
+              onClick={() => setSize((size) => size + 1)}
+            />
+          )}
         </div>
       </div>
 
