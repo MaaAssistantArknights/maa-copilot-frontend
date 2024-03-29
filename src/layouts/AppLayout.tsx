@@ -24,6 +24,11 @@ export const LINKS: {
     label: '创建作业',
     icon: 'add',
   },
+  {
+    to: '/about',
+    label: '关于',
+    icon: 'info-sign',
+  },
 ]
 
 // const darkMode = localStorage.getItem('darkMode') === 'true'

@@ -10,6 +10,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Route, Routes } from 'react-router-dom'
 
+import { AboutPage } from 'pages/about'
 import { ViewPage } from 'pages/view'
 import { clearOutdatedSwrCache } from 'utils/swr'
 
@@ -56,6 +57,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/" element={<IndexPage />} />
           <Route path="/create/:id" element={<CreatePage />} />
           <Route path="/create" element={<CreatePage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/operation/:id" element={<ViewPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
