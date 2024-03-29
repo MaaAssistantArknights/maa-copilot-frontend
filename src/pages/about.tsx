@@ -1,3 +1,10 @@
+import { H2 } from '@blueprintjs/core'
+
+import { Markdown } from 'components/Markdown'
+
+// eslint-disable-next-line import/no-unresolved
+import changelog from '../../changelog.md?raw'
+
 export const AboutPage = () => {
   return (
     <div className="max-w-[48rem] mx-auto">
@@ -9,6 +16,11 @@ export const AboutPage = () => {
           </div>
           <div className="bg-rainbow !bg-clip-content h-1.5 pr-48" />
         </div>
+      </div>
+
+      <div className="mt-16">
+        <H2>更新日志</H2>
+        <Markdown>{changelog}</Markdown>
       </div>
     </div>
   )
