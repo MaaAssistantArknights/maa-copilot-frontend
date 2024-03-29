@@ -55,7 +55,7 @@ export function useOperationSets({
     },
     async ([, req]) => {
       const res = await new OperationSetApi({
-        sendToken: 'never',
+        sendToken: 'optional', // 如果有 token 会用来获取私有作业集
         requireData: true,
       }).querySets({ copilotSetQuery: req })
       return res.data
