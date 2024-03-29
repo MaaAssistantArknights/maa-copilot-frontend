@@ -3,7 +3,7 @@ import { H2 } from '@blueprintjs/core'
 import { Markdown } from 'components/Markdown'
 
 // eslint-disable-next-line import/no-unresolved
-import changelog from '../../changelog.md?raw'
+import changelog from '../../CHANGELOG.md?raw'
 
 export const AboutPage = () => {
   return (
