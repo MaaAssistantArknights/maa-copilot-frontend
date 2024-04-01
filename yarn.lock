@@ -3642,9 +3642,9 @@ lru-cache@^6.0.0:
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-10.2.0.tgz#0bd445ca57363465900f4d1f9bd8db343a4d95c3"
   integrity sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==
 
-"maa-copilot-client@https://github.com/MaaAssistantArknights/maa-copilot-client-ts.git#0.1.0-SNAPSHOT.756.96fb938":
-  version "0.1.0-SNAPSHOT.756.96fb938"
-  resolved "https://github.com/MaaAssistantArknights/maa-copilot-client-ts.git#cc6989590c1c6f81a91b02b16e45cde966cab173"
+"maa-copilot-client@https://github.com/MaaAssistantArknights/maa-copilot-client-ts.git#0.1.0-SNAPSHOT.758.dbc2eb1":
+  version "0.1.0-SNAPSHOT.758.dbc2eb1"
+  resolved "https://github.com/MaaAssistantArknights/maa-copilot-client-ts.git#d6750070b90fec2cac02d3f3d718a3165fd5d55a"
 
 make-dir@^2.1.0:
   version "2.1.0"
