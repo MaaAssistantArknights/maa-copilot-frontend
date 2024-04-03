@@ -181,7 +181,6 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
         </div>
         <div className="flex md:flex-row flex-col gap-4">
           <div className="text-gray-700 leading-normal md:w-1/2">
-            {/* <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div> */}
             <Paragraphs
               content={operation.parsedContent.doc.details}
               limitHeight={21 * 13.5} // 13 lines, 21px per line; the extra 0.5 line is intentional so the `mask` effect is obvious
