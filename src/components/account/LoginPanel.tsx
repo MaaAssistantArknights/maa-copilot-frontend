@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
 import { authAtom, fromCredentials } from 'store/auth'
-import { NetworkError } from 'utils/error'
+import { formatError } from 'utils/error'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { AuthFormEmailField, AuthFormPasswordField } from './AuthFormShared'
@@ -33,7 +33,7 @@ export const LoginPanel: FC<{
 
   const onSubmit = async ({ email, password }: LoginFormValues) => {
     const res = await wrapErrorMessage(
-      (e: NetworkError) => `登录失败：${e.message}`,
+      (e) => `登录失败：${formatError(e)}`,
       login({ email, password }),
     )
     setAuthState(fromCredentials(res))

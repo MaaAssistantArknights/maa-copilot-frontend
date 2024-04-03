@@ -272,16 +272,13 @@ const CommentActions = ({
 
     setPending(true)
 
-    try {
-      await wrapErrorMessage(
-        (e) => '评分失败：' + formatError(e),
-        deleteComment({ commentId: comment.commentId }),
-      )
+    await wrapErrorMessage(
+      (e) => '评分失败：' + formatError(e),
+      deleteComment({ commentId: comment.commentId }),
+    ).catch(console.warn)
 
-      reload()
-    } finally {
-      setPending(false)
-    }
+    reload()
+    setPending(false)
   }
 
   return (
@@ -352,16 +349,13 @@ const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
 
     setPending(true)
 
-    try {
-      await wrapErrorMessage(
-        (e) => '评分失败：' + formatError(e),
-        rateComment({ commentId, rating }),
-      )
+    await wrapErrorMessage(
+      (e) => '评分失败：' + formatError(e),
+      rateComment({ commentId, rating }),
+    ).catch(console.warn)
 
-      reload()
-    } finally {
-      setPending(false)
-    }
+    reload()
+    setPending(false)
   }
 
   return (
@@ -398,16 +392,13 @@ const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
 
     setPending(true)
 
-    try {
-      await wrapErrorMessage(
-        (e) => '置顶失败：' + formatError(e),
-        topComment({ commentId, topping: !topping }),
-      )
+    await wrapErrorMessage(
+      (e) => '置顶失败：' + formatError(e),
+      topComment({ commentId, topping: !topping }),
+    ).catch(console.warn)
 
-      reload()
-    } finally {
-      setPending(false)
-    }
+    reload()
+    setPending(false)
   }
 
   return (

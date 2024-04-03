@@ -4,13 +4,19 @@ import {
   CommentAreaApi,
   Configuration,
   CopilotControllerApi,
+  CopilotSetApi,
   CopilotUserApi,
   JSONApiResponse,
   querystring,
 } from 'maa-copilot-client'
 import { SetRequired } from 'type-fest'
 
-import { ApiError, InvalidTokenError, UnauthorizedError } from 'utils/error'
+import {
+  ApiError,
+  InvalidTokenError,
+  NetworkError,
+  UnauthorizedError,
+} from 'utils/error'
 import { TokenManager } from 'utils/token-manager'
 
 declare module 'maa-copilot-client' {
@@ -86,6 +92,13 @@ export class OperationApi<
     super(createConfiguration(options as T))
   }
 }
+export class OperationSetApi<
+  T extends ApiOptions,
+> extends (CopilotSetApi as WithOptions<CopilotSetApi>)<T> {
+  constructor(options?: ValidateOptions<T>) {
+    super(createConfiguration(options as T))
+  }
+}
 export class LevelApi<
   T extends ApiOptions,
 > extends (ArkLevelControllerApi as WithOptions<ArkLevelControllerApi>)<T> {
@@ -150,6 +163,11 @@ function createConfiguration(options?: ApiOptions) {
 
           ;(response as ExtendedResponse).config = config
           return response
+        },
+
+        // 只会在 fetch() reject 的时候触发
+        async onError() {
+          throw new NetworkError()
         },
       },
     ],

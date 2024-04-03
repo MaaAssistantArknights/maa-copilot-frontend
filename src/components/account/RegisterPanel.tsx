@@ -5,7 +5,7 @@ import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
-import { NetworkError } from 'utils/error'
+import { formatError } from 'utils/error'
 import { REGEX_EMAIL } from 'utils/regexes'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
@@ -37,7 +37,7 @@ export const RegisterPanel: FC<{
   const [countdown, setCountdown] = useState(60)
   const onSubmit = async (val: RegisterFormValues) => {
     await wrapErrorMessage(
-      (e: NetworkError) => `注册失败：${e.message}`,
+      (e) => `注册失败：${formatError(e)}`,
       register({
         email: val.email,
         registrationToken: val.registrationToken,
@@ -66,23 +66,27 @@ export const RegisterPanel: FC<{
   }, [isSendEmailButtonDisabled, countdown])
 
   const onEmailSubmit = async () => {
-    const val = getValues()
-    if (!REGEX_EMAIL.test(val.email)) {
+    try {
+      const val = getValues()
+      if (!REGEX_EMAIL.test(val.email)) {
+        AppToaster.show({
+          intent: 'danger',
+          message: `邮箱输入为空或格式错误,请重新输入`,
+        })
+        return
+      }
+      await wrapErrorMessage(
+        (e) => `发送失败：${formatError(e)}`,
+        sendRegistrationEmail({ email: val.email }),
+      )
       AppToaster.show({
-        intent: 'danger',
-        message: `邮箱输入为空或格式错误,请重新输入`,
+        intent: 'success',
+        message: `邮件发送成功`,
       })
-      return
+      setSendEmailButtonDisabled(true)
+    } catch (e) {
+      console.warn(e)
     }
-    await wrapErrorMessage(
-      (e: NetworkError) => `发送失败：${e.message}`,
-      sendRegistrationEmail({ email: val.email }),
-    )
-    AppToaster.show({
-      intent: 'success',
-      message: `邮件发送成功`,
-    })
-    setSendEmailButtonDisabled(true)
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

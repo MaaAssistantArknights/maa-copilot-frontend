@@ -1,118 +1,62 @@
-import {
-  Button,
-  Card,
-  Drawer,
-  DrawerSize,
-  Elevation,
-  H4,
-  H5,
-  Icon,
-  Tag,
-} from '@blueprintjs/core'
+import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { useState } from 'react'
 import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
+import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
+import { AddToOperationSetButton } from 'components/operation-set/AddToOperationSet'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
 
 import { useLevels } from '../apis/level'
-import { CopilotDocV1 } from '../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
-import { OperationViewer } from './viewer/OperationViewer'
 
-export const NeoOperationCard = ({
-  operation,
-  operationDoc,
-}: {
-  operation: Operation
-  operationDoc: CopilotDocV1.Operation
-}) => {
+export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
-  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <>
-      <Drawer
-        size={DrawerSize.LARGE}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <OperationViewer
-          operationId={operation.id}
-          onCloseDrawer={() => setDrawerOpen(false)}
-        />
-      </Drawer>
-
+    <ReLink search={{ op: operation.id }} className="no-underline">
       <Card
         interactive={true}
         elevation={Elevation.TWO}
         className="flex flex-col gap-2"
-        onClick={() => setDrawerOpen(true)}
       >
-        {/* title */}
-        <div className="flex gap-1">
+        <div className="flex">
           <Tooltip2
-            content={operationDoc.doc.title}
-            className="flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
+            content={operation.parsedContent.doc.title}
+            className="grow flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
           >
             <H4 className="p-0 m-0 whitespace-nowrap overflow-hidden text-ellipsis">
-              {operationDoc.doc.title}
+              {operation.parsedContent.doc.title}
             </H4>
           </Tooltip2>
-          <Tooltip2
-            placement="bottom"
-            content={
-              <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
-            }
-          >
-            <Button
-              small
-              icon="download"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleDownloadJSON(operationDoc)
-              }}
-            />
-          </Tooltip2>
-          <Tooltip2
-            placement="bottom"
-            content={
-              <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
-            }
-          >
-            <Button
-              small
-              icon="clipboard"
-              onClick={(e) => {
-                e.stopPropagation()
-                handleCopyShortCode(operation)
-              }}
-            />
-          </Tooltip2>
+          <CardActions operation={operation} />
         </div>
         <div className="flex items-center text-slate-900">
           <div className="flex flex-wrap">
             <NeoELevel
               level={
-                findLevelByStageName(levels, operationDoc.stageName) ||
-                createCustomLevel(operationDoc.stageName)
+                findLevelByStageName(
+                  levels,
+                  operation.parsedContent.stageName,
+                ) || createCustomLevel(operation.parsedContent.stageName)
               }
             />
             <EDifficulty
-              difficulty={operationDoc.difficulty ?? OpDifficulty.UNKNOWN}
+              difficulty={
+                operation.parsedContent.difficulty ?? OpDifficulty.UNKNOWN
+              }
             />
           </div>
         </div>
         <div className="flex-1 flex flex-col gap-2 justify-center">
           <div className="text-gray-700 leading-normal">
             <Paragraphs
-              content={operationDoc.doc.details}
+              content={operation.parsedContent.doc.details}
               limitHeight={21 * 13.5} // 13 lines, 21px per line; the extra 0.5 line is intentional so the `mask` effect is obvious
             />
           </div>
@@ -120,7 +64,7 @@ export const NeoOperationCard = ({
             <div className="text-sm text-zinc-600 mb-2 font-bold">
               干员/干员组
             </div>
-            <OperatorTags operationDoc={operationDoc} />
+            <OperatorTags operation={operation} />
           </div>
         </div>
 
@@ -162,88 +106,37 @@ export const NeoOperationCard = ({
           </div>
         </div>
       </Card>
-    </>
+    </ReLink>
   )
 }
 
-export const OperationCard = ({
-  operation,
-  operationDoc,
-}: {
-  operation: Operation
-  operationDoc: CopilotDocV1.Operation
-}) => {
+export const OperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
-  const [drawerOpen, setDrawerOpen] = useState(false)
 
   return (
-    <>
-      <Drawer
-        size={DrawerSize.LARGE}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      >
-        <OperationViewer
-          operationId={operation.id}
-          onCloseDrawer={() => setDrawerOpen(false)}
-        />
-      </Drawer>
-
-      <Card
-        interactive={true}
-        elevation={Elevation.TWO}
-        className="mb-4 sm:mb-2 last:mb-0"
-        onClick={() => setDrawerOpen(true)}
-      >
+    <ReLink
+      search={{ op: operation.id }}
+      className="block mb-4 sm:mb-2 last:mb-0 no-underline"
+    >
+      <Card interactive={true} elevation={Elevation.TWO}>
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
           <div className="flex flex-col gap-3">
             <div className="flex gap-2">
               <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
-                {operationDoc.doc.title}
+                {operation.parsedContent.doc.title}
               </H4>
-              <Tooltip2
-                placement="bottom"
-                content={
-                  <div className="max-w-sm dark:text-slate-900">
-                    下载原 JSON
-                  </div>
-                }
-              >
-                <Button
-                  small
-                  icon="download"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleDownloadJSON(operationDoc)
-                  }}
-                />
-              </Tooltip2>
-              <Tooltip2
-                placement="bottom"
-                content={
-                  <div className="max-w-sm dark:text-slate-900">
-                    复制神秘代码
-                  </div>
-                }
-              >
-                <Button
-                  small
-                  icon="clipboard"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleCopyShortCode(operation)
-                  }}
-                />
-              </Tooltip2>
+              <CardActions operation={operation} />
             </div>
             <H5 className="flex items-center text-slate-900 -mt-3">
               <EDifficultyLevel
                 level={
-                  findLevelByStageName(levels, operationDoc.stageName) ||
-                  createCustomLevel(operationDoc.stageName)
+                  findLevelByStageName(
+                    levels,
+                    operation.parsedContent.stageName,
+                  ) || createCustomLevel(operation.parsedContent.stageName)
                 }
-                difficulty={operationDoc.difficulty}
+                difficulty={operation.parsedContent.difficulty}
               />
             </H5>
           </div>
@@ -291,7 +184,7 @@ export const OperationCard = ({
           <div className="text-gray-700 leading-normal md:w-1/2">
             {/* <div className="text-sm text-zinc-600 mb-2 font-bold">作业描述</div> */}
             <Paragraphs
-              content={operationDoc.doc.details}
+              content={operation.parsedContent.doc.details}
               limitHeight={21 * 13.5} // 13 lines, 21px per line; the extra 0.5 line is intentional so the `mask` effect is obvious
             />
           </div>
@@ -299,19 +192,17 @@ export const OperationCard = ({
             <div className="text-sm text-zinc-600 mb-2 font-bold">
               干员/干员组
             </div>
-            <OperatorTags operationDoc={operationDoc} />
+            <OperatorTags operation={operation} />
           </div>
         </div>
       </Card>
-    </>
+    </ReLink>
   )
 }
 
-const OperatorTags = ({
-  operationDoc: { opers, groups },
-}: {
-  operationDoc: CopilotDocV1.Operation
-}) => {
+const OperatorTags = ({ operation }: { operation: Operation }) => {
+  const { opers, groups } = operation.parsedContent
+
   return opers?.length || groups?.length ? (
     <div>
       {opers?.map(({ name, skill }, index) => (
@@ -336,5 +227,57 @@ const OperatorTags = ({
     </div>
   ) : (
     <div className="text-gray-500">无记录</div>
+  )
+}
+
+const CardActions = ({ operation }: { operation: Operation }) => {
+  return (
+    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+    <div
+      className="flex gap-1"
+      onClick={(e) => {
+        // 避免点击按钮时触发卡片的链接跳转
+        e.stopPropagation()
+      }}
+    >
+      <Tooltip2
+        placement="bottom"
+        content={
+          <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
+        }
+      >
+        <Button
+          small
+          icon="download"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDownloadJSON(operation.parsedContent)
+          }}
+        />
+      </Tooltip2>
+      <Tooltip2
+        placement="bottom"
+        content={
+          <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
+        }
+      >
+        <Button
+          small
+          icon="clipboard"
+          onClick={(e) => {
+            e.stopPropagation()
+            handleCopyShortCode(operation)
+          }}
+        />
+      </Tooltip2>
+      <Tooltip2
+        placement="bottom"
+        content={
+          <div className="max-w-sm dark:text-slate-900">添加到作业集</div>
+        }
+      >
+        <AddToOperationSetButton small icon="plus" operationId={operation.id} />
+      </Tooltip2>
+    </div>
   )
 }

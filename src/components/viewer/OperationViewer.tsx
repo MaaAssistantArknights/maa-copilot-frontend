@@ -15,10 +15,14 @@ import {
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { ErrorBoundary } from '@sentry/react'
 
-import { deleteOperation, rateOperation, useOperation } from 'apis/operation'
+import {
+  deleteOperation,
+  rateOperation,
+  useOperation,
+  useRefreshOperations,
+} from 'apis/operation'
 import { useAtom } from 'jotai'
-import { noop } from 'lodash-es'
-import { ComponentType, FC, useEffect, useMemo, useState } from 'react'
+import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
@@ -27,7 +31,7 @@ import { Paragraphs } from 'components/Paragraphs'
 import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
-import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { DrawerLayout } from 'components/drawer/DrawerLayout'
 import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
@@ -36,11 +40,10 @@ import { authAtom } from 'store/auth'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { useLevels } from '../../apis/level'
-import { toCopilotOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
-import { NetworkError, formatError } from '../../utils/error'
+import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { CommentArea } from './comment/CommentArea'
 
@@ -48,6 +51,8 @@ const ManageMenu: FC<{
   operation: Operation
   onUpdate: () => void
 }> = ({ operation, onUpdate }) => {
+  const refreshOperations = useRefreshOperations()
+
   const [loading, setLoading] = useState(false)
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
 
@@ -55,18 +60,23 @@ const ManageMenu: FC<{
     setLoading(true)
     try {
       await wrapErrorMessage(
-        (e: NetworkError) => `删除失败：${e.message}`,
+        (e) => `删除失败：${formatError(e)}`,
         deleteOperation({ id: operation.id }),
       )
+
+      refreshOperations()
+
+      AppToaster.show({
+        intent: 'success',
+        message: `删除成功`,
+      })
+      setDeleteDialogOpen(false)
+      onUpdate()
+    } catch (e) {
+      console.warn(e)
     } finally {
       setLoading(false)
     }
-    AppToaster.show({
-      intent: 'success',
-      message: `删除成功`,
-    })
-    setDeleteDialogOpen(false)
-    onUpdate()
   }
 
   return (
@@ -137,12 +147,7 @@ export const OperationViewer: ComponentType<{
     const [auth] = useAtom(authAtom)
 
     // make eslint happy: we got Suspense out there
-    if (!operation) return null
-
-    const operationDoc = useMemo(
-      () => toCopilotOperation(operation),
-      [operation],
-    )
+    if (!operation) throw new Error('unreachable')
 
     useEffect(() => {
       if (error) {
@@ -160,7 +165,7 @@ export const OperationViewer: ComponentType<{
       }
 
       wrapErrorMessage(
-        (e: NetworkError) => `提交评分失败：${e.message}`,
+        (e) => `提交评分失败：${formatError(e)}`,
         mutate(async (val) => {
           await rateOperation({
             id: operationId,
@@ -168,11 +173,11 @@ export const OperationViewer: ComponentType<{
           })
           return val
         }),
-      ).catch(noop)
+      ).catch(console.warn)
     }
 
     return (
-      <OperationDrawer
+      <DrawerLayout
         title={
           <>
             <Icon icon="document" />
@@ -203,7 +208,7 @@ export const OperationViewer: ComponentType<{
               className="ml-4"
               icon="download"
               text="下载原 JSON"
-              onClick={() => handleDownloadJSON(operationDoc)}
+              onClick={() => handleDownloadJSON(operation.parsedContent)}
             />
 
             <Button
@@ -226,13 +231,12 @@ export const OperationViewer: ComponentType<{
           }
         >
           <OperationViewerInner
-            operationDoc={operationDoc}
             levels={levels}
             operation={operation}
             handleRating={handleRating}
           />
         </ErrorBoundary>
-      </OperationDrawer>
+      </DrawerLayout>
     )
   },
   {
@@ -270,33 +274,33 @@ const EmptyOperator: FC<{
 )
 
 function OperationViewerInner({
-  operationDoc,
   levels,
   operation,
   handleRating,
 }: {
-  operationDoc: CopilotDocV1.Operation
   levels: Level[]
   operation: Operation
   handleRating: (decision: OpRatingType) => Promise<void>
 }) {
   return (
     <div className="h-full overflow-auto py-4 px-8 pt-8">
-      <H3>{operationDoc.doc.title}</H3>
+      <H3>{operation.parsedContent.doc.title}</H3>
 
       <div className="grid grid-rows-1 grid-cols-3 gap-8">
         <div className="flex flex-col">
-          <Paragraphs content={operationDoc.doc.details} linkify />
+          <Paragraphs content={operation.parsedContent.doc.details} linkify />
         </div>
 
         <div className="flex flex-col">
           <FactItem title="作战">
             <EDifficultyLevel
               level={
-                findLevelByStageName(levels, operationDoc.stageName) ||
-                createCustomLevel(operationDoc.stageName)
+                findLevelByStageName(
+                  levels,
+                  operation.parsedContent.stageName,
+                ) || createCustomLevel(operation.parsedContent.stageName)
               }
-              difficulty={operationDoc.difficulty}
+              difficulty={operation.parsedContent.difficulty}
             />
           </FactItem>
 
@@ -364,7 +368,7 @@ function OperationViewerInner({
           />
         }
       >
-        <OperationViewerInnerDetails operationDoc={operationDoc} />
+        <OperationViewerInnerDetails operation={operation} />
       </ErrorBoundary>
 
       <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
@@ -380,28 +384,24 @@ function OperationViewerInner({
     </div>
   )
 }
-function OperationViewerInnerDetails({
-  operationDoc,
-}: {
-  operationDoc: CopilotDocV1.Operation
-}) {
+function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
   return (
     <div className="grid grid-rows-1 grid-cols-3 gap-8">
       <div className="flex flex-col">
         <H4 className="mb-4">干员与干员组</H4>
         <H5 className="mb-4 text-slate-600">干员</H5>
         <div className="flex flex-col mb-4">
-          {operationDoc.opers?.map((operator) => (
+          {operation.parsedContent.opers?.map((operator) => (
             <OperatorCard key={operator.name} operator={operator} />
           ))}
-          {!operationDoc.opers?.length && (
+          {!operation.parsedContent.opers?.length && (
             <EmptyOperator description="作业并未添加干员" />
           )}
         </div>
 
         <H5 className="mb-4 text-slate-600">干员组</H5>
         <div className="flex flex-col">
-          {operationDoc.groups?.map((group) => (
+          {operation.parsedContent.groups?.map((group) => (
             <Card elevation={Elevation.ONE} className="mb-4" key={group.name}>
               <div className="flex flex-col">
                 <H5 className="text-gray-800 font-bold">{group.name}</H5>
@@ -421,7 +421,7 @@ function OperationViewerInnerDetails({
             </Card>
           ))}
 
-          {!operationDoc.groups?.length && (
+          {!operation.parsedContent.groups?.length && (
             <EmptyOperator
               title="暂无干员组"
               description="作业并未添加干员组"
@@ -433,9 +433,9 @@ function OperationViewerInnerDetails({
       <div className="col-span-2">
         <H4 className="mb-4">动作序列</H4>
 
-        {operationDoc.actions.length ? (
+        {operation.parsedContent.actions.length ? (
           <div className="flex flex-col pb-8">
-            {operationDoc.actions.map((action, i) => (
+            {operation.parsedContent.actions.map((action, i) => (
               <ActionCard action={action} key={i} />
             ))}
           </div>

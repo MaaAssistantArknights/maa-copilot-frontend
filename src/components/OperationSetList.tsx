@@ -1,27 +1,24 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
-import { UseOperationsParams, useOperations } from 'apis/operation'
+import { UseOperationSetsParams, useOperationSets } from 'apis/operation-set'
 import { useAtomValue } from 'jotai'
 import { ComponentType, ReactNode } from 'react'
 
 import { neoLayoutAtom } from 'store/pref'
 
-import { NeoOperationCard, OperationCard } from './OperationCard'
+import { NeoOperationSetCard, OperationSetCard } from './OperationSetCard'
 import { withSuspensable } from './Suspensable'
 
-export const OperationList: ComponentType<UseOperationsParams> =
+export const OperationSetList: ComponentType<UseOperationSetsParams> =
   withSuspensable(
     (props) => {
       const neoLayout = useAtomValue(neoLayoutAtom)
 
-      const { operations, setSize, isValidating, isReachingEnd } =
-        useOperations({
-          ...props,
-          suspense: true,
-        })
+      const { operationSets, setSize, isValidating, isReachingEnd } =
+        useOperationSets({ ...props, suspense: true })
 
       // make TS happy: we got Suspense out there
-      if (!operations) throw new Error('unreachable')
+      if (!operationSets) throw new Error('unreachable')
 
       const items: ReactNode = neoLayout ? (
         <div
@@ -30,13 +27,16 @@ export const OperationList: ComponentType<UseOperationsParams> =
             gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr)',
           }}
         >
-          {operations.map((operation) => (
-            <NeoOperationCard operation={operation} key={operation.id} />
+          {operationSets?.map((operationSet) => (
+            <NeoOperationSetCard
+              operationSet={operationSet}
+              key={operationSet.id}
+            />
           ))}
         </div>
       ) : (
-        operations.map((operation) => (
-          <OperationCard operation={operation} key={operation.id} />
+        operationSets.map((operationSet) => (
+          <OperationSetCard operationSet={operationSet} key={operationSet.id} />
         ))
       )
 
@@ -44,15 +44,15 @@ export const OperationList: ComponentType<UseOperationsParams> =
         <>
           {items}
 
-          {isReachingEnd && operations.length === 0 && (
+          {isReachingEnd && operationSets.length === 0 && (
             <NonIdealState
               icon="slash"
-              title="没有找到任何作业"
+              title="没有找到任何作业集"
               description="(つД｀)･ﾟ･"
             />
           )}
 
-          {isReachingEnd && operations.length !== 0 && (
+          {isReachingEnd && operationSets.length !== 0 && (
             <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
               已经到底了哦 (ﾟ▽ﾟ)/
             </div>
@@ -73,6 +73,6 @@ export const OperationList: ComponentType<UseOperationsParams> =
       )
     },
     {
-      retryOnChange: ['orderBy', 'keyword', 'levelKeyword', 'operator'],
+      retryOnChange: ['keyword'],
     },
   )

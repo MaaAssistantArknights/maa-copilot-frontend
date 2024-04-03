@@ -4,6 +4,8 @@ import { getOperation } from 'apis/operation'
 import { FC, useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
 
+import { INVALID_OPERATION_CONTENT } from 'models/converter'
+
 import { parseShortCode } from '../../../models/shortCode'
 import { formatError } from '../../../utils/error'
 import { FormField2 } from '../../FormField'
@@ -39,23 +41,26 @@ export const ShortCodeImporter: FC<{
     try {
       setPending(true)
 
-      const id = +(parseShortCode(code) || NaN)
+      const id = parseShortCode(code)
 
-      if (!isNaN(id)) {
+      if (!id) {
         throw new Error('无效的神秘代码')
       }
 
-      let operationContent = (await getOperation({ id })).content
+      const operationContent = (await getOperation({ id })).parsedContent
 
-      // prettify JSON
-      operationContent = JSON.stringify(JSON.parse(operationContent), null, 2)
+      if (operationContent === INVALID_OPERATION_CONTENT) {
+        throw new Error('无法解析作业内容')
+      }
 
       // deal with race condition
       if (!dialogOpen) {
         return
       }
 
-      onImport(operationContent)
+      const prettifiedJson = JSON.stringify(operationContent, null, 2)
+
+      onImport(prettifiedJson)
       setDialogOpen(false)
     } catch (e) {
       console.warn(e)

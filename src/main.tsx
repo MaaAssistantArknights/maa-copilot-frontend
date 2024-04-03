@@ -6,17 +6,17 @@ import * as Sentry from '@sentry/react'
 import { BrowserTracing } from '@sentry/tracing'
 
 import 'normalize.css'
-import React from 'react'
+import React, { lazy } from 'react'
 import ReactDOM from 'react-dom/client'
 import { Route, Routes } from 'react-router-dom'
 
+import { withSuspensable } from 'components/Suspensable'
 import { ViewPage } from 'pages/view'
-import { clearOutdatedSwrCache } from 'utils/swr-cache'
+import { clearOutdatedSwrCache } from 'utils/swr'
 
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
-import { CreatePage } from './pages/create'
 import { IndexPage } from './pages/index'
 import './styles/blueprint.less'
 
@@ -48,14 +48,22 @@ if (navigator.userAgent.includes('Win')) {
 
 clearOutdatedSwrCache()
 
+const CreatePageLazy = withSuspensable(
+  lazy(() => import('./pages/create').then((m) => ({ default: m.CreatePage }))),
+)
+const AboutPageLazy = withSuspensable(
+  lazy(() => import('./pages/about').then((m) => ({ default: m.AboutPage }))),
+)
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <App>
       <AppLayout>
         <Routes>
           <Route path="/" element={<IndexPage />} />
-          <Route path="/create/:id" element={<CreatePage />} />
-          <Route path="/create" element={<CreatePage />} />
+          <Route path="/create/:id" element={<CreatePageLazy />} />
+          <Route path="/create" element={<CreatePageLazy />} />
+          <Route path="/about" element={<AboutPageLazy />} />
           <Route path="/operation/:id" element={<ViewPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
