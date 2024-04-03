@@ -70,9 +70,12 @@ export namespace TokenManager {
     })()
 
     // reset when finished, so that the next call will trigger a new check
-    pendingGetToken.finally(() => {
-      pendingGetToken = undefined
-    })
+    pendingGetToken
+      .finally(() => {
+        pendingGetToken = undefined
+      })
+      // we still need to catch the error here, otherwise it will be unhandled
+      .catch(noop)
 
     return pendingGetToken
   }
