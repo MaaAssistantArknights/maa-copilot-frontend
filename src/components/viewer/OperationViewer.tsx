@@ -433,7 +433,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
       <div className="col-span-2">
         <H4 className="mb-4">动作序列</H4>
 
-        {operation.parsedContent.actions.length ? (
+        {operation.parsedContent.actions?.length ? (
           <div className="flex flex-col pb-8">
             {operation.parsedContent.actions.map((action, i) => (
               <ActionCard action={action} key={i} />

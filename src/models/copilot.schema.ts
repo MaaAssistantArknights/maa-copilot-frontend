@@ -5,7 +5,7 @@ import { OpDifficulty } from './operation'
  */
 export namespace CopilotDocV1 {
   export interface Operation {
-    actions: Action[]
+    actions?: Action[]
     doc: Doc
     groups?: Group[]
     minimumRequired: string
