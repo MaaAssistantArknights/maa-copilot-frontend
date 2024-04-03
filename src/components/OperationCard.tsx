@@ -1,6 +1,7 @@
 import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
+import clsx from 'clsx'
 import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
@@ -19,22 +20,21 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
-    <ReLink search={{ op: operation.id }} className="no-underline">
-      <Card
-        interactive={true}
-        elevation={Elevation.TWO}
-        className="flex flex-col gap-2"
-      >
+    <Card
+      interactive={true}
+      elevation={Elevation.TWO}
+      className="relative flex flex-col gap-2"
+    >
+      <ReLink search={{ op: operation.id }} className="block no-underline">
         <div className="flex">
           <Tooltip2
             content={operation.parsedContent.doc.title}
             className="grow flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
           >
-            <H4 className="p-0 m-0 whitespace-nowrap overflow-hidden text-ellipsis">
+            <H4 className="p-0 m-0 mr-20 whitespace-nowrap overflow-hidden text-ellipsis">
               {operation.parsedContent.doc.title}
             </H4>
           </Tooltip2>
-          <CardActions operation={operation} />
         </div>
         <div className="flex items-center text-slate-900">
           <div className="flex flex-wrap">
@@ -105,8 +105,10 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
             </Tooltip2>
           </div>
         </div>
-      </Card>
-    </ReLink>
+      </ReLink>
+
+      <CardActions className="absolute top-4 right-4" operation={operation} />
+    </Card>
   )
 }
 
@@ -114,11 +116,12 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
-    <ReLink
-      search={{ op: operation.id }}
-      className="block mb-4 sm:mb-2 last:mb-0 no-underline"
+    <Card
+      interactive={true}
+      elevation={Elevation.TWO}
+      className="relative mb-4 sm:mb-2 last:mb-0"
     >
-      <Card interactive={true} elevation={Elevation.TWO}>
+      <ReLink search={{ op: operation.id }} className="block no-underline">
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
           <div className="flex flex-col gap-3">
@@ -126,7 +129,6 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
               <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
                 {operation.parsedContent.doc.title}
               </H4>
-              <CardActions operation={operation} />
             </div>
             <H5 className="flex items-center text-slate-900 -mt-3">
               <EDifficultyLevel
@@ -141,43 +143,40 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
             </H5>
           </div>
 
-          <div className="lg:flex-1 hidden" />
+          <div className="grow basis-full xl:basis-0" />
 
           {/* meta */}
-          <div className="flex flex-col flex-1 gap-y-1.5 gap-x-4">
-            <div className="flex flex-wrap sm:justify-end items-center gap-x-4 gap-y-1 text-zinc-500">
-              <div className="flex items-center gap-1.5">
-                <Icon icon="star" />
-                <OperationRating
-                  className="text-sm"
-                  operation={operation}
-                  layout="horizontal"
-                />
-              </div>
+          <div className="flex flex-wrap items-start gap-x-4 gap-y-1 text-zinc-500">
+            <div className="flex items-center gap-1.5">
+              <Icon icon="star" />
+              <OperationRating
+                className="text-sm"
+                operation={operation}
+                layout="horizontal"
+              />
+            </div>
 
-              <Tooltip2 placement="top" content={`访问量：${operation.views}`}>
-                <div>
-                  <Icon icon="eye-open" className="mr-1.5" />
-                  <span>{operation.views}</span>
-                </div>
-              </Tooltip2>
-
+            <Tooltip2 placement="top" content={`访问量：${operation.views}`}>
               <div>
-                <Icon icon="time" className="mr-1.5" />
-                <RelativeTime
-                  Tooltip2Props={{ placement: 'top' }}
-                  moment={operation.uploadTime}
-                />
+                <Icon icon="eye-open" className="mr-1.5" />
+                <span>{operation.views}</span>
               </div>
+            </Tooltip2>
+
+            <div>
+              <Icon icon="time" className="mr-1.5" />
+              <RelativeTime
+                Tooltip2Props={{ placement: 'top' }}
+                moment={operation.uploadTime}
+              />
             </div>
-            <div className="text-zinc-500 self-end">
-              <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
-                <div>
-                  <Icon icon="user" className="mr-1.5" />
-                  <span>{operation.uploader}</span>
-                </div>
-              </Tooltip2>
-            </div>
+
+            <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
+              <div>
+                <Icon icon="user" className="mr-1.5" />
+                <span>{operation.uploader}</span>
+              </div>
+            </Tooltip2>
           </div>
         </div>
         <div className="flex md:flex-row flex-col gap-4">
@@ -195,8 +194,13 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
             <OperatorTags operation={operation} />
           </div>
         </div>
-      </Card>
-    </ReLink>
+      </ReLink>
+
+      <CardActions
+        className="absolute top-4 xl:top-12 right-[18px]"
+        operation={operation}
+      />
+    </Card>
   )
 }
 
@@ -230,16 +234,15 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
   )
 }
 
-const CardActions = ({ operation }: { operation: Operation }) => {
+const CardActions = ({
+  className,
+  operation,
+}: {
+  className?: string
+  operation: Operation
+}) => {
   return (
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
-      className="flex gap-1"
-      onClick={(e) => {
-        // 避免点击按钮时触发卡片的链接跳转
-        e.stopPropagation()
-      }}
-    >
+    <div className={clsx('flex gap-1', className)}>
       <Tooltip2
         placement="bottom"
         content={
@@ -249,10 +252,7 @@ const CardActions = ({ operation }: { operation: Operation }) => {
         <Button
           small
           icon="download"
-          onClick={(e) => {
-            e.stopPropagation()
-            handleDownloadJSON(operation.parsedContent)
-          }}
+          onClick={() => handleDownloadJSON(operation.parsedContent)}
         />
       </Tooltip2>
       <Tooltip2
@@ -264,10 +264,7 @@ const CardActions = ({ operation }: { operation: Operation }) => {
         <Button
           small
           icon="clipboard"
-          onClick={(e) => {
-            e.stopPropagation()
-            handleCopyShortCode(operation)
-          }}
+          onClick={() => handleCopyShortCode(operation)}
         />
       </Tooltip2>
       <Tooltip2
