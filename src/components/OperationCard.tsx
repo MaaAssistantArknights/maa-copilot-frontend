@@ -235,10 +235,6 @@ const CardActions = ({ operation }: { operation: Operation }) => {
     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
     <div
       className="flex gap-1"
-      onClick={(e) => {
-        // 避免点击按钮时触发卡片的链接跳转
-        e.stopPropagation()
-      }}
     >
       <Tooltip2
         placement="bottom"
@@ -250,7 +246,7 @@ const CardActions = ({ operation }: { operation: Operation }) => {
           small
           icon="download"
           onClick={(e) => {
-            e.stopPropagation()
+            e.preventDefault()
             handleDownloadJSON(operation.parsedContent)
           }}
         />
@@ -265,7 +261,7 @@ const CardActions = ({ operation }: { operation: Operation }) => {
           small
           icon="clipboard"
           onClick={(e) => {
-            e.stopPropagation()
+            e.preventDefault()
             handleCopyShortCode(operation)
           }}
         />
