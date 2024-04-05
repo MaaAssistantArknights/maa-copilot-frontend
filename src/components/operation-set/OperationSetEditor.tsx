@@ -180,7 +180,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
     control,
     handleSubmit,
     setError,
-    formState: { errors, isDirty, isSubmitting },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     defaultValues: operationSet || {
       name: '',
@@ -220,7 +220,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
                 <div className="grow">
                   <OperationSelector
                     operationSet={operationSet}
-                    ref={operationSelectorRef}
+                    selectorRef={operationSelectorRef}
                   />
                 </div>
               </>
@@ -302,7 +302,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
         )}
 
         <Button
-          disabled={!isDirty || isSubmitting}
+          disabled={isSubmitting}
           intent="primary"
           loading={isSubmitting}
           type="submit"
@@ -326,14 +326,17 @@ interface OperationSelectorProps {
   operationSet: OperationSet
 
   // 这个组件做成受控组件的话，输入输出比较难处理，所以做成非受控组件，用 ref 获取值
-  ref: Ref<OperationSelectorRef>
+  selectorRef: Ref<OperationSelectorRef>
 }
 
 interface OperationSelectorRef {
   getValues(): { idsToAdd: number[]; idsToRemove: number[] }
 }
 
-function OperationSelector({ operationSet, ref }: OperationSelectorProps) {
+function OperationSelector({
+  operationSet,
+  selectorRef,
+}: OperationSelectorProps) {
   const { operations, error } = useOperations({
     operationIds: operationSet.copilotIds,
   })
@@ -348,7 +351,7 @@ function OperationSelector({ operationSet, ref }: OperationSelectorProps) {
   )
 
   useImperativeHandle(
-    ref,
+    selectorRef,
     () => ({
       getValues() {
         const idsToAdd: number[] = []

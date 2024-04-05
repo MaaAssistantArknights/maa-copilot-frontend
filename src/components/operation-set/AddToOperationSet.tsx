@@ -33,14 +33,7 @@ export function AddToOperationSetButton({
 
   return (
     <>
-      <Button
-        {...props}
-        onClick={(e) => {
-          e.preventDefault()
-          e.stopPropagation()
-          setIsOpen(true)
-        }}
-      />
+      <Button {...props} onClick={() => setIsOpen(true)} />
       <Dialog
         title="添加到作业集"
         icon="user"
