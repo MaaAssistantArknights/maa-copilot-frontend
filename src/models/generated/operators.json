@@ -73,12 +73,28 @@
       "alt_name": "Aak"
     },
     {
+      "id": "char_446_aroma",
+      "subProf": "blastcaster",
+      "name": "阿罗玛",
+      "alias": "aluoma eluoma alm elm 阿羅瑪",
+      "rarity": 5,
+      "alt_name": "Aroma"
+    },
+    {
       "id": "char_002_amiya",
       "subProf": "corecaster",
       "name": "阿米娅",
       "alias": "amiya emiya amy emy 阿米婭",
       "rarity": 5,
       "alt_name": "Amiya"
+    },
+    {
+      "id": "char_4132_ascln",
+      "subProf": "stalker",
+      "name": "阿斯卡纶",
+      "alias": "asikalun asikaguan asiqialun asiqiaguan esikalun esikaguan esiqialun esiqiaguan askl askg asql asqg eskl eskg esql esqg 阿斯卡綸",
+      "rarity": 6,
+      "alt_name": "Ascalon"
     },
     {
       "id": "char_277_sqrrel",
@@ -183,6 +199,14 @@
       "alias": "anzhela azl 安哲拉",
       "rarity": 5,
       "alt_name": "Andreana"
+    },
+    {
+      "id": "char_4131_odda",
+      "subProf": "hammer",
+      "name": "奥达",
+      "alias": "aoda yuda ad yd 奧達",
+      "rarity": 5,
+      "alt_name": "Odda"
     },
     {
       "id": "char_346_aosta",
@@ -1487,6 +1511,14 @@
       "alias": "longteng.L lt.L 龍騰.L",
       "rarity": 0,
       "alt_name": "DDF Type-L"
+    },
+    {
+      "id": "char_4130_luton",
+      "subProf": "unyield",
+      "name": "露托",
+      "alias": "loutuo lutuo lt 露托",
+      "rarity": 4,
+      "alt_name": "Lutonada"
     },
     {
       "id": "char_433_windft",
@@ -2972,7 +3004,8 @@
         { "id": "crusher", "name": "重剑手" },
         { "id": "reaper", "name": "收割者" },
         { "id": "fighter", "name": "斗士" },
-        { "id": "librator", "name": "解放者" }
+        { "id": "librator", "name": "解放者" },
+        { "id": "hammer", "name": "撼地者" }
       ]
     },
     {
@@ -3023,9 +3056,9 @@
       "sub": [
         { "id": "protector", "name": "铁卫" },
         { "id": "guardian", "name": "守护者" },
+        { "id": "unyield", "name": "不屈者" },
         { "id": "artsprotector", "name": "驭法铁卫" },
         { "id": "shotprotector", "name": "哨戒铁卫" },
-        { "id": "unyield", "name": "不屈者" },
         { "id": "fortress", "name": "要塞" },
         { "id": "duelist", "name": "决战者" }
       ]
