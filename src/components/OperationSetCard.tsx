@@ -1,7 +1,7 @@
 import { Button, Card, Elevation, H4, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { handleCopyShortCode } from 'services/operation'
+import { copyShortCode } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
@@ -163,7 +163,7 @@ const CardActions = ({
           icon="clipboard"
           onClick={(e) => {
             e.stopPropagation()
-            handleCopyShortCode(operationSet)
+            copyShortCode(operationSet)
           }}
         />
       </Tooltip2>

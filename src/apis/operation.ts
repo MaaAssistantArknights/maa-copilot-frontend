@@ -48,15 +48,19 @@ export function useOperations({
         return null // reached the end
       }
 
-      // 用户输入 maa://xxxxxx 时，只传这个 id，其他参数都不传
+      // 用户输入神秘代码时，只传这个 id，其他参数都不传
       if (keyword) {
-        const id = parseShortCode(keyword)
+        const content = parseShortCode(keyword)
 
-        if (id) {
+        if (content) {
+          if (content.type === 'operationSet') {
+            throw new Error('该神秘代码属于作业集，无法在此使用⊙﹏⊙∥')
+          }
+
           return [
             'operations',
             {
-              copilotIds: [id],
+              copilotIds: [content.id],
             } satisfies QueriesCopilotRequest,
           ]
         }

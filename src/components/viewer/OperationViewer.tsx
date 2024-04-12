@@ -24,7 +24,7 @@ import {
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
+import { copyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -216,7 +216,7 @@ export const OperationViewer: ComponentType<{
               icon="clipboard"
               text="复制神秘代码"
               intent="primary"
-              onClick={() => handleCopyShortCode(operation)}
+              onClick={() => copyShortCode(operation)}
             />
           </>
         }
