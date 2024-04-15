@@ -2,7 +2,7 @@ import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
+import { copyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
@@ -263,7 +263,7 @@ const CardActions = ({
         <Button
           small
           icon="clipboard"
-          onClick={() => handleCopyShortCode(operation)}
+          onClick={() => copyShortCode(operation)}
         />
       </Tooltip2>
       <Tooltip2

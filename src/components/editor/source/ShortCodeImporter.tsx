@@ -41,10 +41,16 @@ export const ShortCodeImporter: FC<{
     try {
       setPending(true)
 
-      const id = parseShortCode(code)
+      const shortCodeContent = parseShortCode(code)
 
-      if (!id) {
+      if (!shortCodeContent) {
         throw new Error('无效的神秘代码')
+      }
+
+      const { type, id } = shortCodeContent
+
+      if (type === 'operationSet') {
+        throw new Error('该神秘代码属于作业集，无法在此使用⊙﹏⊙∥')
       }
 
       const operationContent = (await getOperation({ id })).parsedContent

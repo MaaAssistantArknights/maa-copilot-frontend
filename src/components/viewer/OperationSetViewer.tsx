@@ -19,7 +19,7 @@ import {
 } from 'apis/operation-set'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
-import { handleCopyShortCode } from 'services/operation'
+import { copyShortCode } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
 import { OperationList } from 'components/OperationList'
@@ -179,7 +179,7 @@ export const OperationSetViewer: ComponentType<{
               icon="clipboard"
               text="复制神秘代码"
               intent="primary"
-              onClick={() => handleCopyShortCode(operationSet)}
+              onClick={() => copyShortCode(operationSet)}
             />
           </>
         }

@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite'
 
 import { toCopilotOperation } from 'models/converter'
 import { OpRatingType, Operation } from 'models/operation'
-import { parseShortCode } from 'models/shortCode'
+import { ShortCodeContent, parseShortCode } from 'models/shortCode'
 import { OperationApi } from 'utils/maa-copilot-client'
 import { useSWRRefresh } from 'utils/swr'
 
@@ -48,16 +48,32 @@ export function useOperations({
         return null // reached the end
       }
 
-      // 用户输入 maa://xxxxxx 时，只传这个 id，其他参数都不传
+      // 用户输入神秘代码时，只传这个 id，其他参数都不传
       if (keyword) {
-        const id = parseShortCode(keyword)
+        let content: ShortCodeContent | null = null
 
-        if (id) {
+        try {
+          content = parseShortCode(keyword)
+        } catch (e) {
+          console.warn(e)
+        }
+
+        if (content) {
+          let error: string | undefined
+
+          if (content.type === 'operationSet') {
+            error = '该神秘代码属于作业集，无法在此使用⊙﹏⊙∥'
+          }
+
           return [
             'operations',
             {
-              copilotIds: [id],
+              copilotIds: [content.id],
             } satisfies QueriesCopilotRequest,
+
+            // 如果直接抛出 error 的话，useSWRInfinite 会把这个 error 吞掉，所以传到 fetcher 里再抛出
+            // https://github.com/vercel/swr/issues/2102
+            error,
           ]
         }
       }
@@ -77,7 +93,11 @@ export function useOperations({
         } satisfies QueriesCopilotRequest,
       ]
     },
-    async ([, req]) => {
+    async ([, req, error]) => {
+      if (error) {
+        throw new Error(error)
+      }
+
       // 如果指定了 id 列表，但是列表为空，就直接返回空数据。不然要是直接传空列表，就相当于没有这个参数，
       // 会导致后端返回所有数据
       if (req.copilotIds?.length === 0) {
