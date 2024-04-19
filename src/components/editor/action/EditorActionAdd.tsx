@@ -194,6 +194,10 @@ export const EditorActionAdd = ({
 
           <div className="flex-1" />
 
+          <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
+            {isNew ? '添加' : '保存'}
+          </FormSubmitButton>
+
           <EditorResetButton
             reset={() => reset(resettingValues)}
             entityName="正在编辑的动作"
