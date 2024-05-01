@@ -953,6 +953,14 @@
       "alt_name": "Ash"
     },
     {
+      "id": "token_10035_wisdel_wward",
+      "subProf": "notchar1",
+      "name": "魂灵之影",
+      "alias": "hunlingzhiying hlzy 魂靈之影",
+      "rarity": 0,
+      "alt_name": "Shadow of Revenant"
+    },
+    {
       "id": "char_4027_heyak",
       "subProf": "corecaster",
       "name": "霍尔海雅",
@@ -1361,6 +1369,14 @@
       "alt_name": "Gravel"
     },
     {
+      "id": "char_1036_fang2",
+      "subProf": "charger",
+      "name": "历阵锐枪芬",
+      "alias": "lizhenruiqiangfen lzrqf 曆陣銳槍芬",
+      "rarity": 5,
+      "alt_name": "Fang the Fire-sharpened"
+    },
+    {
       "id": "trap_079_allydonq",
       "subProf": "pioneer",
       "name": "猎潮的骑士",
@@ -1545,6 +1561,14 @@
       "alt_name": "Robin"
     },
     {
+      "id": "char_4133_logos",
+      "subProf": "corecaster",
+      "name": "逻各斯",
+      "alias": "luogesi lgs 邏各斯",
+      "rarity": 6,
+      "alt_name": "Logos"
+    },
+    {
       "id": "char_4040_rockr",
       "subProf": "funnel",
       "name": "洛洛",
@@ -1681,6 +1705,14 @@
       "alt_name": "Mostima"
     },
     {
+      "id": "char_4134_cetsyr",
+      "subProf": "bard",
+      "name": "魔王",
+      "alias": "mowang mw 魔王",
+      "rarity": 6,
+      "alt_name": "Civilight Eterna"
+    },
+    {
       "id": "char_117_myrrh",
       "subProf": "physician",
       "name": "末药",
@@ -1767,6 +1799,14 @@
       "alias": "paopuka paopuqia ppk ppq 泡普卡",
       "rarity": 3,
       "alt_name": "Popukar"
+    },
+    {
+      "id": "char_4136_phonor",
+      "subProf": "ritualist",
+      "name": "PhonoR-0",
+      "alias": "PhonoR-0",
+      "rarity": 1,
+      "alt_name": "PhonoR-0"
     },
     {
       "id": "char_509_acast",
@@ -2311,6 +2351,14 @@
       "alias": "weifeng wf 微風",
       "rarity": 5,
       "alt_name": "Breeze"
+    },
+    {
+      "id": "char_1035_wisdel",
+      "subProf": "bombarder",
+      "name": "维什戴尔",
+      "alias": "weishidaier weishendaier wsde 維什戴爾",
+      "rarity": 6,
+      "alt_name": "Wiš'adel"
     },
     {
       "id": "char_4098_vvana",
@@ -3042,12 +3090,12 @@
       "name": "辅助",
       "sub": [
         { "id": "bard", "name": "吟游者" },
+        { "id": "ritualist", "name": "巫役" },
         { "id": "slower", "name": "凝滞师" },
         { "id": "summoner", "name": "召唤师" },
         { "id": "craftsman", "name": "工匠" },
         { "id": "underminer", "name": "削弱者" },
-        { "id": "blessing", "name": "护佑者" },
-        { "id": "ritualist", "name": "巫役" }
+        { "id": "blessing", "name": "护佑者" }
       ]
     },
     {
