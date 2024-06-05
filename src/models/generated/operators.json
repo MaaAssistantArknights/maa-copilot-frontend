@@ -481,6 +481,14 @@
       "alt_name": "F.T.E"
     },
     {
+      "id": "token_10039_ulpia_block",
+      "subProf": "notchar1",
+      "name": "从不混淆的方向",
+      "alias": "congbuhunxiaodefangxiang congbuhunxiaodifangxiang congfouhunxiaodefangxiang congfouhunxiaodifangxiang zongbuhunxiaodefangxiang zongbuhunxiaodifangxiang zongfouhunxiaodefangxiang zongfouhunxiaodifangxiang cbhxdfx cfhxdfx zbhxdfx zfhxdfx 從不混淆的方向",
+      "rarity": 0,
+      "alt_name": "Undeviating Course"
+    },
+    {
       "id": "char_1031_slent2",
       "subProf": "blessing",
       "name": "淬羽赫默",
@@ -759,6 +767,14 @@
       "alias": "haimo hm 海沫",
       "rarity": 5,
       "alt_name": "Highmore"
+    },
+    {
+      "id": "char_4079_haini",
+      "subProf": "underminer",
+      "name": "海霓",
+      "alias": "haini hn 海霓",
+      "rarity": 5,
+      "alt_name": "Lucilla"
     },
     {
       "id": "char_1021_kroos2",
@@ -2009,6 +2025,14 @@
       "alt_name": "Bassline"
     },
     {
+      "id": "char_4137_udflow",
+      "subProf": "shotprotector",
+      "name": "深巡",
+      "alias": "shenxun sx 深巡",
+      "rarity": 5,
+      "alt_name": "Underflow"
+    },
+    {
       "id": "char_1032_excu2",
       "subProf": "reaper",
       "name": "圣约送葬人",
@@ -2383,6 +2407,14 @@
       "alias": "wenmi wm 溫米",
       "rarity": 5,
       "alt_name": "Warmy"
+    },
+    {
+      "id": "char_4145_ulpia",
+      "subProf": "crusher",
+      "name": "乌尔比安",
+      "alias": "wuerbian weba 烏爾比安",
+      "rarity": 6,
+      "alt_name": "Ulpianus"
     },
     {
       "id": "char_254_vodfox",
