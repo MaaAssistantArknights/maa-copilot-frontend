@@ -25,7 +25,7 @@ import { SetRequired } from 'type-fest'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FactItem } from '../../FactItem'
-import { Droppable, Sortable } from '../../dnd'
+import { Droppable, Sortable } from '../../DND'
 import { EditorGroupItem } from './EditorGroupItem'
 import { EditorOperatorItem } from './EditorOperatorItem'
 import {

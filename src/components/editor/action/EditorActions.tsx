@@ -15,7 +15,7 @@ import { Control, useFieldArray } from 'react-hook-form'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { Sortable } from '../../dnd'
+import { Sortable } from '../../DND'
 import { EditorActionAdd, EditorActionAddProps } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
 import { validateAction } from './validation'

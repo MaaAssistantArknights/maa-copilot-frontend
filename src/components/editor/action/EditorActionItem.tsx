@@ -8,7 +8,7 @@ import type { CopilotDocV1 } from 'models/copilot.schema'
 import { findActionType } from 'models/types'
 
 import { ActionCard } from '../../ActionCard'
-import { SortableItemProps } from '../../dnd'
+import { SortableItemProps } from '../../DND'
 import {
   CardDeleteOption,
   CardDuplicateOption,

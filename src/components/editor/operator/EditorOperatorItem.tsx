@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
 import { OPERATORS, getSkillUsageTitle } from '../../../models/operator'
-import { SortableItemProps } from '../../dnd'
+import { SortableItemProps } from '../../DND'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { OperatorAvatar } from './EditorOperator'
 
