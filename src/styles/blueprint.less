@@ -234,17 +234,23 @@ body {
   }
 }
 
-
 .bp4-dark {
   .docs-content-wrapper {
     @apply min-h-screen;
     background-color: #2f343c;
   }
-  .bp4-tag{
+  .bp4-tag {
     background-color: #141c2b;
+    &.bp4-intent-danger {
+      background-color: #b3303f;
+    }
+    &.bp4-intent-primary {
+      background-color: #3498db;
+    }
   }
   div,
-  p,span {
+  p,
+  span {
     color: #fff;
   }
 }
