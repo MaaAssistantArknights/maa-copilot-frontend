@@ -80,7 +80,7 @@ export const OperationRating: FC<{
                 layout === 'horizontal' ? IconSize.STANDARD : IconSize.LARGE
               }
               icon="star-empty"
-              className="text-zinc-600"
+              className="text-zinc-600 dark:text-slate-100"
             />
           }
           readonly
@@ -88,7 +88,7 @@ export const OperationRating: FC<{
       )}
       <div
         className={clsx(
-          'text-sm text-zinc-500',
+          'text-sm text-zinc-500 dark:text-slate-100',
           layout === 'horizontal' && !operation.notEnoughRating && 'mr-1.5',
         )}
       >
