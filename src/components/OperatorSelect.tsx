@@ -14,7 +14,7 @@ interface OperatorSelectProps {
   onChange: (operators: string[]) => void
 }
 
-type OperatorInfo = typeof OPERATORS[number]
+type OperatorInfo = (typeof OPERATORS)[number]
 
 interface OperatorEntry {
   name: string
@@ -122,11 +122,12 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
         leftIcon: 'person',
         className: '!flex !p-0 !pl-[5px]',
         large: true,
-        tagProps(value, index) {
+        tagProps(_value, index) {
           const operator = operators[index]
 
           return {
             interactive: true,
+            className: operator.exclude ? 'line-through' : undefined,
             intent: operator?.exclude ? 'danger' : 'primary',
             onClick: () => setExclude(index, !operator?.exclude),
           }
