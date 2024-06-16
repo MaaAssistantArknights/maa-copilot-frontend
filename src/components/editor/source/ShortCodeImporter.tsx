@@ -47,12 +47,7 @@ export const ShortCodeImporter: FC<{
         throw new Error('无效的神秘代码')
       }
 
-      const { type, id } = shortCodeContent
-
-      if (type === 'operationSet') {
-        throw new Error('该神秘代码属于作业集，无法在此使用⊙﹏⊙∥')
-      }
-
+      const { id } = shortCodeContent
       const operationContent = (await getOperation({ id })).parsedContent
 
       if (operationContent === INVALID_OPERATION_CONTENT) {

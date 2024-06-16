@@ -32,14 +32,10 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
 /**
  * @param target - Either an operation or an operation set
  */
-export const copyShortCode = async (target: {
-  id: number
-  copilotIds?: number[]
-}) => {
+export const copyShortCode = async (target: { id: number }) => {
   try {
     const content: ShortCodeContent = {
       id: target.id,
-      type: target.copilotIds ? 'operationSet' : 'operation',
     }
 
     const shortCode = toShortCode(content)

@@ -1,39 +1,24 @@
 /*
- * operation:    maa://123456
- * operationSet: maa://c123456
+ * Format: maa://123456
+ * Note that operations and operation sets share the same ID space
+ * and currently there is no way to distinguish them.
  */
 
 const shortCodeScheme = 'maa://'
 
 export interface ShortCodeContent {
   id: number
-  type: 'operation' | 'operationSet'
 }
 
-export function toShortCode({ id, type }: ShortCodeContent) {
-  if (type === 'operation') {
-    return shortCodeScheme + id
-  } else if (type === 'operationSet') {
-    return shortCodeScheme + 'c' + id
-  }
-  throw new Error('无效的神秘代码类型')
+export function toShortCode({ id }: ShortCodeContent) {
+  return shortCodeScheme + id
 }
 
 export function parseShortCode(code: string): ShortCodeContent | null {
   if (code.startsWith(shortCodeScheme)) {
     const idStr = code.slice(shortCodeScheme.length)
-    let content: ShortCodeContent
-
-    if (idStr.startsWith('c')) {
-      content = {
-        id: +idStr.slice(1),
-        type: 'operationSet',
-      }
-    } else {
-      content = {
-        id: +idStr,
-        type: 'operation',
-      }
+    const content: ShortCodeContent = {
+      id: +idStr,
     }
 
     if (!isNaN(content.id)) {

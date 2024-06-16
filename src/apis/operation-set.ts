@@ -111,10 +111,6 @@ export function useOperationSetSearch({
     const shortCodeContent = parseShortCode(keyword)
 
     if (shortCodeContent) {
-      if (shortCodeContent.type === 'operation') {
-        throw new Error('该神秘代码属于作业，无法在此使用⊙﹏⊙∥')
-      }
-
       id = shortCodeContent.id
     }
   }

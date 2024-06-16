@@ -59,21 +59,11 @@ export function useOperations({
         }
 
         if (content) {
-          let error: string | undefined
-
-          if (content.type === 'operationSet') {
-            error = '该神秘代码属于作业集，无法在此使用⊙﹏⊙∥'
-          }
-
           return [
             'operations',
             {
               copilotIds: [content.id],
             } satisfies QueriesCopilotRequest,
-
-            // 如果直接抛出 error 的话，useSWRInfinite 会把这个 error 吞掉，所以传到 fetcher 里再抛出
-            // https://github.com/vercel/swr/issues/2102
-            error,
           ]
         }
       }
@@ -93,11 +83,7 @@ export function useOperations({
         } satisfies QueriesCopilotRequest,
       ]
     },
-    async ([, req, error]) => {
-      if (error) {
-        throw new Error(error)
-      }
-
+    async ([, req]) => {
       // 如果指定了 id 列表，但是列表为空，就直接返回空数据。不然要是直接传空列表，就相当于没有这个参数，
       // 会导致后端返回所有数据
       if (req.copilotIds?.length === 0) {
