@@ -119,6 +119,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                   large
                   type="search"
                   enterKeyHint="search"
+                  defaultValue={queryParams.keyword}
                   onChange={(e) =>
                     debouncedSetQueryParams((old) => ({
                       ...old,
@@ -199,6 +200,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                   large
                   type="search"
                   enterKeyHint="search"
+                  defaultValue={queryParams.keyword}
                   onChange={(e) =>
                     debouncedSetQueryParams((old) => ({
                       ...old,
