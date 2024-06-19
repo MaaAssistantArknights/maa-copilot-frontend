@@ -7,7 +7,7 @@ import {
 } from '@blueprintjs/core'
 
 import { UseOperationsParams } from 'apis/operation'
-import { useAtom } from 'jotai'
+import { useAtom, useAtomValue } from 'jotai'
 import { debounce } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
 
@@ -15,15 +15,25 @@ import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { neoLayoutAtom } from 'store/pref'
+import {
+  selectedOperatorQueryAtom,
+  selectedOperatorsAtom,
+} from 'store/selectedOperators'
 
 import { authAtom } from '../store/auth'
 import { OperatorSelect } from './OperatorSelect'
 import { withSuspensable } from './Suspensable'
 
 export const Operations: ComponentType = withSuspensable(() => {
-  const [queryParams, setQueryParams] = useState<UseOperationsParams>({
+  const [queryParams, setQueryParams] = useState<
+    Omit<UseOperationsParams, 'operator'>
+  >({
     orderBy: 'hot',
   })
+  const [selectedOperators, setSelectedOperators] = useAtom(
+    selectedOperatorsAtom,
+  )
+  const selectedOperatorQuery = useAtomValue(selectedOperatorQueryAtom)
   const debouncedSetQueryParams = useMemo(
     () => debounce(setQueryParams, 500),
     [],
@@ -95,7 +105,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             <div className="flex mr-4">
               <FormGroup
                 helperText={
-                  queryParams.operator?.length
+                  selectedOperators.length
                     ? '点击干员标签以标记为排除该干员'
                     : undefined
                 }
@@ -109,6 +119,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                   large
                   type="search"
                   enterKeyHint="search"
+                  defaultValue={queryParams.keyword}
                   onChange={(e) =>
                     debouncedSetQueryParams((old) => ({
                       ...old,
@@ -135,13 +146,8 @@ export const Operations: ComponentType = withSuspensable(() => {
                 />
                 <OperatorSelect
                   className="mt-2"
-                  operators={queryParams.operator?.split(',') || []}
-                  onChange={(operators) =>
-                    setQueryParams((old) => ({
-                      ...old,
-                      operator: operators.join(','),
-                    }))
-                  }
+                  operators={selectedOperatorQuery.split(',')}
+                  onChange={setSelectedOperators}
                 />
               </FormGroup>
             </div>
@@ -194,6 +200,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                   large
                   type="search"
                   enterKeyHint="search"
+                  defaultValue={queryParams.keyword}
                   onChange={(e) =>
                     debouncedSetQueryParams((old) => ({
                       ...old,
@@ -210,9 +217,12 @@ export const Operations: ComponentType = withSuspensable(() => {
       </Card>
 
       <div className="tabular-nums">
-        {listMode === 'operation' && <OperationList {...queryParams} />}
+        {listMode === 'operation' && (
+          <OperationList {...queryParams} operator={selectedOperatorQuery} />
+        )}
         {listMode === 'operationSet' && <OperationSetList {...queryParams} />}
       </div>
     </>
   )
 })
+Operations.displayName = 'Operations'

@@ -53,7 +53,7 @@ export const AppLayout: FCC = ({ children }) => (
           <NavLink
             key={link.to}
             to={link.to}
-            className="text-sm text-zinc-600 !no-underline ml-2"
+            className="text-sm text-zinc-600 dark:text-slate-100 !no-underline ml-2"
           >
             {({ isActive }) => (
               <Button minimal icon={link.icon} active={isActive}>

@@ -73,12 +73,28 @@
       "alt_name": "Aak"
     },
     {
+      "id": "char_446_aroma",
+      "subProf": "blastcaster",
+      "name": "阿罗玛",
+      "alias": "aluoma eluoma alm elm 阿羅瑪",
+      "rarity": 5,
+      "alt_name": "Aroma"
+    },
+    {
       "id": "char_002_amiya",
       "subProf": "corecaster",
       "name": "阿米娅",
       "alias": "amiya emiya amy emy 阿米婭",
       "rarity": 5,
       "alt_name": "Amiya"
+    },
+    {
+      "id": "char_4132_ascln",
+      "subProf": "stalker",
+      "name": "阿斯卡纶",
+      "alias": "asikalun asikaguan asiqialun asiqiaguan esikalun esikaguan esiqialun esiqiaguan askl askg asql asqg eskl eskg esql esqg 阿斯卡綸",
+      "rarity": 6,
+      "alt_name": "Ascalon"
     },
     {
       "id": "char_277_sqrrel",
@@ -183,6 +199,14 @@
       "alias": "anzhela azl 安哲拉",
       "rarity": 5,
       "alt_name": "Andreana"
+    },
+    {
+      "id": "char_4131_odda",
+      "subProf": "hammer",
+      "name": "奥达",
+      "alias": "aoda yuda ad yd 奧達",
+      "rarity": 5,
+      "alt_name": "Odda"
     },
     {
       "id": "char_346_aosta",
@@ -455,6 +479,14 @@
       "alias": "cimianxiangdi cmxd 此麵向敵",
       "rarity": 0,
       "alt_name": "F.T.E"
+    },
+    {
+      "id": "token_10039_ulpia_block",
+      "subProf": "notchar1",
+      "name": "从不混淆的方向",
+      "alias": "congbuhunxiaodefangxiang congbuhunxiaodifangxiang congfouhunxiaodefangxiang congfouhunxiaodifangxiang zongbuhunxiaodefangxiang zongbuhunxiaodifangxiang zongfouhunxiaodefangxiang zongfouhunxiaodifangxiang cbhxdfx cfhxdfx zbhxdfx zfhxdfx 從不混淆的方向",
+      "rarity": 0,
+      "alt_name": "Undeviating Course"
     },
     {
       "id": "char_1031_slent2",
@@ -737,6 +769,14 @@
       "alt_name": "Highmore"
     },
     {
+      "id": "char_4079_haini",
+      "subProf": "underminer",
+      "name": "海霓",
+      "alias": "haini hn 海霓",
+      "rarity": 5,
+      "alt_name": "Lucilla"
+    },
+    {
       "id": "char_1021_kroos2",
       "subProf": "fastshot",
       "name": "寒芒克洛丝",
@@ -927,6 +967,14 @@
       "alias": "huijin hj 灰燼",
       "rarity": 6,
       "alt_name": "Ash"
+    },
+    {
+      "id": "token_10035_wisdel_wward",
+      "subProf": "notchar1",
+      "name": "魂灵之影",
+      "alias": "hunlingzhiying hlzy 魂靈之影",
+      "rarity": 0,
+      "alt_name": "Shadow of Revenant"
     },
     {
       "id": "char_4027_heyak",
@@ -1337,6 +1385,14 @@
       "alt_name": "Gravel"
     },
     {
+      "id": "char_1036_fang2",
+      "subProf": "charger",
+      "name": "历阵锐枪芬",
+      "alias": "lizhenruiqiangfen lzrqf 曆陣銳槍芬",
+      "rarity": 5,
+      "alt_name": "Fang the Fire-sharpened"
+    },
+    {
       "id": "trap_079_allydonq",
       "subProf": "pioneer",
       "name": "猎潮的骑士",
@@ -1489,6 +1545,14 @@
       "alt_name": "DDF Type-L"
     },
     {
+      "id": "char_4130_luton",
+      "subProf": "unyield",
+      "name": "露托",
+      "alias": "loutuo lutuo lt 露托",
+      "rarity": 4,
+      "alt_name": "Lutonada"
+    },
+    {
       "id": "char_433_windft",
       "subProf": "craftsman",
       "name": "掠风",
@@ -1511,6 +1575,14 @@
       "alias": "luobin lb 羅賓",
       "rarity": 5,
       "alt_name": "Robin"
+    },
+    {
+      "id": "char_4133_logos",
+      "subProf": "corecaster",
+      "name": "逻各斯",
+      "alias": "luogesi lgs 邏各斯",
+      "rarity": 6,
+      "alt_name": "Logos"
     },
     {
       "id": "char_4040_rockr",
@@ -1649,6 +1721,14 @@
       "alt_name": "Mostima"
     },
     {
+      "id": "char_4134_cetsyr",
+      "subProf": "bard",
+      "name": "魔王",
+      "alias": "mowang mw 魔王",
+      "rarity": 6,
+      "alt_name": "Civilight Eterna"
+    },
+    {
       "id": "char_117_myrrh",
       "subProf": "physician",
       "name": "末药",
@@ -1735,6 +1815,14 @@
       "alias": "paopuka paopuqia ppk ppq 泡普卡",
       "rarity": 3,
       "alt_name": "Popukar"
+    },
+    {
+      "id": "char_4136_phonor",
+      "subProf": "ritualist",
+      "name": "PhonoR-0",
+      "alias": "PhonoR-0",
+      "rarity": 1,
+      "alt_name": "PhonoR-0"
     },
     {
       "id": "char_509_acast",
@@ -1935,6 +2023,14 @@
       "alias": "shenlv sl 深律",
       "rarity": 5,
       "alt_name": "Bassline"
+    },
+    {
+      "id": "char_4137_udflow",
+      "subProf": "shotprotector",
+      "name": "深巡",
+      "alias": "shenxun sx 深巡",
+      "rarity": 5,
+      "alt_name": "Underflow"
     },
     {
       "id": "char_1032_excu2",
@@ -2281,6 +2377,14 @@
       "alt_name": "Breeze"
     },
     {
+      "id": "char_1035_wisdel",
+      "subProf": "bombarder",
+      "name": "维什戴尔",
+      "alias": "weishidaier weishendaier wsde 維什戴爾",
+      "rarity": 6,
+      "alt_name": "Wiš'adel"
+    },
+    {
       "id": "char_4098_vvana",
       "subProf": "artsfghter",
       "name": "薇薇安娜",
@@ -2303,6 +2407,14 @@
       "alias": "wenmi wm 溫米",
       "rarity": 5,
       "alt_name": "Warmy"
+    },
+    {
+      "id": "char_4145_ulpia",
+      "subProf": "crusher",
+      "name": "乌尔比安",
+      "alias": "wuerbian weba 烏爾比安",
+      "rarity": 6,
+      "alt_name": "Ulpianus"
     },
     {
       "id": "char_254_vodfox",
@@ -2972,7 +3084,8 @@
         { "id": "crusher", "name": "重剑手" },
         { "id": "reaper", "name": "收割者" },
         { "id": "fighter", "name": "斗士" },
-        { "id": "librator", "name": "解放者" }
+        { "id": "librator", "name": "解放者" },
+        { "id": "hammer", "name": "撼地者" }
       ]
     },
     {
@@ -3009,12 +3122,12 @@
       "name": "辅助",
       "sub": [
         { "id": "bard", "name": "吟游者" },
+        { "id": "ritualist", "name": "巫役" },
         { "id": "slower", "name": "凝滞师" },
         { "id": "summoner", "name": "召唤师" },
         { "id": "craftsman", "name": "工匠" },
         { "id": "underminer", "name": "削弱者" },
-        { "id": "blessing", "name": "护佑者" },
-        { "id": "ritualist", "name": "巫役" }
+        { "id": "blessing", "name": "护佑者" }
       ]
     },
     {
@@ -3023,9 +3136,9 @@
       "sub": [
         { "id": "protector", "name": "铁卫" },
         { "id": "guardian", "name": "守护者" },
+        { "id": "unyield", "name": "不屈者" },
         { "id": "artsprotector", "name": "驭法铁卫" },
         { "id": "shotprotector", "name": "哨戒铁卫" },
-        { "id": "unyield", "name": "不屈者" },
         { "id": "fortress", "name": "要塞" },
         { "id": "duelist", "name": "决战者" }
       ]

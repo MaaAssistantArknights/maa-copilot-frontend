@@ -1,6 +1,9 @@
 import { Button, NonIdealState } from '@blueprintjs/core'
 
-import { UseOperationSetsParams, useOperationSets } from 'apis/operation-set'
+import {
+  UseOperationSetsParams,
+  useOperationSetSearch,
+} from 'apis/operation-set'
 import { useAtomValue } from 'jotai'
 import { ComponentType, ReactNode } from 'react'
 
@@ -15,7 +18,7 @@ export const OperationSetList: ComponentType<UseOperationSetsParams> =
       const neoLayout = useAtomValue(neoLayoutAtom)
 
       const { operationSets, setSize, isValidating, isReachingEnd } =
-        useOperationSets({ ...props, suspense: true })
+        useOperationSetSearch({ ...props, suspense: true })
 
       // make TS happy: we got Suspense out there
       if (!operationSets) throw new Error('unreachable')

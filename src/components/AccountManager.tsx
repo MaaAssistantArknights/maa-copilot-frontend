@@ -14,7 +14,7 @@ import {
 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
-import { useAtom, useSetAtom } from 'jotai'
+import { useAtom } from 'jotai'
 import { ComponentType, FC, useState } from 'react'
 
 import { LoginPanel } from 'components/account/LoginPanel'
@@ -30,7 +30,7 @@ import { EditDialog } from './account/EditDialog'
 import { RegisterPanel } from './account/RegisterPanel'
 
 const AccountMenu: FC = () => {
-  const setAuthState = useSetAtom(authAtom)
+  const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
 
@@ -64,6 +64,14 @@ const AccountMenu: FC = () => {
       />
 
       <Menu>
+        {!authState.activated && (
+          <MenuItem
+            disabled
+            icon="warning-sign"
+            text="账号未激活，请在退出登录后，以重置密码的方式激活"
+          />
+        )}
+
         <MenuItem
           shouldDismissPopover={false}
           icon="edit"

@@ -4,7 +4,7 @@ import useSWRInfinite from 'swr/infinite'
 
 import { toCopilotOperation } from 'models/converter'
 import { OpRatingType, Operation } from 'models/operation'
-import { parseShortCode } from 'models/shortCode'
+import { ShortCodeContent, parseShortCode } from 'models/shortCode'
 import { OperationApi } from 'utils/maa-copilot-client'
 import { useSWRRefresh } from 'utils/swr'
 
@@ -48,15 +48,21 @@ export function useOperations({
         return null // reached the end
       }
 
-      // 用户输入 maa://xxxxxx 时，只传这个 id，其他参数都不传
+      // 用户输入神秘代码时，只传这个 id，其他参数都不传
       if (keyword) {
-        const id = parseShortCode(keyword)
+        let content: ShortCodeContent | null = null
 
-        if (id) {
+        try {
+          content = parseShortCode(keyword)
+        } catch (e) {
+          console.warn(e)
+        }
+
+        if (content) {
           return [
             'operations',
             {
-              copilotIds: [id],
+              copilotIds: [content.id],
             } satisfies QueriesCopilotRequest,
           ]
         }

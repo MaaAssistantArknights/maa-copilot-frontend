@@ -1,4 +1,5 @@
 import { useAtomValue } from 'jotai'
+import { noop } from 'lodash-es'
 import {
   CopilotSetPageRes,
   CopilotSetQuery,
@@ -10,6 +11,8 @@ import useSWRInfinite from 'swr/infinite'
 import { authAtom } from 'store/auth'
 import { OperationSetApi } from 'utils/maa-copilot-client'
 import { useSWRRefresh } from 'utils/swr'
+
+import { parseShortCode } from '../models/shortCode'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
@@ -81,7 +84,61 @@ export function useOperationSets({
 
 export function useRefreshOperationSets() {
   const refresh = useSWRRefresh()
-  return () => refresh((key) => key.includes('operationSets'))
+  return () =>
+    refresh(
+      (key) =>
+        key.includes('operationSets') ||
+        (key.includes('operationSet') && key.includes('fromList')),
+    )
+}
+
+export function useOperationSetSearch({
+  keyword,
+  suspense,
+  disabled,
+  ...params
+}: UseOperationSetsParams) {
+  if (!suspense) {
+    throw new Error('useOperationSetSearch must be used with suspense')
+  }
+  if (disabled) {
+    throw new Error('useOperationSetSearch cannot be disabled')
+  }
+
+  let id: number | undefined
+
+  if (keyword) {
+    const shortCodeContent = parseShortCode(keyword)
+
+    if (shortCodeContent) {
+      id = shortCodeContent.id
+    }
+  }
+
+  const { data: operationSet } = useOperationSet({ id, suspense })
+
+  const listResponse = useOperationSets({
+    keyword,
+    suspense,
+    ...params,
+
+    // disable the list query if we are fetching a single operation set
+    disabled: !!id,
+  })
+
+  if (id) {
+    return {
+      operationSets: [operationSet],
+      isReachingEnd: true,
+      setSize: noop,
+
+      // these are fixed values in suspense mode
+      error: undefined,
+      isValidating: false,
+    }
+  }
+
+  return listResponse
 }
 
 interface UseOperationSetParams {

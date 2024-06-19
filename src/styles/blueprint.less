@@ -234,17 +234,112 @@ body {
   }
 }
 
-
 .bp4-dark {
+  @dark-content-bg: #2f343c;
+
+  // background
   .docs-content-wrapper {
     @apply min-h-screen;
-    background-color: #2f343c;
+    background-color: @dark-content-bg;
   }
-  .bp4-tag{
-    background-color: #141c2b;
+
+  // navbar
+  .bp4-navbar {
+
+    a,
+    .bp4-tag span {
+      @apply text-slate-50;
+    }
   }
-  div,
-  p,span {
-    color: #fff;
+
+  // 首页右侧友情链接
+  .section-social-links {
+    svg {
+      color: #8abbff;
+    }
+
+    span:hover {
+      @apply text-slate-50;
+    }
+  }
+
+
+  // 作业详情页
+  .bp4-card p,
+  .bp4-card div,
+  .markdown-body,
+  .markdown-body blockquote,
+  .markdown-body span {
+    @apply text-slate-100;
+  }
+
+  .markdown-body blockquote {
+    @apply bg-zinc-900;
+  }
+
+  // 通用样式 - 按钮、tag、提示
+  .bp4-button {
+    .bp4-button-text {
+      @apply text-slate-50;
+    }
+
+    &.bp4-minimal.bp4-intent-danger:hover:enabled {
+      @apply bg-red-500;
+    }
+  }
+
+  .bp4-tag {
+    @apply bg-slate-900 text-slate-200;
+
+    &.bp4-intent-danger {
+      @apply bg-red-500;
+    }
+
+    &.bp4-intent-primary {
+      @apply bg-blue-500;
+    }
+
+  }
+
+  .bp4-callout p {
+    @apply text-slate-50;
+  }
+
+  .bp4-label {
+
+    p,
+    span,
+    div {
+      @apply text-slate-100;
+    }
+  }
+
+  .bp4-text-muted {
+    @apply text-slate-100;
+  }
+
+  .bp4-menu {
+    .bp4-menu-item.bp4-selected {
+      @apply text-slate-100;
+    }
+  }
+
+  .bp4-form-group {
+    .bp4-form-helper-text {
+      @apply text-slate-100;
+    }
+
+    .bp4-input-group input {
+      @apply text-slate-100;
+    }
+  }
+
+  .bp4-tabs {
+
+    div,
+    span,
+    p {
+      @apply text-slate-100;
+    }
   }
 }

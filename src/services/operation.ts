@@ -1,7 +1,8 @@
 import { AppToaster } from 'components/Toaster'
 
 import { CopilotDocV1 } from '../models/copilot.schema'
-import { toShortCode } from '../models/shortCode'
+import { ShortCodeContent, toShortCode } from '../models/shortCode'
+import { formatError } from '../utils/error'
 import { snakeCaseKeysUnicode } from '../utils/object'
 
 export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
@@ -28,12 +29,26 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   })
 }
 
-export const handleCopyShortCode = (operation: { id: number }) => {
-  const shortCode = toShortCode(operation.id)
-  navigator.clipboard.writeText(shortCode)
+/**
+ * @param target - Either an operation or an operation set
+ */
+export const copyShortCode = async (target: { id: number }) => {
+  try {
+    const content: ShortCodeContent = {
+      id: target.id,
+    }
 
-  AppToaster.show({
-    message: '已复制神秘代码，前往 MAA 粘贴即可使用~',
-    intent: 'success',
-  })
+    const shortCode = toShortCode(content)
+    navigator.clipboard.writeText(shortCode)
+
+    AppToaster.show({
+      message: '已复制神秘代码，前往 MAA 粘贴即可使用~',
+      intent: 'success',
+    })
+  } catch (e) {
+    AppToaster.show({
+      message: '复制神秘代码失败：' + formatError(e),
+      intent: 'danger',
+    })
+  }
 }

@@ -23,7 +23,7 @@ export const NavAside = () => {
               <div className="flex-col w-full" key={link.to}>
                 <NavLink
                   to={link.to}
-                  className="text-sm text-zinc-600 !no-underline"
+                  className="text-sm text-zinc-600 dark:text-slate-100 !no-underline"
                   onClick={() => toggleNav()}
                 >
                   {({ isActive }) => (

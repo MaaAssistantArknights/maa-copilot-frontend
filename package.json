@@ -49,6 +49,7 @@
     "prettier": "^3.2.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-ga-neo": "^2.2.0",
     "react-hook-form": "^7.33.1",
     "react-markdown": "^8.0.5",
     "react-rating": "^2.0.5",

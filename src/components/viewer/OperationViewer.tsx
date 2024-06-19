@@ -24,7 +24,7 @@ import {
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
+import { copyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -216,7 +216,7 @@ export const OperationViewer: ComponentType<{
               icon="clipboard"
               text="复制神秘代码"
               intent="primary"
-              onClick={() => handleCopyShortCode(operation)}
+              onClick={() => copyShortCode(operation)}
             />
           </>
         }
@@ -339,17 +339,17 @@ function OperationViewerInner({
 
         <div className="flex flex-col items-start select-none tabular-nums">
           <FactItem title="浏览量" icon="eye-open">
-            <span className="text-gray-800 font-bold">{operation.views}</span>
+            <span className="text-gray-800 dark:text-slate-100 font-bold">{operation.views}</span>
           </FactItem>
 
           <FactItem title="发布于" icon="time">
-            <span className="text-gray-800 font-bold">
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
               <RelativeTime moment={operation.uploadTime} />
             </span>
           </FactItem>
 
           <FactItem title="作者" icon="user">
-            <span className="text-gray-800 font-bold">
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
               {operation.uploader}
             </span>
           </FactItem>

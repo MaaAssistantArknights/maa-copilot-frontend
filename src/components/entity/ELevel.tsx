@@ -20,7 +20,7 @@ export const NeoELevel: FC<{
   }
 
   return (
-    <Tag className="transition border border-solid !text-xs tracking-tight !px-2 !py-1 !my-1 leading-none !min-h-0 bg-slate-200 border-slate-300 text-slate-700">
+    <Tag className="transition border border-solid !text-xs tracking-tight !px-2 !py-1 !my-1 leading-none !min-h-0 bg-slate-200 border-slate-300 text-slate-700 dark:bg-slate-900 dark:text-slate-100">
       <div className="flex items-center">
         <div className="flex whitespace-pre">
           <span className="inline-block font-bold my-auto">{catThree}</span>
@@ -47,7 +47,7 @@ export const ELevel: FC<{
   }
 
   return (
-    <Tag className="transition border border-solid !text-xs tracking-tight !p-1 leading-none !min-h-0 bg-slate-200 border-slate-300 text-slate-700">
+    <Tag className="transition border border-solid !text-xs tracking-tight !p-1 leading-none !min-h-0 dark:bg-slate-900 dark:text-slate-100">
       <div className="flex items-center mx-1">
         <div className="flex flex-col mr-2">
           <H4 className="inline-block font-bold my-auto">{catThree}</H4>

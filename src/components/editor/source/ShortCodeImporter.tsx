@@ -41,12 +41,13 @@ export const ShortCodeImporter: FC<{
     try {
       setPending(true)
 
-      const id = parseShortCode(code)
+      const shortCodeContent = parseShortCode(code)
 
-      if (!id) {
+      if (!shortCodeContent) {
         throw new Error('无效的神秘代码')
       }
 
+      const { id } = shortCodeContent
       const operationContent = (await getOperation({ id })).parsedContent
 
       if (operationContent === INVALID_OPERATION_CONTENT) {

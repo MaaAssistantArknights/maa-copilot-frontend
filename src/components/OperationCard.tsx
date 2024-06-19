@@ -2,7 +2,7 @@ import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { handleCopyShortCode, handleDownloadJSON } from 'services/operation'
+import { copyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
@@ -61,7 +61,7 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
             />
           </div>
           <div>
-            <div className="text-sm text-zinc-600 mb-2 font-bold">
+            <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
               干员/干员组
             </div>
             <OperatorTags operation={operation} />
@@ -187,7 +187,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
             />
           </div>
           <div className="md:w-1/2">
-            <div className="text-sm text-zinc-600 mb-2 font-bold">
+            <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
               干员/干员组
             </div>
             <OperatorTags operation={operation} />
@@ -263,7 +263,7 @@ const CardActions = ({
         <Button
           small
           icon="clipboard"
-          onClick={() => handleCopyShortCode(operation)}
+          onClick={() => copyShortCode(operation)}
         />
       </Tooltip2>
       <Tooltip2

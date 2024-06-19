@@ -14,6 +14,8 @@ import { withSuspensable } from 'components/Suspensable'
 import { ViewPage } from 'pages/view'
 import { clearOutdatedSwrCache } from 'utils/swr'
 
+import ReactGA from "react-ga-neo"
+
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
 import { NotFoundPage } from './pages/404'
@@ -38,6 +40,8 @@ Sentry.init({
     return event
   },
 })
+
+ReactGA.initialize("G-K3MCHSLB5K")
 
 // add platform class to root element
 if (navigator.userAgent.includes('Win')) {

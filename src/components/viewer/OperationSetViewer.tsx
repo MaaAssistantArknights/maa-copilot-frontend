@@ -19,7 +19,7 @@ import {
 } from 'apis/operation-set'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
-import { handleCopyShortCode } from 'services/operation'
+import { copyShortCode } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
 import { OperationList } from 'components/OperationList'
@@ -179,7 +179,7 @@ export const OperationSetViewer: ComponentType<{
               icon="clipboard"
               text="复制神秘代码"
               intent="primary"
-              onClick={() => handleCopyShortCode(operationSet)}
+              onClick={() => copyShortCode(operationSet)}
             />
           </>
         }
@@ -219,13 +219,13 @@ function OperationSetViewerInner({
 
         <div className="flex flex-col items-start select-none tabular-nums">
           <FactItem title="发布于" icon="time">
-            <span className="text-gray-800 font-bold">
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
               <RelativeTime moment={operationSet.createTime} />
             </span>
           </FactItem>
 
           <FactItem title="作者" icon="user">
-            <span className="text-gray-800 font-bold">
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
               {operationSet.creator}
             </span>
           </FactItem>
