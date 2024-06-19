@@ -61,7 +61,7 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
             />
           </div>
           <div>
-            <div className="text-sm text-zinc-600 mb-2 font-bold">
+            <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
               干员/干员组
             </div>
             <OperatorTags operation={operation} />
@@ -187,7 +187,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
             />
           </div>
           <div className="md:w-1/2">
-            <div className="text-sm text-zinc-600 mb-2 font-bold">
+            <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
               干员/干员组
             </div>
             <OperatorTags operation={operation} />

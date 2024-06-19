@@ -32,7 +32,7 @@ const DifficultyTag: FC<{
           'transition border border-solid !text-xs cursor-help tracking-tight !px-2 !py-1 !mx-1 !my-1 leading-none !min-h-0',
           hardLevel
             ? 'bg-red-400 hover:bg-red-500 border-red-700 text-red-900'
-            : 'bg-slate-200 hover:bg-slate-300 border-slate-300 text-slate-700',
+            : 'bg-slate-200 hover:bg-slate-300 border-slate-300  text-slate-700 dark:bg-slate-900 dark:text-slate-100',
         )}
       >
         {content}

@@ -106,9 +106,9 @@ const InlineCondition: FCC<{
   title?: string
 }> = ({ title, children }) => (
   <div className="min-w-[5em] text-lg leading-none">
-    <span className="text-zinc-500 mr-0.5 tabular-nums font-bold">
+    <span className="text-zinc-500 dark:text-slate-100 mr-0.5 tabular-nums font-bold">
       {children}
     </span>
-    <span className="text-zinc-400 text-xs">{title}</span>
+    <span className="text-zinc-400 dark:text-slate-200 text-xs">{title}</span>
   </div>
 )

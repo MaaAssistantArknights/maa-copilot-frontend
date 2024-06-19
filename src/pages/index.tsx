@@ -78,13 +78,13 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
 
         <AnnPanel className="mb-4" />
 
-        <div className="flex flex-wrap leading-relaxed mb-8">
+        <div className="flex flex-wrap leading-relaxed mb-8 section-social-links">
           {SOCIAL_LINKS.map((link) => (
             <a
               href={link.href}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center text-zinc-600 no-underline"
+              className="flex items-center text-zinc-600 dark:text-slate-100 no-underline"
             >
               {link.icon}
               <span>{link.label}</span>

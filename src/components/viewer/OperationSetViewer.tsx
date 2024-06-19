@@ -219,13 +219,13 @@ function OperationSetViewerInner({
 
         <div className="flex flex-col items-start select-none tabular-nums">
           <FactItem title="发布于" icon="time">
-            <span className="text-gray-800 font-bold">
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
               <RelativeTime moment={operationSet.createTime} />
             </span>
           </FactItem>
 
           <FactItem title="作者" icon="user">
-            <span className="text-gray-800 font-bold">
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
               {operationSet.creator}
             </span>
           </FactItem>
