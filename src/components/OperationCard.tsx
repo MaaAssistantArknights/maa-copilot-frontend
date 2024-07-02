@@ -23,9 +23,9 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
     <Card
       interactive={true}
       elevation={Elevation.TWO}
-      className="relative flex flex-col gap-2"
+      className="relative"
     >
-      <ReLink search={{ op: operation.id }} className="block no-underline">
+      <ReLink search={{ op: operation.id }} className="no-underline h-full flex flex-col gap-2">
         <div className="flex">
           <Tooltip2
             content={operation.parsedContent.doc.title}
