@@ -585,6 +585,14 @@
       "alt_name": "Durin"
     },
     {
+      "id": "char_4147_mitm",
+      "subProf": "tactician",
+      "name": "渡桥",
+      "alias": "duqiao dq 渡橋",
+      "rarity": 5,
+      "alt_name": "Mitm"
+    },
+    {
       "id": "char_294_ayer",
       "subProf": "lord",
       "name": "断崖",
@@ -1769,6 +1777,14 @@
       "alt_name": "Exusiai"
     },
     {
+      "id": "char_4146_nymph",
+      "subProf": "primcaster",
+      "name": "妮芙",
+      "alias": "nifu nf 妮芙",
+      "rarity": 6,
+      "alt_name": "Nymph"
+    },
+    {
       "id": "char_311_mudrok",
       "subProf": "unyield",
       "name": "泥岩",
@@ -2815,6 +2831,14 @@
       "alias": "yingbintadian ybtd 迎賓踏墊",
       "rarity": 0,
       "alt_name": "Welcome Mat"
+    },
+    {
+      "id": "token_10037_mitm_trshrb",
+      "subProf": "notchar1",
+      "name": "樱桃三号",
+      "alias": "yingtaosanhao ytsh 櫻桃三號",
+      "rarity": 0,
+      "alt_name": "Cherry-3"
     },
     {
       "id": "char_143_ghost",
