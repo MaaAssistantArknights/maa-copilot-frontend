@@ -4,9 +4,10 @@ import { FC, useState } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { SheetOperatorContainer } from './newSheet/SheetOperator'
 import { SheetGroupContainer, SheetGroupProps } from './sheet/SheetGroup'
 import {
-  SheetOperatorContainer,
+  // SheetOperatorContainer,
   SheetOperatorProps,
 } from './sheet/SheetOperator'
 
