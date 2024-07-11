@@ -2,6 +2,7 @@ import { Button, Card, CardProps, Icon } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { FC } from 'react'
 
 import { OperatorAvatar } from '../EditorOperator'
 import { Operator } from '../EditorSheet'
@@ -85,3 +86,12 @@ export const OperatorItem = ({
     )}
   </Card>
 )
+
+export interface OperatorItemProp {
+  name: string
+  selected: boolean
+}
+
+export const OperatorItemV2: FC<OperatorItemProp> = ({ name, selected }) => {
+  return <>111</>
+}

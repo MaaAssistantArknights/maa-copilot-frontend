@@ -5,8 +5,7 @@ import { POPOVER2_DISMISS } from '@blueprintjs/popover2/lib/esm/classes'
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import { isEqual, omit } from 'lodash'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { UseFieldArrayRemove } from 'react-hook-form'
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -14,18 +13,13 @@ import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
 
-import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
 import { OperatorItem } from './SheetOperatorItem'
+import { useSheet } from './SheetProvider'
 
-export interface SheetOperatorProps {
-  submitOperator: EditorPerformerOperatorProps['submit']
-  existedOperators: Operator[]
-  existedGroups: Group[]
-  removeOperator: UseFieldArrayRemove
-}
+export interface SheetOperatorProps {}
 
 export interface OperatorModifyProps {
   operatorPinHandle?: (value: Operator) => void
@@ -67,12 +61,9 @@ const defaultRarityFilter = Array.from(
   new Array(Math.max(...OPERATORS.map(({ rarity }) => rarity)) + 1).keys(),
 ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
 
-const SheetOperator = ({
-  submitOperator,
-  existedOperators,
-  removeOperator,
-  existedGroups,
-}: SheetOperatorProps) => {
+const SheetOperator: FC<SheetOperatorProps> = () => {
+  const { submitOperator, existedOperators, removeOperator, existedGroups } =
+    useSheet()
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
   const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
@@ -232,7 +223,7 @@ const SheetOperator = ({
     submitOperator(value, undefined, true)
   }
 
-  // pagination about
+  // pagination about via frontened
   const [pageIndex, setPageIndex] = useState(0)
   const lastIndex = (pageIndex + 1) * paginationSize
   const backToTop = lastIndex > paginationSize

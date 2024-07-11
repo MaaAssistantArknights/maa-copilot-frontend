@@ -11,24 +11,18 @@ import {
 import { useAtom } from 'jotai'
 import { isEqual, isEqualWith, omit } from 'lodash-es'
 import { FC, useMemo, useState } from 'react'
-import { UseFieldArrayRemove } from 'react-hook-form'
 
 import { AppToaster } from 'components/Toaster'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
 
-import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
 import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
+import { useSheet } from './SheetProvider'
 import { GroupItem } from './sheetGroup/SheetGroupItem'
 
-export interface SheetGroupProps {
-  submitGroup: EditorPerformerGroupProps['submit']
-  existedGroups: Group[]
-  existedOperators: Operator[]
-  removeGroup: UseFieldArrayRemove
-}
+export interface SheetGroupProps {}
 
 export interface GroupListModifyProp {
   groupAddHandle?: (value: Group) => void
@@ -79,12 +73,10 @@ const EditorGroupName = ({
   )
 }
 
-const SheetGroup = ({
-  submitGroup,
-  existedGroups,
-  existedOperators,
-  removeGroup,
-}: SheetGroupProps) => {
+const SheetGroup: FC<SheetGroupProps> = () => {
+  const { submitGroup, existedGroups, existedOperators, removeGroup } =
+    useSheet()
+
   const [coverGroup, setCoverGroup] = useState<Group>()
 
   const defaultGroup = useMemo<Group[]>(() => {
@@ -283,8 +275,8 @@ const SheetGroup = ({
   )
 }
 
-export const SheetGroupContainer: FC<SheetGroupProps> = (sheetGroupProps) => (
+export const SheetGroupContainer: FC<SheetGroupProps> = () => (
   <SheetContainerSkeleton title="设置干员组" icon="people">
-    <SheetGroup {...sheetGroupProps} />
+    <SheetGroup />
   </SheetContainerSkeleton>
 )

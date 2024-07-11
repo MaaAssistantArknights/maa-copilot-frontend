@@ -4,22 +4,28 @@ import { FC, useState } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
-import { SheetOperatorContainer } from './newSheet/SheetOperator'
-import { SheetGroupContainer, SheetGroupProps } from './sheet/SheetGroup'
+import { SheetGroupContainer } from './sheet/SheetGroup'
 import {
-  // SheetOperatorContainer,
+  SheetOperatorContainer,
   SheetOperatorProps,
 } from './sheet/SheetOperator'
+import {
+  SheetContextValue,
+  SheetProvider,
+  SheetProviderProp,
+} from './sheet/SheetProvider'
 
-type EditorSheetProps = SheetOperatorProps & SheetGroupProps
+type EditorSheetProps = SheetContextValue
 export type Group = CopilotDocV1.Group
 export type Operator = CopilotDocV1.Operator
 
 const EditorOperatorSheet = (sheetProps: EditorSheetProps) => (
-  <article className="overflow-y-auto">
-    <SheetOperatorContainer {...sheetProps} />
-    <SheetGroupContainer {...sheetProps} />
-  </article>
+  <SheetProvider {...sheetProps}>
+    <article className="overflow-y-auto">
+      <SheetOperatorContainer />
+      <SheetGroupContainer />
+    </article>
+  </SheetProvider>
 )
 
 export const EditorSheetTrigger: FC<EditorSheetProps> = (sheetProps) => {
