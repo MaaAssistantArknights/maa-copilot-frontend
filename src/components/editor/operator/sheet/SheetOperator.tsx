@@ -1,34 +1,19 @@
-import {
-  Alert,
-  Button,
-  Card,
-  Divider,
-  H4,
-  H5,
-  H6,
-  Icon,
-  Intent,
-} from '@blueprintjs/core'
+import { Button, Divider, H4, H5, H6 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 import { POPOVER2_DISMISS } from '@blueprintjs/popover2/lib/esm/classes'
 
 import clsx from 'clsx'
-import { useAtom } from 'jotai'
-import { isEqual, omit } from 'lodash'
+import { useAtomValue } from 'jotai'
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 
-import { AppToaster } from 'components/Toaster'
-import { CopilotDocV1 } from 'models/copilot.schema'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
-import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
 
-import { OperatorAvatar } from '../EditorOperator'
-import { Group, Operator } from '../EditorSheet'
+import { Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
-import { SkillAboutTrigger } from './SheetOperatorSkillAbout'
 import { useSheet } from './SheetProvider'
+import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
 
 export interface SheetOperatorProps {}
 
@@ -81,8 +66,7 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
   const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
   const [operatorRarity, setOperatorRarity] = useState(defaultRarityFilter)
   const [rarityReverse, setRarityReverse] = useState(false)
-  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
-  const [coverOperator, setCoverOperator] = useState<Operator>()
+  const favOperators = useAtomValue(favOperatorAtom)
 
   const favOperatorFindByName = (target: string) => {
     return !!favOperators.find(({ name }) => name === target)
@@ -126,24 +110,6 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
     },
     [existedOperators, existedGroups],
   )
-
-  const updateFavOperator = (value: Operator) => {
-    const { skill, skillUsage, skillTimes, ...rest } = value
-    const formattedValue = {
-      ...rest,
-      skill: skill || 1,
-      skillUsage: skillUsage || 0,
-      skillTimes:
-        skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
-          ? skillTimes || 1
-          : undefined,
-    }
-    setFavOperators([
-      ...[...favOperators].filter(({ name }) => name !== formattedValue.name),
-      { ...formattedValue },
-    ])
-    submitOperator(formattedValue, undefined, true)
-  }
 
   const getOperatorRarity = (target: string) =>
     operatorsGroupedByProf.find((item) => item.name === target)!.rarity
@@ -362,20 +328,6 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
         </div>
         {ProfSelect}
       </div>
-      <Alert
-        isOpen={!!coverOperator}
-        confirmButtonText="是"
-        cancelButtonText="否"
-        icon="error"
-        intent={Intent.DANGER}
-        onConfirm={() => updateFavOperator(coverOperator as Group)}
-        onClose={() => setCoverOperator(undefined)}
-      >
-        <div>
-          <H5>收藏: </H5>
-          <p>检测到同名的已收藏干员 {coverOperator?.name}，是否覆盖？</p>
-        </div>
-      </Alert>
     </>
   )
 }
@@ -462,147 +414,3 @@ export const SheetOperatorContainer = (
     <SheetOperator {...sheetOperatorProp} />
   </SheetContainerSkeleton>
 )
-
-interface SheetOperatorItemProp {
-  name: string
-}
-
-const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
-  const { existedOperators, existedGroups, submitOperator, removeOperator } =
-    useSheet()
-  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
-
-  const operatorNoneGroupedIndex = existedOperators.findIndex(
-    ({ name: existedName }) => existedName === name,
-  )
-  const operatorInGroup = existedGroups
-    .map(({ opers }) => opers)
-    .flat()
-    .filter((item) => !!item)
-    .find(({ name: existedName }) => existedName === name)
-  const selected = operatorNoneGroupedIndex !== -1
-  const grouped = !!operatorInGroup
-  const operator = existedOperators?.[operatorNoneGroupedIndex] ||
-    operatorInGroup ||
-    favOperators.find(({ name: exsitedName }) => exsitedName === name) || {
-      name,
-    }
-  const selectedInView = selected || grouped
-
-  console.log(
-    operator,
-    favOperators.find(({ name: exsitedName }) => exsitedName === name),
-  )
-  const pinned = isEqual(
-    omit(operator, [...ignoreKeyDic]),
-    omit(
-      favOperators.find(({ name: exsitedName }) => exsitedName === name),
-      [...ignoreKeyDic],
-    ),
-  )
-
-  const onOperatorSelect = () => {
-    if (grouped)
-      AppToaster.show({
-        message: `干员 ${name} 已被编组`,
-        intent: Intent.DANGER,
-      })
-    else {
-      if (selected) {
-        removeOperator(operatorNoneGroupedIndex)
-      } else submitOperator(operator, undefined, true)
-    }
-  }
-
-  const updateFavOperator = () => {
-    const { skill, skillUsage, skillTimes, ...rest } = operator
-    const formattedValue = {
-      ...rest,
-      skill: skill || 1,
-      skillUsage: skillUsage || 0,
-      skillTimes:
-        skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
-          ? skillTimes || 1
-          : undefined,
-    }
-    setFavOperators([
-      ...[...favOperators].filter(({ name }) => name !== formattedValue.name),
-      { ...formattedValue },
-    ])
-    submitOperator(formattedValue, undefined, true)
-  }
-
-  const onPinnedChange = () => {
-    if (pinned)
-      setFavOperators(
-        [...favOperators].filter(
-          ({ name: existedName }) => existedName !== name,
-        ),
-      )
-    else {
-      if (favOperators.find(({ name: existedName }) => existedName === name)) {
-        console.log('有重复')
-      } else updateFavOperator()
-    }
-  }
-
-  return (
-    <Card
-      className={clsx(
-        'flex items-center w-full h-full relative cursor-pointer flex-col justify-center',
-        (selected || grouped) && 'scale-90 bg-gray-200',
-      )}
-      interactive={!selectedInView}
-      onClick={onOperatorSelect}
-    >
-      <>
-        <>
-          <OperatorAvatar name={name} size="large" />
-          <p
-            className={clsx('font-bold leading-none text-center mt-3 truncate')}
-          >
-            {name}
-          </p>
-        </>
-        {selected && (
-          <div
-            className="absolute top-2 right-2"
-            onClick={(e) => e.stopPropagation()}
-            role="presentation"
-          >
-            <Popover2
-              content={
-                <Button minimal onClick={onPinnedChange}>
-                  <Icon icon="pin" className="-rotate-45" />
-                  <span>移出收藏</span>
-                </Button>
-              }
-              disabled={!pinned}
-            >
-              <Icon
-                icon={pinned ? 'pin' : 'unpin'}
-                className={clsx(pinned && '-rotate-45')}
-                onClick={pinned ? undefined : onPinnedChange}
-              />
-            </Popover2>
-          </div>
-        )}
-      </>
-      {selected && (
-        <SkillAboutTrigger
-          {...{
-            operator,
-            onSkillChange: (value) => submitOperator(value, undefined, true),
-            disabled: grouped,
-          }}
-        />
-      )}
-      {grouped && (
-        <span className="text-xs font-bold mt-3">
-          <Icon icon="warning-sign" size={15} />
-          已被编组
-        </span>
-      )}
-    </Card>
-  )
-}
