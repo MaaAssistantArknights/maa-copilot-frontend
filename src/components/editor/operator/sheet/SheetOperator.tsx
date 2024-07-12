@@ -27,8 +27,7 @@ import { OperatorAvatar } from '../EditorOperator'
 import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
-import { OperatorItem } from './SheetOperatorItem'
-import { SkillAboutProps, SkillAboutTrigger } from './SheetOperatorSkillAbout'
+import { SkillAboutTrigger } from './SheetOperatorSkillAbout'
 import { useSheet } from './SheetProvider'
 
 export interface SheetOperatorProps {}
@@ -128,15 +127,6 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
     [existedOperators, existedGroups],
   )
 
-  const checkOperatorPinned = (target: Operator, ignoreKey = ignoreKeyDic) =>
-    isEqual(
-      omit(target, [...ignoreKey]),
-      omit(
-        favOperators.find(({ name }) => name === target.name),
-        [...ignoreKey],
-      ),
-    )
-
   const updateFavOperator = (value: Operator) => {
     const { skill, skillUsage, skillTimes, ...rest } = value
     const formattedValue = {
@@ -153,19 +143,6 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
       { ...formattedValue },
     ])
     submitOperator(formattedValue, undefined, true)
-  }
-
-  const operatorPinHandle: OperatorModifyProps['operatorPinHandle'] = (
-    value,
-  ) => {
-    if (checkOperatorPinned(value))
-      setFavOperators(
-        [...favOperators].filter(({ name }) => name !== value.name),
-      )
-    else {
-      if (favOperatorFindByName(value.name)) setCoverOperator(value)
-      else updateFavOperator(value)
-    }
   }
 
   const getOperatorRarity = (target: string) =>
@@ -205,33 +182,6 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
     rarityReverse,
     getOperatorRarity,
   ])
-
-  const operatorSelectHandle: OperatorModifyProps['operatorSelectHandle'] = (
-    operatorName,
-  ) => {
-    if (checkOperatorSelected(operatorName))
-      if (existedOperators.find((item) => item.name === operatorName))
-        removeOperator(
-          existedOperators.findIndex(({ name }) => name === operatorName),
-        )
-      else
-        AppToaster.show({
-          message: `干员 ${operatorName} 已被编组`,
-          intent: Intent.DANGER,
-        })
-    else
-      submitOperator(
-        favOperators.find(({ name }) => name === operatorName) || {
-          name: operatorName,
-        },
-        undefined,
-        true,
-      )
-  }
-
-  const operatorSkillHandle = (value) => {
-    submitOperator(value, undefined, true)
-  }
 
   // pagination about via frontened
   const [pageIndex, setPageIndex] = useState(0)
@@ -395,36 +345,14 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
               >
                 {operatorsGroupedBySubProf
                   .slice(0, lastIndex)
-                  .map(({ name: operatorInfoName }, index) => {
-                    const operatorDetail = existedOperators.find(
-                      ({ name }) => name === operatorInfoName,
-                    )
-                    return (
-                      <div
-                        className="flex items-center flex-0 w-32 h-32"
-                        key={index}
-                      >
-                        {/* <OperatorItem
-                          selected={checkOperatorSelected(operatorInfoName)}
-                          pinned={checkOperatorPinned(
-                            operatorDetail || { name: operatorInfoName },
-                          )}
-                          onSkillChange={operatorSkillHandle}
-                          operator={operatorDetail}
-                          name={operatorInfoName}
-                          onClick={() => operatorSelectHandle(operatorInfoName)}
-                          onPinHandle={
-                            existedOperators.find(
-                              ({ name }) => name === operatorInfoName,
-                            )
-                              ? operatorPinHandle
-                              : undefined
-                          }
-                        /> */}
-                        {/* <SheetOperatorItem name={operatorInfoName} /> */}
-                      </div>
-                    )
-                  })}
+                  .map(({ name }, index) => (
+                    <div
+                      className="flex items-center flex-0 w-32 h-32"
+                      key={index}
+                    >
+                      <SheetOperatorItem {...{ name }} />
+                    </div>
+                  ))}
               </div>
               {ShowMoreButton}
             </>
@@ -542,6 +470,8 @@ interface SheetOperatorItemProp {
 const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
   const { existedOperators, existedGroups, submitOperator, removeOperator } =
     useSheet()
+  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
+
   const operatorNoneGroupedIndex = existedOperators.findIndex(
     ({ name: existedName }) => existedName === name,
   )
@@ -553,10 +483,16 @@ const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
   const selected = operatorNoneGroupedIndex !== -1
   const grouped = !!operatorInGroup
   const operator = existedOperators?.[operatorNoneGroupedIndex] ||
-    operatorInGroup || { name }
+    operatorInGroup ||
+    favOperators.find(({ name: exsitedName }) => exsitedName === name) || {
+      name,
+    }
   const selectedInView = selected || grouped
 
-  const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
+  console.log(
+    operator,
+    favOperators.find(({ name: exsitedName }) => exsitedName === name),
+  )
   const pinned = isEqual(
     omit(operator, [...ignoreKeyDic]),
     omit(
@@ -578,15 +514,25 @@ const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
     }
   }
 
-  const onPinHandle = () => {
-    existedOperators.find(({ name }) => name === operatorInfoName)
-      ? operatorPinHandle
-      : undefined
+  const updateFavOperator = () => {
+    const { skill, skillUsage, skillTimes, ...rest } = operator
+    const formattedValue = {
+      ...rest,
+      skill: skill || 1,
+      skillUsage: skillUsage || 0,
+      skillTimes:
+        skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes
+          ? skillTimes || 1
+          : undefined,
+    }
+    setFavOperators([
+      ...[...favOperators].filter(({ name }) => name !== formattedValue.name),
+      { ...formattedValue },
+    ])
+    submitOperator(formattedValue, undefined, true)
   }
 
-  const operatorPinHandle: OperatorModifyProps['operatorPinHandle'] = (
-    value,
-  ) => {
+  const onPinnedChange = () => {
     if (pinned)
       setFavOperators(
         [...favOperators].filter(
@@ -594,8 +540,9 @@ const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
         ),
       )
     else {
-      if (favOperatorFindByName(value.name)) setCoverOperator(value)
-      else updateFavOperator(value)
+      if (favOperators.find(({ name: existedName }) => existedName === name)) {
+        console.log('有重复')
+      } else updateFavOperator()
     }
   }
 
@@ -617,7 +564,7 @@ const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
             {name}
           </p>
         </>
-        {/* {(selected || grouped) && (
+        {selected && (
           <div
             className="absolute top-2 right-2"
             onClick={(e) => e.stopPropagation()}
@@ -625,10 +572,7 @@ const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
           >
             <Popover2
               content={
-                <Button
-                  minimal
-                  onClick={() => onPinHandle?.(operator as Operator)}
-                >
+                <Button minimal onClick={onPinnedChange}>
                   <Icon icon="pin" className="-rotate-45" />
                   <span>移出收藏</span>
                 </Button>
@@ -638,13 +582,11 @@ const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
               <Icon
                 icon={pinned ? 'pin' : 'unpin'}
                 className={clsx(pinned && '-rotate-45')}
-                onClick={
-                  pinned ? undefined : () => onPinHandle?.(operator as Operator)
-                }
+                onClick={pinned ? undefined : onPinnedChange}
               />
             </Popover2>
           </div>
-        )} */}
+        )}
       </>
       {selected && (
         <SkillAboutTrigger

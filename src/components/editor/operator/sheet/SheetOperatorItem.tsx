@@ -32,7 +32,6 @@ export const OperatorItem = ({
   pinned,
   ...cardProps
 }: OperatorItemPorps) => {
-
   return (
     <Card
       className={clsx(
