@@ -31,7 +31,6 @@ export interface RarityFilter {
 export interface PaginationFilter {
   size: number
   current: number
-  total: number
 }
 
 const generateCustomizedOperInfo = (name: string): OperatorInfo => ({
@@ -53,7 +52,7 @@ export const useOperatorAfterFiltered = (
   const filterResult = useProfFilterHandle(profFilter)
   //   rarity about
 
-  const total = filterResult.length
+  const dataTotal = filterResult.length
   //   pagination about
 
   //   filterResult
@@ -62,10 +61,7 @@ export const useOperatorAfterFiltered = (
     // return data after being paginated
     data: paginationFilterHandle(paginationFilter, filterResult),
     meta: {
-      pagination: {
-        ...paginationFilter,
-        total,
-      },
+      dataTotal,
     },
   }
 }

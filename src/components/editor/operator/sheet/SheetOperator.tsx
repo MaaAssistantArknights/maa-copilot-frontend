@@ -16,7 +16,6 @@ import {
 
 export interface SheetOperatorProps {}
 
-const paginationSize = 60
 // const defaultRarityFilter = Array.from(
 //   new Array(Math.max(...OPERATORS.map(({ rarity }) => rarity)) + 1).keys(),
 // ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
@@ -105,7 +104,7 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 
   const {
     data: operatorsAfterFiltered,
-    meta: { pagination: paginationAfterFiltered },
+    meta: { dataTotal },
   } = useOperatorAfterFiltered(profFilter, pagination)
 
   // prof listener
@@ -116,10 +115,8 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 
   // pagination listener
   useEffect(() => {
-    if (paginationAfterFiltered.total === pagination.total) return
-    setPagination(paginationAfterFiltered)
-    if (paginationAfterFiltered.current === 1) toTop()
-  }, [pagination.total, paginationAfterFiltered])
+    if (pagination.current === 1) toTop()
+  }, [pagination])
 
   return (
     <>
@@ -140,7 +137,7 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
                   </div>
                 ))}
               </div>
-              <ShowMore {...{ pagination, setPagination }} />
+              <ShowMore {...{ pagination, setPagination, dataTotal }} />
             </>
           ) : (
             OperatorNoData

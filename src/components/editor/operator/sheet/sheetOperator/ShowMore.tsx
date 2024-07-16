@@ -6,27 +6,28 @@ import { PaginationFilter } from './useOperatorFilter'
 
 export interface ShowMoreProp {
   pagination: PaginationFilter
+  dataTotal: number
   setPagination: Dispatch<SetStateAction<PaginationFilter>>
 }
 
 export const defaultPagination: PaginationFilter = {
   current: 1,
   size: 60,
-  total: 0,
 }
 
 export const ShowMore: FC<ShowMoreProp> = ({
-  pagination: { current, size, total },
+  pagination: { current, size },
+  dataTotal,
   setPagination,
 }) => {
   const lastIndex = current * size
 
   return (
     <div className="flex items-center justify-center pt-3 cursor-default">
-      {lastIndex >= total ? (
+      {lastIndex >= dataTotal ? (
         <>
-          <H6>已经展示全部干员了({total})</H6>
-          {total > size && (
+          <H6>已经展示全部干员了({dataTotal})</H6>
+          {dataTotal > size && (
             <H6
               className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
               onClick={() => setPagination(defaultPagination)}
@@ -45,7 +46,7 @@ export const ShowMore: FC<ShowMoreProp> = ({
             }))
           }
         >
-          显示更多干员(剩余{total - lastIndex})
+          显示更多干员(剩余{dataTotal - lastIndex})
         </H6>
       )}
     </div>
