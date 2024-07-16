@@ -1,57 +1,20 @@
-import { Button, Divider, H4, H5, H6 } from '@blueprintjs/core'
-import { Popover2 } from '@blueprintjs/popover2'
-import { POPOVER2_DISMISS } from '@blueprintjs/popover2/lib/esm/classes'
+import { FC, useEffect, useRef, useState } from 'react'
 
-import clsx from 'clsx'
-import { useAtomValue } from 'jotai'
-import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react'
-
-import { OPERATORS, PROFESSIONS } from 'models/operator'
-import { favOperatorAtom } from 'store/useFavOperators'
-
-import { Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
-import { useSheet } from './SheetProvider'
-import { ProfClassification } from './sheetOperator/ProfClassification'
+import {
+  ProfClassification,
+  ProfClassificationProp,
+  defaultProfFilter,
+} from './sheetOperator/ProfClassification'
 import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
+import { ShowMore, defaultPagination } from './sheetOperator/ShowMore'
+import {
+  PaginationFilter,
+  useOperatorAfterFiltered,
+} from './sheetOperator/useOperatorFilter'
 
 export interface SheetOperatorProps {}
-
-export interface OperatorModifyProps {
-  operatorPinHandle?: (value: Operator) => void
-  operatorSelectHandle?: (value: string) => void
-  // operatorSkillHandle?: (value: Operator) => void
-}
-
-// const defaultProf = [
-//   {
-//     id: 'all',
-//     name: '全部',
-//     sub: [],
-//   },
-//   {
-//     id: 'fav',
-//     name: '收藏',
-//     sub: [],
-//   },
-//   {
-//     id: 'others',
-//     name: '其它',
-//     sub: [],
-//   },
-// ]
-
-// const defaultSubProf = [
-//   { id: 'allSubProf', name: '全部' },
-//   { id: 'selected', name: '已选择' },
-// ]
-
-// const formattedProfessions = [
-//   ...defaultProf.slice(0, defaultProf.length - 1),
-//   ...PROFESSIONS,
-//   ...defaultProf.slice(defaultProf.length - 1),
-// ]
 
 const paginationSize = 60
 // const defaultRarityFilter = Array.from(
@@ -59,102 +22,17 @@ const paginationSize = 60
 // ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
 
 const SheetOperator: FC<SheetOperatorProps> = () => {
-  const { submitOperator, existedOperators, removeOperator, existedGroups } =
-    useSheet()
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
-  // const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
-  // const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
-  // const [operatorRarity, setOperatorRarity] = useState(defaultRarityFilter)
-  const [rarityReverse, setRarityReverse] = useState(false)
-  // const favOperators = useAtomValue(favOperatorAtom)
-
-  // const [formattedSubProfessions, operatorsGroupedByProf] = useMemo(
-  //   () => [
-  //     // handle customize operators
-  //     [...defaultSubProf, ...(selectedProf.sub || [])],
-  //     [
-  //       ...existedOperators
-  //         .filter((item) => !OPERATORS.find(({ name }) => name === item.name))
-  //         .map(({ name }) => {
-  //           return {
-  //             name,
-  //             subProf: '',
-  //             rarity: 0,
-  //           }
-  //         }),
-  //       ...OPERATORS,
-  //     ].filter((item) => {
-  //       if (selectedProf.id === defaultProf[0].id) return true
-  //       if (selectedProf.id === defaultProf[1].id)
-  //         return !!favOperators.find(({ name }) => name === item.name)
-  //       else if (selectedProf.id === defaultProf[2].id) {
-  //         return item.subProf === 'notchar1' || !item.subProf
-  //       } else return !!selectedProf.sub?.find((op) => op.id === item.subProf)
-  //     }),
-  //   ],
-  //   [selectedProf.sub, selectedProf.id, existedOperators, favOperators],
-  // )
-
-  const checkOperatorSelected = useCallback(
-    (target: string) => {
-      if (existedOperators.find((item) => item.name === target)) return true
-      else
-        return !!existedGroups
-          .map((item) => item.opers)
-          .flat()
-          .find((item) => item?.name === target)
-    },
-    [existedOperators, existedGroups],
-  )
+  const [profFilter, setProfFilter] =
+    useState<ProfClassificationProp['profFilter']>(defaultProfFilter)
 
   // const getOperatorRarity = (target: string) =>
   //   operatorsGroupedByProf.find((item) => item.name === target)!.rarity
 
-  // const operatorsGroupedBySubProf = useMemo(() => {
-  //   let result: Operator[] = []
-  //   if (selectedSubProf.id === 'all') result = operatorsGroupedByProf
-  //   else if (selectedSubProf.id === 'selected')
-  //     result = operatorsGroupedByProf.filter((item) =>
-  //       checkOperatorSelected(item.name),
-  //     )
-  //   else
-  //     result = operatorsGroupedByProf.filter(
-  //       (item) => item.subProf === selectedSubProf.id,
-  //     )
-
-  //   result = result
-  //     .filter(({ name }) => {
-  //       return (
-  //         operatorRarity.findIndex(
-  //           (rarity) => getOperatorRarity(name) === rarity,
-  //         ) !== -1
-  //       )
-  //     })
-  //     .sort(
-  //       ({ name: aName }, { name: bName }) =>
-  //         getOperatorRarity(bName) - getOperatorRarity(aName),
-  //     )
-
-  //   return rarityReverse ? result.reverse() : result
-  // }, [
-  //   selectedSubProf,
-  //   operatorsGroupedByProf,
-  //   checkOperatorSelected,
-  //   operatorRarity,
-  //   rarityReverse,
-  //   getOperatorRarity,
-  // ])
-
   // pagination about via frontened
-  const [pageIndex, setPageIndex] = useState(0)
-  const lastIndex = (pageIndex + 1) * paginationSize
-  const backToTop = lastIndex > paginationSize
-
-  const resetPaginationState = () => {
-    setPageIndex(0)
-    operatorScrollRef?.current?.scrollIntoView()
-  }
+  const [pagination, setPagination] =
+    useState<PaginationFilter>(defaultPagination)
 
   // useEffect(resetPaginationState, [selectedProf, selectedSubProf])
 
@@ -221,111 +99,55 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 
   // console.log(selectedProf, selectedSubProf)
 
-  // const ShowMoreButton = (
-  //   <div className="flex items-center justify-center pt-3 cursor-default">
-  //     {lastIndex >= operatorsGroupedBySubProf.length ? (
-  //       <>
-  //         <H6>已经展示全部干员了({operatorsGroupedBySubProf.length})</H6>
-  //         {operatorsGroupedBySubProf.length > paginationSize && (
-  //           <H6
-  //             className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
-  //             onClick={resetPaginationState}
-  //           >
-  //             收起
-  //           </H6>
-  //         )}
-  //       </>
-  //     ) : (
-  //       <H6
-  //         className="cursor-pointer mx-auto text-sm text-gray-500 hover:text-inherit hover:underline"
-  //         onClick={() => setPageIndex(pageIndex + 1)}
-  //       >
-  //         显示更多干员(剩余{operatorsGroupedBySubProf.length - lastIndex})
-  //       </H6>
-  //     )}
-  //   </div>
-  // )
+  const toTop = () => {
+    operatorScrollRef?.current?.scrollIntoView()
+  }
 
-  // const ProfSelect = (
-  //   <div className="flex flex-row-reverse h-screen sticky top-0 relative">
-  //     <div className="h-full flex flex-col mr-0.5 w-6 sm:w-12">
-  //       {formattedProfessions.map((prof) => (
-  //         <div
-  //           key={prof.id}
-  //           className="grow cursor-pointer relative flex justify-center items-center"
-  //           title={prof.name}
-  //           onClick={() => {
-  //             setSelectedProf(prof)
-  //             setSelectedSubProf(defaultSubProf[0])
-  //           }}
-  //           role="presentation"
-  //         >
-  //           <img
-  //             className="invert dark:invert-0"
-  //             src={'/assets/prof-icons/' + prof.id + '.png'}
-  //             alt=""
-  //             onError={() => (
-  //               <H5 className="!text-xs sm:!text-base truncate">{prof.name}</H5>
-  //             )}
-  //             title={prof.name}
-  //           />
-  //           {prof.id === selectedProf.id && (
-  //             <div className="h-full w-1 bg-black dark:bg-white absolute top-0 right-full rounded" />
-  //           )}
-  //         </div>
-  //       ))}
-  //     </div>
-  //     <Divider className="mr-0" />
-  //     <div className="mr-1 h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
-  //       <div>
-  //         {formattedSubProfessions?.map((subProf) => (
-  //           <H4
-  //             key={subProf.id}
-  //             className={clsx(
-  //               'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-  //               subProf.id === selectedSubProf.id && '!opacity-100 underline',
-  //               subProf.name.length > 3 && '!text-base',
-  //             )}
-  //             onClick={() => setSelectedSubProf(subProf)}
-  //           >
-  //             {subProf.name}
-  //           </H4>
-  //         ))}
-  //       </div>
-  //       {ActionList}
-  //     </div>
-  //   </div>
-  // )
+  const {
+    data: operatorsAfterFiltered,
+    meta: { pagination: paginationAfterFiltered },
+  } = useOperatorAfterFiltered(profFilter, pagination)
+
+  // prof listener
+  useEffect(() => {
+    setPagination(defaultPagination)
+    toTop()
+  }, [profFilter])
+
+  // pagination listener
+  useEffect(() => {
+    if (paginationAfterFiltered.total === pagination.total) return
+    setPagination(paginationAfterFiltered)
+    if (paginationAfterFiltered.current === 1) toTop()
+  }, [pagination.total, paginationAfterFiltered])
 
   return (
     <>
       <div className="flex h-full">
         <div className="flex-auto px-1" ref={operatorScrollRef}>
-          {/* {operatorsGroupedBySubProf.length ? (
+          {operatorsAfterFiltered.length ? (
             <>
               <div
                 key="operatorContainer"
                 className="flex flex-wrap items-start content-start overscroll-contain relative"
               >
-                {operatorsGroupedBySubProf
-                  .slice(0, lastIndex)
-                  .map(({ name }, index) => (
-                    <div
-                      className="flex items-center flex-0 w-32 h-32"
-                      key={index}
-                    >
-                      <SheetOperatorItem {...{ name }} />
-                    </div>
-                  ))}
+                {operatorsAfterFiltered.map(({ name }, index) => (
+                  <div
+                    className="flex items-center flex-0 w-32 h-32"
+                    key={index}
+                  >
+                    <SheetOperatorItem {...{ name }} />
+                  </div>
+                ))}
               </div>
-              {ShowMoreButton}
+              <ShowMore {...{ pagination, setPagination }} />
             </>
           ) : (
             OperatorNoData
-          )} */}
+          )}
         </div>
         {/* {ProfSelect} */}
-        <ProfClassification />
+        <ProfClassification {...{ profFilter, setProfFilter }} />
       </div>
     </>
   )

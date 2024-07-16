@@ -1,12 +1,22 @@
-import { Button, Divider, H4, H5 } from '@blueprintjs/core'
-import { Popover2 } from '@blueprintjs/popover2'
+import { Divider, H4, H5 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { FC, ImgHTMLAttributes, useMemo, useState } from 'react'
+import {
+  Dispatch,
+  FC,
+  ImgHTMLAttributes,
+  SetStateAction,
+  useMemo,
+  useState,
+} from 'react'
 
 import { PROFESSIONS } from 'models/operator'
 
-import { DEFAULTPROFID, DEFAULTSUBPROFID } from './OperatorFilter'
+import {
+  DEFAULTPROFID,
+  DEFAULTSUBPROFID,
+  ProfFilter as ProfFilterOuter,
+} from './useOperatorFilter'
 
 const formattedProfessions = [
   {
@@ -27,22 +37,29 @@ const formattedProfessions = [
   },
 ]
 
-export interface ProfClassificationProp {}
+type ProfFilter = ProfFilterOuter
 
-export const ProfClassification: FC<ProfClassificationProp> = () => {
-  const [activeProf, setActiveProf] = useState<string[]>([
-    DEFAULTPROFID.ALL,
-    'allSubProf',
-  ])
+export const defaultProfFilter: ProfFilter = {
+  selectedProf: [DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL],
+}
 
+export interface ProfClassificationProp {
+  profFilter: ProfFilter
+  setProfFilter: Dispatch<SetStateAction<ProfFilter>>
+}
+
+export const ProfClassification: FC<ProfClassificationProp> = ({
+  profFilter: { selectedProf },
+  setProfFilter,
+}) => {
   const subProfs = useMemo(() => {
     return [
       { id: DEFAULTSUBPROFID.ALL, name: '全部' },
       { id: DEFAULTSUBPROFID.SELECTED, name: '已选择' },
-      ...(formattedProfessions.find(({ id }) => id === activeProf[0])?.sub ||
+      ...(formattedProfessions.find(({ id }) => id === selectedProf[0])?.sub ||
         []),
     ]
-  }, [activeProf])
+  }, [selectedProf])
 
   //   const ActionList = (
   //     <div className="absolute bottom-0">
@@ -98,11 +115,13 @@ export const ProfClassification: FC<ProfClassificationProp> = () => {
             key={id}
             profId={id}
             name={name}
-            selected={activeProf.includes(id)}
-            onProfClick={() => {
-              console.log('111', id)
-              setActiveProf([id, DEFAULTSUBPROFID.ALL])
-            }}
+            selected={selectedProf.includes(id)}
+            onProfClick={() =>
+              setProfFilter((prev) => ({
+                ...prev,
+                selectedProf: [id, DEFAULTSUBPROFID.ALL],
+              }))
+            }
           />
         ))}
       </ul>
@@ -114,11 +133,14 @@ export const ProfClassification: FC<ProfClassificationProp> = () => {
               <H4
                 className={clsx(
                   'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-                  activeProf.includes(id) && '!opacity-100 underline',
+                  selectedProf.includes(id) && '!opacity-100 underline',
                   name.length > 3 && '!text-base',
                 )}
                 onClick={() =>
-                  setActiveProf((prev) => [...prev.slice(0, 1), id])
+                  setProfFilter(({ selectedProf, ...rest }) => ({
+                    selectedProf: [selectedProf[0], id],
+                    ...rest,
+                  }))
                 }
               >
                 {name}
