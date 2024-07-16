@@ -1,12 +1,18 @@
-import { Button, Divider, H4, H5 } from '@blueprintjs/core'
-import { Popover2 } from '@blueprintjs/popover2'
+import { Divider, H4, H5 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { FC, ImgHTMLAttributes, useMemo, useState } from 'react'
+import {
+  Dispatch,
+  FC,
+  ImgHTMLAttributes,
+  SetStateAction,
+  useMemo,
+  useState,
+} from 'react'
 
 import { PROFESSIONS } from 'models/operator'
 
-import { DEFAULTPROFID, DEFAULTSUBPROFID } from './OperatorFilter'
+import { DEFAULTPROFID, DEFAULTSUBPROFID, ProfFilter } from './OperatorFilter'
 
 const formattedProfessions = [
   {
@@ -27,14 +33,17 @@ const formattedProfessions = [
   },
 ]
 
-export interface ProfClassificationProp {}
+type ActiveProf = ProfFilter['selectedProf']
 
-export const ProfClassification: FC<ProfClassificationProp> = () => {
-  const [activeProf, setActiveProf] = useState<string[]>([
-    DEFAULTPROFID.ALL,
-    'allSubProf',
-  ])
+export interface ProfClassificationProp {
+  activeProf: ActiveProf
+  setActiveProf: Dispatch<SetStateAction<ActiveProf>>
+}
 
+export const ProfClassification: FC<ProfClassificationProp> = ({
+  activeProf,
+  setActiveProf,
+}) => {
   const subProfs = useMemo(() => {
     return [
       { id: DEFAULTSUBPROFID.ALL, name: '全部' },
@@ -117,9 +126,7 @@ export const ProfClassification: FC<ProfClassificationProp> = () => {
                   activeProf.includes(id) && '!opacity-100 underline',
                   name.length > 3 && '!text-base',
                 )}
-                onClick={() =>
-                  setActiveProf((prev) => [...prev.slice(0, 1), id])
-                }
+                onClick={() => setActiveProf((prev) => [prev[0], id])}
               >
                 {name}
               </H4>

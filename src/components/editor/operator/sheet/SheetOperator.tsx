@@ -13,7 +13,15 @@ import { Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
 import { useSheet } from './SheetProvider'
-import { ProfClassification } from './sheetOperator/ProfClassification'
+import {
+  DEFAULTPROFID,
+  DEFAULTSUBPROFID,
+  useOperatorAfterFiltered,
+} from './sheetOperator/OperatorFilter'
+import {
+  ProfClassification,
+  ProfClassificationProp,
+} from './sheetOperator/ProfClassification'
 import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
 
 export interface SheetOperatorProps {}
@@ -59,9 +67,13 @@ const paginationSize = 60
 // ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
 
 const SheetOperator: FC<SheetOperatorProps> = () => {
-  const { submitOperator, existedOperators, removeOperator, existedGroups } =
-    useSheet()
+  // const { submitOperator, existedOperators, removeOperator, existedGroups } =
+  //   useSheet()
   const operatorScrollRef = useRef<HTMLDivElement>(null)
+
+  const [activeProf, setActiveProf] = useState<
+    ProfClassificationProp['activeProf']
+  >([DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL])
 
   // const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
   // const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
@@ -96,17 +108,17 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
   //   [selectedProf.sub, selectedProf.id, existedOperators, favOperators],
   // )
 
-  const checkOperatorSelected = useCallback(
-    (target: string) => {
-      if (existedOperators.find((item) => item.name === target)) return true
-      else
-        return !!existedGroups
-          .map((item) => item.opers)
-          .flat()
-          .find((item) => item?.name === target)
-    },
-    [existedOperators, existedGroups],
-  )
+  // const checkOperatorSelected = useCallback(
+  //   (target: string) => {
+  //     if (existedOperators.find((item) => item.name === target)) return true
+  //     else
+  //       return !!existedGroups
+  //         .map((item) => item.opers)
+  //         .flat()
+  //         .find((item) => item?.name === target)
+  //   },
+  //   [existedOperators, existedGroups],
+  // )
 
   // const getOperatorRarity = (target: string) =>
   //   operatorsGroupedByProf.find((item) => item.name === target)!.rarity
@@ -297,17 +309,23 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
   //   </div>
   // )
 
+  const operatorsAfterFiltered = useOperatorAfterFiltered({
+    selectedProf: activeProf,
+  })
+
+  console.log(operatorsAfterFiltered)
+
   return (
     <>
       <div className="flex h-full">
         <div className="flex-auto px-1" ref={operatorScrollRef}>
-          {/* {operatorsGroupedBySubProf.length ? (
+          {operatorsAfterFiltered.length ? (
             <>
               <div
                 key="operatorContainer"
                 className="flex flex-wrap items-start content-start overscroll-contain relative"
               >
-                {operatorsGroupedBySubProf
+                {operatorsAfterFiltered
                   .slice(0, lastIndex)
                   .map(({ name }, index) => (
                     <div
@@ -318,14 +336,14 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
                     </div>
                   ))}
               </div>
-              {ShowMoreButton}
+              {/* {ShowMoreButton} */}
             </>
           ) : (
             OperatorNoData
-          )} */}
+          )}
         </div>
         {/* {ProfSelect} */}
-        <ProfClassification />
+        <ProfClassification {...{ activeProf, setActiveProf }} />
       </div>
     </>
   )
