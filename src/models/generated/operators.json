@@ -2465,6 +2465,14 @@
       "alt_name": "Ceylon"
     },
     {
+      "id": "char_4151_tinman",
+      "subProf": "alchemist",
+      "name": "锡人",
+      "alias": "xiren xr 錫人",
+      "rarity": 5,
+      "alt_name": "Tin Man"
+    },
+    {
       "id": "char_336_folivo",
       "subProf": "summoner",
       "name": "稀音",
@@ -3123,7 +3131,8 @@
         { "id": "pusher", "name": "推击手" },
         { "id": "dollkeeper", "name": "傀儡师" },
         { "id": "geek", "name": "怪杰" },
-        { "id": "traper", "name": "陷阱师" }
+        { "id": "traper", "name": "陷阱师" },
+        { "id": "alchemist", "name": "炼金师" }
       ]
     },
     {
