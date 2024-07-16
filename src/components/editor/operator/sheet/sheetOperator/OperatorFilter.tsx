@@ -1,4 +1,7 @@
+import { useAtomValue } from 'jotai'
+
 import { OperatorInfo as ModelsOperator, OPERATORS } from 'models/operator'
+import { favOperatorAtom } from 'store/useFavOperators'
 
 import { useSheet } from '../SheetProvider'
 
@@ -32,6 +35,7 @@ export interface PaginationFilter {
 
 export const useOperatorAfterFiltered = (profFilter: ProfFilter) => {
   const { existedOperators } = useSheet()
+  const favOperators = useAtomValue(favOperatorAtom)
   // Priority: prof > sub prof > rarity/rarityReverse
 
   return OPERATORS
@@ -48,5 +52,7 @@ const profFilterHandle = (
     selectedProf: [_, subProf],
   } = profFilter
 
-  return originData
+  return originData.filter(
+    ({ subProf: operatorSubProf }) => operatorSubProf === subProf,
+  )
 }
