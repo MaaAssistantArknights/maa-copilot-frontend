@@ -41,18 +41,33 @@ const generateCustomizedOperInfo = (name: string): OperatorInfo => ({
   subProf: 'customized',
   alias: 'customized-operator',
   rarity: 0,
-  alt_name: 'custormized operator',
+  alt_name: 'custormized operator named' + name,
 })
 
-export const useOperatorAfterFiltered = (profFilter: ProfFilter) => {
+export const useOperatorAfterFiltered = (
+  profFilter: ProfFilter,
+  paginationFilter: PaginationFilter,
+) => {
   // Priority: prof > sub prof > rarity/rarityReverse
   // filterResult init and prof filter about
-  const filterResult: { name: string }[] = useProfFilterHandle(profFilter)
+  const filterResult = useProfFilterHandle(profFilter)
   //   rarity about
 
+  const total = filterResult.length
+  //   pagination about
+
   //   filterResult
-  console.log(filterResult)
-  return filterResult
+  //   console.log(filterResult)
+  return {
+    // return data after being paginated
+    data: paginationFilterHandle(paginationFilter, filterResult),
+    meta: {
+      pagination: {
+        ...paginationFilter,
+        total,
+      },
+    },
+  }
 }
 
 const useProfFilterHandle = (
@@ -132,3 +147,8 @@ const useProfFilterHandle = (
     }
   }
 }
+
+const paginationFilterHandle = (
+  { current, size }: PaginationFilter,
+  originData: OperatorInfo[] = OPERATORS,
+) => originData.slice(0, current * size)

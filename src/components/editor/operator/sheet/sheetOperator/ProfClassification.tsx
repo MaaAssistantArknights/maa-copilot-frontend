@@ -16,7 +16,7 @@ import {
   DEFAULTPROFID,
   DEFAULTSUBPROFID,
   ProfFilter as ProfFilterOuter,
-} from './OperatorFilter'
+} from './useOperatorFilter'
 
 const formattedProfessions = [
   {
@@ -38,6 +38,10 @@ const formattedProfessions = [
 ]
 
 type ProfFilter = ProfFilterOuter
+
+export const defaultProfFilter: ProfFilter = {
+  selectedProf: [DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL],
+}
 
 export interface ProfClassificationProp {
   profFilter: ProfFilter
@@ -112,13 +116,12 @@ export const ProfClassification: FC<ProfClassificationProp> = ({
             profId={id}
             name={name}
             selected={selectedProf.includes(id)}
-            onProfClick={() => {
-              console.log('111', id)
+            onProfClick={() =>
               setProfFilter((prev) => ({
                 ...prev,
                 selectedProf: [id, DEFAULTSUBPROFID.ALL],
               }))
-            }}
+            }
           />
         ))}
       </ul>
