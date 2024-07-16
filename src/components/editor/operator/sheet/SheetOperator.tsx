@@ -26,12 +26,6 @@ import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
 
 export interface SheetOperatorProps {}
 
-export interface OperatorModifyProps {
-  operatorPinHandle?: (value: Operator) => void
-  operatorSelectHandle?: (value: string) => void
-  // operatorSkillHandle?: (value: Operator) => void
-}
-
 // const defaultProf = [
 //   {
 //     id: 'all',
@@ -67,58 +61,14 @@ const paginationSize = 60
 // ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
 
 const SheetOperator: FC<SheetOperatorProps> = () => {
-  // const { submitOperator, existedOperators, removeOperator, existedGroups } =
-  //   useSheet()
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
-  const [activeProf, setActiveProf] = useState<
-    ProfClassificationProp['activeProf']
-  >([DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL])
-
-  // const [selectedProf, setSelectedProf] = useState(formattedProfessions[0])
-  // const [selectedSubProf, setSelectedSubProf] = useState(defaultSubProf[0])
-  // const [operatorRarity, setOperatorRarity] = useState(defaultRarityFilter)
+  const [profFilter, setProfFilter] = useState<
+    ProfClassificationProp['profFilter']
+  >({
+    selectedProf: [DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL],
+  })
   const [rarityReverse, setRarityReverse] = useState(false)
-  // const favOperators = useAtomValue(favOperatorAtom)
-
-  // const [formattedSubProfessions, operatorsGroupedByProf] = useMemo(
-  //   () => [
-  //     // handle customize operators
-  //     [...defaultSubProf, ...(selectedProf.sub || [])],
-  //     [
-  //       ...existedOperators
-  //         .filter((item) => !OPERATORS.find(({ name }) => name === item.name))
-  //         .map(({ name }) => {
-  //           return {
-  //             name,
-  //             subProf: '',
-  //             rarity: 0,
-  //           }
-  //         }),
-  //       ...OPERATORS,
-  //     ].filter((item) => {
-  //       if (selectedProf.id === defaultProf[0].id) return true
-  //       if (selectedProf.id === defaultProf[1].id)
-  //         return !!favOperators.find(({ name }) => name === item.name)
-  //       else if (selectedProf.id === defaultProf[2].id) {
-  //         return item.subProf === 'notchar1' || !item.subProf
-  //       } else return !!selectedProf.sub?.find((op) => op.id === item.subProf)
-  //     }),
-  //   ],
-  //   [selectedProf.sub, selectedProf.id, existedOperators, favOperators],
-  // )
-
-  // const checkOperatorSelected = useCallback(
-  //   (target: string) => {
-  //     if (existedOperators.find((item) => item.name === target)) return true
-  //     else
-  //       return !!existedGroups
-  //         .map((item) => item.opers)
-  //         .flat()
-  //         .find((item) => item?.name === target)
-  //   },
-  //   [existedOperators, existedGroups],
-  // )
 
   // const getOperatorRarity = (target: string) =>
   //   operatorsGroupedByProf.find((item) => item.name === target)!.rarity
@@ -309,9 +259,7 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
   //   </div>
   // )
 
-  const operatorsAfterFiltered = useOperatorAfterFiltered({
-    selectedProf: activeProf,
-  })
+  const operatorsAfterFiltered = useOperatorAfterFiltered(profFilter)
 
   console.log(operatorsAfterFiltered)
 
@@ -343,7 +291,7 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
           )}
         </div>
         {/* {ProfSelect} */}
-        <ProfClassification {...{ activeProf, setActiveProf }} />
+        <ProfClassification {...{ profFilter, setProfFilter }} />
       </div>
     </>
   )

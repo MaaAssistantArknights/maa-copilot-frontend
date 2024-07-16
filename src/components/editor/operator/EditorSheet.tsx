@@ -5,15 +5,8 @@ import { FC, useState } from 'react'
 import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { SheetGroupContainer } from './sheet/SheetGroup'
-import {
-  SheetOperatorContainer,
-  SheetOperatorProps,
-} from './sheet/SheetOperator'
-import {
-  SheetContextValue,
-  SheetProvider,
-  SheetProviderProp,
-} from './sheet/SheetProvider'
+import { SheetOperatorContainer } from './sheet/SheetOperator'
+import { SheetContextValue, SheetProvider } from './sheet/SheetProvider'
 
 type EditorSheetProps = SheetContextValue
 export type Group = CopilotDocV1.Group

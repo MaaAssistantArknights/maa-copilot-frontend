@@ -12,7 +12,11 @@ import {
 
 import { PROFESSIONS } from 'models/operator'
 
-import { DEFAULTPROFID, DEFAULTSUBPROFID, ProfFilter } from './OperatorFilter'
+import {
+  DEFAULTPROFID,
+  DEFAULTSUBPROFID,
+  ProfFilter as ProfFilterOuter,
+} from './OperatorFilter'
 
 const formattedProfessions = [
   {
@@ -33,25 +37,25 @@ const formattedProfessions = [
   },
 ]
 
-type ActiveProf = ProfFilter['selectedProf']
+type ProfFilter = ProfFilterOuter
 
 export interface ProfClassificationProp {
-  activeProf: ActiveProf
-  setActiveProf: Dispatch<SetStateAction<ActiveProf>>
+  profFilter: ProfFilter
+  setProfFilter: Dispatch<SetStateAction<ProfFilter>>
 }
 
 export const ProfClassification: FC<ProfClassificationProp> = ({
-  activeProf,
-  setActiveProf,
+  profFilter: { selectedProf },
+  setProfFilter,
 }) => {
   const subProfs = useMemo(() => {
     return [
       { id: DEFAULTSUBPROFID.ALL, name: '全部' },
       { id: DEFAULTSUBPROFID.SELECTED, name: '已选择' },
-      ...(formattedProfessions.find(({ id }) => id === activeProf[0])?.sub ||
+      ...(formattedProfessions.find(({ id }) => id === selectedProf[0])?.sub ||
         []),
     ]
-  }, [activeProf])
+  }, [selectedProf])
 
   //   const ActionList = (
   //     <div className="absolute bottom-0">
@@ -107,10 +111,13 @@ export const ProfClassification: FC<ProfClassificationProp> = ({
             key={id}
             profId={id}
             name={name}
-            selected={activeProf.includes(id)}
+            selected={selectedProf.includes(id)}
             onProfClick={() => {
               console.log('111', id)
-              setActiveProf([id, DEFAULTSUBPROFID.ALL])
+              setProfFilter((prev) => ({
+                ...prev,
+                selectedProf: [id, DEFAULTSUBPROFID.ALL],
+              }))
             }}
           />
         ))}
@@ -123,10 +130,15 @@ export const ProfClassification: FC<ProfClassificationProp> = ({
               <H4
                 className={clsx(
                   'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-                  activeProf.includes(id) && '!opacity-100 underline',
+                  selectedProf.includes(id) && '!opacity-100 underline',
                   name.length > 3 && '!text-base',
                 )}
-                onClick={() => setActiveProf((prev) => [prev[0], id])}
+                onClick={() =>
+                  setProfFilter(({ selectedProf, ...rest }) => ({
+                    selectedProf: [selectedProf[0], id],
+                    ...rest,
+                  }))
+                }
               >
                 {name}
               </H4>

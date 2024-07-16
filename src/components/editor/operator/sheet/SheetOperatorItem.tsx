@@ -6,9 +6,14 @@ import { FC } from 'react'
 
 import { OperatorAvatar } from '../EditorOperator'
 import { Operator } from '../EditorSheet'
-import { OperatorModifyProps } from './SheetOperator'
 import { SkillAboutProps, SkillAboutTrigger } from './SheetOperatorSkillAbout'
 import { useSheet } from './SheetProvider'
+
+export interface OperatorModifyProps {
+  operatorPinHandle?: (value: Operator) => void
+  operatorSelectHandle?: (value: string) => void
+  // operatorSkillHandle?: (value: Operator) => void
+}
 
 export interface OperatorItemPorps extends CardProps, SkillAboutProps {
   name: string
