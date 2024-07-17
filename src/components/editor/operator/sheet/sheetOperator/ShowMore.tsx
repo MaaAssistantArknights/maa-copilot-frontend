@@ -1,13 +1,14 @@
 import { H6 } from '@blueprintjs/core'
 
-import { Dispatch, FC, SetStateAction } from 'react'
+import { FC, useEffect } from 'react'
 
-import { PaginationFilter } from './useOperatorFilter'
+import {
+  PaginationFilter,
+  useOperatorFilterProvider,
+} from './SheetOperatorFilterProvider'
 
 export interface ShowMoreProp {
-  pagination: PaginationFilter
-  dataTotal: number
-  setPagination: Dispatch<SetStateAction<PaginationFilter>>
+  toTop: () => void
 }
 
 export const defaultPagination: PaginationFilter = {
@@ -15,12 +16,19 @@ export const defaultPagination: PaginationFilter = {
   size: 60,
 }
 
-export const ShowMore: FC<ShowMoreProp> = ({
-  pagination: { current, size },
-  dataTotal,
-  setPagination,
-}) => {
+export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
+  const {
+    operatorFiltered: {
+      meta: { dataTotal },
+    },
+    usePaginationFilterState: [{ current, size }, setPagination],
+  } = useOperatorFilterProvider()
+
   const lastIndex = current * size
+
+  useEffect(() => {
+    if (current === 1) toTop()
+  }, [current, toTop])
 
   return (
     <div className="flex items-center justify-center pt-3 cursor-default">

@@ -1,7 +1,17 @@
-import { FC } from 'react'
+import { Dispatch, FC, SetStateAction } from 'react'
 
-export interface ToolBoxProp {}
+import { RarityFilter } from './SheetOperatorFilterProvider'
 
-export const ToolBox: FC<ToolBoxProp> = () => {
+export interface ToolBoxProp {
+  toTop: () => void
+  rarityFilter: RarityFilter
+  setRarityFilter: Dispatch<SetStateAction<RarityFilter>>
+}
+
+export const ToolBox: FC<ToolBoxProp> = ({
+  toTop,
+  rarityFilter,
+  setRarityFilter,
+}) => {
   return <>111</>
 }

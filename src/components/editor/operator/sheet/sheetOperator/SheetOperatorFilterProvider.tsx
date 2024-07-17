@@ -1,10 +1,21 @@
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import {
+  Dispatch,
+  FC,
+  ReactNode,
+  SetStateAction,
+  createContext,
+  useContext,
+  useMemo,
+  useState,
+} from 'react'
 
 import { OperatorInfo as ModelsOperator, OPERATORS } from 'models/operator'
 import { favOperatorAtom } from 'store/useFavOperators'
 
 import { useSheet } from '../SheetProvider'
+import { defaultProfFilter } from './ProfClassification'
+import { defaultPagination } from './ShowMore'
 
 type OperatorInfo = ModelsOperator
 
@@ -33,6 +44,51 @@ export interface PaginationFilter {
   current: number
 }
 
+interface OperatorFilterProviderProp {
+  children: ReactNode
+}
+
+type UseState<T> = [T, Dispatch<SetStateAction<T>>]
+
+type OperatorFilterProviderData = {
+  usePaginationFilterState: UseState<PaginationFilter>
+  useProfFilterState: UseState<ProfFilter>
+  // useRarityFilterState: UseState<RarityFilter>
+  operatorFiltered: {
+    data: OperatorInfo[]
+    meta: {
+      dataTotal: number
+    }
+  }
+}
+
+const OperatorFilterContext = createContext<OperatorFilterProviderData>(
+  {} as OperatorFilterProviderData,
+)
+
+export const OperatorFilterProvider: FC<OperatorFilterProviderProp> = ({
+  children,
+}) => {
+  const [paginationFilter, setPaginationFilter] =
+    useState<PaginationFilter>(defaultPagination)
+  const [profFilter, setProfFilter] = useState<ProfFilter>(defaultProfFilter)
+
+  return (
+    <OperatorFilterContext.Provider
+      value={{
+        usePaginationFilterState: [paginationFilter, setPaginationFilter],
+        useProfFilterState: [profFilter, setProfFilter],
+        // useRarityFilterState: []
+        operatorFiltered: useOperatorFiltered(profFilter, paginationFilter),
+      }}
+    >
+      {children}
+    </OperatorFilterContext.Provider>
+  )
+}
+
+export const useOperatorFilterProvider = () => useContext(OperatorFilterContext)
+
 const generateCustomizedOperInfo = (name: string): OperatorInfo => ({
   id: 'customized-' + name,
   name,
@@ -43,7 +99,7 @@ const generateCustomizedOperInfo = (name: string): OperatorInfo => ({
   alt_name: 'custormized operator named' + name,
 })
 
-export const useOperatorAfterFiltered = (
+const useOperatorFiltered = (
   profFilter: ProfFilter,
   paginationFilter: PaginationFilter,
 ) => {
