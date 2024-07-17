@@ -94,7 +94,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
     <Card
       className={clsx(
         'flex items-center w-full h-full relative cursor-pointer flex-col justify-center',
-        selectedInView && 'scale-95 bg-gray-200',
+        selectedInView && 'scale-90 bg-gray-200',
       )}
       elevation={grouped ? 0 : 2}
       interactive={!selectedInView}

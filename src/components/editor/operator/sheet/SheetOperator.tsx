@@ -9,6 +9,7 @@ import {
 } from './sheetOperator/SheetOperatorFilterProvider'
 import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
 import { ShowMore } from './sheetOperator/ShowMore'
+import { OperatorBackToTop } from './sheetOperator/toolBox/OperatorBackToTop'
 import { OperatorMutipleSelect } from './sheetOperator/toolBox/OperatorMutipleSelect'
 
 export interface SheetOperatorProps {}
@@ -20,11 +21,16 @@ export interface SheetOperatorProps {}
 const SheetOperator: FC<SheetOperatorProps> = () => {
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
+  const toTop = useCallback(
+    () => operatorScrollRef?.current?.scrollIntoView(),
+    [operatorScrollRef],
+  )
+
   // const getOperatorRarity = (target: string) =>
   //   operatorsGroupedByProf.find((item) => item.name === target)!.rarity
 
   const ToolBox = (
-    <div className="flex">
+    <div className="flex pb-2 pr-2">
       {/* <Popover2
         content={
           <RaritySelector
@@ -40,20 +46,10 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
         <Button minimal icon="filter-list" />
       </Popover2> */}
       <OperatorMutipleSelect />
-      {/* <Button
-        minimal
-        icon="symbol-triangle-up"
-        disabled={!backToTop}
-        title={backToTop ? '回到顶部' : undefined}
-        onClick={resetPaginationState}
-      /> */}
+      <OperatorBackToTop {...{ toTop }} />
     </div>
   )
 
-  const toTop = useCallback(
-    () => operatorScrollRef?.current?.scrollIntoView(),
-    [operatorScrollRef],
-  )
   const {
     operatorFiltered: { data: operatorFilteredData },
   } = useOperatorFilterProvider()
