@@ -1,14 +1,7 @@
 import { Divider, H4, H5 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import {
-  Dispatch,
-  FC,
-  ImgHTMLAttributes,
-  SetStateAction,
-  useMemo,
-  useState,
-} from 'react'
+import { FC, ImgHTMLAttributes, useEffect, useMemo, useState } from 'react'
 
 import { PROFESSIONS } from 'models/operator'
 
@@ -16,7 +9,8 @@ import {
   DEFAULTPROFID,
   DEFAULTSUBPROFID,
   ProfFilter as ProfFilterOuter,
-} from './useOperatorFilter'
+  useOperatorFilterProvider,
+} from './SheetOperatorFilterProvider'
 
 const formattedProfessions = [
   {
@@ -44,14 +38,14 @@ export const defaultProfFilter: ProfFilter = {
 }
 
 export interface ProfClassificationProp {
-  profFilter: ProfFilter
-  setProfFilter: Dispatch<SetStateAction<ProfFilter>>
+  toTop: () => void
 }
 
-export const ProfClassification: FC<ProfClassificationProp> = ({
-  profFilter: { selectedProf },
-  setProfFilter,
-}) => {
+export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
+  const {
+    useProfFilterState: [{ selectedProf }, setProfFilter],
+  } = useOperatorFilterProvider()
+
   const subProfs = useMemo(() => {
     return [
       { id: DEFAULTSUBPROFID.ALL, name: '全部' },
@@ -60,6 +54,10 @@ export const ProfClassification: FC<ProfClassificationProp> = ({
         []),
     ]
   }, [selectedProf])
+
+  useEffect(() => {
+    toTop()
+  }, [selectedProf, toTop])
 
   //   const ActionList = (
   //     <div className="absolute bottom-0">

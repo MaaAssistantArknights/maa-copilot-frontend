@@ -1,18 +1,14 @@
-import { FC, useEffect, useRef, useState } from 'react'
+import { FC, useRef } from 'react'
 
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
+import { ProfClassification } from './sheetOperator/ProfClassification'
 import {
-  ProfClassification,
-  ProfClassificationProp,
-  defaultProfFilter,
-} from './sheetOperator/ProfClassification'
+  OperatorFilterProvider,
+  useOperatorFilterProvider,
+} from './sheetOperator/SheetOperatorFilterProvider'
 import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
-import { ShowMore, defaultPagination } from './sheetOperator/ShowMore'
-import {
-  PaginationFilter,
-  useOperatorAfterFiltered,
-} from './sheetOperator/useOperatorFilter'
+import { ShowMore } from './sheetOperator/ShowMore'
 
 export interface SheetOperatorProps {}
 
@@ -23,17 +19,8 @@ export interface SheetOperatorProps {}
 const SheetOperator: FC<SheetOperatorProps> = () => {
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
-  const [profFilter, setProfFilter] =
-    useState<ProfClassificationProp['profFilter']>(defaultProfFilter)
-
   // const getOperatorRarity = (target: string) =>
   //   operatorsGroupedByProf.find((item) => item.name === target)!.rarity
-
-  // pagination about via frontened
-  const [pagination, setPagination] =
-    useState<PaginationFilter>(defaultPagination)
-
-  // useEffect(resetPaginationState, [selectedProf, selectedSubProf])
 
   // const selectAll = () => {
   //   operatorsGroupedBySubProf.forEach((item) => {
@@ -98,55 +85,34 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 
   // console.log(selectedProf, selectedSubProf)
 
-  const toTop = () => {
-    operatorScrollRef?.current?.scrollIntoView()
-  }
-
   const {
-    data: operatorsAfterFiltered,
-    meta: { dataTotal },
-  } = useOperatorAfterFiltered(profFilter, pagination)
-
-  // prof listener
-  useEffect(() => {
-    setPagination(defaultPagination)
-    toTop()
-  }, [profFilter])
-
-  // pagination listener
-  useEffect(() => {
-    if (pagination.current === 1) toTop()
-  }, [pagination])
+    operatorFiltered: { data: operatorFilteredData },
+  } = useOperatorFilterProvider()
 
   return (
-    <>
-      <div className="flex h-full">
-        <div className="flex-auto px-1" ref={operatorScrollRef}>
-          {operatorsAfterFiltered.length ? (
-            <>
-              <div
-                key="operatorContainer"
-                className="flex flex-wrap items-start content-start overscroll-contain relative"
-              >
-                {operatorsAfterFiltered.map(({ name }, index) => (
-                  <div
-                    className="flex items-center flex-0 w-32 h-32"
-                    key={index}
-                  >
-                    <SheetOperatorItem {...{ name }} />
-                  </div>
-                ))}
-              </div>
-              <ShowMore {...{ pagination, setPagination, dataTotal }} />
-            </>
-          ) : (
-            OperatorNoData
-          )}
-        </div>
-        {/* {ProfSelect} */}
-        <ProfClassification {...{ profFilter, setProfFilter }} />
+    <div className="flex h-full">
+      <div className="flex-auto px-1" ref={operatorScrollRef}>
+        {operatorFilteredData.length ? (
+          <>
+            <div
+              key="operatorContainer"
+              className="flex flex-wrap items-start content-start overscroll-contain relative"
+            >
+              {operatorFilteredData.map(({ name }, index) => (
+                <div className="flex items-center flex-0 w-32 h-32" key={index}>
+                  <SheetOperatorItem {...{ name }} />
+                </div>
+              ))}
+            </div>
+            <ShowMore />
+          </>
+        ) : (
+          OperatorNoData
+        )}
       </div>
-    </>
+      {/* {ProfSelect} */}
+      <ProfClassification />
+    </div>
   )
 }
 
@@ -229,6 +195,8 @@ export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
 ) => (
   <SheetContainerSkeleton title="选择干员" icon="person">
-    <SheetOperator {...sheetOperatorProp} />
+    <OperatorFilterProvider>
+      <SheetOperator {...sheetOperatorProp} />
+    </OperatorFilterProvider>
   </SheetContainerSkeleton>
 )

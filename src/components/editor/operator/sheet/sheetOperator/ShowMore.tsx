@@ -2,24 +2,26 @@ import { H6 } from '@blueprintjs/core'
 
 import { Dispatch, FC, SetStateAction } from 'react'
 
-import { PaginationFilter } from './useOperatorFilter'
+import {
+  PaginationFilter,
+  useOperatorFilterProvider,
+} from './SheetOperatorFilterProvider'
 
-export interface ShowMoreProp {
-  pagination: PaginationFilter
-  dataTotal: number
-  setPagination: Dispatch<SetStateAction<PaginationFilter>>
-}
+export interface ShowMoreProp {}
 
 export const defaultPagination: PaginationFilter = {
   current: 1,
   size: 60,
 }
 
-export const ShowMore: FC<ShowMoreProp> = ({
-  pagination: { current, size },
-  dataTotal,
-  setPagination,
-}) => {
+export const ShowMore: FC<ShowMoreProp> = () => {
+  const {
+    operatorFiltered: {
+      meta: { dataTotal },
+    },
+    usePaginationFilterState: [{ current, size }, setPagination],
+  } = useOperatorFilterProvider()
+
   const lastIndex = current * size
 
   return (
