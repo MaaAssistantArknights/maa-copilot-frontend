@@ -62,54 +62,8 @@ export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
     setPaginationFilter(defaultPagination)
   }, [selectedProf, setPaginationFilter, toTop])
 
-  //   const ActionList = (
-  //     <div className="absolute bottom-0">
-  //       <Popover2
-  //         content={
-  //           <RaritySelector
-  //             {...{
-  //               operatorRarity,
-  //               setOperatorRarity,
-  //               rarityReverse,
-  //               setRarityReverse,
-  //             }}
-  //           />
-  //         }
-  //       >
-  //         <Button minimal icon="filter-list" />
-  //       </Popover2>
-  //       <Button
-  //         minimal
-  //         icon="circle"
-  //         disabled={
-  //           !operatorsGroupedBySubProf.some(({ name }) =>
-  //             checkOperatorSelected(name),
-  //           )
-  //         }
-  //         title={`取消选择全部${existedOperators.length}位干员`}
-  //         onClick={cancelAll}
-  //       />
-  //       <Button
-  //         minimal
-  //         icon="selection"
-  //         title={`全选${operatorsGroupedBySubProf.length}位干员`}
-  //         disabled={operatorsGroupedBySubProf.every(({ name }) =>
-  //           checkOperatorSelected(name),
-  //         )}
-  //         onClick={selectAll}
-  //       />
-  //       <Button
-  //         minimal
-  //         icon="symbol-triangle-up"
-  //         disabled={!backToTop}
-  //         title={backToTop ? '回到顶部' : undefined}
-  //         onClick={resetPaginationState}
-  //       />
-  //     </div>
-  //   )
-
   return (
-    <div className="flex flex-row-reverse h-screen sticky top-0 relative">
+    <div className="flex flex-row-reverse relative h-full">
       <ul className="h-full flex flex-col w-6 sm:w-12">
         {formattedProfessions.map(({ id, name }) => (
           <ProfIcon
@@ -127,30 +81,27 @@ export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
         ))}
       </ul>
       <Divider className="mr-0" />
-      <div className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
-        <ul>
-          {subProfs.map(({ id, name }) => (
-            <li key={id}>
-              <H4
-                className={clsx(
-                  'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-                  selectedProf.includes(id) && '!opacity-100 underline',
-                  name.length > 3 && '!text-base',
-                )}
-                onClick={() =>
-                  setProfFilter(({ selectedProf, ...rest }) => ({
-                    selectedProf: [selectedProf[0], id],
-                    ...rest,
-                  }))
-                }
-              >
-                {name}
-              </H4>
-            </li>
-          ))}
-        </ul>
-        {/* {ActionList} */}
-      </div>
+      <ul className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
+        {subProfs.map(({ id, name }) => (
+          <li key={id}>
+            <H4
+              className={clsx(
+                'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
+                selectedProf.includes(id) && '!opacity-100 underline',
+                name.length > 3 && '!text-base',
+              )}
+              onClick={() =>
+                setProfFilter(({ selectedProf, ...rest }) => ({
+                  selectedProf: [selectedProf[0], id],
+                  ...rest,
+                }))
+              }
+            >
+              {name}
+            </H4>
+          </li>
+        ))}
+      </ul>
     </div>
   )
 }

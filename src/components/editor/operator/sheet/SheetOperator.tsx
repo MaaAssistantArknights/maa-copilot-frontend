@@ -1,4 +1,4 @@
-import { FC, useRef } from 'react'
+import { FC, useCallback, useRef } from 'react'
 
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
@@ -9,6 +9,7 @@ import {
 } from './sheetOperator/SheetOperatorFilterProvider'
 import { SheetOperatorItem } from './sheetOperator/SheetOperatorItem'
 import { ShowMore } from './sheetOperator/ShowMore'
+import { OperatorMutipleSelect } from './sheetOperator/toolBox/OperatorMutipleSelect'
 
 export interface SheetOperatorProps {}
 
@@ -22,71 +23,37 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
   // const getOperatorRarity = (target: string) =>
   //   operatorsGroupedByProf.find((item) => item.name === target)!.rarity
 
-  // const selectAll = () => {
-  //   operatorsGroupedBySubProf.forEach((item) => {
-  //     submitOperator(item, () => {})
-  //   })
-  // }
+  const ToolBox = (
+    <div className="flex">
+      {/* <Popover2
+        content={
+          <RaritySelector
+            {...{
+              operatorRarity,
+              setOperatorRarity,
+              rarityReverse,
+              setRarityReverse,
+            }}
+          />
+        }
+      >
+        <Button minimal icon="filter-list" />
+      </Popover2> */}
+      <OperatorMutipleSelect />
+      {/* <Button
+        minimal
+        icon="symbol-triangle-up"
+        disabled={!backToTop}
+        title={backToTop ? '回到顶部' : undefined}
+        onClick={resetPaginationState}
+      /> */}
+    </div>
+  )
 
-  // const cancelAll = () => {
-  //   const deleteIndexList: number[] = []
-  //   operatorsGroupedBySubProf.forEach(({ name }) => {
-  //     const index = existedOperators.findIndex((item) => item.name === name)
-  //     if (index !== -1) deleteIndexList.push(index)
-  //   })
-  //   removeOperator(deleteIndexList)
-  // }
-
-  // const ActionList = (
-  //   <div className="absolute bottom-0">
-  //     <Popover2
-  //       content={
-  //         <RaritySelector
-  //           {...{
-  //             operatorRarity,
-  //             setOperatorRarity,
-  //             rarityReverse,
-  //             setRarityReverse,
-  //           }}
-  //         />
-  //       }
-  //     >
-  //       <Button minimal icon="filter-list" />
-  //     </Popover2>
-  //     <Button
-  //       minimal
-  //       icon="circle"
-  //       disabled={
-  //         !operatorsGroupedBySubProf.some(({ name }) =>
-  //           checkOperatorSelected(name),
-  //         )
-  //       }
-  //       title={`取消选择全部${existedOperators.length}位干员`}
-  //       onClick={cancelAll}
-  //     />
-  //     <Button
-  //       minimal
-  //       icon="selection"
-  //       title={`全选${operatorsGroupedBySubProf.length}位干员`}
-  //       disabled={operatorsGroupedBySubProf.every(({ name }) =>
-  //         checkOperatorSelected(name),
-  //       )}
-  //       onClick={selectAll}
-  //     />
-  //     <Button
-  //       minimal
-  //       icon="symbol-triangle-up"
-  //       disabled={!backToTop}
-  //       title={backToTop ? '回到顶部' : undefined}
-  //       onClick={resetPaginationState}
-  //     />
-  //   </div>
-  // )
-
-  // console.log(selectedProf, selectedSubProf)
-
-  const toTop = () => operatorScrollRef?.current?.scrollIntoView()
-
+  const toTop = useCallback(
+    () => operatorScrollRef?.current?.scrollIntoView(),
+    [operatorScrollRef],
+  )
   const {
     operatorFiltered: { data: operatorFilteredData },
   } = useOperatorFilterProvider()
@@ -112,8 +79,10 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
           OperatorNoData
         )}
       </div>
-      {/* {ProfSelect} */}
-      <ProfClassification {...{ toTop }} />
+      <div className="h-screen sticky top-0 sticky flex flex-col">
+        <ProfClassification {...{ toTop }} />
+        {ToolBox}
+      </div>
     </div>
   )
 }

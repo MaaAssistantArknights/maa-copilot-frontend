@@ -5,16 +5,15 @@ import { FC, useMemo } from 'react'
 import { useSheet } from '../../SheetProvider'
 import { useOperatorFilterProvider } from '../SheetOperatorFilterProvider'
 
-export interface MutipleSelectProp {}
+export interface OperatorMutipleSelectProp {}
 
-export const MutipleSelect: FC<MutipleSelectProp> = () => {
+export const OperatorMutipleSelect: FC<OperatorMutipleSelectProp> = () => {
   const {
     operatorFiltered: { data: operatorFilteredData },
   } = useOperatorFilterProvider()
-  const { existedOperators } = useSheet()
+  const { existedOperators, submitOperator, removeOperator } = useSheet()
 
   const { cancelAllDisabled, selectAllDisabled } = useMemo(() => {
-    console.log('111')
     const existedOperatorsNames = existedOperators.map(({ name }) => name)
     return {
       cancelAllDisabled: !operatorFilteredData.some(({ name }) =>
@@ -26,8 +25,22 @@ export const MutipleSelect: FC<MutipleSelectProp> = () => {
     }
   }, [existedOperators, operatorFilteredData])
 
+  const selectAll = () =>
+    operatorFilteredData.forEach((item) => {
+      submitOperator(item, () => {})
+    })
+
+  const cancelAll = () => {
+    const deleteIndexList: number[] = []
+    operatorFilteredData.forEach(({ name }) => {
+      const index = existedOperators.findIndex((item) => item.name === name)
+      if (index !== -1) deleteIndexList.push(index)
+    })
+    removeOperator(deleteIndexList)
+  }
+
   return (
-    <div className="flex justify-center content-center">
+    <>
       <Button
         minimal
         icon="circle"
@@ -42,6 +55,6 @@ export const MutipleSelect: FC<MutipleSelectProp> = () => {
         disabled={selectAllDisabled}
         onClick={selectAll}
       />
-    </div>
+    </>
   )
 }
