@@ -1,20 +1,22 @@
 import { H6 } from '@blueprintjs/core'
 
-import { Dispatch, FC, SetStateAction } from 'react'
+import { FC, useEffect } from 'react'
 
 import {
   PaginationFilter,
   useOperatorFilterProvider,
 } from './SheetOperatorFilterProvider'
 
-export interface ShowMoreProp {}
+export interface ShowMoreProp {
+  toTop: () => void
+}
 
 export const defaultPagination: PaginationFilter = {
   current: 1,
   size: 60,
 }
 
-export const ShowMore: FC<ShowMoreProp> = () => {
+export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
   const {
     operatorFiltered: {
       meta: { dataTotal },
@@ -23,6 +25,10 @@ export const ShowMore: FC<ShowMoreProp> = () => {
   } = useOperatorFilterProvider()
 
   const lastIndex = current * size
+
+  useEffect(() => {
+    if (current === 1) toTop()
+  }, [current, toTop])
 
   return (
     <div className="flex items-center justify-center pt-3 cursor-default">

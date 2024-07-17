@@ -11,6 +11,7 @@ import {
   ProfFilter as ProfFilterOuter,
   useOperatorFilterProvider,
 } from './SheetOperatorFilterProvider'
+import { defaultPagination } from './ShowMore'
 
 const formattedProfessions = [
   {
@@ -44,6 +45,7 @@ export interface ProfClassificationProp {
 export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
   const {
     useProfFilterState: [{ selectedProf }, setProfFilter],
+    usePaginationFilterState: [_, setPaginationFilter],
   } = useOperatorFilterProvider()
 
   const subProfs = useMemo(() => {
@@ -57,7 +59,8 @@ export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
 
   useEffect(() => {
     toTop()
-  }, [selectedProf, toTop])
+    setPaginationFilter(defaultPagination)
+  }, [selectedProf, setPaginationFilter, toTop])
 
   //   const ActionList = (
   //     <div className="absolute bottom-0">

@@ -85,6 +85,8 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 
   // console.log(selectedProf, selectedSubProf)
 
+  const toTop = () => operatorScrollRef?.current?.scrollIntoView()
+
   const {
     operatorFiltered: { data: operatorFilteredData },
   } = useOperatorFilterProvider()
@@ -104,14 +106,14 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
                 </div>
               ))}
             </div>
-            <ShowMore />
+            <ShowMore {...{ toTop }} />
           </>
         ) : (
           OperatorNoData
         )}
       </div>
       {/* {ProfSelect} */}
-      <ProfClassification />
+      <ProfClassification {...{ toTop }} />
     </div>
   )
 }
