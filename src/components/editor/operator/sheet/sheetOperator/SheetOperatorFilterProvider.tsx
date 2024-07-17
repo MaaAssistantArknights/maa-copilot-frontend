@@ -14,8 +14,6 @@ import { OperatorInfo as ModelsOperator, OPERATORS } from 'models/operator'
 import { favOperatorAtom } from 'store/useFavOperators'
 
 import { useSheet } from '../SheetProvider'
-import { defaultProfFilter } from './ProfClassification'
-import { defaultPagination } from './ShowMore'
 
 type OperatorInfo = ModelsOperator
 
@@ -33,15 +31,28 @@ export enum DEFAULTSUBPROFID {
 export interface ProfFilter {
   selectedProf: [string, string]
 }
+export const defaultProfFilter: ProfFilter = {
+  selectedProf: [DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL],
+}
 
 export interface RarityFilter {
   selectedRarity: number[]
   reverse: boolean
 }
+export const defaultRarityFilter: RarityFilter = {
+  selectedRarity: Array.from(
+    new Array(Math.max(...OPERATORS.map(({ rarity }) => rarity)) + 1).keys(),
+  ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity))),
+  reverse: false,
+}
 
 export interface PaginationFilter {
   size: number
   current: number
+}
+export const defaultPagination: PaginationFilter = {
+  current: 1,
+  size: 60,
 }
 
 interface OperatorFilterProviderProp {
@@ -53,7 +64,7 @@ type UseState<T> = [T, Dispatch<SetStateAction<T>>]
 type OperatorFilterProviderData = {
   usePaginationFilterState: UseState<PaginationFilter>
   useProfFilterState: UseState<ProfFilter>
-  // useRarityFilterState: UseState<RarityFilter>
+  useRarityFilterState: UseState<RarityFilter>
   operatorFiltered: {
     data: OperatorInfo[]
     meta: {
@@ -72,13 +83,15 @@ export const OperatorFilterProvider: FC<OperatorFilterProviderProp> = ({
   const [paginationFilter, setPaginationFilter] =
     useState<PaginationFilter>(defaultPagination)
   const [profFilter, setProfFilter] = useState<ProfFilter>(defaultProfFilter)
+  const [rarityFilter, setRarityFilter] =
+    useState<RarityFilter>(defaultRarityFilter)
 
   return (
     <OperatorFilterContext.Provider
       value={{
         usePaginationFilterState: [paginationFilter, setPaginationFilter],
         useProfFilterState: [profFilter, setProfFilter],
-        // useRarityFilterState: []
+        useRarityFilterState: [rarityFilter, setRarityFilter],
         operatorFiltered: useOperatorFiltered(profFilter, paginationFilter),
       }}
     >
@@ -141,7 +154,7 @@ const useProfFilterHandle = (
             ? undefined
             : generateCustomizedOperInfo(name),
         )
-        .filter((item) => !!item),
+        .filter((item) => !!item) as OperatorInfo[],
     [existedOperators],
   )
   const favOperatorsInfo = useMemo<OperatorInfo[]>(

@@ -3,17 +3,12 @@ import { H6 } from '@blueprintjs/core'
 import { FC, useEffect } from 'react'
 
 import {
-  PaginationFilter,
+  defaultPagination,
   useOperatorFilterProvider,
 } from './SheetOperatorFilterProvider'
 
 export interface ShowMoreProp {
   toTop: () => void
-}
-
-export const defaultPagination: PaginationFilter = {
-  current: 1,
-  size: 60,
 }
 
 export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {

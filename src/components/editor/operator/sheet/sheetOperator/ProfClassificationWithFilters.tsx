@@ -1,4 +1,5 @@
-import { Divider, H4, H5 } from '@blueprintjs/core'
+import { Button, Divider, H4, H5 } from '@blueprintjs/core'
+import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { FC, ImgHTMLAttributes, useEffect, useMemo, useState } from 'react'
@@ -8,10 +9,12 @@ import { PROFESSIONS } from 'models/operator'
 import {
   DEFAULTPROFID,
   DEFAULTSUBPROFID,
-  ProfFilter as ProfFilterOuter,
+  defaultPagination,
   useOperatorFilterProvider,
 } from './SheetOperatorFilterProvider'
-import { defaultPagination } from './ShowMore'
+import { OperatorBackToTop } from './toolBox/OperatorBackToTop'
+import { OperatorMutipleSelect } from './toolBox/OperatorMutipleSelect'
+import { OperatorRaritySelect } from './toolBox/OperatorRaritySelect'
 
 const formattedProfessions = [
   {
@@ -32,17 +35,13 @@ const formattedProfessions = [
   },
 ]
 
-type ProfFilter = ProfFilterOuter
-
-export const defaultProfFilter: ProfFilter = {
-  selectedProf: [DEFAULTPROFID.ALL, DEFAULTSUBPROFID.ALL],
-}
-
-export interface ProfClassificationProp {
+export interface ProfClassificationWithFiltersProp {
   toTop: () => void
 }
 
-export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
+export const ProfClassificationWithFilters: FC<
+  ProfClassificationWithFiltersProp
+> = ({ toTop }) => {
   const {
     useProfFilterState: [{ selectedProf }, setProfFilter],
     usePaginationFilterState: [_, setPaginationFilter],
@@ -61,6 +60,22 @@ export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
     toTop()
     setPaginationFilter(defaultPagination)
   }, [selectedProf, setPaginationFilter, toTop])
+
+  const ToolBox = (
+    <div className="flex flex-col absolute bottom-0">
+      <Popover2
+        content={
+          <>
+            <OperatorRaritySelect />
+          </>
+        }
+      >
+        <Button minimal icon="filter-list" />
+      </Popover2>
+      <OperatorMutipleSelect />
+      <OperatorBackToTop {...{ toTop }} />
+    </div>
+  )
 
   return (
     <div className="flex flex-row-reverse relative h-full">
@@ -81,27 +96,30 @@ export const ProfClassification: FC<ProfClassificationProp> = ({ toTop }) => {
         ))}
       </ul>
       <Divider className="mr-0" />
-      <ul className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
-        {subProfs.map(({ id, name }) => (
-          <li key={id}>
-            <H4
-              className={clsx(
-                'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-                selectedProf.includes(id) && '!opacity-100 underline',
-                name.length > 3 && '!text-base',
-              )}
-              onClick={() =>
-                setProfFilter(({ selectedProf, ...rest }) => ({
-                  selectedProf: [selectedProf[0], id],
-                  ...rest,
-                }))
-              }
-            >
-              {name}
-            </H4>
-          </li>
-        ))}
-      </ul>
+      <div className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
+        <ul>
+          {subProfs.map(({ id, name }) => (
+            <li key={id}>
+              <H4
+                className={clsx(
+                  'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
+                  selectedProf.includes(id) && '!opacity-100 underline',
+                  name.length > 3 && '!text-base',
+                )}
+                onClick={() =>
+                  setProfFilter(({ selectedProf, ...rest }) => ({
+                    selectedProf: [selectedProf[0], id],
+                    ...rest,
+                  }))
+                }
+              >
+                {name}
+              </H4>
+            </li>
+          ))}
+        </ul>
+        {ToolBox}
+      </div>
     </div>
   )
 }

@@ -2,8 +2,10 @@ import { Button } from '@blueprintjs/core'
 
 import { FC } from 'react'
 
-import { useOperatorFilterProvider } from '../SheetOperatorFilterProvider'
-import { defaultPagination } from '../ShowMore'
+import {
+  defaultPagination,
+  useOperatorFilterProvider,
+} from '../SheetOperatorFilterProvider'
 
 export interface OperatorBackToTopProp {
   toTop: () => void
