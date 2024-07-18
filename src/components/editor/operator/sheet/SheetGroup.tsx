@@ -20,7 +20,7 @@ import { Group, Operator } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
 import { useSheet } from './SheetProvider'
-import { GroupItem } from './sheetGroup/SheetGroupItem'
+import { GroupItem, SheetGroupItem } from './sheetGroup/SheetGroupItem'
 
 export interface SheetGroupProps {}
 
@@ -199,17 +199,18 @@ const SheetGroup: FC<SheetGroupProps> = () => {
                 {existedGroups.length ? (
                   <>
                     {existedGroups.map((item) => (
-                      <GroupItem
-                        key={item.name}
-                        existedGroup={existedGroups}
-                        existedOperator={existedOperators}
-                        groupInfo={item}
-                        exist={checkGroupExisted(item.name)}
-                        pinned={checkGroupPinned(item)}
-                        groupRemoveHandle={groupRemoveHandle}
-                        groupPinHandle={groupPinHandle}
-                        groupUpdateHandle={groupUpdateHandle}
-                      />
+                      // <GroupItem
+                      //   key={item.name}
+                      //   existedGroup={existedGroups}
+                      //   existedOperator={existedOperators}
+                      //   groupInfo={item}
+                      //   exist={checkGroupExisted(item.name)}
+                      //   pinned={checkGroupPinned(item)}
+                      //   groupRemoveHandle={groupRemoveHandle}
+                      //   groupPinHandle={groupPinHandle}
+                      //   groupUpdateHandle={groupUpdateHandle}
+                      // />
+                      <SheetGroupItem groupInfo={item} itemType="selected" />
                     ))}
                     <H6 className="my-2 text-center">
                       已显示全部 {existedGroups.length} 个干员组

@@ -219,10 +219,10 @@ interface CollapseButtonProps extends ButtonProps {
   isCollapse: boolean
 }
 
-export const CollapseButton = ({
+export const CollapseButton: FC<CollapseButtonProps> = ({
   isCollapse,
   ...buttonProps
-}: CollapseButtonProps) => (
+}) => (
   <Button
     {...{
       ...buttonProps,
