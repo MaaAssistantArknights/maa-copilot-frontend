@@ -92,7 +92,11 @@ export const OperatorFilterProvider: FC<OperatorFilterProviderProp> = ({
         usePaginationFilterState: [paginationFilter, setPaginationFilter],
         useProfFilterState: [profFilter, setProfFilter],
         useRarityFilterState: [rarityFilter, setRarityFilter],
-        operatorFiltered: useOperatorFiltered(profFilter, paginationFilter),
+        operatorFiltered: useOperatorFiltered(
+          profFilter,
+          paginationFilter,
+          rarityFilter,
+        ),
       }}
     >
       {children}
@@ -115,22 +119,25 @@ const generateCustomizedOperInfo = (name: string): OperatorInfo => ({
 const useOperatorFiltered = (
   profFilter: ProfFilter,
   paginationFilter: PaginationFilter,
+  rarityFilter: RarityFilter,
 ) => {
   // Priority: prof > sub prof > rarity/rarityReverse
   // filterResult init and prof filter about
-  const filterResult = useProfFilterHandle(profFilter)
+  const profFilterResult = useProfFilterHandle(profFilter)
   //   rarity about
-
-  const dataTotal = filterResult.length
+  const rarityFilterResult = rarityFilterHandle(rarityFilter, profFilterResult)
   //   pagination about
-
   //   filterResult
+  const filterResult = paginationFilterHandle(
+    paginationFilter,
+    rarityFilterResult,
+  )
   //   console.log(filterResult)
   return {
     // return data after being paginated
-    data: paginationFilterHandle(paginationFilter, filterResult),
+    data: filterResult,
     meta: {
-      dataTotal,
+      dataTotal: profFilterResult.length,
     },
   }
 }
@@ -217,3 +224,13 @@ const paginationFilterHandle = (
   { current, size }: PaginationFilter,
   originData: OperatorInfo[] = OPERATORS,
 ) => originData.slice(0, current * size)
+
+const rarityFilterHandle = (
+  { selectedRarity, reverse }: RarityFilter,
+  originData: OperatorInfo[] = OPERATORS,
+) =>
+  originData
+    .filter(({ rarity }) => selectedRarity.includes(rarity))
+    .sort(({ rarity: rarityA }, { rarity: rarityB }) =>
+      reverse ? rarityA - rarityB : rarityB - rarityA,
+    )

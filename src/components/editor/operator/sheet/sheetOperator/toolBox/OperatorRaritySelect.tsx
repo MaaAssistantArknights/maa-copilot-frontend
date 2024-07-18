@@ -1,6 +1,7 @@
 import { Button, Divider, H5 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import { debounce } from 'lodash-es'
 import { FC } from 'react'
 
 import {
@@ -20,7 +21,7 @@ export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
   return (
     <>
       <div className="flex items-center">
-        <H5 className="m-0 mr-1">按干员稀有度展示</H5>
+        <H5 className="m-0 mr-1">按干员星级展示</H5>
         <Button
           icon="reset"
           minimal
@@ -38,17 +39,20 @@ export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
               text={rarityIndex}
               minimal
               className={clsx(isSelect && selectClass)}
-              onClick={() =>
-                setRarityFilter(({ selectedRarity, ...rest }) => ({
-                  ...rest,
-                  selectedRarity: isSelect
-                    ? selectedRarity.filter(
-                        (selectedRarityIndex) =>
-                          selectedRarityIndex !== rarityIndex,
-                      )
-                    : [...selectedRarity, rarityIndex],
-                }))
-              }
+              rightIcon="star"
+              onClick={debounce(
+                () =>
+                  setRarityFilter(({ selectedRarity, ...rest }) => ({
+                    ...rest,
+                    selectedRarity: isSelect
+                      ? selectedRarity.filter(
+                          (selectedRarityIndex) =>
+                            selectedRarityIndex !== rarityIndex,
+                        )
+                      : [...selectedRarity, rarityIndex],
+                  })),
+                150,
+              )}
             />
           )
         })}
