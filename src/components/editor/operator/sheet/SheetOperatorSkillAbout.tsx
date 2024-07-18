@@ -127,6 +127,7 @@ export const SkillAboutTrigger = ({
         if (operator) e.stopPropagation()
       }}
       role="presentation"
+      className="cursor-pointer"
     >
       <Popover2 content={SkillAboutForm} disabled={!operator}>
         {SkillAboutTrigger}

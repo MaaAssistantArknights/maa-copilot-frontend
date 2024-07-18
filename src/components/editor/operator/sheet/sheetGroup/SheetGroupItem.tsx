@@ -12,15 +12,19 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useRef, useState } from 'react'
+import { useAtom, useSetAtom } from 'jotai'
+import { FC, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
+import { favGroupAtom } from 'store/useFavGroups'
 
 import { Group, Operator } from '../../EditorSheet'
 import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorNoData } from '../SheetNoneData'
 import { OperatorItem } from '../SheetOperatorItem'
+import { useSheet } from '../SheetProvider'
+import { OperatorInGroupItem } from './OperatorInGroupItem'
 import {
   CollapseButton,
   SheetGroupOperatorSelectProp,
@@ -64,16 +68,20 @@ export const GroupItem = ({
       <div className="w-full pt-1">
         {groupInfo.opers?.length
           ? groupInfo.opers?.map((item) => (
-              <OperatorItem
-                key={item.name}
-                operator={item}
-                name={item.name}
-                selected
-                scaleDisable
-                interactive={false}
-                horizontal
-                readOnly={!exist}
-                onSkillChange={changeGroupedOperatorSkillHandle}
+              // <OperatorItem
+              //   key={item.name}
+              //   operator={item}
+              //   name={item.name}
+              //   selected
+              //   scaleDisable
+              //   interactive={false}
+              //   horizontal
+              //   readOnly={!exist}
+              //   onSkillChange={changeGroupedOperatorSkillHandle}
+              // />
+              <OperatorInGroupItem
+                operatorInfo={item}
+                onOperatorSkillChange={changeGroupedOperatorSkillHandle}
               />
             ))
           : !editable && OperatorNoData}
@@ -147,13 +155,14 @@ export const GroupItem = ({
 
 const GroupTitle = ({
   groupTitle,
-  editable,
+  // editable,
   renameSubmit,
 }: {
   editable: boolean
-  renameSubmit: (newName: string) => void
+  renameSubmit?: (newName: string) => void
   groupTitle: string
 }) => {
+  const editable = !!renameSubmit
   const [editName, setEditName] = useState('')
   const [nameEditState, setNameEditState] = useState(false)
   const [alertState, setAlertState] = useState(false)
@@ -200,7 +209,7 @@ const GroupTitle = ({
         className="flex items-center"
         onSubmit={handleSubmit(() => {
           ignoreBlur.current = true
-          renameSubmit(editName || groupTitle)
+          renameSubmit?.(editName || groupTitle)
           setNameEditState(false)
           inputRef.current?.blur()
         })}
@@ -239,4 +248,80 @@ const GroupTitle = ({
       </form>
     </>
   )
+}
+
+type ItemType = 'recommend' | 'selected' | 'fav'
+
+export interface SheetGroupItemProp {
+  groupInfo: Group
+  itemType: ItemType
+}
+
+export const SheetGroupItem: FC<SheetGroupItemProp> = ({
+  groupInfo,
+  itemType,
+}) => {
+  const { selected, onGroupNameChange } = useSheetGroupItemController({
+    groupInfo,
+    itemType,
+  })
+
+  return (
+    <Card interactive={!selected} className="mt-1 mx-0.5">
+      <div className="flex items-center justify-between">
+        <GroupTitle
+          groupTitle={groupInfo.name}
+          editable
+          renameSubmit={onGroupNameChange}
+        />
+        <div></div>
+      </div>
+    </Card>
+  )
+}
+
+type SheetGroupItemController = {
+  selected: boolean
+  onGroupNameChange: ((name: string) => void) | undefined
+  defaultOperatorCollapseOpen: boolean
+}
+
+const useSheetGroupItemController = ({
+  groupInfo,
+  itemType,
+}: SheetGroupItemProp): SheetGroupItemController => {
+  const { submitGroup } = useSheet()
+  const [favGroup, setFavGroup] = useAtom(favGroupAtom)
+
+  switch (itemType) {
+    case 'selected':
+      return {
+        selected: true,
+        onGroupNameChange: (name: string) =>
+          submitGroup({ ...groupInfo, name }, undefined, true),
+        defaultOperatorCollapseOpen: true,
+      }
+    case 'recommend':
+      return {
+        selected: false,
+        onGroupNameChange: undefined,
+        defaultOperatorCollapseOpen: false,
+      }
+    case 'fav':
+      return {
+        selected: false,
+        onGroupNameChange: (name: string) =>
+          setFavGroup([
+            ...favGroup.filter(({ name: favName }) => favName !== name),
+            { ...groupInfo, name },
+          ]),
+        defaultOperatorCollapseOpen: false,
+      }
+    default:
+      return {
+        selected: false,
+        onGroupNameChange: undefined,
+        defaultOperatorCollapseOpen: false,
+      }
+  }
 }
