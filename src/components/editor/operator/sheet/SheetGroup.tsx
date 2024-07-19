@@ -9,18 +9,17 @@ import {
 } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
-import { isEqual, isEqualWith, omit } from 'lodash-es'
 import { FC, useMemo, useState } from 'react'
 
 import { AppToaster } from 'components/Toaster'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
-import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
+import { favGroupAtom } from 'store/useFavGroups'
 
-import { Group, Operator } from '../EditorSheet'
+import { Group } from '../EditorSheet'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
 import { useSheet } from './SheetProvider'
-import { GroupItem, SheetGroupItem } from './sheetGroup/SheetGroupItem'
+import { SheetGroupItem } from './sheetGroup/SheetGroupItem'
 
 export interface SheetGroupProps {}
 
@@ -31,12 +30,10 @@ export interface GroupListModifyProp {
   groupUpdateHandle?: (value: Group) => void
 }
 
-const EditorGroupName = ({
-  groupAddHandle,
-}: {
-  groupAddHandle: GroupListModifyProp['groupAddHandle']
-}) => {
+const EditorGroupName: FC = () => {
   const [groupName, setGroupName] = useState('')
+
+  const { submitGroup } = useSheet()
 
   const addGroupHandle = () => {
     const name = groupName.trim()
@@ -46,7 +43,7 @@ const EditorGroupName = ({
         intent: Intent.DANGER,
       })
     } else {
-      groupAddHandle?.({ name })
+      submitGroup({ name }, undefined, true)
       setGroupName('')
     }
   }
@@ -74,8 +71,7 @@ const EditorGroupName = ({
 }
 
 const SheetGroup: FC<SheetGroupProps> = () => {
-  const { submitGroup, existedGroups, existedOperators, removeGroup } =
-    useSheet()
+  const { existedGroups, existedOperators } = useSheet()
 
   const [coverGroup, setCoverGroup] = useState<Group>()
 
@@ -110,74 +106,11 @@ const SheetGroup: FC<SheetGroupProps> = () => {
     return result
   }, [existedOperators, existedGroups])
 
-  const checkGroupExisted = (target: string) =>
-    !!existedGroups.find((item) => item.name === target)
-  const checkGroupPinned = (target: Group, ignoreKey?: string[]) => {
-    const checkTarget = favGroups.find((item) => item.name === target.name)
-    if (checkTarget) {
-      return isEqualWith(
-        checkTarget,
-        omit(target, [...(ignoreKey || ignoreKeyDic)]),
-        ({ opers: aOpers }, { opers: bOpers }) =>
-          isEqual(
-            aOpers.map((item) => omit(item, [...(ignoreKey || ignoreKeyDic)])),
-            bOpers.map((item) => omit(item, [...(ignoreKey || ignoreKeyDic)])),
-          ),
-      )
-    } else {
-      return false
-    }
-  }
-  const checkSamePinned = (target: string) =>
-    !!favGroups.find(({ name }) => name === target)
-  const changeOperatorOfOtherGroups = (target: Operator[] | undefined) => {
-    target?.forEach((item) => {
-      existedGroups.forEach((groupItem) => {
-        const oldLength = groupItem.opers?.length || 0
-        if (oldLength) {
-          const opers = groupItem.opers?.filter(
-            (operItem) => operItem.name !== item.name,
-          )
-          if (opers?.length !== oldLength)
-            submitGroup({ ...groupItem, ...{ opers } }, undefined, true)
-        }
-      })
-    })
-  }
   const updateFavGroup = (value: Group) =>
     setFavGroups([
       ...[...favGroups].filter(({ name }) => name !== value.name),
       { ...value },
     ])
-
-  const groupAddHandle: GroupListModifyProp['groupAddHandle'] = (value) => {
-    if (checkGroupExisted(value.name)) {
-      AppToaster.show({
-        message: '干员组已存在！',
-        intent: Intent.DANGER,
-      })
-    } else {
-      if (checkGroupPinned(value)) changeOperatorOfOtherGroups(value.opers)
-      submitGroup(value, undefined, true)
-    }
-  }
-  const groupRemoveHandle: GroupListModifyProp['groupRemoveHandle'] = (_id) => {
-    removeGroup(existedGroups.findIndex((item) => item._id === _id))
-  }
-  const groupPinHandle: GroupListModifyProp['groupPinHandle'] = (value) => {
-    if (checkGroupPinned(value))
-      setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
-    else {
-      if (checkSamePinned(value.name)) setCoverGroup(value)
-      else updateFavGroup(value)
-    }
-  }
-  const groupUpdateHandle: GroupListModifyProp['groupUpdateHandle'] = (
-    value,
-  ) => {
-    changeOperatorOfOtherGroups(value.opers)
-    submitGroup(value, undefined, true)
-  }
 
   const [favGroups, setFavGroups] = useAtom(favGroupAtom)
 
@@ -192,24 +125,13 @@ const SheetGroup: FC<SheetGroupProps> = () => {
               mini
               className="sticky top-0 z-10 backdrop-blur-lg py-1"
             >
-              <EditorGroupName {...{ groupAddHandle }} />
+              <EditorGroupName />
             </SheetContainerSkeleton>
             <SheetContainerSkeleton title="已设置的干员组" icon="cog" mini>
               <div>
                 {existedGroups.length ? (
                   <>
                     {existedGroups.map((item) => (
-                      // <GroupItem
-                      //   key={item.name}
-                      //   existedGroup={existedGroups}
-                      //   existedOperator={existedOperators}
-                      //   groupInfo={item}
-                      //   exist={checkGroupExisted(item.name)}
-                      //   pinned={checkGroupPinned(item)}
-                      //   groupRemoveHandle={groupRemoveHandle}
-                      //   groupPinHandle={groupPinHandle}
-                      //   groupUpdateHandle={groupUpdateHandle}
-                      // />
                       <SheetGroupItem groupInfo={item} itemType="selected" />
                     ))}
                     <H6 className="my-2 text-center">
@@ -229,13 +151,7 @@ const SheetGroup: FC<SheetGroupProps> = () => {
             <div>
               {defaultGroup.length
                 ? defaultGroup.map((item) => (
-                    <GroupItem
-                      key={item.name}
-                      groupInfo={item}
-                      exist={checkGroupExisted(item.name)}
-                      groupAddHandle={groupAddHandle}
-                      pinned={false}
-                    />
+                    <SheetGroupItem groupInfo={item} itemType="recommend" />
                   ))
                 : GroupNoData}
             </div>
@@ -244,14 +160,7 @@ const SheetGroup: FC<SheetGroupProps> = () => {
             <div>
               {favGroups.length
                 ? favGroups.map((item) => (
-                    <GroupItem
-                      key={item.name}
-                      groupInfo={item}
-                      exist={checkGroupExisted(item.name)}
-                      groupAddHandle={groupAddHandle}
-                      groupPinHandle={groupPinHandle}
-                      pinned
-                    />
+                    <SheetGroupItem groupInfo={item} itemType="fav" />
                   ))
                 : GroupNoData}
             </div>

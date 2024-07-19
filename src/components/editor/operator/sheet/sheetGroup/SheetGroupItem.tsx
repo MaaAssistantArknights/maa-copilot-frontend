@@ -13,6 +13,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
+import { isEqual } from 'lodash-es'
 import { FC, ReactNode, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -23,7 +24,10 @@ import { Group, Operator } from '../../EditorSheet'
 import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorNoData } from '../SheetNoneData'
 import { useSheet } from '../SheetProvider'
-import { OperatorInGroupItem } from './OperatorInGroupItem'
+import {
+  OperatorInGroupItem,
+  OperatorInGroupItemProp,
+} from './OperatorInGroupItem'
 import {
   CollapseButton,
   SheetGroupOperatorSelectProp,
@@ -67,17 +71,6 @@ export const GroupItem = ({
       <div className="w-full pt-1">
         {groupInfo.opers?.length
           ? groupInfo.opers?.map((item) => (
-              // <OperatorItem
-              //   key={item.name}
-              //   operator={item}
-              //   name={item.name}
-              //   selected
-              //   scaleDisable
-              //   interactive={false}
-              //   horizontal
-              //   readOnly={!exist}
-              //   onSkillChange={changeGroupedOperatorSkillHandle}
-              // />
               <OperatorInGroupItem
                 operatorInfo={item}
                 onOperatorSkillChange={changeGroupedOperatorSkillHandle}
@@ -265,6 +258,7 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
     onGroupNameChange,
     defaultOperatorCollapseOpen,
     ActionList,
+    onOperatorSkillChange,
   } = useSheetGroupItemController({
     groupInfo,
     itemType,
@@ -281,7 +275,7 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
           editable
           renameSubmit={onGroupNameChange}
         />
-        <div className="flex">
+        <div className="flex items-center">
           <CollapseButton
             isCollapse={operatorCollapse}
             onClick={() => setOperatorCollapse((prev) => !prev)}
@@ -289,6 +283,25 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
           {ActionList}
         </div>
       </div>
+      <Collapse isOpen={operatorCollapse}>
+        <div className="w-full pt-1">
+          {groupInfo.opers?.length
+            ? groupInfo.opers?.map((item) => (
+                <OperatorInGroupItem
+                  operatorInfo={item}
+                  onOperatorSkillChange={onOperatorSkillChange}
+                />
+              ))
+            : OperatorNoData}
+          {/* {editable && (
+            <SheetGroupOperatorSelectTrigger
+              groupInfo={groupInfo}
+              groupUpdateHandle={groupUpdateHandle}
+              {...rest}
+            />
+          )} */}
+        </div>
+      </Collapse>
     </Card>
   )
 }
@@ -297,49 +310,177 @@ type SheetGroupItemController = {
   selected: boolean
   onGroupNameChange: ((name: string) => void) | undefined
   defaultOperatorCollapseOpen: boolean
+  onOperatorSkillChange: OperatorInGroupItemProp['onOperatorSkillChange']
   ActionList: ReactNode
 }
 
 const useSheetGroupItemController = ({
-  groupInfo,
+  groupInfo: { name, opers = [], ...rest },
   itemType,
 }: SheetGroupItemProp): SheetGroupItemController => {
-  const { submitGroup } = useSheet()
+  const { submitGroup, removeGroup, existedGroups } = useSheet()
   const [favGroup, setFavGroup] = useAtom(favGroupAtom)
 
   switch (itemType) {
-    case 'selected':
+    case 'selected': {
+      const findFavByName = favGroup.find(
+        ({ name: nameInFav }) => nameInFav === name,
+      )
+      const pinned = isEqual({ name, opers }, findFavByName)
+      console.log(pinned)
+
+      const onPinChange: GroupPinOptionProp['onPinChange'] = () => {
+        setFavGroup(
+          pinned
+            ? favGroup.filter(({ name: nameInFav }) => nameInFav !== name)
+            : [...favGroup, { name, opers, ...rest }],
+        )
+      }
       return {
         selected: true,
         onGroupNameChange: (name: string) =>
-          submitGroup({ ...groupInfo, name }, undefined, true),
+          submitGroup({ opers, ...rest, name }, undefined, true),
         defaultOperatorCollapseOpen: true,
-        ActionList: <>111</>,
+        onOperatorSkillChange: (operator: Operator) => {
+          opers.splice(
+            opers.findIndex(
+              ({ name: nameInExist }) => nameInExist === operator.name,
+            ),
+            1,
+            operator,
+          )
+          submitGroup({ opers, name, ...rest }, undefined, true)
+        },
+        ActionList: (
+          <>
+            <CardDeleteOption
+              onClick={() =>
+                removeGroup(
+                  existedGroups.findIndex(
+                    ({ name: nameInExist }) => nameInExist === name,
+                  ),
+                )
+              }
+            />
+            <GroupPinOption
+              pinned={pinned}
+              onPinChange={onPinChange}
+              isDuplicate={!!findFavByName}
+            />
+          </>
+        ),
       }
-    case 'recommend':
+    }
+    case 'recommend': {
       return {
         selected: false,
         onGroupNameChange: undefined,
         defaultOperatorCollapseOpen: false,
-        ActionList: <>111</>,
+        onOperatorSkillChange: undefined,
+        ActionList: (
+          <>
+            <Button
+              minimal
+              icon="arrow-left"
+              title="添加干员组"
+              onClick={() => submitGroup({ name, opers }, undefined, true)}
+            />
+          </>
+        ),
       }
-    case 'fav':
+    }
+    case 'fav': {
+      const selected = !!existedGroups.find(
+        ({ name: nameInExist }) => nameInExist === name,
+      )
+      const onPinChange: GroupPinOptionProp['onPinChange'] = () => {
+        setFavGroup(
+          favGroup.filter(({ name: nameInFav }) => nameInFav !== name),
+        )
+      }
+
       return {
         selected: false,
         onGroupNameChange: (name: string) =>
           setFavGroup([
             ...favGroup.filter(({ name: favName }) => favName !== name),
-            { ...groupInfo, name },
+            { opers, name, ...rest },
           ]),
         defaultOperatorCollapseOpen: false,
-        ActionList: <>111</>,
+        onOperatorSkillChange: (operator: Operator) => {
+          opers.splice(
+            opers.findIndex(
+              ({ name: nameInExist }) => nameInExist === operator.name,
+            ),
+            1,
+            operator,
+          )
+          favGroup.splice(
+            favGroup.findIndex(
+              ({ name: nameInFav }) => nameInFav === operator.name,
+            ),
+            1,
+            { name, opers, ...rest },
+          )
+          setFavGroup(favGroup)
+        },
+        ActionList: (
+          <>
+            <Button
+              minimal
+              icon={selected ? 'tick' : 'arrow-left'}
+              title={selected ? '检测到同名干员组' : '使用该推荐分组'}
+              onClick={() => submitGroup({ name, opers }, undefined, true)}
+            />
+            <GroupPinOption pinned onPinChange={onPinChange} />
+          </>
+        ),
       }
+    }
     default:
       return {
         selected: false,
         onGroupNameChange: undefined,
         defaultOperatorCollapseOpen: false,
+        onOperatorSkillChange: undefined,
         ActionList: <></>,
       }
   }
+}
+
+interface GroupPinOptionProp {
+  pinned: boolean
+  onPinChange?: () => void
+  isDuplicate?: boolean
+}
+
+const GroupPinOption: FC<GroupPinOptionProp> = ({
+  pinned,
+  onPinChange,
+  isDuplicate = false,
+}) => {
+  const pinText = pinned
+    ? `从收藏分组中移除`
+    : isDuplicate
+      ? '此操作会替换同名干员组'
+      : `添加至收藏分组`
+  const pinIcon = pinned ? 'star' : isDuplicate ? 'warning-sign' : 'star-empty'
+
+  return (
+    <Popover2
+      disabled={!pinned && !isDuplicate}
+      content={
+        <Menu className="p-0">
+          <MenuItem text={pinText} icon={pinIcon} onClick={onPinChange} />
+        </Menu>
+      }
+    >
+      <Button
+        minimal
+        icon={pinIcon}
+        title={pinText}
+        onClick={pinned || isDuplicate ? undefined : onPinChange}
+      />
+    </Popover2>
+  )
 }
