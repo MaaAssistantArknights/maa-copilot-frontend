@@ -12,8 +12,8 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useAtom, useSetAtom } from 'jotai'
-import { FC, useMemo, useRef, useState } from 'react'
+import { useAtom } from 'jotai'
+import { FC, ReactNode, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
@@ -22,7 +22,6 @@ import { favGroupAtom } from 'store/useFavGroups'
 import { Group, Operator } from '../../EditorSheet'
 import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorNoData } from '../SheetNoneData'
-import { OperatorItem } from '../SheetOperatorItem'
 import { useSheet } from '../SheetProvider'
 import { OperatorInGroupItem } from './OperatorInGroupItem'
 import {
@@ -261,10 +260,18 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
   groupInfo,
   itemType,
 }) => {
-  const { selected, onGroupNameChange } = useSheetGroupItemController({
+  const {
+    selected,
+    onGroupNameChange,
+    defaultOperatorCollapseOpen,
+    ActionList,
+  } = useSheetGroupItemController({
     groupInfo,
     itemType,
   })
+  const [operatorCollapse, setOperatorCollapse] = useState(
+    defaultOperatorCollapseOpen,
+  )
 
   return (
     <Card interactive={!selected} className="mt-1 mx-0.5">
@@ -274,7 +281,13 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
           editable
           renameSubmit={onGroupNameChange}
         />
-        <div></div>
+        <div className="flex">
+          <CollapseButton
+            isCollapse={operatorCollapse}
+            onClick={() => setOperatorCollapse((prev) => !prev)}
+          />
+          {ActionList}
+        </div>
       </div>
     </Card>
   )
@@ -284,6 +297,7 @@ type SheetGroupItemController = {
   selected: boolean
   onGroupNameChange: ((name: string) => void) | undefined
   defaultOperatorCollapseOpen: boolean
+  ActionList: ReactNode
 }
 
 const useSheetGroupItemController = ({
@@ -300,12 +314,14 @@ const useSheetGroupItemController = ({
         onGroupNameChange: (name: string) =>
           submitGroup({ ...groupInfo, name }, undefined, true),
         defaultOperatorCollapseOpen: true,
+        ActionList: <>111</>,
       }
     case 'recommend':
       return {
         selected: false,
         onGroupNameChange: undefined,
         defaultOperatorCollapseOpen: false,
+        ActionList: <>111</>,
       }
     case 'fav':
       return {
@@ -316,12 +332,14 @@ const useSheetGroupItemController = ({
             { ...groupInfo, name },
           ]),
         defaultOperatorCollapseOpen: false,
+        ActionList: <>111</>,
       }
     default:
       return {
         selected: false,
         onGroupNameChange: undefined,
         defaultOperatorCollapseOpen: false,
+        ActionList: <></>,
       }
   }
 }
