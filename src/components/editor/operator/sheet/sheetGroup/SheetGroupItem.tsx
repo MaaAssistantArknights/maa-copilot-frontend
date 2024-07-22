@@ -13,12 +13,12 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
-import { isEqual } from 'lodash-es'
+import { isEqual, omit } from 'lodash-es'
 import { FC, ReactNode, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
-import { favGroupAtom } from 'store/useFavGroups'
+import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
 
 import { Group, Operator } from '../../EditorSheet'
 import { GroupListModifyProp } from '../SheetGroup'
@@ -327,7 +327,6 @@ const useSheetGroupItemController = ({
         ({ name: nameInFav }) => nameInFav === name,
       )
       const pinned = isEqual({ name, opers }, findFavByName)
-      console.log(pinned)
 
       const onPinChange: GroupPinOptionProp['onPinChange'] = () => {
         setFavGroup(
@@ -390,9 +389,12 @@ const useSheetGroupItemController = ({
       }
     }
     case 'fav': {
-      const selected = !!existedGroups.find(
+      const selected = existedGroups.find(
         ({ name: nameInExist }) => nameInExist === name,
       )
+      const equal = selected
+        ? isEqual(omit(selected, ...ignoreKeyDic), { name, opers })
+        : false
       const onPinChange: GroupPinOptionProp['onPinChange'] = () => {
         setFavGroup(
           favGroup.filter(({ name: nameInFav }) => nameInFav !== name),
@@ -428,8 +430,15 @@ const useSheetGroupItemController = ({
           <>
             <Button
               minimal
-              icon={selected ? 'tick' : 'arrow-left'}
-              title={selected ? '检测到同名干员组' : '使用该推荐分组'}
+              disabled={!!selected}
+              icon={selected && equal ? 'tick' : 'arrow-left'}
+              title={
+                selected
+                  ? equal
+                    ? '已添加'
+                    : '检测到同名干员组'
+                  : '使用该推荐分组'
+              }
               onClick={() => submitGroup({ name, opers }, undefined, true)}
             />
             <GroupPinOption pinned onPinChange={onPinChange} />
@@ -464,20 +473,23 @@ const GroupPinOption: FC<GroupPinOptionProp> = ({
     : isDuplicate
       ? '此操作会替换同名干员组'
       : `添加至收藏分组`
-  const pinIcon = pinned ? 'star' : isDuplicate ? 'warning-sign' : 'star-empty'
 
   return (
     <Popover2
       disabled={!pinned && !isDuplicate}
       content={
         <Menu className="p-0">
-          <MenuItem text={pinText} icon={pinIcon} onClick={onPinChange} />
+          <MenuItem
+            text={pinText}
+            icon={pinned ? 'star' : isDuplicate ? 'warning-sign' : 'star-empty'}
+            onClick={onPinChange}
+          />
         </Menu>
       }
     >
       <Button
         minimal
-        icon={pinIcon}
+        icon={pinned ? 'star' : 'star-empty'}
         title={pinText}
         onClick={pinned || isDuplicate ? undefined : onPinChange}
       />
