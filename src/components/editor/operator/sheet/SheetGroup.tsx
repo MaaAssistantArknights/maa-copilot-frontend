@@ -1,26 +1,20 @@
-import {
-  Alert,
-  Button,
-  Divider,
-  H5,
-  H6,
-  InputGroup,
-  Intent,
-} from '@blueprintjs/core'
+import { Button, Divider, H6, InputGroup, Intent } from '@blueprintjs/core'
 
-import { useAtom } from 'jotai'
-import { isEqual, isEqualWith, omit } from 'lodash-es'
+import { useAtomValue } from 'jotai'
 import { FC, useMemo, useState } from 'react'
 
 import { AppToaster } from 'components/Toaster'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
-import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
+import { favGroupAtom } from 'store/useFavGroups'
 
 import { Group, Operator } from '../EditorSheet'
-import { SheetContainerSkeleton } from './SheetContainerSkeleton'
+import {
+  SheetContainerSkeleton,
+  SheetContainerSkeletonProps,
+} from './SheetContainerSkeleton'
 import { GroupNoData } from './SheetNoneData'
 import { useSheet } from './SheetProvider'
-import { GroupItem, SheetGroupItem } from './sheetGroup/SheetGroupItem'
+import { SheetGroupItem, SheetGroupItemProp } from './sheetGroup/SheetGroupItem'
 
 export interface SheetGroupProps {}
 
@@ -31,12 +25,10 @@ export interface GroupListModifyProp {
   groupUpdateHandle?: (value: Group) => void
 }
 
-const EditorGroupName = ({
-  groupAddHandle,
-}: {
-  groupAddHandle: GroupListModifyProp['groupAddHandle']
-}) => {
+const EditorGroupName: FC = () => {
   const [groupName, setGroupName] = useState('')
+
+  const { submitGroup } = useSheet()
 
   const addGroupHandle = () => {
     const name = groupName.trim()
@@ -46,7 +38,7 @@ const EditorGroupName = ({
         intent: Intent.DANGER,
       })
     } else {
-      groupAddHandle?.({ name })
+      submitGroup({ name }, undefined, true)
       setGroupName('')
     }
   }
@@ -74,112 +66,34 @@ const EditorGroupName = ({
 }
 
 const SheetGroup: FC<SheetGroupProps> = () => {
-  const { submitGroup, existedGroups, existedOperators, removeGroup } =
-    useSheet()
+  const { existedGroups, existedOperators } = useSheet()
 
-  const [coverGroup, setCoverGroup] = useState<Group>()
+  const defaultGroup = useMemo<Group[]>(
+    () =>
+      Object.entries(
+        existedOperators.reduce(
+          (acc, { name, ...rest }) => {
+            const { prof = '', subProf = '' } =
+              OPERATORS.find(({ name: OPERName }) => OPERName === name) || {}
+            const profInfo = PROFESSIONS.find(({ id }) => id === prof)
+            const subProfName = profInfo?.sub?.find(
+              ({ id }) => id === subProf,
+            )?.name
+            const key = (profInfo?.name || '其它') + '-' + (subProfName || '')
+            if (!acc[key]) acc[key] = []
+            acc[key].push({ name, ...rest })
+            return acc
+          },
+          {} as Record<string, Operator[]>,
+        ),
+      ).map(([key, value]) => ({
+        name: key,
+        opers: value,
+      })),
+    [existedOperators],
+  )
 
-  const defaultGroup = useMemo<Group[]>(() => {
-    const result: Group[] = []
-    PROFESSIONS.forEach((proItem) => {
-      proItem.sub?.forEach((subProItem) => {
-        const operators = existedOperators.filter(
-          (opItem) =>
-            OPERATORS.find((opInfoItem) => opInfoItem.name === opItem.name)
-              ?.subProf === subProItem.id,
-        )
-        if (operators.length) {
-          const groupName = proItem.name + '-' + subProItem.name
-          if (!existedGroups.find(({ name }) => name === groupName))
-            result.push({
-              name: groupName,
-              opers: operators,
-            })
-        }
-      })
-    })
-    const otherOperators = existedOperators.filter(
-      (opItem) =>
-        !OPERATORS.find((opInfoItem) => opInfoItem.name === opItem.name),
-    )
-    if (otherOperators.length)
-      result.push({
-        name: '其它',
-        opers: otherOperators,
-      })
-    return result
-  }, [existedOperators, existedGroups])
-
-  const checkGroupExisted = (target: string) =>
-    !!existedGroups.find((item) => item.name === target)
-  const checkGroupPinned = (target: Group, ignoreKey?: string[]) => {
-    const checkTarget = favGroups.find((item) => item.name === target.name)
-    if (checkTarget) {
-      return isEqualWith(
-        checkTarget,
-        omit(target, [...(ignoreKey || ignoreKeyDic)]),
-        ({ opers: aOpers }, { opers: bOpers }) =>
-          isEqual(
-            aOpers.map((item) => omit(item, [...(ignoreKey || ignoreKeyDic)])),
-            bOpers.map((item) => omit(item, [...(ignoreKey || ignoreKeyDic)])),
-          ),
-      )
-    } else {
-      return false
-    }
-  }
-  const checkSamePinned = (target: string) =>
-    !!favGroups.find(({ name }) => name === target)
-  const changeOperatorOfOtherGroups = (target: Operator[] | undefined) => {
-    target?.forEach((item) => {
-      existedGroups.forEach((groupItem) => {
-        const oldLength = groupItem.opers?.length || 0
-        if (oldLength) {
-          const opers = groupItem.opers?.filter(
-            (operItem) => operItem.name !== item.name,
-          )
-          if (opers?.length !== oldLength)
-            submitGroup({ ...groupItem, ...{ opers } }, undefined, true)
-        }
-      })
-    })
-  }
-  const updateFavGroup = (value: Group) =>
-    setFavGroups([
-      ...[...favGroups].filter(({ name }) => name !== value.name),
-      { ...value },
-    ])
-
-  const groupAddHandle: GroupListModifyProp['groupAddHandle'] = (value) => {
-    if (checkGroupExisted(value.name)) {
-      AppToaster.show({
-        message: '干员组已存在！',
-        intent: Intent.DANGER,
-      })
-    } else {
-      if (checkGroupPinned(value)) changeOperatorOfOtherGroups(value.opers)
-      submitGroup(value, undefined, true)
-    }
-  }
-  const groupRemoveHandle: GroupListModifyProp['groupRemoveHandle'] = (_id) => {
-    removeGroup(existedGroups.findIndex((item) => item._id === _id))
-  }
-  const groupPinHandle: GroupListModifyProp['groupPinHandle'] = (value) => {
-    if (checkGroupPinned(value))
-      setFavGroups([...favGroups].filter(({ name }) => name !== value.name))
-    else {
-      if (checkSamePinned(value.name)) setCoverGroup(value)
-      else updateFavGroup(value)
-    }
-  }
-  const groupUpdateHandle: GroupListModifyProp['groupUpdateHandle'] = (
-    value,
-  ) => {
-    changeOperatorOfOtherGroups(value.opers)
-    submitGroup(value, undefined, true)
-  }
-
-  const [favGroups, setFavGroups] = useAtom(favGroupAtom)
+  const favGroups = useAtomValue(favGroupAtom)
 
   return (
     <>
@@ -192,86 +106,40 @@ const SheetGroup: FC<SheetGroupProps> = () => {
               mini
               className="sticky top-0 z-10 backdrop-blur-lg py-1"
             >
-              <EditorGroupName {...{ groupAddHandle }} />
+              <EditorGroupName />
             </SheetContainerSkeleton>
-            <SheetContainerSkeleton title="已设置的干员组" icon="cog" mini>
-              <div>
-                {existedGroups.length ? (
-                  <>
-                    {existedGroups.map((item) => (
-                      // <GroupItem
-                      //   key={item.name}
-                      //   existedGroup={existedGroups}
-                      //   existedOperator={existedOperators}
-                      //   groupInfo={item}
-                      //   exist={checkGroupExisted(item.name)}
-                      //   pinned={checkGroupPinned(item)}
-                      //   groupRemoveHandle={groupRemoveHandle}
-                      //   groupPinHandle={groupPinHandle}
-                      //   groupUpdateHandle={groupUpdateHandle}
-                      // />
-                      <SheetGroupItem groupInfo={item} itemType="selected" />
-                    ))}
-                    <H6 className="my-2 text-center">
-                      已显示全部 {existedGroups.length} 个干员组
-                    </H6>
-                  </>
-                ) : (
-                  GroupNoData
-                )}
-              </div>
-            </SheetContainerSkeleton>
+            <SheetGroupItemsWithSkeleton
+              title="已设置的干员组"
+              icon="cog"
+              mini
+              groups={existedGroups}
+              itemType="selected"
+            />
+            {!!existedGroups.length && (
+              <H6 className="my-2 text-center">
+                已显示全部 {existedGroups.length} 个干员组
+              </H6>
+            )}
           </div>
         </div>
         <Divider />
         <div className="flex-1">
-          <SheetContainerSkeleton title="推荐分组" icon="thumbs-up" mini>
-            <div>
-              {defaultGroup.length
-                ? defaultGroup.map((item) => (
-                    <GroupItem
-                      key={item.name}
-                      groupInfo={item}
-                      exist={checkGroupExisted(item.name)}
-                      groupAddHandle={groupAddHandle}
-                      pinned={false}
-                    />
-                  ))
-                : GroupNoData}
-            </div>
-          </SheetContainerSkeleton>
-          <SheetContainerSkeleton title="收藏分组" icon="star" mini>
-            <div>
-              {favGroups.length
-                ? favGroups.map((item) => (
-                    <GroupItem
-                      key={item.name}
-                      groupInfo={item}
-                      exist={checkGroupExisted(item.name)}
-                      groupAddHandle={groupAddHandle}
-                      groupPinHandle={groupPinHandle}
-                      pinned
-                    />
-                  ))
-                : GroupNoData}
-            </div>
-          </SheetContainerSkeleton>
+          <SheetGroupItemsWithSkeleton
+            title="推荐分组"
+            icon="thumbs-up"
+            mini
+            groups={defaultGroup}
+            itemType="recommend"
+          />
+          <SheetGroupItemsWithSkeleton
+            title="收藏分组"
+            icon="star"
+            mini
+            groups={favGroups}
+            itemType="fav"
+          />
         </div>
       </div>
-      <Alert
-        isOpen={!!coverGroup}
-        confirmButtonText="是"
-        cancelButtonText="否"
-        icon="error"
-        intent={Intent.DANGER}
-        onConfirm={() => updateFavGroup(coverGroup as Group)}
-        onClose={() => setCoverGroup(undefined)}
-      >
-        <div>
-          <H5>收藏干员组: </H5>
-          <p>检测到同名的已收藏干员组 {coverGroup?.name}，是否覆盖？</p>
-        </div>
-      </Alert>
     </>
   )
 }
@@ -279,5 +147,22 @@ const SheetGroup: FC<SheetGroupProps> = () => {
 export const SheetGroupContainer: FC<SheetGroupProps> = () => (
   <SheetContainerSkeleton title="设置干员组" icon="people">
     <SheetGroup />
+  </SheetContainerSkeleton>
+)
+
+const SheetGroupItemsWithSkeleton: FC<
+  SheetContainerSkeletonProps & {
+    groups: SheetGroupItemProp['groupInfo'][]
+    itemType: SheetGroupItemProp['itemType']
+  }
+> = ({ groups, itemType, ...sheetContainerSkeletonProps }) => (
+  <SheetContainerSkeleton {...sheetContainerSkeletonProps}>
+    <div>
+      {groups.length
+        ? groups.map((item) => (
+            <SheetGroupItem groupInfo={item} itemType={itemType} />
+          ))
+        : GroupNoData}
+    </div>
   </SheetContainerSkeleton>
 )

@@ -15,7 +15,7 @@ export const OperatorInGroupItem: FC<OperatorInGroupItemProp> = ({
   onOperatorSkillChange,
   operatorInfo: { name, ...restField },
 }) => (
-  <Card className="flex items-center w-full h-full justify-between">
+  <Card className="flex items-center mb-1 w-full h-full justify-between">
     <>
       <div className="flex items-center">
         <OperatorAvatar name={name} size="large" />

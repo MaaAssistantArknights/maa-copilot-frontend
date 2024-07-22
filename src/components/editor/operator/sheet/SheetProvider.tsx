@@ -5,8 +5,6 @@ import { EditorPerformerGroupProps } from '../EditorPerformerGroup'
 import { EditorPerformerOperatorProps } from '../EditorPerformerOperator'
 import { Group, Operator } from '../EditorSheet'
 
-export interface OperatorInSheet {}
-
 export interface SheetProviderProp {
   submitOperator: EditorPerformerOperatorProps['submit']
   existedOperators: Operator[]
