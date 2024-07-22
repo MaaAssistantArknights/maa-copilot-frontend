@@ -13,7 +13,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
-import { isEqual, omit } from 'lodash-es'
+import { cloneDeep, isEqual, omit } from 'lodash-es'
 import { FC, ReactNode, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -33,6 +33,7 @@ import {
   SheetGroupOperatorSelectProp,
   SheetGroupOperatorSelectTrigger,
 } from './SheetGroupOperatorSelect'
+import { SheetOperatorEditor } from './SheetOperatorEditor'
 
 export interface GroupItemProps
   extends SheetGroupOperatorSelectProp,
@@ -293,13 +294,7 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
                 />
               ))
             : OperatorNoData}
-          {/* {editable && (
-            <SheetGroupOperatorSelectTrigger
-              groupInfo={groupInfo}
-              groupUpdateHandle={groupUpdateHandle}
-              {...rest}
-            />
-          )} */}
+          {selected && <SheetOperatorEditor {...groupInfo} />}
         </div>
       </Collapse>
     </Card>
@@ -329,10 +324,13 @@ const useSheetGroupItemController = ({
       const pinned = isEqual({ name, opers }, findFavByName)
 
       const onPinChange: GroupPinOptionProp['onPinChange'] = () => {
+        const newFavGroup = [
+          ...favGroup.filter(({ name: nameInFav }) => nameInFav !== name),
+        ]
         setFavGroup(
           pinned
-            ? favGroup.filter(({ name: nameInFav }) => nameInFav !== name)
-            : [...favGroup, { name, opers, ...rest }],
+            ? newFavGroup
+            : [...newFavGroup, cloneDeep({ name, opers, ...rest })],
         )
       }
       return {
