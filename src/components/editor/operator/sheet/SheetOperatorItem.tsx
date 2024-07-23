@@ -94,21 +94,3 @@ export const OperatorItem = ({
     </Card>
   )
 }
-
-// export interface OperatorItemV2Prop {
-//   name: string
-//   selected: boolean
-//   grouped: boolean
-//   simpleMode: boolean
-// }
-
-// export const OperatorItemV2: FC<OperatorItemV2Prop> = ({
-//   name,
-//   selected,
-//   grouped,
-// }) => {
-//   const horizontal = selected && grouped
-//   const { existedOperators, existedGroups } = useSheet()
-
-//   return <>111</>
-// }
