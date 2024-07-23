@@ -79,7 +79,10 @@ const SheetGroup: FC<SheetGroupProps> = () => {
             const subProfName = profInfo?.sub?.find(
               ({ id }) => id === subProf,
             )?.name
-            const key = (profInfo?.name || '其它') + '-' + (subProfName || '')
+            const key =
+              (profInfo?.name || '其它') +
+              (profInfo?.name ? '-' : '') +
+              (subProfName || '')
             if (!acc[key]) acc[key] = []
             acc[key].push({ name, ...rest })
             return acc
@@ -160,7 +163,11 @@ const SheetGroupItemsWithSkeleton: FC<
     <div>
       {groups.length
         ? groups.map((item) => (
-            <SheetGroupItem groupInfo={item} itemType={itemType} />
+            <SheetGroupItem
+              key={item.name}
+              groupInfo={item}
+              itemType={itemType}
+            />
           ))
         : GroupNoData}
     </div>

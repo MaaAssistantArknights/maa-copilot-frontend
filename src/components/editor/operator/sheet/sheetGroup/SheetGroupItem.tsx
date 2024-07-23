@@ -4,7 +4,6 @@ import {
   Card,
   Collapse,
   Icon,
-  IconName,
   Intent,
   Menu,
   MenuItem,
@@ -24,15 +23,11 @@ import { Group, Operator } from '../../EditorSheet'
 import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorNoData } from '../SheetNoneData'
 import { useSheet } from '../SheetProvider'
+import { CollapseButton, SheetGroupOperatorSelectProp } from './CollapseButton'
 import {
   OperatorInGroupItem,
   OperatorInGroupItemProp,
 } from './OperatorInGroupItem'
-import {
-  CollapseButton,
-  SheetGroupOperatorSelectProp,
-  SheetGroupOperatorSelectTrigger,
-} from './SheetGroupOperatorSelect'
 import { SheetOperatorEditor } from './SheetOperatorEditor'
 
 export interface GroupItemProps
@@ -40,111 +35,6 @@ export interface GroupItemProps
     GroupListModifyProp {
   exist: boolean
   pinned: boolean
-}
-
-export const GroupItem = ({
-  groupInfo,
-  exist,
-  pinned,
-  groupAddHandle,
-  groupRemoveHandle,
-  groupPinHandle,
-  groupUpdateHandle,
-  ...rest
-}: GroupItemProps) => {
-  const editable = typeof groupRemoveHandle === 'function'
-  const [showOperators, setShowOperators] = useState(editable)
-
-  const renameEventHandle = (name: string) =>
-    groupUpdateHandle?.({ ...groupInfo, name })
-
-  const changeGroupedOperatorSkillHandle = (value: Operator) => {
-    // deep copy
-    const groupInfoCopy = JSON.parse(JSON.stringify(groupInfo))
-    groupInfoCopy.opers![
-      groupInfoCopy.opers!.findIndex(({ name }) => name === value.name)
-    ] = value
-    groupUpdateHandle?.(groupInfoCopy)
-  }
-
-  const OperatorsPart = (
-    <Collapse isOpen={showOperators}>
-      <div className="w-full pt-1">
-        {groupInfo.opers?.length
-          ? groupInfo.opers?.map((item) => (
-              <OperatorInGroupItem
-                key={item.name}
-                operatorInfo={item}
-                onOperatorSkillChange={changeGroupedOperatorSkillHandle}
-              />
-            ))
-          : !editable && OperatorNoData}
-        {editable && (
-          <SheetGroupOperatorSelectTrigger
-            groupInfo={groupInfo}
-            groupUpdateHandle={groupUpdateHandle}
-            {...rest}
-          />
-        )}
-      </div>
-    </Collapse>
-  )
-
-  const pinText = pinned ? `从收藏分组中移除` : `添加至收藏分组`
-  const pinIcon: IconName = pinned ? 'star' : 'star-empty'
-
-  return (
-    <Card interactive={!exist} className="mt-1 mx-0.5">
-      <div className="flex items-center">
-        <GroupTitle
-          groupTitle={groupInfo.name}
-          editable={editable}
-          renameSubmit={renameEventHandle}
-        />
-        <div className="ml-auto flex items-center">
-          <CollapseButton
-            isCollapse={showOperators}
-            onClick={() => setShowOperators(!showOperators)}
-          />
-          {editable ? (
-            <CardDeleteOption
-              className="cursor-pointer"
-              onClick={() => groupRemoveHandle?.(groupInfo._id || '')}
-            />
-          ) : (
-            <Button
-              minimal
-              icon={exist ? 'tick' : 'arrow-left'}
-              title={exist ? '已选择' : '使用该推荐分组'}
-              onClick={() => groupAddHandle?.(groupInfo)}
-            />
-          )}
-          {(editable || pinned) && (
-            <Popover2
-              disabled={!pinned}
-              content={
-                <Menu className="p-0">
-                  <MenuItem
-                    text={pinText}
-                    icon={pinIcon}
-                    onClick={() => groupPinHandle?.(groupInfo)}
-                  />
-                </Menu>
-              }
-            >
-              <Button
-                minimal
-                icon={pinIcon}
-                title={pinText}
-                onClick={pinned ? undefined : () => groupPinHandle?.(groupInfo)}
-              />
-            </Popover2>
-          )}
-        </div>
-      </div>
-      {OperatorsPart}
-    </Card>
-  )
 }
 
 const GroupTitle = ({

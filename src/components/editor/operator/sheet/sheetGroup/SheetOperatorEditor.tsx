@@ -1,14 +1,11 @@
 import {
   Button,
   Card,
-  CardProps,
   Classes,
   Collapse,
-  H3,
   H6,
   Icon,
   Intent,
-  NonIdealState,
   Position,
 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
@@ -24,17 +21,13 @@ import {
 } from 'react'
 
 import { OperatorAvatar } from '../../EditorOperator'
-import { Group, Operator } from '../../EditorSheet'
+import { Group } from '../../EditorSheet'
 import {
   SheetContainerSkeleton,
   SheetContainerSkeletonProps,
 } from '../SheetContainerSkeleton'
-import { OperatorItem } from '../SheetOperatorItem'
 import { useSheet } from '../SheetProvider'
-import {
-  CollapseButton,
-  SheetGroupOperatorSelectProp,
-} from './SheetGroupOperatorSelect'
+import { CollapseButton } from './CollapseButton'
 
 export interface SheetOperatorEditorProp extends SheetOperatorEditorFormProp {}
 
@@ -110,30 +103,22 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
             title="已选择干员"
             collapseDisabled={!opers.length}
           >
-            {opers.map(({ name }) => (
-              <OperatorItemInSheetOperatorEditor
-                setSelectedOperators={setSelectedOperators}
-                selected={
-                  !!selectedOperators.find(({ operName }) => operName === name)
-                }
-                operName={name}
-              />
-            ))}
+            <OperatorSelectorItem
+              {...{ selectedOperators, setSelectedOperators, opers }}
+            />
           </OperatorSelectorSkeleton>
           <OperatorSelectorSkeleton
             icon="person"
             title="未选择干员"
             collapseDisabled={!existedOperators.length}
           >
-            {existedOperators.map(({ name }) => (
-              <OperatorItemInSheetOperatorEditor
-                operName={name}
-                selected={
-                  !!selectedOperators.find(({ operName }) => operName === name)
-                }
-                setSelectedOperators={setSelectedOperators}
-              />
-            ))}
+            <OperatorSelectorItem
+              {...{
+                selectedOperators,
+                setSelectedOperators,
+                opers: existedOperators,
+              }}
+            />
           </OperatorSelectorSkeleton>
           <OperatorSelectorSkeleton
             icon="people"
@@ -169,17 +154,9 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
                       }
                     />
                   </div>
-                  {opers?.map(({ name }) => (
-                    <OperatorItemInSheetOperatorEditor
-                      operName={name}
-                      setSelectedOperators={setSelectedOperators}
-                      selected={
-                        !!selectedOperators.find(
-                          ({ operName }) => operName === name,
-                        )
-                      }
-                    />
-                  ))}
+                  <OperatorSelectorItem
+                    {...{ selectedOperators, setSelectedOperators, opers }}
+                  />
                 </div>
               ))}
           </OperatorSelectorSkeleton>
@@ -213,37 +190,47 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
   )
 }
 
-const OperatorItemInSheetOperatorEditor: FC<
-  {
-    selected: boolean
-    setSelectedOperators: Dispatch<
-      SetStateAction<OperatorInSheetOperatorEditor[]>
-    >
-  } & OperatorInSheetOperatorEditor
-> = ({ selected, operName, groupName, setSelectedOperators }) => {
-  const onOperatorSelect = () => {
-    setSelectedOperators((prev) =>
-      selected
-        ? prev.filter(
-            ({ operName: selectedOperName }) => selectedOperName !== operName,
-          )
-        : [...prev, { groupName, operName }],
-    )
-  }
+const OperatorSelectorItem: FC<{
+  selectedOperators: OperatorInSheetOperatorEditor[]
+  setSelectedOperators: Dispatch<
+    SetStateAction<OperatorInSheetOperatorEditor[]>
+  >
+  groupName?: OperatorInSheetOperatorEditor['groupName']
+  opers: Group['opers']
+}> = ({ selectedOperators, setSelectedOperators, groupName, opers }) => {
   return (
-    <Card
-      interactive={!selected}
-      className={clsx(
-        selected && 'scale-90 bg-gray-200',
-        'w-1/4 p-0.5 flex flex-col items-center cursor-pointer',
-      )}
-      onClick={onOperatorSelect}
-    >
-      <OperatorAvatar name={operName} size="large" />
-      <p className="font-bold leading-none text-center mt-3 truncate">
-        {operName}
-      </p>
-    </Card>
+    <div className="flex flex-wrap">
+      {opers?.map(({ name }) => {
+        const selected = !!selectedOperators.find(
+          ({ operName }) => operName === name,
+        )
+        return (
+          <Card
+            key={name}
+            interactive={!selected}
+            className={clsx(
+              selected && 'scale-90 bg-gray-200',
+              'w-1/4 p-0.5 flex flex-col items-center cursor-pointer',
+            )}
+            onClick={() => {
+              setSelectedOperators((prev) =>
+                selected
+                  ? prev.filter(
+                      ({ operName: selectedOperName }) =>
+                        selectedOperName !== name,
+                    )
+                  : [...prev, { groupName, operName: name }],
+              )
+            }}
+          >
+            <OperatorAvatar name={name} size="large" />
+            <p className="font-bold leading-none text-center mt-3 truncate">
+              {name}
+            </p>
+          </Card>
+        )
+      })}
+    </div>
   )
 }
 
@@ -261,12 +248,9 @@ const OperatorSelectorSkeleton: FC<{
       mini
       className="w-96"
       rightOptions={
-        <Button
+        <CollapseButton
+          isCollapse={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
-          icon={isOpen ? 'collapse-all' : 'expand-all'}
-          title={`${isOpen ? '折叠' : '展开'}所包含干员`}
-          minimal
-          className="cursor-pointer ml-1"
         />
       }
     >
