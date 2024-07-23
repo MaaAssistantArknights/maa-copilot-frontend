@@ -73,6 +73,7 @@ export const GroupItem = ({
         {groupInfo.opers?.length
           ? groupInfo.opers?.map((item) => (
               <OperatorInGroupItem
+                key={item.name}
                 operatorInfo={item}
                 onOperatorSkillChange={changeGroupedOperatorSkillHandle}
               />
