@@ -185,7 +185,7 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
                   onOperatorSkillChange={onOperatorSkillChange}
                 />
               ))
-            : OperatorNoData}
+            : !selected && OperatorNoData}
           {selected && <SheetOperatorEditor {...groupInfo} />}
         </div>
       </Collapse>
