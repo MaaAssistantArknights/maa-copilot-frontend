@@ -11,7 +11,7 @@ export const OperatorMutipleSelect: FC<OperatorMutipleSelectProp> = () => {
   const {
     operatorFiltered: { data: operatorFilteredData },
   } = useOperatorFilterProvider()
-  const { existedOperators, submitOperator, removeOperator } = useSheet()
+  const { existedOperators, submitOperatorInSheet, removeOperator } = useSheet()
 
   const { cancelAllDisabled, selectAllDisabled } = useMemo(() => {
     const existedOperatorsNames = existedOperators.map(({ name }) => name)
@@ -27,7 +27,7 @@ export const OperatorMutipleSelect: FC<OperatorMutipleSelectProp> = () => {
 
   const selectAll = () =>
     operatorFilteredData.forEach((item) => {
-      submitOperator(item, () => {})
+      submitOperatorInSheet(item)
     })
 
   const cancelAll = () => {

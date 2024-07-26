@@ -67,8 +67,12 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
   name,
   opers = [],
 }) => {
-  const { existedOperators, existedGroups, removeOperator, submitGroup } =
-    useSheet()
+  const {
+    existedOperators,
+    existedGroups,
+    removeOperator,
+    submitGroupInSheet,
+  } = useSheet()
   const [selectedOperators, setSelectedOperators] = useState<
     OperatorInSheetOperatorEditor[]
   >(
@@ -90,40 +94,54 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
     React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   >['onSubmit'] = (e) => {
-    console.log(selectedOperators)
     e.preventDefault()
-    const targetGroup = existedGroups.find(
-      ({ name: exsitedName }) => exsitedName === name,
-    ) || { name, opers: [] }
-    const deleteArray: number[] = []
-    // const needModifyGroup: Record<Group['name']>
-    const opers = selectedOperators.map(({ groupName, operName }) => {
-      if (groupName) {
-        const { opers: otherGroupOpers, ...rest } = existedGroups.find(
-          ({ name }) => name === groupName,
-        ) || { name: groupName, opers: [] }
-        const targetIndex =
-          otherGroupOpers?.findIndex(
-            ({ name: otherOpersName }) => otherOpersName === operName,
-          ) || -1
-        const target = otherGroupOpers?.splice(
-          Math.max(targetIndex - 1, 0),
-          1,
-        )[0]
-        console.log(target)
-        console.log(otherGroupOpers)
-        submitGroup({ ...rest, opers: otherGroupOpers }, undefined, true)
-        return target
-      } else {
-        const index = existedOperators.findIndex(
-          ({ name }) => name === operName,
+    const needModifyGroups = selectedOperators.reduce(
+      (acc, { groupName, operName }) => {
+        const key = groupName || 'noneGrouped'
+        if (acc[key]) acc[key].push(operName)
+        else acc[key] = [operName]
+        return acc
+      },
+      {} as Record<Group['name'], OperatorInSheetOperatorEditor['operName'][]>,
+    )
+    let newOpers: Group['opers'] = []
+    Object.entries(needModifyGroups).forEach(([key, value]) => {
+      if (key === 'noneGrouped') {
+        removeOperator(
+          value.map((name) => {
+            const index = existedOperators.findIndex(
+              ({ name: existedName }) => existedName === name,
+            )
+            newOpers?.push(existedOperators[index])
+            return index
+          }),
         )
-        deleteArray.push(index)
-        removeOperator(deleteArray)
-        return existedOperators[index]
+      } else {
+        const { opers: otherGroupOpers, ...groupRestField } =
+          existedGroups.find(
+            ({ name: existedGroups }) => existedGroups === key,
+          )!
+        newOpers = newOpers?.concat(
+          value.map(
+            (name) =>
+              otherGroupOpers?.find(
+                ({ name: existedName }) => existedName === name,
+              )!,
+          ),
+        )
+        if (key !== name)
+          submitGroupInSheet({
+            ...groupRestField,
+            opers: otherGroupOpers?.filter(({ name }) => !value.includes(name)),
+          })
       }
-    }) as Group['opers']
-    submitGroup({ ...targetGroup, opers }, undefined, true)
+    })
+
+    console.log(newOpers)
+    submitGroupInSheet({
+      ...existedGroups.find(({ name: existedName }) => existedName === name)!,
+      opers: newOpers,
+    })
   }
 
   const onReset = () => {

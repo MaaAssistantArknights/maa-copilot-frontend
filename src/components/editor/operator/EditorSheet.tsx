@@ -6,9 +6,9 @@ import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { SheetGroupContainer } from './sheet/SheetGroup'
 import { SheetOperatorContainer } from './sheet/SheetOperator'
-import { SheetContextValue, SheetProvider } from './sheet/SheetProvider'
+import { SheetProvider, SheetProviderProp } from './sheet/SheetProvider'
 
-type EditorSheetProps = SheetContextValue
+type EditorSheetProps = Omit<SheetProviderProp, 'children'>
 export type Group = CopilotDocV1.Group
 export type Operator = CopilotDocV1.Operator
 

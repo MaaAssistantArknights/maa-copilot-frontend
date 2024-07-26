@@ -28,7 +28,7 @@ export interface GroupListModifyProp {
 const EditorGroupName: FC = () => {
   const [groupName, setGroupName] = useState('')
 
-  const { submitGroup } = useSheet()
+  const { submitGroupInSheet } = useSheet()
 
   const addGroupHandle = () => {
     const name = groupName.trim()
@@ -38,7 +38,7 @@ const EditorGroupName: FC = () => {
         intent: Intent.DANGER,
       })
     } else {
-      submitGroup({ name }, undefined, true)
+      submitGroupInSheet({ name })
       setGroupName('')
     }
   }

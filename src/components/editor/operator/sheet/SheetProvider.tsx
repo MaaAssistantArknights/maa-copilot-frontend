@@ -15,15 +15,30 @@ export interface SheetProviderProp {
   children: ReactNode
 }
 
-export type SheetContextValue = Omit<SheetProviderProp, 'children'>
+export type SheetContextValue = {
+  existedOperators: SheetProviderProp['existedOperators']
+  existedGroups: SheetProviderProp['existedGroups']
+  removeOperator: SheetProviderProp['removeOperator']
+  removeGroup: SheetProviderProp['removeGroup']
+  submitOperatorInSheet: (value: Operator) => void
+  submitGroupInSheet: (value: Group) => void
+}
 
 const SheetContext = createContext<SheetContextValue>({} as SheetContextValue)
 
 export const SheetProvider: FC<SheetProviderProp> = ({
   children,
-  ...providerValue
+  submitGroup,
+  submitOperator,
+  ...restValueField
 }) => (
-  <SheetContext.Provider value={{ ...providerValue }}>
+  <SheetContext.Provider
+    value={{
+      submitOperatorInSheet: (value) => submitOperator(value, undefined, true),
+      submitGroupInSheet: (value) => submitGroup(value, undefined, true),
+      ...restValueField,
+    }}
+  >
     {children}
   </SheetContext.Provider>
 )

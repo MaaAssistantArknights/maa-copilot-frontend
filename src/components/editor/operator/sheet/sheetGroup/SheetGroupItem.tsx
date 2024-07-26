@@ -205,7 +205,7 @@ const useSheetGroupItemController = ({
   groupInfo: { name, opers = [], ...rest },
   itemType,
 }: SheetGroupItemProp): SheetGroupItemController => {
-  const { submitGroup, removeGroup, existedGroups } = useSheet()
+  const { submitGroupInSheet, removeGroup, existedGroups } = useSheet()
   const [favGroup, setFavGroup] = useAtom(favGroupAtom)
 
   switch (itemType) {
@@ -228,7 +228,7 @@ const useSheetGroupItemController = ({
       return {
         selected: true,
         onGroupNameChange: (name: string) =>
-          submitGroup({ opers, ...rest, name }, undefined, true),
+          submitGroupInSheet({ opers, ...rest, name }),
         defaultOperatorCollapseOpen: true,
         onOperatorSkillChange: (operator: Operator) => {
           opers.splice(
@@ -238,7 +238,7 @@ const useSheetGroupItemController = ({
             1,
             operator,
           )
-          submitGroup({ opers, name, ...rest }, undefined, true)
+          submitGroupInSheet({ opers, name, ...rest })
         },
         ActionList: (
           <>
@@ -272,7 +272,7 @@ const useSheetGroupItemController = ({
               minimal
               icon="arrow-left"
               title="添加干员组"
-              onClick={() => submitGroup({ name, opers }, undefined, true)}
+              onClick={() => submitGroupInSheet({ name, opers })}
             />
           </>
         ),
@@ -329,7 +329,7 @@ const useSheetGroupItemController = ({
                     : '检测到同名干员组'
                   : '使用该推荐分组'
               }
-              onClick={() => submitGroup({ name, opers }, undefined, true)}
+              onClick={() => submitGroupInSheet({ name, opers })}
             />
             <GroupPinOption pinned onPinChange={onPinChange} />
           </>

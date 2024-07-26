@@ -20,8 +20,12 @@ export interface SheetOperatorItemProp {
 }
 
 export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
-  const { existedOperators, existedGroups, submitOperator, removeOperator } =
-    useSheet()
+  const {
+    existedOperators,
+    existedGroups,
+    submitOperatorInSheet,
+    removeOperator,
+  } = useSheet()
   const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
 
   const operatorNoneGroupedIndex = existedOperators.findIndex(
@@ -58,7 +62,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
     else {
       if (selected) {
         removeOperator(operatorNoneGroupedIndex)
-      } else submitOperator(operator, undefined, true)
+      } else submitOperatorInSheet(operator)
     }
   }
 
@@ -77,7 +81,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
       ...[...favOperators].filter(({ name }) => name !== formattedValue.name),
       { ...formattedValue },
     ])
-    submitOperator(formattedValue, undefined, true)
+    submitOperatorInSheet(formattedValue)
   }
 
   const onPinnedChange = () => {
@@ -151,7 +155,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
         <SkillAboutTrigger
           {...{
             operator,
-            onSkillChange: (value) => submitOperator(value, undefined, true),
+            onSkillChange: (value) => submitOperatorInSheet(value),
             disabled: grouped,
           }}
         />
