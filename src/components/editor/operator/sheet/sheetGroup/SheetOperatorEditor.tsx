@@ -17,6 +17,7 @@ import {
   FC,
   ReactNode,
   SetStateAction,
+  useMemo,
   useState,
 } from 'react'
 
@@ -26,6 +27,7 @@ import {
   SheetContainerSkeleton,
   SheetContainerSkeletonProps,
 } from '../SheetContainerSkeleton'
+import { OperatorNoData } from '../SheetNoneData'
 import { useSheet } from '../SheetProvider'
 import { CollapseButton } from './CollapseButton'
 
@@ -38,6 +40,7 @@ export const SheetOperatorEditor: FC<SheetOperatorEditorProp> = ({
     <Popover2
       className="w-full"
       content={<SheetOperatorEditorForm {...SheetOperatorEditorFormProps} />}
+      position={Position.TOP}
     >
       <Card
         className="flex items-center justify-center"
@@ -74,27 +77,53 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
       operName,
     })),
   )
+  const otherGroups = useMemo(
+    () =>
+      existedGroups.filter(
+        ({ name: existedName, opers }) =>
+          existedName !== name && !!opers?.length,
+      ),
+    [existedGroups, name],
+  )
 
   const onSubmit: DetailedHTMLProps<
     React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   >['onSubmit'] = (e) => {
+    console.log(selectedOperators)
     e.preventDefault()
+    const targetGroup = existedGroups.find(
+      ({ name: exsitedName }) => exsitedName === name,
+    ) || { name, opers: [] }
     const deleteArray: number[] = []
+    // const needModifyGroup: Record<Group['name']>
     const opers = selectedOperators.map(({ groupName, operName }) => {
       if (groupName) {
-        const targetGroup = existedGroups.find(({ name }) => name === groupName)
-        return existedGroups
-          .find(({ name }) => name === groupName)
-          ?.opers?.find(({ name }) => name === operName)
+        const { opers: otherGroupOpers, ...rest } = existedGroups.find(
+          ({ name }) => name === groupName,
+        ) || { name: groupName, opers: [] }
+        const targetIndex =
+          otherGroupOpers?.findIndex(
+            ({ name: otherOpersName }) => otherOpersName === operName,
+          ) || -1
+        const target = otherGroupOpers?.splice(
+          Math.max(targetIndex - 1, 0),
+          1,
+        )[0]
+        console.log(target)
+        console.log(otherGroupOpers)
+        submitGroup({ ...rest, opers: otherGroupOpers }, undefined, true)
+        return target
       } else {
         const index = existedOperators.findIndex(
           ({ name }) => name === operName,
         )
         deleteArray.push(index)
+        removeOperator(deleteArray)
         return existedOperators[index]
       }
-    })
+    }) as Group['opers']
+    submitGroup({ ...targetGroup, opers }, undefined, true)
   }
 
   const onReset = () => {
@@ -135,42 +164,42 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
           <OperatorSelectorSkeleton
             icon="people"
             title="其他分组干员"
-            collapseDisabled={!existedOperators?.length}
+            collapseDisabled={!otherGroups?.length}
           >
-            {existedGroups
-              .filter(
-                ({ name: existedName, opers }) =>
-                  existedName !== name && !!opers?.length,
-              )
-              .map(({ name: otherGroupName, opers }) => (
-                <div key={otherGroupName}>
-                  <div className="flex flex-row-reverse items-center">
-                    <H6 className="p-0 m-0">{otherGroupName}</H6>
-                    <Button
-                      minimal
-                      icon="arrow-top-left"
-                      title="全选"
-                      onClick={() =>
-                        opers?.forEach(({ name }) => {
-                          if (
-                            selectedOperators.find(
-                              ({ operName }) => operName === name,
-                            )
+            {otherGroups.map(({ name: otherGroupName, opers }) => (
+              <div key={otherGroupName}>
+                <div className="flex flex-row-reverse items-center">
+                  <H6 className="p-0 m-0">{otherGroupName}</H6>
+                  <Button
+                    minimal
+                    icon="arrow-top-left"
+                    title="全选"
+                    onClick={() =>
+                      opers?.forEach(({ name }) => {
+                        if (
+                          selectedOperators.find(
+                            ({ operName }) => operName === name,
                           )
-                            return
-                          setSelectedOperators((prev) => [
-                            ...prev,
-                            { operName: name, groupName: otherGroupName },
-                          ])
-                        })
-                      }
-                    />
-                  </div>
-                  <OperatorSelectorItem
-                    {...{ selectedOperators, setSelectedOperators, opers }}
+                        )
+                          return
+                        setSelectedOperators((prev) => [
+                          ...prev,
+                          { operName: name, groupName: otherGroupName },
+                        ])
+                      })
+                    }
                   />
                 </div>
-              ))}
+                <OperatorSelectorItem
+                  {...{
+                    selectedOperators,
+                    setSelectedOperators,
+                    opers,
+                    groupName: otherGroupName,
+                  }}
+                />
+              </div>
+            ))}
           </OperatorSelectorSkeleton>
         </div>
         <div className="flex p-0.5">
@@ -264,12 +293,17 @@ const OperatorSelectorSkeleton: FC<{
         <CollapseButton
           isCollapse={isOpen}
           onClick={() => setIsOpen((prev) => !prev)}
+          disabled={collapseDisabled}
         />
       }
     >
-      <Collapse isOpen={isOpen} className="m-0.5">
-        {children}
-      </Collapse>
+      {collapseDisabled ? (
+        OperatorNoData
+      ) : (
+        <Collapse isOpen={isOpen} className="m-0.5">
+          {children}
+        </Collapse>
+      )}
     </SheetContainerSkeleton>
   )
 }

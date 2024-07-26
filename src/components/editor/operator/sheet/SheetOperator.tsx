@@ -12,10 +12,6 @@ import { ShowMore } from './sheetOperator/ShowMore'
 
 export interface SheetOperatorProps {}
 
-// const defaultRarityFilter = Array.from(
-//   new Array(Math.max(...OPERATORS.map(({ rarity }) => rarity)) + 1).keys(),
-// ).slice(Math.min(...OPERATORS.map(({ rarity }) => rarity)))
-
 const SheetOperator: FC<SheetOperatorProps> = () => {
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
