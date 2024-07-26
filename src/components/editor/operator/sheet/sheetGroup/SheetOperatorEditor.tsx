@@ -79,22 +79,34 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
     React.FormHTMLAttributes<HTMLFormElement>,
     HTMLFormElement
   >['onSubmit'] = (e) => {
+    console.log(selectedOperators)
     e.preventDefault()
+    const targetGroup = existedGroups.find(
+      ({ name: exsitedName }) => exsitedName === name,
+    ) || { name, opers: [] }
     const deleteArray: number[] = []
     const opers = selectedOperators.map(({ groupName, operName }) => {
       if (groupName) {
-        const targetGroup = existedGroups.find(({ name }) => name === groupName)
-        return existedGroups
-          .find(({ name }) => name === groupName)
-          ?.opers?.find(({ name }) => name === operName)
+        const { opers: otherGroupOpers, ...rest } = existedGroups.find(
+          ({ name }) => name === groupName,
+        ) || { name: groupName, opers: [] }
+        const targetIndex =
+          otherGroupOpers?.findIndex(
+            ({ name: otherOpersName }) => otherOpersName === operName,
+          ) || -1
+        const target = otherGroupOpers?.splice(targetIndex, 1)[0]
+        submitGroup({ ...rest, opers: otherGroupOpers }, undefined, true)
+        return target
       } else {
         const index = existedOperators.findIndex(
           ({ name }) => name === operName,
         )
         deleteArray.push(index)
+        removeOperator(deleteArray)
         return existedOperators[index]
       }
-    })
+    }) as Group['opers']
+    submitGroup({ ...targetGroup, opers }, undefined, true)
   }
 
   const onReset = () => {
