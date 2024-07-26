@@ -60,12 +60,16 @@ interface SheetOperatorEditorFormProp {
   opers?: Group['opers']
 }
 
+type FormHTMLElement = DetailedHTMLProps<
+  React.FormHTMLAttributes<HTMLFormElement>,
+  HTMLFormElement
+>
+
 const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
   name,
   opers = [],
 }) => {
-  const { existedOperators, existedGroups, removeOperator, submitGroup } =
-    useSheet()
+  const { existedOperators, existedGroups } = useSheet()
   const [selectedOperators, setSelectedOperators] = useState<
     OperatorInSheetOperatorEditor[]
   >(
@@ -75,29 +79,13 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
     })),
   )
 
-  const onSubmit: DetailedHTMLProps<
-    React.FormHTMLAttributes<HTMLFormElement>,
-    HTMLFormElement
-  >['onSubmit'] = (e) => {
+  const onSubmit: FormHTMLElement['onSubmit'] = (e) => {
     e.preventDefault()
-    const deleteArray: number[] = []
-    const opers = selectedOperators.map(({ groupName, operName }) => {
-      if (groupName) {
-        const targetGroup = existedGroups.find(({ name }) => name === groupName)
-        return existedGroups
-          .find(({ name }) => name === groupName)
-          ?.opers?.find(({ name }) => name === operName)
-      } else {
-        const index = existedOperators.findIndex(
-          ({ name }) => name === operName,
-        )
-        deleteArray.push(index)
-        return existedOperators[index]
-      }
-    })
   }
 
-  const onReset = () => {
+  const onReset: FormHTMLElement['onReset'] = (e) => {
+    // e.preventDefault()
+    console.log('111')
     setSelectedOperators(
       opers.map(({ name: operName }) => ({
         groupName: name,
@@ -108,7 +96,7 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
 
   return (
     <SheetContainerSkeleton title="选择干员" icon="select">
-      <form className="mt-3" onSubmit={onSubmit}>
+      <form className="mt-3" onSubmit={onSubmit} onReset={onReset}>
         <div className="max-h-96 overflow-y-auto overflow-x-hidden">
           <OperatorSelectorSkeleton
             icon="person"
@@ -187,7 +175,6 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
                 <Button
                   type="reset"
                   text="继续"
-                  onClick={onReset}
                   className={clsx(Classes.POPOVER_DISMISS, 'mx-1')}
                 />
                 <Button text="取消" className={Classes.POPOVER_DISMISS} />

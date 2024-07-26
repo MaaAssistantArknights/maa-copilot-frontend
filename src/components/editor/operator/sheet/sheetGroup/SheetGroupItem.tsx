@@ -180,7 +180,6 @@ export const SheetGroupItem: FC<SheetGroupItemProp> = ({
           {groupInfo.opers?.length
             ? groupInfo.opers?.map((item) => (
                 <OperatorInGroupItem
-                  key={item.name}
                   operatorInfo={item}
                   onOperatorSkillChange={onOperatorSkillChange}
                 />
