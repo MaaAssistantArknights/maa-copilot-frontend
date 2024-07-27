@@ -90,12 +90,15 @@ export const EditorActionAdd = ({
     [levels, stageName],
   )
 
-  const resettingValues: DeepPartial<CopilotDocV1.Action> = {
-    ...defaultAction,
-    // to prevent layout jumping, we persist the action type on reset
-    type,
-    ...(type === 'MoveCamera' ? defaultMoveCameraAction : null),
-  }
+  const resettingValues: DeepPartial<CopilotDocV1.Action> = useMemo(
+    () => ({
+      ...defaultAction,
+      // to prevent layout jumping, we persist the action type on reset
+      type,
+      ...(type === 'MoveCamera' ? defaultMoveCameraAction : null),
+    }),
+    [type],
+  )
 
   useEffect(() => {
     if (editingAction) {
@@ -154,13 +157,13 @@ export const EditorActionAdd = ({
     } else {
       reset(resettingValues)
     }
-  }, [editingAction])
+  }, [editingAction, reset, resettingValues, setValue])
 
   useEffect(() => {
     if (type === 'MoveCamera') {
       reset(resettingValues)
     }
-  }, [type])
+  }, [type, reset, resettingValues])
 
   useEffect(() => {
     setValue(
@@ -169,7 +172,7 @@ export const EditorActionAdd = ({
         ? (editingAction as CopilotDocV1.ActionSkillUsage)?.skillTimes ?? 1
         : undefined,
     )
-  }, [skillUsage])
+  }, [skillUsage, editingAction, setValue])
 
   const onSubmit = handleSubmit((values) => {
     if ('name' in values) {

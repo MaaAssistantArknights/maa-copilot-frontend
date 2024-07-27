@@ -101,7 +101,7 @@ export function useAutosave<T>(
         }
       }
     },
-    [limit],
+    [limit, getValue, key, onSave, shouldSave],
   )
 
   useEffect(() => {
@@ -111,14 +111,17 @@ export function useAutosave<T>(
   }, [interval, limit, doSave])
 
   // immediately save and reset the timer
-  const save = (value?: T) => {
-    doSave(value)
-    clearInterval(timer.current)
-    timer.current = setInterval(doSave, interval)
-  }
+  const save = useCallback(
+    (value?: T) => {
+      doSave(value)
+      clearInterval(timer.current)
+      timer.current = setInterval(doSave, interval)
+    },
+    [doSave, interval],
+  )
 
   // trigger save on unmount and page unload
-  useEffect(() => () => save(), [])
+  useEffect(() => () => save(), [save])
   window.addEventListener('beforeunload', () => save())
 
   return {

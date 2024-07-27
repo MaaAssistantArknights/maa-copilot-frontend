@@ -276,7 +276,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         )
       }
     }
-  }, [stageName, levels])
+  }, [stageName, levels, getValues, setValue])
 
   const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 

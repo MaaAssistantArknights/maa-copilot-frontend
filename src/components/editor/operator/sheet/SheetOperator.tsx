@@ -82,9 +82,12 @@ const SheetOperator = ({
   const [favOperators, setFavOperators] = useAtom(favOperatorAtom)
   const [coverOperator, setCoverOperator] = useState<Operator>()
 
-  const favOperatorFindByName = (target: string) => {
-    return !!favOperators.find(({ name }) => name === target)
-  }
+  const favOperatorFindByName = useCallback(
+    (target: string) => {
+      return !!favOperators.find(({ name }) => name === target)
+    },
+    [favOperators],
+  )
 
   const [formattedSubProfessions, operatorsGroupedByProf] = useMemo(
     () => [
@@ -110,7 +113,7 @@ const SheetOperator = ({
         } else return !!selectedProf.sub?.find((op) => op.id === item.subProf)
       }),
     ],
-    [selectedProf, existedOperators, favOperators],
+    [selectedProf, existedOperators, favOperatorFindByName],
   )
 
   const checkOperatorSelected = useCallback(
@@ -165,9 +168,11 @@ const SheetOperator = ({
     }
   }
 
-  const getOperatorRarity = (target: string) =>
-    operatorsGroupedByProf.find((item) => item.name === target)!.rarity
-
+  const getOperatorRarity = useCallback(
+    (target: string) =>
+      operatorsGroupedByProf.find((item) => item.name === target)!.rarity,
+    [operatorsGroupedByProf],
+  )
   const operatorsGroupedBySubProf = useMemo(() => {
     let result: Operator[] = []
     if (selectedSubProf.id === 'all') result = operatorsGroupedByProf
@@ -331,7 +336,7 @@ const SheetOperator = ({
   )
 
   const ProfSelect = (
-    <div className="flex flex-row-reverse h-screen sticky top-0 relative">
+    <div className="flex flex-row-reverse h-screen top-0 relative">
       <div className="h-full flex flex-col mr-0.5 w-6 sm:w-12">
         {formattedProfessions.map((prof) => (
           <div

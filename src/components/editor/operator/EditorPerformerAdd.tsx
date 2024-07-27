@@ -51,31 +51,34 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
     performerSelectItems.find((item) => item.value === mode) ||
     performerSelectItems[0]
 
-  const selector = (
-    <>
-      添加
-      <Select2<PerformerSelectItem>
-        filterable={false}
-        items={performerSelectItems}
-        className="ml-1"
-        onItemSelect={(e) => onModeChange(e.value)}
-        itemRenderer={(action, { handleClick, handleFocus }) => (
-          <MenuItem
-            key={action.value}
-            selected={action.value === mode}
-            onClick={handleClick}
-            onFocus={handleFocus}
-            text={action.label}
+  const selector = useMemo(
+    () => (
+      <>
+        添加
+        <Select2<PerformerSelectItem>
+          filterable={false}
+          items={performerSelectItems}
+          className="ml-1"
+          onItemSelect={(e) => onModeChange(e.value)}
+          itemRenderer={(action, { handleClick, handleFocus }) => (
+            <MenuItem
+              key={action.value}
+              selected={action.value === mode}
+              onClick={handleClick}
+              onFocus={handleFocus}
+              text={action.label}
+            />
+          )}
+        >
+          <Button
+            large
+            text={selectedItem.label}
+            rightIcon="double-caret-vertical"
           />
-        )}
-      >
-        <Button
-          large
-          text={selectedItem.label}
-          rightIcon="double-caret-vertical"
-        />
-      </Select2>
-    </>
+        </Select2>
+      </>
+    ),
+    [mode, onModeChange, selectedItem],
   )
 
   const child = useMemo(() => {
@@ -95,7 +98,16 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
         categorySelector={selector}
       />
     )
-  }, [mode, submitOperator, submitGroup])
+  }, [
+    mode,
+    submitOperator,
+    submitGroup,
+    group,
+    groups,
+    onCancel,
+    operator,
+    selector,
+  ])
 
   return <Card className="mb-8 pt-4">{child}</Card>
 }

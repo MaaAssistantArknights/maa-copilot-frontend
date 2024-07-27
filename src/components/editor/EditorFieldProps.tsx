@@ -48,10 +48,8 @@ type PathOfType<T, P extends Path<T> | ArrayPath<T>, U> = P extends any
  * }
  * ```
  */
-export interface EditorFieldProps<
-  TFieldValues extends FieldValues,
-  TType = any,
-> extends UseControllerProps<
+export interface EditorFieldProps<TFieldValues extends FieldValues, TType = any>
+  extends UseControllerProps<
     TFieldValues,
     // the Cast here is a workaround for the fact that TS cannot correctly recognize
     // that the result of PathOfType is assignable to FieldPath<TFieldValues>

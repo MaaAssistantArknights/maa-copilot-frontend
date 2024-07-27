@@ -3,6 +3,7 @@ import {
   NumericInput,
   NumericInputProps,
 } from '@blueprintjs/core'
+
 import { useRef, useState } from 'react'
 
 type MixedNumericInputProps = HTMLInputProps & NumericInputProps

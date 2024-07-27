@@ -43,7 +43,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
       setDisplaySections(freshSections)
       setLastNoticed(Date.now())
     }
-  }, [announcement])
+  }, [announcement, lastNoticed, setLastNoticed])
 
   return (
     <>
@@ -60,9 +60,9 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className }) => {
         <div className="flex">
           {announcement && (
             <ul className="grow list-disc pl-4">
-              {announcement?.sections.slice(0, 3).map(({ title }) => (
-                <li key={title}>{title}</li>
-              ))}
+              {announcement?.sections
+                .slice(0, 3)
+                .map(({ title }) => <li key={title}>{title}</li>)}
             </ul>
           )}
           {!announcement && error && (

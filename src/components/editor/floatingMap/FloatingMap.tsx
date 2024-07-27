@@ -70,7 +70,7 @@ export function FloatingMap() {
       x: clamp(cfg.x, 0, windowWidth - cfg.width),
       y: clamp(cfg.y, 0, windowHeight - cfg.height),
     }))
-  }, [windowWidth, windowHeight])
+  }, [setConfig, windowWidth, windowHeight])
 
   const [iframeWindow, setIframeWindow] = useState<Window | null | undefined>()
   const [mapStatus, setMapStatus] = useState(MapStatus.Loading)
@@ -81,7 +81,7 @@ export function FloatingMap() {
     // when level changes, the iframe should reload
     setMapStatus(MapStatus.Loading)
     setConfig((cfg) => ({ ...cfg, level }))
-  }, [level])
+  }, [setConfig, level])
 
   const setMapState = useCallback(() => {
     if (iframeWindow) {
@@ -136,7 +136,7 @@ export function FloatingMap() {
       toggleIframePointerEvents(false)
       setConfig((cfg) => ({ ...cfg, x, y }))
     },
-    [toggleIframePointerEvents],
+    [setConfig, toggleIframePointerEvents],
   )
 
   const onResizeStartHandler = useCallback(() => {
@@ -153,7 +153,7 @@ export function FloatingMap() {
         height: parseFloat(ref.style.height),
       }))
     },
-    [toggleIframePointerEvents],
+    [setConfig, toggleIframePointerEvents],
   )
 
   return createPortal(

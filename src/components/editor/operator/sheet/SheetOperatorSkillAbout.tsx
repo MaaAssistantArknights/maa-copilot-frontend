@@ -85,7 +85,7 @@ export const SkillAboutTrigger = ({
       <div className="flex items-center">
         <Button text="确定" type="submit" className={Classes.POPOVER_DISMISS} />
         <Tooltip2
-          content='若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)'
+          content="若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)"
           className="ml-1"
         >
           <Icon icon="help" />

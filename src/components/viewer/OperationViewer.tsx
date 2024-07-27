@@ -339,7 +339,9 @@ function OperationViewerInner({
 
         <div className="flex flex-col items-start select-none tabular-nums">
           <FactItem title="浏览量" icon="eye-open">
-            <span className="text-gray-800 dark:text-slate-100 font-bold">{operation.views}</span>
+            <span className="text-gray-800 dark:text-slate-100 font-bold">
+              {operation.views}
+            </span>
           </FactItem>
 
           <FactItem title="发布于" icon="time">

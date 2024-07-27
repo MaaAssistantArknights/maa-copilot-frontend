@@ -92,7 +92,7 @@ const InfoPanel = ({ onClose }) => {
 
   useEffect(() => {
     reset(auth)
-  }, [auth])
+  }, [auth, reset])
 
   const globalError = (errors as FieldErrors<{ global: void }>).global?.message
 

@@ -20,12 +20,11 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
-    <Card
-      interactive={true}
-      elevation={Elevation.TWO}
-      className="relative"
-    >
-      <ReLink search={{ op: operation.id }} className="no-underline h-full flex flex-col gap-2">
+    <Card interactive={true} elevation={Elevation.TWO} className="relative">
+      <ReLink
+        search={{ op: operation.id }}
+        className="no-underline h-full flex flex-col gap-2"
+      >
         <div className="flex">
           <Tooltip2
             content={operation.parsedContent.doc.title}
