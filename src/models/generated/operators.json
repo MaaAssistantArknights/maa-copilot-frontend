@@ -2,6 +2,7 @@
   "OPERATORS": [
     {
       "id": "token_10026_bgsnow_subbow",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“打字机”",
       "alias": "daziji dzj “打字機” 打字機",
@@ -10,6 +11,7 @@
     },
     {
       "id": "token_10013_robin_mine",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“夹子”",
       "alias": "jiazi gazi jz gz “夾子” 夾子",
@@ -18,6 +20,7 @@
     },
     {
       "id": "token_10020_ling_soul1",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“清平”",
       "alias": "qingping qp “清平” 清平",
@@ -26,6 +29,7 @@
     },
     {
       "id": "token_10020_ling_soul3",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“弦惊”",
       "alias": "xianjing xj “弦驚” 弦驚",
@@ -34,6 +38,7 @@
     },
     {
       "id": "token_10020_ling_soul2",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“逍遥”",
       "alias": "xiaoyao xy “逍遙” 逍遙",
@@ -42,6 +47,7 @@
     },
     {
       "id": "token_10015_dusk_drgn",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“小自在”",
       "alias": "xiaozizai xzz “小自在” 小自在",
@@ -50,6 +56,7 @@
     },
     {
       "id": "token_10019_nearl2_sword",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "“耀阳”",
       "alias": "yaoyang yy “耀陽” 耀陽",
@@ -58,6 +65,7 @@
     },
     {
       "id": "char_009_12fce",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "12F",
       "alias": "12F",
@@ -66,6 +74,7 @@
     },
     {
       "id": "char_225_haak",
+      "prof": "SPECIAL",
       "subProf": "geek",
       "name": "阿",
       "alias": "ae 阿",
@@ -74,6 +83,7 @@
     },
     {
       "id": "char_446_aroma",
+      "prof": "CASTER",
       "subProf": "blastcaster",
       "name": "阿罗玛",
       "alias": "aluoma eluoma alm elm 阿羅瑪",
@@ -82,6 +92,7 @@
     },
     {
       "id": "char_002_amiya",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "阿米娅",
       "alias": "amiya emiya amy emy 阿米婭",
@@ -90,6 +101,7 @@
     },
     {
       "id": "char_4132_ascln",
+      "prof": "SPECIAL",
       "subProf": "stalker",
       "name": "阿斯卡纶",
       "alias": "asikalun asikaguan asiqialun asiqiaguan esikalun esikaguan esiqialun esiqiaguan askl askg asql asqg eskl eskg esql esqg 阿斯卡綸",
@@ -98,6 +110,7 @@
     },
     {
       "id": "char_277_sqrrel",
+      "prof": "SPECIAL",
       "subProf": "pusher",
       "name": "阿消",
       "alias": "axiao exiao ax ex 阿消",
@@ -106,6 +119,7 @@
     },
     {
       "id": "char_4123_ela",
+      "prof": "SPECIAL",
       "subProf": "traper",
       "name": "艾拉",
       "alias": "aila yila al yl 艾拉",
@@ -114,6 +128,7 @@
     },
     {
       "id": "char_4043_erato",
+      "prof": "SNIPER",
       "subProf": "siegesniper",
       "name": "埃拉托",
       "alias": "ailatuo alt 埃拉托",
@@ -122,6 +137,7 @@
     },
     {
       "id": "char_4009_irene",
+      "prof": "WARRIOR",
       "subProf": "sword",
       "name": "艾丽妮",
       "alias": "ailini yilini aln yln 艾麗妮",
@@ -130,6 +146,7 @@
     },
     {
       "id": "char_338_iris",
+      "prof": "CASTER",
       "subProf": "mystic",
       "name": "爱丽丝",
       "alias": "ailisi als 愛麗絲",
@@ -138,6 +155,7 @@
     },
     {
       "id": "char_127_estell",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "艾丝黛尔",
       "alias": "aisidaier yisidaier asde ysde 艾絲黛爾",
@@ -146,6 +164,7 @@
     },
     {
       "id": "char_180_amgoat",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "艾雅法拉",
       "alias": "aiyafala yiyafala ayfl yyfl 艾雅法拉",
@@ -154,6 +173,7 @@
     },
     {
       "id": "char_302_glaze",
+      "prof": "SNIPER",
       "subProf": "longrange",
       "name": "安比尔",
       "alias": "anbier abe 安比爾",
@@ -162,6 +182,7 @@
     },
     {
       "id": "char_211_adnach",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "安德切尔",
       "alias": "andeqieer adqe 安德切爾",
@@ -170,6 +191,7 @@
     },
     {
       "id": "char_291_aglina",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "安洁莉娜",
       "alias": "anjielina anjielinuo ajln 安潔莉娜",
@@ -178,6 +200,7 @@
     },
     {
       "id": "char_212_ansel",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "安赛尔",
       "alias": "ansaier ase 安賽爾",
@@ -186,6 +209,7 @@
     },
     {
       "id": "char_236_rope",
+      "prof": "SPECIAL",
       "subProf": "hookmaster",
       "name": "暗索",
       "alias": "ansuo as 暗索",
@@ -194,6 +218,7 @@
     },
     {
       "id": "char_218_cuttle",
+      "prof": "SNIPER",
       "subProf": "longrange",
       "name": "安哲拉",
       "alias": "anzhela azl 安哲拉",
@@ -202,6 +227,7 @@
     },
     {
       "id": "char_4131_odda",
+      "prof": "WARRIOR",
       "subProf": "hammer",
       "name": "奥达",
       "alias": "aoda yuda ad yd 奧達",
@@ -210,6 +236,7 @@
     },
     {
       "id": "char_346_aosta",
+      "prof": "SNIPER",
       "subProf": "reaperrange",
       "name": "奥斯塔",
       "alias": "aosita yusita ast yst 奧斯塔",
@@ -218,6 +245,7 @@
     },
     {
       "id": "char_252_bibeak",
+      "prof": "WARRIOR",
       "subProf": "sword",
       "name": "柏喙",
       "alias": "baihui bohui bh 柏喙",
@@ -226,6 +254,7 @@
     },
     {
       "id": "char_204_platnm",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "白金",
       "alias": "baijin bj 白金",
@@ -234,6 +263,7 @@
     },
     {
       "id": "char_1026_gvial2",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "百炼嘉维尔",
       "alias": "bailianjiaweier bljwe 百煉嘉維爾",
@@ -242,6 +272,7 @@
     },
     {
       "id": "char_128_plosis",
+      "prof": "MEDIC",
       "subProf": "ringhealer",
       "name": "白面鸮",
       "alias": "baimianxiao bmx 白麵鴞",
@@ -250,6 +281,7 @@
     },
     {
       "id": "char_325_bison",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "拜松",
       "alias": "baisong bs 拜鬆",
@@ -258,6 +290,7 @@
     },
     {
       "id": "char_4072_ironmn",
+      "prof": "SUPPORT",
       "subProf": "craftsman",
       "name": "白铁",
       "alias": "baitie bt 白鐵",
@@ -266,6 +299,7 @@
     },
     {
       "id": "token_10027_ironmn_pile1",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "白铁™多功能平台",
       "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
@@ -274,6 +308,7 @@
     },
     {
       "id": "char_118_yuki",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "白雪",
       "alias": "baixue bx 白雪",
@@ -282,6 +317,7 @@
     },
     {
       "id": "char_284_spot",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "斑点",
       "alias": "bandian bd 斑點",
@@ -290,6 +326,7 @@
     },
     {
       "id": "char_230_savage",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "暴行",
       "alias": "baohang baoxing puhang puxing bh bx ph px 暴行",
@@ -298,6 +335,7 @@
     },
     {
       "id": "char_388_mint",
+      "prof": "CASTER",
       "subProf": "phalanx",
       "name": "薄绿",
       "alias": "baolv baolu bolv bolu bl 薄綠",
@@ -306,6 +344,7 @@
     },
     {
       "id": "char_304_zebra",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "暴雨",
       "alias": "baoyu puyu by py 暴雨",
@@ -314,6 +353,7 @@
     },
     {
       "id": "char_369_bena",
+      "prof": "SPECIAL",
       "subProf": "dollkeeper",
       "name": "贝娜",
       "alias": "beina beinuo bn 貝娜",
@@ -322,6 +362,7 @@
     },
     {
       "id": "char_265_sophia",
+      "prof": "WARRIOR",
       "subProf": "instructor",
       "name": "鞭刃",
       "alias": "bianren br 鞭刃",
@@ -330,6 +371,7 @@
     },
     {
       "id": "char_4104_coldst",
+      "prof": "SNIPER",
       "subProf": "hunter",
       "name": "冰酿",
       "alias": "bingniang bn 冰釀",
@@ -338,6 +380,7 @@
     },
     {
       "id": "char_258_podego",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "波登可",
       "alias": "bodengke bdk 波登可",
@@ -346,6 +389,7 @@
     },
     {
       "id": "char_4004_pudd",
+      "prof": "CASTER",
       "subProf": "chain",
       "name": "布丁",
       "alias": "buding buzheng bd bz 布丁",
@@ -354,6 +398,7 @@
     },
     {
       "id": "char_356_broca",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "布洛卡",
       "alias": "buluoka buluoqia blk blq 布洛卡",
@@ -362,6 +407,7 @@
     },
     {
       "id": "char_4106_bryota",
+      "prof": "WARRIOR",
       "subProf": "instructor",
       "name": "苍苔",
       "alias": "cangtai ct 蒼苔",
@@ -370,6 +416,7 @@
     },
     {
       "id": "char_286_cast3",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "Castle-3",
       "alias": "Castle-3",
@@ -378,6 +425,7 @@
     },
     {
       "id": "char_289_gyuki",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "缠丸",
       "alias": "chanwan cw 纏丸",
@@ -386,6 +434,7 @@
     },
     {
       "id": "char_4047_pianst",
+      "prof": "TANK",
       "subProf": "artsprotector",
       "name": "车尔尼",
       "alias": "cheerni juerni cen jen 車爾尼",
@@ -394,6 +443,7 @@
     },
     {
       "id": "char_010_chen",
+      "prof": "WARRIOR",
       "subProf": "sword",
       "name": "陈",
       "alias": "chen c 陳",
@@ -402,6 +452,7 @@
     },
     {
       "id": "char_377_gdglow",
+      "prof": "CASTER",
       "subProf": "funnel",
       "name": "澄闪",
       "alias": "chengshan dengshan cs ds 澄閃",
@@ -410,6 +461,7 @@
     },
     {
       "id": "char_1027_greyy2",
+      "prof": "SNIPER",
       "subProf": "bombarder",
       "name": "承曦格雷伊",
       "alias": "chengxigeleiyi cxgly 承曦格雷伊",
@@ -418,6 +470,7 @@
     },
     {
       "id": "char_475_akafyu",
+      "prof": "WARRIOR",
       "subProf": "musha",
       "name": "赤冬",
       "alias": "chidong cd 赤冬",
@@ -426,6 +479,7 @@
     },
     {
       "id": "char_4065_judge",
+      "prof": "TANK",
       "subProf": "unyield",
       "name": "斥罪",
       "alias": "chizui cz 斥罪",
@@ -434,6 +488,7 @@
     },
     {
       "id": "char_4082_qiubai",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "仇白",
       "alias": "choubai qiubai cb qb 仇白",
@@ -442,6 +497,7 @@
     },
     {
       "id": "token_10001_deepcl_tentac",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "触手",
       "alias": "chushou cs 觸手",
@@ -450,6 +506,7 @@
     },
     {
       "id": "char_174_slbell",
+      "prof": "SUPPORT",
       "subProf": "underminer",
       "name": "初雪",
       "alias": "chuxue cx 初雪",
@@ -458,6 +515,7 @@
     },
     {
       "id": "char_1016_agoat2",
+      "prof": "MEDIC",
       "subProf": "wandermedic",
       "name": "纯烬艾雅法拉",
       "alias": "chunjinaiyafala chunjinyiyafala cjayfl cjyyfl 純燼艾雅法拉",
@@ -466,6 +524,7 @@
     },
     {
       "id": "char_494_vendla",
+      "prof": "MEDIC",
       "subProf": "incantationmedic",
       "name": "刺玫",
       "alias": "cimei cm 刺玫",
@@ -474,6 +533,7 @@
     },
     {
       "id": "token_10008_cqbw_box",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "此面向敌",
       "alias": "cimianxiangdi cmxd 此麵向敵",
@@ -482,6 +542,7 @@
     },
     {
       "id": "token_10039_ulpia_block",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "从不混淆的方向",
       "alias": "congbuhunxiaodefangxiang congbuhunxiaodifangxiang congfouhunxiaodefangxiang congfouhunxiaodifangxiang zongbuhunxiaodefangxiang zongbuhunxiaodifangxiang zongfouhunxiaodefangxiang zongfouhunxiaodifangxiang cbhxdfx cfhxdfx zbhxdfx zfhxdfx 從不混淆的方向",
@@ -490,6 +551,7 @@
     },
     {
       "id": "char_1031_slent2",
+      "prof": "SUPPORT",
       "subProf": "blessing",
       "name": "淬羽赫默",
       "alias": "cuiyuhemo cyhm 淬羽赫默",
@@ -498,6 +560,7 @@
     },
     {
       "id": "char_362_saga",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "嵯峨",
       "alias": "cuoe ce 嵯峨",
@@ -506,6 +569,7 @@
     },
     {
       "id": "char_157_dagda",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "达格达",
       "alias": "dageda dgd 達格達",
@@ -514,6 +578,7 @@
     },
     {
       "id": "char_4110_delphn",
+      "prof": "CASTER",
       "subProf": "mystic",
       "name": "戴菲恩",
       "alias": "daifeien dfe 戴菲恩",
@@ -522,6 +587,7 @@
     },
     {
       "id": "char_4032_provs",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "但书",
       "alias": "danshu ds 但書",
@@ -530,6 +596,7 @@
     },
     {
       "id": "char_4126_fuze",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "导火索",
       "alias": "daohuosuo dhs 導火索",
@@ -538,6 +605,7 @@
     },
     {
       "id": "char_102_texas",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "德克萨斯",
       "alias": "dekesasi dkss 德克薩斯",
@@ -546,6 +614,7 @@
     },
     {
       "id": "char_1034_jesca2",
+      "prof": "TANK",
       "subProf": "shotprotector",
       "name": "涤火杰西卡",
       "alias": "dihuojiexika dihuojiexiqia dhjxk dhjxq 滌火傑西卡",
@@ -554,6 +623,7 @@
     },
     {
       "id": "char_183_skgoat",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "地灵",
       "alias": "diling deling dl 地靈",
@@ -562,6 +632,7 @@
     },
     {
       "id": "char_452_bstalk",
+      "prof": "PIONEER",
       "subProf": "tactician",
       "name": "豆苗",
       "alias": "doumiao dm 豆苗",
@@ -570,6 +641,7 @@
     },
     {
       "id": "char_130_doberm",
+      "prof": "WARRIOR",
       "subProf": "instructor",
       "name": "杜宾",
       "alias": "dubin db 杜賓",
@@ -578,6 +650,7 @@
     },
     {
       "id": "char_501_durin",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "杜林",
       "alias": "dulin dl 杜林",
@@ -586,6 +659,7 @@
     },
     {
       "id": "char_4147_mitm",
+      "prof": "PIONEER",
       "subProf": "tactician",
       "name": "渡桥",
       "alias": "duqiao dq 渡橋",
@@ -594,6 +668,7 @@
     },
     {
       "id": "char_294_ayer",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "断崖",
       "alias": "duanya dy 斷崖",
@@ -602,6 +677,7 @@
     },
     {
       "id": "char_159_peacok",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "断罪者",
       "alias": "duanzuizhe dzz 斷罪者",
@@ -610,6 +686,7 @@
     },
     {
       "id": "char_4083_chimes",
+      "prof": "WARRIOR",
       "subProf": "crusher",
       "name": "铎铃",
       "alias": "duoling dl 鐸鈴",
@@ -618,6 +695,7 @@
     },
     {
       "id": "char_4048_doroth",
+      "prof": "SPECIAL",
       "subProf": "traper",
       "name": "多萝西",
       "alias": "duoluoxi dlx 多蘿西",
@@ -626,6 +704,7 @@
     },
     {
       "id": "char_271_spikes",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "芳汀",
       "alias": "fangting ft 芳汀",
@@ -634,6 +713,7 @@
     },
     {
       "id": "char_300_phenxi",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "菲亚梅塔",
       "alias": "feiyameita fymt 菲亞梅塔",
@@ -642,6 +722,7 @@
     },
     {
       "id": "char_123_fang",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "芬",
       "alias": "fen f 芬",
@@ -650,6 +731,7 @@
     },
     {
       "id": "char_222_bpipe",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "风笛",
       "alias": "fengdi fd 風笛",
@@ -658,6 +740,7 @@
     },
     {
       "id": "char_4016_kazema",
+      "prof": "SPECIAL",
       "subProf": "dollkeeper",
       "name": "风丸",
       "alias": "fengwan fw 風丸",
@@ -666,6 +749,7 @@
     },
     {
       "id": "char_4093_frston",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "Friston-3",
       "alias": "Friston-3",
@@ -674,6 +758,7 @@
     },
     {
       "id": "char_106_franka",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "芙兰卡",
       "alias": "fulanka fulanqia flk flq 芙蘭卡",
@@ -682,6 +767,7 @@
     },
     {
       "id": "char_120_hibisc",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "芙蓉",
       "alias": "furong fr 芙蓉",
@@ -690,6 +776,7 @@
     },
     {
       "id": "char_220_grani",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "格拉尼",
       "alias": "gelani gln 格拉尼",
@@ -698,6 +785,7 @@
     },
     {
       "id": "char_326_glacus",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "格劳克斯",
       "alias": "gelaokesi glks 格勞克斯",
@@ -706,6 +794,7 @@
     },
     {
       "id": "char_474_glady",
+      "prof": "SPECIAL",
       "subProf": "hookmaster",
       "name": "歌蕾蒂娅",
       "alias": "geleidiya gldy 歌蕾蒂婭",
@@ -714,6 +803,7 @@
     },
     {
       "id": "char_253_greyy",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "格雷伊",
       "alias": "geleiyi gly 格雷伊",
@@ -722,6 +812,7 @@
     },
     {
       "id": "token_10009_weedy_cannon",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "工程蓄水炮",
       "alias": "gongchengxushuipao gongchengxushuibao gcxsp gcxsb 工程蓄水炮",
@@ -730,6 +821,7 @@
     },
     {
       "id": "token_10025_doroth_recttp",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "共振装置",
       "alias": "gongzhenzhuangzhi gzzz 共振裝置",
@@ -738,6 +830,7 @@
     },
     {
       "id": "char_196_sunbr",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "古米",
       "alias": "gumi gm 古米",
@@ -746,6 +839,7 @@
     },
     {
       "id": "char_1023_ghost2",
+      "prof": "SPECIAL",
       "subProf": "dollkeeper",
       "name": "归溟幽灵鲨",
       "alias": "guimingyoulingsha gmyls 歸溟幽靈鯊",
@@ -754,6 +848,7 @@
     },
     {
       "id": "char_4114_harold",
+      "prof": "MEDIC",
       "subProf": "wandermedic",
       "name": "哈洛德",
       "alias": "haluode hld 哈洛德",
@@ -762,6 +857,7 @@
     },
     {
       "id": "char_4045_heidi",
+      "prof": "SUPPORT",
       "subProf": "bard",
       "name": "海蒂",
       "alias": "haidi hd 海蒂",
@@ -770,6 +866,7 @@
     },
     {
       "id": "char_4066_highmo",
+      "prof": "WARRIOR",
       "subProf": "reaper",
       "name": "海沫",
       "alias": "haimo hm 海沫",
@@ -778,6 +875,7 @@
     },
     {
       "id": "char_4079_haini",
+      "prof": "SUPPORT",
       "subProf": "underminer",
       "name": "海霓",
       "alias": "haini hn 海霓",
@@ -786,6 +884,7 @@
     },
     {
       "id": "char_1021_kroos2",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "寒芒克洛丝",
       "alias": "hanmangkeluosi hmkls 寒芒克洛絲",
@@ -794,6 +893,7 @@
     },
     {
       "id": "char_341_sntlla",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "寒檀",
       "alias": "hantan ht 寒檀",
@@ -802,6 +902,7 @@
     },
     {
       "id": "char_4039_horn",
+      "prof": "TANK",
       "subProf": "fortress",
       "name": "号角",
       "alias": "haojiao haojue hj 號角",
@@ -810,6 +911,7 @@
     },
     {
       "id": "char_4088_hodrer",
+      "prof": "WARRIOR",
       "subProf": "crusher",
       "name": "赫德雷",
       "alias": "hedelei hdl 赫德雷",
@@ -818,6 +920,7 @@
     },
     {
       "id": "char_4041_chnut",
+      "prof": "MEDIC",
       "subProf": "wandermedic",
       "name": "褐果",
       "alias": "heguo hg 褐果",
@@ -826,6 +929,7 @@
     },
     {
       "id": "char_188_helage",
+      "prof": "WARRIOR",
       "subProf": "musha",
       "name": "赫拉格",
       "alias": "helage hlg 赫拉格",
@@ -834,6 +938,7 @@
     },
     {
       "id": "char_108_silent",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "赫默",
       "alias": "hemo hm 赫默",
@@ -842,6 +947,7 @@
     },
     {
       "id": "char_297_hamoni",
+      "prof": "CASTER",
       "subProf": "mystic",
       "name": "和弦",
       "alias": "hexian huoxian huxian hx 和弦",
@@ -850,6 +956,7 @@
     },
     {
       "id": "char_340_shwaz",
+      "prof": "SNIPER",
       "subProf": "closerange",
       "name": "黑",
       "alias": "hei h 黑",
@@ -858,6 +965,7 @@
     },
     {
       "id": "char_4046_ebnhlz",
+      "prof": "CASTER",
       "subProf": "mystic",
       "name": "黑键",
       "alias": "heijian hj 黑鍵",
@@ -866,6 +974,7 @@
     },
     {
       "id": "char_500_noirc",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "黑角",
       "alias": "heijiao heijue hj 黑角",
@@ -874,6 +983,7 @@
     },
     {
       "id": "char_144_red",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "红",
       "alias": "honggong hg 紅",
@@ -882,6 +992,7 @@
     },
     {
       "id": "char_290_vigna",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "红豆",
       "alias": "hongdou gongdou hd gd 紅豆",
@@ -890,6 +1001,7 @@
     },
     {
       "id": "char_4023_rfalcn",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "红隼",
       "alias": "hongsun gongsun hs gs 紅隼",
@@ -898,6 +1010,7 @@
     },
     {
       "id": "char_4055_bgsnow",
+      "prof": "SNIPER",
       "subProf": "closerange",
       "name": "鸿雪",
       "alias": "hongxue hx 鴻雪",
@@ -906,6 +1019,7 @@
     },
     {
       "id": "char_190_clour",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "红云",
       "alias": "hongyun gongyun hy gy 紅雲",
@@ -914,6 +1028,7 @@
     },
     {
       "id": "char_226_hmau",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "吽",
       "alias": "houhongou ho 吽",
@@ -922,6 +1037,7 @@
     },
     {
       "id": "char_171_bldsk",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "华法琳",
       "alias": "huafalin hfl 華法琳",
@@ -930,6 +1046,7 @@
     },
     {
       "id": "char_243_waaifu",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "槐琥",
       "alias": "huaihu hh 槐琥",
@@ -938,6 +1055,7 @@
     },
     {
       "id": "token_10003_cgbird_bird",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "幻影",
       "alias": "huanying hy 幻影",
@@ -946,6 +1064,7 @@
     },
     {
       "id": "char_017_huang",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "煌",
       "alias": "huang h 煌",
@@ -954,6 +1073,7 @@
     },
     {
       "id": "char_431_ashlok",
+      "prof": "TANK",
       "subProf": "fortress",
       "name": "灰毫",
       "alias": "huihao hh 灰毫",
@@ -962,6 +1082,7 @@
     },
     {
       "id": "char_367_swllow",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "灰喉",
       "alias": "huihou hh 灰喉",
@@ -970,6 +1091,7 @@
     },
     {
       "id": "char_456_ash",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "灰烬",
       "alias": "huijin hj 灰燼",
@@ -978,6 +1100,7 @@
     },
     {
       "id": "token_10035_wisdel_wward",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "魂灵之影",
       "alias": "hunlingzhiying hlzy 魂靈之影",
@@ -986,6 +1109,7 @@
     },
     {
       "id": "char_4027_heyak",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "霍尔海雅",
       "alias": "huoerhaiya hehy 霍爾海雅",
@@ -994,6 +1118,7 @@
     },
     {
       "id": "char_1030_noirc2",
+      "prof": "WARRIOR",
       "subProf": "musha",
       "name": "火龙S黑角",
       "alias": "huolongSheijiao huolongSheijue hlShj 火龍S黑角",
@@ -1002,6 +1127,7 @@
     },
     {
       "id": "char_493_firwhl",
+      "prof": "TANK",
       "subProf": "fortress",
       "name": "火哨",
       "alias": "huoshao hs 火哨",
@@ -1010,6 +1136,7 @@
     },
     {
       "id": "char_163_hpsts",
+      "prof": "TANK",
       "subProf": "unyield",
       "name": "火神",
       "alias": "huoshen hs 火神",
@@ -1018,6 +1145,7 @@
     },
     {
       "id": "char_293_thorns",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "棘刺",
       "alias": "jici jc 棘刺",
@@ -1026,6 +1154,7 @@
     },
     {
       "id": "token_10032_jesca2_jckshd",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "机动盾牌",
       "alias": "jidongdunpai jddp 機動盾牌",
@@ -1034,6 +1163,7 @@
     },
     {
       "id": "char_422_aurora",
+      "prof": "TANK",
       "subProf": "duelist",
       "name": "极光",
       "alias": "jiguang jg 極光",
@@ -1042,6 +1172,7 @@
     },
     {
       "id": "char_401_elysm",
+      "prof": "PIONEER",
       "subProf": "bearer",
       "name": "极境",
       "alias": "jijing jj 極境",
@@ -1050,6 +1181,7 @@
     },
     {
       "id": "token_10004_otter_motter",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "机械水獭",
       "alias": "jixieshuita jxst 機械水獺",
@@ -1058,6 +1190,7 @@
     },
     {
       "id": "char_1013_chen2",
+      "prof": "SNIPER",
       "subProf": "reaperrange",
       "name": "假日威龙陈",
       "alias": "jiariweilongchen jrwlc 假日威龍陳",
@@ -1066,6 +1199,7 @@
     },
     {
       "id": "char_349_chiave",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "贾维",
       "alias": "jiawei guwei jw gw 賈維",
@@ -1074,6 +1208,7 @@
     },
     {
       "id": "char_187_ccheal",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "嘉维尔",
       "alias": "jiaweier jwe 嘉維爾",
@@ -1082,6 +1217,7 @@
     },
     {
       "id": "char_4116_blkkgt",
+      "prof": "WARRIOR",
       "subProf": "sword",
       "name": "锏",
       "alias": "jian j 鐧",
@@ -1090,6 +1226,7 @@
     },
     {
       "id": "char_4036_forcer",
+      "prof": "SPECIAL",
       "subProf": "pusher",
       "name": "见行者",
       "alias": "jianhangzhe jianxingzhe xianhangzhe xianxingzhe jhz jxz xhz xxz 見行者",
@@ -1098,6 +1235,7 @@
     },
     {
       "id": "char_260_durnar",
+      "prof": "TANK",
       "subProf": "artsprotector",
       "name": "坚雷",
       "alias": "jianlei jl 堅雷",
@@ -1106,6 +1244,7 @@
     },
     {
       "id": "char_1028_texas2",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "缄默德克萨斯",
       "alias": "jianmodekesasi jmdkss 緘默德克薩斯",
@@ -1114,6 +1253,7 @@
     },
     {
       "id": "char_199_yak",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "角峰",
       "alias": "jiaofeng juefeng jf 角峰",
@@ -1122,6 +1262,7 @@
     },
     {
       "id": "char_272_strong",
+      "prof": "SPECIAL",
       "subProf": "merchant",
       "name": "孑",
       "alias": "jie j 孑",
@@ -1130,6 +1271,7 @@
     },
     {
       "id": "char_347_jaksel",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "杰克",
       "alias": "jieke jk 傑克",
@@ -1138,6 +1280,7 @@
     },
     {
       "id": "char_235_jesica",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "杰西卡",
       "alias": "jiexika jiexiqia jxk jxq 傑西卡",
@@ -1146,6 +1289,7 @@
     },
     {
       "id": "char_4078_bdhkgt",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "截云",
       "alias": "jieyun jy 截雲",
@@ -1154,6 +1298,7 @@
     },
     {
       "id": "char_306_leizi",
+      "prof": "CASTER",
       "subProf": "chain",
       "name": "惊蛰",
       "alias": "jingzhe jz 驚蟄",
@@ -1162,6 +1307,7 @@
     },
     {
       "id": "token_10007_phatom_twin",
+      "prof": "TOKEN",
       "subProf": "executor",
       "name": "镜中虚影",
       "alias": "jingzhongxuying jzxy 鏡中虛影",
@@ -1170,6 +1316,7 @@
     },
     {
       "id": "token_10024_ebnhlz_rcube",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "旧日残影",
       "alias": "jiuricanying jrcy 舊日殘影",
@@ -1178,6 +1325,7 @@
     },
     {
       "id": "char_4019_ncdeer",
+      "prof": "SUPPORT",
       "subProf": "blessing",
       "name": "九色鹿",
       "alias": "jiuselu jsl 九色鹿",
@@ -1186,6 +1334,7 @@
     },
     {
       "id": "char_328_cammou",
+      "prof": "CASTER",
       "subProf": "funnel",
       "name": "卡达",
       "alias": "kada qiada kd qd 卡達",
@@ -1194,6 +1343,7 @@
     },
     {
       "id": "char_214_kafka",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "卡夫卡",
       "alias": "kafuka kafuqia qiafuka qiafuqia kfk kfq qfk qfq 卡夫卡",
@@ -1202,6 +1352,7 @@
     },
     {
       "id": "char_426_billro",
+      "prof": "CASTER",
       "subProf": "phalanx",
       "name": "卡涅利安",
       "alias": "kanielian qianielian knla qnla 卡涅利安",
@@ -1210,6 +1361,7 @@
     },
     {
       "id": "char_209_ardign",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "卡缇",
       "alias": "kati qiati kt qt 卡緹",
@@ -1218,6 +1370,7 @@
     },
     {
       "id": "char_003_kalts",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "凯尔希",
       "alias": "kaierxi kex 凱爾希",
@@ -1226,6 +1379,7 @@
     },
     {
       "id": "char_301_cutter",
+      "prof": "WARRIOR",
       "subProf": "sword",
       "name": "刻刀",
       "alias": "kedao kd 刻刀",
@@ -1234,6 +1388,7 @@
     },
     {
       "id": "char_2013_cerber",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "刻俄柏",
       "alias": "keebai keebo keb 刻俄柏",
@@ -1242,6 +1397,7 @@
     },
     {
       "id": "token_10023_windft_wrench",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "可靠电池",
       "alias": "kekaodianchi kkdc 可靠電池",
@@ -1250,6 +1406,7 @@
     },
     {
       "id": "char_124_kroos",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "克洛丝",
       "alias": "keluosi kls 克洛絲",
@@ -1258,6 +1415,7 @@
     },
     {
       "id": "char_201_moeshd",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "可颂",
       "alias": "kesong ks 可頌",
@@ -1266,6 +1424,7 @@
     },
     {
       "id": "char_101_sora",
+      "prof": "SUPPORT",
       "subProf": "bard",
       "name": "空",
       "alias": "kong k 空",
@@ -1274,6 +1433,7 @@
     },
     {
       "id": "char_282_catap",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "空爆",
       "alias": "kongbao kb 空爆",
@@ -1282,6 +1442,7 @@
     },
     {
       "id": "char_4015_spuria",
+      "prof": "SPECIAL",
       "subProf": "geek",
       "name": "空构",
       "alias": "konggou kg 空構",
@@ -1290,6 +1451,7 @@
     },
     {
       "id": "char_332_archet",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "空弦",
       "alias": "kongxian kx 空弦",
@@ -1298,6 +1460,7 @@
     },
     {
       "id": "char_405_absin",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "苦艾",
       "alias": "kuai kuyi ka ky 苦艾",
@@ -1306,6 +1469,7 @@
     },
     {
       "id": "char_250_phatom",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "傀影",
       "alias": "kuiying guiying ky gy 傀影",
@@ -1314,6 +1478,7 @@
     },
     {
       "id": "char_140_whitew",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "拉普兰德",
       "alias": "lapulande lpld 拉普蘭德",
@@ -1322,6 +1487,7 @@
     },
     {
       "id": "char_373_lionhd",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "莱恩哈特",
       "alias": "laienhate leht 萊恩哈特",
@@ -1330,6 +1496,7 @@
     },
     {
       "id": "char_4117_ray",
+      "prof": "SNIPER",
       "subProf": "hunter",
       "name": "莱伊",
       "alias": "laiyi ly 萊伊",
@@ -1338,6 +1505,7 @@
     },
     {
       "id": "char_129_bluep",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "蓝毒",
       "alias": "landu landai ld 藍毒",
@@ -1346,6 +1514,7 @@
     },
     {
       "id": "char_285_medic2",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "Lancet-2",
       "alias": "Lancet-2",
@@ -1354,6 +1523,7 @@
     },
     {
       "id": "token_10028_vigil_wolf",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "狼群",
       "alias": "langqun lq 狼群",
@@ -1362,6 +1532,7 @@
     },
     {
       "id": "char_322_lmlee",
+      "prof": "SPECIAL",
       "subProf": "merchant",
       "name": "老鲤",
       "alias": "laoli ll 老鯉",
@@ -1370,6 +1541,7 @@
     },
     {
       "id": "token_10033_ela_grzmot",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "雷鸣地雷",
       "alias": "leimingdilei leimingdelei lmdl 雷鳴地雷",
@@ -1378,6 +1550,7 @@
     },
     {
       "id": "char_107_liskam",
+      "prof": "TANK",
       "subProf": "shotprotector",
       "name": "雷蛇",
       "alias": "leishe leiyi ls ly 雷蛇",
@@ -1386,6 +1559,7 @@
     },
     {
       "id": "char_237_gravel",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "砾",
       "alias": "li l 礫",
@@ -1394,6 +1568,7 @@
     },
     {
       "id": "char_1036_fang2",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "历阵锐枪芬",
       "alias": "lizhenruiqiangfen lzrqf 曆陣銳槍芬",
@@ -1402,6 +1577,7 @@
     },
     {
       "id": "trap_079_allydonq",
+      "prof": "TOKEN",
       "subProf": "pioneer",
       "name": "猎潮的骑士",
       "alias": "liechaodeqishi liechaodiqishi lcdqs 獵潮的騎士",
@@ -1410,6 +1586,7 @@
     },
     {
       "id": "char_137_brownb",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "猎蜂",
       "alias": "liefeng lf 獵蜂",
@@ -1418,6 +1595,7 @@
     },
     {
       "id": "char_194_leto",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "烈夏",
       "alias": "liexia lx 烈夏",
@@ -1426,6 +1604,7 @@
     },
     {
       "id": "char_4080_lin",
+      "prof": "CASTER",
       "subProf": "phalanx",
       "name": "林",
       "alias": "lin l 林",
@@ -1434,6 +1613,7 @@
     },
     {
       "id": "char_115_headbr",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "凛冬",
       "alias": "lindong ld 凜冬",
@@ -1442,6 +1622,7 @@
     },
     {
       "id": "char_148_nearl",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "临光",
       "alias": "linguang lg 臨光",
@@ -1450,6 +1631,7 @@
     },
     {
       "id": "char_1033_swire2",
+      "prof": "SPECIAL",
       "subProf": "merchant",
       "name": "琳琅诗怀雅",
       "alias": "linlangshihuaiya llshy 琳琅詩懷雅",
@@ -1458,6 +1640,7 @@
     },
     {
       "id": "char_4102_threye",
+      "prof": "SUPPORT",
       "subProf": "ritualist",
       "name": "凛视",
       "alias": "linshi ls 凜視",
@@ -1466,6 +1649,7 @@
     },
     {
       "id": "char_2023_ling",
+      "prof": "SUPPORT",
       "subProf": "summoner",
       "name": "令",
       "alias": "ling l 令",
@@ -1474,6 +1658,7 @@
     },
     {
       "id": "char_358_lisa",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "铃兰",
       "alias": "linglan ll 鈴蘭",
@@ -1482,6 +1667,7 @@
     },
     {
       "id": "char_192_falco",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "翎羽",
       "alias": "lingyu ly 翎羽",
@@ -1490,6 +1676,7 @@
     },
     {
       "id": "char_206_gnosis",
+      "prof": "SUPPORT",
       "subProf": "underminer",
       "name": "灵知",
       "alias": "lingzhi lz 靈知",
@@ -1498,6 +1685,7 @@
     },
     {
       "id": "char_4042_lumen",
+      "prof": "MEDIC",
       "subProf": "healer",
       "name": "流明",
       "alias": "liuming lm 流明",
@@ -1506,6 +1694,7 @@
     },
     {
       "id": "char_126_shotst",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "流星",
       "alias": "liuxing lx 流星",
@@ -1514,6 +1703,7 @@
     },
     {
       "id": "token_10030_mlyss_wtrman",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "流形",
       "alias": "liuxing lx 流形",
@@ -1522,6 +1712,7 @@
     },
     {
       "id": "char_486_takila",
+      "prof": "WARRIOR",
       "subProf": "librator",
       "name": "龙舌兰",
       "alias": "longshelan lsl 龍舌蘭",
@@ -1530,6 +1721,7 @@
     },
     {
       "id": "token_10005_mgllan_drone3",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "龙腾.A",
       "alias": "longteng.A lt.A 龍騰.A",
@@ -1538,6 +1730,7 @@
     },
     {
       "id": "token_10005_mgllan_drone1",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "龙腾.F",
       "alias": "longteng.F lt.F 龍騰.F",
@@ -1546,6 +1739,7 @@
     },
     {
       "id": "token_10005_mgllan_drone2",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "龙腾.L",
       "alias": "longteng.L lt.L 龍騰.L",
@@ -1554,6 +1748,7 @@
     },
     {
       "id": "char_4130_luton",
+      "prof": "TANK",
       "subProf": "unyield",
       "name": "露托",
       "alias": "loutuo lutuo lt 露托",
@@ -1562,6 +1757,7 @@
     },
     {
       "id": "char_433_windft",
+      "prof": "SUPPORT",
       "subProf": "craftsman",
       "name": "掠风",
       "alias": "lvefeng lf 掠風",
@@ -1570,6 +1766,7 @@
     },
     {
       "id": "char_484_robrta",
+      "prof": "SUPPORT",
       "subProf": "craftsman",
       "name": "罗比菈塔",
       "alias": "luobilata lblt 羅比菈塔",
@@ -1578,6 +1775,7 @@
     },
     {
       "id": "char_451_robin",
+      "prof": "SPECIAL",
       "subProf": "traper",
       "name": "罗宾",
       "alias": "luobin lb 羅賓",
@@ -1586,6 +1784,7 @@
     },
     {
       "id": "char_4133_logos",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "逻各斯",
       "alias": "luogesi lgs 邏各斯",
@@ -1594,6 +1793,7 @@
     },
     {
       "id": "char_4040_rockr",
+      "prof": "CASTER",
       "subProf": "funnel",
       "name": "洛洛",
       "alias": "luoluo ll 洛洛",
@@ -1602,6 +1802,7 @@
     },
     {
       "id": "char_4067_lolxh",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "罗小黑",
       "alias": "luoxiaohei lxh 羅小黑",
@@ -1610,6 +1811,7 @@
     },
     {
       "id": "char_4064_mlynar",
+      "prof": "WARRIOR",
       "subProf": "librator",
       "name": "玛恩纳",
       "alias": "maenna men 瑪恩納",
@@ -1618,6 +1820,7 @@
     },
     {
       "id": "char_248_mgllan",
+      "prof": "SUPPORT",
       "subProf": "summoner",
       "name": "麦哲伦",
       "alias": "maizhelun mzl 麥哲倫",
@@ -1626,6 +1829,7 @@
     },
     {
       "id": "char_133_mm",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "梅",
       "alias": "mei m 梅",
@@ -1634,6 +1838,7 @@
     },
     {
       "id": "char_242_otter",
+      "prof": "SUPPORT",
       "subProf": "summoner",
       "name": "梅尔",
       "alias": "meier me 梅爾",
@@ -1642,6 +1847,7 @@
     },
     {
       "id": "char_4006_melnte",
+      "prof": "SNIPER",
       "subProf": "closerange",
       "name": "玫拉",
       "alias": "meila ml 玫拉",
@@ -1650,6 +1856,7 @@
     },
     {
       "id": "char_208_melan",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "玫兰莎",
       "alias": "meilansuo meilansha mls 玫蘭莎",
@@ -1658,6 +1865,7 @@
     },
     {
       "id": "char_391_rosmon",
+      "prof": "SNIPER",
       "subProf": "bombarder",
       "name": "迷迭香",
       "alias": "midiexiang mdx 迷迭香",
@@ -1666,6 +1874,7 @@
     },
     {
       "id": "char_122_beagle",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "米格鲁",
       "alias": "migelu mgl 米格魯",
@@ -1674,6 +1883,7 @@
     },
     {
       "id": "char_344_beewax",
+      "prof": "CASTER",
       "subProf": "phalanx",
       "name": "蜜蜡",
       "alias": "mila ml 蜜蠟",
@@ -1682,6 +1892,7 @@
     },
     {
       "id": "char_449_glider",
+      "prof": "MEDIC",
       "subProf": "wandermedic",
       "name": "蜜莓",
       "alias": "mimei mm 蜜莓",
@@ -1690,6 +1901,7 @@
     },
     {
       "id": "char_4017_puzzle",
+      "prof": "PIONEER",
       "subProf": "agent",
       "name": "谜图",
       "alias": "mitu mt 謎圖",
@@ -1698,6 +1910,7 @@
     },
     {
       "id": "token_10021_blkngt_hypnos",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "眠兽",
       "alias": "mianshou ms 眠獸",
@@ -1706,6 +1919,7 @@
     },
     {
       "id": "char_4071_peper",
+      "prof": "MEDIC",
       "subProf": "chainhealer",
       "name": "明椒",
       "alias": "mingjiao mj 明椒",
@@ -1714,6 +1928,7 @@
     },
     {
       "id": "char_154_morgan",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "摩根",
       "alias": "mogen magen mg 摩根",
@@ -1722,6 +1937,7 @@
     },
     {
       "id": "char_213_mostma",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "莫斯提马",
       "alias": "mositima mosidima musitima musidima mstm msdm 莫斯提馬",
@@ -1730,6 +1946,7 @@
     },
     {
       "id": "char_4134_cetsyr",
+      "prof": "SUPPORT",
       "subProf": "bard",
       "name": "魔王",
       "alias": "mowang mw 魔王",
@@ -1738,6 +1955,7 @@
     },
     {
       "id": "char_117_myrrh",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "末药",
       "alias": "moyao my 末藥",
@@ -1746,6 +1964,7 @@
     },
     {
       "id": "token_10002_kalts_mon3tr",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "Mon3tr",
       "alias": "Mon3tr",
@@ -1754,6 +1973,7 @@
     },
     {
       "id": "char_249_mlyss",
+      "prof": "PIONEER",
       "subProf": "tactician",
       "name": "缪尔赛思",
       "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思",
@@ -1762,6 +1982,7 @@
     },
     {
       "id": "char_185_frncat",
+      "prof": "WARRIOR",
       "subProf": "artsfghter",
       "name": "慕斯",
       "alias": "musi ms 慕斯",
@@ -1770,6 +1991,7 @@
     },
     {
       "id": "char_103_angel",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "能天使",
       "alias": "nengtianshi naitianshi nts 能天使",
@@ -1778,6 +2000,7 @@
     },
     {
       "id": "char_4146_nymph",
+      "prof": "CASTER",
       "subProf": "primcaster",
       "name": "妮芙",
       "alias": "nifu nf 妮芙",
@@ -1786,6 +2009,7 @@
     },
     {
       "id": "char_311_mudrok",
+      "prof": "TANK",
       "subProf": "unyield",
       "name": "泥岩",
       "alias": "niyan ny 泥岩",
@@ -1794,6 +2018,7 @@
     },
     {
       "id": "char_2014_nian",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "年",
       "alias": "nian n 年",
@@ -1802,6 +2027,7 @@
     },
     {
       "id": "char_485_pallas",
+      "prof": "WARRIOR",
       "subProf": "instructor",
       "name": "帕拉斯",
       "alias": "palasi pls 帕拉斯",
@@ -1810,6 +2036,7 @@
     },
     {
       "id": "token_10014_bstalk_crab",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "磐蟹护卫队",
       "alias": "panxiehuweidui pxhwd 磐蟹護衛隊 panxiehuweizhui pxhwz",
@@ -1818,6 +2045,7 @@
     },
     {
       "id": "char_381_bubble",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "泡泡",
       "alias": "paopao pp 泡泡",
@@ -1826,6 +2054,7 @@
     },
     {
       "id": "char_281_popka",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "泡普卡",
       "alias": "paopuka paopuqia ppk ppq 泡普卡",
@@ -1834,6 +2063,7 @@
     },
     {
       "id": "char_4136_phonor",
+      "prof": "SUPPORT",
       "subProf": "ritualist",
       "name": "PhonoR-0",
       "alias": "PhonoR-0",
@@ -1842,6 +2072,7 @@
     },
     {
       "id": "char_509_acast",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "Pith",
       "alias": "Pith",
@@ -1850,6 +2081,7 @@
     },
     {
       "id": "char_145_prove",
+      "prof": "SNIPER",
       "subProf": "closerange",
       "name": "普罗旺斯",
       "alias": "puluowangsi plws 普羅旺斯",
@@ -1858,6 +2090,7 @@
     },
     {
       "id": "char_478_kirara",
+      "prof": "SPECIAL",
       "subProf": "stalker",
       "name": "绮良",
       "alias": "qiliang ql 綺良",
@@ -1866,6 +2099,7 @@
     },
     {
       "id": "char_1029_yato2",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "麒麟R夜刀",
       "alias": "qilinRyedao qlRyd 麒麟R夜刀",
@@ -1874,6 +2108,7 @@
     },
     {
       "id": "char_4062_totter",
+      "prof": "SNIPER",
       "subProf": "siegesniper",
       "name": "铅踝",
       "alias": "qianhuai yanhuai qh yh 鉛踝",
@@ -1882,6 +2117,7 @@
     },
     {
       "id": "char_479_sleach",
+      "prof": "PIONEER",
       "subProf": "bearer",
       "name": "琴柳",
       "alias": "qinliu ql 琴柳",
@@ -1890,6 +2126,7 @@
     },
     {
       "id": "char_149_scave",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "清道夫",
       "alias": "qingdaofu qdf 清道夫",
@@ -1898,6 +2135,7 @@
     },
     {
       "id": "char_385_finlpp",
+      "prof": "MEDIC",
       "subProf": "healer",
       "name": "清流",
       "alias": "qingliu ql 清流",
@@ -1906,6 +2144,7 @@
     },
     {
       "id": "char_488_buildr",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "青枳",
       "alias": "qingzhi qz 青枳",
@@ -1914,6 +2153,7 @@
     },
     {
       "id": "token_10018_robrta_mach",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "全自动造型仪",
       "alias": "quanzidongzaoxingyi qzdzxy 全自動造型儀",
@@ -1922,6 +2162,7 @@
     },
     {
       "id": "char_363_toddi",
+      "prof": "SNIPER",
       "subProf": "siegesniper",
       "name": "熔泉",
       "alias": "rongquan rq 熔泉",
@@ -1930,6 +2171,7 @@
     },
     {
       "id": "char_202_demkni",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "塞雷娅",
       "alias": "saileiya seleiya sly 塞雷婭",
@@ -1938,6 +2180,7 @@
     },
     {
       "id": "char_473_mberry",
+      "prof": "MEDIC",
       "subProf": "wandermedic",
       "name": "桑葚",
       "alias": "sangshen ss 桑葚",
@@ -1946,6 +2189,7 @@
     },
     {
       "id": "char_416_zumama",
+      "prof": "TANK",
       "subProf": "duelist",
       "name": "森蚺",
       "alias": "senran sr 森蚺",
@@ -1954,6 +2198,7 @@
     },
     {
       "id": "token_10034_ray_sndbst",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "沙地兽",
       "alias": "shadishou shadeshou sds 沙地獸",
@@ -1962,6 +2207,7 @@
     },
     {
       "id": "token_10011_beewax_oblisk",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "沙之碑",
       "alias": "shazhibei szb 沙之碑",
@@ -1970,6 +2216,7 @@
     },
     {
       "id": "char_264_f12yin",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "山",
       "alias": "shan s 山",
@@ -1978,6 +2225,7 @@
     },
     {
       "id": "char_457_blitz",
+      "prof": "TANK",
       "subProf": "shotprotector",
       "name": "闪击",
       "alias": "shanji sj 閃擊",
@@ -1986,6 +2234,7 @@
     },
     {
       "id": "char_147_shining",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "闪灵",
       "alias": "shanling sl 閃靈",
@@ -1994,6 +2243,7 @@
     },
     {
       "id": "char_508_aguard",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "Sharp",
       "alias": "Sharp",
@@ -2002,6 +2252,7 @@
     },
     {
       "id": "char_379_sesa",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "慑砂",
       "alias": "shesha ss 懾砂",
@@ -2010,6 +2261,7 @@
     },
     {
       "id": "char_150_snakek",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "蛇屠箱",
       "alias": "shetuxiang yituxiang stx ytx 蛇屠箱",
@@ -2018,6 +2270,7 @@
     },
     {
       "id": "char_469_indigo",
+      "prof": "CASTER",
       "subProf": "mystic",
       "name": "深靛",
       "alias": "shendian sd 深靛",
@@ -2026,6 +2279,7 @@
     },
     {
       "id": "char_110_deepcl",
+      "prof": "SUPPORT",
       "subProf": "summoner",
       "name": "深海色",
       "alias": "shenhaise shs 深海色",
@@ -2034,6 +2288,7 @@
     },
     {
       "id": "char_4109_baslin",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "深律",
       "alias": "shenlv sl 深律",
@@ -2042,6 +2297,7 @@
     },
     {
       "id": "char_4137_udflow",
+      "prof": "TANK",
       "subProf": "shotprotector",
       "name": "深巡",
       "alias": "shenxun sx 深巡",
@@ -2050,6 +2306,7 @@
     },
     {
       "id": "char_1032_excu2",
+      "prof": "WARRIOR",
       "subProf": "reaper",
       "name": "圣约送葬人",
       "alias": "shengyuesongzangren shengyaosongzangren syszr 聖約送葬人",
@@ -2058,6 +2315,7 @@
     },
     {
       "id": "char_210_stward",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "史都华德",
       "alias": "shiduhuade shidouhuade sdhd 史都華德",
@@ -2066,6 +2324,7 @@
     },
     {
       "id": "char_350_surtr",
+      "prof": "WARRIOR",
       "subProf": "artsfghter",
       "name": "史尔特尔",
       "alias": "shierteer sete 史爾特爾",
@@ -2074,6 +2333,7 @@
     },
     {
       "id": "char_308_swire",
+      "prof": "WARRIOR",
       "subProf": "instructor",
       "name": "诗怀雅",
       "alias": "shihuaiya shy 詩懷雅",
@@ -2082,6 +2342,7 @@
     },
     {
       "id": "char_378_asbest",
+      "prof": "TANK",
       "subProf": "artsprotector",
       "name": "石棉",
       "alias": "shimian danmian sm dm 石棉",
@@ -2090,6 +2351,7 @@
     },
     {
       "id": "char_489_serum",
+      "prof": "CASTER",
       "subProf": "blastcaster",
       "name": "蚀清",
       "alias": "shiqing sq 蝕清",
@@ -2098,6 +2360,7 @@
     },
     {
       "id": "char_241_panda",
+      "prof": "SPECIAL",
       "subProf": "pusher",
       "name": "食铁兽",
       "alias": "shitieshou sitieshou yitieshou sts yts 食鐵獸",
@@ -2106,6 +2369,7 @@
     },
     {
       "id": "char_215_mantic",
+      "prof": "SPECIAL",
       "subProf": "stalker",
       "name": "狮蝎",
       "alias": "shixie sx 獅蠍",
@@ -2114,6 +2378,7 @@
     },
     {
       "id": "char_4063_quartz",
+      "prof": "WARRIOR",
       "subProf": "crusher",
       "name": "石英",
       "alias": "shiying danying sy dy 石英",
@@ -2122,6 +2387,7 @@
     },
     {
       "id": "char_158_milu",
+      "prof": "SNIPER",
       "subProf": "longrange",
       "name": "守林人",
       "alias": "shoulinren slr 守林人",
@@ -2130,6 +2396,7 @@
     },
     {
       "id": "char_2025_shu",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "黍",
       "alias": "shu s 黍",
@@ -2138,6 +2405,7 @@
     },
     {
       "id": "char_458_rfrost",
+      "prof": "SPECIAL",
       "subProf": "traper",
       "name": "霜华",
       "alias": "shuanghua sh 霜華",
@@ -2146,6 +2414,7 @@
     },
     {
       "id": "char_193_frostl",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "霜叶",
       "alias": "shuangye shuangxie sy sx 霜葉",
@@ -2154,6 +2423,7 @@
     },
     {
       "id": "char_4124_iana",
+      "prof": "SPECIAL",
       "subProf": "dollkeeper",
       "name": "双月",
       "alias": "shuangyue sy 雙月",
@@ -2162,6 +2432,7 @@
     },
     {
       "id": "char_437_mizuki",
+      "prof": "SPECIAL",
       "subProf": "stalker",
       "name": "水月",
       "alias": "shuiyue sy 水月",
@@ -2170,6 +2441,7 @@
     },
     {
       "id": "char_263_skadi",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "斯卡蒂",
       "alias": "sikadi siqiadi skd sqd 斯卡蒂",
@@ -2178,6 +2450,7 @@
     },
     {
       "id": "token_10017_skadi2_dedant",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "斯卡蒂的海嗣",
       "alias": "sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs 斯卡蒂的海嗣",
@@ -2186,6 +2459,7 @@
     },
     {
       "id": "char_427_vigil",
+      "prof": "PIONEER",
       "subProf": "tactician",
       "name": "伺夜",
       "alias": "siye ciye sy cy 伺夜",
@@ -2194,6 +2468,7 @@
     },
     {
       "id": "char_365_aprl",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "四月",
       "alias": "siyue sy 四月",
@@ -2202,6 +2477,7 @@
     },
     {
       "id": "char_440_pinecn",
+      "prof": "SNIPER",
       "subProf": "reaperrange",
       "name": "松果",
       "alias": "songguo sg 鬆果",
@@ -2210,6 +2486,7 @@
     },
     {
       "id": "char_279_excu",
+      "prof": "SNIPER",
       "subProf": "reaperrange",
       "name": "送葬人",
       "alias": "songzangren szr 送葬人",
@@ -2218,6 +2495,7 @@
     },
     {
       "id": "char_511_asnipe",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "Stormeye",
       "alias": "Stormeye",
@@ -2226,6 +2504,7 @@
     },
     {
       "id": "char_298_susuro",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "苏苏洛",
       "alias": "susuluo ssl 蘇蘇洛",
@@ -2234,6 +2513,7 @@
     },
     {
       "id": "char_245_cello",
+      "prof": "SUPPORT",
       "subProf": "ritualist",
       "name": "塑心",
       "alias": "suxin sx 塑心",
@@ -2242,6 +2522,7 @@
     },
     {
       "id": "char_366_acdrop",
+      "prof": "SNIPER",
       "subProf": "closerange",
       "name": "酸糖",
       "alias": "suantang st 酸糖",
@@ -2250,6 +2531,7 @@
     },
     {
       "id": "char_415_flint",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "燧石",
       "alias": "suishi suidan ss sd 燧石",
@@ -2258,6 +2540,7 @@
     },
     {
       "id": "char_4077_palico",
+      "prof": "SNIPER",
       "subProf": "bombarder",
       "name": "泰拉大陆调查团",
       "alias": "tailadalutiaochatuan tailadalutiaozhatuan tailadaludiaochatuan tailadaludiaozhatuan tailadaluzhouchatuan tailadaluzhouzhatuan tailadailutiaochatuan tailadailutiaozhatuan tailadailudiaochatuan tailadailudiaozhatuan tailadailuzhouchatuan tailadailuzhouzhatuan tailatailutiaochatuan tailatailutiaozhatuan tailatailudiaochatuan tailatailudiaozhatuan tailatailuzhouchatuan tailatailuzhouzhatuan tldltct tldltzt tldldct tldldzt tldlzct tldlzzt tltltct tltltzt tltldct tltldzt tltlzct tltlzzt 泰拉大陸調查團",
@@ -2266,6 +2549,7 @@
     },
     {
       "id": "char_151_myrtle",
+      "prof": "PIONEER",
       "subProf": "bearer",
       "name": "桃金娘",
       "alias": "taojinniang tjn 桃金娘",
@@ -2274,6 +2558,7 @@
     },
     {
       "id": "char_411_tomimi",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "特米米",
       "alias": "temimi tmm 特米米",
@@ -2282,6 +2567,7 @@
     },
     {
       "id": "char_376_therex",
+      "prof": "SPECIAL",
       "subProf": "executor",
       "name": "THRM-EX",
       "alias": "THRM-EX",
@@ -2290,6 +2576,7 @@
     },
     {
       "id": "char_2012_typhon",
+      "prof": "SNIPER",
       "subProf": "siegesniper",
       "name": "提丰",
       "alias": "tifeng difeng tf df 提豐",
@@ -2298,6 +2585,7 @@
     },
     {
       "id": "char_166_skfire",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "天火",
       "alias": "tianhuo th 天火",
@@ -2306,6 +2594,7 @@
     },
     {
       "id": "char_181_flower",
+      "prof": "MEDIC",
       "subProf": "ringhealer",
       "name": "调香师",
       "alias": "tiaoxiangshi diaoxiangshi zhouxiangshi txs dxs zxs 調香師",
@@ -2314,6 +2603,7 @@
     },
     {
       "id": "token_10027_ironmn_pile3",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "铁钳号·原型机",
       "alias": "tieqianhao·yuanxingji tqh·yxj 鐵鉗號·原型機",
@@ -2322,6 +2612,7 @@
     },
     {
       "id": "char_510_amedic",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "Touch",
       "alias": "Touch",
@@ -2330,6 +2621,7 @@
     },
     {
       "id": "char_402_tuye",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "图耶",
       "alias": "tuye ty 圖耶",
@@ -2338,6 +2630,7 @@
     },
     {
       "id": "char_112_siege",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "推进之王",
       "alias": "tuijinzhiwang tjzw 推進之王",
@@ -2346,6 +2639,7 @@
     },
     {
       "id": "char_4091_ulika",
+      "prof": "SUPPORT",
       "subProf": "bard",
       "name": "U-Official",
       "alias": "U-Official",
@@ -2354,6 +2648,7 @@
     },
     {
       "id": "char_113_cqbw",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "W",
       "alias": "W",
@@ -2362,6 +2657,7 @@
     },
     {
       "id": "char_4119_wanqin",
+      "prof": "PIONEER",
       "subProf": "bearer",
       "name": "万顷",
       "alias": "wanqing moqing wq mq 萬頃",
@@ -2370,6 +2666,7 @@
     },
     {
       "id": "char_261_sddrag",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "苇草",
       "alias": "weicao wc 葦草",
@@ -2378,6 +2675,7 @@
     },
     {
       "id": "char_4107_vrdant",
+      "prof": "SPECIAL",
       "subProf": "dollkeeper",
       "name": "维荻",
       "alias": "weidi wd 維荻",
@@ -2386,6 +2684,7 @@
     },
     {
       "id": "char_275_breeze",
+      "prof": "MEDIC",
       "subProf": "ringhealer",
       "name": "微风",
       "alias": "weifeng wf 微風",
@@ -2394,6 +2693,7 @@
     },
     {
       "id": "char_1035_wisdel",
+      "prof": "SNIPER",
       "subProf": "bombarder",
       "name": "维什戴尔",
       "alias": "weishidaier weishendaier wsde 維什戴爾",
@@ -2402,6 +2702,7 @@
     },
     {
       "id": "char_4098_vvana",
+      "prof": "WARRIOR",
       "subProf": "artsfghter",
       "name": "薇薇安娜",
       "alias": "weiweianna weiweiannuo wwan 薇薇安娜",
@@ -2410,6 +2711,7 @@
     },
     {
       "id": "char_400_weedy",
+      "prof": "SPECIAL",
       "subProf": "pusher",
       "name": "温蒂",
       "alias": "wendi wd 溫蒂",
@@ -2418,6 +2720,7 @@
     },
     {
       "id": "char_4081_warmy",
+      "prof": "CASTER",
       "subProf": "primcaster",
       "name": "温米",
       "alias": "wenmi wm 溫米",
@@ -2426,6 +2729,7 @@
     },
     {
       "id": "char_4145_ulpia",
+      "prof": "WARRIOR",
       "subProf": "crusher",
       "name": "乌尔比安",
       "alias": "wuerbian weba 烏爾比安",
@@ -2434,6 +2738,7 @@
     },
     {
       "id": "char_254_vodfox",
+      "prof": "SUPPORT",
       "subProf": "underminer",
       "name": "巫恋",
       "alias": "wulian wl 巫戀",
@@ -2442,6 +2747,7 @@
     },
     {
       "id": "char_455_nothin",
+      "prof": "SPECIAL",
       "subProf": "merchant",
       "name": "乌有",
       "alias": "wuyou wy 烏有",
@@ -2450,6 +2756,7 @@
     },
     {
       "id": "char_2015_dusk",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "夕",
       "alias": "xi x 夕",
@@ -2458,6 +2765,7 @@
     },
     {
       "id": "char_348_ceylon",
+      "prof": "MEDIC",
       "subProf": "healer",
       "name": "锡兰",
       "alias": "xilan xl 錫蘭",
@@ -2474,6 +2782,7 @@
     },
     {
       "id": "char_336_folivo",
+      "prof": "SUPPORT",
       "subProf": "summoner",
       "name": "稀音",
       "alias": "xiyin xy 稀音",
@@ -2482,6 +2791,7 @@
     },
     {
       "id": "char_423_blemsh",
+      "prof": "TANK",
       "subProf": "guardian",
       "name": "瑕光",
       "alias": "xiaguang xg 瑕光",
@@ -2490,6 +2800,7 @@
     },
     {
       "id": "char_492_quercu",
+      "prof": "SUPPORT",
       "subProf": "blessing",
       "name": "夏栎",
       "alias": "xiali xiayue xl xy 夏櫟",
@@ -2498,6 +2809,7 @@
     },
     {
       "id": "token_10031_swire2_gdtrap",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "香槟炸弹",
       "alias": "xiangbinzhadan xiangbinzhatan xiangbingzhadan xiangbingzhatan xbzd xbzt 香檳炸彈",
@@ -2506,6 +2818,7 @@
     },
     {
       "id": "char_240_wyvern",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "香草",
       "alias": "xiangcao xc 香草",
@@ -2514,6 +2827,7 @@
     },
     {
       "id": "char_497_ctable",
+      "prof": "PIONEER",
       "subProf": "agent",
       "name": "晓歌",
       "alias": "xiaoge xg 曉歌",
@@ -2522,6 +2836,7 @@
     },
     {
       "id": "char_4122_grabds",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "小满",
       "alias": "xiaoman xm 小滿",
@@ -2530,6 +2845,7 @@
     },
     {
       "id": "char_274_astesi",
+      "prof": "WARRIOR",
       "subProf": "artsfghter",
       "name": "星极",
       "alias": "xingji xj 星極",
@@ -2538,6 +2854,7 @@
     },
     {
       "id": "char_4105_almond",
+      "prof": "SPECIAL",
       "subProf": "hookmaster",
       "name": "杏仁",
       "alias": "xingren xr 杏仁",
@@ -2546,6 +2863,7 @@
     },
     {
       "id": "char_136_hsguma",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "星熊",
       "alias": "xingxiong xx 星熊",
@@ -2554,6 +2872,7 @@
     },
     {
       "id": "char_135_halo",
+      "prof": "CASTER",
       "subProf": "chain",
       "name": "星源",
       "alias": "xingyuan xy 星源",
@@ -2562,6 +2881,7 @@
     },
     {
       "id": "char_491_humus",
+      "prof": "WARRIOR",
       "subProf": "reaper",
       "name": "休谟斯",
       "alias": "xiumosi xumosi xms 休謨斯",
@@ -2570,6 +2890,7 @@
     },
     {
       "id": "char_436_whispr",
+      "prof": "MEDIC",
       "subProf": "healer",
       "name": "絮雨",
       "alias": "xuyu xy 絮雨",
@@ -2578,6 +2899,7 @@
     },
     {
       "id": "char_466_qanik",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "雪绒",
       "alias": "xuerong xr 雪絨",
@@ -2586,6 +2908,7 @@
     },
     {
       "id": "char_383_snsant",
+      "prof": "SPECIAL",
       "subProf": "hookmaster",
       "name": "雪雉",
       "alias": "xuezhi xz 雪雉",
@@ -2594,6 +2917,7 @@
     },
     {
       "id": "char_503_rang",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "巡林者",
       "alias": "xunlinzhe xlz 巡林者",
@@ -2602,6 +2926,7 @@
     },
     {
       "id": "char_198_blackd",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "讯使",
       "alias": "xunshi xs 訊使",
@@ -2610,6 +2935,7 @@
     },
     {
       "id": "char_173_slchan",
+      "prof": "SPECIAL",
       "subProf": "hookmaster",
       "name": "崖心",
       "alias": "yaxin yx 崖心",
@@ -2618,6 +2944,7 @@
     },
     {
       "id": "char_345_folnic",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "亚叶",
       "alias": "yaye yaxie yy yx 亞葉",
@@ -2626,6 +2953,7 @@
     },
     {
       "id": "char_337_utage",
+      "prof": "WARRIOR",
       "subProf": "musha",
       "name": "宴",
       "alias": "yan y 宴",
@@ -2634,6 +2962,7 @@
     },
     {
       "id": "char_131_flameb",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "炎客",
       "alias": "yanke yk 炎客",
@@ -2642,6 +2971,7 @@
     },
     {
       "id": "char_121_lava",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "炎熔",
       "alias": "yanrong yr 炎熔",
@@ -2650,6 +2980,7 @@
     },
     {
       "id": "char_420_flamtl",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "焰尾",
       "alias": "yanwei yanyi yw yy 焰尾",
@@ -2658,6 +2989,7 @@
     },
     {
       "id": "char_1020_reed2",
+      "prof": "MEDIC",
       "subProf": "incantationmedic",
       "name": "焰影苇草",
       "alias": "yanyingweicao yywc 焰影葦草",
@@ -2666,6 +2998,7 @@
     },
     {
       "id": "char_1011_lava2",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "炎狱炎熔",
       "alias": "yanyuyanrong yyyr 炎獄炎熔",
@@ -2674,6 +3007,7 @@
     },
     {
       "id": "char_464_cement",
+      "prof": "TANK",
       "subProf": "duelist",
       "name": "洋灰",
       "alias": "yanghui yh 洋灰",
@@ -2682,6 +3016,7 @@
     },
     {
       "id": "char_1014_nearl2",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "耀骑士临光",
       "alias": "yaoqishilinguang yqslg 耀騎士臨光",
@@ -2690,6 +3025,7 @@
     },
     {
       "id": "char_476_blkngt",
+      "prof": "PIONEER",
       "subProf": "tactician",
       "name": "夜半",
       "alias": "yeban yb 夜半",
@@ -2698,6 +3034,7 @@
     },
     {
       "id": "char_502_nblade",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "夜刀",
       "alias": "yedao yd 夜刀",
@@ -2706,6 +3043,7 @@
     },
     {
       "id": "token_10029_slent2_protrb",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "夜灯",
       "alias": "yedeng yd 夜燈",
@@ -2714,6 +3052,7 @@
     },
     {
       "id": "char_4013_kjera",
+      "prof": "CASTER",
       "subProf": "funnel",
       "name": "耶拉",
       "alias": "yela yl 耶拉",
@@ -2722,6 +3061,7 @@
     },
     {
       "id": "char_164_nightm",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "夜魔",
       "alias": "yemo ym 夜魔",
@@ -2730,6 +3070,7 @@
     },
     {
       "id": "char_141_nights",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "夜烟",
       "alias": "yeyan yy 夜煙",
@@ -2738,6 +3079,7 @@
     },
     {
       "id": "char_179_cgbird",
+      "prof": "MEDIC",
       "subProf": "ringhealer",
       "name": "夜莺",
       "alias": "yeying yy 夜鶯",
@@ -2746,6 +3088,7 @@
     },
     {
       "id": "char_496_wildmn",
+      "prof": "PIONEER",
       "subProf": "charger",
       "name": "野鬃",
       "alias": "yezong yz 野鬃",
@@ -2754,6 +3097,7 @@
     },
     {
       "id": "token_10010_folivo_car",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "移动摄影器",
       "alias": "yidongsheyingqi yidongnieyingqi ydsyq ydnyq 移動攝影器",
@@ -2762,6 +3106,7 @@
     },
     {
       "id": "char_134_ifrit",
+      "prof": "CASTER",
       "subProf": "blastcaster",
       "name": "伊芙利特",
       "alias": "yifulite yflt 伊芙利特",
@@ -2770,6 +3115,7 @@
     },
     {
       "id": "char_472_pasngr",
+      "prof": "CASTER",
       "subProf": "chain",
       "name": "异客",
       "alias": "yike yk 異客",
@@ -2778,6 +3124,7 @@
     },
     {
       "id": "token_10000_silent_healrb",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "医疗探机",
       "alias": "yiliaotanji yltj 醫療探機",
@@ -2786,6 +3133,7 @@
     },
     {
       "id": "char_4087_ines",
+      "prof": "PIONEER",
       "subProf": "agent",
       "name": "伊内丝",
       "alias": "yineisi yinasi yns 伊內絲",
@@ -2794,6 +3142,7 @@
     },
     {
       "id": "char_355_ethan",
+      "prof": "SPECIAL",
       "subProf": "stalker",
       "name": "伊桑",
       "alias": "yisang ys 伊桑",
@@ -2802,6 +3151,7 @@
     },
     {
       "id": "char_4125_rdoc",
+      "prof": "WARRIOR",
       "subProf": "instructor",
       "name": "医生",
       "alias": "yisheng ys 醫生",
@@ -2810,6 +3160,7 @@
     },
     {
       "id": "char_172_svrash",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "银灰",
       "alias": "yinhui yh 銀灰",
@@ -2818,6 +3169,7 @@
     },
     {
       "id": "char_155_tiger",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "因陀罗",
       "alias": "yintuoluo ytl 因陀羅",
@@ -2826,6 +3178,7 @@
     },
     {
       "id": "char_498_inside",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "隐现",
       "alias": "yinxian yx 隱現",
@@ -2834,6 +3187,7 @@
     },
     {
       "id": "token_10016_rfrost_mine",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "迎宾踏垫",
       "alias": "yingbintadian ybtd 迎賓踏墊",
@@ -2842,6 +3196,7 @@
     },
     {
       "id": "token_10037_mitm_trshrb",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "樱桃三号",
       "alias": "yingtaosanhao ytsh 櫻桃三號",
@@ -2850,6 +3205,7 @@
     },
     {
       "id": "char_143_ghost",
+      "prof": "WARRIOR",
       "subProf": "centurion",
       "name": "幽灵鲨",
       "alias": "youlingsha yls 幽靈鯊",
@@ -2858,6 +3214,7 @@
     },
     {
       "id": "char_506_rmedic",
+      "prof": "MEDIC",
       "subProf": "physician",
       "name": "预备干员-后勤",
       "alias": "yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq 預備幹員-後勤",
@@ -2866,6 +3223,7 @@
     },
     {
       "id": "char_504_rguard",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "预备干员-近战",
       "alias": "yubeiganyuan-jinzhan yubeiganyun-jinzhan ybgy-jz 預備幹員-近戰",
@@ -2874,6 +3232,7 @@
     },
     {
       "id": "char_507_rsnipe",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "预备干员-狙击",
       "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
@@ -2882,6 +3241,7 @@
     },
     {
       "id": "char_505_rcast",
+      "prof": "CASTER",
       "subProf": "corecaster",
       "name": "预备干员-术师",
       "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
@@ -2890,6 +3250,7 @@
     },
     {
       "id": "char_514_rdfend",
+      "prof": "TANK",
       "subProf": "protector",
       "name": "预备干员-重装",
       "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
@@ -2898,6 +3259,7 @@
     },
     {
       "id": "char_513_apionr",
+      "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "郁金香",
       "alias": "yujinxiang yjx 鬱金香",
@@ -2906,6 +3268,7 @@
     },
     {
       "id": "char_421_crow",
+      "prof": "WARRIOR",
       "subProf": "reaper",
       "name": "羽毛笔",
       "alias": "yumaobi ymb 羽毛筆",
@@ -2914,6 +3277,7 @@
     },
     {
       "id": "char_109_fmout",
+      "prof": "CASTER",
       "subProf": "splashcaster",
       "name": "远山",
       "alias": "yuanshan ys 遠山",
@@ -2922,6 +3286,7 @@
     },
     {
       "id": "char_430_fartth",
+      "prof": "SNIPER",
       "subProf": "longrange",
       "name": "远牙",
       "alias": "yuanya yy 遠牙",
@@ -2930,6 +3295,7 @@
     },
     {
       "id": "char_343_tknogi",
+      "prof": "SUPPORT",
       "subProf": "blessing",
       "name": "月禾",
       "alias": "yuehe yh 月禾",
@@ -2938,6 +3304,7 @@
     },
     {
       "id": "char_283_midn",
+      "prof": "WARRIOR",
       "subProf": "lord",
       "name": "月见夜",
       "alias": "yuejianye yuexianye yjy yxy 月見夜",
@@ -2946,6 +3313,7 @@
     },
     {
       "id": "char_4100_caper",
+      "prof": "SNIPER",
       "subProf": "loopshooter",
       "name": "跃跃",
       "alias": "yueyue yy 躍躍",
@@ -2954,6 +3322,7 @@
     },
     {
       "id": "char_219_meteo",
+      "prof": "SNIPER",
       "subProf": "aoesniper",
       "name": "陨星",
       "alias": "yunxing yx 隕星",
@@ -2962,6 +3331,7 @@
     },
     {
       "id": "char_197_poca",
+      "prof": "SNIPER",
       "subProf": "siegesniper",
       "name": "早露",
       "alias": "zaolou zaolu zl 早露",
@@ -2970,6 +3340,7 @@
     },
     {
       "id": "char_459_tachak",
+      "prof": "WARRIOR",
       "subProf": "sword",
       "name": "战车",
       "alias": "zhanche zhanju zc zj 戰車",
@@ -2978,6 +3349,7 @@
     },
     {
       "id": "char_499_kaitou",
+      "prof": "CASTER",
       "subProf": "primcaster",
       "name": "折光",
       "alias": "zheguang sheguang zg sg 折光",
@@ -2986,6 +3358,7 @@
     },
     {
       "id": "char_195_glassb",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "真理",
       "alias": "zhenli zl 真理",
@@ -2994,6 +3367,7 @@
     },
     {
       "id": "char_4000_jnight",
+      "prof": "SNIPER",
       "subProf": "fastshot",
       "name": "正义骑士号",
       "alias": "zhengyiqishihao zyqsh 正義騎士號",
@@ -3002,6 +3376,7 @@
     },
     {
       "id": "char_4054_malist",
+      "prof": "CASTER",
       "subProf": "funnel",
       "name": "至简",
       "alias": "zhijian zj 至簡",
@@ -3010,6 +3385,7 @@
     },
     {
       "id": "token_10022_kazema_shadow",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "纸偶",
       "alias": "zhiou zo 紙偶",
@@ -3018,6 +3394,7 @@
     },
     {
       "id": "char_4011_lessng",
+      "prof": "WARRIOR",
       "subProf": "fearless",
       "name": "止颂",
       "alias": "zhisong zs 止頌",
@@ -3026,6 +3403,7 @@
     },
     {
       "id": "char_2024_chyue",
+      "prof": "WARRIOR",
       "subProf": "fighter",
       "name": "重岳",
       "alias": "zhongyue chongyue zy cy 重嶽",
@@ -3034,6 +3412,7 @@
     },
     {
       "id": "char_333_sidero",
+      "prof": "WARRIOR",
       "subProf": "artsfghter",
       "name": "铸铁",
       "alias": "zhutie zt 鑄鐵",
@@ -3042,6 +3421,7 @@
     },
     {
       "id": "char_1024_hbisc2",
+      "prof": "MEDIC",
       "subProf": "incantationmedic",
       "name": "濯尘芙蓉",
       "alias": "zhuochenfurong zhaochenfurong zcfr 濯塵芙蓉",
@@ -3050,6 +3430,7 @@
     },
     {
       "id": "char_1012_skadi2",
+      "prof": "SUPPORT",
       "subProf": "bard",
       "name": "浊心斯卡蒂",
       "alias": "zhuoxinsikadi zhuoxinsiqiadi zxskd zxsqd 濁心斯卡蒂",
@@ -3058,6 +3439,7 @@
     },
     {
       "id": "char_278_orchid",
+      "prof": "SUPPORT",
       "subProf": "slower",
       "name": "梓兰",
       "alias": "zilan zl 梓蘭",
@@ -3066,6 +3448,7 @@
     },
     {
       "id": "char_4014_lunacu",
+      "prof": "SNIPER",
       "subProf": "longrange",
       "name": "子月",
       "alias": "ziyue zy 子月",
@@ -3074,6 +3457,7 @@
     },
     {
       "id": "token_10006_vodfox_doll",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "诅咒娃娃",
       "alias": "zuzhouwawa zzww 詛咒娃娃",
@@ -3082,6 +3466,7 @@
     },
     {
       "id": "char_4121_zuole",
+      "prof": "WARRIOR",
       "subProf": "musha",
       "name": "左乐",
       "alias": "zuole zuoyue zuoyao zuolao zl zy 左樂",
