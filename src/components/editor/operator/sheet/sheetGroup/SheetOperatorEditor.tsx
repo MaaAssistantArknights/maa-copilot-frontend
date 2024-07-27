@@ -137,7 +137,6 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
       }
     })
 
-    console.log(newOpers)
     submitGroupInSheet({
       ...existedGroups.find(({ name: existedName }) => existedName === name)!,
       opers: newOpers,

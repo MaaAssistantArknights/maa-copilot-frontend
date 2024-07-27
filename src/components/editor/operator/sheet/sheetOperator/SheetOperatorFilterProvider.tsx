@@ -132,7 +132,7 @@ const useOperatorFiltered = (
     paginationFilter,
     rarityFilterResult,
   )
-  //   console.log(filterResult)
+
   return {
     // return data after being paginated
     data: filterResult,
