@@ -2,7 +2,7 @@ import { Button, Divider, H4, H5 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { FC, ImgHTMLAttributes, useEffect, useMemo, useState } from 'react'
+import { FC, ImgHTMLAttributes, useEffect, useMemo } from 'react'
 
 import { PROFESSIONS } from 'models/operator'
 
@@ -138,8 +138,6 @@ const ProfIcon: FC<ProfIconProp> = ({
   onProfClick,
   ...restImgProps
 }) => {
-  const [imgError, setImgError] = useState(false)
-
   return (
     <li
       className="grow cursor-pointer relative flex justify-center items-center"
@@ -147,7 +145,7 @@ const ProfIcon: FC<ProfIconProp> = ({
       role="presentation"
       onClick={onProfClick}
     >
-      {imgError ? (
+      {(Object.values(DEFAULTPROFID) as string[]).includes(profId) ? (
         <H5 className="!text-xs sm:!text-base truncate">{name}</H5>
       ) : (
         <img
@@ -155,7 +153,6 @@ const ProfIcon: FC<ProfIconProp> = ({
           className="invert dark:invert-0"
           src={'/assets/prof-icons/' + profId + '.png'}
           alt=""
-          onError={() => setImgError(true)}
           title={name}
         />
       )}
