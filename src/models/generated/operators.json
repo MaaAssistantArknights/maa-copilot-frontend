@@ -704,6 +704,7 @@
     },
     {
       "id": "token_10036_lasher_mcbird",
+      "prof": "TOKEN",
       "subProf": "notchar1",
       "name": "发条羽兽",
       "alias": "fatiaoyushou ftys 發條羽獸",
@@ -991,6 +992,7 @@
     },
     {
       "id": "char_4140_lasher",
+      "prof": "SUPPORT",
       "subProf": "summoner",
       "name": "衡沙",
       "alias": "hengsha hs 衡沙",
@@ -2007,6 +2009,7 @@
     },
     {
       "id": "char_4138_narant",
+      "prof": "SNIPER",
       "subProf": "loopshooter",
       "name": "娜仁图亚",
       "alias": "narentuya nuorentuya nrty 娜仁圖亞",
@@ -2087,6 +2090,7 @@
     },
     {
       "id": "char_4058_pepe",
+      "prof": "WARRIOR",
       "subProf": "hammer",
       "name": "佩佩",
       "alias": "peipei pp 佩佩",
@@ -2572,6 +2576,7 @@
     },
     {
       "id": "char_4139_papyrs",
+      "prof": "MEDIC",
       "subProf": "chainhealer",
       "name": "莎草",
       "alias": "suocao shacao sc 莎草",
@@ -2814,6 +2819,7 @@
     },
     {
       "id": "char_4151_tinman",
+      "prof": "SPECIAL",
       "subProf": "alchemist",
       "name": "锡人",
       "alias": "xiren xr 錫人",
