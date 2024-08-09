@@ -43,11 +43,13 @@ jobs:
           title: 'chore: update generated assets [skip ci]'
           body: |
             This is an auto-generated PR with updated static assets.
-          branch: dev
-          delete-branch: false
-          base: main
+          branch: scripts/update
+          delete-branch: true
+          base: dev
           labels: |
             scripts/update
+          assignees: |
+            GalvinGao
           reviewers: |
             GalvinGao
 
