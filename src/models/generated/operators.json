@@ -1513,6 +1513,15 @@
       "alt_name": "Leonhardt"
     },
     {
+      "id": "char_4142_laios",
+      "prof": "WARRIOR",
+      "subProf": "fearless",
+      "name": "莱欧斯",
+      "alias": "laiousi los 萊歐斯",
+      "rarity": 5,
+      "alt_name": "Laios"
+    },
+    {
       "id": "char_4117_ray",
       "prof": "SNIPER",
       "subProf": "hunter",
@@ -1837,6 +1846,15 @@
       "alt_name": "Młynar"
     },
     {
+      "id": "char_4141_marcil",
+      "prof": "CASTER",
+      "subProf": "splashcaster",
+      "name": "玛露西尔",
+      "alias": "malouxier maluxier mlxe 瑪露西爾",
+      "rarity": 6,
+      "alt_name": "Marcille"
+    },
+    {
       "id": "char_248_mgllan",
       "prof": "SUPPORT",
       "subProf": "summoner",
@@ -2125,6 +2143,15 @@
       "alt_name": "Provence"
     },
     {
+      "id": "char_4144_chilc",
+      "prof": "PIONEER",
+      "subProf": "agent",
+      "name": "齐尔查克",
+      "alias": "qierchake qierzhake jierchake jierzhake zierchake zierzhake zhaierchake zhaierzhake qeck qezk jeck jezk zeck zezk 齊爾查克",
+      "rarity": 5,
+      "alt_name": "Chilchuck"
+    },
+    {
       "id": "char_478_kirara",
       "prof": "SPECIAL",
       "subProf": "stalker",
@@ -2231,6 +2258,15 @@
       "alias": "senran sr 森蚺",
       "rarity": 6,
       "alt_name": "Eunectes"
+    },
+    {
+      "id": "char_4143_sensi",
+      "prof": "TANK",
+      "subProf": "guardian",
+      "name": "森西",
+      "alias": "senxi sx 森西",
+      "rarity": 5,
+      "alt_name": "Senshi"
     },
     {
       "id": "token_10034_ray_sndbst",
