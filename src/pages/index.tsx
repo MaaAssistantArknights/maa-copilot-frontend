@@ -66,36 +66,38 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
         <Operations />
       </div>
       <div className="md:w-1/3 order-1 md:order-2">
-        <Card className="flex flex-col mb-4 space-y-2">
-          <CardTitle icon="add" className="mb-4">
-            创建新作业
-          </CardTitle>
+        <div className="sticky top-20">
+          <Card className="flex flex-col mb-4 space-y-2">
+            <CardTitle icon="add" className="mb-4">
+              创建新作业
+            </CardTitle>
 
-          <OperationEditorLauncher />
-          <OperationUploaderLauncher />
-          <OperationSetEditorLauncher />
-        </Card>
+            <OperationEditorLauncher />
+            <OperationUploaderLauncher />
+            <OperationSetEditorLauncher />
+          </Card>
 
-        <AnnPanel className="mb-4" />
+          <AnnPanel className="mb-4" />
 
-        <div className="flex flex-wrap leading-relaxed mb-8 section-social-links">
-          {SOCIAL_LINKS.map((link) => (
-            <a
-              href={link.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center text-zinc-600 dark:text-slate-100 no-underline"
-            >
-              {link.icon}
-              <span>{link.label}</span>
-            </a>
-          )).reduce((prev, curr) => (
-            <>
-              {prev}
-              <div className="mx-2 opacity-50">·</div>
-              {curr}
-            </>
-          ))}
+          <div className="flex flex-wrap leading-relaxed mb-8 section-social-links">
+            {SOCIAL_LINKS.map((link) => (
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-zinc-600 dark:text-slate-100 no-underline"
+              >
+                {link.icon}
+                <span>{link.label}</span>
+              </a>
+            )).reduce((prev, curr) => (
+              <>
+                {prev}
+                <div className="mx-2 opacity-50">·</div>
+                {curr}
+              </>
+            ))}
+          </div>
         </div>
       </div>
 
