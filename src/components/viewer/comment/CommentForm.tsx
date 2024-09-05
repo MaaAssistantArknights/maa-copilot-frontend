@@ -16,6 +16,7 @@ export interface CommentFormProps {
   primary?: boolean
   placeholder?: string
   inputAutoFocus?: boolean
+  maxLength?: number
 }
 
 export const CommentForm = ({
@@ -23,6 +24,7 @@ export const CommentForm = ({
   primary,
   placeholder = '发一条友善的评论吧',
   inputAutoFocus,
+  maxLength = MAX_COMMENT_LENGTH,
 }: CommentFormProps) => {
   const { operationId, replyTo, reload } = useContext(CommentAreaContext)
 
@@ -82,7 +84,7 @@ export const CommentForm = ({
         rows={2}
         growVertically
         large
-        maxLength={MAX_COMMENT_LENGTH}
+        maxLength={maxLength}
         placeholder={placeholder}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -111,7 +113,7 @@ export const CommentForm = ({
         </Checkbox>
 
         <div className="ml-auto text-slate-500 text-sm">
-          {message.length}/{MAX_COMMENT_LENGTH}
+          {message.length}/{maxLength}
         </div>
       </div>
 
