@@ -20,6 +20,8 @@ import {
   useComments,
 } from '../../../apis/comment'
 import {
+  MAX_COMMENT_LENGTH,
+  AUTHOR_MAX_COMMENT_LENGTH,
   CommentInfo,
   CommentRating,
   MainCommentInfo,
@@ -62,11 +64,10 @@ export const CommentArea = withSuspensable(function ViewerComments({
 
   const auth = useAtomValue(authAtom)
   const operation = useOperation({ id: operationId }).data
-  // FIXME: 用户名可以重名，这里会让重名用户都显示置顶按钮，需要等后端支持 operation.uploaderId 后再修复
-  const operationOwned =
-    !!operation?.uploader &&
-    !!auth.username &&
-    operation.uploader === auth.username
+
+  const operationOwned = operation && auth.userId && operation.uploaderId === auth.userId
+
+  const maxLength = operationOwned ? AUTHOR_MAX_COMMENT_LENGTH : MAX_COMMENT_LENGTH
 
   const [replyTo, setReplyTo] = useState<CommentInfo>()
 
@@ -94,7 +95,7 @@ export const CommentArea = withSuspensable(function ViewerComments({
   return (
     <CommentAreaContext.Provider value={contextValue}>
       <div>
-        <CommentForm primary className="mb-6" />
+        <CommentForm primary className="mb-6" maxLength={maxLength} />
         {comments?.map((comment) => (
           <MainComment
             key={comment.commentId}
@@ -110,8 +111,8 @@ export const CommentArea = withSuspensable(function ViewerComments({
                   sub.fromCommentId === comment.commentId
                     ? undefined
                     : find(comment.subCommentsInfos, {
-                        commentId: sub.fromCommentId,
-                      })
+                      commentId: sub.fromCommentId,
+                    })
                 }
               />
             ))}
@@ -261,6 +262,7 @@ const CommentActions = ({
   const [{ userId }] = useAtom(authAtom)
   const { operationOwned, replyTo, setReplyTo, reload } =
     useContext(CommentAreaContext)
+  const maxLength = operationOwned ? AUTHOR_MAX_COMMENT_LENGTH : MAX_COMMENT_LENGTH
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [pending, setPending] = useState(false)
@@ -331,7 +333,7 @@ const CommentActions = ({
           </p>
         </Alert>
       </div>
-      {replyTo === comment && <CommentForm inputAutoFocus className="mt-4" />}
+      {replyTo === comment && <CommentForm inputAutoFocus className="mt-4" maxLength={maxLength} />}
     </div>
   )
 }
