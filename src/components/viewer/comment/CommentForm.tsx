@@ -4,6 +4,7 @@ import { sendComment } from 'apis/comment'
 import clsx from 'clsx'
 import { useContext, useState } from 'react'
 
+import { MAX_COMMENT_LENGTH } from '../../../models/comment'
 import { formatError } from '../../../utils/error'
 import { wrapErrorMessage } from '../../../utils/wrapErrorMessage'
 import { Markdown } from '../../Markdown'
@@ -23,7 +24,7 @@ export const CommentForm = ({
   primary,
   placeholder = '发一条友善的评论吧',
   inputAutoFocus,
-  maxLength,
+  maxLength = MAX_COMMENT_LENGTH,
 }: CommentFormProps) => {
   const { operationId, replyTo, reload } = useContext(CommentAreaContext)
 
@@ -83,7 +84,7 @@ export const CommentForm = ({
         rows={2}
         growVertically
         large
-        maxLength={maxLength ?? 150}
+        maxLength={maxLength}
         placeholder={placeholder}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
@@ -112,7 +113,7 @@ export const CommentForm = ({
         </Checkbox>
 
         <div className="ml-auto text-slate-500 text-sm">
-          {message.length}/{maxLength ?? 150}
+          {message.length}/{maxLength}
         </div>
       </div>
 
