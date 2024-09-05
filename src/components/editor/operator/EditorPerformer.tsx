@@ -312,13 +312,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     setError,
     fromSheet,
   ) => {
-    const removeOperatorByArray = () =>
-      removeOperator(
-        group.opers
-          ?.map((item) => operators.findIndex(({ name }) => name === item.name))
-          .filter((item) => item !== -1),
-      )
-
     if (
       groups.find(({ name, _id }) => name === group.name && _id !== group._id)
     ) {
@@ -331,7 +324,6 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         : findGroupById(getId(editingGroup!))
       if (existingGroup) {
         group._id = getId(existingGroup)
-        if (fromSheet) removeOperatorByArray()
         updateGroup(
           groups.findIndex(({ _id }) => _id === existingGroup._id),
           group,
@@ -344,7 +336,15 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     } else {
       group._id = uniqueId()
       appendGroup(group)
-      if (group.opers?.length) removeOperatorByArray()
+      if (group.opers?.length) {
+        removeOperator(
+          group.opers
+            ?.map((item) =>
+              operators.findIndex(({ name }) => name === item.name),
+            )
+            .filter((item) => item !== -1),
+        )
+      }
     }
 
     return true

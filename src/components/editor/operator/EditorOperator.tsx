@@ -11,7 +11,7 @@ import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { OPERATORS } from '../../../models/operator'
 import { Suggest } from '../../Suggest'
 
-type OperatorInfo = typeof OPERATORS[number]
+type OperatorInfo = (typeof OPERATORS)[number]
 type PerformerItem = OperatorInfo | CopilotDocV1.Group
 
 const isOperator = (item: PerformerItem): item is OperatorInfo =>

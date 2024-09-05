@@ -33,6 +33,7 @@ const AccountMenu: FC = () => {
   const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
+  const { isSM } = useCurrentSize()
 
   const handleLogout = () => {
     setAuthState({})
@@ -69,6 +70,14 @@ const AccountMenu: FC = () => {
             disabled
             icon="warning-sign"
             text="账号未激活，请在退出登录后，以重置密码的方式激活"
+          />
+        )}
+
+        {isSM && (
+          <MenuItem
+            shouldDismissPopover={false}
+            icon="user"
+            text={authState.username}
           />
         )}
 
@@ -161,7 +170,7 @@ export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
         <Popover2 content={<AccountMenu />} position={Position.BOTTOM_RIGHT}>
           <Button
             icon="user"
-            text={authState.username}
+            text={!isSM && authState.username}
             rightIcon="caret-down"
           />
         </Popover2>

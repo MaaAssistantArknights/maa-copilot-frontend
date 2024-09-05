@@ -8,13 +8,12 @@ import { BrowserTracing } from '@sentry/tracing'
 import 'normalize.css'
 import React, { lazy } from 'react'
 import ReactDOM from 'react-dom/client'
+import ReactGA from 'react-ga-neo'
 import { Route, Routes } from 'react-router-dom'
 
 import { withSuspensable } from 'components/Suspensable'
 import { ViewPage } from 'pages/view'
 import { clearOutdatedSwrCache } from 'utils/swr'
-
-import ReactGA from "react-ga-neo"
 
 import { App } from './App'
 import { AppLayout } from './layouts/AppLayout'
@@ -41,7 +40,7 @@ Sentry.init({
   },
 })
 
-ReactGA.initialize("G-K3MCHSLB5K")
+ReactGA.initialize('G-K3MCHSLB5K')
 
 // add platform class to root element
 if (navigator.userAgent.includes('Win')) {

@@ -1,6 +1,6 @@
 import { Button } from '@blueprintjs/core'
 
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { SubmitHandler, UseFormSetError, useForm } from 'react-hook-form'
 
 import { CardTitle } from 'components/CardTitle'
@@ -52,9 +52,14 @@ export const EditorPerformerOperator = ({
     watch,
   } = useForm<EditorOperatorFormValues>()
 
-  const findGroupByOperator = (operator?: CopilotDocV1.Operator) =>
-    operator &&
-    groups.find((group) => group.opers?.find((op) => op._id === operator._id))
+  const findGroupByOperator = useCallback(
+    (operator?: CopilotDocV1.Operator) =>
+      operator &&
+      groups.find((group) =>
+        group.opers?.find((op) => op._id === operator._id),
+      ),
+    [groups],
+  )
 
   // when the outside operator changes, reset the entire form
   useEffect(() => {
@@ -65,12 +70,12 @@ export const EditorPerformerOperator = ({
       },
       { keepDefaultValues: true },
     )
-  }, [reset, operator])
+  }, [reset, operator, findGroupByOperator])
 
   // when groups change (meaning the operator's ownership may have changed from outside), update the groupName
   useEffect(() => {
     setValue('groupName', findGroupByOperator(getValues())?.name)
-  }, [reset, getValues, groups])
+  }, [reset, getValues, groups, findGroupByOperator, setValue])
 
   const skillUsage = watch('skillUsage')
   useEffect(() => {
@@ -80,7 +85,7 @@ export const EditorPerformerOperator = ({
         ? operator?.skillTimes ?? 1
         : undefined,
     )
-  }, [skillUsage, setValue])
+  }, [skillUsage, setValue, operator])
 
   const onSubmit: SubmitHandler<EditorOperatorFormValues> = (values) => {
     values.name = values.name.trim()

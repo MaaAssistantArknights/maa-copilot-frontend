@@ -11,6 +11,7 @@ export const enum CommentRating {
 }
 
 export const MAX_COMMENT_LENGTH = 150
+export const AUTHOR_MAX_COMMENT_LENGTH = 500
 
 export function isMainComment(
   comment: CommentInfo,

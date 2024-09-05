@@ -19,8 +19,12 @@ export const FactItem: FCC<{
       className,
     )}
   >
-    {icon && <Icon icon={icon} className="mr-2 text-zinc-500 dark:text-slate-100" />}
-    <div className="text-sm mr-2 text-zinc-500 dark:text-slate-100">{title}</div>
+    {icon && (
+      <Icon icon={icon} className="mr-2 text-zinc-500 dark:text-slate-100" />
+    )}
+    <div className="text-sm mr-2 text-zinc-500 dark:text-slate-100">
+      {title}
+    </div>
     {children}
   </div>
 )

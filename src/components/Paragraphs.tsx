@@ -20,7 +20,7 @@ export const Paragraphs: FC<{
     const { height } = paragraphElementRef.current.getBoundingClientRect()
 
     setExceededLimitHeight(height > limitHeight)
-  }, [paragraphElementRef.current, limitHeight])
+  }, [limitHeight])
 
   const mask = exceededLimitHeight
     ? 'linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,1) calc(100% - 2rem), rgba(0,0,0,0) 100%)'
@@ -40,9 +40,7 @@ export const Paragraphs: FC<{
       }}
     >
       <div ref={paragraphElementRef}>
-        {paragraphs?.map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
+        {paragraphs?.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
       </div>
     </div>
   )

@@ -39,7 +39,7 @@ export function useLazyStorage<T>(
       onUnload()
       window.removeEventListener('beforeunload', onUnload)
     }
-  }, [])
+  }, [storageKey, latestValue])
 
   return [value, setValue] as const
 }

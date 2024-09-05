@@ -1,16 +1,16 @@
 import { Button } from '@blueprintjs/core'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 const themeMedia = window.matchMedia('(prefers-color-scheme: light)')
 
 export const ThemeSwitchButton = () => {
   const [theme, setTheme] = useState(localStorage.getItem('theme') || '')
-  const handleThemeSwitch = () => {
+  const handleThemeSwitch = useCallback(() => {
     const isCurrentDark = theme === 'dark'
     setTheme(isCurrentDark ? 'light' : 'dark')
     localStorage.setItem('theme', isCurrentDark ? 'light' : 'dark')
-  }
+  }, [theme])
   useEffect(() => {
     if (!themeMedia.matches && !localStorage.getItem('theme')) {
       handleThemeSwitch()
@@ -23,7 +23,7 @@ export const ThemeSwitchButton = () => {
       document.body.classList.remove('bp4-dark')
       document.body.classList.remove('dark')
     }
-  }, [theme])
+  }, [theme, handleThemeSwitch])
   return (
     <Button
       onClick={handleThemeSwitch}

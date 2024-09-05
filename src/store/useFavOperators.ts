@@ -5,7 +5,7 @@ import { omit } from 'lodash'
 import { CopilotDocV1 } from '../models/copilot.schema'
 
 type Operator = CopilotDocV1.Operator
-type FavOperator = Omit<Operator, typeof operatorIgnoreKeyDic[number]>
+type FavOperator = Omit<Operator, (typeof operatorIgnoreKeyDic)[number]>
 
 export const operatorIgnoreKeyDic = ['id', '_id'] as const
 

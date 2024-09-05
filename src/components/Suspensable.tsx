@@ -24,6 +24,7 @@ export const Suspensable: FCC<SuspensableProps> = ({
   useEffect(() => {
     resetError.current?.()
     resetError.current = undefined
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, retryDeps)
 
   return (

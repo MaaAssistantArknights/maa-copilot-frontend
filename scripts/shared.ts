@@ -111,6 +111,7 @@ export async function getOperators() {
       return [
         {
           id: id,
+          prof: op.profession,
           subProf: op.subProfessionId,
           ...transformOperatorName(op.name),
           rarity:

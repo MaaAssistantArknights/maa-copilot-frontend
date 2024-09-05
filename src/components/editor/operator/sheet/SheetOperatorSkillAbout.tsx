@@ -13,13 +13,12 @@ import { EditorOperatorSkill } from '../EditorOperatorSkill'
 import { EditorOperatorSkillTimes } from '../EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from '../EditorOperatorSkillUsage'
 import { Operator } from '../EditorSheet'
-import { OperatorModifyProps } from './SheetOperator'
 
 const needSkillTimeType = CopilotDocV1.SkillUsageType.ReadyToUseTimes
 
 export interface SkillAboutProps {
   operator?: Operator
-  onSkillChange?: OperatorModifyProps['operatorSkillHandle']
+  onSkillChange?: (value: Operator) => void
 }
 
 const skillDic = operatorSkillUsages as DetailedSelectChoice[]
@@ -85,7 +84,7 @@ export const SkillAboutTrigger = ({
       <div className="flex items-center">
         <Button text="确定" type="submit" className={Classes.POPOVER_DISMISS} />
         <Tooltip2
-          content='若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)'
+          content="若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)"
           className="ml-1"
         >
           <Icon icon="help" />
@@ -94,33 +93,32 @@ export const SkillAboutTrigger = ({
     </form>
   )
   const SkillAboutTrigger = (
-    <Tooltip2 content="点击进行技能相关设置" disabled={!!operator}>
-      <div
-        className={clsx(
-          'flex mt-3 text-gray-500 items-center text-xs',
-          operator && 'hover:text-black',
-        )}
-      >
+    <div
+      className={clsx(
+        'flex mt-3 text-gray-500 items-center text-xs',
+        operator && 'hover:text-black',
+      )}
+    >
+      {!operator?.skill && (
         <Icon icon="info-sign" size={12} className="flex items-center" />
-        <p>
-          {operator?.skill || '未设置'}技能{' '}
-          {operator?.skillUsage !== undefined ? '·' : ''}
-        </p>
-        {operator?.skillUsage !== undefined && (
-          <div className="relative">
-            <Icon
-              icon={
-                skillDic.find((item) => item.value === operator?.skillUsage)
-                  ?.icon
-              }
-              className="flex items-center ml-1"
-              size={12}
-            />
-          </div>
-        )}
-        {!!operator?.skillTimes && <p> x{operator.skillTimes}</p>}
-      </div>
-    </Tooltip2>
+      )}
+      <p>
+        {operator?.skill || '未设置'}技能{' '}
+        {operator?.skillUsage !== undefined ? '·' : ''}
+      </p>
+      {operator?.skillUsage !== undefined && (
+        <div className="relative">
+          <Icon
+            icon={
+              skillDic.find((item) => item.value === operator?.skillUsage)?.icon
+            }
+            className="flex items-center ml-1"
+            size={12}
+          />
+        </div>
+      )}
+      {!!operator?.skillTimes && <p> x{operator.skillTimes}</p>}
+    </div>
   )
 
   return (
@@ -129,6 +127,7 @@ export const SkillAboutTrigger = ({
         if (operator) e.stopPropagation()
       }}
       role="presentation"
+      className="cursor-pointer"
     >
       <Popover2 content={SkillAboutForm} disabled={!operator}>
         {SkillAboutTrigger}
