@@ -379,6 +379,15 @@
       "alt_name": "Coldshot"
     },
     {
+      "id": "char_487_bobb",
+      "prof": "SUPPORT",
+      "subProf": "ritualist",
+      "name": "波卜",
+      "alias": "bobu bobo bb 波卜",
+      "rarity": 5,
+      "alt_name": "Bobbing"
+    },
+    {
       "id": "char_258_podego",
       "prof": "SUPPORT",
       "subProf": "slower",
@@ -1090,6 +1099,15 @@
       "alt_name": "Blaze"
     },
     {
+      "id": "token_10040_siege2_vlion",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "黄金盟誓",
+      "alias": "huangjinmengshi hjms 黃金盟誓",
+      "rarity": 0,
+      "alt_name": "Golden Vow"
+    },
+    {
       "id": "char_431_ashlok",
       "prof": "TANK",
       "subProf": "fortress",
@@ -1394,6 +1412,15 @@
       "alias": "kaierxi kex 凱爾希",
       "rarity": 6,
       "alt_name": "Kal'tsit"
+    },
+    {
+      "id": "char_4162_cathy",
+      "prof": "SUPPORT",
+      "subProf": "craftsman",
+      "name": "凯瑟琳",
+      "alias": "kaiselin ksl 凱瑟琳",
+      "rarity": 5,
+      "alt_name": "Catherine"
     },
     {
       "id": "char_301_cutter",
@@ -2069,6 +2096,15 @@
       "alias": "nian n 年",
       "rarity": 6,
       "alt_name": "Nian"
+    },
+    {
+      "id": "token_10041_cathy_catsld",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "爬行号·防护单元",
+      "alias": "pahanghao·fanghudanyuan pahanghao·fanghushanyuan pahanghao·fanghuchanyuan paxinghao·fanghudanyuan paxinghao·fanghushanyuan paxinghao·fanghuchanyuan phh·fhdy phh·fhsy phh·fhcy pxh·fhdy pxh·fhsy pxh·fhcy 爬行號·防護單元",
+      "rarity": 0,
+      "alt_name": "Crawler Protection Unit"
     },
     {
       "id": "char_485_pallas",
@@ -2771,6 +2807,15 @@
       "alias": "weifeng wf 微風",
       "rarity": 5,
       "alt_name": "Breeze"
+    },
+    {
+      "id": "char_1019_siege2",
+      "prof": "WARRIOR",
+      "subProf": "artsfghter",
+      "name": "维娜·维多利亚",
+      "alias": "weina·weiduoliya weinuo·weiduoliya wn·wdly 維娜·維多利亞",
+      "rarity": 6,
+      "alt_name": "Vina Victoria"
     },
     {
       "id": "char_1035_wisdel",
