@@ -9,6 +9,18 @@ import {
   NonIdealState,
   TextArea,
 } from '@blueprintjs/core'
+import {
+  DndContext,
+  DragEndEvent,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core'
+import {
+  SortableContext,
+  arrayMove,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable'
 
 import { useOperations } from 'apis/operation'
 import {
@@ -20,11 +32,21 @@ import {
   useRefreshOperationSets,
 } from 'apis/operation-set'
 import clsx from 'clsx'
-import { Ref, useCallback, useImperativeHandle, useRef, useState } from 'react'
+import { UpdateCopilotSetRequest } from 'maa-copilot-client'
+import {
+  Ref,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react'
 import { Controller, UseFormSetError, useForm } from 'react-hook-form'
 
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
+import { Sortable } from 'components/dnd'
+import { Operation } from 'models/operation'
 import { OperationSet } from 'models/operation-set'
 import { formatError } from 'utils/error'
 
@@ -67,15 +89,20 @@ export function OperationSetEditorDialog({
     status,
     idsToAdd,
     idsToRemove,
+    sortIds,
   }) => {
     const updateInfo = async () => {
       if (isEdit) {
-        await updateOperationSet({
+        const params: UpdateCopilotSetRequest['copilotSetUpdateReq'] = {
           id: operationSet!.id,
           name,
           description,
           status,
-        })
+        }
+
+        if (sortIds?.length) params.copilotIds = sortIds
+
+        await updateOperationSet(params)
 
         AppToaster.show({
           intent: 'success',
@@ -168,6 +195,7 @@ interface FormValues {
 
   idsToAdd?: number[]
   idsToRemove?: number[]
+  sortIds?: number[]
 }
 
 function OperationSetForm({ operationSet, onSubmit }: FormProps) {
@@ -207,7 +235,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
   return (
     <form
       className={clsx(
-        'p-4 w-[500px] max-w-[100vw] max-h-[calc(100vh-20rem)] overflow-y-auto',
+        'p-4 w-[500px] max-w-[100vw] max-h-[calc(100vh-20rem)] min-h-[18rem] overflow-y-auto',
         isEdit && 'lg:w-[1000px]',
       )}
       onSubmit={localOnSubmit}
@@ -219,6 +247,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
               <>
                 <div className="grow">
                   <OperationSelector
+                    key={operationSet.id}
                     operationSet={operationSet}
                     selectorRef={operationSelectorRef}
                   />
@@ -330,7 +359,11 @@ interface OperationSelectorProps {
 }
 
 interface OperationSelectorRef {
-  getValues(): { idsToAdd: number[]; idsToRemove: number[] }
+  getValues(): {
+    idsToAdd: number[]
+    idsToRemove: number[]
+    sortIds?: number[]
+  }
 }
 
 function OperationSelector({
@@ -340,6 +373,14 @@ function OperationSelector({
   const { operations, error } = useOperations({
     operationIds: operationSet.copilotIds,
   })
+
+  const [isSorting, setIsSorting] = useState(false)
+
+  const [renderedOperations, setRenderedOperations] = useState<Operation[]>([])
+  useEffect(() => {
+    setRenderedOperations([...(operations ?? [])])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [operations.length])
 
   const [checkboxOverrides, setCheckboxOverrides] = useState(
     {} as Record<number, boolean>,
@@ -356,7 +397,7 @@ function OperationSelector({
       getValues() {
         const idsToAdd: number[] = []
         const idsToRemove: number[] = []
-
+        const sortIds: number[] = []
         Object.entries(checkboxOverrides).forEach(([idKey, checked]) => {
           const id = +idKey
           if (isNaN(id)) return
@@ -367,12 +408,36 @@ function OperationSelector({
             idsToRemove.push(id)
           }
         })
+        if (isSorting) {
+          sortIds.push(
+            ...renderedOperations
+              .map(({ id }) => (checkboxOverrides[id] === false ? 0 : id))
+              .filter((id) => !!id),
+          )
+        }
 
-        return { idsToAdd, idsToRemove }
+        return { idsToAdd, idsToRemove, sortIds }
       },
     }),
-    [checkboxOverrides, alreadyAdded],
+    [checkboxOverrides, isSorting, alreadyAdded, renderedOperations],
   )
+
+  const sensors = useSensors(useSensor(PointerSensor))
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event
+
+    if (active.id !== over?.id) {
+      setRenderedOperations((items) => {
+        const oldIndex = items.findIndex((v) => v.id === active.id)
+        const newIndex = items.findIndex((v) => v.id === over?.id)
+
+        return arrayMove(items, oldIndex, newIndex)
+      })
+
+      setIsSorting(true)
+    }
+  }
 
   return (
     <div className="py-2">
@@ -382,28 +447,53 @@ function OperationSelector({
         </Callout>
       )}
 
-      {operations?.map(({ id, parsedContent }) => (
-        <div key={id}>
-          <Checkbox
-            className={clsx(
-              'flex items-center m-0 p-2 !pl-10 hover:bg-slate-200',
-              checkboxOverrides[id] !== undefined &&
-                checkboxOverrides[id] !== alreadyAdded(id) &&
-                'font-bold',
-            )}
-            checked={checkboxOverrides[id] ?? alreadyAdded(id)}
-            onChange={(e) => {
-              const checked = (e.target as HTMLInputElement).checked
-              setCheckboxOverrides((prev) => ({ ...prev, [id]: checked }))
-            }}
-          >
-            <div className="tabular-nums text-slate-500">{id}:&nbsp;</div>
-            <div className="truncate text-ellipsis">
-              {parsedContent.doc.title}
-            </div>
-          </Checkbox>
-        </div>
-      ))}
+      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <SortableContext
+          items={(renderedOperations ?? []).map(({ id }) => id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {renderedOperations?.map(({ id, parsedContent }) => (
+            <Sortable key={id} id={id}>
+              {({ listeners, attributes }) => (
+                <div
+                  key={id}
+                  className="flex items-center hover:bg-slate-200 dark:hover:bg-slate-800"
+                >
+                  <Icon
+                    className="cursor-grab active:cursor-grabbing p-1 -my-1 -ml-2 -mr-1 rounded-[1px]"
+                    icon="drag-handle-vertical"
+                    {...listeners}
+                    {...attributes}
+                  />
+                  <Checkbox
+                    className={clsx(
+                      'flex items-center m-0 p-2 !pl-10 flex-1',
+                      checkboxOverrides[id] !== undefined &&
+                        checkboxOverrides[id] !== alreadyAdded(id) &&
+                        'font-bold',
+                    )}
+                    checked={checkboxOverrides[id] ?? alreadyAdded(id)}
+                    onChange={(e) => {
+                      const checked = (e.target as HTMLInputElement).checked
+                      setCheckboxOverrides((prev) => ({
+                        ...prev,
+                        [id]: checked,
+                      }))
+                    }}
+                  >
+                    <div className="tabular-nums text-slate-500">
+                      {id}:&nbsp;
+                    </div>
+                    <div className="truncate text-ellipsis">
+                      {parsedContent.doc.title}
+                    </div>
+                  </Checkbox>
+                </div>
+              )}
+            </Sortable>
+          ))}
+        </SortableContext>
+      </DndContext>
     </div>
   )
 }

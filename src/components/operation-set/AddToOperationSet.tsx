@@ -142,7 +142,7 @@ export function AddToOperationSet({
 
   return (
     <>
-      <div className="py-2">
+      <div className="py-2 px-px">
         {error && (
           <Callout intent="danger" icon="error" title="错误">
             {formatError(error)}
@@ -165,7 +165,7 @@ export function AddToOperationSet({
             <div key={id}>
               <Checkbox
                 className={clsx(
-                  'block m-0 p-2 !pl-10 hover:bg-slate-200',
+                  'block m-0 p-2 !pl-10 hover:bg-slate-200 dark:hover:bg-slate-800',
                   checkboxOverrides[id] !== undefined &&
                     checkboxOverrides[id] !== alreadyAdded(id) &&
                     'font-bold',

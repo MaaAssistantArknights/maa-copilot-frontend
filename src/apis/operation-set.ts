@@ -4,6 +4,7 @@ import {
   CopilotSetPageRes,
   CopilotSetQuery,
   CopilotSetStatus,
+  CopilotSetUpdateReq,
 } from 'maa-copilot-client'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
@@ -184,12 +185,7 @@ export async function createOperationSet(req: {
   })
 }
 
-export async function updateOperationSet(req: {
-  id: number
-  name: string
-  description: string
-  status: CopilotSetStatus
-}) {
+export async function updateOperationSet(req: CopilotSetUpdateReq) {
   await new OperationSetApi().updateCopilotSet({ copilotSetUpdateReq: req })
 }
 
