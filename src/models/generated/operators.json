@@ -415,6 +415,15 @@
       "alt_name": "Broca"
     },
     {
+      "id": "char_4155_talr",
+      "prof": "SPECIAL",
+      "subProf": "merchant",
+      "name": "裁度",
+      "alias": "caidu caiduo cd 裁度",
+      "rarity": 5,
+      "alt_name": "Figurino"
+    },
+    {
       "id": "char_4106_bryota",
       "prof": "WARRIOR",
       "subProf": "instructor",
@@ -728,6 +737,15 @@
       "alias": "fangting ft 芳汀",
       "rarity": 4,
       "alt_name": "Arene"
+    },
+    {
+      "id": "char_4148_philae",
+      "prof": "TANK",
+      "subProf": "primprotector",
+      "name": "菲莱",
+      "alias": "feilai fl 菲萊",
+      "rarity": 5,
+      "alt_name": "Philae"
     },
     {
       "id": "char_300_phenxi",
@@ -1106,6 +1124,15 @@
       "alias": "huangjinmengshi hjms 黃金盟誓",
       "rarity": 0,
       "alt_name": "Golden Vow"
+    },
+    {
+      "id": "char_1038_whitw2",
+      "prof": "CASTER",
+      "subProf": "funnel",
+      "name": "荒芜拉普兰德",
+      "alias": "huangwulapulande hwlpld 荒蕪拉普蘭德",
+      "rarity": 6,
+      "alt_name": "Lappland the Decadenza"
     },
     {
       "id": "char_431_ashlok",
@@ -2260,6 +2287,15 @@
       "alt_name": "Making-up Machine"
     },
     {
+      "id": "char_4026_vulpis",
+      "prof": "PIONEER",
+      "subProf": "pioneer",
+      "name": "忍冬",
+      "alias": "rendong rd 忍冬",
+      "rarity": 6,
+      "alt_name": "Vulpisfoglia"
+    },
+    {
       "id": "char_363_toddi",
       "prof": "SNIPER",
       "subProf": "siegesniper",
@@ -2447,6 +2483,15 @@
       "alias": "shihuaiya shy 詩懷雅",
       "rarity": 5,
       "alt_name": "Swire"
+    },
+    {
+      "id": "char_1502_crosly",
+      "prof": "SPECIAL",
+      "subProf": "executor",
+      "name": "弑君者",
+      "alias": "shijunzhe sjz 弑君者",
+      "rarity": 6,
+      "alt_name": "Crownslayer"
     },
     {
       "id": "char_378_asbest",
@@ -3448,6 +3493,15 @@
       "alt_name": "Caper"
     },
     {
+      "id": "char_4165_ctrail",
+      "prof": "SPECIAL",
+      "subProf": "skywalker",
+      "name": "云迹",
+      "alias": "yunji yj 雲跡",
+      "rarity": 4,
+      "alt_name": "Contrail"
+    },
+    {
       "id": "char_219_meteo",
       "prof": "SNIPER",
       "subProf": "aoesniper",
@@ -3642,6 +3696,7 @@
         { "id": "stalker", "name": "伏击客" },
         { "id": "pusher", "name": "推击手" },
         { "id": "dollkeeper", "name": "傀儡师" },
+        { "id": "skywalker", "name": "巡空者" },
         { "id": "geek", "name": "怪杰" },
         { "id": "traper", "name": "陷阱师" },
         { "id": "alchemist", "name": "炼金师" }
@@ -3685,7 +3740,8 @@
         { "id": "artsprotector", "name": "驭法铁卫" },
         { "id": "shotprotector", "name": "哨戒铁卫" },
         { "id": "fortress", "name": "要塞" },
-        { "id": "duelist", "name": "决战者" }
+        { "id": "duelist", "name": "决战者" },
+        { "id": "primprotector", "name": "本源铁卫" }
       ]
     },
     {
