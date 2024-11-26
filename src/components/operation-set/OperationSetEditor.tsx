@@ -24,9 +24,7 @@ import {
 
 import { useOperations } from 'apis/operation'
 import {
-  addToOperationSet,
   createOperationSet,
-  removeFromOperationSet,
   updateOperationSet,
   useRefreshOperationSet,
   useRefreshOperationSets,
@@ -87,9 +85,7 @@ export function OperationSetEditorDialog({
     name,
     description,
     status,
-    idsToAdd,
-    idsToRemove,
-    sortIds,
+    copilotIds,
   }) => {
     const updateInfo = async () => {
       if (isEdit) {
@@ -98,9 +94,8 @@ export function OperationSetEditorDialog({
           name,
           description,
           status,
+          copilotIds,
         }
-
-        if (sortIds?.length) params.copilotIds = sortIds
 
         await updateOperationSet(params)
 
@@ -129,35 +124,7 @@ export function OperationSetEditorDialog({
       }
     }
 
-    const addOperations = async () => {
-      if (operationSet && idsToAdd?.length) {
-        await addToOperationSet({
-          operationSetId: operationSet.id,
-          operationIds: idsToAdd,
-        })
-
-        AppToaster.show({
-          intent: 'success',
-          message: `添加作业成功`,
-        })
-      }
-    }
-
-    const removeOperations = async () => {
-      if (operationSet && idsToRemove?.length) {
-        await removeFromOperationSet({
-          operationSetId: operationSet.id,
-          operationIds: idsToRemove,
-        })
-
-        AppToaster.show({
-          intent: 'success',
-          message: `移除作业成功`,
-        })
-      }
-    }
-
-    await Promise.all([updateInfo(), addOperations(), removeOperations()])
+    await updateInfo()
 
     onClose()
   }
@@ -195,7 +162,7 @@ interface FormValues {
 
   idsToAdd?: number[]
   idsToRemove?: number[]
-  sortIds?: number[]
+  copilotIds?: number[]
 }
 
 function OperationSetForm({ operationSet, onSubmit }: FormProps) {
@@ -360,9 +327,7 @@ interface OperationSelectorProps {
 
 interface OperationSelectorRef {
   getValues(): {
-    idsToAdd: number[]
-    idsToRemove: number[]
-    sortIds?: number[]
+    copilotIds?: number[]
   }
 }
 
@@ -373,8 +338,6 @@ function OperationSelector({
   const { operations, error } = useOperations({
     operationIds: operationSet.copilotIds,
   })
-
-  const [isSorting, setIsSorting] = useState(false)
 
   const [renderedOperations, setRenderedOperations] = useState<Operation[]>([])
   useEffect(() => {
@@ -395,31 +358,17 @@ function OperationSelector({
     selectorRef,
     () => ({
       getValues() {
-        const idsToAdd: number[] = []
-        const idsToRemove: number[] = []
-        const sortIds: number[] = []
-        Object.entries(checkboxOverrides).forEach(([idKey, checked]) => {
-          const id = +idKey
-          if (isNaN(id)) return
+        const copilotIds: number[] = []
+        copilotIds.push(
+          ...renderedOperations
+            .map(({ id }) => (checkboxOverrides[id] === false ? 0 : id))
+            .filter((id) => !!id),
+        )
 
-          if (checked && !alreadyAdded(id)) {
-            idsToAdd.push(id)
-          } else if (!checked && alreadyAdded(id)) {
-            idsToRemove.push(id)
-          }
-        })
-        if (isSorting) {
-          sortIds.push(
-            ...renderedOperations
-              .map(({ id }) => (checkboxOverrides[id] === false ? 0 : id))
-              .filter((id) => !!id),
-          )
-        }
-
-        return { idsToAdd, idsToRemove, sortIds }
+        return { copilotIds }
       },
     }),
-    [checkboxOverrides, isSorting, alreadyAdded, renderedOperations],
+    [checkboxOverrides, renderedOperations],
   )
 
   const sensors = useSensors(useSensor(PointerSensor))
@@ -434,8 +383,6 @@ function OperationSelector({
 
         return arrayMove(items, oldIndex, newIndex)
       })
-
-      setIsSorting(true)
     }
   }
 
