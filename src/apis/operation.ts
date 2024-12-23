@@ -114,7 +114,14 @@ export function useOperations({
 
   const isReachingEnd = !!pages?.some((page) => !page.hasNext)
 
-  const operations = pages?.map((page) => page.data).flat()
+  const _operations = pages?.map((page) => page.data).flat() ?? []
+
+  // 按 operationIds 的顺序排序
+  const operations = operationIds?.length
+    ? operationIds
+        ?.map((id) => _operations?.find((v) => v.id === id))
+        .filter((v) => !!v)
+    : _operations
 
   return {
     error,
