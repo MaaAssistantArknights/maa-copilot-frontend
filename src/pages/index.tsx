@@ -30,6 +30,13 @@ const SOCIAL_LINKS = [
     icon: (
       <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
     ),
+    href: 'https://github.com/MaaAssistantArknights/MaaAssistantArknights',
+    label: 'MAA GitHub Repo',
+  },
+  {
+    icon: (
+      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
+    ),
     href: 'https://github.com/MaaAssistantArknights/maa-copilot-frontend',
     label: '前端 GitHub Repo',
   },
@@ -39,13 +46,6 @@ const SOCIAL_LINKS = [
     ),
     href: 'https://github.com/MaaAssistantArknights/MaaBackendCenter',
     label: '后端 GitHub Repo',
-  },
-  {
-    icon: (
-      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
-    ),
-    href: 'https://github.com/MaaAssistantArknights/MaaAssistantArknights',
-    label: 'MAA GitHub Repo',
   },
   {
     icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
