@@ -28,6 +28,7 @@ export const Operations: ComponentType = withSuspensable(() => {
   const [queryParams, setQueryParams] = useState<
     Omit<UseOperationsParams, 'operator'>
   >({
+    limit: 10,
     orderBy: 'hot',
   })
   const [selectedOperators, setSelectedOperators] = useAtom(

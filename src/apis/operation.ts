@@ -11,6 +11,7 @@ import { useSWRRefresh } from 'utils/swr'
 export type OrderBy = 'views' | 'hot' | 'id'
 
 export interface UseOperationsParams {
+  limit?: number
   orderBy?: OrderBy
   descending?: boolean
   keyword?: string
@@ -24,6 +25,7 @@ export interface UseOperationsParams {
 }
 
 export function useOperations({
+  limit = 50,
   orderBy,
   descending = true,
   keyword,
@@ -71,7 +73,7 @@ export function useOperations({
       return [
         'operations',
         {
-          limit: 50,
+          limit,
           page: pageIndex + 1,
           document: keyword,
           levelKeyword,
