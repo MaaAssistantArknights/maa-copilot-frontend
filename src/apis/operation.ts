@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash-es'
 import { QueriesCopilotRequest } from 'maa-copilot-client'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
@@ -22,6 +23,7 @@ export interface UseOperationsParams {
 
   disabled?: boolean
   suspense?: boolean
+  revalidateFirstPage?: boolean
 }
 
 export function useOperations({
@@ -35,6 +37,7 @@ export function useOperations({
   byMyself,
   disabled,
   suspense,
+  revalidateFirstPage,
 }: UseOperationsParams) {
   const {
     error,
@@ -98,10 +101,13 @@ export function useOperations({
         requireData: true,
       }).queriesCopilot(req)
 
-      const parsedOperations: Operation[] = res.data.data.map((operation) => ({
+      let parsedOperations: Operation[] = res.data.data.map((operation) => ({
         ...operation,
         parsedContent: toCopilotOperation(operation),
       }))
+
+      // 如果 revalidateFirstPage=false，从第二页开始可能会有重复数据，需要去重
+      parsedOperations = uniqBy(parsedOperations, (o) => o.id)
 
       return {
         ...res.data,
@@ -111,6 +117,7 @@ export function useOperations({
     {
       suspense,
       focusThrottleInterval: 1000 * 60 * 30,
+      revalidateFirstPage,
     },
   )
 
