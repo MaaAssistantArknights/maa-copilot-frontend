@@ -31,12 +31,12 @@ export const OperationList: ComponentType<UseOperationsParams> =
           }}
         >
           {operations.map((operation) => (
-            <NeoOperationCard operation={operation} key={operation.id} />
+            <NeoOperationCard operationId = {operation.id} key={operation.id} />
           ))}
         </div>
       ) : (
         operations.map((operation) => (
-          <OperationCard operation={operation} key={operation.id} />
+          <OperationCard operationId={operation.id} key={operation.id} />
         ))
       )
 

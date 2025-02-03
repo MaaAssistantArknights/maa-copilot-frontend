@@ -4,6 +4,10 @@ import { CopilotDocV1 } from '../models/copilot.schema'
 import { ShortCodeContent, toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
 import { snakeCaseKeysUnicode } from '../utils/object'
+import { wrapErrorMessage } from 'utils/wrapErrorMessage'
+import { OpRatingType } from 'models/operation'
+import { rateOperation } from 'apis/operation'
+import { mutate } from 'swr'
 
 export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   // pretty print the JSON
@@ -51,4 +55,34 @@ export const copyShortCode = async (target: { id: number }) => {
       intent: 'danger',
     })
   }
+}
+
+export const handleRating = async (decision: OpRatingType, operationId: number) => {
+  const getMessage = (decision: OpRatingType): string => {
+    switch (decision) {
+      case OpRatingType.None:
+        return '已取消评价~';
+      case OpRatingType.Like:
+        return '已点赞~';
+      case OpRatingType.Dislike:
+        return '已点踩~';
+      default:
+        return '未知评价';
+    }
+  };
+  const message = getMessage(decision);
+  AppToaster.show({
+    message: message,
+    intent: 'success',
+  })
+  wrapErrorMessage(
+    (e) => `提交评分失败：${formatError(e)}`,
+    mutate(async (val) => {
+      await rateOperation({
+        id: operationId,
+        rating: decision,
+      })
+      return val
+    }),
+  ).catch(console.warn)
 }

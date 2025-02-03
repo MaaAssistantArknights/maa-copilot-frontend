@@ -1,23 +1,49 @@
-import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
+import { Button, ButtonGroup, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { copyShortCode, handleDownloadJSON } from 'services/operation'
+import { copyShortCode, handleDownloadJSON, handleRating } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
 import { AddToOperationSetButton } from 'components/operation-set/AddToOperationSet'
 import { OperationRating } from 'components/viewer/OperationRating'
-import { OpDifficulty, Operation } from 'models/operation'
+import { OpDifficulty, Operation, OpRatingType } from 'models/operation'
 
 import { useLevels } from '../apis/level'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
+import { useEffect } from 'react'
+import { useOperation } from 'apis/operation'
+import { AppToaster } from './Toaster'
+import { formatError } from 'utils/error'
 
-export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
+export const NeoOperationCard = ({operationId}:{operationId: Operation['id']}) => {
   const { data: levels } = useLevels()
+  const {
+    data: operation,
+    error,
+  } = useOperation({
+    id: operationId,
+    suspense: true,
+  })
+
+  // make eslint happy: we got Suspense out there
+  if (!operation) throw new Error('unreachable')
+
+  useEffect(() => {
+  }, [operation])
+
+  useEffect(() => {
+    if (error) {
+      AppToaster.show({
+        intent: 'danger',
+        message: `刷新作业失败：${formatError(error)}`,
+      })
+    }
+  }, [error])
 
   return (
     <Card interactive={true} elevation={Elevation.TWO} className="relative">
@@ -111,8 +137,31 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
   )
 }
 
-export const OperationCard = ({ operation }: { operation: Operation }) => {
+export const OperationCard = ({operationId}:{operationId: Operation['id']}) => {
   const { data: levels } = useLevels()
+
+  const {
+    data: operation,
+    error,
+  } = useOperation({
+    id: operationId,
+    suspense: true,
+  })
+
+  // make eslint happy: we got Suspense out there
+  if (!operation) throw new Error('unreachable')
+
+  useEffect(() => {
+  }, [operation])
+
+  useEffect(() => {
+    if (error) {
+      AppToaster.show({
+        intent: 'danger',
+        message: `刷新作业失败：${formatError(error)}`,
+      })
+    }
+  }, [error])
 
   return (
     <Card
@@ -240,39 +289,72 @@ const CardActions = ({
   operation: Operation
 }) => {
   return (
-    <div className={clsx('flex gap-1', className)}>
-      <Tooltip2
-        placement="bottom"
-        content={
-          <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
-        }
-      >
-        <Button
-          small
-          icon="download"
-          onClick={() => handleDownloadJSON(operation.parsedContent)}
-        />
-      </Tooltip2>
-      <Tooltip2
-        placement="bottom"
-        content={
-          <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
-        }
-      >
-        <Button
-          small
-          icon="clipboard"
-          onClick={() => copyShortCode(operation)}
-        />
-      </Tooltip2>
-      <Tooltip2
-        placement="bottom"
-        content={
-          <div className="max-w-sm dark:text-slate-900">添加到作业集</div>
-        }
-      >
-        <AddToOperationSetButton small icon="plus" operationId={operation.id} />
-      </Tooltip2>
-    </div>
+    <>
+      <div className={clsx('flex gap-1', className)}>
+        <Tooltip2
+          placement="bottom"
+          content={
+            <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
+          }
+        >
+          <Button
+            small
+            icon="download"
+            onClick={() => handleDownloadJSON(operation.parsedContent)}
+          />
+        </Tooltip2>
+        <Tooltip2
+          placement="bottom"
+          content={
+            <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
+          }
+        >
+          <Button
+            small
+            icon="clipboard"
+            onClick={() => copyShortCode(operation)}
+          />
+        </Tooltip2>
+        <Tooltip2
+          placement="bottom"
+          content={
+            <div className="max-w-sm dark:text-slate-900">添加到作业集</div>
+          }
+        >
+          <AddToOperationSetButton small icon="plus" operationId={operation.id} />
+        </Tooltip2>
+      </div>
+      <div className={clsx('mt-8 flex', className)}>
+        <ButtonGroup className="flex items-center">
+          <Tooltip2 content="o(*≧▽≦)ツ" placement="bottom">
+            <Button
+              small
+              icon="thumbs-up"
+              intent={
+                operation.ratingType === OpRatingType.Like
+                  ? 'success'
+                  : 'none'
+              }
+              className="mr-2"
+              active={operation.ratingType === OpRatingType.Like}
+              onClick={() => handleRating(operation.ratingType === OpRatingType.Like ? OpRatingType.None : OpRatingType.Like, operation.id)}
+            />
+          </Tooltip2>
+          <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
+            <Button
+              small
+              icon="thumbs-down"
+              intent={
+                operation.ratingType === OpRatingType.Dislike
+                  ? 'danger'
+                  : 'none'
+              }
+              active={operation.ratingType === OpRatingType.Dislike}
+              onClick={() => handleRating(operation.ratingType === OpRatingType.Dislike ? OpRatingType.None : OpRatingType.Dislike, operation.id)}
+            />
+          </Tooltip2>
+        </ButtonGroup>
+      </div>
+    </>
   )
 }
