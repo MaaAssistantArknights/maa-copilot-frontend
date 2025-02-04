@@ -34,9 +34,6 @@ export const NeoOperationCard = ({operationId}:{operationId: Operation['id']}) =
   if (!operation) throw new Error('unreachable')
 
   useEffect(() => {
-  }, [operation])
-
-  useEffect(() => {
     if (error) {
       AppToaster.show({
         intent: 'danger',
@@ -150,9 +147,6 @@ export const OperationCard = ({operationId}:{operationId: Operation['id']}) => {
 
   // make eslint happy: we got Suspense out there
   if (!operation) throw new Error('unreachable')
-
-  useEffect(() => {
-  }, [operation])
 
   useEffect(() => {
     if (error) {
