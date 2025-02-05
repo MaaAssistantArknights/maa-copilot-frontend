@@ -101,6 +101,13 @@ export const EditorActionAdd = ({
   )
 
   useEffect(() => {
+    if (editingAction?.type) {
+      setValue('type', editingAction.type)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editingAction?._id, setValue])
+
+  useEffect(() => {
     if (editingAction) {
       // 修复切换type的时候，数据丢失的问题
       // 原因：因为切换type的时候会触发页面绘制，导致form和对应的item组件丢失绑定，
