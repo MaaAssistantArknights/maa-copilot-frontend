@@ -102,9 +102,6 @@ export const EditorActionAdd = ({
 
   useEffect(() => {
     if (editingAction) {
-      if ('type' in editingAction) {
-        setValue('type', editingAction.type)
-      }
       // 修复切换type的时候，数据丢失的问题
       // 原因：因为切换type的时候会触发页面绘制，导致form和对应的item组件丢失绑定，
       // 当重置时没办法正常清空item组件内部的值。
