@@ -1,3 +1,16 @@
+## 2025-02-06
+
+- 支持作业集内排序 [@hmydgz](https://github.com/hmydgz)
+- 减少首页显示的数据量 [@guansss](https://github.com/guansss)
+
+## 2024-09-06
+
+- 修复了作业卡片高度不足的问题 [@Handiwork](https://github.com/Handiwork)
+- 优化了小屏幕上导航栏的显示 [@martinwang2002](https://github.com/martinwang2002)
+- 优化了干员快捷编辑器 [@Gemini2035](https://github.com/Gemini2035)
+- 优化了首页侧边栏显示 [@fundgao](https://github.com/fundgao)
+- 支持作者评论字数上限为500 [@dragove](https://github.com/dragove)
+
 ## 2024-06-19
 
 - 修复了不能通过神秘代码搜索作业集的问题 [@guansss](https://github.com/guansss)
