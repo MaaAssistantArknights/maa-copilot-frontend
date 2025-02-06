@@ -22,7 +22,7 @@ import { FC, useEffect, useState } from 'react'
 import { Control, UseFieldArrayMove, useFieldArray } from 'react-hook-form'
 import { SetRequired } from 'type-fest'
 
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FactItem } from '../../FactItem'
 import { Droppable, Sortable } from '../../dnd'
@@ -289,7 +289,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             addOperator()
           } else {
             updateOperator(
-              operators.findIndex(({ name }) => name === operator.name),
+              operators.findIndex(({ _id }) => _id === operator._id),
               operator,
             )
           }
