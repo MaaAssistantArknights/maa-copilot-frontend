@@ -20,7 +20,7 @@ import { useOperation } from 'apis/operation'
 import { AppToaster } from './Toaster'
 import { formatError } from 'utils/error'
 
-export const NeoOperationCard = ({operationId}:{operationId: Operation['id']}) => {
+export const NeoOperationCard = ({ operationId }: { operationId: Operation['id'] }) => {
   const { data: levels } = useLevels()
   const {
     data: operation,
@@ -134,7 +134,7 @@ export const NeoOperationCard = ({operationId}:{operationId: Operation['id']}) =
   )
 }
 
-export const OperationCard = ({operationId}:{operationId: Operation['id']}) => {
+export const OperationCard = ({ operationId }: { operationId: Operation['id'] }) => {
   const { data: levels } = useLevels()
 
   const {

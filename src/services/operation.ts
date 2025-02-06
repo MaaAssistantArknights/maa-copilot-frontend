@@ -77,7 +77,7 @@ export const handleRating = async (decision: OpRatingType, operationId: number) 
   })
   wrapErrorMessage(
     (e) => `提交评分失败：${formatError(e)}`,
-    mutate(async (val) => {
+    mutate(['operation', operationId], async (val) => {
       await rateOperation({
         id: operationId,
         rating: decision,

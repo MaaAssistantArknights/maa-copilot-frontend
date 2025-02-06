@@ -129,7 +129,6 @@ export const OperationViewer: ComponentType<{
 
     useEffect(() => {
       // on finished loading, scroll to #fragment if any
-      console.log("update operation")
       if (operation) {
         const fragment = window.location.hash
         if (fragment) {
@@ -297,7 +296,7 @@ function OperationViewerInner({
                   className="mr-2"
                   active={operation.ratingType === OpRatingType.Like}
                   onClick={() => {
-                    var type = operation.ratingType === OpRatingType.Like ? OpRatingType.None : OpRatingType.Like;
+                    const type = operation.ratingType === OpRatingType.Like ? OpRatingType.None : OpRatingType.Like;
                     handleRating(type, operation.id)
                   }}
                 />
@@ -312,7 +311,7 @@ function OperationViewerInner({
                   }
                   active={operation.ratingType === OpRatingType.Dislike}
                   onClick={() => {
-                    var type = operation.ratingType === OpRatingType.Dislike ? OpRatingType.None : OpRatingType.Dislike;
+                    const type = operation.ratingType === OpRatingType.Dislike ? OpRatingType.None : OpRatingType.Dislike;
                     handleRating(type, operation.id)
                   }}
                 />
