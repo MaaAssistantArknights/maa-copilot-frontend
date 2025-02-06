@@ -415,6 +415,15 @@
       "alt_name": "Broca"
     },
     {
+      "id": "char_4155_talr",
+      "prof": "SPECIAL",
+      "subProf": "merchant",
+      "name": "裁度",
+      "alias": "caidu caiduo cd 裁度",
+      "rarity": 5,
+      "alt_name": "Figurino"
+    },
+    {
       "id": "char_4106_bryota",
       "prof": "WARRIOR",
       "subProf": "instructor",
@@ -730,6 +739,15 @@
       "alt_name": "Arene"
     },
     {
+      "id": "char_4148_philae",
+      "prof": "TANK",
+      "subProf": "primprotector",
+      "name": "菲莱",
+      "alias": "feilai fl 菲萊",
+      "rarity": 5,
+      "alt_name": "Philae"
+    },
+    {
       "id": "char_300_phenxi",
       "prof": "SNIPER",
       "subProf": "aoesniper",
@@ -865,6 +883,15 @@
       "alt_name": "Specter the Unchained"
     },
     {
+      "id": "char_4163_rosesa",
+      "prof": "MEDIC",
+      "subProf": "ringhealer",
+      "name": "瑰盐",
+      "alias": "guiyan gy 瑰鹽",
+      "rarity": 5,
+      "alt_name": "Rose Salt"
+    },
+    {
       "id": "char_4114_harold",
       "prof": "MEDIC",
       "subProf": "wandermedic",
@@ -917,6 +944,15 @@
       "alias": "hantan ht 寒檀",
       "rarity": 5,
       "alt_name": "Santalla"
+    },
+    {
+      "id": "char_4172_xingzh",
+      "prof": "SUPPORT",
+      "subProf": "blessing",
+      "name": "行箸",
+      "alias": "hangzhu xingzhu hz xz 行箸",
+      "rarity": 5,
+      "alt_name": "Xingzhu"
     },
     {
       "id": "char_4039_horn",
@@ -1106,6 +1142,15 @@
       "alias": "huangjinmengshi hjms 黃金盟誓",
       "rarity": 0,
       "alt_name": "Golden Vow"
+    },
+    {
+      "id": "char_1038_whitw2",
+      "prof": "CASTER",
+      "subProf": "funnel",
+      "name": "荒芜拉普兰德",
+      "alias": "huangwulapulande hwlpld 荒蕪拉普蘭德",
+      "rarity": 6,
+      "alt_name": "Lappland the Decadenza"
     },
     {
       "id": "char_431_ashlok",
@@ -1891,6 +1936,15 @@
       "alt_name": "Magallan"
     },
     {
+      "id": "char_610_acfend",
+      "prof": "TANK",
+      "subProf": "protector",
+      "name": "Mechanist",
+      "alias": "Mechanist",
+      "rarity": 6,
+      "alt_name": "Mechanist"
+    },
+    {
       "id": "char_133_mm",
       "prof": "SNIPER",
       "subProf": "fastshot",
@@ -1990,6 +2044,15 @@
       "alt_name": "Paprika"
     },
     {
+      "id": "char_615_acspec",
+      "prof": "SPECIAL",
+      "subProf": "executor",
+      "name": "Misery",
+      "alias": "Misery",
+      "rarity": 6,
+      "alt_name": "Misery"
+    },
+    {
       "id": "char_154_morgan",
       "prof": "WARRIOR",
       "subProf": "fearless",
@@ -2042,6 +2105,15 @@
       "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思",
       "rarity": 6,
       "alt_name": "Muelsyse"
+    },
+    {
+      "id": "token_10042_tecno_puppet",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "木偶舞者",
+      "alias": "muouwuzhe mowz 木偶舞者",
+      "rarity": 0,
+      "alt_name": "Puppet Dancer"
     },
     {
       "id": "char_185_frncat",
@@ -2260,6 +2332,24 @@
       "alt_name": "Making-up Machine"
     },
     {
+      "id": "char_614_acsupo",
+      "prof": "SUPPORT",
+      "subProf": "slower",
+      "name": "Raidian",
+      "alias": "Raidian",
+      "rarity": 6,
+      "alt_name": "Raidian"
+    },
+    {
+      "id": "char_4026_vulpis",
+      "prof": "PIONEER",
+      "subProf": "pioneer",
+      "name": "忍冬",
+      "alias": "rendong rd 忍冬",
+      "rarity": 6,
+      "alt_name": "Vulpisfoglia"
+    },
+    {
       "id": "char_363_toddi",
       "prof": "SNIPER",
       "subProf": "siegesniper",
@@ -2447,6 +2537,15 @@
       "alias": "shihuaiya shy 詩懷雅",
       "rarity": 5,
       "alt_name": "Swire"
+    },
+    {
+      "id": "char_1502_crosly",
+      "prof": "SPECIAL",
+      "subProf": "executor",
+      "name": "弑君者",
+      "alias": "shijunzhe sjz 弑君者",
+      "rarity": 6,
+      "alt_name": "Crownslayer"
     },
     {
       "id": "char_378_asbest",
@@ -2672,6 +2771,15 @@
       "alias": "taojinniang tjn 桃金娘",
       "rarity": 4,
       "alt_name": "Myrtle"
+    },
+    {
+      "id": "char_4164_tecno",
+      "prof": "CASTER",
+      "subProf": "soulcaster",
+      "name": "特克诺",
+      "alias": "tekenuo tkn 特克諾",
+      "rarity": 5,
+      "alt_name": "Tecno"
     },
     {
       "id": "char_411_tomimi",
@@ -3043,6 +3151,15 @@
       "alt_name": "Snowsant"
     },
     {
+      "id": "char_4052_surfer",
+      "prof": "PIONEER",
+      "subProf": "agent",
+      "name": "寻澜",
+      "alias": "xunlan xl 尋瀾",
+      "rarity": 5,
+      "alt_name": "Surfer"
+    },
+    {
       "id": "char_503_rang",
       "prof": "SNIPER",
       "subProf": "fastshot",
@@ -3313,6 +3430,15 @@
       "alt_name": "Insider"
     },
     {
+      "id": "char_1039_thorn2",
+      "prof": "SPECIAL",
+      "subProf": "alchemist",
+      "name": "引星棘刺",
+      "alias": "yinxingjici yxjc 引星棘刺",
+      "rarity": 6,
+      "alt_name": "Thorns the Lodestar"
+    },
+    {
       "id": "token_10016_rfrost_mine",
       "prof": "TOKEN",
       "subProf": "notchar1",
@@ -3340,6 +3466,24 @@
       "alt_name": "Specter"
     },
     {
+      "id": "char_2026_yu",
+      "prof": "TANK",
+      "subProf": "primprotector",
+      "name": "余",
+      "alias": "yu y 餘",
+      "rarity": 6,
+      "alt_name": "Yu"
+    },
+    {
+      "id": "char_606_csuppo",
+      "prof": "SUPPORT",
+      "subProf": "slower",
+      "name": "预备干员-辅助",
+      "alias": "yubeiganyuan-fuzhu yubeiganyuan-fuchu yubeiganyun-fuzhu yubeiganyun-fuchu ybgy-fz ybgy-fc 預備幹員-輔助",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Supporter"
+    },
+    {
       "id": "char_506_rmedic",
       "prof": "MEDIC",
       "subProf": "physician",
@@ -3347,6 +3491,15 @@
       "alias": "yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq 預備幹員-後勤",
       "rarity": 3,
       "alt_name": "Reserve (Logistic)"
+    },
+    {
+      "id": "char_601_cguard",
+      "prof": "WARRIOR",
+      "subProf": "fearless",
+      "name": "预备干员-近卫",
+      "alias": "yubeiganyuan-jinwei yubeiganyun-jinwei ybgy-jw 預備幹員-近衛",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Guard"
     },
     {
       "id": "char_504_rguard",
@@ -3374,6 +3527,33 @@
       "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
       "rarity": 3,
       "alt_name": "Reserve (Caster)"
+    },
+    {
+      "id": "char_607_cspec",
+      "prof": "SPECIAL",
+      "subProf": "executor",
+      "name": "预备干员-特种",
+      "alias": "yubeiganyuan-tezhong yubeiganyuan-techong yubeiganyun-tezhong yubeiganyun-techong ybgy-tz ybgy-tc 預備幹員-特種",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Specialist"
+    },
+    {
+      "id": "char_600_cpione",
+      "prof": "PIONEER",
+      "subProf": "pioneer",
+      "name": "预备干员-先锋",
+      "alias": "yubeiganyuan-xianfeng yubeiganyun-xianfeng ybgy-xf 預備幹員-先鋒",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Vanguard"
+    },
+    {
+      "id": "char_605_cmedic",
+      "prof": "MEDIC",
+      "subProf": "physician",
+      "name": "预备干员-医疗",
+      "alias": "yubeiganyuan-yiliao yubeiganyun-yiliao ybgy-yl 預備幹員-醫療",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Medic"
     },
     {
       "id": "char_514_rdfend",
@@ -3446,6 +3626,15 @@
       "alias": "yueyue yy 躍躍",
       "rarity": 4,
       "alt_name": "Caper"
+    },
+    {
+      "id": "char_4165_ctrail",
+      "prof": "SPECIAL",
+      "subProf": "skywalker",
+      "name": "云迹",
+      "alias": "yunji yj 雲跡",
+      "rarity": 4,
+      "alt_name": "Contrail"
     },
     {
       "id": "char_219_meteo",
@@ -3536,6 +3725,15 @@
       "alias": "zhongyue chongyue zy cy 重嶽",
       "rarity": 6,
       "alt_name": "Chongyue"
+    },
+    {
+      "id": "char_1040_blaze2",
+      "prof": "CASTER",
+      "subProf": "primcaster",
+      "name": "烛煌",
+      "alias": "zhuhuang zh 燭煌",
+      "rarity": 6,
+      "alt_name": "Blaze the Igniting Spark"
     },
     {
       "id": "char_333_sidero",
@@ -3642,6 +3840,7 @@
         { "id": "stalker", "name": "伏击客" },
         { "id": "pusher", "name": "推击手" },
         { "id": "dollkeeper", "name": "傀儡师" },
+        { "id": "skywalker", "name": "巡空者" },
         { "id": "geek", "name": "怪杰" },
         { "id": "traper", "name": "陷阱师" },
         { "id": "alchemist", "name": "炼金师" }
@@ -3685,7 +3884,8 @@
         { "id": "artsprotector", "name": "驭法铁卫" },
         { "id": "shotprotector", "name": "哨戒铁卫" },
         { "id": "fortress", "name": "要塞" },
-        { "id": "duelist", "name": "决战者" }
+        { "id": "duelist", "name": "决战者" },
+        { "id": "primprotector", "name": "本源铁卫" }
       ]
     },
     {
@@ -3710,7 +3910,8 @@
         { "id": "chain", "name": "链术师" },
         { "id": "phalanx", "name": "阵法术师" },
         { "id": "blastcaster", "name": "轰击术师" },
-        { "id": "primcaster", "name": "本源术师" }
+        { "id": "primcaster", "name": "本源术师" },
+        { "id": "soulcaster", "name": "塑灵术师" }
       ]
     }
   ]

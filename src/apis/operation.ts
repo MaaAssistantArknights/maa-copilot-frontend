@@ -1,3 +1,4 @@
+import { uniqBy } from 'lodash-es'
 import { QueriesCopilotRequest } from 'maa-copilot-client'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
@@ -11,6 +12,7 @@ import { useSWRRefresh } from 'utils/swr'
 export type OrderBy = 'views' | 'hot' | 'id'
 
 export interface UseOperationsParams {
+  limit?: number
   orderBy?: OrderBy
   descending?: boolean
   keyword?: string
@@ -21,9 +23,11 @@ export interface UseOperationsParams {
 
   disabled?: boolean
   suspense?: boolean
+  revalidateFirstPage?: boolean
 }
 
 export function useOperations({
+  limit = 50,
   orderBy,
   descending = true,
   keyword,
@@ -33,6 +37,7 @@ export function useOperations({
   byMyself,
   disabled,
   suspense,
+  revalidateFirstPage,
 }: UseOperationsParams) {
   const {
     error,
@@ -71,7 +76,7 @@ export function useOperations({
       return [
         'operations',
         {
-          limit: 50,
+          limit,
           page: pageIndex + 1,
           document: keyword,
           levelKeyword,
@@ -96,10 +101,13 @@ export function useOperations({
         requireData: true,
       }).queriesCopilot(req)
 
-      const parsedOperations: Operation[] = res.data.data.map((operation) => ({
+      let parsedOperations: Operation[] = res.data.data.map((operation) => ({
         ...operation,
         parsedContent: toCopilotOperation(operation),
       }))
+
+      // 如果 revalidateFirstPage=false，从第二页开始可能会有重复数据，需要去重
+      parsedOperations = uniqBy(parsedOperations, (o) => o.id)
 
       return {
         ...res.data,
@@ -109,12 +117,20 @@ export function useOperations({
     {
       suspense,
       focusThrottleInterval: 1000 * 60 * 30,
+      revalidateFirstPage,
     },
   )
 
   const isReachingEnd = !!pages?.some((page) => !page.hasNext)
 
-  const operations = pages?.map((page) => page.data).flat()
+  const _operations = pages?.map((page) => page.data).flat() ?? []
+
+  // 按 operationIds 的顺序排序
+  const operations = operationIds?.length
+    ? operationIds
+        ?.map((id) => _operations?.find((v) => v.id === id))
+        .filter((v) => !!v)
+    : _operations
 
   return {
     error,

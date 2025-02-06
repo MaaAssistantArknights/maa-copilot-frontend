@@ -28,6 +28,7 @@ export const Operations: ComponentType = withSuspensable(() => {
   const [queryParams, setQueryParams] = useState<
     Omit<UseOperationsParams, 'operator'>
   >({
+    limit: 10,
     orderBy: 'hot',
   })
   const [selectedOperators, setSelectedOperators] = useAtom(
@@ -218,7 +219,12 @@ export const Operations: ComponentType = withSuspensable(() => {
 
       <div className="tabular-nums">
         {listMode === 'operation' && (
-          <OperationList {...queryParams} operator={selectedOperatorQuery} />
+          <OperationList
+            {...queryParams}
+            operator={selectedOperatorQuery}
+            // 按热度排序时列表前几页的变化不会太频繁，可以不刷新第一页，节省点流量
+            revalidateFirstPage={queryParams.orderBy !== 'hot'}
+          />
         )}
         {listMode === 'operationSet' && <OperationSetList {...queryParams} />}
       </div>
