@@ -15,32 +15,9 @@ import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
-import { useEffect } from 'react'
-import { useOperation } from 'apis/operation'
-import { AppToaster } from './Toaster'
-import { formatError } from 'utils/error'
 
-export const NeoOperationCard = ({ operationId }: { operationId: Operation['id'] }) => {
+export const NeoOperationCard = ({ operation, updateOperation }: { operation: Operation, updateOperation: (id: number, type: number) => Promise<void> }) => {
   const { data: levels } = useLevels()
-  const {
-    data: operation,
-    error,
-  } = useOperation({
-    id: operationId,
-    suspense: true,
-  })
-
-  // make eslint happy: we got Suspense out there
-  if (!operation) throw new Error('unreachable')
-
-  useEffect(() => {
-    if (error) {
-      AppToaster.show({
-        intent: 'danger',
-        message: `刷新作业失败：${formatError(error)}`,
-      })
-    }
-  }, [error])
 
   return (
     <Card interactive={true} elevation={Elevation.TWO} className="relative">
@@ -129,33 +106,13 @@ export const NeoOperationCard = ({ operationId }: { operationId: Operation['id']
         </div>
       </ReLink>
 
-      <CardActions className="absolute top-4 right-4" operation={operation} />
+      <CardActions className="absolute top-4 right-4" operation={operation} updateOperation={updateOperation} />
     </Card>
   )
 }
 
-export const OperationCard = ({ operationId }: { operationId: Operation['id'] }) => {
+export const OperationCard = ({ operation, updateOperation }: { operation: Operation, updateOperation: (id: number, type: number) => Promise<void> }) => {
   const { data: levels } = useLevels()
-
-  const {
-    data: operation,
-    error,
-  } = useOperation({
-    id: operationId,
-    suspense: true,
-  })
-
-  // make eslint happy: we got Suspense out there
-  if (!operation) throw new Error('unreachable')
-
-  useEffect(() => {
-    if (error) {
-      AppToaster.show({
-        intent: 'danger',
-        message: `刷新作业失败：${formatError(error)}`,
-      })
-    }
-  }, [error])
 
   return (
     <Card
@@ -240,6 +197,7 @@ export const OperationCard = ({ operationId }: { operationId: Operation['id'] })
       <CardActions
         className="absolute top-4 xl:top-12 right-[18px]"
         operation={operation}
+        updateOperation={updateOperation}
       />
     </Card>
   )
@@ -278,9 +236,11 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
 const CardActions = ({
   className,
   operation,
+  updateOperation,
 }: {
   className?: string
   operation: Operation
+  updateOperation: (id: number, type: number) => Promise<void>
 }) => {
   return (
     <>
@@ -331,7 +291,11 @@ const CardActions = ({
               }
               className="mr-2"
               active={operation.ratingType === OpRatingType.Like}
-              onClick={() => handleRating(operation.ratingType === OpRatingType.Like ? OpRatingType.None : OpRatingType.Like, operation.id)}
+              onClick={() => {
+                const type = operation.ratingType === OpRatingType.Like ? OpRatingType.None : OpRatingType.Like
+                handleRating(type, operation.id)
+                updateOperation(operation.id, type)
+              }}
             />
           </Tooltip2>
           <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
@@ -344,7 +308,11 @@ const CardActions = ({
                   : 'none'
               }
               active={operation.ratingType === OpRatingType.Dislike}
-              onClick={() => handleRating(operation.ratingType === OpRatingType.Dislike ? OpRatingType.None : OpRatingType.Dislike, operation.id)}
+              onClick={() => {
+                const type = operation.ratingType === OpRatingType.Dislike ? OpRatingType.None : OpRatingType.Dislike
+                handleRating(type, operation.id)
+                updateOperation(operation.id, type)
+              }}
             />
           </Tooltip2>
         </ButtonGroup>
