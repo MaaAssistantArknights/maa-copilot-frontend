@@ -57,6 +57,7 @@ export const OperatorFilter: FC<OperatorSelectProps> = ({
         <div className="flex justify-between items-baseline text-zinc-500">
           <div>点击干员标签以标记为排除该干员</div>
           <Checkbox
+            className="[&>input:checked~.bp4-control-indicator]:bg-zinc-500"
             checked={shouldSaveSelectedOperators}
             onChange={(e) =>
               handleShouldSaveSelectedOperators(e.currentTarget.checked)
