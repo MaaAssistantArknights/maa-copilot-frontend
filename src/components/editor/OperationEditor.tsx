@@ -196,10 +196,18 @@ const DifficultyPicker: FC<{
 
   const stageName = useWatch({ control, name: 'stageName' })
   const { data: levels } = useLevels()
-  const invalid = useMemo(
-    () => !hasHardMode(levels, stageName),
-    [levels, stageName],
-  )
+  const invalid = useMemo(() => {
+    // if the stageName is a custom level, we always allow setting difficulty
+    if (!findLevelByStageName(levels, stageName)) {
+      return false
+    }
+
+    if (hasHardMode(levels, stageName)) {
+      return false
+    }
+
+    return true
+  }, [levels, stageName])
 
   useEffect(() => {
     if (invalid && value !== OpDifficulty.UNKNOWN) {
