@@ -1,0 +1,65 @@
+name: Auto Upsert Release PR
+
+on:
+  # trigger on push to dev branch
+  push:
+    branches:
+      - dev
+  # trigger on manual workflow_dispatch
+  workflow_dispatch:
+
+concurrency:
+  group: pr-upsert-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  pr-upsert:
+    name: Upsert PR
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: "dev"
+          # fetch all history so that git log can get all commit messages
+          fetch-depth: 0
+
+      # create a PR from dev to main, with title in form: Release <semver>
+      # where, <semver> is the next version number to be released, based on the last release in git tag
+      - name: Upsert PR Content
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            const prTitle = "Release to Production"
+            let body = `> *This PR is automatically created by actions defined in this repository. To see the run log of this action, please click [here](/${{ github.repository }}/actions/runs/${{ github.run_id }})*`
+            const existedPR = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: `${context.repo.owner}:dev`,
+              base: 'main'
+            })
+            if (existedPR.data.length > 0) {
+              core.info(`PR already exists: ${existedPR.data[0].html_url}. Updating body...`)
+              await github.rest.pulls.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: existedPR.data[0].number,
+                body: body
+              })
+              core.info(`PR updated: ${existedPR.data[0].html_url}`)
+              return
+            }
+            const pr = await github.rest.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: prTitle,
+              body: body,
+              head: context.ref,
+              base: 'main',
+              draft: true
+            })
