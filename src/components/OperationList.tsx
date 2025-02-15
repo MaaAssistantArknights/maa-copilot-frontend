@@ -13,8 +13,7 @@ export const OperationList: ComponentType<UseOperationsParams> =
   withSuspensable(
     (props) => {
       const neoLayout = useAtomValue(neoLayoutAtom)
-
-      const { operations, setSize, isValidating, isReachingEnd } =
+      const { operations, setSize, isValidating, isReachingEnd, mutate } =
         useOperations({
           ...props,
           suspense: true,
@@ -22,6 +21,28 @@ export const OperationList: ComponentType<UseOperationsParams> =
 
       // make TS happy: we got Suspense out there
       if (!operations) throw new Error('unreachable')
+
+      const updateOperation = async (id, ratingType) => {
+        mutate((val) => {
+          if (!val || !Array.isArray(val)) return val;
+          return val.map((page) => {
+            if ('data' in page && Array.isArray(page.data)) {
+              const updatedData = page.data.map((operation) =>
+                operation.id === id
+                  ? { ...operation, ratingType: ratingType }
+                  : operation
+              );
+              return {
+                ...page,
+                data: updatedData,
+                page: ('page' in page ? page.page : 1),
+                total: ('total' in page ? page.total : 0),
+              };
+            }
+            return page;
+          });
+        }, false);
+      }
 
       const items: ReactNode = neoLayout ? (
         <div
@@ -31,12 +52,12 @@ export const OperationList: ComponentType<UseOperationsParams> =
           }}
         >
           {operations.map((operation) => (
-            <NeoOperationCard operation={operation} key={operation.id} />
+            <NeoOperationCard operation={operation} key={operation.id} updateOperation={updateOperation} />
           ))}
         </div>
       ) : (
         operations.map((operation) => (
-          <OperationCard operation={operation} key={operation.id} />
+          <OperationCard operation={operation} key={operation.id} updateOperation={updateOperation} />
         ))
       )
 

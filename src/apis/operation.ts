@@ -44,6 +44,7 @@ export function useOperations({
     data: pages,
     setSize,
     isValidating,
+    mutate
   } = useSWRInfinite(
     (pageIndex, previousPage: { hasNext: boolean }) => {
       if (disabled) {
@@ -128,8 +129,8 @@ export function useOperations({
   // 按 operationIds 的顺序排序
   const operations = operationIds?.length
     ? operationIds
-        ?.map((id) => _operations?.find((v) => v.id === id))
-        .filter((v) => !!v)
+      ?.map((id) => _operations?.find((v) => v.id === id))
+      .filter((v) => !!v)
     : _operations
 
   return {
@@ -138,6 +139,7 @@ export function useOperations({
     setSize,
     isValidating,
     isReachingEnd,
+    mutate
   }
 }
 
