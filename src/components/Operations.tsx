@@ -7,7 +7,7 @@ import {
 } from '@blueprintjs/core'
 
 import { UseOperationsParams } from 'apis/operation'
-import { useAtom, useAtomValue } from 'jotai'
+import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
 import { ComponentType, useMemo, useState } from 'react'
 
@@ -15,13 +15,9 @@ import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { neoLayoutAtom } from 'store/pref'
-import {
-  selectedOperatorQueryAtom,
-  selectedOperatorsAtom,
-} from 'store/selectedOperators'
 
 import { authAtom } from '../store/auth'
-import { OperatorSelect } from './OperatorSelect'
+import { OperatorFilter } from './OperatorFilter'
 import { withSuspensable } from './Suspensable'
 
 export const Operations: ComponentType = withSuspensable(() => {
@@ -31,14 +27,13 @@ export const Operations: ComponentType = withSuspensable(() => {
     limit: 10,
     orderBy: 'hot',
   })
-  const [selectedOperators, setSelectedOperators] = useAtom(
-    selectedOperatorsAtom,
-  )
-  const selectedOperatorQuery = useAtomValue(selectedOperatorQueryAtom)
   const debouncedSetQueryParams = useMemo(
     () => debounce(setQueryParams, 500),
     [],
   )
+
+  const [selectedOperators, setSelectedOperators] = useState<string[]>([])
+
   const [authState] = useAtom(authAtom)
   const [neoLayout, setNeoLayout] = useAtom(neoLayoutAtom)
   const [listMode, setListMode] = useState<'operation' | 'operationSet'>(
@@ -104,14 +99,7 @@ export const Operations: ComponentType = withSuspensable(() => {
         {listMode === 'operation' && (
           <div className="flex flex-wrap items-end">
             <div className="flex mr-4">
-              <FormGroup
-                helperText={
-                  selectedOperators.length
-                    ? '点击干员标签以标记为排除该干员'
-                    : undefined
-                }
-                className="max-w-md"
-              >
+              <div className="max-w-md">
                 <InputGroup
                   className="[&>input]:!rounded-md"
                   placeholder="标题、描述、神秘代码"
@@ -145,12 +133,12 @@ export const Operations: ComponentType = withSuspensable(() => {
                   }
                   onBlur={() => debouncedSetQueryParams.flush()}
                 />
-                <OperatorSelect
+                <OperatorFilter
                   className="mt-2"
-                  operators={selectedOperatorQuery.split(',')}
+                  operators={selectedOperators}
                   onChange={setSelectedOperators}
                 />
-              </FormGroup>
+              </div>
             </div>
             <div className="flex flex-col">
               {filterNode}
@@ -221,7 +209,7 @@ export const Operations: ComponentType = withSuspensable(() => {
         {listMode === 'operation' && (
           <OperationList
             {...queryParams}
-            operator={selectedOperatorQuery}
+            operator={selectedOperators.join(',')}
             // 按热度排序时列表前几页的变化不会太频繁，可以不刷新第一页，节省点流量
             revalidateFirstPage={queryParams.orderBy !== 'hot'}
           />

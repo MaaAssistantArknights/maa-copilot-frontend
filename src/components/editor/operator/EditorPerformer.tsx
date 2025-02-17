@@ -1,4 +1,4 @@
-import { NonIdealState } from '@blueprintjs/core'
+import { Callout, Icon, NonIdealState } from '@blueprintjs/core'
 import {
   Active,
   DndContext,
@@ -17,12 +17,17 @@ import {
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable'
 
-import { uniqueId } from 'lodash-es'
-import { FC, useEffect, useState } from 'react'
-import { Control, UseFieldArrayMove, useFieldArray } from 'react-hook-form'
+import { compact, uniq, uniqueId } from 'lodash-es'
+import { FC, useEffect, useMemo, useState } from 'react'
+import {
+  Control,
+  UseFieldArrayMove,
+  useFieldArray,
+  useWatch,
+} from 'react-hook-form'
 import { SetRequired } from 'type-fest'
 
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { FactItem } from '../../FactItem'
 import { Droppable, Sortable } from '../../dnd'
@@ -52,6 +57,7 @@ const getId = (performer: Operator | Group) => {
 export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   const [editMode, setEditMode] = useState<PerformerType>('operator')
   const sensors = useSensors(useSensor(PointerSensor))
+  const actions = useWatch({ control, name: 'actions' })
 
   const {
     fields: _operators,
@@ -78,6 +84,25 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
   // upcast them to the base types to stop TS from complaining when calling indexOf(), includes(), etc.
   const operators: Operator[] = _operators
   const groups: Group[] = _groups
+
+  const additionalOperatorsFromActions = useMemo(() => {
+    if (!actions) return []
+
+    const additionalOperators = actions.map((action) => {
+      if (
+        'name' in action &&
+        !operators.some(({ name }) => name === action.name) &&
+        !groups.some(({ opers }) =>
+          opers?.some(({ name }) => name === action.name),
+        )
+      ) {
+        return action.name
+      }
+      return undefined
+    })
+
+    return uniq(compact(additionalOperators))
+  }, [actions, operators, groups])
 
   const [draggingOperator, setDraggingOperator] = useState<Operator>()
   const [draggingGroup, setDraggingGroup] = useState<Group>()
@@ -289,7 +314,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             addOperator()
           } else {
             updateOperator(
-              operators.findIndex(({ name }) => name === operator.name),
+              operators.findIndex(({ _id }) => _id === operator._id),
               operator,
             )
           }
@@ -354,14 +379,16 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     <>
       <div className="flex flex-wrap md:flex-nowrap">
         <div className="w-full md:w-1/3 md:mr-8 flex flex-col pb-8">
-          <EditorSheetTrigger
-            submitOperator={submitOperator}
-            submitGroup={submitGroup}
-            existedOperators={operators}
-            existedGroups={groups}
-            removeOperator={removeOperator}
-            removeGroup={removeGroup}
-          />
+          <div className="mb-2">
+            <EditorSheetTrigger
+              submitOperator={submitOperator}
+              submitGroup={submitGroup}
+              existedOperators={operators}
+              existedGroups={groups}
+              removeOperator={removeOperator}
+              removeGroup={removeGroup}
+            />
+          </div>
           <EditorPerformerAdd
             mode={editMode}
             operator={editingOperator}
@@ -377,7 +404,17 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
           />
         </div>
         <div className="w-full md:w-2/3 pb-8">
-          <div className="p-2 -mx-2 relative">
+          {additionalOperatorsFromActions.length > 0 && (
+            <Callout
+              className="flex items-center py-2 mb-2"
+              icon={null}
+              intent="primary"
+            >
+              <Icon icon="info-sign" className="mr-1" />
+              未加入干员：{additionalOperatorsFromActions.join(', ')}
+            </Callout>
+          )}
+          <div className="mt-2 relative">
             <DndContext
               sensors={sensors}
               onDragStart={handleDragStart}

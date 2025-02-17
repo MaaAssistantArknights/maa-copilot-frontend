@@ -2170,6 +2170,15 @@
       "alt_name": "Nian"
     },
     {
+      "id": "char_4173_nowell",
+      "prof": "MEDIC",
+      "subProf": "healer",
+      "name": "诺威尔",
+      "alias": "nuoweier nwe 諾威爾",
+      "rarity": 5,
+      "alt_name": "Nowell"
+    },
+    {
       "id": "token_10041_cathy_catsld",
       "prof": "TOKEN",
       "subProf": "notchar1",
@@ -3401,6 +3410,15 @@
       "alias": "yisheng ys 醫生",
       "rarity": 5,
       "alt_name": "Doc"
+    },
+    {
+      "id": "char_4010_etlchi",
+      "prof": "WARRIOR",
+      "subProf": "reaper",
+      "name": "隐德来希",
+      "alias": "yindelaixi ydlx 隱德來希",
+      "rarity": 6,
+      "alt_name": "Entelechia"
     },
     {
       "id": "char_172_svrash",
