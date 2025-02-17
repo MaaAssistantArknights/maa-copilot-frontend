@@ -1,3 +1,11 @@
+## 2025-02-17
+
+- 修复了编辑作业时无法修改干员名称的问题 [@Gemini2035](https://github.com/Gemini2035)
+- 修复了编辑作业时无法修改动作类型的问题 [@Gemini2035](https://github.com/Gemini2035)
+- 添加了是否保存干员过滤器的选项 [@guansss](https://github.com/guansss)
+- 使用自定义关卡时支持设置难度 [@guansss](https://github.com/guansss)
+- 编辑作业时提醒缺失的干员 [@guansss](https://github.com/guansss)
+
 ## 2025-02-06
 
 - 支持作业集内排序 [@hmydgz](https://github.com/hmydgz)
