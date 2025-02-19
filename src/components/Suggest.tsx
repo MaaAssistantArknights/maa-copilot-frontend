@@ -1,26 +1,38 @@
 import { Suggest2, Suggest2Props } from '@blueprintjs/select'
 
-import { useEffect, useMemo, useState } from 'react'
+import { noop } from 'lodash-es'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { ControllerFieldState } from 'react-hook-form'
 
 import { FieldResetButton } from './FieldResetButton'
 
 interface SuggestProps<T> extends Suggest2Props<T> {
   debounce?: number // defaults to 100(ms), set to 0 to disable
+  updateQueryOnSelect?: boolean
   fieldState?: ControllerFieldState
   onReset?: () => void
 }
 
 export const Suggest = <T,>({
   debounce = 100,
+  updateQueryOnSelect,
   fieldState,
   onReset,
 
   items,
   itemListPredicate,
+  selectedItem,
+  inputValueRenderer,
   inputProps,
   ...suggest2Props
 }: SuggestProps<T>) => {
+  // 禁用掉 focus 自动选中输入框文字的功能
+  // https://github.com/palantir/blueprint/blob/b41f668461e63e2c20caf54a3248181fe01161c4/packages/select/src/components/suggest/suggest2.tsx#L229
+  const ref = useRef<Suggest2<T>>(null)
+  if (ref.current && ref.current['selectText'] !== noop) {
+    ref.current['selectText'] = noop
+  }
+
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
 
@@ -46,11 +58,20 @@ export const Suggest = <T,>({
     }
   }, [fieldState?.isTouched])
 
+  useEffect(() => {
+    if (updateQueryOnSelect && selectedItem) {
+      setQuery(inputValueRenderer(selectedItem))
+    }
+  }, [updateQueryOnSelect, selectedItem, inputValueRenderer])
+
   return (
     <Suggest2<T>
+      ref={ref}
       items={filteredItems}
       query={query}
       onQueryChange={setQuery}
+      selectedItem={selectedItem}
+      inputValueRenderer={inputValueRenderer}
       inputProps={{
         onKeyDown: (event) => {
           // prevent form submission
@@ -60,7 +81,13 @@ export const Suggest = <T,>({
         },
         rightElement: (
           <FieldResetButton
-            disabled={!fieldState?.isDirty}
+            disabled={
+              fieldState
+                ? !fieldState.isDirty
+                : onReset
+                  ? !(query || selectedItem !== null)
+                  : true
+            }
             onReset={() => {
               setQuery('')
               setDebouncedQuery('')
