@@ -17,14 +17,13 @@ import { ErrorBoundary } from '@sentry/react'
 
 import {
   deleteOperation,
-  rateOperation,
   useOperation,
   useRefreshOperations,
 } from 'apis/operation'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { copyShortCode, handleDownloadJSON } from 'services/operation'
+import { copyShortCode, handleDownloadJSON, handleRating } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
 import { Paragraphs } from 'components/Paragraphs'
@@ -123,7 +122,6 @@ export const OperationViewer: ComponentType<{
     const {
       data: operation,
       error,
-      mutate,
     } = useOperation({
       id: operationId,
       suspense: true,
@@ -157,24 +155,6 @@ export const OperationViewer: ComponentType<{
         })
       }
     }, [error])
-
-    const handleRating = async (decision: OpRatingType) => {
-      // cancel rating if already rated by the same type
-      if (decision === operation.ratingType) {
-        decision = OpRatingType.None
-      }
-
-      wrapErrorMessage(
-        (e) => `提交评分失败：${formatError(e)}`,
-        mutate(async (val) => {
-          await rateOperation({
-            id: operationId,
-            rating: decision,
-          })
-          return val
-        }),
-      ).catch(console.warn)
-    }
 
     return (
       <DrawerLayout
@@ -233,7 +213,6 @@ export const OperationViewer: ComponentType<{
           <OperationViewerInner
             levels={levels}
             operation={operation}
-            handleRating={handleRating}
           />
         </ErrorBoundary>
       </DrawerLayout>
@@ -276,11 +255,9 @@ const EmptyOperator: FC<{
 function OperationViewerInner({
   levels,
   operation,
-  handleRating,
 }: {
   levels: Level[]
   operation: Operation
-  handleRating: (decision: OpRatingType) => Promise<void>
 }) {
   return (
     <div className="h-full overflow-auto py-4 px-8 pt-8">
@@ -318,7 +295,10 @@ function OperationViewerInner({
                   }
                   className="mr-2"
                   active={operation.ratingType === OpRatingType.Like}
-                  onClick={() => handleRating(OpRatingType.Like)}
+                  onClick={() => {
+                    const type = operation.ratingType === OpRatingType.Like ? OpRatingType.None : OpRatingType.Like;
+                    handleRating(type, operation.id)
+                  }}
                 />
               </Tooltip2>
               <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
@@ -330,7 +310,10 @@ function OperationViewerInner({
                       : 'none'
                   }
                   active={operation.ratingType === OpRatingType.Dislike}
-                  onClick={() => handleRating(OpRatingType.Dislike)}
+                  onClick={() => {
+                    const type = operation.ratingType === OpRatingType.Dislike ? OpRatingType.None : OpRatingType.Dislike;
+                    handleRating(type, operation.id)
+                  }}
                 />
               </Tooltip2>
             </ButtonGroup>
