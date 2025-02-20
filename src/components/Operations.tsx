@@ -65,11 +65,11 @@ export const Operations: ComponentType = withSuspensable(() => {
           className=""
           icon="user"
           title="只显示我发布的作品"
-          active={queryParams.byMyself}
+          active={!!queryParams.uploaderId}
           onClick={() => {
             setQueryParams((old) => ({
               ...old,
-              byMyself: !old.byMyself,
+              uploaderId: old.uploaderId ? undefined : authState.userId,
             }))
           }}
         >
@@ -209,7 +209,12 @@ export const Operations: ComponentType = withSuspensable(() => {
             revalidateFirstPage={queryParams.orderBy !== 'hot'}
           />
         )}
-        {listMode === 'operationSet' && <OperationSetList {...queryParams} />}
+        {listMode === 'operationSet' && (
+          <OperationSetList
+            {...queryParams}
+            creatorId={queryParams.uploaderId}
+          />
+        )}
       </div>
     </>
   )

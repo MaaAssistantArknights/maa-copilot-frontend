@@ -1,4 +1,3 @@
-import { useAtomValue } from 'jotai'
 import { noop } from 'lodash-es'
 import {
   CopilotSetPageRes,
@@ -9,7 +8,6 @@ import {
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
-import { authAtom } from 'store/auth'
 import { OperationSetApi } from 'utils/maa-copilot-client'
 import { useSWRRefresh } from 'utils/swr'
 
@@ -19,7 +17,7 @@ export type OrderBy = 'views' | 'hot' | 'id'
 
 export interface UseOperationSetsParams {
   keyword?: string
-  byMyself?: boolean
+  creatorId?: string
 
   disabled?: boolean
   suspense?: boolean
@@ -27,12 +25,10 @@ export interface UseOperationSetsParams {
 
 export function useOperationSets({
   keyword,
-  byMyself,
+  creatorId,
   disabled,
   suspense,
 }: UseOperationSetsParams) {
-  const { userId } = useAtomValue(authAtom)
-
   const {
     data: pages,
     error,
@@ -53,14 +49,13 @@ export function useOperationSets({
           limit: 50,
           page: pageIndex + 1,
           keyword,
-          creatorId: byMyself ? userId : undefined,
+          creatorId,
         } satisfies CopilotSetQuery,
-        byMyself,
       ]
     },
-    async ([, req, byMyself]) => {
+    async ([, req]) => {
       const res = await new OperationSetApi({
-        sendToken: byMyself ? 'always' : 'optional', // 如果有 token 会用来获取自己的作业集
+        sendToken: 'optional', // 如果有 token 即可获取到私有的作业集
         requireData: true,
       }).querySets({ copilotSetQuery: req })
       return res.data

@@ -19,7 +19,7 @@ export interface UseOperationsParams {
   levelKeyword?: string
   operator?: string
   operationIds?: number[]
-  byMyself?: boolean
+  uploaderId?: string
 
   disabled?: boolean
   suspense?: boolean
@@ -34,7 +34,7 @@ export function useOperations({
   levelKeyword,
   operator,
   operationIds,
-  byMyself,
+  uploaderId,
   disabled,
   suspense,
   revalidateFirstPage,
@@ -84,7 +84,7 @@ export function useOperations({
           orderBy,
           desc: descending,
           copilotIds: operationIds,
-          uploaderId: byMyself ? 'me' : undefined,
+          uploaderId,
         } satisfies QueriesCopilotRequest,
       ]
     },
@@ -96,8 +96,7 @@ export function useOperations({
       }
 
       const res = await new OperationApi({
-        sendToken:
-          'uploaderId' in req && req.uploaderId === 'me' ? 'always' : 'never',
+        sendToken: 'optional',
         requireData: true,
       }).queriesCopilot(req)
 
