@@ -38,14 +38,6 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       }),
     [levels],
   )
-  const fuseSimilar = useMemo(
-    () =>
-      new Fuse(levels, {
-        keys: ['levelId'],
-        threshold: 0,
-      }),
-    [levels],
-  )
 
   // value 可以由用户输入，所以可以是任何值，只有用 stageId 才能匹配到唯一的关卡
   const selectedLevel = useMemo(
@@ -53,37 +45,64 @@ export const LevelSelect: FC<LevelSelectProps> = ({
     [levels, value],
   )
 
+  const search = (query: string) => {
+    // 如果 query 和当前关卡完全匹配（也就是唯一对应），就显示同类关卡
+    if (selectedLevel && selectedLevel.stageId === query) {
+      let similarLevels: Level[]
+      let headerName: string
+
+      if (selectedLevel.catOne === '剿灭作战') {
+        headerName = selectedLevel.catOne
+        similarLevels = levels.filter(
+          (el) => el.catOne === selectedLevel.catOne,
+        )
+      } else if (
+        selectedLevel.stageId.includes('rune') ||
+        selectedLevel.stageId.includes('crisis')
+      ) {
+        // 危机合约分类非常混乱，直接全塞到一起
+        headerName = '危机合约'
+        similarLevels = levels.filter(
+          (el) => el.stageId.includes('rune') || el.stageId.includes('crisis'),
+        )
+      } else if (selectedLevel.catTwo) {
+        headerName = selectedLevel.catTwo
+        similarLevels = levels.filter(
+          (el) => el.catTwo === selectedLevel.catTwo,
+        )
+      } else {
+        // catTwo 为空的时候用 levelId 来分类
+        headerName = '相关关卡'
+        const levelIdPrefix = selectedLevel.levelId
+          .split('/')
+          .slice(0, -1)
+          .join('/')
+        similarLevels = levelIdPrefix
+          ? levels.filter((el) => el.levelId.startsWith(levelIdPrefix))
+          : []
+      }
+
+      if (similarLevels.length > 1) {
+        const header = createCustomLevel(headerName)
+        header.stageId = 'header'
+        return [header, ...similarLevels]
+      }
+    }
+
+    return query ? fuse.search(query).map((el) => el.item) : levels
+  }
+
   return (
     <Suggest<Level>
       updateQueryOnSelect
       items={levels}
-      itemListPredicate={(query) => {
-        // 如果 query 和当前关卡完全匹配（也就是唯一对应），就显示同类关卡
-        if (selectedLevel && selectedLevel.stageId === query) {
-          const levelIdPrefix = selectedLevel.levelId
-            .split('/')
-            .slice(0, -1)
-            .join('/')
-          const similarLevels = fuseSimilar
-            .search(levelIdPrefix)
-            .map((el) => el.item)
-
-          if (similarLevels.length > 0) {
-            const header = createCustomLevel('header')
-            // catTwo 一般是活动名，有时候是空的
-            header.catTwo = selectedLevel.catTwo || '相关关卡'
-            return [header, ...similarLevels]
-          }
-        }
-
-        return query ? fuse.search(query).map((el) => el.item) : levels
-      }}
+      itemListPredicate={search}
       onReset={() => onChange('')}
       className={clsx(className, selectedLevel && '[&_input]:italic')}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) =>
-        item.name === 'header' ? (
+        item.stageId === 'header' ? (
           <Fragment key="header">
-            <div className="ml-2 text-zinc-500 text-xs">{item.catTwo}</div>
+            <div className="ml-2 text-zinc-500 text-xs">{item.name}</div>
             <MenuDivider />
           </Fragment>
         ) : (
