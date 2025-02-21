@@ -11,6 +11,7 @@ interface SuspensableProps {
   pendingTitle?: string
 
   fetcher?: () => void
+  errorFallback?: (params: { error: Error }) => JSX.Element | undefined
 }
 
 export const Suspensable: FCC<SuspensableProps> = ({
@@ -18,6 +19,7 @@ export const Suspensable: FCC<SuspensableProps> = ({
   retryDeps = [],
   pendingTitle = '加载中',
   fetcher,
+  errorFallback,
 }) => {
   const resetError = useRef<() => void>()
 
@@ -30,13 +32,18 @@ export const Suspensable: FCC<SuspensableProps> = ({
   return (
     <ErrorBoundary
       fallback={({ resetError: _resetError, error }) => {
+        const fallback = errorFallback?.({ error })
+        if (fallback !== undefined) {
+          return fallback
+        }
+
         resetError.current = _resetError
 
         return (
           <NonIdealState
             icon="issue"
             title="加载失败"
-            description={fetcher ? '数据加载失败，请尝试' : error.message}
+            description={fetcher ? '数据加载失败，请重试' : error.message}
             className="py-8"
             action={
               fetcher && (

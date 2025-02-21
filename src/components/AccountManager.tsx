@@ -73,14 +73,11 @@ const AccountMenu: FC = () => {
           />
         )}
 
-        {isSM && (
-          <MenuItem
-            shouldDismissPopover={false}
-            icon="user"
-            text={authState.username}
-          />
-        )}
-
+        <MenuItem
+          icon="person"
+          text={(isSM ? authState.username + ' - ' : '') + '个人主页'}
+          href={`/profile/${authState.userId}`}
+        />
         <MenuItem
           shouldDismissPopover={false}
           icon="edit"

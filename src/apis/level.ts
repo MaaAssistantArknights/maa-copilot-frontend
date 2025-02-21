@@ -28,7 +28,6 @@ export const useLevels = ({ suspense }: { suspense?: boolean } = {}) => {
         }
 
         if (stageIds.has(level.stageId)) {
-          console.warn('Duplicate level removed:', level.stageId, level.name)
           return false
         }
 

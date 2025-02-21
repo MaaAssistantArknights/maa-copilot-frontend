@@ -5,23 +5,31 @@ import {
   useOperationSetSearch,
 } from 'apis/operation-set'
 import { useAtomValue } from 'jotai'
-import { ComponentType, ReactNode } from 'react'
+import { ComponentType, ReactNode, useEffect } from 'react'
 
 import { neoLayoutAtom } from 'store/pref'
 
 import { NeoOperationSetCard, OperationSetCard } from './OperationSetCard'
 import { withSuspensable } from './Suspensable'
 
-export const OperationSetList: ComponentType<UseOperationSetsParams> =
+interface OperationSetListProps extends UseOperationSetsParams {
+  onUpdate?: (params: { total: number }) => void
+}
+
+export const OperationSetList: ComponentType<OperationSetListProps> =
   withSuspensable(
-    (props) => {
+    ({ onUpdate, ...params }) => {
       const neoLayout = useAtomValue(neoLayoutAtom)
 
-      const { operationSets, setSize, isValidating, isReachingEnd } =
-        useOperationSetSearch({ ...props, suspense: true })
+      const { operationSets, total, setSize, isValidating, isReachingEnd } =
+        useOperationSetSearch({ ...params, suspense: true })
 
       // make TS happy: we got Suspense out there
       if (!operationSets) throw new Error('unreachable')
+
+      useEffect(() => {
+        onUpdate?.({ total })
+      }, [total, onUpdate])
 
       const items: ReactNode = neoLayout ? (
         <div

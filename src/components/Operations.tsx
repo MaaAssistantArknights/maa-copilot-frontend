@@ -17,6 +17,7 @@ import { OperationSetList } from 'components/OperationSetList'
 import { neoLayoutAtom } from 'store/pref'
 
 import { authAtom } from '../store/auth'
+import { LevelSelect } from './LevelSelect'
 import { OperatorFilter } from './OperatorFilter'
 import { withSuspensable } from './Suspensable'
 
@@ -64,11 +65,11 @@ export const Operations: ComponentType = withSuspensable(() => {
           className=""
           icon="user"
           title="只显示我发布的作品"
-          active={queryParams.byMyself}
+          active={!!queryParams.uploaderId}
           onClick={() => {
             setQueryParams((old) => ({
               ...old,
-              byMyself: !old.byMyself,
+              uploaderId: old.uploaderId ? undefined : authState.userId,
             }))
           }}
         >
@@ -117,21 +118,15 @@ export const Operations: ComponentType = withSuspensable(() => {
                   }
                   onBlur={() => debouncedSetQueryParams.flush()}
                 />
-                <InputGroup
-                  className="mt-2 [&>input]:!rounded-md"
-                  placeholder="关卡名、关卡类型、关卡编号"
-                  leftIcon="area-of-interest"
-                  size={64}
-                  large
-                  type="search"
-                  enterKeyHint="search"
-                  onChange={(e) =>
-                    debouncedSetQueryParams((old) => ({
+                <LevelSelect
+                  className="mt-2"
+                  value={queryParams.levelKeyword ?? ''}
+                  onChange={(level) =>
+                    setQueryParams((old) => ({
                       ...old,
-                      levelKeyword: e.target.value.trim(),
+                      levelKeyword: level,
                     }))
                   }
-                  onBlur={() => debouncedSetQueryParams.flush()}
                 />
                 <OperatorFilter
                   className="mt-2"
@@ -214,7 +209,12 @@ export const Operations: ComponentType = withSuspensable(() => {
             revalidateFirstPage={queryParams.orderBy !== 'hot'}
           />
         )}
-        {listMode === 'operationSet' && <OperationSetList {...queryParams} />}
+        {listMode === 'operationSet' && (
+          <OperationSetList
+            {...queryParams}
+            creatorId={queryParams.uploaderId}
+          />
+        )}
       </div>
     </>
   )

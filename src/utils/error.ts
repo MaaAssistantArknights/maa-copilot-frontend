@@ -27,6 +27,10 @@ export class InvalidTokenError extends Error {
   message = this.message || '登录失效，请重新登录'
 }
 
+export class NotFoundError extends Error {
+  message = this.message || '资源不存在'
+}
+
 export class NetworkError extends Error {
   message = this.message || '网络错误'
 }
