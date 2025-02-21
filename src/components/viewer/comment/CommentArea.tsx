@@ -37,6 +37,7 @@ import { wrapErrorMessage } from '../../../utils/wrapErrorMessage'
 import { Markdown } from '../../Markdown'
 import { OutlinedIcon } from '../../OutlinedIcon'
 import { withSuspensable } from '../../Suspensable'
+import { UserName } from '../../UserName'
 import { CommentForm } from './CommentForm'
 
 interface CommentAreaProps {
@@ -194,7 +195,10 @@ const SubComment = ({
             {fromComment && (
               <>
                 <Tag minimal className="mr-px">
-                  回复 @{fromComment.uploader}
+                  回复
+                  <UserName userId={fromComment.uploaderId}>
+                    @{fromComment.uploader}
+                  </UserName>
                 </Tag>
                 :&nbsp;
               </>
@@ -228,7 +232,7 @@ const CommentHeader = ({
       )}
     >
       <div className={clsx('mr-2', userId === uploaderId && 'font-bold')}>
-        {uploader}
+        <UserName userId={uploaderId}>{uploader}</UserName>
       </div>
       <div className="text-slate-500" title={formatDateTime(uploadTime)}>
         {formatRelativeTime(uploadTime)}

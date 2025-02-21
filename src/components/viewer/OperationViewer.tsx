@@ -45,6 +45,7 @@ import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
 import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
+import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
 
 const ManageMenu: FC<{
@@ -351,9 +352,12 @@ function OperationViewerInner({
           </FactItem>
 
           <FactItem title="作者" icon="user">
-            <span className="text-gray-800 dark:text-slate-100 font-bold">
+            <UserName
+              className="text-gray-800 dark:text-slate-100 font-bold"
+              userId={operation.uploaderId}
+            >
               {operation.uploader}
-            </span>
+            </UserName>
           </FactItem>
         </div>
       </div>

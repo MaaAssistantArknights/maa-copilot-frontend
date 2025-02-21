@@ -13,6 +13,7 @@ import { useLevels } from '../apis/level'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { ReLinkDiv } from './ReLinkDiv'
+import { UserName } from './UserName'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
 
@@ -96,15 +97,13 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
           </div>
           <div className="flex-1" />
           <div className="text-zinc-500">
-            <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
-              <div>
-                <Icon icon="user" className="mr-1.5" />
-                <span>{operation.uploader}</span>
-              </div>
-            </Tooltip2>
+            <Icon icon="user" className="mr-1.5" />
+            <UserName userId={operation.uploaderId}>
+              {operation.uploader}
+            </UserName>
           </div>
         </div>
-      </ReLink>
+      </ReLinkDiv>
 
       <CardActions className="absolute top-4 right-4" operation={operation} />
     </Card>
@@ -170,12 +169,12 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
               />
             </div>
 
-            <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
-              <div>
-                <Icon icon="user" className="mr-1.5" />
-                <span>{operation.uploader}</span>
-              </div>
-            </Tooltip2>
+            <div>
+              <Icon icon="user" className="mr-1.5" />
+              <UserName userId={operation.uploaderId}>
+                {operation.uploader}
+              </UserName>
+            </div>
           </div>
         </div>
         <div className="flex md:flex-row flex-col gap-4">

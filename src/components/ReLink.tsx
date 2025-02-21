@@ -1,6 +1,5 @@
 import { isString } from '@sentry/utils'
 
-import clsx from 'clsx'
 import { Link, LinkProps, useSearchParams } from 'react-router-dom'
 import { SetOptional } from 'type-fest'
 
@@ -25,7 +24,7 @@ export function ReLink({ className, search, ...props }: ReLinkProps) {
   return (
     <Link
       {...props}
-      className={clsx('hover:no-underline hover:text-inherit', className)}
+      className={className}
       to={
         isString(props.to)
           ? props.to
