@@ -186,8 +186,7 @@ export const OperationViewer: ComponentType<{
 
             <div className="flex-1" />
 
-            {operation.uploader === auth.username && (
-              // FIXME: 用户名可以重名，这里会让重名用户都显示管理按钮，需要等后端支持 operation.uploaderId 后再修复
+            {operation.uploaderId === auth.userId && (
               <Popover2
                 content={
                   <ManageMenu
