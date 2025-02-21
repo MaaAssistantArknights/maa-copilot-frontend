@@ -45,6 +45,7 @@ import { useLevels } from '../../apis/level'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
+import { OPERATORS } from '../../models/operator'
 import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { UserName } from '../UserName'
@@ -250,11 +251,16 @@ const OperatorCard: FC<{
   operator: CopilotDocV1.Operator
 }> = ({ operator }) => {
   const { name, skill } = operator
+  const info = OPERATORS.find((o) => o.name === name)
   const skillStr = [null, '一', '二', '三'][skill ?? 1] ?? '未知'
   return (
     <div className="min-w-24 flex flex-col items-center">
-      <OperatorAvatar name={name} className="w-16 h-16 mb-1" />
-      <span className="mb-1 font-bold">{name}</span>
+      <OperatorAvatar
+        id={info?.id}
+        rarity={info?.rarity}
+        className="w-16 h-16 mb-1"
+      />
+      <span className={clsx('mb-1 font-bold')}>{name}</span>
       <span className="text-xs text-zinc-500">{skillStr}技能</span>
     </div>
   )
