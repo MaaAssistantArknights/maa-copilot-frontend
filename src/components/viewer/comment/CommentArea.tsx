@@ -20,10 +20,10 @@ import {
   useComments,
 } from '../../../apis/comment'
 import {
-  MAX_COMMENT_LENGTH,
   AUTHOR_MAX_COMMENT_LENGTH,
   CommentInfo,
   CommentRating,
+  MAX_COMMENT_LENGTH,
   MainCommentInfo,
   SubCommentInfo,
   isMainComment,
@@ -66,9 +66,15 @@ export const CommentArea = withSuspensable(function ViewerComments({
   const auth = useAtomValue(authAtom)
   const operation = useOperation({ id: operationId }).data
 
-  const operationOwned = operation && auth.userId && operation.uploaderId === auth.userId
+  const operationOwned = !!(
+    operation &&
+    auth.userId &&
+    operation.uploaderId === auth.userId
+  )
 
-  const maxLength = operationOwned ? AUTHOR_MAX_COMMENT_LENGTH : MAX_COMMENT_LENGTH
+  const maxLength = operationOwned
+    ? AUTHOR_MAX_COMMENT_LENGTH
+    : MAX_COMMENT_LENGTH
 
   const [replyTo, setReplyTo] = useState<CommentInfo>()
 
@@ -112,8 +118,8 @@ export const CommentArea = withSuspensable(function ViewerComments({
                   sub.fromCommentId === comment.commentId
                     ? undefined
                     : find(comment.subCommentsInfos, {
-                      commentId: sub.fromCommentId,
-                    })
+                        commentId: sub.fromCommentId,
+                      })
                 }
               />
             ))}
@@ -266,7 +272,9 @@ const CommentActions = ({
   const [{ userId }] = useAtom(authAtom)
   const { operationOwned, replyTo, setReplyTo, reload } =
     useContext(CommentAreaContext)
-  const maxLength = operationOwned ? AUTHOR_MAX_COMMENT_LENGTH : MAX_COMMENT_LENGTH
+  const maxLength = operationOwned
+    ? AUTHOR_MAX_COMMENT_LENGTH
+    : MAX_COMMENT_LENGTH
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [pending, setPending] = useState(false)
@@ -337,7 +345,9 @@ const CommentActions = ({
           </p>
         </Alert>
       </div>
-      {replyTo === comment && <CommentForm inputAutoFocus className="mt-4" maxLength={maxLength} />}
+      {replyTo === comment && (
+        <CommentForm inputAutoFocus className="mt-4" maxLength={maxLength} />
+      )}
     </div>
   )
 }
