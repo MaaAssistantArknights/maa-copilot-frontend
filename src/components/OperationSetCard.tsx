@@ -22,7 +22,7 @@ export const NeoOperationSetCard = ({
     >
       <ReLink
         search={{ opset: operationSet.id }}
-        className="block no-underline"
+        className="block no-underline hover:no-underline hover:text-inherit"
       >
         {/* title */}
         <div className="flex gap-1">
@@ -91,7 +91,7 @@ export const OperationSetCard = ({
     >
       <ReLink
         search={{ opset: operationSet.id }}
-        className="block no-underline"
+        className="block no-underline hover:no-underline hover:text-inherit"
       >
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
