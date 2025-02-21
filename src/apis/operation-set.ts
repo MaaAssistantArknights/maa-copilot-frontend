@@ -67,10 +67,12 @@ export function useOperationSets({
   )
 
   const isReachingEnd = !!pages?.some((page) => !page.hasNext)
+  const total = pages?.[0]?.total ?? 0
   const operationSets = pages?.map((page) => page.data).flat()
 
   return {
     operationSets,
+    total,
     error,
     setSize,
     isValidating,
@@ -125,6 +127,7 @@ export function useOperationSetSearch({
   if (id) {
     return {
       operationSets: [operationSet],
+      total: operationSet ? 1 : 0,
       isReachingEnd: true,
       setSize: noop,
 

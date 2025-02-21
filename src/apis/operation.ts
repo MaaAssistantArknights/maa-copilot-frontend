@@ -92,7 +92,7 @@ export function useOperations({
       // 如果指定了 id 列表，但是列表为空，就直接返回空数据。不然要是直接传空列表，就相当于没有这个参数，
       // 会导致后端返回所有数据
       if (req.copilotIds?.length === 0) {
-        return { data: [], hasNext: false }
+        return { data: [], hasNext: false, total: 0 }
       }
 
       const res = await new OperationApi({
@@ -121,6 +121,7 @@ export function useOperations({
   )
 
   const isReachingEnd = !!pages?.some((page) => !page.hasNext)
+  const total = pages?.[0]?.total ?? 0
 
   const _operations = pages?.map((page) => page.data).flat() ?? []
 
@@ -134,6 +135,7 @@ export function useOperations({
   return {
     error,
     operations,
+    total,
     setSize,
     isValidating,
     isReachingEnd,

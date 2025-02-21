@@ -3,7 +3,6 @@ import { Button, ButtonGroup, Card } from '@blueprintjs/core'
 import { ComponentType, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
-import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
@@ -25,6 +24,8 @@ const _ProfilePage: ComponentType = () => {
   const [listMode, setListMode] = useState<'operation' | 'operationSet'>(
     'operation',
   )
+  const [operationCount, setOperationCount] = useState(-1)
+  const [operationSetCount, setOperationSetCount] = useState(-1)
 
   return (
     <div className="flex flex-col md:flex-row px-8 mt-8 max-w-[96rem] mx-auto">
@@ -36,23 +37,33 @@ const _ProfilePage: ComponentType = () => {
               active={listMode === 'operation'}
               onClick={() => setListMode('operation')}
             >
-              作业
+              作业{operationCount === -1 ? '' : ` (${operationCount})`}
             </Button>
             <Button
               icon="folder-close"
               active={listMode === 'operationSet'}
               onClick={() => setListMode('operationSet')}
             >
-              作业集
+              作业集{operationSetCount === -1 ? '' : ` (${operationSetCount})`}
             </Button>
           </ButtonGroup>
         </div>
 
         <div className="tabular-nums">
           {listMode === 'operation' && (
-            <OperationList limit={10} orderBy="id" uploaderId={id} />
+            <OperationList
+              limit={10}
+              orderBy="id"
+              uploaderId={id}
+              onUpdate={({ total }) => setOperationCount(total)}
+            />
           )}
-          {listMode === 'operationSet' && <OperationSetList creatorId={id} />}
+          {listMode === 'operationSet' && (
+            <OperationSetList
+              creatorId={id}
+              onUpdate={({ total }) => setOperationSetCount(total)}
+            />
+          )}
         </div>
       </div>
       <div className="md:w-1/3 order-1 md:order-2">
