@@ -1,23 +1,26 @@
 import { Button, ButtonGroup, Card } from '@blueprintjs/core'
 
 import { ComponentType, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Navigate, useParams } from 'react-router-dom'
 
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
 
+import { useUserInfo } from '../apis/user'
 import { CardTitle } from '../components/CardTitle'
 import { withSuspensable } from '../components/Suspensable'
+import { NotFoundError } from '../utils/error'
 
-export const _ProfilePage: ComponentType = () => {
+const _ProfilePage: ComponentType = () => {
   const { id } = useParams()
-
-  // edge case?
   if (!id) {
+    // edge case?
     throw new Error('ID 无效')
   }
+
+  const { data: userInfo } = useUserInfo({ userId: id, suspense: true })
 
   const [listMode, setListMode] = useState<'operation' | 'operationSet'>(
     'operation',
@@ -55,7 +58,7 @@ export const _ProfilePage: ComponentType = () => {
       <div className="md:w-1/3 order-1 md:order-2">
         <div className="sticky top-20">
           <Card className="flex flex-col mb-4 space-y-2">
-            <CardTitle icon="user">用户名</CardTitle>
+            <CardTitle icon="user">{userInfo?.userName}</CardTitle>
           </Card>
         </div>
       </div>
@@ -66,6 +69,11 @@ export const _ProfilePage: ComponentType = () => {
 }
 _ProfilePage.displayName = 'ProfilePage'
 
-export const ProfilePage = withGlobalErrorBoundary(
-  withSuspensable(_ProfilePage),
-)
+export const ProfilePage = withSuspensable(_ProfilePage, {
+  errorFallback: ({ error }) => {
+    if (error instanceof NotFoundError) {
+      return <Navigate to="/404" replace />
+    }
+    return undefined
+  },
+})
