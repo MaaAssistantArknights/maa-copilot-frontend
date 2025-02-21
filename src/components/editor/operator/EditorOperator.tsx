@@ -156,11 +156,12 @@ export const OperatorAvatar = ({
   })()
 
   const sizingClassName =
+    size &&
     {
       small: 'h-5 w-5',
       medium: 'h-6 w-6',
       large: 'h-8 w-8',
-    }[size || 'medium'] || 'h-6 w-6'
+    }[size]
 
   const commonClassName = 'rounded-md object-cover bp4-elevation-1 bg-slate-100'
 

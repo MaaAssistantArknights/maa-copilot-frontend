@@ -3,10 +3,11 @@ import {
   Button,
   ButtonGroup,
   Card,
+  Collapse,
   Elevation,
   H3,
   H4,
-  H5,
+  H6,
   Icon,
   Menu,
   MenuItem,
@@ -21,6 +22,7 @@ import {
   useOperation,
   useRefreshOperations,
 } from 'apis/operation'
+import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -248,30 +250,15 @@ const OperatorCard: FC<{
   operator: CopilotDocV1.Operator
 }> = ({ operator }) => {
   const { name, skill } = operator
+  const skillStr = [null, '一', '二', '三'][skill ?? 1] ?? '未知'
   return (
-    <Card elevation={Elevation.ONE} className="mb-2 last:mb-0 flex">
-      <OperatorAvatar name={name} size="large" className="mr-3" />
-      <div className="flex items-center font-bold">{name}</div>
-      <div className="flex-1" />
-      <div className="flex items-center tabular-nums">
-        技能<span className="font-bold ml-1">{skill}</span>
-      </div>
-    </Card>
+    <div className="min-w-24 flex flex-col items-center">
+      <OperatorAvatar name={name} className="w-16 h-16 mb-1" />
+      <span className="mb-1 font-bold">{name}</span>
+      <span className="text-xs text-zinc-500">{skillStr}技能</span>
+    </div>
   )
 }
-
-const EmptyOperator: FC<{
-  title?: string
-  description?: string
-}> = ({ title = '暂无干员', description }) => (
-  <NonIdealState
-    className="my-2"
-    title={title}
-    description={description}
-    icon="slash"
-    layout="horizontal"
-  />
-)
 
 function OperationViewerInner({
   levels,
@@ -390,56 +377,87 @@ function OperationViewerInner({
   )
 }
 function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
+  const [showOperators, setShowOperators] = useState(true)
+  const [showActions, setShowActions] = useState(false)
+
   return (
-    <div className="grid grid-rows-1 grid-cols-3 gap-8">
-      <div className="flex flex-col">
-        <H4 className="mb-4">干员与干员组</H4>
-        <H5 className="mb-4 text-slate-600">干员</H5>
-        <div className="flex flex-col mb-4">
+    <div>
+      <H4
+        className="inline-flex items-center cursor-pointer hover:text-violet-500"
+        onClick={() => setShowOperators((v) => !v)}
+      >
+        干员与干员组
+        <Tooltip2
+          className="!flex items-center"
+          placement="top"
+          content="干员组：组内干员可以任选其一，自动编队时按最高练度来选择"
+        >
+          <Icon icon="info-sign" size={12} className="text-zinc-500 ml-1" />
+        </Tooltip2>
+        <Icon
+          icon="chevron-down"
+          className={clsx(
+            'ml-1 transition-transform',
+            showOperators && 'rotate-180',
+          )}
+        />
+      </H4>
+      <Collapse isOpen={showOperators}>
+        <div className="mt-2 flex flex-wrap -ml-4">
+          {!operation.parsedContent.opers?.length &&
+            !operation.parsedContent.groups?.length && (
+              <NonIdealState
+                className="my-2"
+                title="暂无干员"
+                description="作业并未添加干员"
+                icon="slash"
+                layout="horizontal"
+              />
+            )}
           {operation.parsedContent.opers?.map((operator) => (
             <OperatorCard key={operator.name} operator={operator} />
           ))}
-          {!operation.parsedContent.opers?.length && (
-            <EmptyOperator description="作业并未添加干员" />
-          )}
         </div>
-
-        <H5 className="mb-4 text-slate-600">干员组</H5>
-        <div className="flex flex-col">
+        <div className="flex flex-wrap gap-4 mt-4">
           {operation.parsedContent.groups?.map((group) => (
-            <Card elevation={Elevation.ONE} className="mb-4" key={group.name}>
-              <div className="flex flex-col">
-                <H5 className="text-gray-800 font-bold">{group.name}</H5>
+            <Card
+              elevation={Elevation.ONE}
+              className="!p-2 flex flex-col items-center"
+              key={group.name}
+            >
+              <H6 className="text-gray-800">{group.name}</H6>
+              <div className="flex gap-1">
+                {group.opers
+                  ?.filter(Boolean)
+                  .map((operator) => (
+                    <OperatorCard key={operator.name} operator={operator} />
+                  ))}
 
-                <div className="flex flex-col">
-                  {group.opers
-                    ?.filter(Boolean)
-                    .map((operator) => (
-                      <OperatorCard key={operator.name} operator={operator} />
-                    ))}
-
-                  {group.opers?.filter(Boolean).length === 0 && (
-                    <EmptyOperator description="干员组中并未添加干员" />
-                  )}
-                </div>
+                {group.opers?.filter(Boolean).length === 0 && (
+                  <span className="text-zinc-500">无干员</span>
+                )}
               </div>
             </Card>
           ))}
-
-          {!operation.parsedContent.groups?.length && (
-            <EmptyOperator
-              title="暂无干员组"
-              description="作业并未添加干员组"
-            />
-          )}
         </div>
-      </div>
+      </Collapse>
 
-      <div className="col-span-2">
-        <H4 className="mb-4">动作序列</H4>
-
+      <H4
+        className="mt-6 inline-flex items-center cursor-pointer hover:text-violet-500"
+        onClick={() => setShowActions((v) => !v)}
+      >
+        动作序列
+        <Icon
+          icon="chevron-down"
+          className={clsx(
+            'ml-1 transition-transform',
+            showActions && 'rotate-180',
+          )}
+        />
+      </H4>
+      <Collapse isOpen={showActions}>
         {operation.parsedContent.actions?.length ? (
-          <div className="flex flex-col pb-8">
+          <div className="mt-2 flex flex-col pb-8">
             {operation.parsedContent.actions.map((action, i) => (
               <ActionCard action={action} key={i} />
             ))}
@@ -453,7 +471,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
             layout="horizontal"
           />
         )}
-      </div>
+      </Collapse>
     </div>
   )
 }
