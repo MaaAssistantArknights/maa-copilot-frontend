@@ -1,3 +1,10 @@
+## 2025-02-22
+
+- 添加了关卡筛选器的联想输入功能 [@guansss](https://github.com/guansss)
+- 添加了用户个人页面 [@guansss](https://github.com/guansss)
+- 修复了在作业详情里无法正常使用鼠标回退键的问题 [@guansss](https://github.com/guansss)
+- 优化了作业列表和作业详情界面 [@guansss](https://github.com/guansss)
+
 ## 2025-02-17
 
 - 修复了编辑作业时无法修改干员名称的问题 [@Gemini2035](https://github.com/Gemini2035)
