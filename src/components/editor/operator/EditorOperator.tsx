@@ -26,6 +26,8 @@ const createArbitraryOperator = (name: string): OperatorInfo => ({
   alias: '',
   alt_name: '',
   subProf: '',
+  prof: '',
+  rarity: 0,
 })
 
 export const EditorOperatorName = <T extends FieldValues>({
@@ -134,11 +136,13 @@ export const EditorOperatorName = <T extends FieldValues>({
 export const OperatorAvatar = ({
   id,
   name,
+  rarity = 0,
   size,
   className,
 }: {
   id?: string
   name?: string
+  rarity?: number
   size?: 'small' | 'medium' | 'large'
   className?: string
 }) => {
@@ -154,17 +158,33 @@ export const OperatorAvatar = ({
   })()
 
   const sizingClassName =
+    size &&
     {
       small: 'h-5 w-5',
       medium: 'h-6 w-6',
       large: 'h-8 w-8',
-    }[size || 'medium'] || 'h-6 w-6'
+    }[size]
 
-  const commonClassName = 'rounded-md object-cover bp4-elevation-1 bg-slate-100'
+  const colorClassName =
+    rarity === 6
+      ? ['bg-orange-200', 'ring-orange-300']
+      : rarity === 5
+        ? ['bg-yellow-100', 'ring-yellow-200']
+        : rarity === 4
+          ? ['bg-purple-100', 'ring-purple-200']
+          : ['bg-slate-100', 'ring-slate-200']
+
+  const commonClassName =
+    'ring-inset ring-2 border-solid rounded-md object-cover'
 
   return foundId ? (
     <img
-      className={clsx(sizingClassName, commonClassName, className)}
+      className={clsx(
+        sizingClassName,
+        colorClassName,
+        commonClassName,
+        className,
+      )}
       src={'/assets/operator-avatars/' + foundId + '.png'}
       alt={id}
       loading="lazy"
@@ -173,6 +193,7 @@ export const OperatorAvatar = ({
     <div
       className={clsx(
         sizingClassName,
+        colorClassName,
         commonClassName,
         'flex items-center justify-center font-bold text-2xl text-slate-300 select-none',
         className,

@@ -14,12 +14,15 @@ import {
   useOperationSets,
 } from 'apis/operation-set'
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 import { useState } from 'react'
 
 import { AppToaster } from 'components/Toaster'
 import { OperationSetEditorDialog } from 'components/operation-set/OperationSetEditor'
 import { formatError } from 'utils/error'
 import { useNetworkState } from 'utils/useNetworkState'
+
+import { authAtom } from '../../store/auth'
 
 interface AddToOperationSetButtonProps extends ButtonProps {
   operationId: number
@@ -60,6 +63,8 @@ export function AddToOperationSet({
   operationId,
   onSuccess,
 }: AddToOperationSetProps) {
+  const auth = useAtomValue(authAtom)
+
   const {
     operationSets,
     isReachingEnd,
@@ -67,7 +72,8 @@ export function AddToOperationSet({
     setSize,
     error: listError,
   } = useOperationSets({
-    byMyself: true,
+    disabled: !auth.userId,
+    creatorId: auth.userId,
   })
 
   const {
@@ -82,7 +88,8 @@ export function AddToOperationSet({
     {} as Record<number, boolean>,
   )
 
-  const error = submitError || listError
+  const error =
+    submitError || listError || (!auth.userId ? '未登录' : undefined)
 
   const operationSetList = onlyShowAdded
     ? operationSets?.filter(

@@ -4,7 +4,6 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 import clsx from 'clsx'
 import { copyShortCode, handleDownloadJSON } from 'services/operation'
 
-import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
 import { AddToOperationSetButton } from 'components/operation-set/AddToOperationSet'
 import { OperationRating } from 'components/viewer/OperationRating'
@@ -13,6 +12,8 @@ import { OpDifficulty, Operation } from 'models/operation'
 import { useLevels } from '../apis/level'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
+import { ReLinkDiv } from './ReLinkDiv'
+import { UserName } from './UserName'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
 
@@ -21,9 +22,9 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
 
   return (
     <Card interactive={true} elevation={Elevation.TWO} className="relative">
-      <ReLink
+      <ReLinkDiv
         search={{ op: operation.id }}
-        className="no-underline h-full flex flex-col gap-2"
+        className="h-full flex flex-col gap-2"
       >
         <div className="flex">
           <Tooltip2
@@ -96,15 +97,13 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
           </div>
           <div className="flex-1" />
           <div className="text-zinc-500">
-            <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
-              <div>
-                <Icon icon="user" className="mr-1.5" />
-                <span>{operation.uploader}</span>
-              </div>
-            </Tooltip2>
+            <Icon icon="user" className="mr-1.5" />
+            <UserName userId={operation.uploaderId}>
+              {operation.uploader}
+            </UserName>
           </div>
         </div>
-      </ReLink>
+      </ReLinkDiv>
 
       <CardActions className="absolute top-4 right-4" operation={operation} />
     </Card>
@@ -120,7 +119,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
       elevation={Elevation.TWO}
       className="relative mb-4 sm:mb-2 last:mb-0"
     >
-      <ReLink search={{ op: operation.id }} className="block no-underline">
+      <ReLinkDiv search={{ op: operation.id }}>
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
           <div className="flex flex-col gap-3">
@@ -170,12 +169,12 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
               />
             </div>
 
-            <Tooltip2 placement="top" content={`作者：${operation.uploader}`}>
-              <div>
-                <Icon icon="user" className="mr-1.5" />
-                <span>{operation.uploader}</span>
-              </div>
-            </Tooltip2>
+            <div>
+              <Icon icon="user" className="mr-1.5" />
+              <UserName userId={operation.uploaderId}>
+                {operation.uploader}
+              </UserName>
+            </div>
           </div>
         </div>
         <div className="flex md:flex-row flex-col gap-4">
@@ -192,7 +191,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
             <OperatorTags operation={operation} />
           </div>
         </div>
-      </ReLink>
+      </ReLinkDiv>
 
       <CardActions
         className="absolute top-4 xl:top-12 right-[18px]"

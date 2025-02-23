@@ -1,5 +1,6 @@
 import { Drawer, DrawerSize } from '@blueprintjs/core'
 
+import { SyntheticEvent } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { OperationSetViewer } from 'components/viewer/OperationSetViewer'
@@ -10,14 +11,24 @@ export function OperationDrawer() {
   const operationId = +(searchParams.get('op') || NaN) || undefined
   const operationSetId = +(searchParams.get('opset') || NaN) || undefined
 
-  const closeOperation = () => {
+  const closeOperation = (e?: SyntheticEvent) => {
+    // 如果是通过鼠标点击外面来触发的关闭，那么只在左键点击时关闭，避免用后退键点击时关闭后又立即打开的问题
+    // (原因是后退键会先触发关闭，然后触发浏览器的后退操作，使页面回到上一个 URL，导致又触发打开)
+    if (e?.nativeEvent instanceof MouseEvent && e.nativeEvent.button !== 0) {
+      return
+    }
+
     setSearchParams((params) => {
       params.delete('op')
       return params
     })
   }
 
-  const closeOperationSet = () => {
+  const closeOperationSet = (e?: SyntheticEvent) => {
+    if (e?.nativeEvent instanceof MouseEvent && e.nativeEvent.button !== 0) {
+      return
+    }
+
     setSearchParams((params) => {
       params.delete('opset')
       return params

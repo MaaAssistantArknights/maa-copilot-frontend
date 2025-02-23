@@ -34,6 +34,7 @@ import { authAtom } from 'store/auth'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { formatError } from '../../utils/error'
+import { UserName } from '../UserName'
 
 const ManageMenu: FC<{
   operationSet: OperationSet
@@ -225,9 +226,12 @@ function OperationSetViewerInner({
           </FactItem>
 
           <FactItem title="作者" icon="user">
-            <span className="text-gray-800 dark:text-slate-100 font-bold">
+            <UserName
+              className="text-gray-800 dark:text-slate-100 font-bold"
+              userId={operationSet.creatorId}
+            >
               {operationSet.creator}
-            </span>
+            </UserName>
           </FactItem>
         </div>
       </div>

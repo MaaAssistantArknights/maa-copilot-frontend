@@ -57,6 +57,11 @@ const CreatePageLazy = withSuspensable(
 const AboutPageLazy = withSuspensable(
   lazy(() => import('./pages/about').then((m) => ({ default: m.AboutPage }))),
 )
+const ProfilePageLazy = withSuspensable(
+  lazy(() =>
+    import('./pages/profile').then((m) => ({ default: m.ProfilePage })),
+  ),
+)
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -67,6 +72,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/create/:id" element={<CreatePageLazy />} />
           <Route path="/create" element={<CreatePageLazy />} />
           <Route path="/about" element={<AboutPageLazy />} />
+          <Route path="/profile/:id" element={<ProfilePageLazy />} />
           <Route path="/operation/:id" element={<ViewPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

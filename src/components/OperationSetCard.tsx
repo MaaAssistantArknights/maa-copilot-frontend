@@ -8,6 +8,7 @@ import { RelativeTime } from 'components/RelativeTime'
 import { OperationSetListItem } from 'models/operation-set'
 
 import { Paragraphs } from './Paragraphs'
+import { UserName } from './UserName'
 
 export const NeoOperationSetCard = ({
   operationSet,
@@ -22,7 +23,7 @@ export const NeoOperationSetCard = ({
     >
       <ReLink
         search={{ opset: operationSet.id }}
-        className="block no-underline"
+        className="block no-underline hover:no-underline hover:text-inherit"
       >
         {/* title */}
         <div className="flex gap-1">
@@ -60,12 +61,10 @@ export const NeoOperationSetCard = ({
           </div>
           <div className="flex-1" />
           <div className="text-zinc-500">
-            <Tooltip2 placement="top" content={`作者：${operationSet.creator}`}>
-              <div>
-                <Icon icon="user" className="mr-1.5" />
-                <span>{operationSet.creator}</span>
-              </div>
-            </Tooltip2>
+            <Icon icon="user" className="mr-1.5" />
+            <UserName userId={operationSet.creatorId}>
+              {operationSet.creator}
+            </UserName>
           </div>
         </div>
       </ReLink>
@@ -91,7 +90,7 @@ export const OperationSetCard = ({
     >
       <ReLink
         search={{ opset: operationSet.id }}
-        className="block no-underline"
+        className="block no-underline hover:no-underline hover:text-inherit"
       >
         <div className="flex flex-wrap mb-4 sm:mb-2">
           {/* title */}
@@ -117,12 +116,12 @@ export const OperationSetCard = ({
                 moment={operationSet.createTime}
               />
             </div>
-            <Tooltip2 placement="top" content={`作者：${operationSet.creator}`}>
-              <div>
-                <Icon icon="user" className="mr-1.5" />
-                <span>{operationSet.creator}</span>
-              </div>
-            </Tooltip2>
+            <div>
+              <Icon icon="user" className="mr-1.5" />
+              <UserName userId={operationSet.creatorId}>
+                {operationSet.creator}
+              </UserName>
+            </div>
           </div>
         </div>
         <div className="flex md:flex-row flex-col gap-4">
