@@ -8,7 +8,7 @@ export const navAtom = atom<NavState>({
   expanded: false,
 })
 
-export const toggleExpandNavAtom = atom(null, (get, set, value) => {
+export const toggleExpandNavAtom = atom(null, (get, set, value: void) => {
   set(navAtom, {
     ...get(navAtom),
     expanded: !get(navAtom).expanded,
