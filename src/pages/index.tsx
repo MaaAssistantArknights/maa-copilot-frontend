@@ -1,5 +1,6 @@
 import { Card } from '@blueprintjs/core'
 
+import dayjs from 'dayjs'
 import { ComponentType } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
@@ -67,16 +68,20 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   )
 })
 
-const Ads = () => (
-  <a
-    className="block relative"
-    href="https://gad.netease.com/gad/access?project_id=201005304&s=SppRGFTnJ1VxfSFEZWE6hY3pO4gn&code_type=1"
-    target="_blank"
-    rel="noreferrer"
-  >
-    <img src="/ads_mumu.jpg" alt="MuMu模拟器" />
-    <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1">
-      广告
-    </div>
-  </a>
-)
+const Ads =
+  dayjs().isAfter('2025-03-02 00:00:00+8') &&
+  dayjs().isBefore('2025-04-02 00:00:00+8')
+    ? () => (
+        // eslint-disable-next-line react/jsx-no-target-blank
+        <a
+          className="block relative"
+          href="https://gad.netease.com/gad/access?project_id=201005304&s=SppRGFTnJ1VxfSFEZWE6hY3pO4gn&code_type=1"
+          target="_blank"
+        >
+          <img src="/ads_mumu.jpg" alt="MuMu模拟器" />
+          <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1">
+            广告
+          </div>
+        </a>
+      )
+    : () => null
