@@ -18,7 +18,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   const { isMD } = useCurrentSize()
   return (
     <div className="flex flex-col md:flex-row px-4 mt-4 md:px-8 md:mt-8 max-w-[96rem] mx-auto">
-      <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8">
+      {isMD && <Ads />}
+      <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8 mt-4 md:mt-0">
         <Operations />
       </div>
       {!isMD && (
@@ -36,7 +37,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
 
             <AnnPanel className="mb-4" />
 
-            <div className="flex flex-wrap leading-relaxed mb-8 section-social-links">
+            <div className="flex flex-wrap leading-relaxed mb-4 section-social-links">
               {SOCIAL_LINKS.map((link) => (
                 <a
                   href={link.href}
@@ -55,6 +56,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
                 </>
               ))}
             </div>
+
+            <Ads />
           </div>
         </div>
       )}
@@ -63,3 +66,17 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
     </div>
   )
 })
+
+const Ads = () => (
+  <a
+    className="block relative"
+    href="https://gad.netease.com/gad/access?project_id=201005304&s=SppRGFTnJ1VxfSFEZWE6hY3pO4gn&code_type=1"
+    target="_blank"
+    rel="noreferrer"
+  >
+    <img src="/ads_mumu.jpg" alt="MuMu模拟器" />
+    <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1">
+      广告
+    </div>
+  </a>
+)
