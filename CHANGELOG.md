@@ -1,3 +1,8 @@
+## 2025-03-01
+
+- 优化了移动端界面 [@guansss](https://github.com/guansss)
+- 加入广告 [@guansss](https://github.com/guansss)
+
 ## 2025-02-22
 
 - 添加了关卡筛选器的联想输入功能 [@guansss](https://github.com/guansss)
