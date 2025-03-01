@@ -189,38 +189,33 @@ export const OperationViewer: ComponentType<{
 
             <div className="flex-1" />
 
-            {operation.uploaderId === auth.userId && (
-              <Popover2
-                content={
-                  <ManageMenu
-                    operation={operation}
-                    onUpdate={() => onCloseDrawer()}
-                  />
-                }
-              >
-                <Button
-                  className="ml-4"
-                  icon="wrench"
-                  text="管理"
-                  rightIcon="caret-down"
-                />
-              </Popover2>
-            )}
+            <div className="flex flex-wrap items-center gap-2 md:gap-4">
+              {operation.uploaderId === auth.userId && (
+                <Popover2
+                  content={
+                    <ManageMenu
+                      operation={operation}
+                      onUpdate={() => onCloseDrawer()}
+                    />
+                  }
+                >
+                  <Button icon="wrench" text="管理" rightIcon="caret-down" />
+                </Popover2>
+              )}
 
-            <Button
-              className="ml-4"
-              icon="download"
-              text="下载原 JSON"
-              onClick={() => handleDownloadJSON(operation.parsedContent)}
-            />
+              <Button
+                icon="download"
+                text="下载原 JSON"
+                onClick={() => handleDownloadJSON(operation.parsedContent)}
+              />
 
-            <Button
-              className="ml-4"
-              icon="clipboard"
-              text="复制神秘代码"
-              intent="primary"
-              onClick={() => copyShortCode(operation)}
-            />
+              <Button
+                icon="clipboard"
+                text="复制神秘代码"
+                intent="primary"
+                onClick={() => copyShortCode(operation)}
+              />
+            </div>
           </>
         }
       >
@@ -276,10 +271,10 @@ function OperationViewerInner({
   handleRating: (decision: OpRatingType) => Promise<void>
 }) {
   return (
-    <div className="h-full overflow-auto py-4 px-8 pt-8">
+    <div className="h-full overflow-auto p-4 md:p-8">
       <H3>{operation.parsedContent.doc.title}</H3>
 
-      <div className="grid grid-rows-1 grid-cols-3 gap-8">
+      <div className="flex flex-col-reverse md:grid grid-rows-1 grid-cols-3 gap-2 md:gap-8">
         <div className="flex flex-col">
           <Paragraphs content={operation.parsedContent.doc.details} linkify />
         </div>
@@ -330,20 +325,20 @@ function OperationViewerInner({
           </FactItem>
         </div>
 
-        <div className="flex flex-col items-start select-none tabular-nums">
-          <FactItem title="浏览量" icon="eye-open">
+        <div className="flex flex-wrap md:flex-col items-start select-none tabular-nums gap-4">
+          <FactItem dense title="浏览量" icon="eye-open">
             <span className="text-gray-800 dark:text-slate-100 font-bold">
               {operation.views}
             </span>
           </FactItem>
 
-          <FactItem title="发布于" icon="time">
+          <FactItem dense title="发布于" icon="time">
             <span className="text-gray-800 dark:text-slate-100 font-bold">
               <RelativeTime moment={operation.uploadTime} />
             </span>
           </FactItem>
 
-          <FactItem title="作者" icon="user">
+          <FactItem dense title="作者" icon="user">
             <UserName
               className="text-gray-800 dark:text-slate-100 font-bold"
               userId={operation.uploaderId}
@@ -409,7 +404,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
         />
       </H4>
       <Collapse isOpen={showOperators}>
-        <div className="mt-2 flex flex-wrap -ml-4">
+        <div className="mt-2 flex flex-wrap -ml-4 gap-y-2">
           {!operation.parsedContent.opers?.length &&
             !operation.parsedContent.groups?.length && (
               <NonIdealState
@@ -432,7 +427,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
               key={group.name}
             >
               <H6 className="text-gray-800">{group.name}</H6>
-              <div className="flex gap-1">
+              <div className="flex flex-wrap gap-y-2">
                 {group.opers
                   ?.filter(Boolean)
                   .map((operator) => (

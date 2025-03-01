@@ -20,7 +20,6 @@ export function useAnnouncement() {
         .then((res) => res.text())
         .catch((e) => {
           if ((e as Error).message === 'Failed to fetch') {
-            console.warn(e)
             throw new Error('网络错误')
           }
 

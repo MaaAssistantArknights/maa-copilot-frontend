@@ -5,7 +5,7 @@ export const DrawerLayout: FCC<{
 }> = ({ title, children }) => {
   return (
     <section className="flex flex-col relative h-full">
-      <div className="px-8 py-2 text-lg font-medium flex items-center bg-slate-100 shadow w-full h-12 dark:bg-slate-900 dark:text-white">
+      <div className="px-4 md:px-8 py-2 text-lg font-medium flex flex-wrap items-center bg-slate-100 shadow w-full min-h-12 dark:bg-slate-900 dark:text-white">
         {title}
       </div>
 
