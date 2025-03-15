@@ -361,6 +361,15 @@
       "alt_name": "Bena"
     },
     {
+      "id": "token_10043_necras_skeltn",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "悲叹的仆役",
+      "alias": "beitandepuyi beitandipuyi btdpy 悲歎的仆役",
+      "rarity": 0,
+      "alt_name": "The Servant of Lament"
+    },
+    {
       "id": "char_265_sophia",
       "prof": "WARRIOR",
       "subProf": "instructor",
@@ -1558,6 +1567,15 @@
       "alt_name": "Absinthe"
     },
     {
+      "id": "token_10044_wulfen_mine",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "矿石“杀手”",
+      "alias": "kuangshishashou kuangdanshashou ksss kdss 礦石“殺手” 礦石殺手",
+      "rarity": 0,
+      "alt_name": "Rocky Chomper"
+    },
+    {
       "id": "char_250_phatom",
       "prof": "SPECIAL",
       "subProf": "executor",
@@ -2116,6 +2134,15 @@
       "alt_name": "Puppet Dancer"
     },
     {
+      "id": "char_4171_wulfen",
+      "prof": "SPECIAL",
+      "subProf": "traper",
+      "name": "钼铅",
+      "alias": "muqian muyan mq my 鉬鉛",
+      "rarity": 5,
+      "alt_name": "Wulfenite"
+    },
+    {
       "id": "char_185_frncat",
       "prof": "WARRIOR",
       "subProf": "artsfghter",
@@ -2647,6 +2674,15 @@
       "alt_name": "Iana"
     },
     {
+      "id": "char_4177_brigid",
+      "prof": "SNIPER",
+      "subProf": "loopshooter",
+      "name": "水灯心",
+      "alias": "shuidengxin sdx 水燈心",
+      "rarity": 5,
+      "alt_name": "Brigid"
+    },
+    {
       "id": "char_437_mizuki",
       "prof": "SPECIAL",
       "subProf": "stalker",
@@ -2672,6 +2708,15 @@
       "alias": "sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs 斯卡蒂的海嗣",
       "rarity": 0,
       "alt_name": "Skadi's seaborn"
+    },
+    {
+      "id": "char_450_necras",
+      "prof": "CASTER",
+      "subProf": "soulcaster",
+      "name": "死芒",
+      "alias": "simang sm 死芒",
+      "rarity": 6,
+      "alt_name": "Necrass"
     },
     {
       "id": "char_427_vigil",
