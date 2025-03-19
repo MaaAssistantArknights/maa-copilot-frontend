@@ -75,7 +75,7 @@ const Ads =
         // eslint-disable-next-line react/jsx-no-target-blank
         <a
           className="block relative dark:brightness-[85%]"
-          href="https://gad.netease.com/gad/access?project_id=201005304&s=SppRGFTnJ1VxfSFEZWE6hY3pO4gn&code_type=1"
+          href="https://adl.netease.com/d/g/mmwb/c/ad_MAA_cpa"
           target="_blank"
         >
           <img src="/ads_mumu.jpg" alt="MuMu模拟器" />
