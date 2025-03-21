@@ -3,7 +3,20 @@ import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from '../models/copilot.schema'
 import { ShortCodeContent, toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
+import { OperationApi } from '../utils/maa-copilot-client'
 import { snakeCaseKeysUnicode } from '../utils/object'
+
+const doTriggerDownloadJSON = (content: string, filename: string) => {
+  const blob = new Blob([content], {
+    type: 'application/json',
+  })
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = filename
+  link.click()
+  URL.revokeObjectURL(url)
+}
 
 export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   // pretty print the JSON
@@ -13,20 +26,25 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
     null,
     2,
   )
-  const blob = new Blob([json], {
-    type: 'application/json',
-  })
-  const url = URL.createObjectURL(blob)
-  const link = document.createElement('a')
-  link.href = url
-  link.download = `MAACopilot_${operationDoc.doc.title}.json`
-  link.click()
-  URL.revokeObjectURL(url)
+
+  doTriggerDownloadJSON(json, `MAACopilot_${operationDoc.doc.title}.json`)
 
   AppToaster.show({
     message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
     intent: 'success',
   })
+}
+
+export const handleLazyDownloadJSON = async (id: number, title: string) => {
+  const resp = await new OperationApi().getCopilotById({
+    id: id,
+  })
+  const json = JSON.stringify(
+    snakeCaseKeysUnicode(JSON.parse(resp.data?.content ?? '{}') as any),
+    null,
+    2,
+  )
+  doTriggerDownloadJSON(json, `MAACopilot_${title}.json`)
 }
 
 /**
