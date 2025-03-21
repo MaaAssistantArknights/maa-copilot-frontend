@@ -2,7 +2,10 @@ import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { copyShortCode, handleDownloadJSON } from 'services/operation'
+import {
+  copyShortCode,
+  handleLazyDownloadJSON,
+} from 'services/operation'
 
 import { RelativeTime } from 'components/RelativeTime'
 import { AddToOperationSetButton } from 'components/operation-set/AddToOperationSet'
@@ -249,7 +252,12 @@ const CardActions = ({
         <Button
           small
           icon="download"
-          onClick={() => handleDownloadJSON(operation.parsedContent)}
+          onClick={() =>
+            handleLazyDownloadJSON(
+              operation.id,
+              operation.parsedContent.doc.title,
+            )
+          }
         />
       </Tooltip2>
       <Tooltip2
