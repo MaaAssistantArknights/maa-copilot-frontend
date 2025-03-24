@@ -38,7 +38,7 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
 
 export const handleLazyDownloadJSON = async (id: number, title: string) => {
   const resp = await wrapErrorMessage(
-    (e) => `发送失败：${formatError(e)}`,
+    (e) => `JSON下载失败：${formatError(e)}`,
     new OperationApi().getCopilotById({
       id: id,
     }),
