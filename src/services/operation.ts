@@ -5,6 +5,7 @@ import { ShortCodeContent, toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
 import { OperationApi } from '../utils/maa-copilot-client'
 import { snakeCaseKeysUnicode } from '../utils/object'
+import { wrapErrorMessage } from '../utils/wrapErrorMessage'
 
 const doTriggerDownloadJSON = (content: string, filename: string) => {
   const blob = new Blob([content], {
@@ -36,15 +37,31 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
 }
 
 export const handleLazyDownloadJSON = async (id: number, title: string) => {
-  const resp = await new OperationApi().getCopilotById({
-    id: id,
-  })
-  const json = JSON.stringify(
-    snakeCaseKeysUnicode(JSON.parse(resp.data?.content ?? '{}') as any),
-    null,
-    2,
+  const resp = await wrapErrorMessage(
+    (e) => `发送失败：${formatError(e)}`,
+    new OperationApi().getCopilotById({
+      id: id,
+    }),
   )
-  doTriggerDownloadJSON(json, `MAACopilot_${title}.json`)
+
+  try {
+    const json = JSON.stringify(
+      snakeCaseKeysUnicode(JSON.parse(resp.data!.content) as any),
+      null,
+      2,
+    )
+    doTriggerDownloadJSON(json, `MAACopilot_${title}.json`)
+    AppToaster.show({
+      message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
+      intent: 'success',
+    })
+  } catch (e) {
+    console.error(e)
+    AppToaster.show({
+      message: 'JSON 数据错误，请联系开发者',
+      intent: 'danger',
+    })
+  }
 }
 
 /**
