@@ -69,7 +69,7 @@ export const Operations: ComponentType = withSuspensable(() => {
           onClick={() => {
             setQueryParams((old) => ({
               ...old,
-              uploaderId: old.uploaderId ? undefined : authState.userId,
+              uploaderId: old.uploaderId ? undefined : 'me',
             }))
           }}
         >

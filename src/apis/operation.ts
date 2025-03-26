@@ -1,5 +1,8 @@
 import { uniqBy } from 'lodash-es'
-import { QueriesCopilotRequest } from 'maa-copilot-client'
+import {
+  CopilotInfoStatusEnum,
+  QueriesCopilotRequest,
+} from 'maa-copilot-client'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
@@ -178,16 +181,29 @@ export async function getOperation(req: { id: number }): Promise<Operation> {
   }
 }
 
-export async function createOperation(req: { content: string }) {
+export async function createOperation(req: {
+  content: string
+  status: CopilotInfoStatusEnum
+}) {
   await new OperationApi().uploadCopilot({ copilotCUDRequest: req })
 }
 
-export async function updateOperation(req: { id: number; content: string }) {
+export async function updateOperation(req: {
+  id: number
+  content: string
+  status: CopilotInfoStatusEnum
+}) {
   await new OperationApi().updateCopilot({ copilotCUDRequest: req })
 }
 
 export async function deleteOperation(req: { id: number }) {
-  await new OperationApi().deleteCopilot({ copilotCUDRequest: req })
+  await new OperationApi().deleteCopilot({
+    copilotCUDRequest: {
+      content: '',
+      status: CopilotInfoStatusEnum.Public,
+      ...req,
+    },
+  })
 }
 
 export async function rateOperation(req: { id: number; rating: OpRatingType }) {

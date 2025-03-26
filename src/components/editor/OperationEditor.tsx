@@ -291,7 +291,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   return (
     <FloatingMapContext>
       <section className="flex flex-col relative h-full pt-4">
-        <div className="px-8 text-lg font-medium flex items-center w-full h-12">
+        <div className="px-8 text-lg font-medium flex items-center flex-wrap w-full">
           <Icon icon="document" />
           <span className="ml-2 mr-4">作业编辑器</span>
           <div className="flex-1" />
@@ -307,7 +307,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
           </Callout>
         )}
 
-        <div className="py-4 px-8 mr-0.5">
+        <div className="px-8 mr-0.5">
           <H4>作业元信息</H4>
           <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-1/4 md:mr-8">
