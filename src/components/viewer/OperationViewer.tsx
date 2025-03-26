@@ -12,6 +12,7 @@ import {
   Menu,
   MenuItem,
   NonIdealState,
+  Tag,
 } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { ErrorBoundary } from '@sentry/react'
@@ -24,6 +25,7 @@ import {
 } from 'apis/operation'
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
+import { CopilotInfoStatusEnum } from 'maa-copilot-client'
 import { ComponentType, FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { copyShortCode, handleDownloadJSON } from 'services/operation'
@@ -272,7 +274,14 @@ function OperationViewerInner({
 }) {
   return (
     <div className="h-full overflow-auto p-4 md:p-8">
-      <H3>{operation.parsedContent.doc.title}</H3>
+      <H3>
+        {operation.parsedContent.doc.title}
+        {operation.status === CopilotInfoStatusEnum.Private && (
+          <Tag minimal className="ml-2 font-normal opacity-75">
+            私有
+          </Tag>
+        )}
+      </H3>
 
       <div className="flex flex-col-reverse md:grid grid-rows-1 grid-cols-3 gap-2 md:gap-8">
         <div className="flex flex-col">
