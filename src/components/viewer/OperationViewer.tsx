@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   ButtonGroup,
   Card,
@@ -10,6 +9,7 @@ import {
   H6,
   Icon,
   Menu,
+  MenuDivider,
   MenuItem,
   NonIdealState,
   Tag,
@@ -18,6 +18,7 @@ import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 import { ErrorBoundary } from '@sentry/react'
 
 import {
+  banComments,
   deleteOperation,
   rateOperation,
   useOperation,
@@ -25,9 +26,11 @@ import {
 } from 'apis/operation'
 import clsx from 'clsx'
 import { useAtom } from 'jotai'
-import { CopilotInfoStatusEnum } from 'maa-copilot-client'
+import {
+  BanCommentsStatusEnum,
+  CopilotInfoStatusEnum,
+} from 'maa-copilot-client'
 import { ComponentType, FC, useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { copyShortCode, handleDownloadJSON } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
@@ -50,20 +53,28 @@ import { Level } from '../../models/operation'
 import { OPERATORS } from '../../models/operator'
 import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
+import { Confirm } from '../Confirm'
+import { ReLinkDiv } from '../ReLinkDiv'
 import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
 
 const ManageMenu: FC<{
   operation: Operation
-  onUpdate: () => void
-}> = ({ operation, onUpdate }) => {
+  onRevalidateOperation: () => void
+  onDelete: () => void
+}> = ({ operation, onRevalidateOperation, onDelete }) => {
   const refreshOperations = useRefreshOperations()
 
-  const [loading, setLoading] = useState(false)
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const handleBanComments = async (status: BanCommentsStatusEnum) => {
+    await wrapErrorMessage(
+      (e) => '操作失败：' + formatError(e),
+      banComments({ operationId: operation.id, status }),
+    ).catch(console.warn)
+
+    onRevalidateOperation()
+  }
 
   const handleDelete = async () => {
-    setLoading(true)
     try {
       await wrapErrorMessage(
         (e) => `删除失败：${formatError(e)}`,
@@ -76,46 +87,72 @@ const ManageMenu: FC<{
         intent: 'success',
         message: `删除成功`,
       })
-      setDeleteDialogOpen(false)
-      onUpdate()
+      onDelete()
     } catch (e) {
       console.warn(e)
-    } finally {
-      setLoading(false)
     }
   }
 
   return (
     <>
-      <Alert
-        isOpen={deleteDialogOpen}
-        cancelButtonText="取消"
-        confirmButtonText="删除"
-        icon="log-out"
-        intent="danger"
-        canOutsideClickCancel
-        loading={loading}
-        onCancel={() => setDeleteDialogOpen(false)}
-        onConfirm={handleDelete}
-      >
-        <H4>删除作业</H4>
-        <p>确定要删除作业吗？</p>
-      </Alert>
-
       <Menu>
-        <Link
-          className="hover:[color:inherit] hover:no-underline"
-          to={`/create/${operation.id}`}
-        >
+        <ReLinkDiv to={`/create/${operation.id}`}>
           <MenuItem icon="edit" text="修改作业" />
-        </Link>
-        <MenuItem
-          icon="delete"
+        </ReLinkDiv>
+        {operation.commentStatus === BanCommentsStatusEnum.Enabled && (
+          <Confirm
+            intent="danger"
+            trigger={({ handleClick }) => (
+              <MenuItem
+                icon="comment"
+                text="关闭评论区"
+                shouldDismissPopover={false}
+                onClick={handleClick}
+              />
+            )}
+            onConfirm={() => handleBanComments(BanCommentsStatusEnum.Disabled)}
+          >
+            <H6>关闭评论区</H6>
+            <p>确定要关闭评论区吗？</p>
+            <p>已有的评论不会被删除，重新开启后会恢复显示</p>
+          </Confirm>
+        )}
+        {operation.commentStatus === BanCommentsStatusEnum.Disabled && (
+          <Confirm
+            trigger={({ handleClick }) => (
+              <MenuItem
+                icon="comment"
+                text="开启评论区"
+                shouldDismissPopover={false}
+                onClick={handleClick}
+              />
+            )}
+            onConfirm={() => handleBanComments(BanCommentsStatusEnum.Enabled)}
+          >
+            <H6>开启评论区</H6>
+            <p>确定要开启评论区吗？</p>
+          </Confirm>
+        )}
+        <MenuDivider />
+        <Confirm
           intent="danger"
-          text="删除作业..."
-          shouldDismissPopover={false}
-          onClick={() => setDeleteDialogOpen(true)}
-        />
+          confirmButtonText="删除"
+          repeats={3}
+          onConfirm={handleDelete}
+          trigger={({ handleClick }) => (
+            <MenuItem
+              icon="delete"
+              intent="danger"
+              text="删除作业"
+              shouldDismissPopover={false}
+              onClick={handleClick}
+            />
+          )}
+        >
+          <H4>删除作业</H4>
+          <p>确定要删除作业吗？</p>
+          <p>需要三次确认以删除</p>
+        </Confirm>
       </Menu>
     </>
   )
@@ -197,7 +234,8 @@ export const OperationViewer: ComponentType<{
                   content={
                     <ManageMenu
                       operation={operation}
-                      onUpdate={() => onCloseDrawer()}
+                      onRevalidateOperation={() => mutate()}
+                      onDelete={() => onCloseDrawer()}
                     />
                   }
                 >
@@ -376,12 +414,20 @@ function OperationViewerInner({
       <div className="h-[1px] w-full bg-gray-200 mt-4 mb-6" />
 
       <div className="mb-6">
-        <div>
-          <H4 className="mb-4" id="comment">
-            评论 ({operation.commentsCount})
-          </H4>
+        <H4 className="mb-4" id="comment">
+          {operation.commentStatus === BanCommentsStatusEnum.Disabled
+            ? '评论'
+            : `评论 (${operation.commentsCount})`}
+        </H4>
+        {operation.commentStatus === BanCommentsStatusEnum.Disabled ? (
+          <NonIdealState
+            icon="tree"
+            title="评论区已关闭"
+            description="感受…宁静……"
+          />
+        ) : (
           <CommentArea operationId={operation.id} />
-        </div>
+        )}
       </div>
     </div>
   )

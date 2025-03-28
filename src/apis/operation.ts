@@ -1,5 +1,6 @@
 import { uniqBy } from 'lodash-es'
 import {
+  BanCommentsStatusEnum,
   CopilotInfoStatusEnum,
   QueriesCopilotRequest,
 } from 'maa-copilot-client'
@@ -218,5 +219,15 @@ export async function rateOperation(req: { id: number; rating: OpRatingType }) {
       ...req,
       rating: ratingTypeMapping[req.rating],
     },
+  })
+}
+
+export async function banComments(req: {
+  operationId: number
+  status: BanCommentsStatusEnum
+}) {
+  await new OperationApi().banComments({
+    copilotId: req.operationId,
+    ...req,
   })
 }
