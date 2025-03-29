@@ -9,6 +9,7 @@ import {
 import { UseOperationsParams } from 'apis/operation'
 import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
+import { MaaUserInfo } from 'maa-copilot-client'
 import { ComponentType, useMemo, useState } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
@@ -20,6 +21,7 @@ import { authAtom } from '../store/auth'
 import { LevelSelect } from './LevelSelect'
 import { OperatorFilter } from './OperatorFilter'
 import { withSuspensable } from './Suspensable'
+import { UserFilter } from './UserFilter'
 
 export const Operations: ComponentType = withSuspensable(() => {
   const [queryParams, setQueryParams] = useState<
@@ -33,6 +35,7 @@ export const Operations: ComponentType = withSuspensable(() => {
     [],
   )
 
+  const [selectedUser, setSelectedUser] = useState<MaaUserInfo>()
   const [selectedOperators, setSelectedOperators] = useState<string[]>([])
 
   const [authState] = useAtom(authAtom)
@@ -132,6 +135,17 @@ export const Operations: ComponentType = withSuspensable(() => {
                   className="mt-2"
                   operators={selectedOperators}
                   onChange={setSelectedOperators}
+                />
+                <UserFilter
+                  className="mt-2"
+                  user={selectedUser}
+                  onChange={(user) => {
+                    setSelectedUser(user)
+                    setQueryParams((old) => ({
+                      ...old,
+                      uploaderId: user?.id,
+                    }))
+                  }}
                 />
               </div>
             </div>

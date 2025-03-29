@@ -1,25 +1,29 @@
 import { Suggest2, Suggest2Props } from '@blueprintjs/select'
 
-import { noop } from 'lodash-es'
+import { debounce, noop } from 'lodash-es'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { ControllerFieldState } from 'react-hook-form'
 
 import { FieldResetButton } from './FieldResetButton'
 
 interface SuggestProps<T> extends Suggest2Props<T> {
-  debounce?: number // defaults to 100(ms), set to 0 to disable
+  query?: string // controlled query, optional
+  debounce?: number // defaults to 100(ms)
   updateQueryOnSelect?: boolean
   fieldState?: ControllerFieldState
+  onDebouncedQueryChange?: (query: string) => void
   onReset?: () => void
 }
 
 export const Suggest = <T,>({
-  debounce = 100,
+  debounce: debounceTime = 100,
   updateQueryOnSelect,
   fieldState,
+  query: propQuery,
+  onQueryChange,
+  onDebouncedQueryChange,
   onReset,
 
-  items,
   itemListPredicate,
   selectedItem,
   inputValueRenderer,
@@ -33,45 +37,60 @@ export const Suggest = <T,>({
     ref.current['selectText'] = noop
   }
 
-  const [query, setQuery] = useState('')
+  const onQueryChangeRef = useRef(onQueryChange)
+  onQueryChangeRef.current = onQueryChange
+  const onDebouncedQueryChangeRef = useRef(onDebouncedQueryChange)
+  onDebouncedQueryChangeRef.current = onDebouncedQueryChange
+
+  const [internalQuery, setInternalQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
+  const query = propQuery ?? internalQuery
+  const updateQuery = useMemo(() => {
+    // note: debouncing is required to fix https://github.com/MaaAssistantArknights/maa-copilot-frontend/issues/72
+    const debouncedUpdateQuery = debounce((query: string) => {
+      setDebouncedQuery(query)
+      onDebouncedQueryChangeRef.current?.(query)
+    }, debounceTime)
 
-  // the debounce fixes https://github.com/MaaAssistantArknights/maa-copilot-frontend/issues/72
-  useEffect(() => {
-    if (debounce) {
-      const timer = setTimeout(() => setDebouncedQuery(query), debounce)
-      return () => clearTimeout(timer)
+    const updateQuery = (query: string, immediately: boolean) => {
+      setInternalQuery(query)
+      onQueryChangeRef.current?.(query)
+      debouncedUpdateQuery(query)
+      if (immediately) {
+        debouncedUpdateQuery.flush()
+      }
     }
-    setDebouncedQuery(query)
-    return undefined
-  }, [query, debounce])
+    updateQuery.cancel = debouncedUpdateQuery.cancel
+    return updateQuery
+  }, [debounceTime])
 
-  const filteredItems = useMemo(
-    () => itemListPredicate?.(debouncedQuery, items) || items,
-    [itemListPredicate, debouncedQuery, items],
-  )
+  // 取消等待中的调用
+  useEffect(() => () => updateQuery.cancel(), [updateQuery])
 
   useEffect(() => {
-    if (!fieldState?.isTouched) {
-      setQuery('')
-      setDebouncedQuery('')
+    if (fieldState && !fieldState.isTouched) {
+      updateQuery('', true)
     }
-  }, [fieldState?.isTouched])
+  }, [fieldState, updateQuery])
 
   useEffect(() => {
     if (updateQueryOnSelect && selectedItem) {
-      setQuery(inputValueRenderer(selectedItem))
+      updateQuery(inputValueRenderer(selectedItem), true)
     }
-  }, [updateQueryOnSelect, selectedItem, inputValueRenderer])
+  }, [updateQueryOnSelect, selectedItem, inputValueRenderer, updateQuery])
 
   return (
     <Suggest2<T>
       ref={ref}
-      items={filteredItems}
       query={query}
-      onQueryChange={setQuery}
+      onQueryChange={(query) => updateQuery(query, false)}
       selectedItem={selectedItem}
       inputValueRenderer={inputValueRenderer}
+      itemListPredicate={
+        itemListPredicate
+          ? (query, items) => itemListPredicate(debouncedQuery, items)
+          : undefined
+      }
       inputProps={{
         onKeyDown: (event) => {
           // prevent form submission
@@ -82,15 +101,17 @@ export const Suggest = <T,>({
         rightElement: (
           <FieldResetButton
             disabled={
-              fieldState
-                ? !fieldState.isDirty
-                : onReset
-                  ? !(query || selectedItem !== null)
-                  : true
+              !(
+                // enabled =
+                (fieldState
+                  ? fieldState.isDirty
+                  : onReset
+                    ? query || selectedItem !== null
+                    : false)
+              )
             }
             onReset={() => {
-              setQuery('')
-              setDebouncedQuery('')
+              updateQuery('', true)
               onReset?.()
             }}
           />
