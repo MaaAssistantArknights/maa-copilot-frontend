@@ -2,9 +2,14 @@
 
 MAA 作业站前端！
 
-## 开发流程
+## 文档
 
-后端接口文档：https://maa-docker.kkdy.tech/swagger-ui/index.html
+- ~~后端接口文档~~ (暂无，请参考 [maa-copilot-client](https://github.com/MaaAssistantArknights/maa-copilot-client-ts) 的 TS 类型，或者从后端 [Actions](https://github.com/MaaAssistantArknights/MaaBackendCenter/actions/workflows/openapi.yml) 的 Artifacts 里下载最新的 OpenAPI 文档)
+- 作业格式：[MAA 战斗流程协议](https://maa.plus/docs/zh-cn/protocol/copilot-schema.html)
+
+更新 maa-copilot-client 时，需要在 [Tags](https://github.com/MaaAssistantArknights/maa-copilot-client-ts/tags) 中复制版本号，然后替换掉 `package.json` 中的 `maa-copilot-client` 版本号，再运行 `yarn` 安装依赖
+
+## 开发流程
 
 该仓库的主分支为 `dev`，线上分支为 `main`，代码合并到 `main` 后将会自动部署到线上
 
