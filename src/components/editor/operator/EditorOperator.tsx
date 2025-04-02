@@ -167,12 +167,12 @@ export const OperatorAvatar = ({
 
   const colorClassName =
     rarity === 6
-      ? ['bg-orange-200', 'ring-orange-300']
+      ? 'bg-orange-200 ring-orange-300'
       : rarity === 5
-        ? ['bg-yellow-100', 'ring-yellow-200']
+        ? 'bg-yellow-100 ring-yellow-200'
         : rarity === 4
-          ? ['bg-purple-100', 'ring-purple-200']
-          : ['bg-slate-100', 'ring-slate-200']
+          ? 'bg-purple-100 ring-purple-200'
+          : 'bg-slate-100 ring-slate-200'
 
   const commonClassName =
     'ring-inset ring-2 border-solid rounded-md object-cover'

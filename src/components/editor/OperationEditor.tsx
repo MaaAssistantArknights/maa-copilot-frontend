@@ -34,6 +34,7 @@ import {
   getPrtsMapUrl,
   getStageIdWithDifficulty,
   hasHardMode,
+  isCustomLevel,
   isHardMode,
   toNormalMode,
 } from '../../models/level'
@@ -151,7 +152,11 @@ export const StageNameInput: FC<{
           )}
           selectedItem={selectedLevel}
           onItemSelect={selectLevel}
-          inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
+          inputValueRenderer={(item) =>
+            isCustomLevel(item)
+              ? `${item.name} (自定义)`
+              : `${item.catThree} ${item.name}`
+          }
           noResults={<MenuItem disabled text="没有匹配的关卡" />}
           createNewItemFromQuery={(query) => createCustomLevel(query)}
           createNewItemRenderer={(query, active, handleClick) => (

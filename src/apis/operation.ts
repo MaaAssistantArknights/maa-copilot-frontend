@@ -15,13 +15,18 @@ import { useSWRRefresh } from 'utils/swr'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
+export interface OperatorFilterParams {
+  included: string[]
+  excluded: string[]
+}
+
 export interface UseOperationsParams {
   limit?: number
   orderBy?: OrderBy
   descending?: boolean
   keyword?: string
   levelKeyword?: string
-  operator?: string
+  operator?: OperatorFilterParams
   operationIds?: number[]
   uploaderId?: string
 
@@ -84,7 +89,12 @@ export function useOperations({
           page: pageIndex + 1,
           document: keyword,
           levelKeyword,
-          operator,
+          operator: operator
+            ? [
+                ...operator.included,
+                ...operator.excluded.map((o) => `~${o}`),
+              ].join(',') || undefined
+            : undefined,
           orderBy,
           desc: descending,
           copilotIds: operationIds,

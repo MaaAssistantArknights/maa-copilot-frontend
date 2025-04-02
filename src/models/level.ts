@@ -22,9 +22,9 @@ export function createCustomLevel(name: string): Level {
     name,
     stageId: name,
     levelId: '',
-    catOne: '',
+    catOne: '自定义关卡',
     catTwo: '',
-    catThree: '自定义关卡',
+    catThree: name,
     width: 0,
     height: 0,
   }
