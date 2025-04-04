@@ -4,7 +4,7 @@ import { Classes as Popover2Classes } from '@blueprintjs/popover2'
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { MaaUserInfo } from 'maa-copilot-client'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 
 import { useUserSearch } from '../apis/user'
 import { authAtom } from '../store/auth'
@@ -42,6 +42,13 @@ export const UserFilter: FC<UserFilterProps> = ({
     isLoading,
     isValidating,
   } = useUserSearch({ keyword: debouncedQuery })
+
+  useEffect(() => {
+    // 退出登录时清空 myself
+    if (isMyself(user) && !auth.token) {
+      onChange(undefined)
+    }
+  }, [auth.token, user, onChange])
 
   return (
     <Select<MaaUserInfo>
