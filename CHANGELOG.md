@@ -1,3 +1,20 @@
+## 2025-04-04
+
+- 优化了首页列表的性能 [@Aliothmoon](https://github.com/Aliothmoon)
+- 添加了私有作业功能 [@guansss](https://github.com/guansss) [@dragove](https://github.com/dragove)
+- 添加了关闭评论区功能 [@guansss](https://github.com/guansss) [@dragove](https://github.com/dragove)
+- 添加了按用户筛选功能 [@guansss](https://github.com/guansss) [@Pleasurecruise](https://github.com/Pleasurecruise) [@dragove](https://github.com/dragove)
+- 重新设计了主页的搜索面板 [@guansss](https://github.com/guansss)
+- 搜索功能的全文索引优化 [@Aliothmoon](https://github.com/Aliothmoon) [@Handiwork](https://github.com/Handiwork)
+- 修复了按干员筛选时和异格冲突的问题 [@LuoRenMu](https://github.com/LuoRenMu)
+- 优化了敏感词检测 [@dragove](https://github.com/dragove) [@Daydreamer114](https://github.com/Daydreamer114)
+
+从现在起，后端的更新和贡献者也会一并列出 (～￣▽￣)～
+
+## 2025-03-15
+
+- 优化了暗色模式界面显示 [@zhangchi0104](https://github.com/zhangchi0104)
+
 ## 2025-03-01
 
 - 优化了移动端界面 [@guansss](https://github.com/guansss)

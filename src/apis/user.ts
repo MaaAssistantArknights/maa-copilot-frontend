@@ -1,6 +1,5 @@
 import useSWR from 'swr'
 
-import { NotFoundError } from '../utils/error'
 import { UserApi } from '../utils/maa-copilot-client'
 
 export function useUserInfo({
@@ -20,13 +19,27 @@ export function useUserInfo({
         userId,
       })
 
-      // FIXME: 严谨一点！！！
-      if (res.data.userName === '未知用户:(') {
-        throw new NotFoundError()
-      }
-
       return res.data
     },
     { suspense },
+  )
+}
+
+export function useUserSearch({ keyword }: { keyword?: string }) {
+  return useSWR(
+    keyword ? ['userSearch', keyword] : null,
+    async ([, keyword]) => {
+      const res = await new UserApi({
+        sendToken: 'never',
+        requireData: true,
+      }).searchUsers({
+        userName: keyword,
+      })
+      return res.data
+    },
+    {
+      revalidateOnFocus: false,
+      keepPreviousData: true,
+    },
   )
 }

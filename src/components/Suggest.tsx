@@ -1,28 +1,33 @@
 import { Suggest2, Suggest2Props } from '@blueprintjs/select'
 
 import { noop } from 'lodash-es'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { ControllerFieldState } from 'react-hook-form'
 
+import {
+  UseDebouncedQueryParams,
+  useDebouncedQuery,
+} from '../utils/useDebouncedQuery'
 import { FieldResetButton } from './FieldResetButton'
 
-interface SuggestProps<T> extends Suggest2Props<T> {
-  debounce?: number // defaults to 100(ms), set to 0 to disable
-  updateQueryOnSelect?: boolean
+interface SuggestProps<T>
+  extends Omit<Suggest2Props<T>, 'onQueryChange'>,
+    UseDebouncedQueryParams {
+  query?: string // controlled query, optional
   fieldState?: ControllerFieldState
   onReset?: () => void
 }
 
 export const Suggest = <T,>({
-  debounce = 100,
-  updateQueryOnSelect,
+  debounceTime = 100,
   fieldState,
+  query: externalQuery,
+  onQueryChange,
+  onDebouncedQueryChange,
   onReset,
 
-  items,
   itemListPredicate,
   selectedItem,
-  inputValueRenderer,
   inputProps,
   ...suggest2Props
 }: SuggestProps<T>) => {
@@ -33,45 +38,30 @@ export const Suggest = <T,>({
     ref.current['selectText'] = noop
   }
 
-  const [query, setQuery] = useState('')
-  const [debouncedQuery, setDebouncedQuery] = useState('')
-
-  // the debounce fixes https://github.com/MaaAssistantArknights/maa-copilot-frontend/issues/72
-  useEffect(() => {
-    if (debounce) {
-      const timer = setTimeout(() => setDebouncedQuery(query), debounce)
-      return () => clearTimeout(timer)
-    }
-    setDebouncedQuery(query)
-    return undefined
-  }, [query, debounce])
-
-  const filteredItems = useMemo(
-    () => itemListPredicate?.(debouncedQuery, items) || items,
-    [itemListPredicate, debouncedQuery, items],
-  )
+  const { query, debouncedQuery, updateQuery } = useDebouncedQuery({
+    query: externalQuery,
+    debounceTime,
+    onQueryChange,
+    onDebouncedQueryChange,
+  })
 
   useEffect(() => {
-    if (!fieldState?.isTouched) {
-      setQuery('')
-      setDebouncedQuery('')
+    if (fieldState && !fieldState.isTouched) {
+      updateQuery('', true)
     }
-  }, [fieldState?.isTouched])
-
-  useEffect(() => {
-    if (updateQueryOnSelect && selectedItem) {
-      setQuery(inputValueRenderer(selectedItem))
-    }
-  }, [updateQueryOnSelect, selectedItem, inputValueRenderer])
+  }, [fieldState, updateQuery])
 
   return (
     <Suggest2<T>
       ref={ref}
-      items={filteredItems}
       query={query}
-      onQueryChange={setQuery}
+      onQueryChange={(query) => updateQuery(query, false)}
       selectedItem={selectedItem}
-      inputValueRenderer={inputValueRenderer}
+      itemListPredicate={
+        itemListPredicate
+          ? (query, items) => itemListPredicate(debouncedQuery, items)
+          : undefined
+      }
       inputProps={{
         onKeyDown: (event) => {
           // prevent form submission
@@ -82,15 +72,17 @@ export const Suggest = <T,>({
         rightElement: (
           <FieldResetButton
             disabled={
-              fieldState
-                ? !fieldState.isDirty
-                : onReset
-                  ? !(query || selectedItem !== null)
-                  : true
+              !(
+                // enabled =
+                (fieldState
+                  ? fieldState.isDirty
+                  : onReset
+                    ? query || selectedItem !== null
+                    : false)
+              )
             }
             onReset={() => {
-              setQuery('')
-              setDebouncedQuery('')
+              updateQuery('', true)
               onReset?.()
             }}
           />

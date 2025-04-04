@@ -1,5 +1,9 @@
 import { uniqBy } from 'lodash-es'
-import { QueriesCopilotRequest } from 'maa-copilot-client'
+import {
+  BanCommentsStatusEnum,
+  CopilotInfoStatusEnum,
+  QueriesCopilotRequest,
+} from 'maa-copilot-client'
 import useSWR from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
@@ -11,13 +15,18 @@ import { useSWRRefresh } from 'utils/swr'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
+export interface OperatorFilterParams {
+  included: string[]
+  excluded: string[]
+}
+
 export interface UseOperationsParams {
   limit?: number
   orderBy?: OrderBy
   descending?: boolean
   keyword?: string
   levelKeyword?: string
-  operator?: string
+  operator?: OperatorFilterParams
   operationIds?: number[]
   uploaderId?: string
 
@@ -80,7 +89,12 @@ export function useOperations({
           page: pageIndex + 1,
           document: keyword,
           levelKeyword,
-          operator,
+          operator: operator
+            ? [
+                ...operator.included,
+                ...operator.excluded.map((o) => `~${o}`),
+              ].join(',') || undefined
+            : undefined,
           orderBy,
           desc: descending,
           copilotIds: operationIds,
@@ -178,16 +192,29 @@ export async function getOperation(req: { id: number }): Promise<Operation> {
   }
 }
 
-export async function createOperation(req: { content: string }) {
+export async function createOperation(req: {
+  content: string
+  status: CopilotInfoStatusEnum
+}) {
   await new OperationApi().uploadCopilot({ copilotCUDRequest: req })
 }
 
-export async function updateOperation(req: { id: number; content: string }) {
+export async function updateOperation(req: {
+  id: number
+  content: string
+  status: CopilotInfoStatusEnum
+}) {
   await new OperationApi().updateCopilot({ copilotCUDRequest: req })
 }
 
 export async function deleteOperation(req: { id: number }) {
-  await new OperationApi().deleteCopilot({ copilotCUDRequest: req })
+  await new OperationApi().deleteCopilot({
+    copilotCUDRequest: {
+      content: '',
+      status: CopilotInfoStatusEnum.Public,
+      ...req,
+    },
+  })
 }
 
 export async function rateOperation(req: { id: number; rating: OpRatingType }) {
@@ -202,5 +229,15 @@ export async function rateOperation(req: { id: number; rating: OpRatingType }) {
       ...req,
       rating: ratingTypeMapping[req.rating],
     },
+  })
+}
+
+export async function banComments(req: {
+  operationId: number
+  status: BanCommentsStatusEnum
+}) {
+  await new OperationApi().banComments({
+    copilotId: req.operationId,
+    ...req,
   })
 }

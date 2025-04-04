@@ -1,13 +1,14 @@
-import { MenuDivider, MenuItem } from '@blueprintjs/core'
+import { Button, Classes, MenuDivider, MenuItem } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { FC, Fragment, useMemo } from 'react'
+import { FC, useMemo } from 'react'
 
 import { useLevels } from '../apis/level'
 import { createCustomLevel, isHardMode } from '../models/level'
 import { Level } from '../models/operation'
-import { Suggest } from './Suggest'
+import { useDebouncedQuery } from '../utils/useDebouncedQuery'
+import { Select } from './Select'
 
 interface LevelSelectProps {
   className?: string
@@ -29,7 +30,6 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         .sort((a, b) => a.levelId.localeCompare(b.levelId)),
     [data],
   )
-
   const fuse = useMemo(
     () =>
       new Fuse(levels, {
@@ -39,15 +39,24 @@ export const LevelSelect: FC<LevelSelectProps> = ({
     [levels],
   )
 
-  // value 可以由用户输入，所以可以是任何值，只有用 stageId 才能匹配到唯一的关卡
-  const selectedLevel = useMemo(
-    () => levels.find((el) => el.stageId === value) ?? null,
-    [levels, value],
-  )
+  const { query, debouncedQuery, updateQuery, onOptionMouseDown } =
+    useDebouncedQuery()
 
-  const search = (query: string) => {
-    // 如果 query 和当前关卡完全匹配（也就是唯一对应），就显示同类关卡
-    if (selectedLevel && selectedLevel.stageId === query) {
+  const selectedLevel = useMemo(() => {
+    const level = levels.find((el) => el.stageId === value)
+    if (level) {
+      return level
+    }
+    // 如果有 value 但匹配不到，就创建一个自定义关卡来显示
+    if (value) {
+      return createCustomLevel(value)
+    }
+    return undefined
+  }, [levels, value])
+
+  const filteredLevels = useMemo(() => {
+    // 未输入 query 时显示同类关卡
+    if (selectedLevel && !debouncedQuery) {
       let similarLevels: Level[]
       let headerName: string
 
@@ -83,55 +92,78 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       }
 
       if (similarLevels.length > 1) {
-        const header = createCustomLevel(headerName)
-        header.stageId = 'header'
+        const header = createCustomLevel('header')
+        header.name = headerName
         return [header, ...similarLevels]
       }
     }
 
-    return query ? fuse.search(query).map((el) => el.item) : levels
-  }
+    return debouncedQuery.trim()
+      ? fuse.search(debouncedQuery).map((el) => el.item)
+      : levels
+  }, [debouncedQuery, selectedLevel, levels, fuse])
 
   return (
-    <Suggest<Level>
-      updateQueryOnSelect
+    <Select<Level>
       items={levels}
-      itemListPredicate={search}
+      itemListPredicate={() => filteredLevels}
+      query={query}
+      onQueryChange={(query) => updateQuery(query, false)}
       onReset={() => onChange('')}
-      className={clsx(className, selectedLevel && '[&_input]:italic')}
+      className={clsx('items-stretch', className)}
+      itemsEqual={(a, b) => a.stageId === b.stageId}
+      itemDisabled={(item) => item.stageId === 'header'} // 避免 header 被选中为 active
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) =>
         item.stageId === 'header' ? (
-          <Fragment key="header">
-            <div className="ml-2 text-zinc-500 text-xs">{item.name}</div>
-            <MenuDivider />
-          </Fragment>
+          <MenuDivider key="header" title={item.name} />
         ) : (
           <MenuItem
+            roleStructure="listoption"
             key={item.stageId}
+            className={clsx(modifiers.active && Classes.ACTIVE)}
             text={`${item.catThree} ${item.name}`}
             onClick={handleClick}
             onFocus={handleFocus}
-            selected={modifiers.active}
+            onMouseDown={onOptionMouseDown}
+            selected={item === selectedLevel}
             disabled={modifiers.disabled}
           />
         )
       }
       selectedItem={selectedLevel}
-      onItemSelect={(level) => onChange(level.stageId)}
-      inputValueRenderer={(item) => item.stageId}
-      noResults={<MenuItem disabled text="没有可选的关卡" />}
-      inputProps={{
-        placeholder: '关卡名、关卡类型、关卡编号',
-        leftIcon: 'area-of-interest',
-        large: true,
-        size: 64,
-        onBlur: (e) => {
-          // 失焦时直接把 query 提交上去，用于处理关卡未匹配的情况
-          if (value !== e.target.value) {
-            onChange(e.target.value)
-          }
-        },
+      onItemSelect={(level) => {
+        // 重置 query 以显示同类关卡
+        updateQuery('', true)
+        onChange(level.stageId)
       }}
-    />
+      createNewItemFromQuery={(query) => createCustomLevel(query)}
+      createNewItemRenderer={(query, active, handleClick) => (
+        <MenuItem
+          key="create-new-item"
+          roleStructure="listoption"
+          text={`使用自定义关卡名 "${query}"`}
+          icon="text-highlight"
+          onClick={handleClick}
+          active={active}
+        />
+      )}
+      inputProps={{
+        placeholder: '关卡名、类型、编号',
+      }}
+      popoverProps={{
+        minimal: true,
+      }}
+    >
+      {
+        <Button
+          minimal
+          className="!pl-3 !pr-2"
+          icon="area-of-interest"
+          rightIcon="chevron-down"
+        >
+          {selectedLevel ? selectedLevel.catThree : '关卡'}
+        </Button>
+      }
+    </Select>
   )
 }

@@ -2,7 +2,8 @@ import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { copyShortCode, handleDownloadJSON } from 'services/operation'
+import { CopilotInfoStatusEnum } from 'maa-copilot-client'
+import { copyShortCode, handleLazyDownloadJSON } from 'services/operation'
 
 import { RelativeTime } from 'components/RelativeTime'
 import { AddToOperationSetButton } from 'components/operation-set/AddToOperationSet'
@@ -31,8 +32,15 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
             content={operation.parsedContent.doc.title}
             className="grow flex-1 whitespace-nowrap overflow-hidden text-ellipsis"
           >
-            <H4 className="p-0 m-0 mr-20 whitespace-nowrap overflow-hidden text-ellipsis">
-              {operation.parsedContent.doc.title}
+            <H4 className="p-0 m-0 mr-20 flex items-center overflow-hidden">
+              <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                {operation.parsedContent.doc.title}
+              </span>
+              {operation.status === CopilotInfoStatusEnum.Private && (
+                <Tag minimal className="ml-2 shrink-0 font-normal opacity-75">
+                  私有
+                </Tag>
+              )}
             </H4>
           </Tooltip2>
         </div>
@@ -126,6 +134,11 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
             <div className="flex gap-2">
               <H4 className="inline-block pb-1 border-b-2 border-zinc-200 border-solid mb-2">
                 {operation.parsedContent.doc.title}
+                {operation.status === CopilotInfoStatusEnum.Private && (
+                  <Tag minimal className="ml-2 font-normal opacity-75">
+                    私有
+                  </Tag>
+                )}
               </H4>
             </div>
             <H5 className="flex items-center text-slate-900 -mt-3">
@@ -249,7 +262,12 @@ const CardActions = ({
         <Button
           small
           icon="download"
-          onClick={() => handleDownloadJSON(operation.parsedContent)}
+          onClick={() =>
+            handleLazyDownloadJSON(
+              operation.id,
+              operation.parsedContent.doc.title,
+            )
+          }
         />
       </Tooltip2>
       <Tooltip2

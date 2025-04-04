@@ -1,11 +1,13 @@
 import { Button, ButtonGroup, Card } from '@blueprintjs/core'
 
+import { useAtom } from 'jotai'
 import { ComponentType, useState } from 'react'
 import { Navigate, useParams } from 'react-router-dom'
 
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { OperationDrawer } from 'components/drawer/OperationDrawer'
+import { authAtom } from 'store/auth'
 
 import { useUserInfo } from '../apis/user'
 import { CardTitle } from '../components/CardTitle'
@@ -20,6 +22,8 @@ const _ProfilePage: ComponentType = () => {
   }
 
   const { data: userInfo } = useUserInfo({ userId: id, suspense: true })
+
+  const [authState, _setAuthState] = useAtom(authAtom)
 
   const [listMode, setListMode] = useState<'operation' | 'operationSet'>(
     'operation',
@@ -54,7 +58,7 @@ const _ProfilePage: ComponentType = () => {
             <OperationList
               limit={10}
               orderBy="id"
-              uploaderId={id}
+              uploaderId={authState.userId == id ? 'me' : id}
               onUpdate={({ total }) => setOperationCount(total)}
             />
           )}

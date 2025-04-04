@@ -2,6 +2,7 @@ import { OpDifficulty } from './operation'
 
 /**
  * MAA Copilot 战斗协议 v1
+ * https://maa.plus/docs/zh-cn/protocol/copilot-schema.html
  */
 export namespace CopilotDocV1 {
   export interface Operation {

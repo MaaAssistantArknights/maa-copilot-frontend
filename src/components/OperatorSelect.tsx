@@ -1,11 +1,14 @@
-import { MenuItem } from '@blueprintjs/core'
+import { Classes, MenuItem } from '@blueprintjs/core'
+import { MenuItem2 } from '@blueprintjs/popover2'
 import { MultiSelect2 } from '@blueprintjs/select'
 
+import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { compact } from 'lodash-es'
-import { FC, useMemo, useRef } from 'react'
+import { FC, useMemo } from 'react'
 
 import { OPERATORS } from '../models/operator'
+import { useDebouncedQuery } from '../utils/useDebouncedQuery'
 import { OperatorAvatar } from './editor/operator/EditorOperator'
 
 interface OperatorSelectProps {
@@ -16,24 +19,13 @@ interface OperatorSelectProps {
 
 type OperatorInfo = (typeof OPERATORS)[number]
 
-interface OperatorEntry {
-  name: string
-  exclude?: boolean
-}
-
 export const OperatorSelect: FC<OperatorSelectProps> = ({
   className,
-  operators: _operators,
+  operators,
   onChange,
 }) => {
-  const operators: OperatorEntry[] = useMemo(
-    () =>
-      _operators.map((name) => ({
-        exclude: name.startsWith('~'),
-        name: name.replace('~', ''),
-      })),
-    [_operators],
-  )
+  const { query, trimmedDebouncedQuery, updateQuery, onOptionMouseDown } =
+    useDebouncedQuery()
 
   const fuse = useMemo(
     () =>
@@ -47,98 +39,102 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   const selectedItems = useMemo(
     () =>
       compact(
-        operators.map(({ name }) =>
-          OPERATORS.find((item) => item.name === name),
-        ),
+        operators.map((name) => OPERATORS.find((item) => item.name === name)),
       ),
     [operators],
   )
 
-  const isRemoving = useRef(false)
-
-  const change = (items: OperatorEntry[]) => {
-    onChange(
-      compact(
-        items.map((item) => (item?.exclude ? `~${item.name}` : item.name)),
-      ),
-    )
-  }
-
-  const setExclude = (index: number, exclude: boolean) => {
-    // clicking on the tag's X button will also trigger this, so we need to check
-    // if the item is already being removed to prevent re-adding it back
-    if (isRemoving.current) {
-      isRemoving.current = false
-      return
-    }
-
-    change(
-      operators.map((item, i) => (i === index ? { ...item, exclude } : item)),
-    )
-  }
-
-  const add = (operation: OperatorInfo) => {
-    if (!operators.some((op) => op.name === operation.name)) {
-      change([...operators, { name: operation.name }])
-    } else {
-      remove(operation)
+  const select = (operator: OperatorInfo) => {
+    if (!operators.includes(operator.name)) {
+      onChange([...operators, operator.name])
     }
   }
 
-  const remove = (operation: OperatorInfo) => {
-    isRemoving.current = true
-    change(operators.filter((op) => op.name !== operation.name))
+  const remove = (operator: OperatorInfo) => {
+    onChange(operators.filter((name) => name !== operator.name))
   }
 
   const clear = () => {
-    change([])
+    onChange([])
   }
 
   return (
     <MultiSelect2<OperatorInfo>
-      className={className}
+      className={clsx('', className)}
+      query={query}
+      onQueryChange={(query) => updateQuery(query, false)}
       items={OPERATORS}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
-        <MenuItem
+        <MenuItem2
+          roleStructure="listoption"
+          className={clsx(
+            'py-0 items-center',
+            modifiers.active && Classes.ACTIVE,
+            selectedItems.includes(item) && Classes.SELECTED,
+          )}
           key={item.name}
-          text={item.name}
-          icon={<OperatorAvatar id={item.id} size="small" />}
+          text={
+            <div className="flex items-center gap-2">
+              <OperatorAvatar
+                className="w-8 h-8"
+                id={item.id}
+                rarity={item.rarity}
+              />
+              {item.name}
+            </div>
+          }
           onClick={handleClick}
           onFocus={handleFocus}
-          selected={modifiers.active}
+          onMouseDown={onOptionMouseDown}
+          selected={selectedItems.includes(item)}
           disabled={modifiers.disabled}
         />
       )}
-      itemListPredicate={(query) => {
-        if (!query) {
-          return OPERATORS
+      itemListPredicate={() => {
+        // 如果没有输入则不显示下拉框，配合空的 noResults 来实现（不能使用 initialContent，因为它检查的是 query 而不是 debouncedQuery）
+        if (!trimmedDebouncedQuery) {
+          return []
         }
-        return fuse.search(query).map((el) => el.item)
+        return fuse.search(trimmedDebouncedQuery).map((el) => el.item)
       }}
       selectedItems={selectedItems}
-      placeholder="包含或排除干员"
-      noResults={<MenuItem disabled text={`没有匹配的干员`} />}
+      placeholder=""
+      noResults={
+        trimmedDebouncedQuery ? (
+          <MenuItem roleStructure="listoption" disabled text="没有匹配的干员" />
+        ) : undefined
+      }
       tagInputProps={{
-        leftIcon: 'person',
         className: '!flex !p-0 !pl-[5px]',
         large: true,
-        tagProps(_value, index) {
-          const operator = operators[index]
-
-          return {
-            interactive: true,
-            className: operator.exclude ? 'line-through' : undefined,
-            intent: operator?.exclude ? 'danger' : 'primary',
-            onClick: () => setExclude(index, !operator?.exclude),
-          }
+        tagProps: {
+          minimal: true,
+          className: '!py-0 !pl-0',
+        },
+        inputProps: {
+          className: '!leading-8',
         },
       }}
       resetOnSelect={true}
-      tagRenderer={(item) => item.name}
+      tagRenderer={(item) => (
+        <div className="flex items-center gap-2">
+          <OperatorAvatar
+            className="w-8 h-8"
+            id={item.id}
+            rarity={item.rarity}
+          />
+          {item.name}
+        </div>
+      )}
       popoverProps={{
+        popoverClassName: trimmedDebouncedQuery
+          ? undefined
+          : '[&_.bp4-popover2-content]:!p-0',
         placement: 'bottom-start',
+        minimal: true,
+        matchTargetWidth: true,
       }}
-      onItemSelect={add}
+      onItemSelect={select}
       onRemove={remove}
       onClear={clear}
     />

@@ -34,6 +34,7 @@ import {
   getPrtsMapUrl,
   getStageIdWithDifficulty,
   hasHardMode,
+  isCustomLevel,
   isHardMode,
   toNormalMode,
 } from '../../models/level'
@@ -151,7 +152,11 @@ export const StageNameInput: FC<{
           )}
           selectedItem={selectedLevel}
           onItemSelect={selectLevel}
-          inputValueRenderer={(item) => `${item.catThree} ${item.name}`}
+          inputValueRenderer={(item) =>
+            isCustomLevel(item)
+              ? `${item.name} (自定义)`
+              : `${item.catThree} ${item.name}`
+          }
           noResults={<MenuItem disabled text="没有匹配的关卡" />}
           createNewItemFromQuery={(query) => createCustomLevel(query)}
           createNewItemRenderer={(query, active, handleClick) => (
@@ -291,7 +296,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   return (
     <FloatingMapContext>
       <section className="flex flex-col relative h-full pt-4">
-        <div className="px-8 text-lg font-medium flex items-center w-full h-12">
+        <div className="px-8 text-lg font-medium flex items-center flex-wrap w-full">
           <Icon icon="document" />
           <span className="ml-2 mr-4">作业编辑器</span>
           <div className="flex-1" />
@@ -307,7 +312,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
           </Callout>
         )}
 
-        <div className="py-4 px-8 mr-0.5">
+        <div className="px-8 mr-0.5">
           <H4>作业元信息</H4>
           <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-1/4 md:mr-8">

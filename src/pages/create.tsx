@@ -1,6 +1,8 @@
-import { Button } from '@blueprintjs/core'
+import { Button, Checkbox } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 import { isEqual } from 'lodash-es'
+import { CopilotInfoStatusEnum } from 'maa-copilot-client'
 import { ComponentType, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useParams } from 'react-router-dom'
@@ -26,7 +28,7 @@ import {
 } from '../components/editor/useAutosave'
 import { validateOperation } from '../components/editor/validation'
 import { toCopilotOperation } from '../models/converter'
-import { MinimumRequired } from '../models/operation'
+import { MinimumRequired, Operation } from '../models/operation'
 import { NetworkError, formatError } from '../utils/error'
 
 const defaultOperation: CopilotDocV1.Operation = {
@@ -80,6 +82,9 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
       autosaveOptions,
     )
 
+    const [operationStatus, setOperationStatus] = useState<Operation['status']>(
+      apiOperation ? apiOperation.status : CopilotInfoStatusEnum.Public,
+    )
     const [uploading, setUploading] = useState(false)
 
     const triggerValidation = async () => {
@@ -108,9 +113,16 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
 
         try {
           if (isNew) {
-            await createOperation({ content: JSON.stringify(operation) })
+            await createOperation({
+              content: JSON.stringify(operation),
+              status: operationStatus,
+            })
           } else {
-            await updateOperation({ id, content: JSON.stringify(operation) })
+            await updateOperation({
+              id,
+              content: JSON.stringify(operation),
+              status: operationStatus,
+            })
           }
         } catch (e) {
           // handle a special error
@@ -181,6 +193,33 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
                 onSubmit()
               }}
             />
+            <div className="flex-[100%_0_0]" />
+            <div className="ml-auto mt-2">
+              <Tooltip2
+                placement="bottom"
+                content={
+                  <>
+                    公开作业：会在所有列表中显示
+                    <br />
+                    私有作业：其他人无法在列表中看见，但可以通过神秘代码访问
+                  </>
+                }
+              >
+                <Checkbox
+                  className="text-sm"
+                  checked={operationStatus === CopilotInfoStatusEnum.Public}
+                  onChange={(e) =>
+                    setOperationStatus(
+                      e.currentTarget.checked
+                        ? CopilotInfoStatusEnum.Public
+                        : CopilotInfoStatusEnum.Private,
+                    )
+                  }
+                >
+                  <span className="-ml-1 opacity-75">公开</span>
+                </Checkbox>
+              </Tooltip2>
+            </div>
           </>
         }
       />
