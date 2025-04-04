@@ -54,7 +54,7 @@ const _ProfilePage: ComponentType = () => {
             <OperationList
               limit={10}
               orderBy="id"
-              uploaderId="me"
+              uploaderId={id}
               onUpdate={({ total }) => setOperationCount(total)}
             />
           )}
