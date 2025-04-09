@@ -1,3 +1,4 @@
+import { useAtomValue } from 'jotai'
 import { noop } from 'lodash-es'
 import {
   CopilotSetPageRes,
@@ -12,6 +13,7 @@ import { OperationSetApi } from 'utils/maa-copilot-client'
 import { useSWRRefresh } from 'utils/swr'
 
 import { parseShortCode } from '../models/shortCode'
+import { authAtom } from '../store/auth'
 
 export type OrderBy = 'views' | 'hot' | 'id'
 
@@ -29,6 +31,7 @@ export function useOperationSets({
   disabled,
   suspense,
 }: UseOperationSetsParams) {
+  const auth = useAtomValue(authAtom)
   const {
     data: pages,
     error,
@@ -49,7 +52,7 @@ export function useOperationSets({
           limit: 50,
           page: pageIndex + 1,
           keyword,
-          creatorId,
+          creatorId: creatorId === 'me' ? auth.userId : creatorId,
         } satisfies CopilotSetQuery,
       ]
     },
