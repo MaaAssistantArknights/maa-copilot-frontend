@@ -11,18 +11,20 @@ import clsx from 'clsx'
 interface SelectProps<T> extends Select2Props<T> {
   selectedItem?: T
   resetButtonProps?: ButtonProps
+  canReset?: boolean
   onReset?: () => void
 }
 
 export const Select = <T,>({
   className,
   selectedItem,
+  canReset,
   onReset,
   resetButtonProps,
   inputProps,
   ...props
 }: SelectProps<T>) => {
-  const canReset = selectedItem !== undefined
+  canReset ??= selectedItem !== undefined
 
   return (
     <Label className={clsx('!flex items-center !mb-0', className)}>
