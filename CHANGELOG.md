@@ -1,3 +1,9 @@
+## 2025-04-10
+
+- 修改作业时会在新标签页打开 [@guansss](https://github.com/guansss)
+- 对搜索面板进行了正面优化（确信） [@guansss](https://github.com/guansss)
+- 广告更新
+
 ## 2025-04-04
 
 - 优化了首页列表的性能 [@Aliothmoon](https://github.com/Aliothmoon)

@@ -54,7 +54,7 @@ import { OPERATORS } from '../../models/operator'
 import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { Confirm } from '../Confirm'
-import { ReLinkDiv } from '../ReLinkDiv'
+import { ReLink } from '../ReLink'
 import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
 
@@ -96,9 +96,15 @@ const ManageMenu: FC<{
   return (
     <>
       <Menu>
-        <ReLinkDiv to={`/create/${operation.id}`}>
-          <MenuItem icon="edit" text="修改作业" />
-        </ReLinkDiv>
+        <li>
+          <ReLink
+            className="hover:text-inherit hover:no-underline"
+            to={`/create/${operation.id}`}
+            target="_blank"
+          >
+            <MenuItem tagName="div" icon="edit" text="修改作业" />
+          </ReLink>
+        </li>
         {operation.commentStatus === BanCommentsStatusEnum.Enabled && (
           <Confirm
             intent="danger"

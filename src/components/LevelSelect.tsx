@@ -1,11 +1,12 @@
 import { Button, Classes, MenuDivider, MenuItem } from '@blueprintjs/core'
+import { getCreateNewItem } from '@blueprintjs/select'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
-import { FC, useMemo } from 'react'
+import { FC, useEffect, useMemo, useState } from 'react'
 
 import { useLevels } from '../apis/level'
-import { createCustomLevel, isHardMode } from '../models/level'
+import { createCustomLevel, isCustomLevel, isHardMode } from '../models/level'
 import { Level } from '../models/operation'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
 import { Select } from './Select'
@@ -40,7 +41,17 @@ export const LevelSelect: FC<LevelSelectProps> = ({
   )
 
   const { query, debouncedQuery, updateQuery, onOptionMouseDown } =
-    useDebouncedQuery()
+    useDebouncedQuery({
+      onDebouncedQueryChange: (value) => {
+        if (value !== debouncedQuery) {
+          // 清空 activeItem，之后会自动设置为第一项
+          setActiveItem(null)
+        }
+      },
+    })
+  const [activeItem, setActiveItem] = useState<Level | 'createNewItem' | null>(
+    null,
+  )
 
   const selectedLevel = useMemo(() => {
     const level = levels.find((el) => el.stageId === value)
@@ -103,10 +114,26 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       : levels
   }, [debouncedQuery, selectedLevel, levels, fuse])
 
+  useEffect(() => {
+    if (!selectedLevel) {
+      setActiveItem(null)
+    } else if (isCustomLevel(selectedLevel)) {
+      setActiveItem('createNewItem')
+    } else {
+      setActiveItem(selectedLevel)
+    }
+  }, [selectedLevel])
+
   return (
     <Select<Level>
       items={levels}
       itemListPredicate={() => filteredLevels}
+      activeItem={
+        activeItem === 'createNewItem' ? getCreateNewItem() : activeItem
+      }
+      onActiveItemChange={(item, isCreateNewItem) => {
+        setActiveItem(isCreateNewItem ? 'createNewItem' : item)
+      }}
       query={query}
       onQueryChange={(query) => updateQuery(query, false)}
       onReset={() => onChange('')}
@@ -132,8 +159,10 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       }
       selectedItem={selectedLevel}
       onItemSelect={(level) => {
-        // 重置 query 以显示同类关卡
-        updateQuery('', true)
+        if (!isCustomLevel(level)) {
+          // 重置 query 以显示同类关卡
+          updateQuery('', true)
+        }
         onChange(level.stageId)
       }}
       createNewItemFromQuery={(query) => createCustomLevel(query)}
@@ -141,10 +170,11 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         <MenuItem
           key="create-new-item"
           roleStructure="listoption"
-          text={`使用自定义关卡名 "${query}"`}
+          className={clsx(active && Classes.ACTIVE)}
+          text={`直接搜索关卡 "${query}"`}
           icon="text-highlight"
           onClick={handleClick}
-          active={active}
+          selected={selectedLevel && isCustomLevel(selectedLevel)}
         />
       )}
       inputProps={{
