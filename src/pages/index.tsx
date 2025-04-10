@@ -1,5 +1,6 @@
 import { Card } from '@blueprintjs/core'
 
+import dayjs from 'dayjs'
 import { ComponentType } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
@@ -18,12 +19,13 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   const { isMD } = useCurrentSize()
   return (
     <div className="flex flex-col md:flex-row px-4 mt-4 md:px-8 md:mt-8 max-w-[96rem] mx-auto">
+      {isMD && <Ad />}
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8 mt-4 md:mt-0">
         <Operations />
       </div>
       {!isMD && (
         <div className="md:w-1/3 order-1 md:order-2">
-          <div className="sticky top-20">
+          <div className="top-20">
             <Card className="flex flex-col mb-4 space-y-2">
               <CardTitle icon="add" className="mb-4">
                 创建新作业
@@ -55,6 +57,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
                 </>
               ))}
             </div>
+
+            <Ad />
           </div>
         </div>
       )}
@@ -63,3 +67,19 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
     </div>
   )
 })
+
+const Ad = dayjs().isBefore('2025-05-11 00:00:00+8')
+  ? () => (
+      // eslint-disable-next-line react/jsx-no-target-blank
+      <a
+        className="block relative dark:brightness-[85%]"
+        href="https://www.ldmnq.com/ldy/ldymuban/#/landing/9651"
+        target="_blank"
+      >
+        <img src="/ad_leidian.jpg" alt="雷电模拟器" />
+        <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1 ">
+          广告
+        </div>
+      </a>
+    )
+  : () => null
