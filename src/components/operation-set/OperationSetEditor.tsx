@@ -6,9 +6,12 @@ import {
   DialogProps,
   Icon,
   InputGroup,
+  Menu,
+  MenuItem,
   NonIdealState,
   TextArea,
 } from '@blueprintjs/core'
+import { Popover2 } from '@blueprintjs/popover2'
 import {
   DndContext,
   DragEndEvent,
@@ -44,9 +47,12 @@ import { Controller, UseFormSetError, useForm } from 'react-hook-form'
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
 import { Sortable } from 'components/dnd'
-import { Operation } from 'models/operation'
+import { Level, Operation } from 'models/operation'
 import { OperationSet } from 'models/operation-set'
 import { formatError } from 'utils/error'
+
+import { useLevels } from '../../apis/level'
+import { findLevelByStageName } from '../../models/level'
 
 export function OperationSetEditorLauncher() {
   const [isOpen, setIsOpen] = useState(false)
@@ -202,27 +208,22 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
   return (
     <form
       className={clsx(
-        'p-4 w-[500px] max-w-[100vw] max-h-[calc(100vh-20rem)] min-h-[18rem] overflow-y-auto',
+        'p-4 w-[500px] max-w-[100vw] max-h-[calc(100vh-20rem)] min-h-[18rem] flex flex-col overflow-auto lg:overflow-hidden',
         isEdit && 'lg:w-[1000px]',
       )}
       onSubmit={localOnSubmit}
     >
-      <div className="gap-4 flex flex-wrap-reverse lg:flex-nowrap">
+      <div className="gap-4 flex flex-wrap-reverse lg:flex-nowrap lg:overflow-hidden">
         {isEdit && (
-          <div className="grow basis-full flex flex-col border-t lg:border-t-0 lg:border-r border-slate-200">
+          <div className="grow basis-full lg:overflow-y-auto border-t lg:border-t-0 lg:border-r border-slate-200">
             {operationSet.copilotIds.length > 0 ? (
-              <>
-                <div className="grow">
-                  <OperationSelector
-                    key={operationSet.id}
-                    operationSet={operationSet}
-                    selectorRef={operationSelectorRef}
-                  />
-                </div>
-              </>
+              <OperationSelector
+                key={operationSet.id}
+                operationSet={operationSet}
+                selectorRef={operationSelectorRef}
+              />
             ) : (
               <NonIdealState
-                className="grow"
                 icon="helicopter"
                 description={
                   <>
@@ -236,7 +237,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           </div>
         )}
 
-        <div className="grow basis-full">
+        <div className="grow basis-full lg:overflow-y-auto">
           <FormField
             label="标题"
             field="name"
@@ -261,6 +262,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
             ControllerProps={{
               render: (renderProps) => (
                 <TextArea
+                  rows={6}
                   {...renderProps.field}
                   value={renderProps.field.value || ''}
                 />
@@ -290,7 +292,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
         </div>
       </div>
 
-      <div className="mt-6 flex items-end">
+      <div className="flex items-end">
         {isEdit && (
           <div className="text-xs text-gray-500">
             <Icon icon="info-sign" /> 修改后请点击保存按钮
@@ -338,6 +340,11 @@ function OperationSelector({
   const { operations, error } = useOperations({
     operationIds: operationSet.copilotIds,
   })
+  const {
+    data: levels,
+    isLoading: levelLoading,
+    error: levelError,
+  } = useLevels()
 
   const [renderedOperations, setRenderedOperations] = useState<Operation[]>([])
   useEffect(() => {
@@ -386,8 +393,88 @@ function OperationSelector({
     }
   }
 
+  const sort = (type: 'title' | 'level' | 'id' | 'reverse') => {
+    const levelCache: Record<string, Level | undefined> = {}
+    setRenderedOperations((items) => {
+      if (type === 'reverse') {
+        return [...items].reverse()
+      }
+      return [...items].sort((a, b) => {
+        if (type === 'title') {
+          return a.parsedContent.doc.title.localeCompare(
+            b.parsedContent.doc.title,
+          )
+        } else if (type === 'level') {
+          const aLevel = (levelCache[a.parsedContent.stageName] ??=
+            findLevelByStageName(levels, a.parsedContent.stageName))
+          const bLevel = (levelCache[b.parsedContent.stageName] ??=
+            findLevelByStageName(levels, b.parsedContent.stageName))
+
+          if (aLevel && bLevel) {
+            return aLevel.catThree.localeCompare(bLevel.catThree)
+          } else if (!aLevel && !bLevel) {
+            // 如果两个都是未知关卡，可能是自定义关卡，或者关卡列表加载失败，直接按 stageName 排序
+            return a.parsedContent.stageName.localeCompare(
+              b.parsedContent.stageName,
+            )
+          } else if (!aLevel) {
+            // 未知关卡排最后面
+            return 1
+          } else if (!bLevel) {
+            return -1
+          }
+        }
+        return a.id - b.id
+      })
+    })
+  }
+
   return (
-    <div className="py-2">
+    <div>
+      <div className="mb-2 flex">
+        <Popover2
+          minimal
+          captureDismiss
+          placement="bottom-start"
+          content={
+            <Menu>
+              <MenuItem
+                disabled={levelLoading}
+                icon="sort-alphabetical"
+                text={
+                  '按关卡' +
+                  (levelLoading
+                    ? ' (加载中...)'
+                    : levelError
+                      ? ' (关卡加载失败，使用备用排序)'
+                      : '')
+                }
+                onClick={() => sort('level')}
+              />
+              <MenuItem
+                icon="sort-alphabetical"
+                text="按标题"
+                onClick={() => sort('title')}
+              />
+              <MenuItem
+                icon="sort-numerical"
+                text="按 ID"
+                onClick={() => sort('id')}
+              />
+            </Menu>
+          }
+        >
+          <Button small minimal icon="sort" text="一键排序..." />
+        </Popover2>
+        <Button
+          small
+          minimal
+          icon="reset"
+          text="反转列表"
+          onClick={() => sort('reverse')}
+        />
+      </div>
+
       {error && (
         <Callout intent="danger" icon="error" title="错误">
           {formatError(error)}
