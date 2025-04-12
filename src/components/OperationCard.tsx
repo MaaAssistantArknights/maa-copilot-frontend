@@ -18,7 +18,17 @@ import { UserName } from './UserName'
 import { EDifficulty } from './entity/EDifficulty'
 import { EDifficultyLevel, NeoELevel } from './entity/ELevel'
 
-export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
+export const NeoOperationCard = ({
+  operation,
+  selected,
+  selectable,
+  onSelect,
+}: {
+  operation: Operation
+  selectable?: boolean
+  selected?: boolean
+  onSelect?: (operation: Operation, selected: boolean) => void
+}) => {
   const { data: levels } = useLevels()
 
   return (
@@ -113,7 +123,13 @@ export const NeoOperationCard = ({ operation }: { operation: Operation }) => {
         </div>
       </ReLinkDiv>
 
-      <CardActions className="absolute top-4 right-4" operation={operation} />
+      <CardActions
+        className="absolute top-4 right-4"
+        operation={operation}
+        selectable={selectable}
+        selected={selected}
+        onSelect={onSelect}
+      />
     </Card>
   )
 }
@@ -247,11 +263,27 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
 const CardActions = ({
   className,
   operation,
+  selected,
+  selectable,
+  onSelect,
 }: {
   className?: string
   operation: Operation
+  selectable?: boolean
+  selected?: boolean
+  onSelect?: (operation: Operation, selected: boolean) => void
 }) => {
-  return (
+  return selectable ? (
+    <Button
+      small
+      minimal={!selected}
+      outlined={!selected}
+      intent="primary"
+      className="absolute top-4 right-4"
+      icon={selected ? 'tick' : 'blank'}
+      onClick={() => onSelect?.(operation, !selected)}
+    />
+  ) : (
     <div className={clsx('flex gap-1', className)}>
       <Tooltip2
         placement="bottom"
@@ -288,7 +320,11 @@ const CardActions = ({
           <div className="max-w-sm dark:text-slate-900">添加到作业集</div>
         }
       >
-        <AddToOperationSetButton small icon="plus" operationId={operation.id} />
+        <AddToOperationSetButton
+          small
+          icon="plus"
+          operationIds={[operation.id]}
+        />
       </Tooltip2>
     </div>
   )

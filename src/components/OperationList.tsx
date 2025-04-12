@@ -6,15 +6,19 @@ import { ComponentType, ReactNode, useEffect } from 'react'
 
 import { neoLayoutAtom } from 'store/pref'
 
+import { Operation } from '../models/operation'
 import { NeoOperationCard, OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
 
 interface OperationListProps extends UseOperationsParams {
+  multiselect?: boolean
+  selectedOperations?: Operation[]
+  onSelect?: (operation: Operation, selected: boolean) => void
   onUpdate?: (params: { total: number }) => void
 }
 
 export const OperationList: ComponentType<OperationListProps> = withSuspensable(
-  ({ onUpdate, ...params }) => {
+  ({ multiselect, selectedOperations, onSelect, onUpdate, ...params }) => {
     const neoLayout = useAtomValue(neoLayoutAtom)
 
     const { operations, total, setSize, isValidating, isReachingEnd } =
@@ -38,7 +42,13 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
         }}
       >
         {operations.map((operation) => (
-          <NeoOperationCard operation={operation} key={operation.id} />
+          <NeoOperationCard
+            operation={operation}
+            key={operation.id}
+            selectable={multiselect}
+            selected={selectedOperations?.some((op) => op.id === operation.id)}
+            onSelect={onSelect}
+          />
         ))}
       </div>
     ) : (
