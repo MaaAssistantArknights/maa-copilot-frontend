@@ -1,7 +1,6 @@
 import {
   Button,
   ButtonGroup,
-  Callout,
   Card,
   Divider,
   H6,
@@ -22,12 +21,10 @@ import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { neoLayoutAtom } from 'store/pref'
 
-import { Operation } from '../models/operation'
 import { LevelSelect } from './LevelSelect'
 import { OperatorFilter, useOperatorFilter } from './OperatorFilter'
 import { withSuspensable } from './Suspensable'
 import { UserFilter } from './UserFilter'
-import { AddToOperationSetButton } from './operation-set/AddToOperationSet'
 
 export const Operations: ComponentType = withSuspensable(() => {
   const [queryParams, setQueryParams] = useState<
@@ -46,7 +43,6 @@ export const Operations: ComponentType = withSuspensable(() => {
   const [neoLayout, setNeoLayout] = useAtom(neoLayoutAtom)
   const [tab, setTab] = useState<'operation' | 'operationSet'>('operation')
   const [multiselect, setMultiselect] = useState(false)
-  const [selectedOperations, setSelectedOperations] = useState<Operation[]>([])
 
   return (
     <>
@@ -191,43 +187,6 @@ export const Operations: ComponentType = withSuspensable(() => {
                 </ButtonGroup>
               </div>
             </div>
-            {multiselect && (
-              <Callout className="mt-2 p-0 select-none">
-                <details>
-                  <summary className="px-2 py-4 cursor-pointer hover:bg-zinc-500 hover:bg-opacity-5">
-                    已选择 {selectedOperations.length} 份作业
-                  </summary>
-                  <div className="p-2 flex flex-wrap gap-1">
-                    {selectedOperations.map((operation) => (
-                      <Button
-                        key={operation.id}
-                        small
-                        minimal
-                        rightIcon="cross"
-                        onClick={() =>
-                          setSelectedOperations((old) =>
-                            old.filter((op) => op.id !== operation.id),
-                          )
-                        }
-                      >
-                        {operation.parsedContent.doc.title}
-                      </Button>
-                    ))}
-                  </div>
-                </details>
-                <AddToOperationSetButton
-                  minimal
-                  outlined
-                  intent="primary"
-                  icon="add-to-folder"
-                  className="absolute top-2 right-2"
-                  disabled={selectedOperations.length === 0}
-                  operationIds={selectedOperations.map((op) => op.id)}
-                >
-                  添加到作业集
-                </AddToOperationSetButton>
-              </Callout>
-            )}
           </>
         )}
 
@@ -269,16 +228,6 @@ export const Operations: ComponentType = withSuspensable(() => {
           <OperationList
             {...queryParams}
             multiselect={multiselect}
-            selectedOperations={selectedOperations}
-            onSelect={(operation, selected) =>
-              setSelectedOperations((old) => {
-                const newList = old.filter((op) => op.id !== operation.id)
-                if (selected) {
-                  newList.push(operation)
-                }
-                return newList
-              })
-            }
             operator={operatorFilter.enabled ? operatorFilter : undefined}
             // 按热度排序时列表前几页的变化不会太频繁，可以不刷新第一页，节省点流量
             revalidateFirstPage={queryParams.orderBy !== 'hot'}

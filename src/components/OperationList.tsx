@@ -1,24 +1,24 @@
-import { Button, NonIdealState } from '@blueprintjs/core'
+import { Button, Callout, NonIdealState } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 import { UseOperationsParams, useOperations } from 'apis/operation'
 import { useAtomValue } from 'jotai'
-import { ComponentType, ReactNode, useEffect } from 'react'
+import { ComponentType, ReactNode, useEffect, useState } from 'react'
 
 import { neoLayoutAtom } from 'store/pref'
 
 import { Operation } from '../models/operation'
 import { NeoOperationCard, OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
+import { AddToOperationSetButton } from './operation-set/AddToOperationSet'
 
 interface OperationListProps extends UseOperationsParams {
   multiselect?: boolean
-  selectedOperations?: Operation[]
-  onSelect?: (operation: Operation, selected: boolean) => void
   onUpdate?: (params: { total: number }) => void
 }
 
 export const OperationList: ComponentType<OperationListProps> = withSuspensable(
-  ({ multiselect, selectedOperations, onSelect, onUpdate, ...params }) => {
+  ({ multiselect, onUpdate, ...params }) => {
     const neoLayout = useAtomValue(neoLayoutAtom)
 
     const { operations, total, setSize, isValidating, isReachingEnd } =
@@ -33,6 +33,25 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
     useEffect(() => {
       onUpdate?.({ total })
     }, [total, onUpdate])
+
+    const [selectedOperations, setSelectedOperations] = useState<Operation[]>(
+      [],
+    )
+    const updateSelection = (add: Operation[], remove: Operation[]) => {
+      setSelectedOperations((old) => {
+        return [
+          ...old.filter((op) => !remove.some((o) => o.id === op.id)),
+          ...add.filter((op) => !old.some((o) => o.id === op.id)),
+        ]
+      })
+    }
+    const onSelect = (operation: Operation, selected: boolean) => {
+      if (selected) {
+        updateSelection([operation], [])
+      } else {
+        updateSelection([], [operation])
+      }
+    }
 
     const items: ReactNode = neoLayout ? (
       <div
@@ -59,6 +78,60 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
 
     return (
       <>
+        {multiselect && (
+          <Callout className="mb-4 p-0 select-none">
+            <details>
+              <summary className="px-2 py-4 cursor-pointer hover:bg-zinc-500 hover:bg-opacity-5">
+                已选择 {selectedOperations.length} 份作业
+              </summary>
+              <div className="p-2 flex flex-wrap gap-1">
+                {selectedOperations.map((operation) => (
+                  <Button
+                    key={operation.id}
+                    small
+                    minimal
+                    outlined
+                    rightIcon="cross"
+                    onClick={() => updateSelection([], [operation])}
+                  >
+                    {operation.parsedContent.doc.title}
+                  </Button>
+                ))}
+              </div>
+            </details>
+            <div className="absolute top-2 right-2 flex">
+              <Tooltip2 content="只能选择已加载的项目" placement="top">
+                <Button
+                  minimal
+                  icon="tick"
+                  onClick={() => updateSelection(operations, [])}
+                >
+                  全选
+                </Button>
+              </Tooltip2>
+              <Button
+                minimal
+                intent="danger"
+                icon="trash"
+                onClick={() => setSelectedOperations([])}
+              >
+                清空
+              </Button>
+              <AddToOperationSetButton
+                minimal
+                outlined
+                intent="primary"
+                icon="add-to-folder"
+                className="ml-2"
+                disabled={selectedOperations.length === 0}
+                operationIds={selectedOperations.map((op) => op.id)}
+              >
+                添加到作业集
+              </AddToOperationSetButton>
+            </div>
+          </Callout>
+        )}
+
         {items}
 
         {isReachingEnd && operations.length === 0 && (
