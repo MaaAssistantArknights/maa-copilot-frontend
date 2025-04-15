@@ -4,12 +4,19 @@ import {
   NumericInputProps,
 } from '@blueprintjs/core'
 
-import { useRef, useState } from 'react'
+import {
+  WheelEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react'
 
 type MixedNumericInputProps = HTMLInputProps & NumericInputProps
 
 export interface NumericInput2Props extends MixedNumericInputProps {
   intOnly?: boolean
+  onWheelFocused?: (e: React.WheelEvent<HTMLInputElement>) => void
 }
 
 export const NumericInput2 = ({
@@ -18,10 +25,14 @@ export const NumericInput2 = ({
   minorStepSize,
   value,
   onValueChange,
+  onWheelFocused,
   ...props
 }: NumericInput2Props) => {
   const allowNegative = min === undefined || min < 0
 
+  const onWheelFocusedRef = useRef(onWheelFocused)
+  onWheelFocusedRef.current = onWheelFocused
+  const handleWheelRegistered = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [endsWithDot, setEndsWithDot] = useState(false)
 
@@ -33,6 +44,17 @@ export const NumericInput2 = ({
     minorStepSize = 0.001
   }
 
+  const handleWheel: WheelEventHandler<HTMLInputElement> = useCallback((e) => {
+    onWheelFocusedRef.current?.(e)
+  }, [])
+
+  useEffect(() => {
+    if (handleWheelRegistered.current) {
+      inputRef.current?.removeEventListener('wheel', handleWheel as any)
+      handleWheelRegistered.current = false
+    }
+  }, [handleWheel])
+
   return (
     <NumericInput
       allowNumericCharactersOnly
@@ -40,7 +62,21 @@ export const NumericInput2 = ({
       minorStepSize={minorStepSize}
       inputRef={inputRef}
       value={endsWithDot ? value + '.' : value}
-      onBlur={() => setEndsWithDot(false)}
+      onFocus={(e) => {
+        if (onWheelFocused && !handleWheelRegistered.current) {
+          handleWheelRegistered.current = true
+          e.currentTarget.addEventListener('wheel', handleWheel as any, {
+            passive: false,
+          })
+        }
+      }}
+      onBlur={() => {
+        setEndsWithDot(false)
+        if (handleWheelRegistered.current) {
+          inputRef.current?.removeEventListener('wheel', handleWheel as any)
+          handleWheelRegistered.current = false
+        }
+      }}
       onButtonClick={(num, str) => onValueChange?.(num, str, inputRef.current)}
       onValueChange={(num, str, inputEl) => {
         // count hyphens to determine the sign, so that user can toggle the sign
