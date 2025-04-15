@@ -17,6 +17,11 @@ export const NAV_CONFIG = [
     icon: <Icon icon="add" />,
   },
   {
+    to: '/editor',
+    label: '作业编辑器v2',
+    icon: 'annotation',
+  },
+  {
     to: '/about',
     labelKey: i18nDefer.links.about,
     icon: <Icon icon="info-sign" />,

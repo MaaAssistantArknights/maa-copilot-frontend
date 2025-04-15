@@ -8,7 +8,8 @@
       "name": "“打字机”",
       "alias": "daziji dzj “打字機” 打字機",
       "rarity": 0,
-      "alt_name": "Typewriters"
+      "alt_name": "Typewriters",
+      "skills": []
     },
     {
       "id": "token_10013_robin_mine",
@@ -18,7 +19,8 @@
       "name": "“夹子”",
       "alias": "jiazi gazi jz gz “夾子” 夾子",
       "rarity": 0,
-      "alt_name": "\"Clip\" Charge"
+      "alt_name": "\"Clip\" Charge",
+      "skills": []
     },
     {
       "id": "token_10020_ling_soul1",
@@ -28,7 +30,8 @@
       "name": "“清平”",
       "alias": "qingping qp “清平” 清平",
       "rarity": 0,
-      "alt_name": "Tranquility"
+      "alt_name": "Tranquility",
+      "skills": []
     },
     {
       "id": "token_10020_ling_soul3",
@@ -38,7 +41,8 @@
       "name": "“弦惊”",
       "alias": "xianjing xj “弦驚” 弦驚",
       "rarity": 0,
-      "alt_name": "Thunderer"
+      "alt_name": "Thunderer",
+      "skills": []
     },
     {
       "id": "token_10020_ling_soul2",
@@ -48,7 +52,8 @@
       "name": "“逍遥”",
       "alias": "xiaoyao xy “逍遙” 逍遙",
       "rarity": 0,
-      "alt_name": "Peripateticism"
+      "alt_name": "Peripateticism",
+      "skills": []
     },
     {
       "id": "token_10015_dusk_drgn",
@@ -58,7 +63,8 @@
       "name": "“小自在”",
       "alias": "xiaozizai xzz “小自在” 小自在",
       "rarity": 0,
-      "alt_name": "Little Instinct"
+      "alt_name": "Little Instinct",
+      "skills": []
     },
     {
       "id": "token_10019_nearl2_sword",
@@ -68,7 +74,8 @@
       "name": "“耀阳”",
       "alias": "yaoyang yy “耀陽” 耀陽",
       "rarity": 0,
-      "alt_name": "Blazing Sun"
+      "alt_name": "Blazing Sun",
+      "skills": []
     },
     {
       "id": "char_009_12fce",
@@ -78,7 +85,8 @@
       "name": "12F",
       "alias": "12F",
       "rarity": 2,
-      "alt_name": "12F"
+      "alt_name": "12F",
+      "skills": []
     },
     {
       "id": "char_225_haak",
@@ -88,7 +96,20 @@
       "name": "阿",
       "alias": "ae 阿",
       "rarity": 6,
-      "alt_name": "Aak"
+      "alt_name": "Aak",
+      "skills": ["快速射击", "爆发剂·γ型", "爆发剂·榴莲味"],
+      "equips": ["", "X"]
+    },
+    {
+      "id": "char_4178_alanna",
+      "prof": "SUPPORT",
+      "subProf": "craftsman",
+      "name": "阿兰娜",
+      "alias": "alanna alannuo elanna elannuo aln eln 阿蘭娜",
+      "rarity": 5,
+      "alt_name": "Alanna",
+      "skills": ["气动增压", "“万斤顶”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4178_alanna",
@@ -108,7 +129,9 @@
       "name": "阿罗玛",
       "alias": "aluoma eluoma alm elm 阿羅瑪",
       "rarity": 5,
-      "alt_name": "Aroma"
+      "alt_name": "Aroma",
+      "skills": ["强效清洁", "小心地滑"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_002_amiya",
@@ -118,7 +141,9 @@
       "name": "阿米娅",
       "alias": "amiya emiya amy emy 阿米婭",
       "rarity": 5,
-      "alt_name": "Amiya"
+      "alt_name": "Amiya",
+      "skills": ["战术咏唱·γ型", "精神爆发", "奇美拉"],
+      "equips": ["", "", "", "X", "X", "Y"]
     },
     {
       "id": "char_4132_ascln",
@@ -128,7 +153,9 @@
       "name": "阿斯卡纶",
       "alias": "asikalun asikaguan asiqialun asiqiaguan esikalun esikaguan esiqialun esiqiaguan askl askg asql asqg eskl eskg esql esqg 阿斯卡綸",
       "rarity": 6,
-      "alt_name": "Ascalon"
+      "alt_name": "Ascalon",
+      "skills": ["追袭", "恩赐", "降临"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_277_sqrrel",
@@ -138,7 +165,9 @@
       "name": "阿消",
       "alias": "axiao exiao ax ex 阿消",
       "rarity": 4,
-      "alt_name": "Shaw"
+      "alt_name": "Shaw",
+      "skills": ["水蒸气泵", "高压水炮"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4123_ela",
@@ -148,7 +177,9 @@
       "name": "艾拉",
       "alias": "aila yila al yl 艾拉",
       "rarity": 6,
-      "alt_name": "Ela"
+      "alt_name": "Ela",
+      "skills": ["眩目阻滞", "震荡坚守", "“博萨克风暴”"],
+      "equips": ["", "D"]
     },
     {
       "id": "char_4043_erato",
@@ -158,7 +189,9 @@
       "name": "埃拉托",
       "alias": "ailatuo alt 埃拉托",
       "rarity": 5,
-      "alt_name": "Erato"
+      "alt_name": "Erato",
+      "skills": ["安眠旋律", "英雄赞歌"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4009_irene",
@@ -168,7 +201,9 @@
       "name": "艾丽妮",
       "alias": "ailini yilini aln yln 艾麗妮",
       "rarity": 6,
-      "alt_name": "Irene"
+      "alt_name": "Irene",
+      "skills": ["起风", "裂潮", "判决"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_338_iris",
@@ -178,7 +213,9 @@
       "name": "爱丽丝",
       "alias": "ailisi als 愛麗絲",
       "rarity": 5,
-      "alt_name": "Iris"
+      "alt_name": "Iris",
+      "skills": ["童话守卫者", "梦乡摇篮"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_127_estell",
@@ -188,7 +225,9 @@
       "name": "艾丝黛尔",
       "alias": "aisidaier yisidaier asde ysde 艾絲黛爾",
       "rarity": 4,
-      "alt_name": "Estelle"
+      "alt_name": "Estelle",
+      "skills": ["攻击力强化·β型", "舍身突击"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_180_amgoat",
@@ -198,7 +237,9 @@
       "name": "艾雅法拉",
       "alias": "aiyafala yiyafala ayfl yyfl 艾雅法拉",
       "rarity": 6,
-      "alt_name": "Eyjafjalla"
+      "alt_name": "Eyjafjalla",
+      "skills": ["二重咏唱", "点燃", "火山"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_302_glaze",
@@ -208,7 +249,9 @@
       "name": "安比尔",
       "alias": "anbier abe 安比爾",
       "rarity": 4,
-      "alt_name": "Ambriel"
+      "alt_name": "Ambriel",
+      "skills": ["阻挡弹", "雷达定位"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_211_adnach",
@@ -218,7 +261,8 @@
       "name": "安德切尔",
       "alias": "andeqieer adqe 安德切爾",
       "rarity": 3,
-      "alt_name": "Adnachiel"
+      "alt_name": "Adnachiel",
+      "skills": ["攻击力强化·α型"]
     },
     {
       "id": "char_291_aglina",
@@ -228,7 +272,9 @@
       "name": "安洁莉娜",
       "alias": "anjielina anjielinuo ajln 安潔莉娜",
       "rarity": 6,
-      "alt_name": "Angelina"
+      "alt_name": "Angelina",
+      "skills": ["秘杖·速充模式", "秘杖·微粒模式", "秘杖·反重力模式"],
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_212_ansel",
@@ -238,7 +284,8 @@
       "name": "安赛尔",
       "alias": "ansaier ase 安賽爾",
       "rarity": 3,
-      "alt_name": "Ansel"
+      "alt_name": "Ansel",
+      "skills": ["治疗范围强化"]
     },
     {
       "id": "char_236_rope",
@@ -248,7 +295,9 @@
       "name": "暗索",
       "alias": "ansuo as 暗索",
       "rarity": 4,
-      "alt_name": "Rope"
+      "alt_name": "Rope",
+      "skills": ["勾爪发射", "复式勾爪"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_218_cuttle",
@@ -258,7 +307,9 @@
       "name": "安哲拉",
       "alias": "anzhela azl 安哲拉",
       "rarity": 5,
-      "alt_name": "Andreana"
+      "alt_name": "Andreana",
+      "skills": ["攻击力强化·γ型", "阻滞射击战术"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4131_odda",
@@ -268,7 +319,9 @@
       "name": "奥达",
       "alias": "aoda yuda ad yd 奧達",
       "rarity": 5,
-      "alt_name": "Odda"
+      "alt_name": "Odda",
+      "skills": ["火花溅射", "锻锤之力"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_346_aosta",
@@ -278,7 +331,9 @@
       "name": "奥斯塔",
       "alias": "aosita yusita ast yst 奧斯塔",
       "rarity": 5,
-      "alt_name": "Aosta"
+      "alt_name": "Aosta",
+      "skills": ["迅捷打击·γ型", "影钉"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_252_bibeak",
@@ -288,7 +343,9 @@
       "name": "柏喙",
       "alias": "baihui bohui bh 柏喙",
       "rarity": 5,
-      "alt_name": "Bibeak"
+      "alt_name": "Bibeak",
+      "skills": ["飞针剑羽", "异刃斩"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_204_platnm",
@@ -298,7 +355,9 @@
       "name": "白金",
       "alias": "baijin bj 白金",
       "rarity": 5,
-      "alt_name": "Platinum"
+      "alt_name": "Platinum",
+      "skills": ["攻击力强化·γ型", "天马视域"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1026_gvial2",
@@ -308,7 +367,9 @@
       "name": "百炼嘉维尔",
       "alias": "bailianjiaweier bljwe 百煉嘉維爾",
       "rarity": 6,
-      "alt_name": "Gavial the Invincible"
+      "alt_name": "Gavial the Invincible",
+      "skills": ["精准痛击", "链锯强袭", "丛林之魂"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_128_plosis",
@@ -318,7 +379,9 @@
       "name": "白面鸮",
       "alias": "baimianxiao bmx 白麵鴞",
       "rarity": 5,
-      "alt_name": "Ptilopsis"
+      "alt_name": "Ptilopsis",
+      "skills": ["治疗强化·γ型", "脑啡肽"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_325_bison",
@@ -328,7 +391,9 @@
       "name": "拜松",
       "alias": "baisong bs 拜鬆",
       "rarity": 5,
-      "alt_name": "Bison"
+      "alt_name": "Bison",
+      "skills": ["防御力强化·γ型", "深化阵线"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4072_ironmn",
@@ -338,7 +403,9 @@
       "name": "白铁",
       "alias": "baitie bt 白鐵",
       "rarity": 6,
-      "alt_name": "Stainless"
+      "alt_name": "Stainless",
+      "skills": ["极致火力", "高效补给", "铁钳号·原型机"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10027_ironmn_pile1",
@@ -348,7 +415,18 @@
       "name": "白铁™多功能平台",
       "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
       "rarity": 0,
-      "alt_name": "Stainless™ Multifunctional platform"
+      "alt_name": "Stainless™ Multifunctional platform",
+      "skills": []
+    },
+    {
+      "id": "token_10027_ironmn_pile2",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "白铁™多功能平台",
+      "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
+      "rarity": 0,
+      "alt_name": "Stainless™ Multifunctional platform",
+      "skills": []
     },
     {
       "id": "token_10027_ironmn_pile2",
@@ -368,7 +446,9 @@
       "name": "白雪",
       "alias": "baixue bx 白雪",
       "rarity": 4,
-      "alt_name": "ShiraYuki"
+      "alt_name": "ShiraYuki",
+      "skills": ["敌飙", "凝武"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_284_spot",
@@ -378,7 +458,8 @@
       "name": "斑点",
       "alias": "bandian bd 斑點",
       "rarity": 3,
-      "alt_name": "Spot"
+      "alt_name": "Spot",
+      "skills": ["次级治疗模式"]
     },
     {
       "id": "char_230_savage",
@@ -388,7 +469,9 @@
       "name": "暴行",
       "alias": "baohang baoxing puhang puxing bh bx ph px 暴行",
       "rarity": 5,
-      "alt_name": "Savage"
+      "alt_name": "Savage",
+      "skills": ["强力击·β型", "微差爆破"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_388_mint",
@@ -398,7 +481,9 @@
       "name": "薄绿",
       "alias": "baolv baolu bolv bolu bl 薄綠",
       "rarity": 5,
-      "alt_name": "Mint"
+      "alt_name": "Mint",
+      "skills": ["风语", "聚能涡旋"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_304_zebra",
@@ -408,7 +493,9 @@
       "name": "暴雨",
       "alias": "baoyu puyu by py 暴雨",
       "rarity": 5,
-      "alt_name": "Heavyrain"
+      "alt_name": "Heavyrain",
+      "skills": ["应急迷彩", "群体迷彩"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_369_bena",
@@ -418,7 +505,9 @@
       "name": "贝娜",
       "alias": "beina beinuo bn 貝娜",
       "rarity": 5,
-      "alt_name": "Bena"
+      "alt_name": "Bena",
+      "skills": ["奋力修剪", "快速修剪"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10043_necras_skeltn",
@@ -428,7 +517,8 @@
       "name": "悲叹的仆役",
       "alias": "beitandepuyi beitandipuyi btdpy 悲歎的仆役",
       "rarity": 0,
-      "alt_name": "The Servant of Lament"
+      "alt_name": "The Servant of Lament",
+      "skills": []
     },
     {
       "id": "char_265_sophia",
@@ -438,7 +528,9 @@
       "name": "鞭刃",
       "alias": "bianren br 鞭刃",
       "rarity": 5,
-      "alt_name": "Whislash"
+      "alt_name": "Whislash",
+      "skills": ["激励艺术", "鞭刃"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4104_coldst",
@@ -448,7 +540,9 @@
       "name": "冰酿",
       "alias": "bingniang bn 冰釀",
       "rarity": 5,
-      "alt_name": "Coldshot"
+      "alt_name": "Coldshot",
+      "skills": ["攻击力强化·γ型", "酣醉之夜"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_487_bobb",
@@ -458,7 +552,9 @@
       "name": "波卜",
       "alias": "bobu bobo bb 波卜",
       "rarity": 5,
-      "alt_name": "Bobbing"
+      "alt_name": "Bobbing",
+      "skills": ["非和平劝说", "“此路不通”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_258_podego",
@@ -468,7 +564,9 @@
       "name": "波登可",
       "alias": "bodengke bdk 波登可",
       "rarity": 4,
-      "alt_name": "Podenco"
+      "alt_name": "Podenco",
+      "skills": ["花香疗法", "孢子扩散"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4004_pudd",
@@ -478,7 +576,9 @@
       "name": "布丁",
       "alias": "buding buzheng bd bz 布丁",
       "rarity": 4,
-      "alt_name": "Pudding"
+      "alt_name": "Pudding",
+      "skills": ["战术咏唱·β型", "扩散电流"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_356_broca",
@@ -488,7 +588,9 @@
       "name": "布洛卡",
       "alias": "buluoka buluoqia blk blq 布洛卡",
       "rarity": 5,
-      "alt_name": "Broca"
+      "alt_name": "Broca",
+      "skills": ["通电", "高压电流"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4155_talr",
@@ -498,7 +600,9 @@
       "name": "裁度",
       "alias": "caidu caiduo cd 裁度",
       "rarity": 5,
-      "alt_name": "Figurino"
+      "alt_name": "Figurino",
+      "skills": ["量衣尺", "缝线缠身"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4106_bryota",
@@ -508,7 +612,9 @@
       "name": "苍苔",
       "alias": "cangtai ct 蒼苔",
       "rarity": 5,
-      "alt_name": "Bryophyta"
+      "alt_name": "Bryophyta",
+      "skills": ["强力击·β型", "土石的恒心"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_286_cast3",
@@ -518,7 +624,8 @@
       "name": "Castle-3",
       "alias": "Castle-3",
       "rarity": 1,
-      "alt_name": "Castle-3"
+      "alt_name": "Castle-3",
+      "skills": []
     },
     {
       "id": "char_289_gyuki",
@@ -528,7 +635,9 @@
       "name": "缠丸",
       "alias": "chanwan cw 纏丸",
       "rarity": 4,
-      "alt_name": "Matoimaru"
+      "alt_name": "Matoimaru",
+      "skills": ["生命回复·β型", "恶鬼之力"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4047_pianst",
@@ -538,7 +647,8 @@
       "name": "车尔尼",
       "alias": "cheerni juerni cen jen 車爾尼",
       "rarity": 5,
-      "alt_name": "Czerny"
+      "alt_name": "Czerny",
+      "skills": ["纷飞十指", "曲惊四座"]
     },
     {
       "id": "char_010_chen",
@@ -548,7 +658,19 @@
       "name": "陈",
       "alias": "chen c 陳",
       "rarity": 6,
-      "alt_name": "Ch'en"
+      "alt_name": "Ch'en",
+      "skills": ["鞘击", "赤霄·拔刀", "赤霄·绝影"],
+      "equips": ["", "X", "Y"]
+    },
+    {
+      "id": "char_445_wscoot",
+      "prof": "WARRIOR",
+      "subProf": "librator",
+      "name": "骋风",
+      "alias": "chengfeng cf 騁風",
+      "rarity": 4,
+      "alt_name": "Windscoot",
+      "skills": ["以攻为守", "招无虚发"]
     },
     {
       "id": "char_445_wscoot",
@@ -568,7 +690,9 @@
       "name": "澄闪",
       "alias": "chengshan dengshan cs ds 澄閃",
       "rarity": 6,
-      "alt_name": "Goldenglow"
+      "alt_name": "Goldenglow",
+      "skills": ["火花四溅", "电流翻涌", "澄净闪耀"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1027_greyy2",
@@ -578,7 +702,9 @@
       "name": "承曦格雷伊",
       "alias": "chengxigeleiyi cxgly 承曦格雷伊",
       "rarity": 5,
-      "alt_name": "Greyy the Lightningbearer"
+      "alt_name": "Greyy the Lightningbearer",
+      "skills": ["迅捷打击·γ型", "晨曦信标"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_475_akafyu",
@@ -588,7 +714,9 @@
       "name": "赤冬",
       "alias": "chidong cd 赤冬",
       "rarity": 5,
-      "alt_name": "Akafuyu"
+      "alt_name": "Akafuyu",
+      "skills": ["信影流·雷刀之势", "信影流·十文字胜"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4065_judge",
@@ -598,7 +726,9 @@
       "name": "斥罪",
       "alias": "chizui cz 斥罪",
       "rarity": 6,
-      "alt_name": "Penance"
+      "alt_name": "Penance",
+      "skills": ["一锤定音", "坚心苦修", "披荆斩棘"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4082_qiubai",
@@ -608,7 +738,9 @@
       "name": "仇白",
       "alias": "choubai qiubai cb qb 仇白",
       "rarity": 6,
-      "alt_name": "Qiubai"
+      "alt_name": "Qiubai",
+      "skills": ["留羽", "承影", "问雪"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10001_deepcl_tentac",
@@ -618,7 +750,8 @@
       "name": "触手",
       "alias": "chushou cs 觸手",
       "rarity": 0,
-      "alt_name": "Tentacle"
+      "alt_name": "Tentacle",
+      "skills": []
     },
     {
       "id": "char_174_slbell",
@@ -628,7 +761,9 @@
       "name": "初雪",
       "alias": "chuxue cx 初雪",
       "rarity": 5,
-      "alt_name": "Pramanix"
+      "alt_name": "Pramanix",
+      "skills": ["传音回响", "自然震慑"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1016_agoat2",
@@ -638,7 +773,9 @@
       "name": "纯烬艾雅法拉",
       "alias": "chunjinaiyafala chunjinyiyafala cjayfl cjyyfl 純燼艾雅法拉",
       "rarity": 6,
-      "alt_name": "Eyjafjalla the Hvít Aska"
+      "alt_name": "Eyjafjalla the Hvít Aska",
+      "skills": ["无声润物", "云霭荫佑", "火山回响"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_494_vendla",
@@ -648,7 +785,9 @@
       "name": "刺玫",
       "alias": "cimei cm 刺玫",
       "rarity": 5,
-      "alt_name": "Vendela"
+      "alt_name": "Vendela",
+      "skills": ["战术咏唱·γ型", "荆藤庇荫"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10008_cqbw_box",
@@ -658,7 +797,8 @@
       "name": "此面向敌",
       "alias": "cimianxiangdi cmxd 此麵向敵",
       "rarity": 0,
-      "alt_name": "F.T.E"
+      "alt_name": "F.T.E",
+      "skills": []
     },
     {
       "id": "char_4188_confes",
@@ -678,7 +818,8 @@
       "name": "从不混淆的方向",
       "alias": "congbuhunxiaodefangxiang congbuhunxiaodifangxiang congfouhunxiaodefangxiang congfouhunxiaodifangxiang zongbuhunxiaodefangxiang zongbuhunxiaodifangxiang zongfouhunxiaodefangxiang zongfouhunxiaodifangxiang cbhxdfx cfhxdfx zbhxdfx zfhxdfx 從不混淆的方向",
       "rarity": 0,
-      "alt_name": "Undeviating Course"
+      "alt_name": "Undeviating Course",
+      "skills": []
     },
     {
       "id": "char_1031_slent2",
@@ -688,7 +829,9 @@
       "name": "淬羽赫默",
       "alias": "cuiyuhemo cyhm 淬羽赫默",
       "rarity": 6,
-      "alt_name": "Silence the Paradigmatic"
+      "alt_name": "Silence the Paradigmatic",
+      "skills": ["进取之心", "俯瞰视界", "无畏者协议"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_362_saga",
@@ -698,7 +841,9 @@
       "name": "嵯峨",
       "alias": "cuoe ce 嵯峨",
       "rarity": 6,
-      "alt_name": "Saga"
+      "alt_name": "Saga",
+      "skills": ["冲锋号令·γ型", "除恶", "怒目"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_157_dagda",
@@ -708,7 +853,9 @@
       "name": "达格达",
       "alias": "dageda dgd 達格達",
       "rarity": 5,
-      "alt_name": "Dagda"
+      "alt_name": "Dagda",
+      "skills": ["反制技巧", "精准捕杀"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4110_delphn",
@@ -718,7 +865,9 @@
       "name": "戴菲恩",
       "alias": "daifeien dfe 戴菲恩",
       "rarity": 5,
-      "alt_name": "Delphine"
+      "alt_name": "Delphine",
+      "skills": ["“贯注”", "“抢攻”"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4032_provs",
@@ -728,7 +877,9 @@
       "name": "但书",
       "alias": "danshu ds 但書",
       "rarity": 5,
-      "alt_name": "Proviso"
+      "alt_name": "Proviso",
+      "skills": ["纠纷起诉", "致胜立论"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4126_fuze",
@@ -738,7 +889,9 @@
       "name": "导火索",
       "alias": "daohuosuo dhs 導火索",
       "rarity": 5,
-      "alt_name": "Fuze"
+      "alt_name": "Fuze",
+      "skills": ["火力侦察", "霰射炸药"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_102_texas",
@@ -748,7 +901,9 @@
       "name": "德克萨斯",
       "alias": "dekesasi dkss 德克薩斯",
       "rarity": 5,
-      "alt_name": "Texas"
+      "alt_name": "Texas",
+      "skills": ["冲锋号令·γ型", "剑雨"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_1034_jesca2",
@@ -758,7 +913,9 @@
       "name": "涤火杰西卡",
       "alias": "dihuojiexika dihuojiexiqia dhjxk dhjxq 滌火傑西卡",
       "rarity": 6,
-      "alt_name": "Jessica the Liberated"
+      "alt_name": "Jessica the Liberated",
+      "skills": ["坚守阵线", "掩蔽护卫", "饱和迸射"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_183_skgoat",
@@ -768,7 +925,9 @@
       "name": "地灵",
       "alias": "diling deling dl 地靈",
       "rarity": 4,
-      "alt_name": "Earthspirit"
+      "alt_name": "Earthspirit",
+      "skills": ["攻击力强化·β型", "流沙化"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_452_bstalk",
@@ -778,7 +937,9 @@
       "name": "豆苗",
       "alias": "doumiao dm 豆苗",
       "rarity": 4,
-      "alt_name": "Beanstalk"
+      "alt_name": "Beanstalk",
+      "skills": ["定点指令", "“大家一起上”"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_130_doberm",
@@ -788,7 +949,9 @@
       "name": "杜宾",
       "alias": "dubin db 杜賓",
       "rarity": 4,
-      "alt_name": "Dobermann"
+      "alt_name": "Dobermann",
+      "skills": ["强力击·β型", "鞭策"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_501_durin",
@@ -798,7 +961,8 @@
       "name": "杜林",
       "alias": "dulin dl 杜林",
       "rarity": 2,
-      "alt_name": "Durin"
+      "alt_name": "Durin",
+      "skills": []
     },
     {
       "id": "char_4147_mitm",
@@ -808,7 +972,9 @@
       "name": "渡桥",
       "alias": "duqiao dq 渡橋",
       "rarity": 5,
-      "alt_name": "Mitm"
+      "alt_name": "Mitm",
+      "skills": ["遥控解体", "承压功率"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_294_ayer",
@@ -818,7 +984,9 @@
       "name": "断崖",
       "alias": "duanya dy 斷崖",
       "rarity": 5,
-      "alt_name": "Ayerscarpe"
+      "alt_name": "Ayerscarpe",
+      "skills": ["多导向散射弹丸", "浮游刃启动"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_159_peacok",
@@ -828,7 +996,9 @@
       "name": "断罪者",
       "alias": "duanzuizhe dzz 斷罪者",
       "rarity": 4,
-      "alt_name": "Conviction"
+      "alt_name": "Conviction",
+      "skills": ["断罪", "创世纪"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4083_chimes",
@@ -838,7 +1008,9 @@
       "name": "铎铃",
       "alias": "duoling dl 鐸鈴",
       "rarity": 5,
-      "alt_name": "Wind Chimes"
+      "alt_name": "Wind Chimes",
+      "skills": ["攻击力强化·γ型", "乡心无改"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4048_doroth",
@@ -848,7 +1020,9 @@
       "name": "多萝西",
       "alias": "duoluoxi dlx 多蘿西",
       "rarity": 6,
-      "alt_name": "Dorothy"
+      "alt_name": "Dorothy",
+      "skills": ["危险目标清除", "流沙区域生成", "高速共振排障"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10036_lasher_mcbird",
@@ -858,7 +1032,8 @@
       "name": "发条羽兽",
       "alias": "fatiaoyushou ftys 發條羽獸",
       "rarity": 0,
-      "alt_name": "Clockwork Fowlbeast"
+      "alt_name": "Clockwork Fowlbeast",
+      "skills": []
     },
     {
       "id": "char_271_spikes",
@@ -868,7 +1043,9 @@
       "name": "芳汀",
       "alias": "fangting ft 芳汀",
       "rarity": 4,
-      "alt_name": "Arene"
+      "alt_name": "Arene",
+      "skills": ["小玩笑", "致命恶作剧"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4148_philae",
@@ -878,7 +1055,8 @@
       "name": "菲莱",
       "alias": "feilai fl 菲萊",
       "rarity": 5,
-      "alt_name": "Philae"
+      "alt_name": "Philae",
+      "skills": ["灵河护佑", "冥河诅咒"]
     },
     {
       "id": "char_300_phenxi",
@@ -888,7 +1066,9 @@
       "name": "菲亚梅塔",
       "alias": "feiyameita fymt 菲亞梅塔",
       "rarity": 6,
-      "alt_name": "Fiammetta"
+      "alt_name": "Fiammetta",
+      "skills": ["“你须直面”", "“你须愧悔”", "“你须偿还”"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_123_fang",
@@ -898,7 +1078,8 @@
       "name": "芬",
       "alias": "fen f 芬",
       "rarity": 3,
-      "alt_name": "Fang"
+      "alt_name": "Fang",
+      "skills": ["冲锋号令·α型"]
     },
     {
       "id": "char_222_bpipe",
@@ -908,7 +1089,9 @@
       "name": "风笛",
       "alias": "fengdi fd 風笛",
       "rarity": 6,
-      "alt_name": "Bagpipe"
+      "alt_name": "Bagpipe",
+      "skills": ["迅捷打击·γ型", "高效冲击", "闭膛连发"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4016_kazema",
@@ -918,7 +1101,9 @@
       "name": "风丸",
       "alias": "fengwan fw 風丸",
       "rarity": 5,
-      "alt_name": "Kazemaru"
+      "alt_name": "Kazemaru",
+      "skills": ["纸艺·迅击", "纸艺·双影"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4093_frston",
@@ -928,7 +1113,8 @@
       "name": "Friston-3",
       "alias": "Friston-3",
       "rarity": 1,
-      "alt_name": "Friston-3"
+      "alt_name": "Friston-3",
+      "skills": []
     },
     {
       "id": "char_106_franka",
@@ -938,7 +1124,9 @@
       "name": "芙兰卡",
       "alias": "fulanka fulanqia flk flq 芙蘭卡",
       "rarity": 5,
-      "alt_name": "Franka"
+      "alt_name": "Franka",
+      "skills": ["迅捷打击·γ型", "极致锋度"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_120_hibisc",
@@ -948,7 +1136,8 @@
       "name": "芙蓉",
       "alias": "furong fr 芙蓉",
       "rarity": 3,
-      "alt_name": "Hibiscus"
+      "alt_name": "Hibiscus",
+      "skills": ["治疗强化·α型"]
     },
     {
       "id": "char_220_grani",
@@ -958,7 +1147,9 @@
       "name": "格拉尼",
       "alias": "gelani gln 格拉尼",
       "rarity": 5,
-      "alt_name": "Grani"
+      "alt_name": "Grani",
+      "skills": ["防御力强化·γ型", "永不后退！"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_326_glacus",
@@ -968,7 +1159,9 @@
       "name": "格劳克斯",
       "alias": "gelaokesi glks 格勞克斯",
       "rarity": 5,
-      "alt_name": "Glaucus"
+      "alt_name": "Glaucus",
+      "skills": ["双线装填", "反制电磁脉冲"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_474_glady",
@@ -978,7 +1171,9 @@
       "name": "歌蕾蒂娅",
       "alias": "geleidiya gldy 歌蕾蒂婭",
       "rarity": 6,
-      "alt_name": "Gladiia"
+      "alt_name": "Gladiia",
+      "skills": ["缺水的大洋裂断", "缺水的掌握怒海", "缺水的碎漩狂舞"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_253_greyy",
@@ -988,7 +1183,9 @@
       "name": "格雷伊",
       "alias": "geleiyi gly 格雷伊",
       "rarity": 4,
-      "alt_name": "Greyy"
+      "alt_name": "Greyy",
+      "skills": ["战术咏唱·β型", "静电释放"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10009_weedy_cannon",
@@ -998,7 +1195,8 @@
       "name": "工程蓄水炮",
       "alias": "gongchengxushuipao gongchengxushuibao gcxsp gcxsb 工程蓄水炮",
       "rarity": 0,
-      "alt_name": "Cannon"
+      "alt_name": "Cannon",
+      "skills": []
     },
     {
       "id": "token_10025_doroth_recttp",
@@ -1008,7 +1206,8 @@
       "name": "共振装置",
       "alias": "gongzhenzhuangzhi gzzz 共振裝置",
       "rarity": 0,
-      "alt_name": "Resonator"
+      "alt_name": "Resonator",
+      "skills": []
     },
     {
       "id": "char_196_sunbr",
@@ -1018,7 +1217,9 @@
       "name": "古米",
       "alias": "gumi gm 古米",
       "rarity": 4,
-      "alt_name": "Гум"
+      "alt_name": "Гум",
+      "skills": ["备用军粮", "食粮烹制"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1023_ghost2",
@@ -1028,7 +1229,9 @@
       "name": "归溟幽灵鲨",
       "alias": "guimingyoulingsha gmyls 歸溟幽靈鯊",
       "rarity": 6,
-      "alt_name": "Specter the Unchained"
+      "alt_name": "Specter the Unchained",
+      "skills": ["生存的技巧", "生存的渴望", "生存的重压"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4163_rosesa",
@@ -1038,7 +1241,9 @@
       "name": "瑰盐",
       "alias": "guiyan gy 瑰鹽",
       "rarity": 5,
-      "alt_name": "Rose Salt"
+      "alt_name": "Rose Salt",
+      "skills": ["上佳的应急药呀", "绝妙的长效药呀"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4114_harold",
@@ -1048,7 +1253,9 @@
       "name": "哈洛德",
       "alias": "haluode hld 哈洛德",
       "rarity": 5,
-      "alt_name": "Harold"
+      "alt_name": "Harold",
+      "skills": ["治疗强化·γ型", "重症优先"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4045_heidi",
@@ -1058,7 +1265,9 @@
       "name": "海蒂",
       "alias": "haidi hd 海蒂",
       "rarity": 5,
-      "alt_name": "Heidi"
+      "alt_name": "Heidi",
+      "skills": ["虚构故事·怒士", "虚构故事·锈城"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4066_highmo",
@@ -1068,7 +1277,9 @@
       "name": "海沫",
       "alias": "haimo hm 海沫",
       "rarity": 5,
-      "alt_name": "Highmore"
+      "alt_name": "Highmore",
+      "skills": ["回首，断舍", "泡影，殆尽"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4079_haini",
@@ -1078,7 +1289,9 @@
       "name": "海霓",
       "alias": "haini hn 海霓",
       "rarity": 5,
-      "alt_name": "Lucilla"
+      "alt_name": "Lucilla",
+      "skills": ["迷惑性洋流图", "阻滞性显色剂"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1021_kroos2",
@@ -1088,7 +1301,9 @@
       "name": "寒芒克洛丝",
       "alias": "hanmangkeluosi hmkls 寒芒克洛絲",
       "rarity": 5,
-      "alt_name": "Kroos the Keen Glint"
+      "alt_name": "Kroos the Keen Glint",
+      "skills": ["无痕", "封喉"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_341_sntlla",
@@ -1098,7 +1313,9 @@
       "name": "寒檀",
       "alias": "hantan ht 寒檀",
       "rarity": 5,
-      "alt_name": "Santalla"
+      "alt_name": "Santalla",
+      "skills": ["迅捷打击·γ型", "“女巫之泪”"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4172_xingzh",
@@ -1108,7 +1325,9 @@
       "name": "行箸",
       "alias": "hangzhu xingzhu hz xz 行箸",
       "rarity": 5,
-      "alt_name": "Xingzhu"
+      "alt_name": "Xingzhu",
+      "skills": ["盈帙满笥", "食不厌精"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4039_horn",
@@ -1118,7 +1337,9 @@
       "name": "号角",
       "alias": "haojiao haojue hj 號角",
       "rarity": 6,
-      "alt_name": "Horn"
+      "alt_name": "Horn",
+      "skills": ["照明榴弹", "暴风号令", "终极防线"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4088_hodrer",
@@ -1128,7 +1349,9 @@
       "name": "赫德雷",
       "alias": "hedelei hdl 赫德雷",
       "rarity": 6,
-      "alt_name": "Hoederer"
+      "alt_name": "Hoederer",
+      "skills": ["重锋不熄", "余烬重荷", "死境硝烟"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4041_chnut",
@@ -1138,7 +1361,9 @@
       "name": "褐果",
       "alias": "heguo hg 褐果",
       "rarity": 4,
-      "alt_name": "Chestnut"
+      "alt_name": "Chestnut",
+      "skills": ["积微成著", "厚土迸发"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_188_helage",
@@ -1148,7 +1373,9 @@
       "name": "赫拉格",
       "alias": "helage hlg 赫拉格",
       "rarity": 6,
-      "alt_name": "Hellagur"
+      "alt_name": "Hellagur",
+      "skills": ["新月", "弦月", "满月"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_108_silent",
@@ -1158,7 +1385,9 @@
       "name": "赫默",
       "alias": "hemo hm 赫默",
       "rarity": 5,
-      "alt_name": "Silence"
+      "alt_name": "Silence",
+      "skills": ["治疗强化·γ型", "医疗无人机"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_297_hamoni",
@@ -1168,7 +1397,9 @@
       "name": "和弦",
       "alias": "hexian huoxian huxian hx 和弦",
       "rarity": 5,
-      "alt_name": "Harmonie"
+      "alt_name": "Harmonie",
+      "skills": ["轻巧舞步", "沉溺之灾"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_340_shwaz",
@@ -1178,7 +1409,9 @@
       "name": "黑",
       "alias": "hei h 黑",
       "rarity": 6,
-      "alt_name": "Schwarz"
+      "alt_name": "Schwarz",
+      "skills": ["强弩", "暮眼锐瞳", "战术的终结"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4046_ebnhlz",
@@ -1188,7 +1421,9 @@
       "name": "黑键",
       "alias": "heijian hj 黑鍵",
       "rarity": 6,
-      "alt_name": "Ebenholz"
+      "alt_name": "Ebenholz",
+      "skills": ["渐快急板", "荒芜回响", "寂静之声"],
+      "equips": ["", "X", "Y", "D"]
     },
     {
       "id": "char_500_noirc",
@@ -1198,7 +1433,8 @@
       "name": "黑角",
       "alias": "heijiao heijue hj 黑角",
       "rarity": 2,
-      "alt_name": "Noir Corne"
+      "alt_name": "Noir Corne",
+      "skills": []
     },
     {
       "id": "char_4140_lasher",
@@ -1208,7 +1444,9 @@
       "name": "衡沙",
       "alias": "hengsha hs 衡沙",
       "rarity": 5,
-      "alt_name": "Sand Reckoner"
+      "alt_name": "Sand Reckoner",
+      "skills": ["上紧发条", "权知轻重"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_144_red",
@@ -1218,7 +1456,9 @@
       "name": "红",
       "alias": "honggong hg 紅",
       "rarity": 5,
-      "alt_name": "Projekt Red"
+      "alt_name": "Projekt Red",
+      "skills": ["处决模式", "狼群"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_290_vigna",
@@ -1228,7 +1468,9 @@
       "name": "红豆",
       "alias": "hongdou gongdou hd gd 紅豆",
       "rarity": 4,
-      "alt_name": "Vigna"
+      "alt_name": "Vigna",
+      "skills": ["攻击力强化·β型", "槌音"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4023_rfalcn",
@@ -1238,7 +1480,9 @@
       "name": "红隼",
       "alias": "hongsun gongsun hs gs 紅隼",
       "rarity": 5,
-      "alt_name": "Kestrel"
+      "alt_name": "Kestrel",
+      "skills": ["冲锋号令·γ型", "醉刃乱舞"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4055_bgsnow",
@@ -1248,7 +1492,9 @@
       "name": "鸿雪",
       "alias": "hongxue hx 鴻雪",
       "rarity": 6,
-      "alt_name": "Позёмка"
+      "alt_name": "Позёмка",
+      "skills": ["抑扬格", "点题", "锐笔速写"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_190_clour",
@@ -1258,7 +1504,9 @@
       "name": "红云",
       "alias": "hongyun gongyun hy gy 紅雲",
       "rarity": 4,
-      "alt_name": "Vermeil"
+      "alt_name": "Vermeil",
+      "skills": ["攻击力强化·β型", "双弦开弓"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_226_hmau",
@@ -1268,7 +1516,9 @@
       "name": "吽",
       "alias": "houhongou ho 吽",
       "rarity": 5,
-      "alt_name": "Hung"
+      "alt_name": "Hung",
+      "skills": ["反制治疗", "反制医疗模式"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_171_bldsk",
@@ -1278,7 +1528,9 @@
       "name": "华法琳",
       "alias": "huafalin hfl 華法琳",
       "rarity": 5,
-      "alt_name": "Warfarin"
+      "alt_name": "Warfarin",
+      "skills": ["紧急包扎", "不稳定血浆"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_243_waaifu",
@@ -1288,7 +1540,9 @@
       "name": "槐琥",
       "alias": "huaihu hh 槐琥",
       "rarity": 5,
-      "alt_name": "Waai Fu"
+      "alt_name": "Waai Fu",
+      "skills": ["寸劲", "七武掠阵踢"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10003_cgbird_bird",
@@ -1298,7 +1552,8 @@
       "name": "幻影",
       "alias": "huanying hy 幻影",
       "rarity": 0,
-      "alt_name": "Cage"
+      "alt_name": "Cage",
+      "skills": []
     },
     {
       "id": "char_017_huang",
@@ -1308,7 +1563,9 @@
       "name": "煌",
       "alias": "huang h 煌",
       "rarity": 6,
-      "alt_name": "Blaze"
+      "alt_name": "Blaze",
+      "skills": ["强力击·γ型", "链锯延伸模块", "沸腾爆裂"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10040_siege2_vlion",
@@ -1318,7 +1575,8 @@
       "name": "黄金盟誓",
       "alias": "huangjinmengshi hjms 黃金盟誓",
       "rarity": 0,
-      "alt_name": "Golden Vow"
+      "alt_name": "Golden Vow",
+      "skills": []
     },
     {
       "id": "char_1038_whitw2",
@@ -1328,7 +1586,9 @@
       "name": "荒芜拉普兰德",
       "alias": "huangwulapulande hwlpld 荒蕪拉普蘭德",
       "rarity": 6,
-      "alt_name": "Lappland the Decadenza"
+      "alt_name": "Lappland the Decadenza",
+      "skills": ["慵怠者悲鸣", "逐猎狂飙", "终幕·浩劫"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_431_ashlok",
@@ -1338,7 +1598,9 @@
       "name": "灰毫",
       "alias": "huihao hh 灰毫",
       "rarity": 5,
-      "alt_name": "Ashlock"
+      "alt_name": "Ashlock",
+      "skills": ["攻击力强化·γ型", "专注轰击"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_367_swllow",
@@ -1348,7 +1610,9 @@
       "name": "灰喉",
       "alias": "huihou hh 灰喉",
       "rarity": 5,
-      "alt_name": "GreyThroat"
+      "alt_name": "GreyThroat",
+      "skills": ["飞羽", "回流"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_456_ash",
@@ -1358,7 +1622,9 @@
       "name": "灰烬",
       "alias": "huijin hj 灰燼",
       "rarity": 6,
-      "alt_name": "Ash"
+      "alt_name": "Ash",
+      "skills": ["支援射击", "突击战术", "攻坚榴弹"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10035_wisdel_wward",
@@ -1368,7 +1634,8 @@
       "name": "魂灵之影",
       "alias": "hunlingzhiying hlzy 魂靈之影",
       "rarity": 0,
-      "alt_name": "Shadow of Revenant"
+      "alt_name": "Shadow of Revenant",
+      "skills": []
     },
     {
       "id": "char_4027_heyak",
@@ -1378,7 +1645,9 @@
       "name": "霍尔海雅",
       "alias": "huoerhaiya hehy 霍爾海雅",
       "rarity": 6,
-      "alt_name": "Ho'olheyak"
+      "alt_name": "Ho'olheyak",
+      "skills": ["但为求索", "群星逶迤", "博览者的狂语"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_1030_noirc2",
@@ -1388,7 +1657,9 @@
       "name": "火龙S黑角",
       "alias": "huolongSheijiao huolongSheijue hlShj 火龍S黑角",
       "rarity": 5,
-      "alt_name": "Rathalos S Noir Corne"
+      "alt_name": "Rathalos S Noir Corne",
+      "skills": ["居合拔刀气刃斩", "气刃兜割"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_493_firwhl",
@@ -1398,7 +1669,9 @@
       "name": "火哨",
       "alias": "huoshao hs 火哨",
       "rarity": 5,
-      "alt_name": "Firewhistle"
+      "alt_name": "Firewhistle",
+      "skills": ["野火", "焦土"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_163_hpsts",
@@ -1408,7 +1681,9 @@
       "name": "火神",
       "alias": "huoshen hs 火神",
       "rarity": 5,
-      "alt_name": "Vulcan"
+      "alt_name": "Vulcan",
+      "skills": ["坚守模式", "武力模式"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_293_thorns",
@@ -1418,7 +1693,9 @@
       "name": "棘刺",
       "alias": "jici jc 棘刺",
       "rarity": 6,
-      "alt_name": "Thorns"
+      "alt_name": "Thorns",
+      "skills": ["攻击力强化·γ型", "护身尖刺", "至高之术"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10032_jesca2_jckshd",
@@ -1428,7 +1705,8 @@
       "name": "机动盾牌",
       "alias": "jidongdunpai jddp 機動盾牌",
       "rarity": 0,
-      "alt_name": "Mobile personnel shield"
+      "alt_name": "Mobile personnel shield",
+      "skills": []
     },
     {
       "id": "char_422_aurora",
@@ -1438,7 +1716,9 @@
       "name": "极光",
       "alias": "jiguang jg 極光",
       "rarity": 5,
-      "alt_name": "Aurora"
+      "alt_name": "Aurora",
+      "skills": ["固守家园", "人工降雪"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_401_elysm",
@@ -1448,7 +1728,9 @@
       "name": "极境",
       "alias": "jijing jj 極境",
       "rarity": 5,
-      "alt_name": "Elysium"
+      "alt_name": "Elysium",
+      "skills": ["支援号令·γ型", "聆听"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10004_otter_motter",
@@ -1458,7 +1740,8 @@
       "name": "机械水獭",
       "alias": "jixieshuita jxst 機械水獺",
       "rarity": 0,
-      "alt_name": "Mibo"
+      "alt_name": "Mibo",
+      "skills": []
     },
     {
       "id": "char_1013_chen2",
@@ -1468,7 +1751,9 @@
       "name": "假日威龙陈",
       "alias": "jiariweilongchen jrwlc 假日威龍陳",
       "rarity": 6,
-      "alt_name": "Ch'en the Holungday"
+      "alt_name": "Ch'en the Holungday",
+      "skills": ["高压冲击", "“堇青之夜”", "“假日风暴”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_349_chiave",
@@ -1478,7 +1763,9 @@
       "name": "贾维",
       "alias": "jiawei guwei jw gw 賈維",
       "rarity": 5,
-      "alt_name": "Chiave"
+      "alt_name": "Chiave",
+      "skills": ["冲锋号令·γ型", "火焰剥离"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_187_ccheal",
@@ -1488,7 +1775,9 @@
       "name": "嘉维尔",
       "alias": "jiaweier jwe 嘉維爾",
       "rarity": 4,
-      "alt_name": "Gavial"
+      "alt_name": "Gavial",
+      "skills": ["活力再生", "活力再生·广域"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4116_blkkgt",
@@ -1498,7 +1787,9 @@
       "name": "锏",
       "alias": "jian j 鐧",
       "rarity": 6,
-      "alt_name": "Degenbrecher"
+      "alt_name": "Degenbrecher",
+      "skills": ["纯粹的武力", "无声的嘲笑", "归于宁静"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4036_forcer",
@@ -1508,7 +1799,9 @@
       "name": "见行者",
       "alias": "jianhangzhe jianxingzhe xianhangzhe xianxingzhe jhz jxz xhz xxz 見行者",
       "rarity": 5,
-      "alt_name": "Enforcer"
+      "alt_name": "Enforcer",
+      "skills": ["护身射击", "惊爆射击"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_260_durnar",
@@ -1518,7 +1811,8 @@
       "name": "坚雷",
       "alias": "jianlei jl 堅雷",
       "rarity": 4,
-      "alt_name": "Dur-nar"
+      "alt_name": "Dur-nar",
+      "skills": ["攻击力强化·β型", "起盾回击"]
     },
     {
       "id": "char_1028_texas2",
@@ -1528,7 +1822,9 @@
       "name": "缄默德克萨斯",
       "alias": "jianmodekesasi jmdkss 緘默德克薩斯",
       "rarity": 6,
-      "alt_name": "Texas the Omertosa"
+      "alt_name": "Texas the Omertosa",
+      "skills": ["细雨无声", "阵雨连绵", "剑雨滂沱"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_199_yak",
@@ -1538,7 +1834,9 @@
       "name": "角峰",
       "alias": "jiaofeng juefeng jf 角峰",
       "rarity": 4,
-      "alt_name": "Matterhorn"
+      "alt_name": "Matterhorn",
+      "skills": ["体能强化", "抗寒体质"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_272_strong",
@@ -1548,7 +1846,9 @@
       "name": "孑",
       "alias": "jie j 孑",
       "rarity": 4,
-      "alt_name": "Jaye"
+      "alt_name": "Jaye",
+      "skills": ["断螯", "刺身拼盘"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_347_jaksel",
@@ -1558,7 +1858,9 @@
       "name": "杰克",
       "alias": "jieke jk 傑克",
       "rarity": 4,
-      "alt_name": "Jackie"
+      "alt_name": "Jackie",
+      "skills": ["给你一拳！", "全神贯注！"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_235_jesica",
@@ -1568,7 +1870,9 @@
       "name": "杰西卡",
       "alias": "jiexika jiexiqia jxk jxq 傑西卡",
       "rarity": 4,
-      "alt_name": "Jessica"
+      "alt_name": "Jessica",
+      "skills": ["强力击·β型", "掩护烟幕"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4078_bdhkgt",
@@ -1578,7 +1882,9 @@
       "name": "截云",
       "alias": "jieyun jy 截雲",
       "rarity": 5,
-      "alt_name": "Jieyun"
+      "alt_name": "Jieyun",
+      "skills": ["探前路", "掷旧尘"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_306_leizi",
@@ -1588,7 +1894,9 @@
       "name": "惊蛰",
       "alias": "jingzhe jz 驚蟄",
       "rarity": 5,
-      "alt_name": "Leizi"
+      "alt_name": "Leizi",
+      "skills": ["攻击力强化·γ型", "初雷"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10007_phatom_twin",
@@ -1598,7 +1906,8 @@
       "name": "镜中虚影",
       "alias": "jingzhongxuying jzxy 鏡中虛影",
       "rarity": 6,
-      "alt_name": "The Mirror"
+      "alt_name": "The Mirror",
+      "skills": []
     },
     {
       "id": "token_10024_ebnhlz_rcube",
@@ -1608,7 +1917,8 @@
       "name": "旧日残影",
       "alias": "jiuricanying jrcy 舊日殘影",
       "rarity": 0,
-      "alt_name": "Old Day Remnants"
+      "alt_name": "Old Day Remnants",
+      "skills": []
     },
     {
       "id": "char_4019_ncdeer",
@@ -1618,7 +1928,9 @@
       "name": "九色鹿",
       "alias": "jiuselu jsl 九色鹿",
       "rarity": 5,
-      "alt_name": "Nine-Colored Deer"
+      "alt_name": "Nine-Colored Deer",
+      "skills": ["人间降吉", "仙山去远"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_328_cammou",
@@ -1628,7 +1940,9 @@
       "name": "卡达",
       "alias": "kada qiada kd qd 卡達",
       "rarity": 4,
-      "alt_name": "Click"
+      "alt_name": "Click",
+      "skills": ["攻击力强化·β型", "同步索敌攻击"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_214_kafka",
@@ -1638,7 +1952,9 @@
       "name": "卡夫卡",
       "alias": "kafuka kafuqia qiafuka qiafuqia kfk kfq qfk qfq 卡夫卡",
       "rarity": 5,
-      "alt_name": "Kafka"
+      "alt_name": "Kafka",
+      "skills": ["怪异魔方", "诡异剪刀"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_426_billro",
@@ -1648,7 +1964,9 @@
       "name": "卡涅利安",
       "alias": "kanielian qianielian knla qnla 卡涅利安",
       "rarity": 6,
-      "alt_name": "Carnelian"
+      "alt_name": "Carnelian",
+      "skills": ["沙暴守卫", "沙缚镣锁", "食噬之印"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_209_ardign",
@@ -1658,7 +1976,8 @@
       "name": "卡缇",
       "alias": "kati qiati kt qt 卡緹",
       "rarity": 3,
-      "alt_name": "Cardigan"
+      "alt_name": "Cardigan",
+      "skills": ["生命回复·α型"]
     },
     {
       "id": "char_003_kalts",
@@ -1668,7 +1987,9 @@
       "name": "凯尔希",
       "alias": "kaierxi kex 凱爾希",
       "rarity": 6,
-      "alt_name": "Kal'tsit"
+      "alt_name": "Kal'tsit",
+      "skills": ["指令：结构加固", "指令：战术协同", "指令：熔毁"],
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_4162_cathy",
@@ -1678,7 +1999,9 @@
       "name": "凯瑟琳",
       "alias": "kaiselin ksl 凱瑟琳",
       "rarity": 5,
-      "alt_name": "Catherine"
+      "alt_name": "Catherine",
+      "skills": ["岁月锻打", "战火淬炼"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_301_cutter",
@@ -1688,7 +2011,9 @@
       "name": "刻刀",
       "alias": "kedao kd 刻刀",
       "rarity": 4,
-      "alt_name": "Cutter"
+      "alt_name": "Cutter",
+      "skills": ["红移", "绯红刺刀"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_2013_cerber",
@@ -1698,7 +2023,9 @@
       "name": "刻俄柏",
       "alias": "keebai keebo keb 刻俄柏",
       "rarity": 6,
-      "alt_name": "Ceobe"
+      "alt_name": "Ceobe",
+      "skills": ["“很冰的斧”", "“很热的刀”", "“很重的枪”"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10023_windft_wrench",
@@ -1708,7 +2035,8 @@
       "name": "可靠电池",
       "alias": "kekaodianchi kkdc 可靠電池",
       "rarity": 0,
-      "alt_name": "Reliable Battery"
+      "alt_name": "Reliable Battery",
+      "skills": []
     },
     {
       "id": "char_124_kroos",
@@ -1718,7 +2046,8 @@
       "name": "克洛丝",
       "alias": "keluosi kls 克洛絲",
       "rarity": 3,
-      "alt_name": "Kroos"
+      "alt_name": "Kroos",
+      "skills": ["二连射·自动"]
     },
     {
       "id": "char_201_moeshd",
@@ -1728,7 +2057,9 @@
       "name": "可颂",
       "alias": "kesong ks 可頌",
       "rarity": 5,
-      "alt_name": "Croissant"
+      "alt_name": "Croissant",
+      "skills": ["自动防御", "磁爆锤"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_101_sora",
@@ -1738,7 +2069,9 @@
       "name": "空",
       "alias": "kong k 空",
       "rarity": 5,
-      "alt_name": "Sora"
+      "alt_name": "Sora",
+      "skills": ["睡眠之歌", "战斗之歌"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_282_catap",
@@ -1748,7 +2081,8 @@
       "name": "空爆",
       "alias": "kongbao kb 空爆",
       "rarity": 3,
-      "alt_name": "Catapult"
+      "alt_name": "Catapult",
+      "skills": ["爆破范围提升·α型"]
     },
     {
       "id": "char_4015_spuria",
@@ -1758,7 +2092,9 @@
       "name": "空构",
       "alias": "konggou kg 空構",
       "rarity": 5,
-      "alt_name": "Spuria"
+      "alt_name": "Spuria",
+      "skills": ["见机行事", "临场铳械改装"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_332_archet",
@@ -1768,7 +2104,9 @@
       "name": "空弦",
       "alias": "kongxian kx 空弦",
       "rarity": 6,
-      "alt_name": "Archetto"
+      "alt_name": "Archetto",
+      "skills": ["箭矢·散逸", "箭矢·追猎", "箭矢·暴风"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_405_absin",
@@ -1778,7 +2116,9 @@
       "name": "苦艾",
       "alias": "kuai kuyi ka ky 苦艾",
       "rarity": 5,
-      "alt_name": "Absinthe"
+      "alt_name": "Absinthe",
+      "skills": ["执法模式", "终结连射"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10044_wulfen_mine",
@@ -1788,7 +2128,8 @@
       "name": "矿石“杀手”",
       "alias": "kuangshishashou kuangdanshashou ksss kdss 礦石“殺手” 礦石殺手",
       "rarity": 0,
-      "alt_name": "Rocky Chomper"
+      "alt_name": "Rocky Chomper",
+      "skills": []
     },
     {
       "id": "char_250_phatom",
@@ -1798,7 +2139,9 @@
       "name": "傀影",
       "alias": "kuiying guiying ky gy 傀影",
       "rarity": 6,
-      "alt_name": "Phantom"
+      "alt_name": "Phantom",
+      "skills": ["暗夜魅影", "血色乐章", "夜幕突袭"],
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_140_whitew",
@@ -1808,7 +2151,9 @@
       "name": "拉普兰德",
       "alias": "lapulande lpld 拉普蘭德",
       "rarity": 5,
-      "alt_name": "Lappland"
+      "alt_name": "Lappland",
+      "skills": ["日晷", "狼魂"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_373_lionhd",
@@ -1818,7 +2163,9 @@
       "name": "莱恩哈特",
       "alias": "laienhate leht 萊恩哈特",
       "rarity": 5,
-      "alt_name": "Leonhardt"
+      "alt_name": "Leonhardt",
+      "skills": ["攻击力强化·γ型", "解构与爆破"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4142_laios",
@@ -1828,7 +2175,9 @@
       "name": "莱欧斯",
       "alias": "laiousi los 萊歐斯",
       "rarity": 5,
-      "alt_name": "Laios"
+      "alt_name": "Laios",
+      "skills": ["胆小剑助", "威吓战法"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4117_ray",
@@ -1838,7 +2187,9 @@
       "name": "莱伊",
       "alias": "laiyi ly 萊伊",
       "rarity": 6,
-      "alt_name": "Ray"
+      "alt_name": "Ray",
+      "skills": ["脱身矢", "广域警觉", "“得见光芒”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_129_bluep",
@@ -1848,7 +2199,9 @@
       "name": "蓝毒",
       "alias": "landu landai ld 藍毒",
       "rarity": 5,
-      "alt_name": "Blue Poison"
+      "alt_name": "Blue Poison",
+      "skills": ["二重射击·自动", "毒液散射"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_285_medic2",
@@ -1858,7 +2211,8 @@
       "name": "Lancet-2",
       "alias": "Lancet-2",
       "rarity": 1,
-      "alt_name": "Lancet-2"
+      "alt_name": "Lancet-2",
+      "skills": []
     },
     {
       "id": "token_10028_vigil_wolf",
@@ -1868,7 +2222,8 @@
       "name": "狼群",
       "alias": "langqun lq 狼群",
       "rarity": 0,
-      "alt_name": "Vigil"
+      "alt_name": "Vigil",
+      "skills": []
     },
     {
       "id": "char_322_lmlee",
@@ -1878,7 +2233,9 @@
       "name": "老鲤",
       "alias": "laoli ll 老鯉",
       "rarity": 6,
-      "alt_name": "Lee"
+      "alt_name": "Lee",
+      "skills": ["小惩大诫", "驱凶辟邪", "贵客盈门"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10033_ela_grzmot",
@@ -1888,7 +2245,8 @@
       "name": "雷鸣地雷",
       "alias": "leimingdilei leimingdelei lmdl 雷鳴地雷",
       "rarity": 0,
-      "alt_name": "GRZMOT Mine"
+      "alt_name": "GRZMOT Mine",
+      "skills": []
     },
     {
       "id": "char_4193_lemuen",
@@ -1908,7 +2266,9 @@
       "name": "雷蛇",
       "alias": "leishe leiyi ls ly 雷蛇",
       "rarity": 5,
-      "alt_name": "Liskarm"
+      "alt_name": "Liskarm",
+      "skills": ["充能防御", "反击电弧"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_237_gravel",
@@ -1918,7 +2278,9 @@
       "name": "砾",
       "alias": "li l 礫",
       "rarity": 4,
-      "alt_name": "Gravel"
+      "alt_name": "Gravel",
+      "skills": ["影袭", "鼠群"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1036_fang2",
@@ -1928,7 +2290,9 @@
       "name": "历阵锐枪芬",
       "alias": "lizhenruiqiangfen lzrqf 曆陣銳槍芬",
       "rarity": 5,
-      "alt_name": "Fang the Fire-sharpened"
+      "alt_name": "Fang the Fire-sharpened",
+      "skills": ["贯敌刺枪", "执守阵线"],
+      "equips": ["", "X"]
     },
     {
       "id": "trap_079_allydonq",
@@ -1938,7 +2302,8 @@
       "name": "猎潮的骑士",
       "alias": "liechaodeqishi liechaodiqishi lcdqs 獵潮的騎士",
       "rarity": 1,
-      "alt_name": "The Tide-hunt Knight"
+      "alt_name": "The Tide-hunt Knight",
+      "skills": []
     },
     {
       "id": "char_137_brownb",
@@ -1948,7 +2313,9 @@
       "name": "猎蜂",
       "alias": "liefeng lf 獵蜂",
       "rarity": 4,
-      "alt_name": "Beehunter"
+      "alt_name": "Beehunter",
+      "skills": ["高机动", "急速拳"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_194_leto",
@@ -1958,7 +2325,9 @@
       "name": "烈夏",
       "alias": "liexia lx 烈夏",
       "rarity": 5,
-      "alt_name": "Лето"
+      "alt_name": "Лето",
+      "skills": ["迅捷打击·γ型", "一呼百应"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4080_lin",
@@ -1968,7 +2337,9 @@
       "name": "林",
       "alias": "lin l 林",
       "rarity": 6,
-      "alt_name": "Lin"
+      "alt_name": "Lin",
+      "skills": ["玲珑", "荫庇", "流光乍裂"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_115_headbr",
@@ -1978,7 +2349,9 @@
       "name": "凛冬",
       "alias": "lindong ld 凜冬",
       "rarity": 5,
-      "alt_name": "Зима"
+      "alt_name": "Зима",
+      "skills": ["冲锋号令·γ型", "乌萨斯战吼"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_148_nearl",
@@ -1988,7 +2361,9 @@
       "name": "临光",
       "alias": "linguang lg 臨光",
       "rarity": 5,
-      "alt_name": "Nearl"
+      "alt_name": "Nearl",
+      "skills": ["急救", "急救模式"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1033_swire2",
@@ -1998,7 +2373,9 @@
       "name": "琳琅诗怀雅",
       "alias": "linlangshihuaiya llshy 琳琅詩懷雅",
       "rarity": 6,
-      "alt_name": "Swire the Elegant Wit"
+      "alt_name": "Swire the Elegant Wit",
+      "skills": ["仗义疏财", "“见面礼”", "千金一掷"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4102_threye",
@@ -2008,7 +2385,9 @@
       "name": "凛视",
       "alias": "linshi ls 凜視",
       "rarity": 5,
-      "alt_name": "Valarqvin"
+      "alt_name": "Valarqvin",
+      "skills": ["我见崩毁之前", "我见枯朽之后"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_2023_ling",
@@ -2018,7 +2397,9 @@
       "name": "令",
       "alias": "ling l 令",
       "rarity": 6,
-      "alt_name": "Ling"
+      "alt_name": "Ling",
+      "skills": ["重进酒", "笑鸣瑟", "宁作吾"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_358_lisa",
@@ -2028,7 +2409,9 @@
       "name": "铃兰",
       "alias": "linglan ll 鈴蘭",
       "rarity": 6,
-      "alt_name": "Suzuran"
+      "alt_name": "Suzuran",
+      "skills": ["全力以赴", "儿时的舞乐", "狐火渺然"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4187_graceb",
@@ -2048,7 +2431,8 @@
       "name": "翎羽",
       "alias": "lingyu ly 翎羽",
       "rarity": 3,
-      "alt_name": "Plume"
+      "alt_name": "Plume",
+      "skills": ["迅捷打击·α型"]
     },
     {
       "id": "char_206_gnosis",
@@ -2058,7 +2442,9 @@
       "name": "灵知",
       "alias": "lingzhi lz 靈知",
       "rarity": 6,
-      "alt_name": "Gnosis"
+      "alt_name": "Gnosis",
+      "skills": ["高速思考", "零度爆发", "失温症"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4042_lumen",
@@ -2068,7 +2454,9 @@
       "name": "流明",
       "alias": "liuming lm 流明",
       "rarity": 6,
-      "alt_name": "Lumen"
+      "alt_name": "Lumen",
+      "skills": ["沐雨", "沛霖", "灯火不灭"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_126_shotst",
@@ -2078,7 +2466,9 @@
       "name": "流星",
       "alias": "liuxing lx 流星",
       "rarity": 4,
-      "alt_name": "Meteor"
+      "alt_name": "Meteor",
+      "skills": ["碎甲击", "碎甲击·扩散"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10030_mlyss_wtrman",
@@ -2088,7 +2478,8 @@
       "name": "流形",
       "alias": "liuxing lx 流形",
       "rarity": 0,
-      "alt_name": "Flowing Shape"
+      "alt_name": "Flowing Shape",
+      "skills": []
     },
     {
       "id": "char_486_takila",
@@ -2098,7 +2489,8 @@
       "name": "龙舌兰",
       "alias": "longshelan lsl 龍舌蘭",
       "rarity": 5,
-      "alt_name": "Tequila"
+      "alt_name": "Tequila",
+      "skills": ["当机立断", "剑走偏锋"]
     },
     {
       "id": "token_10005_mgllan_drone3",
@@ -2108,7 +2500,8 @@
       "name": "龙腾.A",
       "alias": "longteng.A lt.A 龍騰.A",
       "rarity": 0,
-      "alt_name": "DDF Type-A"
+      "alt_name": "DDF Type-A",
+      "skills": []
     },
     {
       "id": "token_10005_mgllan_drone1",
@@ -2118,7 +2511,8 @@
       "name": "龙腾.F",
       "alias": "longteng.F lt.F 龍騰.F",
       "rarity": 0,
-      "alt_name": "DDF Type-F"
+      "alt_name": "DDF Type-F",
+      "skills": []
     },
     {
       "id": "token_10005_mgllan_drone2",
@@ -2128,7 +2522,8 @@
       "name": "龙腾.L",
       "alias": "longteng.L lt.L 龍騰.L",
       "rarity": 0,
-      "alt_name": "DDF Type-L"
+      "alt_name": "DDF Type-L",
+      "skills": []
     },
     {
       "id": "char_4130_luton",
@@ -2138,7 +2533,9 @@
       "name": "露托",
       "alias": "loutuo lutuo lt 露托",
       "rarity": 4,
-      "alt_name": "Lutonada"
+      "alt_name": "Lutonada",
+      "skills": ["强力击·β型", "强磁防卫"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_433_windft",
@@ -2148,7 +2545,9 @@
       "name": "掠风",
       "alias": "lvefeng lf 掠風",
       "rarity": 5,
-      "alt_name": "Windflit"
+      "alt_name": "Windflit",
+      "skills": ["此身为筑", "此身为源"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_484_robrta",
@@ -2158,7 +2557,9 @@
       "name": "罗比菈塔",
       "alias": "luobilata lblt 羅比菈塔",
       "rarity": 4,
-      "alt_name": "Roberta"
+      "alt_name": "Roberta",
+      "skills": ["叙拉古式上妆", "全自动造型仪"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_451_robin",
@@ -2168,7 +2569,9 @@
       "name": "罗宾",
       "alias": "luobin lb 羅賓",
       "rarity": 5,
-      "alt_name": "Robin"
+      "alt_name": "Robin",
+      "skills": ["束缚“夹子”", "弹射“夹子”"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4133_logos",
@@ -2178,7 +2581,9 @@
       "name": "逻各斯",
       "alias": "luogesi lgs 邏各斯",
       "rarity": 6,
-      "alt_name": "Logos"
+      "alt_name": "Logos",
+      "skills": ["殁亡", "提喻", "延异视阈"],
+      "equips": ["", "Y", "D"]
     },
     {
       "id": "char_4040_rockr",
@@ -2188,7 +2593,9 @@
       "name": "洛洛",
       "alias": "luoluo ll 洛洛",
       "rarity": 5,
-      "alt_name": "Rockrock"
+      "alt_name": "Rockrock",
+      "skills": ["战术咏唱·γ型", "自负此轭"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4067_lolxh",
@@ -2198,7 +2605,9 @@
       "name": "罗小黑",
       "alias": "luoxiaohei lxh 羅小黑",
       "rarity": 4,
-      "alt_name": "Luo Xiaohei"
+      "alt_name": "Luo Xiaohei",
+      "skills": ["掠光尾影", "碎金为刃"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4064_mlynar",
@@ -2208,7 +2617,8 @@
       "name": "玛恩纳",
       "alias": "maenna men 瑪恩納",
       "rarity": 6,
-      "alt_name": "Młynar"
+      "alt_name": "Młynar",
+      "skills": ["未声张的怒火", "未宽解的悲哀", "未照耀的荣光"]
     },
     {
       "id": "char_4141_marcil",
@@ -2218,7 +2628,9 @@
       "name": "玛露西尔",
       "alias": "malouxier maluxier mlxe 瑪露西爾",
       "rarity": 6,
-      "alt_name": "Marcille"
+      "alt_name": "Marcille",
+      "skills": ["才女的实力", "召唤使魔", "爆破魔法"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_248_mgllan",
@@ -2228,7 +2640,9 @@
       "name": "麦哲伦",
       "alias": "maizhelun mzl 麥哲倫",
       "rarity": 6,
-      "alt_name": "Magallan"
+      "alt_name": "Magallan",
+      "skills": ["高效制冷模块", "激光开采模块", "武装打击模块"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_610_acfend",
@@ -2238,7 +2652,9 @@
       "name": "Mechanist",
       "alias": "Mechanist",
       "rarity": 6,
-      "alt_name": "Mechanist"
+      "alt_name": "Mechanist",
+      "skills": ["结构稳定", "不变性原理", "应力倒置"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_133_mm",
@@ -2248,7 +2664,9 @@
       "name": "梅",
       "alias": "mei m 梅",
       "rarity": 4,
-      "alt_name": "May"
+      "alt_name": "May",
+      "skills": ["麻痹弹", "束缚电击"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_242_otter",
@@ -2258,7 +2676,9 @@
       "name": "梅尔",
       "alias": "meier me 梅爾",
       "rarity": 5,
-      "alt_name": "Mayer"
+      "alt_name": "Mayer",
+      "skills": ["迷惑装置", "爆破回收"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4006_melnte",
@@ -2268,7 +2688,9 @@
       "name": "玫拉",
       "alias": "meila ml 玫拉",
       "rarity": 5,
-      "alt_name": "Melanite"
+      "alt_name": "Melanite",
+      "skills": ["饱和脉冲", "临界爆发"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_208_melan",
@@ -2278,7 +2700,8 @@
       "name": "玫兰莎",
       "alias": "meilansuo meilansha mls 玫蘭莎",
       "rarity": 3,
-      "alt_name": "Melantha"
+      "alt_name": "Melantha",
+      "skills": ["攻击力强化·α型"]
     },
     {
       "id": "char_391_rosmon",
@@ -2288,7 +2711,9 @@
       "name": "迷迭香",
       "alias": "midiexiang mdx 迷迭香",
       "rarity": 6,
-      "alt_name": "Rosmontis"
+      "alt_name": "Rosmontis",
+      "skills": ["思维膨大", "末梢阻断", "“如你所愿”"],
+      "equips": ["", "X", "A"]
     },
     {
       "id": "char_122_beagle",
@@ -2298,7 +2723,8 @@
       "name": "米格鲁",
       "alias": "migelu mgl 米格魯",
       "rarity": 3,
-      "alt_name": "Beagle"
+      "alt_name": "Beagle",
+      "skills": ["防御力强化·α型"]
     },
     {
       "id": "char_344_beewax",
@@ -2308,7 +2734,9 @@
       "name": "蜜蜡",
       "alias": "mila ml 蜜蠟",
       "rarity": 5,
-      "alt_name": "Beeswax"
+      "alt_name": "Beeswax",
+      "skills": ["沙暴扩散", "守卫尖碑"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_449_glider",
@@ -2318,7 +2746,9 @@
       "name": "蜜莓",
       "alias": "mimei mm 蜜莓",
       "rarity": 5,
-      "alt_name": "Honeyberry"
+      "alt_name": "Honeyberry",
+      "skills": ["精神护理", "振奋"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4017_puzzle",
@@ -2328,7 +2758,9 @@
       "name": "谜图",
       "alias": "mitu mt 謎圖",
       "rarity": 5,
-      "alt_name": "Puzzle"
+      "alt_name": "Puzzle",
+      "skills": ["关键线索", "疑点追踪"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10021_blkngt_hypnos",
@@ -2338,7 +2770,8 @@
       "name": "眠兽",
       "alias": "mianshou ms 眠獸",
       "rarity": 0,
-      "alt_name": "Hypnos"
+      "alt_name": "Hypnos",
+      "skills": []
     },
     {
       "id": "char_4071_peper",
@@ -2348,7 +2781,8 @@
       "name": "明椒",
       "alias": "mingjiao mj 明椒",
       "rarity": 5,
-      "alt_name": "Paprika"
+      "alt_name": "Paprika",
+      "skills": ["掩护作战·γ型", "同伴意识"]
     },
     {
       "id": "char_615_acspec",
@@ -2358,7 +2792,9 @@
       "name": "Misery",
       "alias": "Misery",
       "rarity": 6,
-      "alt_name": "Misery"
+      "alt_name": "Misery",
+      "skills": ["物理的服从", "战争的恭顺", "空间的归依"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_154_morgan",
@@ -2368,7 +2804,9 @@
       "name": "摩根",
       "alias": "mogen magen mg 摩根",
       "rarity": 5,
-      "alt_name": "Morgan"
+      "alt_name": "Morgan",
+      "skills": ["街头好手", "无畏招架"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_213_mostma",
@@ -2378,7 +2816,9 @@
       "name": "莫斯提马",
       "alias": "mositima mosidima musitima musidima mstm msdm 莫斯提馬",
       "rarity": 6,
-      "alt_name": "Mostima"
+      "alt_name": "Mostima",
+      "skills": ["攻击力强化·γ型", "荒时之锁", "序时之匙"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4134_cetsyr",
@@ -2388,7 +2828,9 @@
       "name": "魔王",
       "alias": "mowang mw 魔王",
       "rarity": 6,
-      "alt_name": "Civilight Eterna"
+      "alt_name": "Civilight Eterna",
+      "skills": ["往昔萦绕身旁", "明日渺远不及", "编织重构现世"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_117_myrrh",
@@ -2398,7 +2840,19 @@
       "name": "末药",
       "alias": "moyao my 末藥",
       "rarity": 4,
-      "alt_name": "Myrrh"
+      "alt_name": "Myrrh",
+      "skills": ["二重治疗", "医疗力场"],
+      "equips": ["", "X"]
+    },
+    {
+      "id": "char_4179_monstr",
+      "prof": "MEDIC",
+      "subProf": "chainhealer",
+      "name": "Mon3tr",
+      "alias": "Mon3tr",
+      "rarity": 6,
+      "alt_name": "Mon3tr",
+      "skills": ["策略：超压链接", "策略：超负荷", "策略：熔毁"]
     },
     {
       "id": "char_4179_monstr",
@@ -2418,7 +2872,8 @@
       "name": "Mon3tr",
       "alias": "Mon3tr",
       "rarity": 0,
-      "alt_name": "Mon3tr"
+      "alt_name": "Mon3tr",
+      "skills": []
     },
     {
       "id": "char_249_mlyss",
@@ -2428,7 +2883,19 @@
       "name": "缪尔赛思",
       "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思",
       "rarity": 6,
-      "alt_name": "Muelsyse"
+      "alt_name": "Muelsyse",
+      "skills": ["渐进性润化", "生态耦合", "浅层非熵适应"],
+      "equips": ["", "X"]
+    },
+    {
+      "id": "char_4025_aprot2",
+      "prof": "TANK",
+      "subProf": "artsprotector",
+      "name": "暮落",
+      "alias": "muluo mula mulao ml 暮落",
+      "rarity": 5,
+      "alt_name": "Shalem",
+      "skills": ["速战速决", "燃命狂欢"]
     },
     {
       "id": "char_4025_aprot2",
@@ -2448,7 +2915,8 @@
       "name": "木偶舞者",
       "alias": "muouwuzhe mowz 木偶舞者",
       "rarity": 0,
-      "alt_name": "Puppet Dancer"
+      "alt_name": "Puppet Dancer",
+      "skills": []
     },
     {
       "id": "char_4171_wulfen",
@@ -2458,7 +2926,9 @@
       "name": "钼铅",
       "alias": "muqian muyan mq my 鉬鉛",
       "rarity": 5,
-      "alt_name": "Wulfenite"
+      "alt_name": "Wulfenite",
+      "skills": ["“驱兽专用”", "“顽石专用”"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_185_frncat",
@@ -2468,7 +2938,9 @@
       "name": "慕斯",
       "alias": "musi ms 慕斯",
       "rarity": 4,
-      "alt_name": "Mousse"
+      "alt_name": "Mousse",
+      "skills": ["挠伤", "炸毛"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4138_narant",
@@ -2478,7 +2950,8 @@
       "name": "娜仁图亚",
       "alias": "narentuya nuorentuya nrty 娜仁圖亞",
       "rarity": 6,
-      "alt_name": "Narantuya"
+      "alt_name": "Narantuya",
+      "skills": ["旋刃", "恶魇", "吞日"]
     },
     {
       "id": "char_103_angel",
@@ -2488,7 +2961,9 @@
       "name": "能天使",
       "alias": "nengtianshi naitianshi nts 能天使",
       "rarity": 6,
-      "alt_name": "Exusiai"
+      "alt_name": "Exusiai",
+      "skills": ["冲锋模式", "扫射模式", "过载模式"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4146_nymph",
@@ -2498,7 +2973,8 @@
       "name": "妮芙",
       "alias": "nifu nf 妮芙",
       "rarity": 6,
-      "alt_name": "Nymph"
+      "alt_name": "Nymph",
+      "skills": ["笞心击", "怵然震爆", "心防溃决"]
     },
     {
       "id": "char_311_mudrok",
@@ -2508,7 +2984,9 @@
       "name": "泥岩",
       "alias": "niyan ny 泥岩",
       "rarity": 6,
-      "alt_name": "Mudrock"
+      "alt_name": "Mudrock",
+      "skills": ["防御力强化·γ型", "岩崩锤", "秽壤的血脉"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_2014_nian",
@@ -2518,7 +2996,9 @@
       "name": "年",
       "alias": "nian n 年",
       "rarity": 6,
-      "alt_name": "Nian"
+      "alt_name": "Nian",
+      "skills": ["锡灼", "铜印", "铁御"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4173_nowell",
@@ -2528,7 +3008,9 @@
       "name": "诺威尔",
       "alias": "nuoweier nwe 諾威爾",
       "rarity": 5,
-      "alt_name": "Nowell"
+      "alt_name": "Nowell",
+      "skills": ["步履不停", "生命不息"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10041_cathy_catsld",
@@ -2538,7 +3020,8 @@
       "name": "爬行号·防护单元",
       "alias": "pahanghao·fanghudanyuan pahanghao·fanghushanyuan pahanghao·fanghuchanyuan paxinghao·fanghudanyuan paxinghao·fanghushanyuan paxinghao·fanghuchanyuan phh·fhdy phh·fhsy phh·fhcy pxh·fhdy pxh·fhsy pxh·fhcy 爬行號·防護單元",
       "rarity": 0,
-      "alt_name": "Crawler Protection Unit"
+      "alt_name": "Crawler Protection Unit",
+      "skills": []
     },
     {
       "id": "char_485_pallas",
@@ -2548,7 +3031,9 @@
       "name": "帕拉斯",
       "alias": "palasi pls 帕拉斯",
       "rarity": 6,
-      "alt_name": "Pallas"
+      "alt_name": "Pallas",
+      "skills": ["胜利的连击", "信念的长鞭", "英勇的祝福"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10014_bstalk_crab",
@@ -2558,7 +3043,8 @@
       "name": "磐蟹护卫队",
       "alias": "panxiehuweidui pxhwd 磐蟹護衛隊 panxiehuweizhui pxhwz",
       "rarity": 0,
-      "alt_name": "M.C.G"
+      "alt_name": "M.C.G",
+      "skills": []
     },
     {
       "id": "char_381_bubble",
@@ -2568,7 +3054,9 @@
       "name": "泡泡",
       "alias": "paopao pp 泡泡",
       "rarity": 4,
-      "alt_name": "Bubble"
+      "alt_name": "Bubble",
+      "skills": ["防御力强化·β型", "“挨打”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_281_popka",
@@ -2578,7 +3066,8 @@
       "name": "泡普卡",
       "alias": "paopuka paopuqia ppk ppq 泡普卡",
       "rarity": 3,
-      "alt_name": "Popukar"
+      "alt_name": "Popukar",
+      "skills": ["攻击力强化·α型"]
     },
     {
       "id": "char_4058_pepe",
@@ -2588,7 +3077,9 @@
       "name": "佩佩",
       "alias": "peipei pp 佩佩",
       "rarity": 6,
-      "alt_name": "Pepe"
+      "alt_name": "Pepe",
+      "skills": ["盖戳！", "阻遏混乱锤", "时光震荡"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4136_phonor",
@@ -2598,7 +3089,8 @@
       "name": "PhonoR-0",
       "alias": "PhonoR-0",
       "rarity": 1,
-      "alt_name": "PhonoR-0"
+      "alt_name": "PhonoR-0",
+      "skills": []
     },
     {
       "id": "char_509_acast",
@@ -2608,7 +3100,19 @@
       "name": "Pith",
       "alias": "Pith",
       "rarity": 5,
-      "alt_name": "Pith"
+      "alt_name": "Pith",
+      "skills": ["“为我所为”"]
+    },
+    {
+      "id": "char_612_accast",
+      "prof": "CASTER",
+      "subProf": "splashcaster",
+      "name": "Pith",
+      "alias": "Pith",
+      "rarity": 6,
+      "alt_name": "Pith",
+      "skills": ["“书我所书”", "“为我所为”", "“驭我所驭”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_612_accast",
@@ -2628,7 +3132,9 @@
       "name": "普罗旺斯",
       "alias": "puluowangsi plws 普羅旺斯",
       "rarity": 5,
-      "alt_name": "Provence"
+      "alt_name": "Provence",
+      "skills": ["狼眼", "杀戮嗅觉"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4144_chilc",
@@ -2638,7 +3144,9 @@
       "name": "齐尔查克",
       "alias": "qierchake qierzhake jierchake jierzhake zierchake zierzhake zhaierchake zhaierzhake qeck qezk jeck jezk zeck zezk 齊爾查克",
       "rarity": 5,
-      "alt_name": "Chilchuck"
+      "alt_name": "Chilchuck",
+      "skills": ["开锁工具", "随机应变"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_478_kirara",
@@ -2648,7 +3156,9 @@
       "name": "绮良",
       "alias": "qiliang ql 綺良",
       "rarity": 5,
-      "alt_name": "Kirara"
+      "alt_name": "Kirara",
+      "skills": ["锚击", "锚点捕捉"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1029_yato2",
@@ -2658,7 +3168,9 @@
       "name": "麒麟R夜刀",
       "alias": "qilinRyedao qlRyd 麒麟R夜刀",
       "rarity": 6,
-      "alt_name": "Kirin R Yato"
+      "alt_name": "Kirin R Yato",
+      "skills": ["鬼人化", "乱舞", "空中回旋乱舞"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4062_totter",
@@ -2668,7 +3180,9 @@
       "name": "铅踝",
       "alias": "qianhuai yanhuai qh yh 鉛踝",
       "rarity": 4,
-      "alt_name": "Totter"
+      "alt_name": "Totter",
+      "skills": ["贯日", "破虹"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_479_sleach",
@@ -2678,7 +3192,9 @@
       "name": "琴柳",
       "alias": "qinliu ql 琴柳",
       "rarity": 6,
-      "alt_name": "Saileach"
+      "alt_name": "Saileach",
+      "skills": ["支援号令·γ型", "信仰传承", "光辉旗帜"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_149_scave",
@@ -2688,7 +3204,9 @@
       "name": "清道夫",
       "alias": "qingdaofu qdf 清道夫",
       "rarity": 4,
-      "alt_name": "Scavenger"
+      "alt_name": "Scavenger",
+      "skills": ["冲锋号令·β型", "冲锋号令·攻击"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_385_finlpp",
@@ -2698,7 +3216,9 @@
       "name": "清流",
       "alias": "qingliu ql 清流",
       "rarity": 4,
-      "alt_name": "Purestream"
+      "alt_name": "Purestream",
+      "skills": ["治愈水波", "涌泉"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_488_buildr",
@@ -2708,7 +3228,9 @@
       "name": "青枳",
       "alias": "qingzhi qz 青枳",
       "rarity": 5,
-      "alt_name": "Poncirus"
+      "alt_name": "Poncirus",
+      "skills": ["冲锋号令·γ型", "工程者之愿"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10018_robrta_mach",
@@ -2718,7 +3240,8 @@
       "name": "全自动造型仪",
       "alias": "quanzidongzaoxingyi qzdzxy 全自動造型儀",
       "rarity": 0,
-      "alt_name": "Making-up Machine"
+      "alt_name": "Making-up Machine",
+      "skills": []
     },
     {
       "id": "char_614_acsupo",
@@ -2728,7 +3251,9 @@
       "name": "Raidian",
       "alias": "Raidian",
       "rarity": 6,
-      "alt_name": "Raidian"
+      "alt_name": "Raidian",
+      "skills": ["双声", "三形", "信号跃动"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4026_vulpis",
@@ -2738,7 +3263,9 @@
       "name": "忍冬",
       "alias": "rendong rd 忍冬",
       "rarity": 6,
-      "alt_name": "Vulpisfoglia"
+      "alt_name": "Vulpisfoglia",
+      "skills": ["小施惩戒", "坠刃拷问", "隐狐之艺"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_363_toddi",
@@ -2748,7 +3275,9 @@
       "name": "熔泉",
       "alias": "rongquan rq 熔泉",
       "rarity": 5,
-      "alt_name": "Toddifons"
+      "alt_name": "Toddifons",
+      "skills": ["信号矢", "便携破城矢"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_202_demkni",
@@ -2758,7 +3287,9 @@
       "name": "塞雷娅",
       "alias": "saileiya seleiya sly 塞雷婭",
       "rarity": 6,
-      "alt_name": "Saria"
+      "alt_name": "Saria",
+      "skills": ["急救", "药物配置", "钙质化"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_473_mberry",
@@ -2768,7 +3299,9 @@
       "name": "桑葚",
       "alias": "sangshen ss 桑葚",
       "rarity": 5,
-      "alt_name": "Mulberry"
+      "alt_name": "Mulberry",
+      "skills": ["治愈云雾", "安全区域"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_416_zumama",
@@ -2778,7 +3311,9 @@
       "name": "森蚺",
       "alias": "senran sr 森蚺",
       "rarity": 6,
-      "alt_name": "Eunectes"
+      "alt_name": "Eunectes",
+      "skills": ["轻型挂斧", "震慑劈砍", "钢铁意志"],
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_4143_sensi",
@@ -2788,7 +3323,9 @@
       "name": "森西",
       "alias": "senxi sx 森西",
       "rarity": 5,
-      "alt_name": "Senshi"
+      "alt_name": "Senshi",
+      "skills": ["单人份料理", "团体魔物大餐"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10034_ray_sndbst",
@@ -2798,7 +3335,8 @@
       "name": "沙地兽",
       "alias": "shadishou shadeshou sds 沙地獸",
       "rarity": 0,
-      "alt_name": "Sandbeast"
+      "alt_name": "Sandbeast",
+      "skills": []
     },
     {
       "id": "token_10011_beewax_oblisk",
@@ -2808,7 +3346,8 @@
       "name": "沙之碑",
       "alias": "shazhibei szb 沙之碑",
       "rarity": 0,
-      "alt_name": "Desert Obelisk"
+      "alt_name": "Desert Obelisk",
+      "skills": []
     },
     {
       "id": "char_264_f12yin",
@@ -2818,7 +3357,9 @@
       "name": "山",
       "alias": "shan s 山",
       "rarity": 6,
-      "alt_name": "Mountain"
+      "alt_name": "Mountain",
+      "skills": ["左勾扫拳", "横扫架势", "震地碎岩击"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_457_blitz",
@@ -2828,7 +3369,9 @@
       "name": "闪击",
       "alias": "shanji sj 閃擊",
       "rarity": 5,
-      "alt_name": "Blitz"
+      "alt_name": "Blitz",
+      "skills": ["闪光护盾", "突破防线"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_147_shining",
@@ -2838,7 +3381,9 @@
       "name": "闪灵",
       "alias": "shanling sl 閃靈",
       "rarity": 6,
-      "alt_name": "Shining"
+      "alt_name": "Shining",
+      "skills": ["信条", "自动掩护", "教条力场"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_508_aguard",
@@ -2848,7 +3393,19 @@
       "name": "Sharp",
       "alias": "Sharp",
       "rarity": 5,
-      "alt_name": "Sharp"
+      "alt_name": "Sharp",
+      "skills": ["亮剑"]
+    },
+    {
+      "id": "char_609_acguad",
+      "prof": "WARRIOR",
+      "subProf": "fearless",
+      "name": "Sharp",
+      "alias": "Sharp",
+      "rarity": 6,
+      "alt_name": "Sharp",
+      "skills": ["快刀", "亮剑", "力战不竭"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_609_acguad",
@@ -2868,7 +3425,9 @@
       "name": "慑砂",
       "alias": "shesha ss 懾砂",
       "rarity": 5,
-      "alt_name": "Sesa"
+      "alt_name": "Sesa",
+      "skills": ["攻击力强化·γ型", "延时震荡零件"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_150_snakek",
@@ -2878,7 +3437,9 @@
       "name": "蛇屠箱",
       "alias": "shetuxiang yituxiang stx ytx 蛇屠箱",
       "rarity": 4,
-      "alt_name": "Cuora"
+      "alt_name": "Cuora",
+      "skills": ["防御力强化·β型", "壳状防御"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_469_indigo",
@@ -2888,7 +3449,9 @@
       "name": "深靛",
       "alias": "shendian sd 深靛",
       "rarity": 4,
-      "alt_name": "Indigo"
+      "alt_name": "Indigo",
+      "skills": ["灯塔守卫者", "光影迷宫"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_110_deepcl",
@@ -2898,7 +3461,9 @@
       "name": "深海色",
       "alias": "shenhaise shs 深海色",
       "rarity": 4,
-      "alt_name": "Deepcolor"
+      "alt_name": "Deepcolor",
+      "skills": ["光影之触", "视觉陷阱"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4109_baslin",
@@ -2908,7 +3473,9 @@
       "name": "深律",
       "alias": "shenlv sl 深律",
       "rarity": 5,
-      "alt_name": "Bassline"
+      "alt_name": "Bassline",
+      "skills": ["急救", "沉音宁神"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4137_udflow",
@@ -2918,7 +3485,9 @@
       "name": "深巡",
       "alias": "shenxun sx 深巡",
       "rarity": 5,
-      "alt_name": "Underflow"
+      "alt_name": "Underflow",
+      "skills": ["侵袭破坏应对", "行动能力剥夺"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1032_excu2",
@@ -2928,7 +3497,9 @@
       "name": "圣约送葬人",
       "alias": "shengyuesongzangren shengyaosongzangren syszr 聖約送葬人",
       "rarity": 6,
-      "alt_name": "Executor the Ex Foedere"
+      "alt_name": "Executor the Ex Foedere",
+      "skills": ["遗嘱执行", "近身铳斗", "圣约决裁"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_210_stward",
@@ -2938,7 +3509,8 @@
       "name": "史都华德",
       "alias": "shiduhuade shidouhuade sdhd 史都華德",
       "rarity": 3,
-      "alt_name": "Steward"
+      "alt_name": "Steward",
+      "skills": ["强力击·α型"]
     },
     {
       "id": "char_350_surtr",
@@ -2948,7 +3520,9 @@
       "name": "史尔特尔",
       "alias": "shierteer sete 史爾特爾",
       "rarity": 6,
-      "alt_name": "Surtr"
+      "alt_name": "Surtr",
+      "skills": ["烈焰魔剑", "熔核巨影", "黄昏"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_308_swire",
@@ -2958,7 +3532,9 @@
       "name": "诗怀雅",
       "alias": "shihuaiya shy 詩懷雅",
       "rarity": 5,
-      "alt_name": "Swire"
+      "alt_name": "Swire",
+      "skills": ["指挥调度", "协同作战"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1502_crosly",
@@ -2968,7 +3544,9 @@
       "name": "弑君者",
       "alias": "shijunzhe sjz 弑君者",
       "rarity": 6,
-      "alt_name": "Crownslayer"
+      "alt_name": "Crownslayer",
+      "skills": ["尘烟蔽目", "硝烟震爆", "烽烟行刑场"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_378_asbest",
@@ -2978,7 +3556,8 @@
       "name": "石棉",
       "alias": "shimian danmian sm dm 石棉",
       "rarity": 5,
-      "alt_name": "Asbestos"
+      "alt_name": "Asbestos",
+      "skills": ["固守模式", "火电模式"]
     },
     {
       "id": "char_489_serum",
@@ -2988,7 +3567,9 @@
       "name": "蚀清",
       "alias": "shiqing sq 蝕清",
       "rarity": 5,
-      "alt_name": "Corroserum"
+      "alt_name": "Corroserum",
+      "skills": ["专注力超载", "传导蚀滞弹"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_241_panda",
@@ -2998,7 +3579,9 @@
       "name": "食铁兽",
       "alias": "shitieshou sitieshou yitieshou sts yts 食鐵獸",
       "rarity": 5,
-      "alt_name": "FEater"
+      "alt_name": "FEater",
+      "skills": ["铁意六合", "崩拳式"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_215_mantic",
@@ -3008,7 +3591,9 @@
       "name": "狮蝎",
       "alias": "shixie sx 獅蠍",
       "rarity": 5,
-      "alt_name": "Manticore"
+      "alt_name": "Manticore",
+      "skills": ["蝎毒", "蓄力毒尾击"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4063_quartz",
@@ -3018,7 +3603,9 @@
       "name": "石英",
       "alias": "shiying danying sy dy 石英",
       "rarity": 4,
-      "alt_name": "Quartz"
+      "alt_name": "Quartz",
+      "skills": ["攻击力强化·β型", "全力相搏"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_158_milu",
@@ -3028,7 +3615,9 @@
       "name": "守林人",
       "alias": "shoulinren slr 守林人",
       "rarity": 5,
-      "alt_name": "Firewatch"
+      "alt_name": "Firewatch",
+      "skills": ["环境伪装", "战术电台"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_2025_shu",
@@ -3038,7 +3627,9 @@
       "name": "黍",
       "alias": "shu s 黍",
       "rarity": 6,
-      "alt_name": "Shu"
+      "alt_name": "Shu",
+      "skills": ["化被草木", "嘉禾盈仓", "离离枯荣"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_458_rfrost",
@@ -3048,7 +3639,9 @@
       "name": "霜华",
       "alias": "shuanghua sh 霜華",
       "rarity": 5,
-      "alt_name": "Frost"
+      "alt_name": "Frost",
+      "skills": ["陷阱部署", "击倒猎物"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_193_frostl",
@@ -3058,7 +3651,9 @@
       "name": "霜叶",
       "alias": "shuangye shuangxie sy sx 霜葉",
       "rarity": 4,
-      "alt_name": "Frostleaf"
+      "alt_name": "Frostleaf",
+      "skills": ["寒霜枪刃", "凝冰枪刃"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4124_iana",
@@ -3068,7 +3663,9 @@
       "name": "双月",
       "alias": "shuangyue sy 雙月",
       "rarity": 5,
-      "alt_name": "Iana"
+      "alt_name": "Iana",
+      "skills": ["幻影诡雷", "全知者的战术"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4177_brigid",
@@ -3078,7 +3675,8 @@
       "name": "水灯心",
       "alias": "shuidengxin sdx 水燈心",
       "rarity": 5,
-      "alt_name": "Brigid"
+      "alt_name": "Brigid",
+      "skills": ["所熟知的", "可驯服的"]
     },
     {
       "id": "char_437_mizuki",
@@ -3088,7 +3686,9 @@
       "name": "水月",
       "alias": "shuiyue sy 水月",
       "rarity": 6,
-      "alt_name": "Mizuki"
+      "alt_name": "Mizuki",
+      "skills": ["唤醒", "囚徒困境", "镜花水月"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_263_skadi",
@@ -3098,7 +3698,9 @@
       "name": "斯卡蒂",
       "alias": "sikadi siqiadi skd sqd 斯卡蒂",
       "rarity": 6,
-      "alt_name": "Skadi"
+      "alt_name": "Skadi",
+      "skills": ["迅捷打击·γ型", "跃浪击", "涌潮悲歌"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10017_skadi2_dedant",
@@ -3108,7 +3710,8 @@
       "name": "斯卡蒂的海嗣",
       "alias": "sikadidehaisi sikadidihaisi siqiadidehaisi siqiadidihaisi skddhs sqddhs 斯卡蒂的海嗣",
       "rarity": 0,
-      "alt_name": "Skadi's seaborn"
+      "alt_name": "Skadi's seaborn",
+      "skills": []
     },
     {
       "id": "char_450_necras",
@@ -3118,7 +3721,8 @@
       "name": "死芒",
       "alias": "simang sm 死芒",
       "rarity": 6,
-      "alt_name": "Necrass"
+      "alt_name": "Necrass",
+      "skills": ["噩愿", "折朽", "冠死以冕"]
     },
     {
       "id": "char_427_vigil",
@@ -3128,7 +3732,9 @@
       "name": "伺夜",
       "alias": "siye ciye sy cy 伺夜",
       "rarity": 6,
-      "alt_name": "Vigil"
+      "alt_name": "Vigil",
+      "skills": ["领袖的呼唤", "领袖的馈赠", "领袖的尊严"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_365_aprl",
@@ -3138,7 +3744,9 @@
       "name": "四月",
       "alias": "siyue sy 四月",
       "rarity": 5,
-      "alt_name": "April"
+      "alt_name": "April",
+      "skills": ["精准射击", "灵活伪装"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_440_pinecn",
@@ -3148,7 +3756,9 @@
       "name": "松果",
       "alias": "songguo sg 鬆果",
       "rarity": 4,
-      "alt_name": "Pinecone"
+      "alt_name": "Pinecone",
+      "skills": ["RMA长钉", "电能过载"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_279_excu",
@@ -3158,7 +3768,9 @@
       "name": "送葬人",
       "alias": "songzangren szr 送葬人",
       "rarity": 5,
-      "alt_name": "Executor"
+      "alt_name": "Executor",
+      "skills": ["铳口收束", "最终旅程"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_511_asnipe",
@@ -3168,7 +3780,19 @@
       "name": "Stormeye",
       "alias": "Stormeye",
       "rarity": 5,
-      "alt_name": "Stormeye"
+      "alt_name": "Stormeye",
+      "skills": ["旋臂"]
+    },
+    {
+      "id": "char_611_acnipe",
+      "prof": "SNIPER",
+      "subProf": "fastshot",
+      "name": "Stormeye",
+      "alias": "Stormeye",
+      "rarity": 6,
+      "alt_name": "Stormeye",
+      "skills": ["破空", "心手合一", "旋臂"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_611_acnipe",
@@ -3188,7 +3812,9 @@
       "name": "苏苏洛",
       "alias": "susuluo ssl 蘇蘇洛",
       "rarity": 4,
-      "alt_name": "Sussurro"
+      "alt_name": "Sussurro",
+      "skills": ["治疗强化·β型", "深度治疗"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_245_cello",
@@ -3198,7 +3824,9 @@
       "name": "塑心",
       "alias": "suxin sx 塑心",
       "rarity": 6,
-      "alt_name": "Virtuosa"
+      "alt_name": "Virtuosa",
+      "skills": ["“黄金的狂喜”", "“安魂的弥撒”", "“自由的探戈”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_366_acdrop",
@@ -3208,7 +3836,9 @@
       "name": "酸糖",
       "alias": "suantang st 酸糖",
       "rarity": 4,
-      "alt_name": "Aciddrop"
+      "alt_name": "Aciddrop",
+      "skills": ["花式点射", "扳机时刻"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_415_flint",
@@ -3218,7 +3848,9 @@
       "name": "燧石",
       "alias": "suishi suidan ss sd 燧石",
       "rarity": 5,
-      "alt_name": "Flint"
+      "alt_name": "Flint",
+      "skills": ["不息", "锋芒毕露"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4139_papyrs",
@@ -3228,7 +3860,8 @@
       "name": "莎草",
       "alias": "suocao shacao sc 莎草",
       "rarity": 5,
-      "alt_name": "Papyrus"
+      "alt_name": "Papyrus",
+      "skills": ["巧思乍现", "临考发挥"]
     },
     {
       "id": "char_4077_palico",
@@ -3238,7 +3871,8 @@
       "name": "泰拉大陆调查团",
       "alias": "tailadalutiaochatuan tailadalutiaozhatuan tailadaludiaochatuan tailadaludiaozhatuan tailadaluzhouchatuan tailadaluzhouzhatuan tailadailutiaochatuan tailadailutiaozhatuan tailadailudiaochatuan tailadailudiaozhatuan tailadailuzhouchatuan tailadailuzhouzhatuan tailatailutiaochatuan tailatailutiaozhatuan tailatailudiaochatuan tailatailudiaozhatuan tailatailuzhouchatuan tailatailuzhouzhatuan tldltct tldltzt tldldct tldldzt tldlzct tldlzzt tltltct tltltzt tltldct tltldzt tltlzct tltlzzt 泰拉大陸調查團",
       "rarity": 1,
-      "alt_name": "Terra Research Commission"
+      "alt_name": "Terra Research Commission",
+      "skills": []
     },
     {
       "id": "char_151_myrtle",
@@ -3248,7 +3882,9 @@
       "name": "桃金娘",
       "alias": "taojinniang tjn 桃金娘",
       "rarity": 4,
-      "alt_name": "Myrtle"
+      "alt_name": "Myrtle",
+      "skills": ["支援号令·β型", "治愈之翼"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4164_tecno",
@@ -3258,7 +3894,8 @@
       "name": "特克诺",
       "alias": "tekenuo tkn 特克諾",
       "rarity": 5,
-      "alt_name": "Tecno"
+      "alt_name": "Tecno",
+      "skills": ["关节锁定", "恣意挥洒"]
     },
     {
       "id": "char_411_tomimi",
@@ -3268,7 +3905,9 @@
       "name": "特米米",
       "alias": "temimi tmm 特米米",
       "rarity": 5,
-      "alt_name": "Tomimi"
+      "alt_name": "Tomimi",
+      "skills": ["部族技艺", "嘉维尔保护方案"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_376_therex",
@@ -3278,7 +3917,8 @@
       "name": "THRM-EX",
       "alias": "THRM-EX",
       "rarity": 1,
-      "alt_name": "Thermal-EX"
+      "alt_name": "Thermal-EX",
+      "skills": []
     },
     {
       "id": "char_2012_typhon",
@@ -3288,7 +3928,9 @@
       "name": "提丰",
       "alias": "tifeng difeng tf df 提豐",
       "rarity": 6,
-      "alt_name": "Typhon"
+      "alt_name": "Typhon",
+      "skills": ["迅捷打击·γ型", "冰原秩序", "“永恒狩猎”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_166_skfire",
@@ -3298,7 +3940,9 @@
       "name": "天火",
       "alias": "tianhuo th 天火",
       "rarity": 5,
-      "alt_name": "Skyfire"
+      "alt_name": "Skyfire",
+      "skills": ["攻击力强化·γ型", "天坠之火"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_181_flower",
@@ -3308,7 +3952,9 @@
       "name": "调香师",
       "alias": "tiaoxiangshi diaoxiangshi zhouxiangshi txs dxs zxs 調香師",
       "rarity": 4,
-      "alt_name": "Perfumer"
+      "alt_name": "Perfumer",
+      "skills": ["治疗强化·β型", "精调"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10027_ironmn_pile3",
@@ -3318,7 +3964,8 @@
       "name": "铁钳号·原型机",
       "alias": "tieqianhao·yuanxingji tqh·yxj 鐵鉗號·原型機",
       "rarity": 0,
-      "alt_name": "Prototype of Feist's Metal Crab"
+      "alt_name": "Prototype of Feist's Metal Crab",
+      "skills": []
     },
     {
       "id": "token_10056_angel2_target",
@@ -3338,7 +3985,19 @@
       "name": "Touch",
       "alias": "Touch",
       "rarity": 5,
-      "alt_name": "Touch"
+      "alt_name": "Touch",
+      "skills": ["宛如天启"]
+    },
+    {
+      "id": "char_613_acmedc",
+      "prof": "MEDIC",
+      "subProf": "physician",
+      "name": "Touch",
+      "alias": "Touch",
+      "rarity": 6,
+      "alt_name": "Touch",
+      "skills": ["慨赠", "宛如天启", "恳切福音"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_613_acmedc",
@@ -3358,7 +4017,9 @@
       "name": "图耶",
       "alias": "tuye ty 圖耶",
       "rarity": 5,
-      "alt_name": "Tuye"
+      "alt_name": "Tuye",
+      "skills": ["水流环", "强心剂"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_112_siege",
@@ -3368,7 +4029,9 @@
       "name": "推进之王",
       "alias": "tuijinzhiwang tjzw 推進之王",
       "rarity": 6,
-      "alt_name": "Siege"
+      "alt_name": "Siege",
+      "skills": ["冲锋号令·γ型", "跃空锤", "碎颅击"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4091_ulika",
@@ -3378,7 +4041,8 @@
       "name": "U-Official",
       "alias": "U-Official",
       "rarity": 1,
-      "alt_name": "U-Official"
+      "alt_name": "U-Official",
+      "skills": []
     },
     {
       "id": "char_113_cqbw",
@@ -3388,7 +4052,9 @@
       "name": "W",
       "alias": "W",
       "rarity": 6,
-      "alt_name": "W"
+      "alt_name": "W",
+      "skills": ["红桃K", "惊吓盒子", "D12"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4119_wanqin",
@@ -3398,7 +4064,9 @@
       "name": "万顷",
       "alias": "wanqing moqing wq mq 萬頃",
       "rarity": 5,
-      "alt_name": "Wanqing"
+      "alt_name": "Wanqing",
+      "skills": ["支援号令·γ型", "应东风"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_261_sddrag",
@@ -3408,7 +4076,9 @@
       "name": "苇草",
       "alias": "weicao wc 葦草",
       "rarity": 5,
-      "alt_name": "Reed"
+      "alt_name": "Reed",
+      "skills": ["迅捷打击·γ型", "生灵火花"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4107_vrdant",
@@ -3418,7 +4088,9 @@
       "name": "维荻",
       "alias": "weidi wd 維荻",
       "rarity": 4,
-      "alt_name": "Verdant"
+      "alt_name": "Verdant",
+      "skills": ["苍翠屏障", "双刃毒藤"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_275_breeze",
@@ -3428,7 +4100,9 @@
       "name": "微风",
       "alias": "weifeng wf 微風",
       "rarity": 5,
-      "alt_name": "Breeze"
+      "alt_name": "Breeze",
+      "skills": ["集束疗法", "扩散疗法"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1019_siege2",
@@ -3438,7 +4112,9 @@
       "name": "维娜·维多利亚",
       "alias": "weina·weiduoliya weinuo·weiduoliya wn·wdly 維娜·維多利亞",
       "rarity": 6,
-      "alt_name": "Vina Victoria"
+      "alt_name": "Vina Victoria",
+      "skills": ["重铸晖光", "进赴故土", "俱以我之名"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1035_wisdel",
@@ -3448,7 +4124,9 @@
       "name": "维什戴尔",
       "alias": "weishidaier weishendaier wsde 維什戴爾",
       "rarity": 6,
-      "alt_name": "Wiš'adel"
+      "alt_name": "Wiš'adel",
+      "skills": ["定点清算", "饱和复仇", "爆裂黎明"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4098_vvana",
@@ -3458,7 +4136,9 @@
       "name": "薇薇安娜",
       "alias": "weiweianna weiweiannuo wwan 薇薇安娜",
       "rarity": 6,
-      "alt_name": "Viviana"
+      "alt_name": "Viviana",
+      "skills": ["光影迅捷剑", "烛燃影息", "“明灭”"],
+      "equips": ["", "D"]
     },
     {
       "id": "char_400_weedy",
@@ -3468,7 +4148,9 @@
       "name": "温蒂",
       "alias": "wendi wd 溫蒂",
       "rarity": 6,
-      "alt_name": "Weedy"
+      "alt_name": "Weedy",
+      "skills": ["炮管敲击", "水炮模式", "液氮大炮"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4081_warmy",
@@ -3478,7 +4160,8 @@
       "name": "温米",
       "alias": "wenmi wm 溫米",
       "rarity": 5,
-      "alt_name": "Warmy"
+      "alt_name": "Warmy",
+      "skills": ["炎炎火焰", "滔滔热流"]
     },
     {
       "id": "char_4145_ulpia",
@@ -3488,7 +4171,9 @@
       "name": "乌尔比安",
       "alias": "wuerbian weba 烏爾比安",
       "rarity": 6,
-      "alt_name": "Ulpianus"
+      "alt_name": "Ulpianus",
+      "skills": ["必须促成的接触", "必须维系的界限", "必须开辟的通路"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_254_vodfox",
@@ -3498,7 +4183,9 @@
       "name": "巫恋",
       "alias": "wulian wl 巫戀",
       "rarity": 5,
-      "alt_name": "Shamare"
+      "alt_name": "Shamare",
+      "skills": ["病入膏肓", "诅咒娃娃"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_455_nothin",
@@ -3508,7 +4195,9 @@
       "name": "乌有",
       "alias": "wuyou wy 烏有",
       "rarity": 5,
-      "alt_name": "Mr.Nothing"
+      "alt_name": "Mr.Nothing",
+      "skills": ["知难而退", "阴晴圆缺"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_2015_dusk",
@@ -3518,7 +4207,9 @@
       "name": "夕",
       "alias": "xi x 夕",
       "rarity": 6,
-      "alt_name": "Dusk"
+      "alt_name": "Dusk",
+      "skills": ["工笔入化", "泼墨淋漓", "写意胜形"],
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_348_ceylon",
@@ -3528,7 +4219,9 @@
       "name": "锡兰",
       "alias": "xilan xl 錫蘭",
       "rarity": 5,
-      "alt_name": "Ceylon"
+      "alt_name": "Ceylon",
+      "skills": ["集中式水疗", "水灵庇护"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4151_tinman",
@@ -3538,7 +4231,9 @@
       "name": "锡人",
       "alias": "xiren xr 錫人",
       "rarity": 5,
-      "alt_name": "Tin Man"
+      "alt_name": "Tin Man",
+      "skills": ["“老科利”", "“大拉里”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_336_folivo",
@@ -3548,7 +4243,9 @@
       "name": "稀音",
       "alias": "xiyin xy 稀音",
       "rarity": 5,
-      "alt_name": "Scene"
+      "alt_name": "Scene",
+      "skills": ["保护色隐蔽", "全景过载摄像"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_423_blemsh",
@@ -3558,7 +4255,9 @@
       "name": "瑕光",
       "alias": "xiaguang xg 瑕光",
       "rarity": 6,
-      "alt_name": "Blemishine"
+      "alt_name": "Blemishine",
+      "skills": ["光芒涌动", "慑敌辉光", "先贤化身"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_492_quercu",
@@ -3568,7 +4267,9 @@
       "name": "夏栎",
       "alias": "xiali xiayue xl xy 夏櫟",
       "rarity": 5,
-      "alt_name": "Quercus"
+      "alt_name": "Quercus",
+      "skills": ["大地的慈悲", "生灵的回响"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10031_swire2_gdtrap",
@@ -3578,7 +4279,8 @@
       "name": "香槟炸弹",
       "alias": "xiangbinzhadan xiangbinzhatan xiangbingzhadan xiangbingzhatan xbzd xbzt 香檳炸彈",
       "rarity": 0,
-      "alt_name": "Champagne Bomb"
+      "alt_name": "Champagne Bomb",
+      "skills": []
     },
     {
       "id": "char_240_wyvern",
@@ -3588,7 +4290,8 @@
       "name": "香草",
       "alias": "xiangcao xc 香草",
       "rarity": 3,
-      "alt_name": "Vanilla"
+      "alt_name": "Vanilla",
+      "skills": ["冲锋号令·援军"]
     },
     {
       "id": "char_497_ctable",
@@ -3598,7 +4301,19 @@
       "name": "晓歌",
       "alias": "xiaoge xg 曉歌",
       "rarity": 5,
-      "alt_name": "Cantabile"
+      "alt_name": "Cantabile",
+      "skills": ["观火", "浮光"],
+      "equips": ["", "Y"]
+    },
+    {
+      "id": "token_10045_alanna_crane",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "小螺帽",
+      "alias": "xiaoluomao xlm 小螺帽",
+      "rarity": 0,
+      "alt_name": "Nutlet",
+      "skills": []
     },
     {
       "id": "token_10045_alanna_crane",
@@ -3618,7 +4333,9 @@
       "name": "小满",
       "alias": "xiaoman xm 小滿",
       "rarity": 5,
-      "alt_name": "Grain Buds"
+      "alt_name": "Grain Buds",
+      "skills": ["竹笛飞声", "乡音沉沉"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4194_rmixer",
@@ -3648,7 +4365,9 @@
       "name": "星极",
       "alias": "xingji xj 星極",
       "rarity": 5,
-      "alt_name": "Astesia"
+      "alt_name": "Astesia",
+      "skills": ["星座守护", "星辉剑"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4105_almond",
@@ -3658,7 +4377,9 @@
       "name": "杏仁",
       "alias": "xingren xr 杏仁",
       "rarity": 5,
-      "alt_name": "Almond"
+      "alt_name": "Almond",
+      "skills": ["磁力抓取", "强力牵引"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_136_hsguma",
@@ -3668,7 +4389,9 @@
       "name": "星熊",
       "alias": "xingxiong xx 星熊",
       "rarity": 6,
-      "alt_name": "Hoshiguma"
+      "alt_name": "Hoshiguma",
+      "skills": ["战意", "荆棘", "力之锯"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_135_halo",
@@ -3678,7 +4401,9 @@
       "name": "星源",
       "alias": "xingyuan xy 星源",
       "rarity": 5,
-      "alt_name": "Astgenne"
+      "alt_name": "Astgenne",
+      "skills": ["双端导流", "星束交汇"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_491_humus",
@@ -3688,7 +4413,9 @@
       "name": "休谟斯",
       "alias": "xiumosi xumosi xms 休謨斯",
       "rarity": 4,
-      "alt_name": "Humus"
+      "alt_name": "Humus",
+      "skills": ["固废切割", "高效处理"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_436_whispr",
@@ -3698,7 +4425,9 @@
       "name": "絮雨",
       "alias": "xuyu xy 絮雨",
       "rarity": 5,
-      "alt_name": "Whisperain"
+      "alt_name": "Whisperain",
+      "skills": ["定向诊断", "痛觉抑制"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_466_qanik",
@@ -3708,7 +4437,9 @@
       "name": "雪绒",
       "alias": "xuerong xr 雪絨",
       "rarity": 5,
-      "alt_name": "Qanipalaat"
+      "alt_name": "Qanipalaat",
+      "skills": ["冻风", "坠雪"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_383_snsant",
@@ -3718,7 +4449,9 @@
       "name": "雪雉",
       "alias": "xuezhi xz 雪雉",
       "rarity": 5,
-      "alt_name": "Snowsant"
+      "alt_name": "Snowsant",
+      "skills": ["倒刺钩爪", "伸缩式电捕网"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4052_surfer",
@@ -3728,7 +4461,9 @@
       "name": "寻澜",
       "alias": "xunlan xl 尋瀾",
       "rarity": 5,
-      "alt_name": "Surfer"
+      "alt_name": "Surfer",
+      "skills": ["探寻", "洞悉"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_503_rang",
@@ -3738,7 +4473,8 @@
       "name": "巡林者",
       "alias": "xunlinzhe xlz 巡林者",
       "rarity": 2,
-      "alt_name": "Rangers"
+      "alt_name": "Rangers",
+      "skills": []
     },
     {
       "id": "char_198_blackd",
@@ -3748,7 +4484,9 @@
       "name": "讯使",
       "alias": "xunshi xs 訊使",
       "rarity": 4,
-      "alt_name": "Courier"
+      "alt_name": "Courier",
+      "skills": ["冲锋号令·β型", "冲锋号令·防御"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_173_slchan",
@@ -3758,7 +4496,9 @@
       "name": "崖心",
       "alias": "yaxin yx 崖心",
       "rarity": 5,
-      "alt_name": "Cliffheart"
+      "alt_name": "Cliffheart",
+      "skills": ["锁链勾爪", "束缚链"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_345_folnic",
@@ -3768,7 +4508,9 @@
       "name": "亚叶",
       "alias": "yaye yaxie yy yx 亞葉",
       "rarity": 5,
-      "alt_name": "Folinic"
+      "alt_name": "Folinic",
+      "skills": ["最大剂量输注", "复合型药物弹片"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_337_utage",
@@ -3778,7 +4520,9 @@
       "name": "宴",
       "alias": "yan y 宴",
       "rarity": 4,
-      "alt_name": "Utage"
+      "alt_name": "Utage",
+      "skills": ["分神", "落地斩·破门"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_131_flameb",
@@ -3788,7 +4532,9 @@
       "name": "炎客",
       "alias": "yanke yk 炎客",
       "rarity": 5,
-      "alt_name": "Flamebringer"
+      "alt_name": "Flamebringer",
+      "skills": ["歃血", "刃鬼"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_121_lava",
@@ -3798,7 +4544,8 @@
       "name": "炎熔",
       "alias": "yanrong yr 炎熔",
       "rarity": 3,
-      "alt_name": "Lava"
+      "alt_name": "Lava",
+      "skills": ["战术咏唱·α型"]
     },
     {
       "id": "char_420_flamtl",
@@ -3808,7 +4555,9 @@
       "name": "焰尾",
       "alias": "yanwei yanyi yw yy 焰尾",
       "rarity": 6,
-      "alt_name": "Flametail"
+      "alt_name": "Flametail",
+      "skills": ["迅敏直觉", "“红松林”", "焰心"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_1020_reed2",
@@ -3818,7 +4567,9 @@
       "name": "焰影苇草",
       "alias": "yanyingweicao yywc 焰影葦草",
       "rarity": 6,
-      "alt_name": "Reed The Flame Shadow"
+      "alt_name": "Reed The Flame Shadow",
+      "skills": ["迅捷打击·γ型", "枯荣共息", "生命火种"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1011_lava2",
@@ -3828,7 +4579,9 @@
       "name": "炎狱炎熔",
       "alias": "yanyuyanrong yyyr 炎獄炎熔",
       "rarity": 5,
-      "alt_name": "Lava the Purgatory"
+      "alt_name": "Lava the Purgatory",
+      "skills": ["焰淬匕首", "狱火之环"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_464_cement",
@@ -3838,7 +4591,9 @@
       "name": "洋灰",
       "alias": "yanghui yh 洋灰",
       "rarity": 5,
-      "alt_name": "Cement"
+      "alt_name": "Cement",
+      "skills": ["突破矿层", "结构加固"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1014_nearl2",
@@ -3848,7 +4603,9 @@
       "name": "耀骑士临光",
       "alias": "yaoqishilinguang yqslg 耀騎士臨光",
       "rarity": 6,
-      "alt_name": "Nearl the Radiant Knight"
+      "alt_name": "Nearl the Radiant Knight",
+      "skills": ["灿焰长刃", "逐夜烁光", "耀阳颔首"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_476_blkngt",
@@ -3858,7 +4615,9 @@
       "name": "夜半",
       "alias": "yeban yb 夜半",
       "rarity": 5,
-      "alt_name": "Blacknight"
+      "alt_name": "Blacknight",
+      "skills": ["半醒", "安眠"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_502_nblade",
@@ -3868,7 +4627,8 @@
       "name": "夜刀",
       "alias": "yedao yd 夜刀",
       "rarity": 2,
-      "alt_name": "Yato"
+      "alt_name": "Yato",
+      "skills": []
     },
     {
       "id": "token_10029_slent2_protrb",
@@ -3878,7 +4638,8 @@
       "name": "夜灯",
       "alias": "yedeng yd 夜燈",
       "rarity": 0,
-      "alt_name": "Night Banisher"
+      "alt_name": "Night Banisher",
+      "skills": []
     },
     {
       "id": "char_4013_kjera",
@@ -3888,7 +4649,9 @@
       "name": "耶拉",
       "alias": "yela yl 耶拉",
       "rarity": 5,
-      "alt_name": "Kjera"
+      "alt_name": "Kjera",
+      "skills": ["攻击力强化·γ型", "心随意动"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_164_nightm",
@@ -3898,7 +4661,9 @@
       "name": "夜魔",
       "alias": "yemo ym 夜魔",
       "rarity": 5,
-      "alt_name": "Nightmare"
+      "alt_name": "Nightmare",
+      "skills": ["灵魂汲取", "夜魇魔影"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_141_nights",
@@ -3908,7 +4673,9 @@
       "name": "夜烟",
       "alias": "yeyan yy 夜煙",
       "rarity": 4,
-      "alt_name": "Haze"
+      "alt_name": "Haze",
+      "skills": ["攻击力强化·β型", "赤色之瞳"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_179_cgbird",
@@ -3918,7 +4685,9 @@
       "name": "夜莺",
       "alias": "yeying yy 夜鶯",
       "rarity": 6,
-      "alt_name": "Nightingale"
+      "alt_name": "Nightingale",
+      "skills": ["治疗强化·γ型", "法术护盾", "圣域"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_496_wildmn",
@@ -3928,7 +4697,9 @@
       "name": "野鬃",
       "alias": "yezong yz 野鬃",
       "rarity": 5,
-      "alt_name": "Wild Mane"
+      "alt_name": "Wild Mane",
+      "skills": ["骑枪刺击", "夹枪冲锋"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10010_folivo_car",
@@ -3938,7 +4709,8 @@
       "name": "移动摄影器",
       "alias": "yidongsheyingqi yidongnieyingqi ydsyq ydnyq 移動攝影器",
       "rarity": 0,
-      "alt_name": "M.P.M"
+      "alt_name": "M.P.M",
+      "skills": []
     },
     {
       "id": "char_134_ifrit",
@@ -3948,7 +4720,9 @@
       "name": "伊芙利特",
       "alias": "yifulite yflt 伊芙利特",
       "rarity": 6,
-      "alt_name": "Ifrit"
+      "alt_name": "Ifrit",
+      "skills": ["狂热", "炎爆", "灼地"],
+      "equips": ["", "X", "D"]
     },
     {
       "id": "char_472_pasngr",
@@ -3958,7 +4732,9 @@
       "name": "异客",
       "alias": "yike yk 異客",
       "rarity": 6,
-      "alt_name": "Passenger"
+      "alt_name": "Passenger",
+      "skills": ["电能之触", "聚焦指令", "辉煌裂片"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "token_10000_silent_healrb",
@@ -3968,7 +4744,8 @@
       "name": "医疗探机",
       "alias": "yiliaotanji yltj 醫療探機",
       "rarity": 0,
-      "alt_name": "Medical Drone"
+      "alt_name": "Medical Drone",
+      "skills": []
     },
     {
       "id": "char_4087_ines",
@@ -3978,7 +4755,9 @@
       "name": "伊内丝",
       "alias": "yineisi yinasi yns 伊內絲",
       "rarity": 6,
-      "alt_name": "Ines"
+      "alt_name": "Ines",
+      "skills": ["淬影突袭", "暗夜无明", "独影归途"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_355_ethan",
@@ -3988,7 +4767,9 @@
       "name": "伊桑",
       "alias": "yisang ys 伊桑",
       "rarity": 4,
-      "alt_name": "Ethan"
+      "alt_name": "Ethan",
+      "skills": ["花式回旋", "十字悬挂"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4125_rdoc",
@@ -3998,7 +4779,9 @@
       "name": "医生",
       "alias": "yisheng ys 醫生",
       "rarity": 5,
-      "alt_name": "Doc"
+      "alt_name": "Doc",
+      "skills": ["以暴制暴", "激素手枪"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4010_etlchi",
@@ -4008,7 +4791,9 @@
       "name": "隐德来希",
       "alias": "yindelaixi ydlx 隱德來希",
       "rarity": 6,
-      "alt_name": "Entelechia"
+      "alt_name": "Entelechia",
+      "skills": ["玫影觅迹", "绯红壁合", "灵与欲的惜别"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_172_svrash",
@@ -4018,7 +4803,9 @@
       "name": "银灰",
       "alias": "yinhui yh 銀灰",
       "rarity": 6,
-      "alt_name": "SilverAsh"
+      "alt_name": "SilverAsh",
+      "skills": ["强力击·γ型", "雪境生存法则", "真银斩"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_155_tiger",
@@ -4028,7 +4815,9 @@
       "name": "因陀罗",
       "alias": "yintuoluo ytl 因陀羅",
       "rarity": 5,
-      "alt_name": "Indra"
+      "alt_name": "Indra",
+      "skills": ["碎甲拳", "裂魂"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_498_inside",
@@ -4038,7 +4827,9 @@
       "name": "隐现",
       "alias": "yinxian yx 隱現",
       "rarity": 5,
-      "alt_name": "Insider"
+      "alt_name": "Insider",
+      "skills": ["“不惹麻烦”", "“解决麻烦”"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1039_thorn2",
@@ -4048,7 +4839,9 @@
       "name": "引星棘刺",
       "alias": "yinxingjici yxjc 引星棘刺",
       "rarity": 6,
-      "alt_name": "Thorns the Lodestar"
+      "alt_name": "Thorns the Lodestar",
+      "skills": ["度算浪波", "解构涌潮", "“我的海疆”"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10016_rfrost_mine",
@@ -4058,7 +4851,8 @@
       "name": "迎宾踏垫",
       "alias": "yingbintadian ybtd 迎賓踏墊",
       "rarity": 0,
-      "alt_name": "Welcome Mat"
+      "alt_name": "Welcome Mat",
+      "skills": []
     },
     {
       "id": "token_10037_mitm_trshrb",
@@ -4068,7 +4862,8 @@
       "name": "樱桃三号",
       "alias": "yingtaosanhao ytsh 櫻桃三號",
       "rarity": 0,
-      "alt_name": "Cherry-3"
+      "alt_name": "Cherry-3",
+      "skills": []
     },
     {
       "id": "char_143_ghost",
@@ -4078,7 +4873,9 @@
       "name": "幽灵鲨",
       "alias": "youlingsha yls 幽靈鯊",
       "rarity": 5,
-      "alt_name": "Specter"
+      "alt_name": "Specter",
+      "skills": ["攻击力强化·γ型", "肉斩骨断"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_2026_yu",
@@ -4088,7 +4885,8 @@
       "name": "余",
       "alias": "yu y 餘",
       "rarity": 6,
-      "alt_name": "Yu"
+      "alt_name": "Yu",
+      "skills": ["今日做东", "厚礼上宾", "灶里乾坤"]
     },
     {
       "id": "char_606_csuppo",
@@ -4098,7 +4896,8 @@
       "name": "预备干员-辅助",
       "alias": "yubeiganyuan-fuzhu yubeiganyuan-fuchu yubeiganyun-fuzhu yubeiganyun-fuchu ybgy-fz ybgy-fc 預備幹員-輔助",
       "rarity": 4,
-      "alt_name": "Reserve Operator - Supporter"
+      "alt_name": "Reserve Operator - Supporter",
+      "skills": ["战术咏唱·α型", "战术咏唱·β型", "战术咏唱·γ型"]
     },
     {
       "id": "char_506_rmedic",
@@ -4108,7 +4907,8 @@
       "name": "预备干员-后勤",
       "alias": "yubeiganyuan-houqin yubeiganyun-houqin ybgy-hq 預備幹員-後勤",
       "rarity": 3,
-      "alt_name": "Reserve (Logistic)"
+      "alt_name": "Reserve (Logistic)",
+      "skills": []
     },
     {
       "id": "char_601_cguard",
@@ -4118,7 +4918,8 @@
       "name": "预备干员-近卫",
       "alias": "yubeiganyuan-jinwei yubeiganyun-jinwei ybgy-jw 預備幹員-近衛",
       "rarity": 4,
-      "alt_name": "Reserve Operator - Guard"
+      "alt_name": "Reserve Operator - Guard",
+      "skills": ["攻击力强化·α型", "攻击力强化·β型", "攻击力强化·γ型"]
     },
     {
       "id": "char_504_rguard",
@@ -4128,7 +4929,8 @@
       "name": "预备干员-近战",
       "alias": "yubeiganyuan-jinzhan yubeiganyun-jinzhan ybgy-jz 預備幹員-近戰",
       "rarity": 3,
-      "alt_name": "Reserve (Melee)"
+      "alt_name": "Reserve (Melee)",
+      "skills": []
     },
     {
       "id": "char_507_rsnipe",
@@ -4138,7 +4940,18 @@
       "name": "预备干员-狙击",
       "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
       "rarity": 3,
-      "alt_name": "Reserve (Sniper)"
+      "alt_name": "Reserve (Sniper)",
+      "skills": []
+    },
+    {
+      "id": "char_603_csnipe",
+      "prof": "SNIPER",
+      "subProf": "fastshot",
+      "name": "预备干员-狙击",
+      "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Sniper",
+      "skills": ["攻击力强化·α型", "攻击力强化·β型", "攻击力强化·γ型"]
     },
     {
       "id": "char_603_csnipe",
@@ -4158,7 +4971,18 @@
       "name": "预备干员-术师",
       "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
       "rarity": 3,
-      "alt_name": "Reserve (Caster)"
+      "alt_name": "Reserve (Caster)",
+      "skills": []
+    },
+    {
+      "id": "char_604_ccast",
+      "prof": "CASTER",
+      "subProf": "corecaster",
+      "name": "预备干员-术师",
+      "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Caster",
+      "skills": ["战术咏唱·α型", "战术咏唱·β型", "战术咏唱·γ型"]
     },
     {
       "id": "char_604_ccast",
@@ -4178,7 +5002,8 @@
       "name": "预备干员-特种",
       "alias": "yubeiganyuan-tezhong yubeiganyuan-techong yubeiganyun-tezhong yubeiganyun-techong ybgy-tz ybgy-tc 預備幹員-特種",
       "rarity": 4,
-      "alt_name": "Reserve Operator - Specialist"
+      "alt_name": "Reserve Operator - Specialist",
+      "skills": ["一击即退·α型", "一击即退·β型", "一击即退·γ型"]
     },
     {
       "id": "char_600_cpione",
@@ -4188,7 +5013,8 @@
       "name": "预备干员-先锋",
       "alias": "yubeiganyuan-xianfeng yubeiganyun-xianfeng ybgy-xf 預備幹員-先鋒",
       "rarity": 4,
-      "alt_name": "Reserve Operator - Vanguard"
+      "alt_name": "Reserve Operator - Vanguard",
+      "skills": ["冲锋号令·α型", "冲锋号令·β型", "冲锋号令·γ型"]
     },
     {
       "id": "char_605_cmedic",
@@ -4198,7 +5024,8 @@
       "name": "预备干员-医疗",
       "alias": "yubeiganyuan-yiliao yubeiganyun-yiliao ybgy-yl 預備幹員-醫療",
       "rarity": 4,
-      "alt_name": "Reserve Operator - Medic"
+      "alt_name": "Reserve Operator - Medic",
+      "skills": ["治疗强化·α型", "治疗强化·β型", "治疗强化·γ型"]
     },
     {
       "id": "char_514_rdfend",
@@ -4208,7 +5035,18 @@
       "name": "预备干员-重装",
       "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
       "rarity": 3,
-      "alt_name": "Reserve (Defender)"
+      "alt_name": "Reserve (Defender)",
+      "skills": []
+    },
+    {
+      "id": "char_602_cdfend",
+      "prof": "TANK",
+      "subProf": "protector",
+      "name": "预备干员-重装",
+      "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Defender",
+      "skills": ["防御力强化·α型", "防御力强化·β型", "防御力强化·γ型"]
     },
     {
       "id": "char_602_cdfend",
@@ -4228,7 +5066,19 @@
       "name": "郁金香",
       "alias": "yujinxiang yjx 鬱金香",
       "rarity": 5,
-      "alt_name": "Tulip"
+      "alt_name": "Tulip",
+      "skills": ["只余芬芳"]
+    },
+    {
+      "id": "char_608_acpion",
+      "prof": "PIONEER",
+      "subProf": "pioneer",
+      "name": "郁金香",
+      "alias": "yujinxiang yjx 鬱金香",
+      "rarity": 6,
+      "alt_name": "Tulip",
+      "skills": ["钻心", "迅瞬", "只余芬芳"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_608_acpion",
@@ -4248,7 +5098,9 @@
       "name": "羽毛笔",
       "alias": "yumaobi ymb 羽毛筆",
       "rarity": 5,
-      "alt_name": "La Pluma"
+      "alt_name": "La Pluma",
+      "skills": ["高速切割", "收割"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_109_fmout",
@@ -4258,7 +5110,9 @@
       "name": "远山",
       "alias": "yuanshan ys 遠山",
       "rarity": 4,
-      "alt_name": "Gitano"
+      "alt_name": "Gitano",
+      "skills": ["战术咏唱·β型", "命运"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_430_fartth",
@@ -4268,7 +5122,9 @@
       "name": "远牙",
       "alias": "yuanya yy 遠牙",
       "rarity": 6,
-      "alt_name": "Fartooth"
+      "alt_name": "Fartooth",
+      "skills": ["迅捷打击·γ型", "同盟支援", "光羽箭"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_343_tknogi",
@@ -4278,7 +5134,9 @@
       "name": "月禾",
       "alias": "yuehe yh 月禾",
       "rarity": 5,
-      "alt_name": "Tsukinogi"
+      "alt_name": "Tsukinogi",
+      "skills": ["迹无", "森廻"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_283_midn",
@@ -4288,7 +5146,8 @@
       "name": "月见夜",
       "alias": "yuejianye yuexianye yjy yxy 月見夜",
       "rarity": 3,
-      "alt_name": "Midnight"
+      "alt_name": "Midnight",
+      "skills": ["武器附魔·α型"]
     },
     {
       "id": "char_4100_caper",
@@ -4298,7 +5157,8 @@
       "name": "跃跃",
       "alias": "yueyue yy 躍躍",
       "rarity": 4,
-      "alt_name": "Caper"
+      "alt_name": "Caper",
+      "skills": ["强力击·β型", "乐趣加倍"]
     },
     {
       "id": "char_4165_ctrail",
@@ -4308,7 +5168,8 @@
       "name": "云迹",
       "alias": "yunji yj 雲跡",
       "rarity": 4,
-      "alt_name": "Contrail"
+      "alt_name": "Contrail",
+      "skills": ["紧急升空", "掠空飞翎"]
     },
     {
       "id": "char_219_meteo",
@@ -4318,7 +5179,9 @@
       "name": "陨星",
       "alias": "yunxing yx 隕星",
       "rarity": 5,
-      "alt_name": "Meteorite"
+      "alt_name": "Meteorite",
+      "skills": ["霰射弹头", "高爆弹头"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_197_poca",
@@ -4328,7 +5191,9 @@
       "name": "早露",
       "alias": "zaolou zaolu zl 早露",
       "rarity": 6,
-      "alt_name": "Роса"
+      "alt_name": "Роса",
+      "skills": ["攻击力强化·γ型", "分裂射击", "雪崩击"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_459_tachak",
@@ -4338,7 +5203,9 @@
       "name": "战车",
       "alias": "zhanche zhanju zc zj 戰車",
       "rarity": 5,
-      "alt_name": "Tachanka"
+      "alt_name": "Tachanka",
+      "skills": ["燃烧榴弹", "倾泻弹药"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_499_kaitou",
@@ -4348,7 +5215,8 @@
       "name": "折光",
       "alias": "zheguang sheguang zg sg 折光",
       "rarity": 5,
-      "alt_name": "Diamante"
+      "alt_name": "Diamante",
+      "skills": ["镭射穿凿", "热处理变色"]
     },
     {
       "id": "char_195_glassb",
@@ -4358,7 +5226,9 @@
       "name": "真理",
       "alias": "zhenli zl 真理",
       "rarity": 5,
-      "alt_name": "Истина"
+      "alt_name": "Истина",
+      "skills": ["专心致志", "文学风暴"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_4000_jnight",
@@ -4368,7 +5238,8 @@
       "name": "正义骑士号",
       "alias": "zhengyiqishihao zyqsh 正義騎士號",
       "rarity": 1,
-      "alt_name": "\"Justice Knight\""
+      "alt_name": "\"Justice Knight\"",
+      "skills": []
     },
     {
       "id": "char_4054_malist",
@@ -4378,7 +5249,9 @@
       "name": "至简",
       "alias": "zhijian zj 至簡",
       "rarity": 5,
-      "alt_name": "Minimalist"
+      "alt_name": "Minimalist",
+      "skills": ["迅捷打击·γ型", "神工意匠"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10022_kazema_shadow",
@@ -4388,7 +5261,8 @@
       "name": "纸偶",
       "alias": "zhiou zo 紙偶",
       "rarity": 0,
-      "alt_name": "Kaminingyo"
+      "alt_name": "Kaminingyo",
+      "skills": []
     },
     {
       "id": "char_4011_lessng",
@@ -4398,7 +5272,19 @@
       "name": "止颂",
       "alias": "zhisong zs 止頌",
       "rarity": 6,
-      "alt_name": "Lessing"
+      "alt_name": "Lessing",
+      "skills": ["强力击·γ型", "虔修对决", "苦修破誓"],
+      "equips": ["", "X", "Y"]
+    },
+    {
+      "id": "token_10050_monstr_prosts",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "重构体",
+      "alias": "zhonggouti chonggouti zgt cgt 重構體",
+      "rarity": 0,
+      "alt_name": "Reconstruct",
+      "skills": []
     },
     {
       "id": "token_10050_monstr_prosts",
@@ -4418,7 +5304,9 @@
       "name": "重岳",
       "alias": "zhongyue chongyue zy cy 重嶽",
       "rarity": 6,
-      "alt_name": "Chongyue"
+      "alt_name": "Chongyue",
+      "skills": ["冲盈", "拂尘", "我无"],
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_1040_blaze2",
@@ -4428,7 +5316,8 @@
       "name": "烛煌",
       "alias": "zhuhuang zh 燭煌",
       "rarity": 6,
-      "alt_name": "Blaze the Igniting Spark"
+      "alt_name": "Blaze the Igniting Spark",
+      "skills": ["炙手之援", "沸血燎原", "众恶的焚场"]
     },
     {
       "id": "char_333_sidero",
@@ -4438,7 +5327,9 @@
       "name": "铸铁",
       "alias": "zhutie zt 鑄鐵",
       "rarity": 5,
-      "alt_name": "Sideroca"
+      "alt_name": "Sideroca",
+      "skills": ["生命回复·γ型", "破浪回神"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_1024_hbisc2",
@@ -4448,7 +5339,9 @@
       "name": "濯尘芙蓉",
       "alias": "zhuochenfurong zhaochenfurong zcfr 濯塵芙蓉",
       "rarity": 5,
-      "alt_name": "Hibiscus the Purifier"
+      "alt_name": "Hibiscus the Purifier",
+      "skills": ["攻击力强化·γ型", "抚业之触"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1012_skadi2",
@@ -4458,7 +5351,9 @@
       "name": "浊心斯卡蒂",
       "alias": "zhuoxinsikadi zhuoxinsiqiadi zxskd zxsqd 濁心斯卡蒂",
       "rarity": 6,
-      "alt_name": "Skadi the Corrupting Heart"
+      "alt_name": "Skadi the Corrupting Heart",
+      "skills": ["同归殊途之吟", "同葬无光之愿", "\"潮涌，潮枯\""],
+      "equips": ["", "X"]
     },
     {
       "id": "char_278_orchid",
@@ -4468,7 +5363,8 @@
       "name": "梓兰",
       "alias": "zilan zl 梓蘭",
       "rarity": 3,
-      "alt_name": "Orchid"
+      "alt_name": "Orchid",
+      "skills": ["迅捷打击·α型"]
     },
     {
       "id": "char_4014_lunacu",
@@ -4478,7 +5374,9 @@
       "name": "子月",
       "alias": "ziyue zy 子月",
       "rarity": 5,
-      "alt_name": "Lunacub"
+      "alt_name": "Lunacub",
+      "skills": ["狩猎时刻", "伏击之影"],
+      "equips": ["", "Y"]
     },
     {
       "id": "token_10006_vodfox_doll",
@@ -4488,7 +5386,8 @@
       "name": "诅咒娃娃",
       "alias": "zuzhouwawa zzww 詛咒娃娃",
       "rarity": 0,
-      "alt_name": "Curse Doll"
+      "alt_name": "Curse Doll",
+      "skills": []
     },
     {
       "id": "char_4121_zuole",
@@ -4498,7 +5397,9 @@
       "name": "左乐",
       "alias": "zuole zuoyue zuoyao zuolao zl zy 左樂",
       "rarity": 6,
-      "alt_name": "Zuo Le"
+      "alt_name": "Zuo Le",
+      "skills": ["破虏", "行险", "佑序有炎"],
+      "equips": ["", "X", "Y"]
     }
   ],
   "PROFESSIONS": [

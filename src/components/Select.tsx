@@ -39,8 +39,6 @@ export const Select = <T,>({
           ),
         }}
         {...props}
-        // 传给 QueryList，给下面的补丁用
-        {...{ _parentType: 'Select' }}
       />
       {canReset && (
         <Button
@@ -61,7 +59,6 @@ export const Select = <T,>({
 }
 
 // 修复 BP 的远古 bug：https://github.com/palantir/blueprint/issues/3751
-// 补丁只对 Select 组件启用，因为不知道对 Suggest 和 MultiSelect 是否有效，先不管了
 
 const originalSetQuery =
   (QueryList.prototype.setQuery as any)._original ??
@@ -77,10 +74,7 @@ const originalGetActiveIndex =
   (QueryList.prototype['getActiveIndex'] as any)._original ??
   QueryList.prototype['getActiveIndex']
 QueryList.prototype['getActiveIndex'] = function (items) {
-  if (
-    this.props['_parentType'] === 'Select' &&
-    (this as any)._isCallingSetQuery
-  ) {
+  if ((this as any)._isCallingSetQuery) {
     const activeItem =
       this.props.activeItem === undefined
         ? this.state.activeItem

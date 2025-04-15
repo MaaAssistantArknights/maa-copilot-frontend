@@ -1,6 +1,7 @@
 import { IconName } from '@blueprintjs/core'
 
 import { useAtomValue } from 'jotai'
+import { clamp, defaults } from 'lodash-es'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -21,6 +22,85 @@ export type DetailedOperatorSkillUsage = DetailedSelectChoice
 export type OperatorInfo = (typeof OPERATORS)[number]
 
 export type Profession = (typeof PROFESSIONS)[number]
+
+export const defaultSkills: OperatorInfo['skills'] = [
+  '一技能',
+  '二技能',
+  '三技能',
+]
+
+const defaultRequirementsByRarity: Record<
+  number,
+  Required<CopilotDocV1.Requirements>
+> = {
+  0: { potentiality: 1, module: 0, elite: 0, level: 1, skillLevel: 1 },
+  1: { potentiality: 1, module: 0, elite: 0, level: 30, skillLevel: 1 },
+  2: { potentiality: 1, module: 0, elite: 0, level: 30, skillLevel: 1 },
+  3: { potentiality: 1, module: 0, elite: 1, level: 55, skillLevel: 7 },
+  4: { potentiality: 1, module: 0, elite: 1, level: 70, skillLevel: 7 },
+  5: { potentiality: 1, module: 0, elite: 2, level: 40, skillLevel: 7 },
+  6: { potentiality: 1, module: 0, elite: 2, level: 60, skillLevel: 10 },
+}
+
+export function getDefaultRequirements(rarity = 6) {
+  return defaultRequirementsByRarity[rarity] ?? defaultRequirementsByRarity[6]
+}
+
+export function withDefaultRequirements(
+  baseRequirements: CopilotDocV1.Requirements = {},
+  rarity = 6,
+): Required<CopilotDocV1.Requirements> {
+  const defaultRequirements = getDefaultRequirements(rarity)
+  return defaults(baseRequirements, defaultRequirements)
+}
+
+export function adjustOperatorLevel({
+  // 未知稀有度按6星算
+  rarity = 6,
+  elite,
+  level,
+  adjustment,
+}: {
+  rarity?: number
+  elite: number
+  level: number
+  adjustment: number
+}) {
+  const elite1 = 50
+  const elite2 = elite1 + 70
+  const maxLevel =
+    rarity === 6
+      ? elite2 + 90
+      : rarity === 5
+        ? elite2 + 80
+        : rarity === 4
+          ? elite2 + 70
+          : rarity === 3
+            ? elite1 + 55
+            : 30
+  if (elite === 1) {
+    level += elite1
+  } else if (elite === 2) {
+    level += elite2
+  }
+  level += adjustment
+  // 向 adjustment 的绝对值取整，如果 adjustment=±10，就可以得到整十的等级
+  level =
+    (adjustment < 0 ? Math.ceil : Math.floor)(level / Math.abs(adjustment)) *
+    Math.abs(adjustment)
+
+  level = clamp(level, 1, maxLevel)
+  if (level > elite2) {
+    elite = 2
+    level -= elite2
+  } else if (level > elite1) {
+    elite = 1
+    level -= elite1
+  } else {
+    elite = 0
+  }
+  return { elite, level }
+}
 
 export const operatorSkillUsages: readonly DetailedSelectItem[] = [
   {
