@@ -25,14 +25,13 @@ import {
 import { SortableContext, arrayMove } from '@dnd-kit/sortable'
 
 import clsx from 'clsx'
-import { clamp, compact, uniqueId } from 'lodash-es'
+import { clamp, compact } from 'lodash-es'
 import { FC } from 'react'
 import {
   UseFieldArrayMove,
   useFieldArray,
   useFormContext,
 } from 'react-hook-form'
-import { SetRequired } from 'type-fest'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -51,18 +50,11 @@ import { NumericInput2 } from '../editor/NumericInput2'
 import { OperatorAvatar } from '../editor/operator/EditorOperator'
 import {
   EditorFormValues,
-  editorStateAtom,
-  useAtomHistory,
+  EditorGroup,
+  EditorOperator,
+  useEditorControls,
 } from './editor-state'
-
-type EditorOperator = NonNullable<
-  NonNullable<EditorFormValues['opers']>[number]
->
-type EditorGroup = NonNullable<NonNullable<EditorFormValues['groups']>[number]>
-
-const getInternalId = (target: { _id?: string }) => {
-  return (target._id ??= uniqueId())
-}
+import { WithInternalId, getInternalId } from './reconciliation'
 
 const nonGroupedContainerId = 'nonGrouped'
 
@@ -72,7 +64,7 @@ export const OperatorPanel: FC = () => {
       activationConstraint: { distance: 5 },
     }),
   )
-  const { checkpoint } = useAtomHistory(editorStateAtom)
+  const { checkpoint } = useEditorControls()
   const { control } = useFormContext<EditorFormValues>()
   const {
     fields: operators,
@@ -101,9 +93,8 @@ export const OperatorPanel: FC = () => {
     if (operator) return { group: undefined, operator }
 
     for (const group of groups) {
-      const operator = group.opers?.find((op) => op && getInternalId(op) === id)
-      if (operator)
-        return { group: group as SetRequired<typeof group, 'opers'>, operator }
+      const operator = group.opers.find((op) => getInternalId(op) === id)
+      if (operator) return { group, operator }
     }
     return { group: undefined, operator: undefined }
   }
@@ -134,7 +125,7 @@ export const OperatorPanel: FC = () => {
             // remove from old group
             updateGroup(groups.indexOf(oldGroup), {
               ...oldGroup,
-              opers: oldGroup.opers?.filter((op) => op !== operator),
+              opers: oldGroup.opers.filter((op) => op !== operator),
             })
           } else {
             // remove from global list
@@ -144,7 +135,7 @@ export const OperatorPanel: FC = () => {
             // add to new group
             updateGroup(groups.indexOf(newGroup), {
               ...newGroup,
-              opers: [operator, ...(newGroup.opers || [])],
+              opers: [operator, ...newGroup.opers],
             })
           } else {
             // add to global list
@@ -158,7 +149,10 @@ export const OperatorPanel: FC = () => {
 
     // move operator or group within their own container
     if (getType(active) === getType(over)) {
-      const moveItem = <T,>(items: T[], move: UseFieldArrayMove) => {
+      const moveItem = <T extends WithInternalId>(
+        items: T[],
+        move: UseFieldArrayMove,
+      ) => {
         const oldIndex = items.findIndex(
           (item) => item && getInternalId(item) === active.id,
         )
@@ -233,7 +227,7 @@ export const OperatorPanel: FC = () => {
                     onOperatorRemove={(operatorIndexInGroup) => {
                       const groupIndex = groups.indexOf(group)
                       if (operatorIndexInGroup > -1) {
-                        group.opers?.splice(operatorIndexInGroup, 1)
+                        group.opers.splice(operatorIndexInGroup, 1)
                       }
                       updateGroup(groupIndex, group)
                     }}
@@ -267,7 +261,7 @@ const OperatorDragOverlay = () => {
         groups
           .map(({ opers }) => opers)
           .flat()
-          .find((op) => op && getInternalId(op) === active.id)
+          .find((op) => getInternalId(op) === active.id)
       : undefined
   const activeGroup =
     active?.data.current?.type === 'group'
@@ -309,7 +303,7 @@ const OperatorItem = ({
   attributes,
   listeners,
 }: OperatorItemProps) => {
-  const { checkpoint } = useAtomHistory(editorStateAtom)
+  const { checkpoint } = useEditorControls()
   const info = OPERATORS.find(({ name }) => name === operator.name)
   const skillUsage =
     '技能' +
@@ -431,7 +425,7 @@ const OperatorItem = ({
             <OperatorAvatar
               id={info?.id}
               rarity={info?.rarity}
-              className="mb-1"
+              className="mb-1 w-full"
             />
             <h4
               className={clsx(
@@ -642,7 +636,7 @@ const GroupItem = ({
   attributes,
   listeners,
 }: GroupItemProps) => {
-  const { checkpoint } = useAtomHistory(editorStateAtom)
+  const { checkpoint } = useEditorControls()
   const operators = compact(group.opers ?? [])
   const operatorIds = useStableArray(operators.map(getInternalId))
   return (

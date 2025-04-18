@@ -17,6 +17,7 @@ type MixedNumericInputProps = HTMLInputProps & NumericInputProps
 export interface NumericInput2Props extends MixedNumericInputProps {
   intOnly?: boolean
   onWheelFocused?: (e: React.WheelEvent<HTMLInputElement>) => void
+  wheelStepSize?: number
 }
 
 export const NumericInput2 = ({
@@ -26,12 +27,20 @@ export const NumericInput2 = ({
   value,
   onValueChange,
   onWheelFocused,
+  wheelStepSize,
   ...props
 }: NumericInput2Props) => {
   const allowNegative = min === undefined || min < 0
 
   const onWheelFocusedRef = useRef(onWheelFocused)
   onWheelFocusedRef.current = onWheelFocused
+  const onValueChangeRef = useRef(onValueChange)
+  onValueChangeRef.current = onValueChange
+  const wheelStepSizeRef = useRef(wheelStepSize)
+  wheelStepSizeRef.current = wheelStepSize
+  const valueRef = useRef(value)
+  valueRef.current = value
+
   const handleWheelRegistered = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [endsWithDot, setEndsWithDot] = useState(false)
@@ -46,6 +55,16 @@ export const NumericInput2 = ({
 
   const handleWheel: WheelEventHandler<HTMLInputElement> = useCallback((e) => {
     onWheelFocusedRef.current?.(e)
+    if (wheelStepSizeRef.current) {
+      e.preventDefault()
+      const newValue =
+        (Number(valueRef.current) || 0) -
+        Math.sign(e.deltaY) * wheelStepSizeRef.current
+
+      if (newValue !== valueRef.current) {
+        onValueChangeRef.current?.(newValue, String(newValue), inputRef.current)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -63,7 +82,10 @@ export const NumericInput2 = ({
       inputRef={inputRef}
       value={endsWithDot ? value + '.' : value}
       onFocus={(e) => {
-        if (onWheelFocused && !handleWheelRegistered.current) {
+        if (
+          (onWheelFocused || wheelStepSize !== undefined) &&
+          !handleWheelRegistered.current
+        ) {
           handleWheelRegistered.current = true
           e.currentTarget.addEventListener('wheel', handleWheel as any, {
             passive: false,

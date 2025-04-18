@@ -33,6 +33,7 @@ export namespace CopilotDocV1 {
     cooling?: number
     preDelay?: number
     rearDelay?: number
+    postDelay?: number
   }
 
   export interface ActionDeploy extends ActionBase {
@@ -85,11 +86,11 @@ export namespace CopilotDocV1 {
     | ActionMoveCamera
 
   export enum Direction {
-    Down = 'Down',
     Left = 'Left',
-    None = 'None',
     Right = 'Right',
     Up = 'Up',
+    Down = 'Down',
+    None = 'None',
   }
 
   export enum Type {

@@ -7,7 +7,6 @@ import { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
   DetailedSelectChoice,
-  DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
 import { Language, i18n, i18nDefer, languageAtom } from '../i18n/i18n'
@@ -15,13 +14,28 @@ import { OPERATORS, PROFESSIONS } from '../models/generated/operators.json'
 
 export { OPERATORS, PROFESSIONS }
 
+export type OperatorInfo = (typeof OPERATORS)[number]
+export type Profession = (typeof PROFESSIONS)[number]
+
+const OPERATORS_BY_ID = Object.fromEntries(
+  OPERATORS.map((operator) => [operator.id, operator]),
+)
+export function findOperatorById(id: string): OperatorInfo | undefined {
+  return OPERATORS_BY_ID[id]
+}
+
+const OPERATORS_BY_NAME = Object.fromEntries(
+  OPERATORS.map((operator) => [operator.name, operator]),
+)
+export function findOperatorByName(name: string): OperatorInfo | undefined {
+  return OPERATORS_BY_NAME[name]
+}
+
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 
-export type DetailedOperatorSkillUsage = DetailedSelectChoice
-
-export type OperatorInfo = (typeof OPERATORS)[number]
-
-export type Profession = (typeof PROFESSIONS)[number]
+export type DetailedOperatorSkillUsage = DetailedSelectChoice & {
+  shortTitle: string
+}
 
 export const defaultSkills: OperatorInfo['skills'] = [
   '一技能',
@@ -102,11 +116,12 @@ export function adjustOperatorLevel({
   return { elite, level }
 }
 
-export const operatorSkillUsages: readonly DetailedSelectItem[] = [
+export const operatorSkillUsages: DetailedOperatorSkillUsage[] = [
   {
     type: 'choice',
     icon: 'disable',
     title: i18nDefer.models.operator.skill_usage.none_title,
+    shortTitle: '不自动使用',
     value: CopilotDocV1.SkillUsageType.None,
     description: i18nDefer.models.operator.skill_usage.none_description,
   },
@@ -114,6 +129,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'automatic-updates',
     title: i18nDefer.models.operator.skill_usage.ready_to_use_title,
+    shortTitle: '好了就用',
     value: CopilotDocV1.SkillUsageType.ReadyToUse,
     description: i18nDefer.models.operator.skill_usage.ready_to_use_description,
   },
@@ -121,6 +137,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'circle',
     title: i18nDefer.models.operator.skill_usage.ready_to_use_times_title,
+    shortTitle: '好了就用',
     value: CopilotDocV1.SkillUsageType.ReadyToUseTimes,
     description:
       i18nDefer.models.operator.skill_usage.ready_to_use_times_description,
@@ -129,6 +146,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'predictive-analysis',
     title: i18nDefer.models.operator.skill_usage.automatically_title,
+    shortTitle: '自动判断使用时机',
     value: CopilotDocV1.SkillUsageType.Automatically,
     description:
       i18nDefer.models.operator.skill_usage.automatically_description,
@@ -140,6 +158,7 @@ const unknownSkillUsage: DetailedOperatorSkillUsage = {
   type: 'choice',
   icon: 'error',
   title: i18nDefer.models.operator.skill_usage.unknown_title,
+  shortTitle: '未知用法',
   value: -1,
   description: '',
 }
