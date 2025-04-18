@@ -8,6 +8,8 @@ import {
   TextArea,
 } from '@blueprintjs/core'
 
+import clsx from 'clsx'
+import { atom, useAtomValue } from 'jotai'
 import { FC, useState } from 'react'
 import { Controller, FieldErrors, useFormContext } from 'react-hook-form'
 
@@ -16,7 +18,8 @@ import { DifficultyPicker } from './DifficultyPicker'
 import { EditorToolbar } from './EditorToolbar'
 import { LevelSelect } from './LevelSelect'
 import { OperatorPanel } from './OperatorPanel'
-import { editorStateAtom, useAtomHistory } from './editor-state'
+import { ActionEditor } from './action/ActionEditor'
+import { editorStateAtom, useEditorControls } from './editor-state'
 import { OperatorSheet } from './operator/sheet/OperatorSheet'
 
 interface OperationEditorProps {
@@ -27,8 +30,13 @@ interface OperationEditorProps {
 
 const tabs = [
   { id: 'main', name: '作业信息' },
-  { id: 'actions', name: '动作序列' },
+  { id: 'action', name: '动作序列' },
 ]
+
+const operatorCountAtom = atom(
+  (get) => get(editorStateAtom).form.opers?.length || 0,
+)
+const visibilityAtom = atom((get) => get(editorStateAtom).visibility)
 
 export const OperationEditor: FC<OperationEditorProps> = ({
   title,
@@ -41,7 +49,9 @@ export const OperationEditor: FC<OperationEditorProps> = ({
     formState: { errors },
     watch,
   } = useFormContext<CopilotDocV1.Operation>()
-  const { state, update, checkpoint } = useAtomHistory(editorStateAtom)
+  const visibility = useAtomValue(visibilityAtom)
+  const operatorCount = useAtomValue(operatorCountAtom)
+  const { update, checkpoint } = useEditorControls()
 
   const globalError = (errors as FieldErrors<{ global: void }>).global?.message
   const [stageName, difficulty] = watch(['stageName', 'difficulty'])
@@ -64,7 +74,12 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         </Callout>
       )}
 
-      <div className="grow min-h-0 flex">
+      <div
+        className={clsx(
+          'grow min-h-0 flex',
+          selectedTab !== 'main' && 'hidden',
+        )}
+      >
         <div className="flex-1">
           <OperatorSheet />
         </div>
@@ -164,7 +179,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
             <FormGroup inline contentClassName="grow" label="可见范围">
               <RadioGroup
                 inline
-                selectedValue={state.visibility}
+                selectedValue={visibility}
                 onChange={(e) => {
                   checkpoint('update-visibility', '修改可见范围', true)
                   update((prev) => ({
@@ -184,14 +199,13 @@ export const OperationEditor: FC<OperationEditorProps> = ({
             </FormGroup>
           </div>
           <div className="flex items-center mb-4">
-            <h2 className="text-xl font-bold">
-              干员与干员组 {state.form.opers?.length}
-            </h2>
+            <h2 className="text-xl font-bold">干员与干员组 {operatorCount}</h2>
             <Divider className="grow" />
           </div>
           <OperatorPanel />
         </div>
       </div>
+      <ActionEditor className={clsx(selectedTab !== 'action' && 'hidden')} />
     </div>
   )
 }

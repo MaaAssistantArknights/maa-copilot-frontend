@@ -1,13 +1,14 @@
 import { Button, Divider, H1, Icon, Navbar, Tab, Tabs } from '@blueprintjs/core'
 
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import { useFormContext } from 'react-hook-form'
 
+import { joinJSX } from '../../utils/react'
 import { SourceEditorButton } from '../editor/source/SourceEditorButton'
 import {
   EditorFormValues,
-  editorStateAtom,
-  useAtomHistory,
+  useEditorControls,
+  useEditorHistory,
 } from './editor-state'
 
 interface EditorToolbarProps {
@@ -30,8 +31,8 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   const {
     formState: { isSubmitting },
   } = form
-  const { history, canRedo, canUndo, undo, redo } =
-    useAtomHistory(editorStateAtom)
+  const { history, canRedo, canUndo } = useEditorHistory()
+  const { undo, redo } = useEditorControls()
 
   return (
     <Navbar className="px-8 h-auto flex items-baseline flex-wrap w-full">
@@ -47,29 +48,17 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         onChange={(newTab) => onTabChange(newTab as string)}
       >
         {tabs.length > 0 &&
-          tabs
-            .map(({ id, name }) => (
+          joinJSX(
+            tabs.map(({ id, name }) => (
               <Tab
                 className="flex items-center"
                 key={id}
                 id={id}
                 title={name}
               />
-            ))
-            .reduce(
-              (prev, curr) =>
-                prev.length === 0
-                  ? [curr]
-                  : [
-                      ...prev,
-                      <Divider
-                        key={'divider' + prev.length}
-                        className="self-center h-[1em]"
-                      />,
-                      curr,
-                    ],
-              [] as ReactNode[],
-            )}
+            )),
+            <Divider className="self-center h-[1em]" />,
+          )}
       </Tabs>
       <div className="ml-auto py-2 flex items-center gap-2">
         <SourceEditorButton

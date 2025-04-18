@@ -53,7 +53,9 @@ export const Sortable: FC<SortableProps> = ({
     transform:
       isSorting && noSortAnimation
         ? undefined
-        : CSS.Transform.toString(transform),
+        : CSS.Transform.toString(
+            transform && { ...transform, scaleY: 1, scaleX: 1 },
+          ),
     transition,
   }
 

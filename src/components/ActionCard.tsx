@@ -95,7 +95,9 @@ export const ActionCard: FC<ActionCardProps> = ({
           {action.preDelay ? formatDuration(action.preDelay) : '-'}
         </InlineCondition>
         <InlineCondition title="后置">
-          {action.rearDelay ? formatDuration(action.rearDelay) : '-'}
+          {action.rearDelay || action.postDelay
+            ? formatDuration(action.rearDelay || action.postDelay!)
+            : '-'}
         </InlineCondition>
       </div>
     </Card>

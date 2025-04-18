@@ -6,20 +6,34 @@ import { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
   DetailedSelectChoice,
-  DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
 import { OPERATORS, PROFESSIONS } from '../models/generated/operators.json'
 
 export { OPERATORS, PROFESSIONS }
 
+export type OperatorInfo = (typeof OPERATORS)[number]
+export type Profession = (typeof PROFESSIONS)[number]
+
+const OPERATORS_BY_ID = Object.fromEntries(
+  OPERATORS.map((operator) => [operator.id, operator]),
+)
+export function findOperatorById(id: string): OperatorInfo | undefined {
+  return OPERATORS_BY_ID[id]
+}
+
+const OPERATORS_BY_NAME = Object.fromEntries(
+  OPERATORS.map((operator) => [operator.name, operator]),
+)
+export function findOperatorByName(name: string): OperatorInfo | undefined {
+  return OPERATORS_BY_NAME[name]
+}
+
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 
-export type DetailedOperatorSkillUsage = DetailedSelectChoice
-
-export type OperatorInfo = (typeof OPERATORS)[number]
-
-export type Profession = (typeof PROFESSIONS)[number]
+export type DetailedOperatorSkillUsage = DetailedSelectChoice & {
+  shortTitle: string
+}
 
 export const defaultSkills: OperatorInfo['skills'] = [
   '一技能',
@@ -100,11 +114,12 @@ export function adjustOperatorLevel({
   return { elite, level }
 }
 
-export const operatorSkillUsages: readonly DetailedSelectItem[] = [
+export const operatorSkillUsages: DetailedOperatorSkillUsage[] = [
   {
     type: 'choice',
     icon: 'disable',
     title: '不自动使用',
+    shortTitle: '不自动使用',
     value: CopilotDocV1.SkillUsageType.None,
     description:
       '不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作',
@@ -113,6 +128,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'automatic-updates',
     title: '好了就用',
+    shortTitle: '好了就用',
     value: CopilotDocV1.SkillUsageType.ReadyToUse,
     description: '有多少次用多少次，例如：棘刺 3 技能、桃金娘 1 技能等',
   },
@@ -120,6 +136,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'circle',
     title: '好了就用（指定次数）',
+    shortTitle: '好了就用',
     value: CopilotDocV1.SkillUsageType.ReadyToUseTimes,
     description: '默认仅使用一次，例如：山 2 技能',
   },
@@ -127,6 +144,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
     type: 'choice',
     icon: 'predictive-analysis',
     title: '自动判断使用时机',
+    shortTitle: '自动判断使用时机',
     value: CopilotDocV1.SkillUsageType.Automatically,
     description: '(锐意开发中) 画饼.jpg',
     disabled: true,
@@ -137,6 +155,7 @@ const unknownSkillUsage: DetailedOperatorSkillUsage = {
   type: 'choice',
   icon: 'error',
   title: '未知用法',
+  shortTitle: '未知用法',
   value: -1,
   description: '',
 }
