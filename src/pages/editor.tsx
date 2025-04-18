@@ -43,16 +43,19 @@ export const EditorPage: ComponentType = withGlobalErrorBoundary(
     const { state } = useEditorHistory()
     const { update } = useEditorControls()
 
-    const initialEditorHistoryState = useMemo(
+    const initialEditorAtomValue = useMemo(
       () =>
         apiOperation
-          ? createInitialEditorHistoryState({
-              form: operationToFormValues(toCopilotOperation(apiOperation)),
-              visibility:
-                apiOperation.status === CopilotInfoStatusEnum.Public
-                  ? 'public'
-                  : 'private',
-            })
+          ? ([
+              editorStateHistoryAtom,
+              createInitialEditorHistoryState({
+                form: operationToFormValues(toCopilotOperation(apiOperation)),
+                visibility:
+                  apiOperation.status === CopilotInfoStatusEnum.Public
+                    ? 'public'
+                    : 'private',
+              }),
+            ] as const)
           : undefined,
       [apiOperation],
     )
@@ -115,7 +118,7 @@ export const EditorPage: ComponentType = withGlobalErrorBoundary(
     return (
       <FormProvider {...form}>
         <AtomsHydrator
-          atomValues={[[editorStateHistoryAtom, initialEditorHistoryState]]}
+          atomValues={initialEditorAtomValue ? [initialEditorAtomValue] : []}
         >
           <OperationEditor
             title={isNew ? '创建作业' : '修改作业 - ' + toShortCode({ id })}
