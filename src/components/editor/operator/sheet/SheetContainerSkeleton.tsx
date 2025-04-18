@@ -23,9 +23,7 @@ export const SheetContainerSkeleton = ({
   <section className={className}>
     <header className={clsx('flex items-center pl-3', mini ? 'my-1' : 'my-5')}>
       <Icon icon={icon} size={mini ? 16 : 20} />
-      <H3 className={clsx('p-0 m-0 ml-3 truncate', mini && '!text-lg')}>
-        {title}
-      </H3>
+      <H3 className={clsx('m-0 ml-3', mini && '!text-lg')}>{title}</H3>
       {rightOptions}
     </header>
     {!mini && <Divider />}

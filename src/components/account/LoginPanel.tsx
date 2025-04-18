@@ -4,6 +4,7 @@ import { login } from 'apis/auth'
 import { useSetAtom } from 'jotai'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { AppToaster } from 'components/Toaster'
 import { authAtom, fromCredentials } from 'store/auth'
@@ -22,6 +23,7 @@ export const LoginPanel: FC<{
   onNavigateRegisterPanel: () => void
   onComplete: () => void
 }> = ({ onNavigateRegisterPanel, onComplete }) => {
+  const { t } = useTranslation()
   const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false)
 
   const {
@@ -33,13 +35,18 @@ export const LoginPanel: FC<{
 
   const onSubmit = async ({ email, password }: LoginFormValues) => {
     const res = await wrapErrorMessage(
-      (e) => `登录失败：${formatError(e)}`,
+      (e) =>
+        t('components.account.LoginPanel.login_failed', {
+          error: formatError(e),
+        }),
       login({ email, password }),
     )
     setAuthState(fromCredentials(res))
     AppToaster.show({
       intent: 'success',
-      message: `登录成功。欢迎回来，${res.userInfo.userName}`,
+      message: t('components.account.LoginPanel.login_success', {
+        name: res.userInfo.userName,
+      }),
     })
     onComplete()
   }
@@ -65,16 +72,18 @@ export const LoginPanel: FC<{
                 icon="key"
                 onClick={() => setResetPasswordDialogOpen(true)}
               >
-                忘记密码...
+                {t('components.account.LoginPanel.forgot_password')}
               </Button>
             ),
           })}
         />
 
         <div className="mt-6 flex items-center">
-          <span className="text-zinc-500">还没有账号？</span>
+          <span className="text-zinc-500">
+            {t('components.account.LoginPanel.no_account')}
+          </span>
           <Button minimal onClick={onNavigateRegisterPanel}>
-            前往注册
+            {t('components.account.LoginPanel.go_register')}
           </Button>
 
           <div className="flex-1" />
@@ -87,7 +96,7 @@ export const LoginPanel: FC<{
             icon="log-in"
             className="self-stretch"
           >
-            登录
+            {t('components.account.LoginPanel.login')}
           </Button>
         </div>
       </form>

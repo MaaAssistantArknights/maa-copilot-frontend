@@ -6,6 +6,7 @@ import {
 } from 'apis/operation-set'
 import { useAtomValue } from 'jotai'
 import { ComponentType, ReactNode, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { neoLayoutAtom } from 'store/pref'
 
@@ -19,6 +20,7 @@ interface OperationSetListProps extends UseOperationSetsParams {
 export const OperationSetList: ComponentType<OperationSetListProps> =
   withSuspensable(
     ({ onUpdate, ...params }) => {
+      const { t } = useTranslation()
       const neoLayout = useAtomValue(neoLayoutAtom)
 
       const { operationSets, total, setSize, isValidating, isReachingEnd } =
@@ -58,21 +60,21 @@ export const OperationSetList: ComponentType<OperationSetListProps> =
           {isReachingEnd && operationSets.length === 0 && (
             <NonIdealState
               icon="slash"
-              title="没有找到任何作业集"
-              description="(つД｀)･ﾟ･"
+              title={t('components.OperationSetList.no_job_sets_found')}
+              description={t('components.OperationSetList.sad_face')}
             />
           )}
 
           {isReachingEnd && operationSets.length !== 0 && (
             <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
-              已经到底了哦 (ﾟ▽ﾟ)/
+              {t('components.OperationSetList.reached_bottom')}
             </div>
           )}
 
           {!isReachingEnd && (
             <Button
               loading={isValidating}
-              text="加载更多"
+              text={t('components.OperationSetList.load_more')}
               icon="more"
               className="mt-2"
               large

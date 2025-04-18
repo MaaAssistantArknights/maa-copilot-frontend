@@ -1,4 +1,5 @@
 import { useFormState } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { SetOptional } from 'type-fest'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
@@ -15,19 +16,24 @@ export const EditorActionPreDelay = ({
   control,
   ...controllerProps
 }: EditorActionDelayProps) => {
+  const { t } = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label="前置延时"
+      label={t('components.editor.action.EditorActionDelay.pre_delay')}
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description="可选，默认为 0，单位毫秒"
+      description={t(
+        'components.editor.action.EditorActionDelay.delay_description',
+      )}
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: '前置延时',
+          placeholder: t(
+            'components.editor.action.EditorActionDelay.pre_delay',
+          ),
           min: 0,
           stepSize: 100,
           minorStepSize: 10,
@@ -46,18 +52,23 @@ export const EditorActionRearDelay = ({
   control,
   ...controllerProps
 }: EditorActionDelayProps) => {
+  const { t } = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label="后置延时"
+      label={t('components.editor.action.EditorActionDelay.post_delay')}
       field={name}
       error={errors[name]}
-      description="可选，默认为 0，单位毫秒"
+      description={t(
+        'components.editor.action.EditorActionDelay.delay_description',
+      )}
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: '后置延时',
+          placeholder: t(
+            'components.editor.action.EditorActionDelay.post_delay',
+          ),
           min: 0,
           stepSize: 100,
           minorStepSize: 10,

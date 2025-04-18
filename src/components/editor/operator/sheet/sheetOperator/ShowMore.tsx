@@ -1,6 +1,7 @@
 import { H6 } from '@blueprintjs/core'
 
 import { FC, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
   defaultPagination,
@@ -12,6 +13,7 @@ export interface ShowMoreProp {
 }
 
 export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
+  const { t } = useTranslation()
   const {
     operatorFiltered: {
       meta: { dataTotal },
@@ -29,13 +31,20 @@ export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
     <div className="flex items-center justify-center pt-3 cursor-default">
       {lastIndex >= dataTotal ? (
         <>
-          <H6>已经展示全部干员了({dataTotal})</H6>
+          <H6>
+            {t(
+              'components.editor.operator.sheet.sheetOperator.ShowMore.showing_all_operators',
+              { total: dataTotal },
+            )}
+          </H6>
           {dataTotal > size && (
             <H6
               className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
               onClick={() => setPagination(defaultPagination)}
             >
-              收起
+              {t(
+                'components.editor.operator.sheet.sheetOperator.ShowMore.collapse',
+              )}
             </H6>
           )}
         </>
@@ -49,7 +58,10 @@ export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
             }))
           }
         >
-          显示更多干员(剩余{dataTotal - lastIndex})
+          {t(
+            'components.editor.operator.sheet.sheetOperator.ShowMore.show_more',
+            { remaining: dataTotal - lastIndex },
+          )}
         </H6>
       )}
     </div>

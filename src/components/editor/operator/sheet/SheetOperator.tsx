@@ -1,4 +1,5 @@
 import { FC, useCallback, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
@@ -42,7 +43,7 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
             <ShowMore {...{ toTop }} />
           </>
         ) : (
-          OperatorNoData
+          <OperatorNoData />
         )}
       </div>
       <div className="h-screen sticky top-0 sticky flex flex-col">
@@ -54,10 +55,18 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 
 export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
-) => (
-  <SheetContainerSkeleton title="选择干员" icon="person">
-    <OperatorFilterProvider>
-      <SheetOperator {...sheetOperatorProp} />
-    </OperatorFilterProvider>
-  </SheetContainerSkeleton>
-)
+) => {
+  const { t } = useTranslation()
+  return (
+    <SheetContainerSkeleton
+      title={t(
+        'components.editor.operator.sheet.SheetOperator.select_operator',
+      )}
+      icon="person"
+    >
+      <OperatorFilterProvider>
+        <SheetOperator {...sheetOperatorProp} />
+      </OperatorFilterProvider>
+    </SheetContainerSkeleton>
+  )
+}

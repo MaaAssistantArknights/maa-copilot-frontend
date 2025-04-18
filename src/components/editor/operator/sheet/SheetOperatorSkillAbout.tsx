@@ -3,6 +3,7 @@ import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { FormField2 } from 'components/FormField'
 import { DetailedSelectChoice } from 'components/editor/DetailedSelect'
@@ -27,6 +28,8 @@ export const SkillAboutTrigger = ({
   operator,
   onSkillChange,
 }: SkillAboutProps) => {
+  const { t, i18n } = useTranslation()
+
   const {
     control,
     handleSubmit,
@@ -55,7 +58,9 @@ export const SkillAboutTrigger = ({
       <div onClick={(e) => e.stopPropagation()} role="presentation">
         <div className="flex flex-wrap">
           <FormField2
-            label="技能"
+            label={t(
+              'components.editor.operator.sheet.SheetOperatorSkillAbout.skill',
+            )}
             field="skill"
             error={errors.skill}
             className="mr-1"
@@ -63,7 +68,9 @@ export const SkillAboutTrigger = ({
             <EditorOperatorSkill control={control} name="skill" />
           </FormField2>
           <FormField2
-            label="技能用法"
+            label={t(
+              'components.editor.operator.sheet.SheetOperatorSkillAbout.skill_usage',
+            )}
             field="skillUsage"
             error={errors.skillUsage}
           >
@@ -73,7 +80,9 @@ export const SkillAboutTrigger = ({
 
         {needSkillTime && (
           <FormField2
-            label="技能使用次数"
+            label={t(
+              'components.editor.operator.sheet.SheetOperatorSkillAbout.skill_usage_count',
+            )}
             field="skillTimes"
             error={errors.skillTimes}
           >
@@ -82,9 +91,17 @@ export const SkillAboutTrigger = ({
         )}
       </div>
       <div className="flex items-center">
-        <Button text="确定" type="submit" className={Classes.POPOVER_DISMISS} />
+        <Button
+          text={t(
+            'components.editor.operator.sheet.SheetOperatorSkillAbout.confirm',
+          )}
+          type="submit"
+          className={Classes.POPOVER_DISMISS}
+        />
         <Tooltip2
-          content="若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)"
+          content={t(
+            'components.editor.operator.sheet.SheetOperatorSkillAbout.default_settings_tooltip',
+          )}
           className="ml-1"
         >
           <Icon icon="help" />
@@ -100,24 +117,26 @@ export const SkillAboutTrigger = ({
       )}
     >
       {!operator?.skill && (
-        <Icon icon="info-sign" size={12} className="flex items-center" />
+        <Icon icon="info-sign" size={12} className="flex items-center mr-1" />
       )}
       <p>
-        {operator?.skill || '未设置'}技能{' '}
-        {operator?.skillUsage !== undefined ? '·' : ''}
+        {i18n.language === 'cn'
+          ? `${operator?.skill || '未设置'}技能`
+          : !operator?.skill
+            ? 'Skill not set'
+            : `S${operator.skill}`}
+        {operator?.skillUsage !== undefined && ' ·'}
       </p>
       {operator?.skillUsage !== undefined && (
-        <div className="relative">
-          <Icon
-            icon={
-              skillDic.find((item) => item.value === operator?.skillUsage)?.icon
-            }
-            className="flex items-center ml-1"
-            size={12}
-          />
-        </div>
+        <Icon
+          icon={
+            skillDic.find((item) => item.value === operator.skillUsage)?.icon
+          }
+          className="flex items-center ml-1"
+          size={12}
+        />
       )}
-      {!!operator?.skillTimes && <p> x{operator.skillTimes}</p>}
+      {operator?.skillTimes && <p>×{operator.skillTimes}</p>}
     </div>
   )
 

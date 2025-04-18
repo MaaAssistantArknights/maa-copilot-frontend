@@ -1,6 +1,7 @@
 import { Button } from '@blueprintjs/core'
 
 import { useController } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import {
   DetailedSelect,
@@ -19,6 +20,8 @@ export const EditorOperatorSkillUsage = <
   control,
   ...controllerProps
 }: EditorFieldProps<T, CopilotDocV1.SkillUsageType>) => {
+  const { t } = useTranslation()
+
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
@@ -41,7 +44,13 @@ export const EditorOperatorSkillUsage = <
     >
       <Button
         icon={selectedAction?.icon || 'slash'}
-        text={selectedAction ? selectedAction.title : '选择技能用法'}
+        text={
+          selectedAction
+            ? selectedAction.title
+            : t(
+                'components.editor.operator.EditorOperatorSkillUsage.select_skill_usage',
+              )
+        }
         rightIcon="double-caret-vertical"
         onBlur={onBlur}
         ref={ref}

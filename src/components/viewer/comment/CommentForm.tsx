@@ -3,6 +3,7 @@ import { Button, Card, Checkbox, TextArea } from '@blueprintjs/core'
 import { sendComment } from 'apis/comment'
 import clsx from 'clsx'
 import { useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { MAX_COMMENT_LENGTH } from '../../../models/comment'
 import { formatError } from '../../../utils/error'
@@ -22,11 +23,16 @@ export interface CommentFormProps {
 export const CommentForm = ({
   className,
   primary,
-  placeholder = '发一条友善的评论吧',
+  placeholder,
   inputAutoFocus,
   maxLength = MAX_COMMENT_LENGTH,
 }: CommentFormProps) => {
+  const { t } = useTranslation()
   const { operationId, replyTo, reload } = useContext(CommentAreaContext)
+
+  const defaultPlaceholder = t(
+    'components.viewer.comment.friendly_comment_placeholder',
+  )
 
   const [message, setMessage] = useState('')
   const [showMarkdownPreview, setShowMarkdownPreview] = useState(false)
@@ -36,7 +42,7 @@ export const CommentForm = ({
     if (!message.trim()) {
       AppToaster.show({
         intent: 'primary',
-        message: '请输入评论内容',
+        message: t('components.viewer.comment.enter_comment'),
       })
       return
     }
@@ -48,14 +54,17 @@ export const CommentForm = ({
     setIsSubmitting(true)
 
     await wrapErrorMessage(
-      (e) => '发表评论失败：' + formatError(e),
+      (e) =>
+        t('components.viewer.comment.submit_failed', { error: formatError(e) }),
       (async () => {
         if (primary) {
           // this comment is a main comment and does not reply to others
           await sendComment({ message, operationId })
         } else {
           if (!replyTo) {
-            throw new Error('要回复的评论不存在')
+            throw new Error(
+              t('components.viewer.comment.reply_target_not_found'),
+            )
           }
           await sendComment({
             message,
@@ -66,7 +75,7 @@ export const CommentForm = ({
 
         AppToaster.show({
           intent: 'success',
-          message: `发表成功`,
+          message: t('components.viewer.comment.submit_success'),
         })
 
         setMessage('')
@@ -85,7 +94,7 @@ export const CommentForm = ({
         growVertically
         large
         maxLength={maxLength}
-        placeholder={placeholder}
+        placeholder={placeholder || defaultPlaceholder}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
         // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -99,7 +108,9 @@ export const CommentForm = ({
           loading={isSubmitting}
           onClick={handleSubmit}
         >
-          {primary ? '发表评论' : '回复'}
+          {primary
+            ? t('components.viewer.comment.post_comment')
+            : t('components.viewer.comment.reply')}
         </Button>
 
         <Checkbox
@@ -109,7 +120,7 @@ export const CommentForm = ({
             setShowMarkdownPreview((e.target as HTMLInputElement).checked)
           }
         >
-          预览 Markdown
+          {t('components.viewer.comment.preview_markdown')}
         </Checkbox>
 
         <div className="ml-auto text-slate-500 text-sm">
@@ -119,7 +130,9 @@ export const CommentForm = ({
 
       {showMarkdownPreview && (
         <Card className="mt-2 border-2">
-          <Markdown>{message || '*没有内容*'}</Markdown>
+          <Markdown>
+            {message || t('components.viewer.comment.no_content')}
+          </Markdown>
         </Card>
       )}
     </form>

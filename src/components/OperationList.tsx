@@ -4,6 +4,7 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 import { UseOperationsParams, useOperations } from 'apis/operation'
 import { useAtomValue } from 'jotai'
 import { ComponentType, ReactNode, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { neoLayoutAtom } from 'store/pref'
 
@@ -19,6 +20,7 @@ interface OperationListProps extends UseOperationsParams {
 
 export const OperationList: ComponentType<OperationListProps> = withSuspensable(
   ({ multiselect, onUpdate, ...params }) => {
+    const { t } = useTranslation()
     const neoLayout = useAtomValue(neoLayoutAtom)
 
     const { operations, total, setSize, isValidating, isReachingEnd } =
@@ -82,7 +84,9 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
           <Callout className="mb-4 p-0 select-none">
             <details>
               <summary className="px-2 py-4 cursor-pointer hover:bg-zinc-500 hover:bg-opacity-5">
-                已选择 {selectedOperations.length} 份作业
+                {t('components.OperationList.selected_jobs', {
+                  count: selectedOperations.length,
+                })}
               </summary>
               <div className="p-2 flex flex-wrap gap-1">
                 {selectedOperations.map((operation) => (
@@ -100,13 +104,16 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
               </div>
             </details>
             <div className="absolute top-2 right-2 flex">
-              <Tooltip2 content="只能选择已加载的项目" placement="top">
+              <Tooltip2
+                content={t('components.OperationList.only_loaded_items')}
+                placement="top"
+              >
                 <Button
                   minimal
                   icon="tick"
                   onClick={() => updateSelection(operations, [])}
                 >
-                  全选
+                  {t('components.OperationList.select_all')}
                 </Button>
               </Tooltip2>
               <Button
@@ -115,7 +122,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
                 icon="trash"
                 onClick={() => setSelectedOperations([])}
               >
-                清空
+                {t('components.OperationList.clear')}
               </Button>
               <AddToOperationSetButton
                 minimal
@@ -126,7 +133,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
                 disabled={selectedOperations.length === 0}
                 operationIds={selectedOperations.map((op) => op.id)}
               >
-                添加到作业集
+                {t('components.OperationList.add_to_job_set')}
               </AddToOperationSetButton>
             </div>
           </Callout>
@@ -137,21 +144,21 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
         {isReachingEnd && operations.length === 0 && (
           <NonIdealState
             icon="slash"
-            title="没有找到任何作业"
-            description="(つД｀)･ﾟ･"
+            title={t('components.OperationList.no_jobs_found')}
+            description={t('components.OperationList.sad_face')}
           />
         )}
 
         {isReachingEnd && operations.length !== 0 && (
           <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
-            已经到底了哦 (ﾟ▽ﾟ)/
+            {t('components.OperationList.reached_bottom')}
           </div>
         )}
 
         {!isReachingEnd && (
           <Button
             loading={isValidating}
-            text="加载更多"
+            text={t('components.OperationList.load_more')}
             icon="more"
             className="mt-2"
             large

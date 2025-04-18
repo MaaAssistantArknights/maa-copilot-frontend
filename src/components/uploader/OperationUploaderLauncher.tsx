@@ -1,10 +1,12 @@
 import { Button, Drawer } from '@blueprintjs/core'
 
 import { FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { OperationUploader } from 'components/uploader/OperationUploader'
 
 export const OperationUploaderLauncher: FC = () => {
+  const { t } = useTranslation()
   const [uploaderActive, setUploaderActive] = useState(false)
 
   return (
@@ -23,7 +25,7 @@ export const OperationUploaderLauncher: FC = () => {
         icon="cloud-upload"
         onClick={() => setUploaderActive(true)}
       >
-        上传本地作业
+        {t('components.uploader.OperationUploaderLauncher.upload_local_jobs')}
       </Button>
     </>
   )
