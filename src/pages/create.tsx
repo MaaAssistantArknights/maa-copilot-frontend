@@ -5,6 +5,7 @@ import { isEqual } from 'lodash-es'
 import { CopilotInfoStatusEnum } from 'maa-copilot-client'
 import { ComponentType, useMemo, useState } from 'react'
 import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
@@ -49,11 +50,14 @@ const isDirty = (operation: CopilotDocV1.Operation) =>
 
 export const CreatePage: ComponentType = withGlobalErrorBoundary(
   withSuspensable(() => {
+    const { t } = useTranslation()
     const params = useParams()
     const id = params.id ? +params.id : undefined
 
     const isNew = !id
-    const submitAction = isNew ? '发布' : '更新'
+    const submitAction = isNew
+      ? t('pages.create.publish')
+      : t('pages.create.update')
 
     const apiOperation = useOperation({ id, suspense: true }).data
 
@@ -137,9 +141,9 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
 
             if (actionWithNegativeCostChanges !== -1) {
               throw new Error(
-                `目前暂不支持上传费用变化量为负数的动作（第${
-                  actionWithNegativeCostChanges + 1
-                }个动作）`,
+                t('pages.create.negative_cost_not_supported', {
+                  actionIndex: actionWithNegativeCostChanges + 1,
+                }),
               )
             }
           }
@@ -149,13 +153,17 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
 
         AppToaster.show({
           intent: 'success',
-          message: `作业${submitAction}成功`,
+          message: isNew
+            ? t('pages.create.task_publish_success')
+            : t('pages.create.task_update_success'),
         })
       } catch (e) {
         setError('global' as any, {
           message:
             e instanceof NetworkError
-              ? `作业${submitAction}失败：${e.message}`
+              ? isNew
+                ? t('pages.create.task_publish_failed', { error: e.message })
+                : t('pages.create.task_update_failed', { error: e.message })
               : formatError(e),
         })
       } finally {
@@ -173,7 +181,9 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
               className="!text-xs opacity-75"
               archive={archive}
               options={autosaveOptions}
-              itemTitle={(record) => record.v.doc?.title || '无标题'}
+              itemTitle={(record) =>
+                record.v.doc?.title || t('pages.create.untitled')
+              }
               onRestore={(value) => reset(value, { keepDefaultValues: true })}
             />
             <SourceEditorButton
@@ -199,9 +209,9 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
                 placement="bottom"
                 content={
                   <>
-                    公开作业：会在所有列表中显示
+                    {t('pages.create.public_task_description')}
                     <br />
-                    私有作业：其他人无法在列表中看见，但可以通过神秘代码访问
+                    {t('pages.create.private_task_description')}
                   </>
                 }
               >
@@ -216,7 +226,9 @@ export const CreatePage: ComponentType = withGlobalErrorBoundary(
                     )
                   }
                 >
-                  <span className="-ml-1 opacity-75">公开</span>
+                  <span className="-ml-1 opacity-75">
+                    {t('pages.create.public')}
+                  </span>
                 </Checkbox>
               </Tooltip2>
             </div>

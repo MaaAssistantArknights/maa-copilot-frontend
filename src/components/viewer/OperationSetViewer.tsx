@@ -19,6 +19,7 @@ import {
 } from 'apis/operation-set'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { copyShortCode } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
@@ -40,6 +41,7 @@ const ManageMenu: FC<{
   operationSet: OperationSet
   onUpdate: () => void
 }> = ({ operationSet, onUpdate }) => {
+  const { t } = useTranslation()
   const refreshOperationSets = useRefreshOperationSets()
 
   const [loading, setLoading] = useState(false)
@@ -50,7 +52,10 @@ const ManageMenu: FC<{
     setLoading(true)
     try {
       await wrapErrorMessage(
-        (e) => `删除失败：${formatError(e)}`,
+        (e) =>
+          t('components.viewer.OperationSetViewer.delete_failed', {
+            error: formatError(e),
+          }),
         deleteOperationSet({ id: operationSet.id }),
       )
 
@@ -58,7 +63,7 @@ const ManageMenu: FC<{
 
       AppToaster.show({
         intent: 'success',
-        message: `删除成功`,
+        message: t('components.viewer.OperationSetViewer.delete_success'),
       })
       setDeleteDialogOpen(false)
       onUpdate()
@@ -73,8 +78,8 @@ const ManageMenu: FC<{
     <>
       <Alert
         isOpen={deleteDialogOpen}
-        cancelButtonText="取消"
-        confirmButtonText="删除"
+        cancelButtonText={t('components.viewer.OperationSetViewer.cancel')}
+        confirmButtonText={t('components.viewer.OperationSetViewer.delete')}
         icon="log-out"
         intent="danger"
         canOutsideClickCancel
@@ -82,8 +87,10 @@ const ManageMenu: FC<{
         onCancel={() => setDeleteDialogOpen(false)}
         onConfirm={handleDelete}
       >
-        <H4>删除作业集</H4>
-        <p>确定要删除作业集吗？</p>
+        <H4>{t('components.viewer.OperationSetViewer.delete_task_set')}</H4>
+        <p>
+          {t('components.viewer.OperationSetViewer.confirm_delete_task_set')}
+        </p>
       </Alert>
 
       <OperationSetEditorDialog
@@ -95,14 +102,14 @@ const ManageMenu: FC<{
       <Menu>
         <MenuItem
           icon="edit"
-          text="编辑作业集..."
+          text={t('components.viewer.OperationSetViewer.edit_task_set')}
           shouldDismissPopover={false}
           onClick={() => setEditorOpen(true)}
         />
         <MenuItem
           icon="delete"
           intent="danger"
-          text="删除作业集..."
+          text={t('components.viewer.OperationSetViewer.delete_task_set')}
           shouldDismissPopover={false}
           onClick={() => setDeleteDialogOpen(true)}
         />
@@ -116,6 +123,7 @@ export const OperationSetViewer: ComponentType<{
   onCloseDrawer: () => void
 }> = withSuspensable(
   function OperationSetViewer({ operationSetId, onCloseDrawer }) {
+    const { t } = useTranslation()
     const { data: operationSet, error } = useOperationSet({
       id: operationSetId,
       suspense: true,
@@ -143,17 +151,21 @@ export const OperationSetViewer: ComponentType<{
       if (error) {
         AppToaster.show({
           intent: 'danger',
-          message: `刷新作业集失败：${formatError(error)}`,
+          message: t('components.viewer.OperationSetViewer.refresh_failed', {
+            error: formatError(error),
+          }),
         })
       }
-    }, [error])
+    }, [error, t])
 
     return (
       <DrawerLayout
         title={
           <>
             <Icon icon="document" />
-            <span className="ml-2">MAA Copilot 作业集</span>
+            <span className="ml-2">
+              {t('components.viewer.OperationSetViewer.maa_copilot_task_set')}
+            </span>
 
             <div className="flex-1" />
 
@@ -169,7 +181,7 @@ export const OperationSetViewer: ComponentType<{
                 <Button
                   className="ml-4"
                   icon="wrench"
-                  text="管理"
+                  text={t('components.viewer.OperationSetViewer.manage')}
                   rightIcon="caret-down"
                 />
               </Popover2>
@@ -178,7 +190,7 @@ export const OperationSetViewer: ComponentType<{
             <Button
               className="ml-4"
               icon="clipboard"
-              text="复制神秘代码"
+              text={t('components.viewer.OperationSetViewer.copy_secret_code')}
               intent="primary"
               onClick={() => copyShortCode(operationSet)}
             />
@@ -189,8 +201,10 @@ export const OperationSetViewer: ComponentType<{
           fallback={
             <NonIdealState
               icon="issue"
-              title="渲染错误"
-              description="渲染此作业集时出现了问题。是否是还未支持的作业集类型？"
+              title={t('components.viewer.OperationSetViewer.render_error')}
+              description={t(
+                'components.viewer.OperationSetViewer.render_problem',
+              )}
             />
           }
         >
@@ -200,7 +214,8 @@ export const OperationSetViewer: ComponentType<{
     )
   },
   {
-    pendingTitle: '作业集加载中',
+    pendingTitle: (t) =>
+      t('components.viewer.OperationSetViewer.loading_task_set'),
   },
 )
 
@@ -209,6 +224,8 @@ function OperationSetViewerInner({
 }: {
   operationSet: OperationSet
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="h-full overflow-auto py-4 px-8 pt-8">
       <H3>{operationSet.name}</H3>
@@ -219,13 +236,19 @@ function OperationSetViewerInner({
         </div>
 
         <div className="flex flex-col items-start select-none tabular-nums">
-          <FactItem title="发布于" icon="time">
+          <FactItem
+            title={t('components.viewer.OperationSetViewer.published_at')}
+            icon="time"
+          >
             <span className="text-gray-800 dark:text-slate-100 font-bold">
               <RelativeTime moment={operationSet.createTime} />
             </span>
           </FactItem>
 
-          <FactItem title="作者" icon="user">
+          <FactItem
+            title={t('components.viewer.OperationSetViewer.author')}
+            icon="user"
+          >
             <UserName
               className="text-gray-800 dark:text-slate-100 font-bold"
               userId={operationSet.creatorId}
@@ -242,8 +265,10 @@ function OperationSetViewerInner({
         fallback={
           <NonIdealState
             icon="issue"
-            title="渲染错误"
-            description="渲染此作业集的预览时出现了问题 Σ(っ °Д °;)っ"
+            title={t('components.viewer.OperationSetViewer.render_error')}
+            description={t(
+              'components.viewer.OperationSetViewer.render_preview_problem',
+            )}
             className="h-96 bg-stripe rounded"
           />
         }
@@ -253,15 +278,19 @@ function OperationSetViewerInner({
     </div>
   )
 }
+
 function OperationSetViewerInnerDetails({
   operationSet,
 }: {
   operationSet: OperationSet
 }) {
+  const { t } = useTranslation()
+
   return (
     <div className="flex flex-col">
       <H5 className="mb-4 text-slate-600">
-        作业列表({operationSet.copilotIds.length})
+        {t('components.viewer.OperationSetViewer.task_list')}(
+        {operationSet.copilotIds.length})
       </H5>
       <div className="flex flex-col mb-4 max-w-screen-2xl">
         <OperationList operationIds={operationSet.copilotIds} />

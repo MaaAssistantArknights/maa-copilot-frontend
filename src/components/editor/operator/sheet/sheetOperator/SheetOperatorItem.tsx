@@ -5,6 +5,7 @@ import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import { isEqual, omit } from 'lodash-es'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
@@ -20,6 +21,7 @@ export interface SheetOperatorItemProp {
 }
 
 export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
+  const { t } = useTranslation()
   const {
     existedOperators,
     existedGroups,
@@ -56,7 +58,10 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
   const onOperatorSelect = () => {
     if (grouped)
       AppToaster.show({
-        message: `干员 ${name} 已被编组`,
+        message: t(
+          'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.operator_in_group',
+          { name },
+        ),
         intent: Intent.DANGER,
       })
     else {
@@ -132,7 +137,13 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
                         className={clsx(pinned && '-rotate-45')}
                       />
                       <span>
-                        {pinned ? '移出收藏' : '此操作会覆盖已有干员'}
+                        {pinned
+                          ? t(
+                              'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.remove_from_favorites',
+                            )
+                          : t(
+                              'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.will_replace_operator',
+                            )}
                       </span>
                     </Button>
                   }
@@ -163,7 +174,9 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
       {grouped && (
         <span className="text-xs font-bold mt-3">
           <Icon icon="warning-sign" size={15} />
-          已被编组
+          {t(
+            'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.in_group',
+          )}
         </span>
       )}
     </Card>

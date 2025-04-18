@@ -3,6 +3,7 @@ import { Popover2InteractionKind, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import Rating from 'react-rating'
 
 import { Operation } from 'models/operation'
@@ -17,21 +18,30 @@ const GetLevelDescription: FC<{
   operation: PickedOperation
   layout?: 'horizontal' | 'vertical'
 }> = ({ operation, layout }) => {
+  const { t } = useTranslation()
+  const likePercent = Math.round(
+    (operation.like / (operation.like + operation.dislike)) * 100,
+  )
+  const likeRatio = `${operation.like}/${operation.like + operation.dislike}`
+
   return operation.notEnoughRating ? (
     layout === 'vertical' ? (
-      <span>还没有足够的评分</span>
+      <span>
+        {t('components.viewer.OperationRating.not_enough_ratings_long')}
+      </span>
     ) : (
-      <span>评分不足</span>
+      <span>
+        {t('components.viewer.OperationRating.not_enough_ratings_short')}
+      </span>
     )
   ) : (
     <Tooltip2
       className="!inline-block !mt-0"
       interactionKind={Popover2InteractionKind.HOVER}
-      content={`有${Math.round(
-        (operation.like / (operation.like + operation.dislike)) * 100,
-      )}%的人为本作业点了个赞（${operation.like}/${
-        operation.like + operation.dislike
-      }）`}
+      content={t('components.viewer.OperationRating.liked_percentage', {
+        percent: likePercent,
+        ratio: likeRatio,
+      })}
       position="bottom-left"
     >
       {ratingLevelToString(operation.ratingLevel)}

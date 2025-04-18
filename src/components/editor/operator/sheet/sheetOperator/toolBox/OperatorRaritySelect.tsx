@@ -3,6 +3,7 @@ import { Button, Divider, H5 } from '@blueprintjs/core'
 import clsx from 'clsx'
 import { debounce } from 'lodash-es'
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import {
   defaultRarityFilter,
@@ -12,6 +13,7 @@ import {
 export interface OperatorRaritySelectProp {}
 
 export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
+  const { t } = useTranslation()
   const {
     useRarityFilterState: [{ selectedRarity, reverse }, setRarityFilter],
   } = useOperatorFilterProvider()
@@ -21,11 +23,17 @@ export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
   return (
     <>
       <div className="flex items-center">
-        <H5 className="m-0 mr-1">按干员星级展示</H5>
+        <H5 className="m-0 mr-1">
+          {t(
+            'components.editor.operator.sheet.sheetOperator.toolbox.OperatorRaritySelect.display_by_rarity',
+          )}
+        </H5>
         <Button
           icon="reset"
           minimal
-          title="重置选择"
+          title={t(
+            'components.editor.operator.sheet.sheetOperator.toolbox.OperatorRaritySelect.reset_selection',
+          )}
           onClick={() => setRarityFilter(defaultRarityFilter)}
         />
       </div>
@@ -69,7 +77,9 @@ export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
               reverse: false,
             }))
           }
-          title="按从下至上升序排列"
+          title={t(
+            'components.editor.operator.sheet.sheetOperator.toolbox.OperatorRaritySelect.sort_ascending',
+          )}
         />
         <Button
           minimal
@@ -82,7 +92,9 @@ export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
               reverse: true,
             }))
           }
-          title="按从下至上降序排列"
+          title={t(
+            'components.editor.operator.sheet.sheetOperator.toolbox.OperatorRaritySelect.sort_descending',
+          )}
         />
       </div>
       <Divider />

@@ -1,23 +1,27 @@
 import { Drawer, Menu, MenuDivider } from '@blueprintjs/core'
 import { MenuItem2 } from '@blueprintjs/popover2'
 
+import { useLinks } from 'hooks/useLinks'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { NavLink } from 'react-router-dom'
 
 import { navAtom, toggleExpandNavAtom } from 'store/nav'
 
-import { NAV_LINKS, SOCIAL_LINKS } from '../../links'
 import { useCurrentSize } from '../../utils/useCurrenSize'
 import { AnnPanel } from '../announcement/AnnPanel'
 import { OperationSetEditorDialog } from '../operation-set/OperationSetEditor'
 
 export const NavAside = () => {
+  const { t } = useTranslation()
   const { isMD } = useCurrentSize()
   const nav = useAtomValue(navAtom)
   const toggleNav = useSetAtom(toggleExpandNavAtom)
 
   const [showOperationSetDialog, setShowOperationSetDialog] = useState(false)
+
+  const { NAV_LINKS, SOCIAL_LINKS } = useLinks()
 
   if (!isMD) return null
 
@@ -38,7 +42,7 @@ export const NavAside = () => {
               {({ isActive }) => (
                 <MenuItem2
                   key={link.to}
-                  icon={link.icon}
+                  icon={link.icon as any}
                   active={isActive}
                   text={link.label}
                   className="p-2 rounded-md"
@@ -51,7 +55,7 @@ export const NavAside = () => {
           <MenuDivider />
           <MenuItem2
             icon="folder-new"
-            text="创建作业集..."
+            text={t('components.drawer.NavAside.create_job_set')}
             className="p-2 rounded-md"
             onClick={() => {
               setShowOperationSetDialog(true)
@@ -62,7 +66,7 @@ export const NavAside = () => {
             trigger={({ handleClick }) => (
               <MenuItem2
                 icon="info-sign"
-                text="公告"
+                text={t('components.drawer.NavAside.announcement')}
                 className="p-2 rounded-md"
                 onClick={handleClick}
               />

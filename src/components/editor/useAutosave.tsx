@@ -11,6 +11,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import { first, isEqual } from 'lodash-es'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { formatRelativeTime } from '../../utils/times'
 
@@ -144,8 +145,14 @@ export const AutosaveSheet = <T,>({
   onRestore,
   ...buttonProps
 }: AutosaveSheetProps<T>) => {
+  const { t } = useTranslation()
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false)
   const restoringRecord = useRef<Record<T>>()
+
+  const formatTime = (timestamp?: number) => {
+    if (!timestamp) return ''
+    return formatRelativeTime(timestamp)
+  }
 
   const handleRestore = () => {
     if (restoringRecord.current) {
@@ -161,8 +168,10 @@ export const AutosaveSheet = <T,>({
         content={
           <>
             <Callout intent="primary">
-              每隔 {~~(interval / 1000 / 60)}{' '}
-              分钟自动保存编辑过的内容，记录上限为 {limit} 条
+              {t('components.editor.useAutosave.autosave_info', {
+                minutes: ~~(interval / 1000 / 60),
+                limit,
+              })}
             </Callout>
             <Menu className="mt-2 p-0">
               {archive.map((record) => (
@@ -173,7 +182,7 @@ export const AutosaveSheet = <T,>({
                     <>
                       {itemTitle(record)}
                       <div className="text-xs opacity-75">
-                        {formatRelativeTime(record.t)}
+                        {formatTime(record.t)}
                       </div>
                     </>
                   }
@@ -192,8 +201,10 @@ export const AutosaveSheet = <T,>({
           icon="history"
           text={
             archive.length
-              ? `已自动保存：${formatRelativeTime(first(archive)?.t)}`
-              : '未保存'
+              ? t('components.editor.useAutosave.autosaved_at', {
+                  time: formatTime(first(archive)?.t),
+                })
+              : t('components.editor.useAutosave.not_saved')
           }
           {...buttonProps}
         />
@@ -201,16 +212,16 @@ export const AutosaveSheet = <T,>({
 
       <Alert
         isOpen={restoreDialogOpen}
-        cancelButtonText="取消"
-        confirmButtonText="确定"
+        cancelButtonText={t('components.editor.useAutosave.cancel')}
+        confirmButtonText={t('components.editor.useAutosave.confirm')}
         icon="rotate-document"
         intent="danger"
         canOutsideClickCancel
         onCancel={() => setRestoreDialogOpen(false)}
         onConfirm={handleRestore}
       >
-        <H4>恢复内容</H4>
-        <p>当前的编辑内容将会被覆盖，确定要恢复内容吗？</p>
+        <H4>{t('components.editor.useAutosave.restore_content')}</H4>
+        <p>{t('components.editor.useAutosave.restore_confirmation')}</p>
       </Alert>
     </>
   )

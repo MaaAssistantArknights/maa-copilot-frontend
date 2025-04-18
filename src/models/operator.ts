@@ -7,6 +7,7 @@ import {
   DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
+import i18n from '../i18n'
 import { OPERATORS, PROFESSIONS } from '../models/generated/operators.json'
 
 export { OPERATORS, PROFESSIONS }
@@ -23,31 +24,34 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
   {
     type: 'choice',
     icon: 'disable',
-    title: '不自动使用',
+    title: i18n.t('models.operator.skill_usage.none_title'),
     value: CopilotDocV1.SkillUsageType.None,
-    description:
-      '不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作',
+    description: i18n.t('models.operator.skill_usage.none_description'),
   },
   {
     type: 'choice',
     icon: 'automatic-updates',
-    title: '好了就用',
+    title: i18n.t('models.operator.skill_usage.ready_to_use_title'),
     value: CopilotDocV1.SkillUsageType.ReadyToUse,
-    description: '有多少次用多少次，例如：棘刺 3 技能、桃金娘 1 技能等',
+    description: i18n.t('models.operator.skill_usage.ready_to_use_description'),
   },
   {
     type: 'choice',
     icon: 'circle',
-    title: '好了就用（指定次数）',
+    title: i18n.t('models.operator.skill_usage.ready_to_use_times_title'),
     value: CopilotDocV1.SkillUsageType.ReadyToUseTimes,
-    description: '默认仅使用一次，例如：山 2 技能',
+    description: i18n.t(
+      'models.operator.skill_usage.ready_to_use_times_description',
+    ),
   },
   {
     type: 'choice',
     icon: 'predictive-analysis',
-    title: '自动判断使用时机',
+    title: i18n.t('models.operator.skill_usage.automatically_title'),
     value: CopilotDocV1.SkillUsageType.Automatically,
-    description: '(锐意开发中) 画饼.jpg',
+    description: i18n.t(
+      'models.operator.skill_usage.automatically_description',
+    ),
     disabled: true,
   },
 ]
@@ -55,7 +59,7 @@ export const operatorSkillUsages: readonly DetailedSelectItem[] = [
 const unknownSkillUsage: DetailedOperatorSkillUsage = {
   type: 'choice',
   icon: 'error',
-  title: '未知用法',
+  title: i18n.t('models.operator.skill_usage.unknown_title'),
   value: -1,
   description: '',
 }
@@ -74,7 +78,11 @@ export function getSkillUsageTitle(
   skillTimes?: CopilotDocV1.SkillTimes,
 ) {
   if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
-    return `好了就用（${skillTimes ? `${skillTimes}次` : '指定次数'}）`
+    return skillTimes
+      ? i18n.t('models.operator.skill_usage.format_times', {
+          times: skillTimes,
+        })
+      : i18n.t('models.operator.skill_usage.format_specific_times')
   }
   return findOperatorSkillUsage(skillUsage).title
 }
@@ -92,34 +100,34 @@ export const operatorDirections: OperatorDirection[] = [
   // TODO: remove these string literals when CopilotDocV1 can be imported
   {
     icon: 'slash',
-    title: '无',
+    title: i18n.t('models.operator.direction.none'),
     value: 'None' as CopilotDocV1.Direction.None,
   },
   {
     icon: 'arrow-up',
-    title: '上',
+    title: i18n.t('models.operator.direction.up'),
     value: 'Up' as CopilotDocV1.Direction.Up,
   },
   {
     icon: 'arrow-down',
-    title: '下',
+    title: i18n.t('models.operator.direction.down'),
     value: 'Down' as CopilotDocV1.Direction.Down,
   },
   {
     icon: 'arrow-left',
-    title: '左',
+    title: i18n.t('models.operator.direction.left'),
     value: 'Left' as CopilotDocV1.Direction.Left,
   },
   {
     icon: 'arrow-right',
-    title: '右',
+    title: i18n.t('models.operator.direction.right'),
     value: 'Right' as CopilotDocV1.Direction.Right,
   },
 ]
 
 const unknownDirection: OperatorDirection = {
   icon: 'error',
-  title: '未知方向',
+  title: i18n.t('models.operator.direction.unknown'),
   value: null,
 }
 
@@ -142,43 +150,43 @@ export interface ActionDocColor {
 // https://github.com/MaaAssistantArknights/MaaAssistantArknights/blob/50f5f94dfcc2ec175556bbaa55d0ffec74128a8e/src/MeoAsstGui/Helper/LogColor.cs
 export const actionDocColors: ActionDocColor[] = [
   {
-    title: '黑色',
+    title: i18n.t('models.operator.color.black'),
     value: 'Black',
   },
   {
-    title: '灰色',
+    title: i18n.t('models.operator.color.gray'),
     value: 'Gray',
   },
   {
-    title: '红色',
+    title: i18n.t('models.operator.color.dark_red'),
     value: 'DarkRed',
   },
   {
-    title: '橙色',
+    title: i18n.t('models.operator.color.dark_goldenrod'),
     value: 'DarkGoldenrod',
   },
   {
-    title: '黄色',
+    title: i18n.t('models.operator.color.gold'),
     value: 'Gold',
   },
   {
-    title: '绿色',
+    title: i18n.t('models.operator.color.spring_green'),
     value: 'SpringGreen',
   },
   {
-    title: '青色',
+    title: i18n.t('models.operator.color.dark_cyan'),
     value: 'DarkCyan',
   },
   {
-    title: '蓝色',
+    title: i18n.t('models.operator.color.deep_sky_blue'),
     value: 'DeepSkyBlue',
   },
   {
-    title: '紫色',
+    title: i18n.t('models.operator.color.purple'),
     value: '#6f42c1',
   },
   {
-    title: '粉色',
+    title: i18n.t('models.operator.color.pink'),
     value: '#d63384',
   },
 ]

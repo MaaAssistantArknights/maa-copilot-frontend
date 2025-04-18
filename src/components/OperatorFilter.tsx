@@ -12,6 +12,7 @@ import clsx from 'clsx'
 import { getDefaultStore, useAtom } from 'jotai'
 import { compact } from 'lodash-es'
 import { FC, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { OPERATORS } from '../models/operator'
 import {
@@ -51,6 +52,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
   filter,
   onChange,
 }) => {
+  const { t } = useTranslation()
   const [savedFilter, setSavedFilter] = useAtom(operatorFilterAtom)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingFilter, setEditingFilter] = useState<typeof savedFilter>(filter)
@@ -164,7 +166,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
           <Button
             minimal
             icon="power"
-            title="禁用干员选择"
+            title={t('components.OperatorFilter.disable_operator_selection')}
             active={!editingFilter.enabled}
             onClick={() => handleEnable(!editingFilter.enabled)}
           />
@@ -176,32 +178,38 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
           icon="plus"
           onClick={() => setDialogOpen(true)}
         >
-          干员
+          {t('components.OperatorFilter.operators')}
         </Button>
       )}
       <Dialog
         isOpen={dialogOpen}
         onClose={() => setDialogOpen(false)}
-        title="选择干员"
+        title={t('components.OperatorFilter.select_operators')}
       >
         <DialogBody>
-          <H6 className="mb-4">包含的干员</H6>
+          <H6 className="mb-4">
+            {t('components.OperatorFilter.included_operators')}
+          </H6>
           <OperatorSelect
             operators={editingFilter.included}
             onChange={(included) => updateEditingFilter(included, undefined)}
           />
-          <H6 className="mt-6 mb-4">排除的干员</H6>
+          <H6 className="mt-6 mb-4">
+            {t('components.OperatorFilter.excluded_operators')}
+          </H6>
           <OperatorSelect
             operators={editingFilter.excluded}
             onChange={(excluded) => updateEditingFilter(undefined, excluded)}
           />
-          <p className="mt-2 opacity-75">输入干员名、拼音或拼音首字母以搜索</p>
+          <p className="mt-2 opacity-75">
+            {t('components.OperatorFilter.search_help')}
+          </p>
         </DialogBody>
         <DialogFooter
           actions={
             <>
               <Button minimal icon="cross" onClick={() => setDialogOpen(false)}>
-                取消
+                {t('components.OperatorFilter.cancel')}
               </Button>
               <Button
                 intent="primary"
@@ -211,7 +219,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
                   setDialogOpen(false)
                 }}
               >
-                确认
+                {t('components.OperatorFilter.confirm')}
               </Button>
             </>
           }
@@ -221,7 +229,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
             checked={editingFilter.save}
             onChange={(e) => handleSave(e.currentTarget.checked)}
           >
-            记住选择
+            {t('components.OperatorFilter.remember_selection')}
           </Checkbox>
         </DialogFooter>
       </Dialog>

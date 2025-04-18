@@ -3,6 +3,7 @@ import { UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 import { clsx } from 'clsx'
+import { useTranslation } from 'react-i18next'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -38,6 +39,8 @@ export const EditorGroupItem = ({
   attributes,
   listeners,
 }: EditorGroupItemProps) => {
+  const { t } = useTranslation()
+
   return (
     <Card
       elevation={Elevation.TWO}
@@ -84,7 +87,11 @@ export const EditorGroupItem = ({
         </ul>
 
         {!group.opers?.length && (
-          <NonIdealState>将干员拖拽到此处</NonIdealState>
+          <NonIdealState>
+            {t(
+              'components.editor.operator.EditorGroupItem.drag_operators_here',
+            )}
+          </NonIdealState>
         )}
       </SortableContext>
     </Card>

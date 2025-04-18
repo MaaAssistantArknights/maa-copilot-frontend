@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { compact } from 'lodash-es'
 import { FC, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { OPERATORS } from '../models/operator'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
@@ -24,6 +25,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   operators,
   onChange,
 }) => {
+  const { t } = useTranslation()
   const { query, trimmedDebouncedQuery, updateQuery, onOptionMouseDown } =
     useDebouncedQuery()
 
@@ -101,7 +103,11 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
       placeholder=""
       noResults={
         trimmedDebouncedQuery ? (
-          <MenuItem roleStructure="listoption" disabled text="没有匹配的干员" />
+          <MenuItem
+            roleStructure="listoption"
+            disabled
+            text={t('components.OperatorSelect.no_matching_operators')}
+          />
         ) : undefined
       }
       tagInputProps={{

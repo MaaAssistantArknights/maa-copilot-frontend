@@ -5,11 +5,59 @@ import {
   FieldValues,
   UseControllerProps,
 } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL, REGEX_USERNAME } from 'utils/regexes'
 
 export type RuleKeys = 'email' | 'password' | 'username' | 'registertoken'
+
+export function useAuthRules() {
+  const { t } = useTranslation()
+
+  return {
+    email: {
+      required: t('components.account.AuthFormShared.email_required'),
+      pattern: {
+        value: REGEX_EMAIL,
+        message: t('components.account.AuthFormShared.email_invalid'),
+      },
+    },
+    password: {
+      required: t('components.account.AuthFormShared.password_required'),
+      minLength: {
+        value: 8,
+        message: t('components.account.AuthFormShared.password_min_length'),
+      },
+      maxLength: {
+        value: 32,
+        message: t('components.account.AuthFormShared.password_max_length'),
+      },
+    },
+    username: {
+      required: t('components.account.AuthFormShared.username_required'),
+      minLength: {
+        value: 4,
+        message: t('components.account.AuthFormShared.username_min_length'),
+      },
+      maxLength: {
+        value: 24,
+        message: t('components.account.AuthFormShared.username_max_length'),
+      },
+    },
+    registertoken: {
+      required: t('components.account.AuthFormShared.token_required'),
+      minLength: {
+        value: 6,
+        message: t('components.account.AuthFormShared.token_length'),
+      },
+      maxLength: {
+        value: 6,
+        message: t('components.account.AuthFormShared.token_length'),
+      },
+    },
+  }
+}
 
 export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
   email: {
@@ -49,7 +97,7 @@ export type AuthFormFieldProps<T extends FieldValues> = Pick<
 }
 
 export const AuthFormEmailField = <T extends FieldValues>({
-  label = '邮箱',
+  label,
   control,
   error,
   field,
@@ -57,6 +105,8 @@ export const AuthFormEmailField = <T extends FieldValues>({
   autoComplete = 'email',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
+  const { t } = useTranslation()
+  label = label || t('components.account.AuthFormShared.email')
   return (
     <FormField
       label={label}
@@ -79,13 +129,16 @@ export const AuthFormEmailField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText: register && '将通过发送邮件输入验证码确认',
+        helperText:
+          register &&
+          t('components.account.AuthFormShared.email_verification_note'),
       }}
     />
   )
 }
+
 export const AuthRegistrationTokenField = <T extends FieldValues>({
-  label = '邮箱验证码',
+  label,
   control,
   error,
   field,
@@ -93,6 +146,9 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
   autoComplete = '',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
+  const { t } = useTranslation()
+  label =
+    label || t('components.account.AuthFormShared.email_verification_code')
   return (
     <FormField
       label={label}
@@ -113,20 +169,23 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText: register && '请输入邮件中的验证码',
+        helperText:
+          register && t('components.account.AuthFormShared.enter_email_code'),
       }}
     />
   )
 }
 
 export const AuthFormPasswordField = <T extends FieldValues>({
-  label = '密码',
+  label,
   control,
   error,
   field,
   autoComplete = 'current-password',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
+  const { t } = useTranslation()
+  label = label || t('components.account.AuthFormShared.password')
   return (
     <FormField
       label={label}
@@ -152,13 +211,15 @@ export const AuthFormPasswordField = <T extends FieldValues>({
 }
 
 export const AuthFormUsernameField = <T extends FieldValues>({
-  label = '用户名',
+  label,
   control,
   error,
   field,
   autoComplete = 'username',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
+  const { t } = useTranslation()
+  label = label || t('components.account.AuthFormShared.username')
   return (
     <FormField
       label={label}

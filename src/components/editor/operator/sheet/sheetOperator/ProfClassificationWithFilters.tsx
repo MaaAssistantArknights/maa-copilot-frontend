@@ -3,6 +3,7 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { FC, ImgHTMLAttributes, useEffect, useMemo } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { PROFESSIONS } from 'models/operator'
 
@@ -19,18 +20,18 @@ import { OperatorRaritySelect } from './toolBox/OperatorRaritySelect'
 const formattedProfessions = [
   {
     id: DEFAULTPROFID.ALL,
-    name: '全部',
+    name: 'all',
     sub: [],
   },
   {
     id: DEFAULTPROFID.FAV,
-    name: '收藏',
+    name: 'favorites',
     sub: [],
   },
   ...PROFESSIONS,
   {
     id: DEFAULTPROFID.OTHERS,
-    name: '其它',
+    name: 'others',
     sub: [],
   },
 ]
@@ -42,6 +43,7 @@ export interface ProfClassificationWithFiltersProp {
 export const ProfClassificationWithFilters: FC<
   ProfClassificationWithFiltersProp
 > = ({ toTop }) => {
+  const { t } = useTranslation()
   const {
     useProfFilterState: [{ selectedProf }, setProfFilter],
     usePaginationFilterState: [_, setPaginationFilter],
@@ -49,8 +51,8 @@ export const ProfClassificationWithFilters: FC<
 
   const subProfs = useMemo(() => {
     return [
-      { id: DEFAULTSUBPROFID.ALL, name: '全部' },
-      { id: DEFAULTSUBPROFID.SELECTED, name: '已选择' },
+      { id: DEFAULTSUBPROFID.ALL, name: 'all' },
+      { id: DEFAULTSUBPROFID.SELECTED, name: 'selected' },
       ...(formattedProfessions.find(({ id }) => id === selectedProf[0])?.sub ||
         []),
     ]
@@ -84,7 +86,13 @@ export const ProfClassificationWithFilters: FC<
           <ProfIcon
             key={id}
             profId={id}
-            name={name}
+            name={
+              name === 'all' || name === 'favorites' || name === 'others'
+                ? t(
+                    `components.editor.operator.sheet.sheetOperator.ProfClassificationWithFilters.${name}`,
+                  )
+                : name
+            }
             selected={selectedProf.includes(id)}
             onProfClick={() =>
               setProfFilter((prev) => ({
@@ -113,7 +121,15 @@ export const ProfClassificationWithFilters: FC<
                   }))
                 }
               >
-                {name}
+                {name === 'all'
+                  ? t(
+                      'components.editor.operator.sheet.sheetOperator.ProfClassificationWithFilters.all',
+                    )
+                  : name === 'selected'
+                    ? t(
+                        'components.editor.operator.sheet.sheetOperator.ProfClassificationWithFilters.selected',
+                      )
+                    : name}
               </H4>
             </li>
           ))}

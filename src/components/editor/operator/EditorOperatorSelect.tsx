@@ -2,6 +2,7 @@ import { Button } from '@blueprintjs/core'
 
 import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import {
   DetailedSelect,
@@ -14,78 +15,126 @@ export const EditorOperatorSelect = <T extends FieldValues>({
   name,
   control,
 }: EditorFieldProps<T>) => {
+  const { t } = useTranslation()
+
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
     name,
     control,
-    rules: { required: '请选择干员' },
+    rules: {
+      required: t(
+        'components.editor.operator.EditorOperatorSelect.please_select_operator',
+      ),
+    },
   })
 
   const menuItems = useMemo<DetailedSelectItem[]>(
     () => [
-      { type: 'header', header: '干员上/退场' },
+      {
+        type: 'header',
+        header: t(
+          'components.editor.operator.EditorOperatorSelect.operator_deploy_retreat',
+        ),
+      },
       {
         type: 'choice',
         icon: 'new-object',
-        title: '部署',
+        title: t('components.editor.operator.EditorOperatorSelect.deploy'),
         value: 'Deploy',
-        description: `部署干员至指定位置。当费用不够时，会一直等待到费用够（除非 timeout）`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.deploy_description',
+        ),
       },
       {
         type: 'choice',
         icon: 'graph-remove',
-        title: '撤退',
+        title: t('components.editor.operator.EditorOperatorSelect.retreat'),
         value: 'Retreat',
-        description: '将干员从作战中撤出',
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.retreat_description',
+        ),
       },
-      { type: 'header', header: '干员技能' },
+      {
+        type: 'header',
+        header: t(
+          'components.editor.operator.EditorOperatorSelect.operator_skills',
+        ),
+      },
       {
         type: 'choice',
         icon: 'target',
-        title: '使用技能',
+        title: t('components.editor.operator.EditorOperatorSelect.use_skill'),
         value: 'Skill',
-        description: `当技能 CD 没转好时，一直等待到技能 CD 好（除非 timeout）`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.use_skill_description',
+        ),
       },
       {
         type: 'choice',
         icon: 'swap-horizontal',
-        title: '切换技能用法',
+        title: t(
+          'components.editor.operator.EditorOperatorSelect.switch_skill_usage',
+        ),
         value: 'SkillUsage',
-        description: `切换干员技能用法。例如，刚下桃金娘、需要她帮忙打几个怪，但此时不能自动开技能否则会漏怪，等中后期平稳了才需要她自动开技能，则可以在对应时刻后，将桃金娘的技能用法从「不自动使用」改为「好了就用」。`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.switch_skill_usage_description',
+        ),
       },
-      { type: 'header', header: '作战控制' },
+      {
+        type: 'header',
+        header: t(
+          'components.editor.operator.EditorOperatorSelect.battle_control',
+        ),
+      },
       {
         type: 'choice',
         icon: 'fast-forward',
-        title: '切换二倍速',
+        title: t(
+          'components.editor.operator.EditorOperatorSelect.toggle_speed',
+        ),
         value: 'SpeedUp',
-        description: `执行后切换至二倍速，再次执行切换至一倍速`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.toggle_speed_description',
+        ),
       },
       {
         type: 'choice',
         icon: 'fast-backward',
-        title: '进入子弹时间',
+        title: t('components.editor.operator.EditorOperatorSelect.bullet_time'),
         value: 'BulletTime',
-        description: `执行后将点击任意干员，进入 1/5 速度状态；再进行任意动作会恢复正常速度`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.bullet_time_description',
+        ),
       },
       {
         type: 'choice',
         icon: 'antenna',
-        title: '开始挂机',
+        title: t('components.editor.operator.EditorOperatorSelect.auto_mode'),
         value: 'SkillDaemon',
-        description: `进入挂机模式。仅使用 “好了就用” 的技能，其他什么都不做，直到战斗结束`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.auto_mode_description',
+        ),
       },
-      { type: 'header', header: '杂项' },
+      {
+        type: 'header',
+        header: t(
+          'components.editor.operator.EditorOperatorSelect.miscellaneous',
+        ),
+      },
       {
         type: 'choice',
         icon: 'paragraph',
-        title: '打印描述内容',
+        title: t(
+          'components.editor.operator.EditorOperatorSelect.print_description',
+        ),
         value: 'Ouput',
-        description: `对作战没有实际作用，仅用于输出描述内容（用来做字幕之类的）`,
+        description: t(
+          'components.editor.operator.EditorOperatorSelect.print_description_details',
+        ),
       },
     ],
-    [],
+    [t],
   )
   const selectedAction = menuItems.find(
     (action) => action.type === 'choice' && action.value === value,
@@ -102,7 +151,13 @@ export const EditorOperatorSelect = <T extends FieldValues>({
       <Button
         large
         icon={selectedAction?.icon || 'slash'}
-        text={selectedAction ? selectedAction.title : '选择干员'}
+        text={
+          selectedAction
+            ? selectedAction.title
+            : t(
+                'components.editor.operator.EditorOperatorSelect.select_operator',
+              )
+        }
         rightIcon="double-caret-vertical"
         onBlur={onBlur}
         ref={ref}

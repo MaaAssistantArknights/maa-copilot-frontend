@@ -2,6 +2,7 @@ import { Card, Icon } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useAnnouncement } from '../../apis/announcement'
 import {
@@ -19,6 +20,7 @@ interface AnnPanelProps {
 }
 
 export const AnnPanel: FC<AnnPanelProps> = ({ className, trigger }) => {
+  const { t } = useTranslation()
   const { data, error } = useAnnouncement()
   const announcement = useMemo(
     () => (data ? parseAnnouncement(data) : undefined),
@@ -53,7 +55,9 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className, trigger }) => {
 
   trigger ??= ({ handleClick }) => (
     <Card interactive className={clsx(className)} onClick={handleClick}>
-      <CardTitle icon="info-sign">公告</CardTitle>
+      <CardTitle icon="info-sign">
+        {t('components.announcement.AnnPanel.title')}
+      </CardTitle>
 
       <div className="flex">
         {announcement && (
@@ -65,7 +69,9 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className, trigger }) => {
         )}
         {!announcement && error && (
           <div className="grow text-red-500">
-            公告加载失败：{formatError(error)}
+            {t('components.announcement.AnnPanel.load_failed', {
+              error: formatError(error),
+            })}
           </div>
         )}
         <Icon className="self-end" icon="more" size={14} />
