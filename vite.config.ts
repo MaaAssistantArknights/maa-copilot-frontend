@@ -20,7 +20,7 @@ export default defineConfig(({ command, mode }) => {
       },
     },
     build: {
-      sourcemap: true,
+      sourcemap: false,
     },
   }
 })
