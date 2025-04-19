@@ -6,6 +6,7 @@ import {
   Dialog,
   NonIdealState,
   Tag,
+  ToastProps,
 } from '@blueprintjs/core'
 
 import {
@@ -15,7 +16,9 @@ import {
 } from 'apis/operation-set'
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
-import { useState } from 'react'
+import { compact, isEqual } from 'lodash-es'
+import { FC, memo, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { AppToaster } from 'components/Toaster'
 import { OperationSetEditorDialog } from 'components/operation-set/OperationSetEditor'
@@ -25,44 +28,54 @@ import { useNetworkState } from 'utils/useNetworkState'
 import { authAtom } from '../../store/auth'
 
 interface AddToOperationSetButtonProps extends ButtonProps {
-  operationId: number
+  operationIds: number[]
 }
 
-export function AddToOperationSetButton({
-  operationId,
-  ...props
-}: AddToOperationSetButtonProps) {
-  const [isOpen, setIsOpen] = useState(false)
+export const AddToOperationSetButton: FC<AddToOperationSetButtonProps> = memo(
+  ({ operationIds, ...props }) => {
+    const [isOpen, setIsOpen] = useState(false)
 
-  return (
-    <>
-      <Button {...props} onClick={() => setIsOpen(true)} />
-      <Dialog
-        title="添加到作业集"
-        icon="user"
-        isOpen={isOpen}
-        onClose={() => setIsOpen(false)}
-      >
-        <AddToOperationSet
-          operationId={operationId}
-          isOpen={isOpen}
-          onSuccess={() => setIsOpen(false)}
+    return (
+      <>
+        <Button
+          {...props}
+          disabled={!operationIds.length}
+          onClick={() => setIsOpen(true)}
         />
-      </Dialog>
-    </>
-  )
-}
+        <Dialog
+          title={`添加 ${operationIds.length} 份作业到作业集`}
+          icon="add-to-folder"
+          isOpen={isOpen}
+          onClose={() => setIsOpen(false)}
+        >
+          <AddToOperationSet
+            operationIds={operationIds}
+            isOpen={isOpen}
+            onSuccess={() => setIsOpen(false)}
+          />
+        </Dialog>
+      </>
+    )
+  },
+  (prevProps, nextProps) =>
+    isEqual(prevProps.operationIds, nextProps.operationIds),
+)
+AddToOperationSetButton.displayName = 'AddToOperationSetButton'
 
 interface AddToOperationSetProps {
-  operationId: number
+  operationIds: number[]
   isOpen: boolean
   onSuccess: () => void
 }
 
-export function AddToOperationSet({
-  operationId,
+function AddToOperationSet({
+  operationIds,
   onSuccess,
 }: AddToOperationSetProps) {
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+  const singleOperationId =
+    operationIds.length > 1 ? undefined : operationIds[0]
   const auth = useAtomValue(authAtom)
 
   const {
@@ -91,18 +104,23 @@ export function AddToOperationSet({
   const error =
     submitError || listError || (!auth.userId ? '未登录' : undefined)
 
-  const operationSetList = onlyShowAdded
-    ? operationSets?.filter(
-        (set) =>
-          checkboxOverrides[set.id] ?? set.copilotIds.includes(operationId),
-      )
-    : operationSets
+  const operationSetList =
+    singleOperationId && onlyShowAdded
+      ? operationSets?.filter(
+          (set) =>
+            checkboxOverrides[set.id] ??
+            set.copilotIds.includes(operationIds[0]),
+        )
+      : operationSets
 
-  const alreadyAdded = (operationSetId: number) =>
-    !!operationSets?.find(
-      (set) =>
-        set.id === operationSetId && set.copilotIds.includes(operationId),
-    )
+  const defaultChecked = (operationSetId: number) =>
+    singleOperationId
+      ? !!operationSets?.find(
+          (set) =>
+            set.id === operationSetId &&
+            set.copilotIds.includes(singleOperationId),
+        )
+      : false
 
   const onSubmit = async () => {
     if (loading || !operationSets?.length) return
@@ -111,32 +129,45 @@ export function AddToOperationSet({
 
     try {
       const tasks = Object.entries(checkboxOverrides).map(
-        ([idKey, checked]) => {
+        async ([idKey, checked]) => {
           const id = +idKey
           if (isNaN(id)) return undefined
 
-          if (checked && !alreadyAdded(id)) {
-            return addToOperationSet({
+          if (checked && !defaultChecked(id)) {
+            await addToOperationSet({
               operationSetId: id,
-              operationIds: [operationId],
+              operationIds,
             })
-          } else if (!checked && alreadyAdded(id)) {
-            return removeFromOperationSet({
+            return id
+          } else if (!checked && defaultChecked(id)) {
+            await removeFromOperationSet({
               operationSetId: id,
-              operationIds: [operationId],
+              operationIds,
             })
+            return id
           }
 
           return undefined
         },
       )
+      const processedIds = compact(await Promise.all(tasks))
+      if (processedIds.length) {
+        let action: ToastProps['action']
 
-      if (tasks.find(Boolean)) {
-        await Promise.all(tasks)
+        if (processedIds.length === 1) {
+          const search = new URLSearchParams(searchParams)
+          search.set('opset', processedIds[0].toString())
+          action = {
+            text: '点击查看',
+            className: '!px-1',
+            onClick: () => navigate({ search: search.toString() }),
+          }
+        }
 
         AppToaster.show({
           intent: 'success',
           message: '已添加到作业集',
+          action,
         })
       }
 
@@ -167,19 +198,17 @@ export function AddToOperationSet({
           />
         )}
 
-        <div className="max-h-[calc(100vh-20rem)] overflow-y-auto">
+        <div className="min-h-36 max-h-[calc(100vh-20rem)] overflow-y-auto">
           {operationSetList?.map(({ id, name, copilotIds, status }) => (
             <div key={id}>
               <Checkbox
                 className={clsx(
-                  'block m-0 p-2 !pl-10 hover:bg-slate-200 dark:hover:bg-slate-800',
+                  'flex items-center m-0 p-2 !pl-10 hover:bg-slate-200 dark:hover:bg-slate-800 [&>.bp4-control-indicator]:mt-0',
                   checkboxOverrides[id] !== undefined &&
-                    checkboxOverrides[id] !== alreadyAdded(id) &&
+                    checkboxOverrides[id] !== defaultChecked(id) &&
                     'font-bold',
                 )}
-                checked={
-                  checkboxOverrides[id] ?? copilotIds.includes(operationId)
-                }
+                checked={checkboxOverrides[id] ?? defaultChecked(id)}
                 onChange={(e) => {
                   const checked = (e.target as HTMLInputElement).checked
                   setCheckboxOverrides((prev) => ({ ...prev, [id]: checked }))
@@ -191,6 +220,7 @@ export function AddToOperationSet({
                   </Tag>
                 )}
                 {name}
+                <span className="ml-auto opacity-50">{copilotIds.length}</span>
               </Checkbox>
             </div>
           ))}
@@ -211,16 +241,19 @@ export function AddToOperationSet({
 
       <div className="h-px bg-slate-200" />
 
-      <div className="flex space-x-3 p-4">
-        <Checkbox
-          label="只显示已添加的"
-          className="grow"
-          checked={onlyShowAdded}
-          onChange={(e) =>
-            setOnlyShowAdded((e.target as HTMLInputElement).checked)
-          }
-        />
-        <Button onClick={() => setEditorOpen(true)}>创建作业集...</Button>
+      <div className="flex p-4 gap-3">
+        {!!singleOperationId && (
+          <Checkbox
+            label="只显示已添加的"
+            checked={onlyShowAdded}
+            onChange={(e) =>
+              setOnlyShowAdded((e.target as HTMLInputElement).checked)
+            }
+          />
+        )}
+        <Button className="ml-auto" onClick={() => setEditorOpen(true)}>
+          创建作业集...
+        </Button>
         <Button
           disabled={!operationSets?.length}
           loading={loading}

@@ -191,12 +191,21 @@ body {
     @apply rounded border-none;
     &.bp4-intent-success {
       @apply bg-emerald-500;
+      .bp4-button {
+        @apply !bg-emerald-500;
+      }
     }
     &.bp4-intent-warning {
       @apply bg-amber-500;
+      .bp4-button {
+        @apply !bg-amber-500;
+      }
     }
     &.bp4-intent-danger {
       @apply bg-red-500;
+      .bp4-button {
+        @apply !bg-red-500;
+      }
     }
     .bp4-button {
       @apply border-none p-0;

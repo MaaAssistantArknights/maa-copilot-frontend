@@ -42,6 +42,7 @@ export const Operations: ComponentType = withSuspensable(() => {
   const [selectedUser, setSelectedUser] = useState<MaaUserInfo>()
   const [neoLayout, setNeoLayout] = useAtom(neoLayoutAtom)
   const [tab, setTab] = useState<'operation' | 'operationSet'>('operation')
+  const [multiselect, setMultiselect] = useState(false)
 
   return (
     <>
@@ -74,7 +75,15 @@ export const Operations: ComponentType = withSuspensable(() => {
               title="作业集"
             />
           </Tabs>
-          <ButtonGroup className="ml-auto">
+          <Button
+            minimal
+            icon="multi-select"
+            title="启动多选"
+            className="ml-auto mr-2"
+            active={multiselect}
+            onClick={() => setMultiselect((v) => !v)}
+          />
+          <ButtonGroup>
             <Button
               icon="grid-view"
               active={neoLayout}
@@ -218,6 +227,7 @@ export const Operations: ComponentType = withSuspensable(() => {
         {tab === 'operation' && (
           <OperationList
             {...queryParams}
+            multiselect={multiselect}
             operator={operatorFilter.enabled ? operatorFilter : undefined}
             // 按热度排序时列表前几页的变化不会太频繁，可以不刷新第一页，节省点流量
             revalidateFirstPage={queryParams.orderBy !== 'hot'}
