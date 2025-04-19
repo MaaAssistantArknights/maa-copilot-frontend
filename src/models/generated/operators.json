@@ -82,6 +82,15 @@
       "alt_name": "Aak"
     },
     {
+      "id": "char_4178_alanna",
+      "prof": "SUPPORT",
+      "subProf": "craftsman",
+      "name": "阿兰娜",
+      "alias": "alanna alannuo elanna elannuo aln eln 阿蘭娜",
+      "rarity": 5,
+      "alt_name": "Alanna"
+    },
+    {
       "id": "char_446_aroma",
       "prof": "CASTER",
       "subProf": "blastcaster",
@@ -476,6 +485,15 @@
       "alias": "chen c 陳",
       "rarity": 6,
       "alt_name": "Ch'en"
+    },
+    {
+      "id": "char_445_wscoot",
+      "prof": "WARRIOR",
+      "subProf": "librator",
+      "name": "骋风",
+      "alias": "chengfeng cf 騁風",
+      "rarity": 4,
+      "alt_name": "Windscoot"
     },
     {
       "id": "char_377_gdglow",
@@ -2107,12 +2125,12 @@
       "alt_name": "Myrrh"
     },
     {
-      "id": "token_10002_kalts_mon3tr",
-      "prof": "TOKEN",
-      "subProf": "notchar1",
+      "id": "char_4179_monstr",
+      "prof": "MEDIC",
+      "subProf": "chainhealer",
       "name": "Mon3tr",
       "alias": "Mon3tr",
-      "rarity": 0,
+      "rarity": 6,
       "alt_name": "Mon3tr"
     },
     {
@@ -3124,6 +3142,15 @@
       "alt_name": "Cantabile"
     },
     {
+      "id": "token_10045_alanna_crane",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "小螺帽",
+      "alias": "xiaoluomao xlm 小螺帽",
+      "rarity": 0,
+      "alt_name": "Nutlet"
+    },
+    {
       "id": "char_4122_grabds",
       "prof": "SUPPORT",
       "subProf": "slower",
@@ -3781,6 +3808,15 @@
       "alt_name": "Lessing"
     },
     {
+      "id": "token_10050_monstr_prosts",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "重构体",
+      "alias": "zhonggouti chonggouti zgt cgt 重構體",
+      "rarity": 0,
+      "alt_name": "Reconstruct"
+    },
+    {
       "id": "char_2024_chyue",
       "prof": "WARRIOR",
       "subProf": "fighter",
@@ -3888,8 +3924,8 @@
         { "id": "musha", "name": "武者" },
         { "id": "crusher", "name": "重剑手" },
         { "id": "reaper", "name": "收割者" },
-        { "id": "fighter", "name": "斗士" },
         { "id": "librator", "name": "解放者" },
+        { "id": "fighter", "name": "斗士" },
         { "id": "hammer", "name": "撼地者" }
       ]
     },
