@@ -2,6 +2,7 @@ import { Button, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 
 import { useController } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { SetOptional } from 'type-fest'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
@@ -21,13 +22,18 @@ export const EditorActionOperatorDirection = ({
   control,
   ...controllerProps
 }: EditorActionOperatorDirectionProps) => {
+  const { t } = useTranslation()
   const {
     field: { onChange, onBlur, value, ref },
     formState: { errors },
   } = useController({
     name,
     control,
-    rules: { required: '必须选择朝向' },
+    rules: {
+      required: t(
+        'components.editor.action.EditorActionOperatorDirection.direction_required',
+      ),
+    },
     defaultValue: 'None' as CopilotDocV1.Direction.None,
     ...controllerProps,
   })
@@ -36,10 +42,14 @@ export const EditorActionOperatorDirection = ({
 
   return (
     <FormField2
-      label="干员朝向"
+      label={t(
+        'components.editor.action.EditorActionOperatorDirection.operator_direction',
+      )}
       field={name}
       error={errors[name]}
-      description="部署干员的干员朝向"
+      description={t(
+        'components.editor.action.EditorActionOperatorDirection.direction_description',
+      )}
     >
       <Select2<OperatorDirection>
         filterable={false}

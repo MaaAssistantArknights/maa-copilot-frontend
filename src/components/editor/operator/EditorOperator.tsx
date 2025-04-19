@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
@@ -41,7 +42,15 @@ export const EditorOperatorName = <T extends FieldValues>({
   groups?: CopilotDocV1.Group[]
   operators?: CopilotDocV1.Operator[]
 }) => {
-  const entityName = useMemo(() => (groups ? '干员或干员组' : '干员'), [groups])
+  const { t } = useTranslation()
+
+  const entityName = useMemo(
+    () =>
+      groups
+        ? t('components.editor.operator.EditorOperator.operator_or_group')
+        : t('components.editor.operator.EditorOperator.operator'),
+    [groups, t],
+  )
 
   const {
     field: { onChange, onBlur, value },
@@ -49,7 +58,13 @@ export const EditorOperatorName = <T extends FieldValues>({
   } = useController({
     name,
     control,
-    rules: { required: `请输入${entityName}名`, ...rules },
+    rules: {
+      required: t(
+        'components.editor.operator.EditorOperator.please_enter_name',
+        { entityName },
+      ),
+      ...rules,
+    },
     ...controllerProps,
   })
 
@@ -114,15 +129,29 @@ export const EditorOperatorName = <T extends FieldValues>({
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem
           key="create-new-item"
-          text={`使用自定义${entityName}名 "${query}"`}
+          text={t('components.editor.operator.EditorOperator.use_custom_name', {
+            entityName,
+            query,
+          })}
           icon="text-highlight"
           onClick={handleClick}
           selected={active}
         />
       )}
-      noResults={<MenuItem disabled text={`没有匹配的${entityName}`} />}
+      noResults={
+        <MenuItem
+          disabled
+          text={t(
+            'components.editor.operator.EditorOperator.no_matching_entity',
+            { entityName },
+          )}
+        />
+      }
       inputProps={{
-        placeholder: `${entityName}名`,
+        placeholder: t(
+          'components.editor.operator.EditorOperator.entity_name',
+          { entityName },
+        ),
         large: true,
         onBlur,
       }}

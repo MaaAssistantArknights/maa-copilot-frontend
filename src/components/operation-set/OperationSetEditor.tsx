@@ -43,6 +43,7 @@ import {
   useState,
 } from 'react'
 import { Controller, UseFormSetError, useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
@@ -55,12 +56,13 @@ import { useLevels } from '../../apis/level'
 import { findLevelByStageName } from '../../models/level'
 
 export function OperationSetEditorLauncher() {
+  const { t } = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
       <Button large fill icon="folder-close" onClick={() => setIsOpen(true)}>
-        创建作业集
+        {t('components.operation-set.OperationSetEditor.create_job_set')}
       </Button>
       <OperationSetEditorDialog
         isOpen={isOpen}
@@ -82,6 +84,7 @@ export function OperationSetEditorDialog({
   operationSet,
   ...props
 }: OperationSetEditorDialogProps) {
+  const { t } = useTranslation()
   const isEdit = !!operationSet
 
   const refreshOperationSets = useRefreshOperationSets()
@@ -107,7 +110,9 @@ export function OperationSetEditorDialog({
 
         AppToaster.show({
           intent: 'success',
-          message: `更新作业集成功`,
+          message: t(
+            'components.operation-set.OperationSetEditor.update_success',
+          ),
         })
       } else {
         await createOperationSet({
@@ -119,7 +124,9 @@ export function OperationSetEditorDialog({
 
         AppToaster.show({
           intent: 'success',
-          message: `创建作业集成功`,
+          message: t(
+            'components.operation-set.OperationSetEditor.create_success',
+          ),
         })
       }
 
@@ -137,7 +144,11 @@ export function OperationSetEditorDialog({
 
   return (
     <Dialog
-      title={isEdit ? '编辑作业集' : '创建作业集'}
+      title={
+        isEdit
+          ? t('components.operation-set.OperationSetEditor.edit_job_set')
+          : t('components.operation-set.OperationSetEditor.create_job_set')
+      }
       icon="folder-close"
       className="w-auto"
       isOpen={isOpen}
@@ -172,6 +183,7 @@ interface FormValues {
 }
 
 function OperationSetForm({ operationSet, onSubmit }: FormProps) {
+  const { t } = useTranslation()
   const isEdit = !!operationSet
 
   const operationSelectorRef = useRef<OperationSelectorRef>(null)
@@ -227,9 +239,13 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
                 icon="helicopter"
                 description={
                   <>
-                    还没有添加作业哦(￣▽￣)
+                    {t(
+                      'components.operation-set.OperationSetEditor.no_jobs_yet',
+                    )}
                     <br />
-                    请从作业列表中添加
+                    {t(
+                      'components.operation-set.OperationSetEditor.add_from_list',
+                    )}
                   </>
                 }
               />
@@ -239,12 +255,16 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
 
         <div className="grow basis-full lg:overflow-y-auto">
           <FormField
-            label="标题"
+            label={t('components.operation-set.OperationSetEditor.title')}
             field="name"
             control={control}
             error={errors.name}
             ControllerProps={{
-              rules: { required: '标题不能为空' },
+              rules: {
+                required: t(
+                  'components.operation-set.OperationSetEditor.title_required',
+                ),
+              },
               render: (renderProps) => (
                 <InputGroup
                   {...renderProps.field}
@@ -255,7 +275,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           />
 
           <FormField
-            label="描述"
+            label={t('components.operation-set.OperationSetEditor.description')}
             field="description"
             control={control}
             error={errors.description}
@@ -285,7 +305,9 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
                       : 'PRIVATE',
                   )
                 }
-                label="对所有人可见"
+                label={t(
+                  'components.operation-set.OperationSetEditor.visible_to_all',
+                )}
               />
             )}
           />
@@ -295,7 +317,8 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
       <div className="flex items-end">
         {isEdit && (
           <div className="text-xs text-gray-500">
-            <Icon icon="info-sign" /> 修改后请点击保存按钮
+            <Icon icon="info-sign" />{' '}
+            {t('components.operation-set.OperationSetEditor.click_save')}
           </div>
         )}
 
@@ -307,12 +330,18 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           icon="floppy-disk"
           className="ml-auto"
         >
-          {isEdit ? '保存' : '创建'}
+          {isEdit
+            ? t('components.operation-set.OperationSetEditor.save')
+            : t('components.operation-set.OperationSetEditor.create')}
         </Button>
       </div>
 
       {globalError && (
-        <Callout intent="danger" icon="error" title="错误">
+        <Callout
+          intent="danger"
+          icon="error"
+          title={t('components.operation-set.OperationSetEditor.error')}
+        >
           {globalError}
         </Callout>
       )}
@@ -337,6 +366,7 @@ function OperationSelector({
   operationSet,
   selectorRef,
 }: OperationSelectorProps) {
+  const { t } = useTranslation()
   const { operations, error } = useOperations({
     operationIds: operationSet.copilotIds,
   })
@@ -442,41 +472,65 @@ function OperationSelector({
                 disabled={levelLoading}
                 icon="sort-alphabetical"
                 text={
-                  '按关卡' +
+                  t(
+                    'components.operation-set.OperationSetEditor.sort_by_level',
+                  ) +
                   (levelLoading
-                    ? ' (加载中...)'
+                    ? ' (' +
+                      t('components.operation-set.OperationSetEditor.loading') +
+                      ')'
                     : levelError
-                      ? ' (关卡加载失败，使用备用排序)'
+                      ? ' (' +
+                        t(
+                          'components.operation-set.OperationSetEditor.level_load_failed',
+                        ) +
+                        ')'
                       : '')
                 }
                 onClick={() => sort('level')}
               />
               <MenuItem
                 icon="sort-alphabetical"
-                text="按标题"
+                text={t(
+                  'components.operation-set.OperationSetEditor.sort_by_title',
+                )}
                 onClick={() => sort('title')}
               />
               <MenuItem
                 icon="sort-numerical"
-                text="按 ID"
+                text={t(
+                  'components.operation-set.OperationSetEditor.sort_by_id',
+                )}
                 onClick={() => sort('id')}
               />
             </Menu>
           }
         >
-          <Button small minimal icon="sort" text="一键排序..." />
+          <Button
+            small
+            minimal
+            icon="sort"
+            text={
+              t('components.operation-set.OperationSetEditor.quick_sort') +
+              '...'
+            }
+          />
         </Popover2>
         <Button
           small
           minimal
           icon="reset"
-          text="反转列表"
+          text={t('components.operation-set.OperationSetEditor.reverse_list')}
           onClick={() => sort('reverse')}
         />
       </div>
 
       {error && (
-        <Callout intent="danger" icon="error" title="错误">
+        <Callout
+          intent="danger"
+          icon="error"
+          title={t('components.operation-set.OperationSetEditor.error')}
+        >
           {formatError(error)}
         </Callout>
       )}

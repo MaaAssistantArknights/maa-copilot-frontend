@@ -1,4 +1,5 @@
 import { useFormState } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 import { SetOptional } from 'type-fest'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
@@ -15,19 +16,26 @@ export const EditorActionExecPredicateKills = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
+  const { t } = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label="击杀数条件"
+      label={t(
+        'components.editor.action.EditorActionExecPredicate.kill_count_condition',
+      )}
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description="如果没达到就一直等待。可选，默认为 0，直接执行"
+      description={t(
+        'components.editor.action.EditorActionExecPredicate.kill_count_description',
+      )}
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: '击杀数',
+          placeholder: t(
+            'components.editor.action.EditorActionExecPredicate.kill_count',
+          ),
           min: 0,
         }}
         control={control}
@@ -43,19 +51,26 @@ export const EditorActionExecPredicateCosts = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
+  const { t } = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label="费用条件"
+      label={t(
+        'components.editor.action.EditorActionExecPredicate.cost_condition',
+      )}
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description="如果没达到就一直等待。可选，默认为 0，直接执行。费用受潜能等影响，可能并不完全正确，仅适合对时间轴要求不严格的战斗，否则请使用下面的费用变化量条件。另外仅在费用是两位数的时候识别的比较准，三位数的费用可能会识别错，不推荐使用。"
+      description={t(
+        'components.editor.action.EditorActionExecPredicate.cost_condition_description',
+      )}
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: '费用',
+          placeholder: t(
+            'components.editor.action.EditorActionExecPredicate.dp_cost',
+          ),
           min: 0,
         }}
         control={control}
@@ -71,18 +86,27 @@ export const EditorActionExecPredicateCostChange = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
+  const { t } = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label="费用变化量条件"
+      label={t(
+        'components.editor.action.EditorActionExecPredicate.cost_change_condition',
+      )}
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description="如果没达到就一直等待。可选，默认为 0，直接执行。注意：费用变化量是从开始执行本动作时开始计算的（即：使用前一个动作结束时的费用作为基准）。支持负数，即费用变少了（例如“孑”等吸费干员使得费用变少了）。另外仅在费用是两位数的时候识别的比较准，三位数的费用可能会识别错，不推荐使用。"
+      description={t(
+        'components.editor.action.EditorActionExecPredicate.cost_change_description',
+      )}
     >
       <EditorIntegerInput
-        NumericInputProps={{ placeholder: '费用变化量' }}
+        NumericInputProps={{
+          placeholder: t(
+            'components.editor.action.EditorActionExecPredicate.dp_change_amount',
+          ),
+        }}
         control={control}
         name={name}
         {...controllerProps}
@@ -96,18 +120,25 @@ export const EditorActionExecPredicateCooling = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
+  const { t } = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label="CD 中干员数量条件"
+      label={t(
+        'components.editor.action.EditorActionExecPredicate.cooldown_operator_condition',
+      )}
       field={name}
       error={errors[name]}
-      description="如果没达到就一直等待。可选，默认 -1，不识别"
+      description={t(
+        'components.editor.action.EditorActionExecPredicate.cooldown_description',
+      )}
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: 'CD 中干员数量',
+          placeholder: t(
+            'components.editor.action.EditorActionExecPredicate.cooldown_count',
+          ),
           min: 0,
         }}
         control={control}

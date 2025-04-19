@@ -1,41 +1,44 @@
 import { Tooltip2, Tooltip2Props } from '@blueprintjs/popover2'
 
-import { FC, memo, useEffect, useMemo, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
-import { DayjsInput, formatDateTime, formatRelativeTime } from 'utils/times'
+import { formatDate, formatRelativeTime } from '../utils/times'
 
-export const RelativeTime: FC<{
-  moment: DayjsInput
+interface RelativeTimeProps {
+  moment: string | number | Date
   className?: string
-  detailTooltip?: boolean
   Tooltip2Props?: Omit<Tooltip2Props, 'content'>
-}> = memo(({ moment, className, detailTooltip = true, Tooltip2Props }) => {
-  const [formatted, setFormatted] = useState(formatRelativeTime(moment))
+}
 
+export const RelativeTime: FC<RelativeTimeProps> = ({
+  moment,
+  className,
+  Tooltip2Props,
+}) => {
+  // Convert to timestamp if needed
+  const timestamp =
+    typeof moment === 'string' || moment instanceof Date
+      ? new Date(moment).getTime()
+      : moment
+
+  const formattedDate = formatDate(timestamp)
+  const [relativeTime, setRelativeTime] = useState(
+    formatRelativeTime(timestamp),
+  )
   useEffect(() => {
     const interval = setInterval(() => {
-      setFormatted(formatRelativeTime(moment))
+      setRelativeTime(formatRelativeTime(timestamp))
     }, 5000)
-
     return () => clearInterval(interval)
-  }, [moment])
+  }, [timestamp])
 
-  const absoluteTime = useMemo(() => {
-    return formatDateTime(moment)
-  }, [moment])
-
-  const child = useMemo(
-    () => <span className={className}>{formatted}</span>,
-    [formatted, className],
-  )
-
-  return detailTooltip ? (
-    <Tooltip2 {...Tooltip2Props} content={absoluteTime}>
-      {child}
+  return (
+    <Tooltip2
+      content={formattedDate}
+      {...Tooltip2Props}
+      disabled={!formattedDate}
+    >
+      <span className={className}>{relativeTime}</span>
     </Tooltip2>
-  ) : (
-    child
   )
-})
-
-RelativeTime.displayName = 'RelativeTime'
+}

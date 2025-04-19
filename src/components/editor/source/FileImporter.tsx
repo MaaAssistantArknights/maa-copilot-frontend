@@ -1,12 +1,14 @@
 import { MenuItem } from '@blueprintjs/core'
 
 import { ChangeEventHandler, FC, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { AppToaster } from '../../Toaster'
 
 export const FileImporter: FC<{ onImport: (content: string) => void }> = ({
   onImport,
 }) => {
+  const { t } = useTranslation()
   const inputRef = useRef<HTMLInputElement>(null)
 
   const handleUpload: ChangeEventHandler<HTMLInputElement> = async (e) => {
@@ -21,7 +23,7 @@ export const FileImporter: FC<{ onImport: (content: string) => void }> = ({
     } catch (e) {
       console.warn('Failed to read file:', e)
       AppToaster.show({
-        message: '无法读取文件',
+        message: t('components.editor.source.FileImporter.cannot_read_file'),
         intent: 'danger',
       })
     }
@@ -35,7 +37,7 @@ export const FileImporter: FC<{ onImport: (content: string) => void }> = ({
         onClick={() => inputRef.current?.click()}
         text={
           <>
-            导入本地文件...
+            {t('components.editor.source.FileImporter.import_local_file')}
             <input
               className="hidden"
               type="file"

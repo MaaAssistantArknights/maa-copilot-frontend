@@ -8,6 +8,7 @@ import {
 } from '@blueprintjs/core'
 
 import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Components } from 'react-markdown'
 
 import { announcementBaseURL } from '../../apis/announcement'
@@ -23,6 +24,7 @@ interface AnnDialogProps extends DialogProps {
 }
 
 export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
+  const { t } = useTranslation()
   const content = sections?.map(({ raw }) => raw).join('\n\n')
 
   // attach each section's meta to its heading node
@@ -65,7 +67,12 @@ export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
   }
 
   return (
-    <Dialog className="" title="公告" icon="info-sign" {...dialogProps}>
+    <Dialog
+      className=""
+      title={t('components.announcement.AnnDialog.title')}
+      icon="info-sign"
+      {...dialogProps}
+    >
       <DialogBody className="">
         {content ? (
           <Markdown
@@ -84,12 +91,19 @@ export const AnnDialog: FC<AnnDialogProps> = ({ sections, ...dialogProps }) => {
             {content || ''}
           </Markdown>
         ) : (
-          <NonIdealState icon="help" title="暂无公告" />
+          <NonIdealState
+            icon="help"
+            title={t('components.announcement.AnnDialog.no_announcements')}
+          />
         )}
       </DialogBody>
       <DialogFooter
         actions={
-          <Button intent="primary" text="确定" onClick={dialogProps.onClose} />
+          <Button
+            intent="primary"
+            text={t('components.announcement.AnnDialog.ok')}
+            onClick={dialogProps.onClose}
+          />
         }
       />
     </Dialog>

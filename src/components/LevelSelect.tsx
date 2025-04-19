@@ -4,6 +4,7 @@ import { getCreateNewItem } from '@blueprintjs/select'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { FC, useEffect, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { useLevels } from '../apis/level'
 import { createCustomLevel, isCustomLevel, isHardMode } from '../models/level'
@@ -22,6 +23,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
   value,
   onChange,
 }) => {
+  const { t } = useTranslation()
   const { data } = useLevels()
   const levels = useMemo(
     () =>
@@ -72,7 +74,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       let headerName: string
 
       if (selectedLevel.catOne === '剿灭作战') {
-        headerName = selectedLevel.catOne
+        headerName = t('components.LevelSelect.annihilation')
         similarLevels = levels.filter(
           (el) => el.catOne === selectedLevel.catOne,
         )
@@ -81,7 +83,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         selectedLevel.stageId.includes('crisis')
       ) {
         // 危机合约分类非常混乱，直接全塞到一起
-        headerName = '危机合约'
+        headerName = t('components.LevelSelect.contingency_contract')
         similarLevels = levels.filter(
           (el) => el.stageId.includes('rune') || el.stageId.includes('crisis'),
         )
@@ -92,7 +94,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         )
       } else {
         // catTwo 为空的时候用 levelId 来分类
-        headerName = '相关关卡'
+        headerName = t('components.LevelSelect.related_levels')
         const levelIdPrefix = selectedLevel.levelId
           .split('/')
           .slice(0, -1)
@@ -171,14 +173,14 @@ export const LevelSelect: FC<LevelSelectProps> = ({
           key="create-new-item"
           roleStructure="listoption"
           className={clsx(active && Classes.ACTIVE)}
-          text={`直接搜索关卡 "${query}"`}
+          text={t('components.LevelSelect.search_level', { query })}
           icon="text-highlight"
           onClick={handleClick}
           selected={selectedLevel && isCustomLevel(selectedLevel)}
         />
       )}
       inputProps={{
-        placeholder: '关卡名、类型、编号',
+        placeholder: t('components.LevelSelect.level_search_placeholder'),
       }}
       popoverProps={{
         minimal: true,
@@ -191,7 +193,9 @@ export const LevelSelect: FC<LevelSelectProps> = ({
           icon="area-of-interest"
           rightIcon="chevron-down"
         >
-          {selectedLevel ? selectedLevel.catThree : '关卡'}
+          {selectedLevel
+            ? selectedLevel.catThree
+            : t('components.LevelSelect.level')}
         </Button>
       }
     </Select>

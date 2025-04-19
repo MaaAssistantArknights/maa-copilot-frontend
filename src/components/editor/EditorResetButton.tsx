@@ -2,6 +2,7 @@ import { Alert, Button, H4 } from '@blueprintjs/core'
 
 import { useState } from 'react'
 import { FieldValues, UseFormReset } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
 
 export const EditorResetButton = <T extends FieldValues>({
   reset,
@@ -10,14 +11,15 @@ export const EditorResetButton = <T extends FieldValues>({
   reset: UseFormReset<T>
   entityName: string
 }) => {
+  const { t } = useTranslation()
   const [resetDialogOpen, setResetDialogOpen] = useState(false)
 
   return (
     <>
       <Alert
         isOpen={resetDialogOpen}
-        confirmButtonText="重置"
-        cancelButtonText="取消"
+        confirmButtonText={t('components.editor.EditorResetButton.reset')}
+        cancelButtonText={t('components.editor.EditorResetButton.cancel')}
         icon="reset"
         intent="danger"
         canOutsideClickCancel
@@ -27,8 +29,16 @@ export const EditorResetButton = <T extends FieldValues>({
           setResetDialogOpen(false)
         }}
       >
-        <H4>重置{entityName}</H4>
-        <p>确定要重置{entityName}吗？</p>
+        <H4>
+          {t('components.editor.EditorResetButton.reset_entity', {
+            entityName,
+          })}
+        </H4>
+        <p>
+          {t('components.editor.EditorResetButton.confirm_reset', {
+            entityName,
+          })}
+        </p>
       </Alert>
 
       <Button
@@ -38,7 +48,7 @@ export const EditorResetButton = <T extends FieldValues>({
         intent="danger"
         onClick={() => setResetDialogOpen(true)}
       >
-        重置...
+        {t('components.editor.EditorResetButton.reset_button')}
       </Button>
     </>
   )

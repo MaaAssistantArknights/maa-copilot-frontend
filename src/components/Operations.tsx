@@ -15,6 +15,7 @@ import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
 import { MaaUserInfo } from 'maa-copilot-client'
 import { ComponentType, useMemo, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
@@ -27,6 +28,7 @@ import { withSuspensable } from './Suspensable'
 import { UserFilter } from './UserFilter'
 
 export const Operations: ComponentType = withSuspensable(() => {
+  const { t } = useTranslation()
   const [queryParams, setQueryParams] = useState<
     Omit<UseOperationsParams, 'operator'>
   >({
@@ -63,7 +65,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                 tab !== 'operation' && 'opacity-75',
               )}
               id="operation"
-              title="作业"
+              title={t('components.Operations.operations')}
             />
             <Divider className="self-center h-[1em]" />
             <Tab
@@ -72,13 +74,13 @@ export const Operations: ComponentType = withSuspensable(() => {
                 tab !== 'operationSet' && 'opacity-75',
               )}
               id="operationSet"
-              title="作业集"
+              title={t('components.Operations.operation_sets')}
             />
           </Tabs>
           <Button
             minimal
             icon="multi-select"
-            title="启动多选"
+            title={t('components.Operations.enable_multi_select')}
             className="ml-auto mr-2"
             active={multiselect}
             onClick={() => setMultiselect((v) => !v)}
@@ -101,7 +103,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             <div className="flex flex-wrap items-center gap-2">
               <InputGroup
                 className="max-w-md [&>input]:!rounded-md"
-                placeholder="标题、描述、神秘代码"
+                placeholder={t('components.Operations.search_placeholder')}
                 leftIcon="search"
                 size={64}
                 large
@@ -145,25 +147,27 @@ export const Operations: ComponentType = withSuspensable(() => {
                 onChange={setOperatorFilter}
               />
               <div className="flex flex-wrap items-center ml-auto">
-                <H6 className="mb-0 mr-1 opacity-75">排序:</H6>
+                <H6 className="mb-0 mr-1 opacity-75">
+                  {t('components.Operations.sort_by')}
+                </H6>
                 <ButtonGroup minimal className="flex-wrap">
                   {(
                     [
                       {
                         icon: 'flame',
-                        text: '热度',
+                        text: t('components.Operations.popularity'),
                         orderBy: 'hot',
                         active: queryParams.orderBy === 'hot',
                       },
                       {
                         icon: 'time',
-                        text: '最新',
+                        text: t('components.Operations.newest'),
                         orderBy: 'id',
                         active: queryParams.orderBy === 'id',
                       },
                       {
                         icon: 'eye-open',
-                        text: '访问量',
+                        text: t('components.Operations.views'),
                         orderBy: 'views',
                         active: queryParams.orderBy === 'views',
                       },
@@ -194,7 +198,7 @@ export const Operations: ComponentType = withSuspensable(() => {
           <div className="flex flex-wrap items-center gap-2">
             <InputGroup
               className="max-w-md [&>input]:!rounded-md"
-              placeholder="标题、描述、神秘代码"
+              placeholder={t('components.Operations.search_placeholder')}
               leftIcon="search"
               size={64}
               large

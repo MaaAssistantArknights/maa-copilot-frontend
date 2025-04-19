@@ -1,7 +1,9 @@
 import { Button, NonIdealState, Spinner } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
 
-import { ComponentType, Suspense, useEffect, useRef } from 'react'
+import { TFunction } from 'i18next'
+import { ComponentType, FC, Suspense, useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 import { FCC } from 'types'
 
 interface SuspensableProps {
@@ -79,30 +81,59 @@ export const Suspensable: FCC<SuspensableProps> = ({
   )
 }
 
-export function withSuspensable<P extends {}>(
+interface SuspensableOptions {
+  pendingTitle?: string | ((t: TFunction) => string)
+  retryOnChange?: string[]
+  errorFallback?: (params: {
+    error: Error
+    resetError: () => void
+  }) => JSX.Element | undefined
+}
+
+export function withSuspensable<P extends object>(
   Component: ComponentType<P>,
-  {
-    retryOnChange,
-    ...suspensableProps
-  }: Omit<SuspensableProps, 'retryDeps'> & {
-    // keys of a subset of props that will be passed as `retryDeps` to Suspensable
-    retryOnChange?: readonly (keyof P)[]
-  } = {},
-): ComponentType<P> {
-  const Wrapped: ComponentType<P> = (props) => {
+  options: SuspensableOptions = {},
+): FC<P> {
+  const { pendingTitle, retryOnChange = [] } = options
+
+  const SuspensableComponent: FC<P> = (props) => {
+    const { t } = useTranslation()
+    const resetErrorRef = useRef<(() => void) | undefined>()
+
+    useEffect(
+      () => {
+        resetErrorRef.current?.()
+        resetErrorRef.current = undefined
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      },
+      retryOnChange.map((key) => (props as any)[key]),
+    )
+
+    const title =
+      typeof pendingTitle === 'function'
+        ? pendingTitle(t)
+        : pendingTitle || t('common.loading')
+
     return (
-      <Suspensable
-        {...suspensableProps}
-        retryDeps={retryOnChange?.map((key) => props[key])}
+      <Suspense
+        fallback={
+          <div className="flex justify-center p-8">
+            <div className="flex items-center gap-4">
+              <Spinner size={20} />
+              <div>{title}</div>
+            </div>
+          </div>
+        }
       >
         <Component {...props} />
-      </Suspensable>
+      </Suspense>
     )
   }
 
-  // Format for display in DevTools
-  const name = Component.displayName || Component.name || 'Unknown'
-  Wrapped.displayName = `withSuspensable(${name})`
+  // Debug
+  SuspensableComponent.displayName = `Suspensable(${
+    Component.displayName || Component.name || 'Component'
+  })`
 
-  return Wrapped
+  return SuspensableComponent
 }
