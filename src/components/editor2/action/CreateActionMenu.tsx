@@ -6,17 +6,17 @@ import {
   Tooltip2,
 } from '@blueprintjs/popover2'
 
+import { PrimitiveAtom, useSetAtom } from 'jotai'
 import { clamp } from 'lodash-es'
 import { FC, ReactNode, Ref, useRef } from 'react'
-import { useFieldArray, useFormContext } from 'react-hook-form'
 
 import { ACTION_TYPES_BY_GROUP } from '../../../models/types'
 import { joinJSX } from '../../../utils/react'
-import { EditorFormValues, useEditorControls } from '../editor-state'
+import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
 import { createAction } from '../reconciliation'
 
 interface CreateActionMenuProps {
-  index?: number
+  actionAtom?: PrimitiveAtom<EditorAction>
   renderTarget?: (
     props: { locatorRef: Ref<HTMLElement> } & Parameters<
       NonNullable<Popover2Props['renderTarget']>
@@ -26,13 +26,12 @@ interface CreateActionMenuProps {
 }
 
 export const CreateActionMenu: FC<CreateActionMenuProps> = ({
-  index,
+  actionAtom,
   renderTarget,
   children,
 }) => {
-  const { checkpoint } = useEditorControls()
-  const { control } = useFormContext<EditorFormValues>()
-  const { append, insert } = useFieldArray({ name: 'actions', control })
+  const { withCheckpoint } = useEditorControls()
+  const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
   const containerRef = useRef<HTMLElement>(null)
   const locatorRef = useRef<HTMLElement>(null)
   const popperRef =
@@ -60,13 +59,18 @@ export const CreateActionMenu: FC<CreateActionMenuProps> = ({
                     </Tooltip2>
                   }
                   onClick={() => {
-                    checkpoint('add-action', '添加动作', true)
-                    const newAction = createAction(value)
-                    if (index !== undefined) {
-                      insert(index, newAction)
-                    } else {
-                      append(newAction)
-                    }
+                    withCheckpoint(() => {
+                      dispatchActions({
+                        type: 'insert',
+                        value: createAction(value),
+                        before: actionAtom,
+                      })
+                      return {
+                        action: 'add-action',
+                        desc: '添加动作',
+                        squash: false,
+                      }
+                    })
                   }}
                 />
               )),

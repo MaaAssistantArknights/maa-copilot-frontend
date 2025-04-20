@@ -1,164 +1,204 @@
+import { produce } from 'immer'
+import { useAtom } from 'jotai'
+import { useAtomCallback } from 'jotai/utils'
 import { uniqueId } from 'lodash-es'
-import { useFieldArray, useFormContext } from 'react-hook-form'
-import { SetRequired } from 'type-fest'
+import { useCallback } from 'react'
 
-import { EditorPerformerAddProps } from '../../../editor/operator/EditorPerformerAdd'
+import { CopilotDocV1 } from '../../../../models/copilot.schema'
 import { SheetProvider } from '../../../editor/operator/sheet/SheetProvider'
 import { OperatorFilterProvider } from '../../../editor/operator/sheet/sheetOperator/SheetOperatorFilterProvider'
-import { EditorFormValues } from '../../editor-state'
+import {
+  EditorGroup,
+  EditorOperation,
+  EditorOperator,
+  editorAtoms,
+  useEditorControls,
+} from '../../editor-state'
+import { getInternalId } from '../../reconciliation'
 import { SheetList } from './SheetList'
 
-type EditorOperator = NonNullable<
-  NonNullable<EditorFormValues['opers']>[number]
->
-type EditorGroup = NonNullable<NonNullable<EditorFormValues['groups']>[number]>
-
-const getId = (performer: EditorOperator | EditorGroup) => {
-  // normally the id will never be undefined, but we need to make TS happy as well as handing edge cases
-  return (performer._id ??= uniqueId())
-}
-
 export const OperatorSheet = () => {
-  const { control } = useFormContext<EditorFormValues>()
+  const { withCheckpoint } = useEditorControls()
+  const [operators] = useAtom(editorAtoms.operators)
+  const [groups] = useAtom(editorAtoms.groups)
 
-  const {
-    fields: operators,
-    append: appendOperator,
-    update: updateOperator,
-    remove: removeOperator,
-  } = useFieldArray({
-    name: 'opers',
-    control,
-  })
-  const {
-    fields: groups,
-    append: appendGroup,
-    update: updateGroup,
-    remove: removeGroup,
-  } = useFieldArray({
-    name: 'groups',
-    control,
-  })
-
-  const findGroupByOperator = (operator?: EditorOperator) =>
-    operator &&
-    (groups.find((group) => group.opers?.includes(operator)) as
-      | SetRequired<EditorGroup, 'opers'>
-      | undefined)
-
-  const submitOperator: EditorPerformerAddProps['submitOperator'] = (
-    { groupName, ...operator },
-    setError,
-    fromSheet,
-  ) => {
-    if (
-      operators.find(
-        ({ name, _id }) => name === operator.name && _id !== operator._id,
-      )
-    ) {
-      setError?.('name', { message: '干员已存在' })
-      return false
-    }
-
-    let newGroup: EditorGroup | undefined
-    let newGroupIndex = -1
-
-    if (groupName) {
-      newGroupIndex = groups.findIndex((group) => group.name === groupName)
-      newGroup = groups[newGroupIndex]
-
-      if (!newGroup) {
-        newGroup = { name: groupName }
-        newGroupIndex = groups.length
-        submitGroup(newGroup, setError)
+  // TODO: 兼容性处理，以后要去掉
+  const ensureEditorOperator = useCallback(
+    (
+      operation: EditorOperation,
+      operator: CopilotDocV1.Operator,
+    ): EditorOperator => {
+      if (operator._id) {
+        return operator as EditorOperator
       }
-    }
-
-    const addOperator = () => {
-      if (newGroup) {
-        updateGroup(newGroupIndex, {
-          ...newGroup,
-          opers: [...(newGroup.opers || []), operator],
-        })
-      } else appendOperator(operator)
-    }
-
-    if (fromSheet && operator._id) {
-      const existingOperator = operator
-      operator._id = getId(existingOperator)
-
-      const oldGroup = findGroupByOperator(existingOperator)
-      if (oldGroup) {
-        if (oldGroup === newGroup) {
-          // replace existing operator in group
-          updateGroup(groups.indexOf(oldGroup), {
-            ...oldGroup,
-            opers: oldGroup.opers.map((op) =>
-              op === existingOperator ? operator : op,
-            ),
-          })
-        } else {
-          // remove existing operator from group
-          updateGroup(groups.indexOf(oldGroup), {
-            ...oldGroup,
-            opers: oldGroup.opers.filter((op) => op !== existingOperator),
-          })
-
-          // add new operator to group
-          addOperator()
-        }
-      } else {
-        if (newGroup) {
-          removeOperator(operators.indexOf(existingOperator))
-          addOperator()
-        } else {
-          updateOperator(
-            operators.findIndex(({ _id }) => _id === operator._id),
-            operator,
-          )
-        }
-      }
-    } else {
-      operator._id = uniqueId()
-      addOperator()
-    }
-    return true
-  }
-
-  const submitGroup: EditorPerformerAddProps['submitGroup'] = (
-    group,
-    setError,
-    fromSheet,
-  ) => {
-    if (
-      groups.find(({ name, _id }) => name === group.name && _id !== group._id)
-    ) {
-      setError?.('name', { message: '干员组已存在' })
-      return false
-    }
-    if (fromSheet && group._id) {
-      const existingGroup = group
-      group._id = getId(existingGroup)
-      updateGroup(
-        groups.findIndex(({ _id }) => _id === existingGroup._id),
-        group,
+      const matchedOperator = operation.opers.find(
+        (op) => op.name === operator.name,
       )
-    } else {
-      group._id = uniqueId()
-      appendGroup(group)
-      if (group.opers?.length) {
-        removeOperator(
-          group.opers
-            ?.map((item) =>
-              operators.findIndex(({ name }) => name === item.name),
-            )
-            .filter((item) => item !== -1),
+      if (matchedOperator) {
+        return matchedOperator
+      }
+      for (const group of operation.groups) {
+        const matchedOperator = group.opers.find(
+          (op) => op.name === operator.name,
         )
+        if (matchedOperator) {
+          return matchedOperator
+        }
       }
-    }
+      return { ...operator, _id: uniqueId() }
+    },
+    [],
+  )
+  const ensureEditorGroup = useCallback(
+    (operation: EditorOperation, group: CopilotDocV1.Group): EditorGroup => {
+      if (group._id) {
+        return group as EditorGroup
+      }
+      const matchedGroup = operation.groups.find((g) => g.name === group.name)
+      if (matchedGroup) {
+        return matchedGroup
+      }
+      return {
+        ...group,
+        _id: uniqueId(),
+        opers:
+          group.opers?.map((op) => ensureEditorOperator(operation, op)) || [],
+      }
+    },
+    [ensureEditorOperator],
+  )
 
-    return true
-  }
+  const submitOperator = useAtomCallback(
+    useCallback(
+      (get, set, _operator: CopilotDocV1.Operator) => {
+        const operation = get(editorAtoms.operation)
+        const operator = ensureEditorOperator(operation, _operator)
+
+        withCheckpoint((skip) => {
+          let checkpoint = skip
+          const newOperation = produce(operation, (draft) => {
+            let targetOperator = draft.opers.find(
+              (op) => getInternalId(op) === getInternalId(operator),
+            )
+            if (!targetOperator) {
+              for (const group of draft.groups) {
+                targetOperator = group.opers.find(
+                  (op) => getInternalId(op) === getInternalId(operator),
+                )
+                if (targetOperator) {
+                  break
+                }
+              }
+            }
+            if (targetOperator) {
+              Object.assign(targetOperator, operator)
+              checkpoint = {
+                action: 'update-operator',
+                desc: '更新干员',
+                squash: false,
+              }
+            } else {
+              draft.opers.push(operator)
+              checkpoint = {
+                action: 'add-operator',
+                desc: '添加干员',
+                squash: false,
+              }
+            }
+          })
+          set(editorAtoms.operation, newOperation)
+          return checkpoint
+        })
+        return true
+      },
+      [ensureEditorOperator, withCheckpoint],
+    ),
+  )
+
+  const submitGroup = useAtomCallback(
+    useCallback(
+      (get, set, _group: CopilotDocV1.Group) => {
+        const operation = get(editorAtoms.operation)
+        const group = ensureEditorGroup(operation, _group)
+
+        withCheckpoint((skip) => {
+          let checkpoint = skip
+          const newOperation = produce(operation, (draft) => {
+            const targetGroup = draft.groups.find(
+              (g) => getInternalId(g) === getInternalId(group),
+            )
+            if (targetGroup) {
+              Object.assign(targetGroup, group)
+              checkpoint = {
+                action: 'update-group',
+                desc: '更新干员组',
+                squash: false,
+              }
+            } else {
+              draft.groups.push(group)
+              checkpoint = {
+                action: 'add-group',
+                desc: '添加干员组',
+                squash: false,
+              }
+            }
+          })
+          set(editorAtoms.operation, newOperation)
+          return checkpoint
+        })
+        return true
+      },
+      [ensureEditorGroup, withCheckpoint],
+    ),
+  )
+
+  const removeOperator = useAtomCallback(
+    useCallback(
+      (get, set, index: number | number[] | undefined) => {
+        if (index === undefined || index === -1) return
+        if (typeof index === 'number') {
+          index = [index]
+        }
+        withCheckpoint(() => {
+          set(editorAtoms.operation, (operation) =>
+            produce(operation, (draft) => {
+              draft.opers = draft.opers.filter((_, i) => !index.includes(i))
+            }),
+          )
+          return {
+            action: 'remove-operator',
+            desc: '移除干员',
+            squash: false,
+          }
+        })
+      },
+      [withCheckpoint],
+    ),
+  )
+
+  const removeGroup = useAtomCallback(
+    useCallback(
+      (get, set, index: number | number[] | undefined) => {
+        if (index === undefined || index === -1) return
+        if (typeof index === 'number') {
+          index = [index]
+        }
+        withCheckpoint(() => {
+          set(editorAtoms.operation, (operation) =>
+            produce(operation, (draft) => {
+              draft.groups = draft.groups.filter((_, i) => !index.includes(i))
+            }),
+          )
+          return {
+            action: 'remove-group',
+            desc: '移除干员组',
+            squash: false,
+          }
+        })
+      },
+      [withCheckpoint],
+    ),
+  )
 
   return (
     <SheetProvider

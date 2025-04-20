@@ -1,7 +1,7 @@
 import { uniqueId } from 'lodash-es'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
-import { EditorAction, EditorFormValues } from './editor-state'
+import { EditorAction, EditorGroup, EditorOperation } from './editor-state'
 
 export type WithInternalId<T = {}> = T extends never
   ? never
@@ -28,9 +28,20 @@ export function createAction(type: CopilotDocV1.Type) {
   return action
 }
 
-export function operationToFormValues(
+export function createGroup(
+  initialValues: Partial<Pick<EditorGroup, 'name'>> = {},
+): EditorGroup {
+  const group: EditorGroup = {
+    _id: uniqueId(),
+    name: initialValues.name || '',
+    opers: [],
+  }
+  return group
+}
+
+export function toEditorOperation(
   operation: CopilotDocV1.Operation,
-): EditorFormValues {
+): EditorOperation {
   const values = {
     ...operation,
     opers:

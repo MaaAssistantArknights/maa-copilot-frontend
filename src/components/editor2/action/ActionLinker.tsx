@@ -2,37 +2,38 @@ import { Button, Icon, Menu, MenuItem } from '@blueprintjs/core'
 import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { Draft } from 'immer'
+import { PrimitiveAtom, useAtomValue } from 'jotai'
+import { useImmerAtom } from 'jotai-immer'
 import { compact } from 'lodash-es'
 import { FC } from 'react'
-import {
-  Controller,
-  ControllerRenderProps,
-  useFieldArray,
-  useFormContext,
-} from 'react-hook-form'
 import { ValueOf } from 'type-fest'
 
 import { ACTION_CONDITIONS, ActionConditionType } from '../../../models/types'
 import { joinJSX } from '../../../utils/react'
 import { NumericInput2, NumericInput2Props } from '../../editor/NumericInput2'
-import { EditorFormValues, useEditorControls } from '../editor-state'
+import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
 import { CreateActionMenu } from './CreateActionMenu'
 
 interface ActionLinkerProps {
-  index: number
+  actionAtom: PrimitiveAtom<EditorAction>
   isDragging?: boolean
   isSorting?: boolean
 }
 
 export const ActionLinker: FC<ActionLinkerProps> = ({
-  index,
+  actionAtom,
   isDragging,
   isSorting,
 }) => {
-  const { checkpoint } = useEditorControls()
-  const { control, watch } = useFormContext<EditorFormValues>()
-  const { update } = useFieldArray({ name: 'actions', control })
-  const action = watch(`actions.${index}`)
+  const { withCheckpoint } = useEditorControls()
+  const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
+  const [action, setAction] = useImmerAtom(actionAtom)
+  const index = actionAtoms.indexOf(actionAtom)
+  // edge case?
+  if (index === -1) {
+    return null
+  }
   return (
     <div className="group flex items-center text-gray-400">
       <div
@@ -41,7 +42,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
           (isDragging || isSorting) && 'opacity-0',
         )}
       >
-        <CreateActionMenu index={index}>
+        <CreateActionMenu actionAtom={actionAtom}>
           <Button
             small
             minimal
@@ -103,35 +104,37 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
                         return
                       }
 
-                      switch (conditionType) {
-                        case 'intermediatePreDelay':
-                          action.intermediatePreDelay = 0
-                          break
-                        case 'intermediatePostDelay':
-                          action.intermediatePostDelay = 0
-                          break
-                        case 'costs':
-                          action.costs = 0
-                          break
-                        case 'costChanges':
-                          action.costChanges = 0
-                          break
-                        case 'kills':
-                          action.kills = 0
-                          break
-                        case 'cooling':
-                          action.cooling = 0
-                          break
-                        default:
-                          conditionType satisfies never
-                      }
-
-                      checkpoint(
-                        'add-action-' + conditionType + '-' + index,
-                        '添加动作条件',
-                        true,
-                      )
-                      update(index, action)
+                      withCheckpoint(() => {
+                        setAction((draft) => {
+                          switch (conditionType) {
+                            case 'intermediatePreDelay':
+                              draft.intermediatePreDelay = 0
+                              break
+                            case 'intermediatePostDelay':
+                              draft.intermediatePostDelay = 0
+                              break
+                            case 'costs':
+                              draft.costs = 0
+                              break
+                            case 'costChanges':
+                              draft.costChanges = 0
+                              break
+                            case 'kills':
+                              draft.kills = 0
+                              break
+                            case 'cooling':
+                              draft.cooling = 0
+                              break
+                            default:
+                              conditionType satisfies never
+                          }
+                        })
+                        return {
+                          action: 'add-action-' + conditionType,
+                          desc: '添加动作条件',
+                          squash: false,
+                        }
+                      })
                     }}
                   />
                 ))}
@@ -149,204 +152,75 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
         </Popover2>
       </div>
 
-      <ConditionChain index={index} />
+      <ConditionChain actionAtom={actionAtom} index={index} />
     </div>
   )
 }
 
-const ConditionChain: FC<{ index: number }> = ({ index }) => {
-  const { checkpoint } = useEditorControls()
-  const { control, watch, unregister } = useFormContext<EditorFormValues>()
-  const action = watch(`actions.${index}`)
+const ConditionChain: FC<{
+  actionAtom: PrimitiveAtom<EditorAction>
+  index: number
+}> = ({ actionAtom, index }) => {
+  const [action, setAction] = useImmerAtom(actionAtom)
   const conditionNodes = compact([
     index !== 0 && action.intermediatePreDelay !== undefined && (
-      <Controller
+      <ConditionNode
         key="intermediatePreDelay"
-        name={`actions.${index}.intermediatePreDelay`}
-        control={control}
-        render={({ field }) => (
-          <ConditionNode
-            title="延迟"
-            unit="ms"
-            onRemove={() => {
-              checkpoint(
-                'remove-action-intermediatePreDelay-' + index,
-                '删除动作条件-前置延迟',
-                true,
-              )
-              unregister(`actions.${index}.intermediatePreDelay`)
-            }}
-            inputProps={{ wheelStepSize: 100 }}
-            field={{
-              ...field,
-              onChange(v) {
-                checkpoint(
-                  'update-action-intermediatePreDelay-' + index,
-                  '修改动作条件-前置延迟',
-                  false,
-                )
-                field.onChange(v)
-              },
-            }}
-          />
-        )}
+        conditionKey="intermediatePreDelay"
+        title="延迟"
+        unit="ms"
+        inputProps={{ wheelStepSize: 100 }}
+        index={index}
+        action={action}
+        setAction={setAction}
       />
     ),
     action.costs !== undefined && (
-      <Controller
+      <ConditionNode
         key="costs"
-        name={`actions.${index}.costs`}
-        control={control}
-        render={({ field }) => (
-          <ConditionNode
-            title="费用"
-            onRemove={() => {
-              checkpoint(
-                'remove-action-costs-' + index,
-                '删除动作条件-费用',
-                true,
-              )
-              unregister(`actions.${index}.costs`)
-            }}
-            field={{
-              ...field,
-              onChange(v) {
-                checkpoint(
-                  'update-action-costs-' + index,
-                  '修改动作条件-费用',
-                  false,
-                )
-                field.onChange(v)
-              },
-            }}
-          />
-        )}
+        conditionKey="costs"
+        index={index}
+        action={action}
+        setAction={setAction}
       />
     ),
     action.costChanges !== undefined && (
-      <Controller
+      <ConditionNode
         key="costChanges"
-        name={`actions.${index}.costChanges`}
-        control={control}
-        render={({ field }) => (
-          <ConditionNode
-            title="费用变化"
-            onRemove={() => {
-              checkpoint(
-                'remove-action-costChanges-' + index,
-                '删除动作条件-费用变化',
-                true,
-              )
-              unregister(`actions.${index}.costChanges`)
-            }}
-            field={{
-              ...field,
-              onChange(v) {
-                checkpoint(
-                  'update-action-costChanges-' + index,
-                  '修改动作条件-费用变化',
-                  false,
-                )
-                field.onChange(v)
-              },
-            }}
-          />
-        )}
+        conditionKey="costChanges"
+        index={index}
+        action={action}
+        setAction={setAction}
       />
     ),
     action.kills !== undefined && (
-      <Controller
+      <ConditionNode
         key="kills"
-        name={`actions.${index}.kills`}
-        control={control}
-        render={({ field }) => (
-          <ConditionNode
-            title="击杀数"
-            onRemove={() => {
-              checkpoint(
-                'remove-action-kills-' + index,
-                '删除动作条件-击杀数',
-                true,
-              )
-              unregister(`actions.${index}.kills`)
-            }}
-            field={{
-              ...field,
-              onChange(v) {
-                checkpoint(
-                  'update-action-kills-' + index,
-                  '修改动作条件-击杀数',
-                  false,
-                )
-                field.onChange(v)
-              },
-            }}
-          />
-        )}
+        conditionKey="kills"
+        index={index}
+        action={action}
+        setAction={setAction}
       />
     ),
     action.cooling !== undefined && (
-      <Controller
+      <ConditionNode
         key="cooling"
-        name={`actions.${index}.cooling`}
-        control={control}
-        render={({ field }) => (
-          <ConditionNode
-            title="冷却中干员"
-            onRemove={() => {
-              checkpoint(
-                'remove-action-cooling-' + index,
-                '删除动作条件-冷却',
-                true,
-              )
-              unregister(`actions.${index}.cooling`)
-            }}
-            field={{
-              ...field,
-              onChange(v) {
-                checkpoint(
-                  'update-action-cooling-' + index,
-                  '修改动作条件-冷却',
-                  false,
-                )
-                field.onChange(v)
-              },
-            }}
-          />
-        )}
+        conditionKey="cooling"
+        index={index}
+        action={action}
+        setAction={setAction}
       />
     ),
     action.intermediatePostDelay !== undefined && (
-      <Controller
+      <ConditionNode
         key="intermediatePostDelay"
-        name={`actions.${index}.intermediatePostDelay`}
-        control={control}
-        render={({ field }) => (
-          <ConditionNode
-            title="延迟"
-            unit="ms"
-            onRemove={() => {
-              checkpoint(
-                'remove-action-intermediatePostDelay-' + index,
-                '删除动作条件-后置延迟',
-                true,
-              )
-              unregister(`actions.${index}.intermediatePostDelay`)
-            }}
-            inputProps={{ wheelStepSize: 100 }}
-            field={{
-              ...field,
-              onChange(v) {
-                checkpoint(
-                  'update-action-intermediatePostDelay-' + index,
-                  '修改动作条件-后置延迟',
-                  false,
-                )
-                field.onChange(v)
-              },
-            }}
-          />
-        )}
+        conditionKey="intermediatePostDelay"
+        title="延迟"
+        unit="ms"
+        inputProps={{ wheelStepSize: 100 }}
+        index={index}
+        action={action}
+        setAction={setAction}
       />
     ),
   ])
@@ -403,19 +277,29 @@ const ConditionChain: FC<{ index: number }> = ({ index }) => {
   )
 }
 
-const ConditionNode: FC<{
-  title: string
+interface ConditionNodeProps {
+  conditionKey: ActionConditionType
+  title?: string
   unit?: string
-  onRemove: () => void
   inputProps?: NumericInput2Props
-  field: Omit<ControllerRenderProps, 'value'> & { value: number | undefined }
-}> = ({
+  index: number
+  action: EditorAction
+  setAction: (fn: (v: Draft<EditorAction>) => void) => void
+}
+
+const ConditionNode: FC<ConditionNodeProps> = ({
   title,
   unit,
-  onRemove,
   inputProps,
-  field: { ref, value, onChange },
+  index,
+  conditionKey,
+  action,
+  setAction,
 }) => {
+  const { withCheckpoint } = useEditorControls()
+  const value = action[conditionKey]!
+  const typeInfo = ACTION_CONDITIONS[conditionKey]
+  title ??= typeInfo.title
   return (
     <div className="flex items-baseline">
       <Popover2
@@ -426,7 +310,18 @@ const ConditionNode: FC<{
               icon="cross"
               intent="danger"
               text="删除"
-              onClick={onRemove}
+              onClick={() => {
+                withCheckpoint(() => {
+                  setAction((draft) => {
+                    draft[conditionKey] = undefined
+                  })
+                  return {
+                    action: `unset-action-${conditionKey}-${index}`,
+                    desc: '删除动作条件-' + typeInfo.title,
+                    squash: false,
+                  }
+                })
+              }}
             />
           </Menu>
         }
@@ -445,11 +340,21 @@ const ConditionNode: FC<{
           'min-w-5 !p-0 !h-5 !leading-none !bg-transparent hover:!bg-gray-200 focus:!bg-gray-200 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none text-center font-semibold !text-inherit !text-[length:inherit]',
         )}
         style={{ width: String(value).length + 0.5 + 'ch' }}
-        value={value ?? ''}
+        value={value}
         wheelStepSize={1}
         {...inputProps}
-        inputRef={ref}
-        onValueChange={onChange}
+        onValueChange={(v) => {
+          withCheckpoint(() => {
+            setAction((draft) => {
+              draft[conditionKey] = v
+            })
+            return {
+              action: `set-action-${conditionKey}-${index}`,
+              desc: '修改动作条件-' + typeInfo.title,
+              squash: true,
+            }
+          })
+        }}
       />
       {unit}
     </div>

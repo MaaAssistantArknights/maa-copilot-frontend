@@ -64,6 +64,7 @@ export namespace CopilotDocV1 {
     )
 
   export interface ActionSkillUsage extends ActionBase {
+    name: string
     skillUsage: SkillUsageType
     type: Type.SkillUsage
     skillTimes?: number
