@@ -1,15 +1,9 @@
 import { Button, Divider, H1, Icon, Navbar, Tab, Tabs } from '@blueprintjs/core'
 
 import { FC } from 'react'
-import { useFormContext } from 'react-hook-form'
 
 import { joinJSX } from '../../utils/react'
-import { SourceEditorButton } from '../editor/source/SourceEditorButton'
-import {
-  EditorFormValues,
-  useEditorControls,
-  useEditorHistory,
-} from './editor-state'
+import { useEditorControls, useEditorHistory } from './editor-state'
 
 interface EditorToolbarProps {
   title?: string
@@ -27,10 +21,6 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   submitAction,
   onSubmit,
 }) => {
-  const form = useFormContext<EditorFormValues>()
-  const {
-    formState: { isSubmitting },
-  } = form
   const { history, canRedo, canUndo } = useEditorHistory()
   const { undo, redo } = useEditorControls()
 
@@ -61,11 +51,6 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
           )}
       </Tabs>
       <div className="ml-auto py-2 flex items-center gap-2">
-        <SourceEditorButton
-          className="ml-4"
-          form={form}
-          triggerValidation={() => {}}
-        />
         <Button
           minimal
           text={history.index + 1 + '/' + history.stack.length}
@@ -92,7 +77,6 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
           className="!px-8"
           icon="upload"
           text={submitAction}
-          loading={isSubmitting}
           onClick={onSubmit}
         />
       </div>

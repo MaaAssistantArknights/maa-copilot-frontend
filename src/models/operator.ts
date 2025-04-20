@@ -63,7 +63,7 @@ export function withDefaultRequirements(
   rarity = 6,
 ): Required<CopilotDocV1.Requirements> {
   const defaultRequirements = getDefaultRequirements(rarity)
-  return defaults(baseRequirements, defaultRequirements)
+  return defaults({}, baseRequirements, defaultRequirements)
 }
 
 export function adjustOperatorLevel({

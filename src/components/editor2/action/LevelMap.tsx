@@ -14,7 +14,7 @@ import {
 import { useLevels } from '../../../apis/level'
 import { findLevelByStageName } from '../../../models/level'
 import { getMapUrl } from '../../editor/floatingMap/connection'
-import { editorStateAtom } from '../editor-state'
+import { editorAtoms } from '../editor-state'
 
 interface LevelMapProps {
   className?: string
@@ -22,7 +22,7 @@ interface LevelMapProps {
 
 type MapStatus = 'idle' | 'loading' | 'contentLoading' | 'ready' | 'error'
 
-const stageNameAtom = atom((get) => get(editorStateAtom).form.stageName)
+const stageNameAtom = atom((get) => get(editorAtoms.operationBase).stageName)
 
 export const LevelMap: FC<LevelMapProps> = ({ className }) => {
   const { data: levels } = useLevels()

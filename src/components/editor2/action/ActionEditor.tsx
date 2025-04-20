@@ -1,4 +1,4 @@
-import { Button, Divider, Icon, NonIdealState } from '@blueprintjs/core'
+import { Button, Divider, Icon } from '@blueprintjs/core'
 import {
   DndContext,
   DragEndEvent,
@@ -9,12 +9,13 @@ import {
 import { SortableContext } from '@dnd-kit/sortable'
 
 import clsx from 'clsx'
-import { uniqueId, unset } from 'lodash-es'
-import { FC } from 'react'
-import { useFieldArray, useFormContext } from 'react-hook-form'
+import { useAtomValue } from 'jotai'
+import { selectAtom, useAtomCallback } from 'jotai/utils'
+import { FC, useCallback } from 'react'
 
-import { Sortable, useStableArray } from '../../dnd'
-import { EditorFormValues, useEditorControls } from '../editor-state'
+import { Sortable } from '../../dnd'
+import { AtomRenderer } from '../AtomRenderer'
+import { editorAtoms, useEditorControls } from '../editor-state'
 import { getInternalId } from '../reconciliation'
 import { ActionItem } from './ActionItem'
 import { CreateActionMenu } from './CreateActionMenu'
@@ -24,44 +25,51 @@ interface ActionEditorProps {
   className?: string
 }
 
+const actionIdsAtom = selectAtom(
+  editorAtoms.actions,
+  (actions) => actions.map(getInternalId),
+  (a, b) => a.join() === b.join(),
+)
+
 export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
-  const { checkpoint } = useEditorControls()
-  const { control } = useFormContext<EditorFormValues>()
-  const {
-    fields: actionDefaults,
-    append,
-    insert,
-    update,
-    move,
-    remove,
-  } = useFieldArray({
-    name: 'actions',
-    control,
-  })
+  const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
+  const actionIds = useAtomValue(actionIdsAtom)
+  const { withCheckpoint } = useEditorControls()
   const sensors = useSensors(useSensor(PointerSensor))
-  const actionIds = useStableArray(actionDefaults.map(getInternalId))
 
-  const handleDragEnd = ({ active, over }: DragEndEvent) => {
-    if (over && active.id !== over.id) {
-      const oldIndex = actionDefaults.findIndex(
-        (el) => getInternalId(el) === active.id,
-      )
-      const newIndex = actionDefaults.findIndex(
-        (el) => getInternalId(el) === over.id,
-      )
-      if (oldIndex !== -1 && newIndex !== -1) {
-        checkpoint(`move-action-${oldIndex}-${newIndex}`, '移动动作', true)
-        move(oldIndex, newIndex)
-      }
-    }
-  }
-
-  const handleDuplicate = (index: number) => {
-    const action = JSON.parse(JSON.stringify(actionDefaults[index]))
-    action._id = uniqueId()
-    unset(action, 'id')
-    insert(index + 1, action)
-  }
+  const handleDragEnd = useAtomCallback(
+    useCallback(
+      (get, set, { active, over }: DragEndEvent) => {
+        const actions = get(editorAtoms.actions)
+        if (over && active.id !== over.id) {
+          const oldIndex = actions.findIndex(
+            (el) => getInternalId(el) === active.id,
+          )
+          const newIndex = actions.findIndex(
+            (el) => getInternalId(el) === over.id,
+          )
+          if (oldIndex !== -1 && newIndex !== -1) {
+            const actionAtoms = get(editorAtoms.actionAtoms)
+            withCheckpoint(() => {
+              // 从后往前移动需要+1，比如从 0 移动到 1，最终位置是 1，实际上是 before 2
+              const beforeIndex = oldIndex < newIndex ? newIndex + 1 : newIndex
+              set(editorAtoms.actionAtoms, {
+                type: 'move',
+                atom: actionAtoms[oldIndex],
+                before: actionAtoms[beforeIndex],
+              })
+              return {
+                action: 'move-action',
+                desc: '移动动作',
+                squash: false,
+              }
+            })
+          }
+        }
+      },
+      [withCheckpoint],
+    ),
+  )
 
   return (
     <div className={clsx('grow min-h-0 flex', className)}>
@@ -79,28 +87,25 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
           <SortableContext items={actionIds}>
             <ul className="flex flex-col">
-              {actionDefaults.map((action, index) => (
-                <Sortable
-                  id={getInternalId(action)}
-                  // key 必须和 index 绑定，不然插入动作时会数据错乱，因为 RHF Controller 内部有缓存。
-                  // 按照 RHF 官方文档的方案应该是用 key={action.id}，但这个 id 很不稳定，动不动就更新，
-                  // 导致填写 input 的时候丢失 focus，所以这里用我们自己的 internal id 加 index
-                  key={getInternalId(action) + index}
-                >
-                  {(attrs) => (
-                    <ActionItem
-                      onDuplicate={() => handleDuplicate(index)}
-                      onRemove={() => remove(index)}
-                      {...attrs}
-                      index={index}
-                    />
+              {actionAtoms.map((actionAtom) => (
+                <AtomRenderer
+                  key={actionAtom.toString()}
+                  atom={actionAtom}
+                  render={(action) => (
+                    <Sortable
+                      id={getInternalId(action)}
+                      key={getInternalId(action)}
+                    >
+                      {(attrs) => (
+                        <ActionItem actionAtom={actionAtom} {...attrs} />
+                      )}
+                    </Sortable>
                   )}
-                </Sortable>
+                />
               ))}
             </ul>
           </SortableContext>
         </DndContext>
-
         <CreateActionMenu
           renderTarget={({ ref, locatorRef, onClick }) => (
             <Button
@@ -117,10 +122,6 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
             </Button>
           )}
         />
-
-        {actionDefaults.length === 0 && (
-          <NonIdealState title="暂无动作" className="" icon="inbox" />
-        )}
       </div>
     </div>
   )
