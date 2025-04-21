@@ -1,12 +1,14 @@
 import { Divider } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { FC, memo, useState } from 'react'
+import { throttle } from 'lodash-es'
+import { FC, memo, useEffect, useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
 import { EditorToolbar } from './EditorToolbar'
 import { InfoEditor } from './InfoEditor'
 import { ActionEditor } from './action/ActionEditor'
+import { useEditorControls } from './editor-state'
 import { OperatorEditor } from './operator/OperatorEditor'
 import { OperatorSheet } from './operator/sheet/OperatorSheet'
 
@@ -23,7 +25,38 @@ const tabs = [
 
 export const OperationEditor: FC<OperationEditorProps> = memo(
   ({ title, submitAction, onSubmit }) => {
+    const { undo, redo } = useEditorControls()
     const [selectedTab, setSelectedTab] = useState(tabs[0].id)
+
+    useEffect(() => {
+      const throttledUndo = throttle(undo, 100)
+      const throttledRedo = throttle(redo, 100)
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.code === 'KeyZ' && (e.ctrlKey || e.metaKey)) {
+          if (e.shiftKey) {
+            throttledRedo()
+          } else {
+            throttledUndo()
+          }
+          e.preventDefault()
+        }
+      }
+      const onBeforeInput = (e: InputEvent) => {
+        if (e.inputType === 'historyUndo' || e.inputType === 'historyRedo') {
+          e.preventDefault()
+        }
+      }
+      document.addEventListener('keydown', onKeyDown)
+      document.addEventListener('beforeinput', onBeforeInput, {
+        capture: true,
+      })
+      return () => {
+        document.removeEventListener('keydown', onKeyDown)
+        document.removeEventListener('beforeinput', onBeforeInput, {
+          capture: true,
+        })
+      }
+    }, [undo, redo])
 
     return (
       <div className="copilot-editor h-[calc(100vh-3.5rem)] flex flex-col">
