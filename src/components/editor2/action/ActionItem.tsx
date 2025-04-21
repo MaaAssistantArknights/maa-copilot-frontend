@@ -1,39 +1,26 @@
-import {
-  Button,
-  Card,
-  Classes,
-  Divider,
-  Icon,
-  MenuDivider,
-  MenuItem,
-} from '@blueprintjs/core'
+import { Button, Card, Divider, Icon } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import Fuse from 'fuse.js'
 import { Draft } from 'immer'
 import { PrimitiveAtom, atom, useAtom, useAtomValue } from 'jotai'
 import { useImmerAtom } from 'jotai-immer'
 import { selectAtom } from 'jotai/utils'
-import { uniqueId } from 'lodash-es'
-import { FC, ReactNode, memo, useMemo, useState } from 'react'
+import { FC, ReactNode, memo, useMemo } from 'react'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import {
-  OPERATORS,
-  OperatorInfo,
   findOperatorByName,
   findOperatorSkillUsage,
   getSkillUsageTitle,
   operatorSkillUsages,
 } from '../../../models/operator'
 import { findActionType } from '../../../models/types'
-import { useDebouncedQuery } from '../../../utils/useDebouncedQuery'
-import { Select } from '../../Select'
 import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
+import { OperatorSelect } from '../operator/OperatorSelect'
 import { getInternalId } from '../reconciliation'
 import { ActionLinker } from './ActionLinker'
 
@@ -306,22 +293,6 @@ export const ActionItem: FC<ActionItemProps> = memo(
 )
 ActionItem.displayName = 'ActionItem'
 
-const createArbitraryOperator = (name: string): OperatorInfo => ({
-  id: '',
-  name,
-  alias: '',
-  alt_name: '',
-  subProf: '',
-  prof: '',
-  rarity: 0,
-  skills: [],
-})
-
-const operatorNamesAtom = selectAtom(
-  editorAtoms.operators,
-  (operators) => operators.map((op) => op.name),
-  (a, b) => a.join() === b.join(),
-)
 const groupNamesAtom = selectAtom(
   editorAtoms.groups,
   (groups) => groups.map((g) => g.name),
@@ -345,7 +316,6 @@ const ActionTarget: FC<{
 }> = ({ actionAtom }) => {
   const { withCheckpoint } = useEditorControls()
   const [action, setAction] = useAtom(actionAtom)
-  const operatorNames = useAtomValue(operatorNamesAtom)
   const groupNames = useAtomValue(groupNamesAtom)
   const operator = useAtomValue(
     useMemo(
@@ -356,56 +326,14 @@ const ActionTarget: FC<{
       [action.name],
     ),
   )
-  const isGroup = (name?: string) => name && groupNames.includes(name)
+  const isGroup = (name?: string) =>
+    name !== undefined && groupNames.includes(name)
 
-  type Item = (OperatorInfo | { name: string }) & { isHeader?: boolean }
-  const [isOpen, setIsOpen] = useState(false)
-
-  const items: Item[] = useMemo(() => {
-    if (!isOpen) return []
-    const pickedOperators = operatorNames.map((name) => ({ name }))
-    const unpickedOperators = pickedOperators.length
-      ? OPERATORS.filter((op) => {
-          const index = operatorNames.indexOf(op.name)
-          if (index !== -1) {
-            pickedOperators[index] = op
-            return false
-          }
-          return true
-        })
-      : OPERATORS
-    const items: Item[] = [
-      ...groupNames.map((name) => ({ name })),
-      ...pickedOperators,
-    ]
-    if (items.length > 0) {
-      items.push({ name: uniqueId(), isHeader: true })
-    }
-    items.push(...unpickedOperators)
-    return items
-  }, [operatorNames, groupNames, isOpen])
-
-  const fuse = useMemo(
-    () =>
-      new Fuse(items, {
-        keys: ['name', 'alias', 'alt_name'],
-        threshold: 0.3,
-      }),
-    [items],
-  )
-
-  const { query, trimmedDebouncedQuery, updateQuery, onOptionMouseDown } =
-    useDebouncedQuery()
-
-  const filteredItems = useMemo(
-    () =>
-      trimmedDebouncedQuery
-        ? fuse.search(trimmedDebouncedQuery).map((el) => el.item)
-        : items,
-    [items, fuse, trimmedDebouncedQuery],
-  )
   const operatorInfo = operator && findOperatorByName(operator.name)
-  const displayName = operatorInfo?.name || action.name || '请选择干员'
+  const displayName =
+    operatorInfo?.name ||
+    action.name ||
+    (isGroup(action.name) ? '(未命名干员组)' : '请选择干员')
   const skillUsage =
     operator &&
     '技能' +
@@ -423,84 +351,12 @@ const ActionTarget: FC<{
         : // 自定义干员、关卡里的道具之类
           '未知单位')
   return (
-    <Select<Item>
-      query={query}
-      onQueryChange={(query) => updateQuery(query, false)}
-      items={OPERATORS}
-      itemDisabled={(item) => !!item.isHeader}
-      itemRenderer={(item, { index, handleClick, handleFocus, modifiers }) =>
-        item.isHeader ? (
-          <MenuDivider key={item.name} />
-        ) : (
-          <MenuItem
-            roleStructure="listoption"
-            className={clsx(
-              'py-0 items-center',
-              modifiers.active && Classes.ACTIVE,
-            )}
-            // item 是 group 时要处理 name 是空字符串以及 name 与干员或其他 group 重名的情况，
-            // 所以干脆用 index 作为 key 了
-            key={
-              isGroup(item.name) ? index : 'id' in item ? item.id : item.name
-            }
-            text={
-              <div className="flex items-center gap-2">
-                <OperatorAvatar
-                  className="w-8 h-8 leading-3"
-                  id={
-                    isGroup(item.name)
-                      ? undefined
-                      : 'id' in item
-                        ? item.id
-                        : undefined
-                  }
-                  name={item.name}
-                  fallback={
-                    isGroup(item.name) ? (
-                      <Icon icon="people" size={20} className="align-middle" />
-                    ) : (
-                      item.name
-                    )
-                  }
-                />
-                {item.name}
-              </div>
-            }
-            onClick={handleClick}
-            onFocus={handleFocus}
-            onMouseDown={onOptionMouseDown}
-            selected={action.name === item.name}
-            disabled={modifiers.disabled}
-          />
-        )
-      }
-      itemListPredicate={() => filteredItems}
-      createNewItemFromQuery={(query) => createArbitraryOperator(query)}
-      createNewItemRenderer={(query, active, handleClick) => (
-        <MenuItem
-          key="create-new-item"
-          roleStructure="listoption"
-          text={`使用自定义干员 "${query}"`}
-          className={clsx('py-0 items-center', active && Classes.ACTIVE)}
-          icon="text-highlight"
-          onClick={handleClick}
-        />
-      )}
-      inputProps={{
-        placeholder: '搜索干员',
-      }}
-      resetOnSelect={true}
-      popoverProps={{
-        placement: 'right-start',
-        onOpening: () => setIsOpen(true),
-        onClosed: () => setIsOpen(false),
-      }}
-      onItemSelect={(item) => {
+    <OperatorSelect
+      liftPicked
+      value={action.name}
+      onSelect={(name) => {
         withCheckpoint(() => {
-          setAction({
-            ...action,
-            name: item.name,
-          })
+          setAction({ ...action, name })
           return {
             action: 'set-action-name-' + getInternalId(action),
             desc: '修改动作目标',
@@ -513,7 +369,7 @@ const ActionTarget: FC<{
         <div className="flex items-center">
           <OperatorAvatar
             className="w-16 h-16"
-            name={action.name}
+            name={isGroup(action.name) ? undefined : action.name}
             fallback={
               isGroup(action.name) ? (
                 <Icon icon="people" size={32} />
@@ -536,6 +392,6 @@ const ActionTarget: FC<{
           </div>
         </div>
       </Button>
-    </Select>
+    </OperatorSelect>
   )
 }

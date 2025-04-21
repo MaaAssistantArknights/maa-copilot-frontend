@@ -98,7 +98,15 @@ export const OperatorSheet = () => {
                 squash: false,
               }
             } else {
-              draft.opers.push(operator)
+              const { activeGroupId } = get(editorAtoms.ui)
+              if (activeGroupId) {
+                const activeGroup = draft.groups.find(
+                  (g) => getInternalId(g) === activeGroupId,
+                )
+                activeGroup?.opers.push(operator)
+              } else {
+                draft.opers.push(operator)
+              }
               checkpoint = {
                 action: 'add-operator',
                 desc: '添加干员',

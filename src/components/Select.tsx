@@ -27,7 +27,7 @@ export const Select = <T,>({
   canReset ??= selectedItem !== undefined
 
   return (
-    <Label className={clsx('!flex items-center !mb-0', className)}>
+    <Label className={clsx('!inline-flex items-center !mb-0', className)}>
       <Select2
         className="!mt-0"
         resetOnQuery={false} // 这个功能有无限 reset 的 bug，不要用

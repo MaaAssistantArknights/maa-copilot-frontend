@@ -1,14 +1,12 @@
 import { Divider } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { atom, useAtomValue } from 'jotai'
 import { FC, memo, useState } from 'react'
 
 import { EditorToolbar } from './EditorToolbar'
 import { InfoEditor } from './InfoEditor'
-import { OperatorPanel } from './OperatorPanel'
 import { ActionEditor } from './action/ActionEditor'
-import { editorAtoms } from './editor-state'
+import { OperatorEditor } from './operator/OperatorEditor'
 import { OperatorSheet } from './operator/sheet/OperatorSheet'
 
 interface OperationEditorProps {
@@ -22,12 +20,9 @@ const tabs = [
   { id: 'action', name: '动作序列' },
 ]
 
-const operatorCountAtom = atom((get) => get(editorAtoms.operators).length)
-
 export const OperationEditor: FC<OperationEditorProps> = memo(
   ({ title, submitAction, onSubmit }) => {
     const [selectedTab, setSelectedTab] = useState(tabs[0].id)
-    const operatorCount = useAtomValue(operatorCountAtom)
 
     return (
       <div className="copilot-editor h-[calc(100vh-3.5rem)] flex flex-col">
@@ -56,13 +51,7 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
               <Divider className="grow" />
             </div>
             <InfoEditor className="mb-4 [&>.bp4-inline>.bp4-label]:w-20" />
-            <div className="flex items-center mb-4">
-              <h2 className="text-xl font-bold">
-                干员与干员组 {operatorCount}
-              </h2>
-              <Divider className="grow" />
-            </div>
-            <OperatorPanel />
+            <OperatorEditor />
           </div>
         </div>
         <ActionEditor className={clsx(selectedTab !== 'action' && 'hidden')} />

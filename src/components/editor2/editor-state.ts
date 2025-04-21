@@ -190,6 +190,13 @@ export const historyAtom = (() => {
   )
 })()
 
+interface EditorUIState {
+  activeGroupId?: string
+  newlyAddedGroupId?: string
+  activeActionId?: string
+}
+const uiAtom = atom<EditorUIState>({})
+
 export const editorAtoms = {
   operation: operationAtom,
   operationBase: baseAtom,
@@ -205,6 +212,7 @@ export const editorAtoms = {
   ),
   actions: actionsAtom,
   actionAtoms: splitAtom(actionsAtom, getInternalId),
+  ui: uiAtom,
 }
 
 export function createInitialEditorHistoryState(): InternalHistoryTracker<EditorState> {
