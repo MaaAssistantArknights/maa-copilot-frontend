@@ -5104,6 +5104,11 @@ react-resizable-panels@2.0.10:
   resolved "https://registry.yarnpkg.com/react-resizable-panels/-/react-resizable-panels-2.0.10.tgz#9b83d52952047435a4ceba0b6dd0799e162816d4"
   integrity sha512-1cQl5rp3VDWRL04XXX92lzM1hej2Fe5x+vpjYXcldfOjKwLV5JVrt5T6q0cTB5yfp4Wh+JIdYQ9A5EnZypO1DQ==
 
+react-resizable-panels@^2.1.8:
+  version "2.1.8"
+  resolved "https://registry.yarnpkg.com/react-resizable-panels/-/react-resizable-panels-2.1.8.tgz#4f31057854d93c30a6e221ff8c0ecb7addec55a3"
+  integrity sha512-oDvD0sw34Ecx00cQFLiRJpAE2fCgNLBr8DMrBzkrsaUiLpAycIQoY3eAWfMblDql3pTIMZ60wJ/P89RO1htM2w==
+
 react-rnd@^10.4.1:
   version "10.4.1"
   resolved "https://registry.yarnpkg.com/react-rnd/-/react-rnd-10.4.1.tgz#9e1c3f244895d7862ef03be98b2a620848c3fba1"

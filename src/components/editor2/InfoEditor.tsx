@@ -49,7 +49,6 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         <TextArea
           fill
           rows={4}
-          growVertically
           large
           placeholder="如：作者名、参考的视频攻略链接（如有）等"
           value={info.doc?.details || ''}

@@ -58,6 +58,7 @@
     "react-hook-form": "^7.55.0",
     "react-markdown": "^8.0.5",
     "react-rating": "^2.0.5",
+    "react-resizable-panels": "^2.1.8",
     "react-rnd": "^10.4.1",
     "react-router-dom": "6",
     "react-spring": "^9.4.5",
