@@ -23,6 +23,12 @@
       }
     }
   },
+  "common": {
+    "loading": {
+      "cn": "加载中...",
+      "en": "Loading..."
+    }
+  },
   "components": {
     "account": {
       "AuthFormShared": {
