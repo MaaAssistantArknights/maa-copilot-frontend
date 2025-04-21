@@ -99,9 +99,11 @@ export const ActionItem: FC<ActionItemProps> = memo(
             <div
               className={clsx(
                 'p-1 pl-2 w-full',
-                'absolute top-0 bottom-0 left-0 text-white [clip-path:polygon(0_0,4px_0,4px_100%,0_100%)] transition-[clip-path]',
+                'absolute top-0 bottom-0 left-0 text-white transition-[clip-path]',
                 typeInfo.accentBg,
-                isActive && '[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]',
+                isActive
+                  ? '[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]'
+                  : '[clip-path:polygon(0_0,4px_0,4px_100%,0_100%)]',
               )}
             >
               {typeInfo.shortTitle}

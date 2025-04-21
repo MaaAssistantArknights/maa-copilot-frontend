@@ -11,7 +11,7 @@ import { SortableContext } from '@dnd-kit/sortable'
 import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
-import { FC, useCallback } from 'react'
+import { FC, useCallback, useEffect, useRef } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
 import { Sortable } from '../../dnd'
@@ -19,7 +19,7 @@ import { AtomRenderer } from '../AtomRenderer'
 import { editorAtoms, useEditorControls } from '../editor-state'
 import { getInternalId } from '../reconciliation'
 import { ActionItem } from './ActionItem'
-import { CreateActionMenu } from './CreateActionMenu'
+import { CreateActionMenu, CreateActionMenuRef } from './CreateActionMenu'
 import { LevelMap } from './LevelMap'
 
 interface ActionEditorProps {
@@ -37,6 +37,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
   const actionIds = useAtomValue(actionIdsAtom)
   const { withCheckpoint } = useEditorControls()
   const sensors = useSensors(useSensor(PointerSensor))
+  const createActionMenuRef = useRef<CreateActionMenuRef>(null)
 
   const handleDragEnd = useAtomCallback(
     useCallback(
@@ -72,8 +73,29 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
     ),
   )
 
+  useEffect(() => {
+    let mouseX = 0
+    let mouseY = 0
+    const onMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX
+      mouseY = e.clientY
+    }
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.code === 'KeyA' && e.shiftKey) {
+        createActionMenuRef.current?.open(mouseX, mouseY)
+        e.preventDefault()
+      }
+    }
+    document.addEventListener('mousemove', onMouseMove)
+    document.addEventListener('keydown', onKeyDown)
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove)
+      document.removeEventListener('keydown', onKeyDown)
+    }
+  }, [])
+
   return (
-    <div className={clsx('grow min-h-0 flex', className)}>
+    <div className={clsx('relative grow min-h-0 flex', className)}>
       <PanelGroup autoSaveId="editor-actions" direction="horizontal">
         <Panel>
           <PanelGroup autoSaveId="editor-actions-left" direction="vertical">
@@ -116,27 +138,32 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
               </ul>
             </SortableContext>
           </DndContext>
-          <CreateActionMenu
-            renderTarget={({ ref, locatorRef, onClick }) => (
-              <Button
-                minimal
-                outlined
-                icon={<Icon icon="plus" size={24} />}
-                intent="primary"
-                className="relative mt-6 w-full h-16 !text-xl"
-                elementRef={ref}
-                onClick={onClick}
-              >
-                <span
-                  className="absolute pointer-events-none"
-                  ref={locatorRef}
-                />
-                添加动作
-              </Button>
-            )}
-          />
+          <Button
+            minimal
+            outlined
+            icon={<Icon icon="plus" size={24} />}
+            intent="primary"
+            className="relative mt-6 w-full h-16 !text-xl"
+            onClick={(e) => {
+              createActionMenuRef.current?.open(e.clientX, e.clientY)
+            }}
+          >
+            添加动作 (Shift + A)
+          </Button>
         </Panel>
       </PanelGroup>
+      <CreateActionMenu
+        ref={createActionMenuRef}
+        renderTarget={({ ref, locatorRef, onClick }) => (
+          <div
+            className="absolute top-0 right-0 bottom-0 left-0 pointer-events-none"
+            ref={ref}
+          >
+            {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}
+            <span className="absolute" ref={locatorRef} onClick={onClick} />
+          </div>
+        )}
+      />
     </div>
   )
 }

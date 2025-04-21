@@ -111,7 +111,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
           minimal
           large
           icon="undo"
-          title="撤销"
+          title="撤销 (Ctrl+Z)"
           disabled={!canUndo}
           onClick={undo}
         />
@@ -120,7 +120,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
           large
           className="mr-8"
           icon="redo"
-          title="重做"
+          title="重做 (Ctrl+Y)"
           disabled={!canRedo}
           onClick={redo}
         />
