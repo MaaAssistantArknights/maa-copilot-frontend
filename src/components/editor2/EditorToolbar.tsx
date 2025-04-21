@@ -1,8 +1,21 @@
-import { Button, Divider, H1, Icon, Navbar, Tab, Tabs } from '@blueprintjs/core'
+import {
+  Button,
+  Divider,
+  H1,
+  Icon,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  Tab,
+  Tabs,
+} from '@blueprintjs/core'
+import { Popover2 } from '@blueprintjs/popover2'
 
-import { FC } from 'react'
+import clsx from 'clsx'
+import { FC, useState } from 'react'
 
 import { joinJSX } from '../../utils/react'
+import { RelativeTime } from '../RelativeTime'
 import { useEditorControls, useEditorHistory } from './editor-state'
 
 interface EditorToolbarProps {
@@ -22,7 +35,8 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   onSubmit,
 }) => {
   const { history, canRedo, canUndo } = useEditorHistory()
-  const { undo, redo } = useEditorControls()
+  const { undo, redo, checkout } = useEditorControls()
+  const [historyListIsOpen, setHistoryListIsOpen] = useState(false)
 
   return (
     <div className="px-8 flex items-baseline flex-wrap bg-white dark:bg-[#383e47]">
@@ -50,14 +64,52 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
             <Divider className="self-center h-[1em]" />,
           )}
       </Tabs>
-      <div className="ml-auto py-2 flex items-center gap-2">
+      <div className="ml-auto py-2 flex items-center">
+        <Popover2
+          content={
+            historyListIsOpen ? (
+              <Menu>
+                <MenuDivider className="pb-2 border-b" title="操作历史" />
+                {[...history.stack].reverse().map((record, reversedIndex) => {
+                  const index = history.stack.length - 1 - reversedIndex
+                  return (
+                    <MenuItem
+                      key={index}
+                      className={clsx(
+                        index === 0 && 'italic',
+                        index === history.index ? 'font-bold' : undefined,
+                      )}
+                      text={index + 1 + '. ' + record.desc}
+                      labelElement={
+                        <RelativeTime
+                          className="ml-4 text-xs"
+                          detailTooltip={false}
+                          moment={record.time}
+                        />
+                      }
+                      onClick={() => checkout(index)}
+                    />
+                  )
+                })}
+              </Menu>
+            ) : (
+              <span />
+            )
+          }
+          placement="bottom"
+          onOpening={() => setHistoryListIsOpen(true)}
+          onClosed={() => setHistoryListIsOpen(false)}
+        >
+          <Button
+            minimal
+            large
+            icon="history"
+            text={history.index + 1 + '/' + history.stack.length}
+          />
+        </Popover2>
         <Button
           minimal
-          text={history.index + 1 + '/' + history.stack.length}
-          disabled
-        />
-        <Button
-          minimal
+          large
           icon="undo"
           title="撤销"
           disabled={!canUndo}
@@ -65,6 +117,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         />
         <Button
           minimal
+          large
           className="mr-8"
           icon="redo"
           title="重做"
