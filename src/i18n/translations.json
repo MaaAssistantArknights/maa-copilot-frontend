@@ -1638,7 +1638,7 @@
         },
         "no_jobs_yet": {
           "cn": "还没有添加作业哦(￣▽￣)",
-          "en": "No jobs added yet (￣▽￣)"
+          "en": "No Jobs added yet (￣▽￣)"
         },
         "add_from_list": {
           "cn": "请从作业列表中添加",
@@ -2540,7 +2540,7 @@
       },
       "view_my_jobs": {
         "cn": "查看我自己的作业",
-        "en": "View my own jobs"
+        "en": "View my own Jobs"
       },
       "view_mine": {
         "cn": "看看我的",
