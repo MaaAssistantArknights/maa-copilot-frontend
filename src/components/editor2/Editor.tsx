@@ -2,6 +2,7 @@ import { Divider } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { FC, memo, useState } from 'react'
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
 import { EditorToolbar } from './EditorToolbar'
 import { InfoEditor } from './InfoEditor'
@@ -41,18 +42,22 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
             selectedTab !== 'main' && 'hidden',
           )}
         >
-          <div className="flex-1">
-            <OperatorSheet />
-          </div>
-          <Divider className="m-0" />
-          <div className="flex-1 p-4 pr-8 overflow-auto">
-            <div className="flex items-center mb-4">
-              <h2 className="text-xl font-bold">作业信息</h2>
-              <Divider className="grow" />
-            </div>
-            <InfoEditor className="mb-4 [&>.bp4-inline>.bp4-label]:w-20" />
-            <OperatorEditor />
-          </div>
+          <PanelGroup autoSaveId="editor-main" direction="horizontal">
+            <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
+              <OperatorSheet />
+            </Panel>
+            <PanelResizeHandle className="w-1 bg-white dark:bg-[#383e47]" />
+            <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)] !overflow-auto">
+              <div className="p-4 pr-8">
+                <div className="flex items-center mb-4">
+                  <h2 className="text-xl font-bold">作业信息</h2>
+                  <Divider className="grow" />
+                </div>
+                <InfoEditor className="mb-4 [&>.bp4-inline>.bp4-label]:w-20" />
+                <OperatorEditor />
+              </div>
+            </Panel>
+          </PanelGroup>
         </div>
         <ActionEditor className={clsx(selectedTab !== 'action' && 'hidden')} />
       </div>
