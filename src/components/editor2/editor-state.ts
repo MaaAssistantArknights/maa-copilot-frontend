@@ -218,9 +218,10 @@ export const editorAtoms = {
 export function createInitialEditorHistoryState(): InternalHistoryTracker<EditorState> {
   const record = {
     state: null,
-    action: '',
-    desc: '',
+    action: 'init',
+    desc: '初始化（锁定）',
     squash: false,
+    time: Date.now(),
   }
   return {
     stack: [record],
@@ -245,6 +246,7 @@ export interface Checkpoint {
 
 interface HistoryRecord<T> extends Checkpoint {
   state: T
+  time: number
 }
 
 interface InternalHistoryTracker<T extends {}> {
@@ -288,11 +290,7 @@ export function useHistoryControls<T extends {}>(
       if (prev.index <= 0) {
         return prev
       }
-      return {
-        ...prev,
-        index: prev.index - 1,
-        _current: prev.stack[prev.index - 1],
-      }
+      return { ...prev, index: prev.index - 1 }
     })
   }
   const redo = () => {
@@ -300,11 +298,15 @@ export function useHistoryControls<T extends {}>(
       if (prev.index >= prev.stack.length - 1) {
         return prev
       }
-      return {
-        ...prev,
-        index: prev.index + 1,
-        _current: prev.stack[prev.index + 1],
+      return { ...prev, index: prev.index + 1 }
+    })
+  }
+  const checkout = (index: number) => {
+    setHistory((prev) => {
+      if (index < 0 || index >= prev.stack.length) {
+        return prev
       }
+      return { ...prev, index }
     })
   }
   const withCheckpoint = useAtomCallback(
@@ -313,7 +315,7 @@ export function useHistoryControls<T extends {}>(
         const snapshot = get(historyAtom)
         const checkpoint = fn(skipCheckpoint)
         const history = get(historyAtom)
-        if (checkpoint === skipCheckpoint || history === snapshot) {
+        if (checkpoint === skipCheckpoint && history === snapshot) {
           return
         }
         const current = history.stack[history.index]
@@ -321,12 +323,23 @@ export function useHistoryControls<T extends {}>(
           return
         }
         const snapshottedCurrent = snapshot.stack[snapshot.index]
-        const newRecord = { ...current, ...checkpoint }
+        if (JSON.stringify(current) === JSON.stringify(snapshottedCurrent)) {
+          return
+        }
+        const newRecord = {
+          ...current,
+          ...checkpoint,
+          time: Date.now(),
+        }
         const newStack = [
-          ...history.stack.slice(-history.limit, history.index),
+          ...history.stack.slice(-(history.limit - 2), history.index),
           snapshottedCurrent,
           newRecord,
         ]
+        // 永远保留第一条记录
+        if (history.index >= history.limit - 2) {
+          newStack.unshift(snapshot.stack[0])
+        }
         set(historyAtom, {
           ...history,
           stack: newStack,
@@ -340,6 +353,7 @@ export function useHistoryControls<T extends {}>(
   return {
     undo,
     redo,
+    checkout,
     withCheckpoint,
   }
 }
