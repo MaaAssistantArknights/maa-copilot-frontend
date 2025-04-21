@@ -33,7 +33,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
   ({ className, actionAtom, isDragging, isSorting, attributes, listeners }) => {
     const { withCheckpoint } = useEditorControls()
     const [action, setAction] = useImmerAtom(actionAtom)
+    const [ui, setUI] = useImmerAtom(editorAtoms.ui)
     const typeInfo = findActionType(action.type)
+    const isActive = getInternalId(action) === ui.activeActionId
 
     // 类型断言不能用在多个参数上，所以只能组装成一个对象然后再解构了
     // https://github.com/microsoft/TypeScript/issues/26916
@@ -56,7 +58,13 @@ export const ActionItem: FC<ActionItemProps> = memo(
     }
 
     return (
-      <div>
+      <div
+        onMouseDownCapture={() => {
+          setUI((ui) => {
+            ui.activeActionId = getInternalId(action)
+          })
+        }}
+      >
         <ActionLinker
           actionAtom={actionAtom}
           isDragging={isDragging}
@@ -65,19 +73,39 @@ export const ActionItem: FC<ActionItemProps> = memo(
         <Card
           className={clsx(
             className,
-            '!p-0 flex items-center !rounded-none border-l-4 overflow-hidden bg-[linear-gradient(102deg,#F8F8F8,#F8F8F8_7.5em,white_7.5em)] dark:bg-[linear-gradient(102deg,#1e1a1a,#1e1a1a_7.5em,#2F343C_7.5em)]',
-            typeInfo.accent,
-            typeInfo.accentText,
+            '!p-0 flex items-center gap-6 !rounded-none',
           )}
         >
           <h4
             className={clsx(
-              'self-start m-1 w-[4.5em] text-2xl font-bold font-serif cursor-move',
+              'relative self-stretch w-[4.8em] text-2xl font-bold font-serif bg-gray-100 dark:bg-gray-700 cursor-move',
+              // regarding the calc(), we try to make the right border tilt by 12deg, so the x coordinate
+              // of the bottom right corner will be 100% - height * tan(12deg), where height turns out to be 72px
+              '[clip-path:polygon(0_0,100%_0,calc(100%-15px)_100%,0_100%)]',
             )}
             {...attributes}
             {...listeners}
           >
-            {typeInfo.shortTitle}
+            <div
+              className={clsx(
+                'p-1 pl-2 w-full',
+                typeInfo.accentText,
+                // hide the underneath element later to avoid edge cases where the above element does not align perfectly
+                isActive && 'opacity-0 transition-opacity delay-100',
+              )}
+            >
+              {typeInfo.shortTitle}
+            </div>
+            <div
+              className={clsx(
+                'p-1 pl-2 w-full',
+                'absolute top-0 bottom-0 left-0 text-white [clip-path:polygon(0_0,4px_0,4px_100%,0_100%)] transition-[clip-path]',
+                typeInfo.accentBg,
+                isActive && '[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]',
+              )}
+            >
+              {typeInfo.shortTitle}
+            </div>
           </h4>
           {renderForTypes(
             [
@@ -100,7 +128,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
             ],
             ({ action, setAction }) => (
               <>
-                <Divider className="mx-6 self-stretch rotate-12" />
+                <Divider className="self-stretch rotate-12" />
                 <div className="">
                   <div className="flex items-center text-3xl">
                     <span className="text-gray-300 dark:text-gray-600">
@@ -162,7 +190,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
             [CopilotDocV1.Type.Deploy],
             ({ action, setAction }) => (
               <>
-                <Divider className="mx-6 self-stretch rotate-12" />
+                <Divider className="self-stretch rotate-12" />
                 <div className="mt-2 !text-inherit">
                   <div className="flex items-center !text-inherit">
                     {Object.values(CopilotDocV1.Direction).map((dir) => (
@@ -223,7 +251,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   : findOperatorSkillUsage(action.skillUsage)
               return (
                 <>
-                  <Divider className="mx-6 self-stretch rotate-12" />
+                  <Divider className="self-stretch rotate-12" />
                   <div className="">
                     <div className="flex items-baseline gap-1 text-xl">
                       <DetailedSelect

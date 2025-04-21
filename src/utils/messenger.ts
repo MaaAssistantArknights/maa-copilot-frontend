@@ -1,6 +1,6 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 
-const DEBUG = true as boolean
+const DEBUG = false as boolean
 
 let messengerName = 'Copilot'
 
@@ -98,6 +98,8 @@ export function useMessage<M extends Message>(
   type: M['type'],
   listener: (message: MessengerEvent<M>) => void,
 ) {
+  const listenerRef = useRef(listener)
+  listenerRef.current = listener
   useEffect(() => {
     const handler: typeof listener = (message) => {
       if (isAckType(message.type)) {
@@ -113,7 +115,7 @@ export function useMessage<M extends Message>(
 
         // processing messages received from outside can be error-prone, so we wrap the listener in a try-catch
         try {
-          listener(message)
+          listenerRef.current(message)
         } catch (e) {
           log('Error:', e)
         }
@@ -123,7 +125,7 @@ export function useMessage<M extends Message>(
     return () => {
       messenger.removeEventListener(type, handler)
     }
-  }, [type, origin, listener])
+  }, [type, origin])
 }
 
 export function sendMessage<M extends Message>(

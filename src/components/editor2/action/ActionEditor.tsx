@@ -81,7 +81,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       <Divider className="m-0" />
       <div className="flex-1 p-4 pr-8 pb-96 overflow-auto">
         <div className="flex items-center">
-          <h3 className="text-xl font-bold">动作序列</h3>
+          <h3 className="text-xl font-bold">动作序列 ({actionAtoms.length})</h3>
           <Divider className="grow" />
         </div>
         <DndContext sensors={sensors} onDragEnd={handleDragEnd}>

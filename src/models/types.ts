@@ -9,6 +9,7 @@ interface ActionType {
   icon: IconName
   accent: string
   accentText: string
+  accentBg: string
   title: string
   shortTitle: string
   value: CopilotDocV1.Type
@@ -22,6 +23,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'new-object',
     accent: 'border-red-700',
     accentText: 'text-red-700 dark:text-red-400',
+    accentBg: 'bg-red-700',
     title: '部署',
     shortTitle: '部署',
     value: CopilotDocV1.Type.Deploy,
@@ -34,6 +36,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'graph-remove',
     accent: 'border-amber-700',
     accentText: 'text-amber-700 dark:text-amber-400',
+    accentBg: 'bg-amber-700',
     title: '撤退',
     shortTitle: '撤退',
     value: CopilotDocV1.Type.Retreat,
@@ -46,6 +49,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'target',
     accent: 'border-lime-700',
     accentText: 'text-lime-700 dark:text-lime-400',
+    accentBg: 'bg-lime-700',
     title: '使用技能',
     shortTitle: '使用技能',
     value: CopilotDocV1.Type.Skill,
@@ -58,6 +62,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'swap-horizontal',
     accent: 'border-emerald-700',
     accentText: 'text-emerald-700 dark:text-emerald-400',
+    accentBg: 'bg-emerald-700',
     title: '切换技能用法',
     shortTitle: '技能用法',
     value: CopilotDocV1.Type.SkillUsage,
@@ -70,6 +75,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'fast-forward',
     accent: 'border-cyan-700',
     accentText: 'text-cyan-700 dark:text-cyan-400',
+    accentBg: 'bg-cyan-700',
     title: '切换二倍速',
     shortTitle: '二倍速',
     value: CopilotDocV1.Type.SpeedUp,
@@ -82,6 +88,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'fast-backward',
     accent: 'border-blue-700',
     accentText: 'text-blue-700 dark:text-blue-400',
+    accentBg: 'bg-blue-700',
     title: '进入子弹时间',
     shortTitle: '子弹时间',
     value: CopilotDocV1.Type.BulletTime,
@@ -94,6 +101,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'camera',
     accent: 'border-blue-700',
     accentText: 'text-blue-700 dark:text-blue-400',
+    accentBg: 'bg-blue-700',
     title: '移动相机',
     shortTitle: '移动相机',
     value: CopilotDocV1.Type.MoveCamera,
@@ -106,6 +114,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'antenna',
     accent: 'border-violet-700',
     accentText: 'text-violet-700 dark:text-violet-400',
+    accentBg: 'bg-violet-700',
     title: '开始挂机',
     shortTitle: '开始挂机',
     value: CopilotDocV1.Type.SkillDaemon,
@@ -118,6 +127,7 @@ export const ACTION_TYPES: ActionType[] = [
     icon: 'paragraph',
     accent: 'border-fuchsia-700',
     accentText: 'text-fuchsia-700 dark:text-fuchsia-400',
+    accentBg: 'bg-fuchsia-700',
     title: '打印描述内容',
     shortTitle: '打印内容',
     value: CopilotDocV1.Type.Output,
@@ -140,6 +150,7 @@ const notFoundActionType: Omit<ActionType, 'value'> & { value: 'Unknown' } = {
   icon: 'help',
   accent: 'border-zinc-700',
   accentText: 'text-zinc-700 dark:text-zinc-400',
+  accentBg: 'bg-zinc-700',
   title: '未知动作',
   shortTitle: '未知动作',
   value: 'Unknown',
