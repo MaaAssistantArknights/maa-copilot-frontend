@@ -5,6 +5,7 @@ import { FC, useCallback, useRef } from 'react'
 import { ProfClassificationWithFilters } from '../../../editor/operator/sheet/sheetOperator/ProfClassificationWithFilters'
 import { useOperatorFilterProvider } from '../../../editor/operator/sheet/sheetOperator/SheetOperatorFilterProvider'
 import { SheetOperatorItem } from '../../../editor/operator/sheet/sheetOperator/SheetOperatorItem'
+import { ShowMore } from '../../../editor/operator/sheet/sheetOperator/ShowMore'
 
 interface SheetListProps {}
 
@@ -35,6 +36,7 @@ export const SheetList: FC<SheetListProps> = () => {
                 </div>
               ))}
             </div>
+            <ShowMore {...{ toTop }} />
           </>
         ) : (
           <NonIdealState title="暂无干员" />

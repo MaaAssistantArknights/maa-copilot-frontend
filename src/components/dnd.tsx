@@ -6,6 +6,7 @@ import {
 } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
+import clsx from 'clsx'
 import { isEqual } from 'lodash-es'
 import { FC, ReactNode, useRef } from 'react'
 
@@ -85,19 +86,41 @@ export type DroppableItemProps = ReturnType<typeof useDroppable>
 export interface DroppableProps {
   id: UniqueIdentifier
   data?: Record<string, any>
+  className?: string
   children: ReactNode | ((childProps: DroppableItemProps) => ReactNode)
 }
 
-export const Droppable: FC<DroppableProps> = ({ id, data, children }) => {
+export const Droppable: FC<DroppableProps> = ({
+  id,
+  data,
+  className,
+  children,
+}) => {
   const droppable = useDroppable({ id, data })
+  const { active, over, isOver, setNodeRef } = droppable
+  const isOverAsContainer = isOver || over?.data.current?.container === id
 
-  const { setNodeRef } = droppable
+  className = clsx(
+    'relative',
+    active &&
+      "before:content-[''] before:absolute before:inset-0 before:border-2 before:border-dashed before:border-blue-400 before:pointer-events-none",
+    isOverAsContainer && 'before:bg-blue-500/10',
+    className,
+  )
 
   if (typeof children === 'function') {
-    return <div ref={setNodeRef}>{children(droppable)}</div>
+    return (
+      <div className={className} ref={setNodeRef}>
+        {children(droppable)}
+      </div>
+    )
   }
 
-  return <div ref={setNodeRef}>{children}</div>
+  return (
+    <div className={className} ref={setNodeRef}>
+      {children}
+    </div>
+  )
 }
 
 // 启用 noSortAnimation 时，要尽可能把静态的 items 数组传给 SortableContext，不然无法触发排序动画
