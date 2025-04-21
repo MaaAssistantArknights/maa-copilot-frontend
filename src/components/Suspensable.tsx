@@ -112,7 +112,7 @@ export function withSuspensable<P extends object>(
     const title =
       typeof pendingTitle === 'function'
         ? pendingTitle(t)
-        : pendingTitle || t('common.loading')
+        : pendingTitle || t('components.Suspensable.loading')
 
     return (
       <Suspense

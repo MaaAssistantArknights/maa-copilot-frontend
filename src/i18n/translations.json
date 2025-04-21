@@ -23,12 +23,6 @@
       }
     }
   },
-  "common": {
-    "loading": {
-      "cn": "加载中...",
-      "en": "Loading..."
-    }
-  },
   "components": {
     "account": {
       "AuthFormShared": {
@@ -2517,6 +2511,12 @@
       "no_matching_operators": {
         "cn": "没有匹配的干员",
         "en": "No matching operators"
+      }
+    },
+    "Suspensable": {
+      "loading": {
+        "cn": "加载中...",
+        "en": "Loading..."
       }
     },
     "UserFilter": {
