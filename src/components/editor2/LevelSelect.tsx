@@ -227,6 +227,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       />
       <Tooltip2 placement="top" content="在 PRTS.Map 中查看关卡">
         <AnchorButton
+          minimal
           large
           icon="share"
           target="_blank"

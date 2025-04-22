@@ -235,7 +235,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     'relative',
                     selected
                       ? available
-                        ? '!bg-blue-100 dark:!bg-blue-900 dark:text-blue-200 text-blue-800'
+                        ? '!bg-purple-100 dark:!bg-purple-900 dark:text-purple-200 text-purple-800'
                         : '!bg-red-100 dark:!bg-red-900 dark:text-red-200 text-red-800'
                       : '!bg-gray-300 dark:!bg-gray-600 opacity-15 dark:opacity-25 hover:opacity-30 dark:hover:opacity-50',
                   )}
@@ -384,7 +384,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 className={clsx(
                   'w-4 h-4 !p-0 flex items-center justify-center font-serif !font-bold !text-base !rounded-none !border-2 !border-current',
                   requirements.module
-                    ? '!bg-blue-100 dark:!bg-blue-900 dark:!text-blue-200 !text-blue-800'
+                    ? '!bg-purple-100 dark:!bg-purple-900 dark:!text-purple-200 !text-purple-800'
                     : '!bg-gray-300 dark:!bg-gray-600 opacity-15 dark:opacity-25 hover:opacity-30 dark:hover:opacity-50',
                 )}
               >
