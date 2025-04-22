@@ -1,4 +1,4 @@
-import { Button, Divider, NonIdealState } from '@blueprintjs/core'
+import { Button, Divider } from '@blueprintjs/core'
 import {
   Active,
   DndContext,
@@ -138,7 +138,6 @@ export const OperatorEditor: FC = memo(() => {
         <Divider className="grow" />
       </div>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        {operatorAtoms.length === 0 && <NonIdealState title="暂无干员" />}
         <Droppable id={globalContainerId} data={{ type: 'group' }}>
           <SortableContext items={operatorIds}>
             <ul className="flex flex-wrap gap-4">

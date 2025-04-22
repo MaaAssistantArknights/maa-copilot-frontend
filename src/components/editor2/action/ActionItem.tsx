@@ -2,7 +2,7 @@ import { Button, Card, Divider, Icon } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { Draft } from 'immer'
-import { PrimitiveAtom, atom, useAtom, useAtomValue } from 'jotai'
+import { PrimitiveAtom, atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useImmerAtom } from 'jotai-immer'
 import { selectAtom } from 'jotai/utils'
 import { FC, ReactNode, memo, useMemo } from 'react'
@@ -21,7 +21,7 @@ import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
 import { OperatorSelect } from '../operator/OperatorSelect'
-import { getInternalId } from '../reconciliation'
+import { createAction, getInternalId } from '../reconciliation'
 import { ActionLinker } from './ActionLinker'
 
 interface ActionItemProps extends Partial<SortableItemProps> {
@@ -32,6 +32,7 @@ interface ActionItemProps extends Partial<SortableItemProps> {
 export const ActionItem: FC<ActionItemProps> = memo(
   ({ className, actionAtom, isDragging, isSorting, attributes, listeners }) => {
     const { withCheckpoint } = useEditorControls()
+    const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
     const [action, setAction] = useImmerAtom(actionAtom)
     const [ui, setUI] = useImmerAtom(editorAtoms.ui)
     const typeInfo = findActionType(action.type)
@@ -73,15 +74,16 @@ export const ActionItem: FC<ActionItemProps> = memo(
         <Card
           className={clsx(
             className,
-            '!p-0 flex items-center gap-6 !rounded-none',
+            '!p-0 flex items-center !rounded-none',
+            typeInfo.accentText,
           )}
         >
           <h4
             className={clsx(
-              'relative self-stretch w-[4.8em] text-2xl font-bold font-serif bg-gray-100 dark:bg-gray-700 cursor-move',
+              'relative shrink-0 self-stretch w-[5em] text-2xl font-bold font-serif bg-gray-100 dark:bg-gray-700 cursor-move',
               // regarding the calc(), we try to make the right border tilt by 12deg, so the x coordinate
-              // of the bottom right corner will be 100% - height * tan(12deg), where height turns out to be 72px
-              '[clip-path:polygon(0_0,100%_0,calc(100%-15px)_100%,0_100%)]',
+              // of the bottom right corner will be 100% - height * tan(12deg), where height turns out to be 4.5rem
+              '[clip-path:polygon(0_0,100%_0,calc(100%-.96rem)_100%,0_100%)]',
             )}
             {...attributes}
             {...listeners}
@@ -89,7 +91,6 @@ export const ActionItem: FC<ActionItemProps> = memo(
             <div
               className={clsx(
                 'p-1 pl-2 w-full',
-                typeInfo.accentText,
                 // hide the underneath element later to avoid edge cases where the above element does not align perfectly
                 isActive && 'opacity-0 transition-opacity delay-100',
               )}
@@ -109,6 +110,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
               {typeInfo.shortTitle}
             </div>
           </h4>
+          <div className="flex-[0_1_1rem]" />
           {renderForTypes(
             [
               CopilotDocV1.Type.Deploy,
@@ -130,8 +132,10 @@ export const ActionItem: FC<ActionItemProps> = memo(
             ],
             ({ action, setAction }) => (
               <>
-                <Divider className="self-stretch rotate-12" />
-                <div className="">
+                <div className="grow self-stretch max-w-10 flex items-stretch justify-center">
+                  <Divider className="rotate-12" />
+                </div>
+                <div className="shrink-0">
                   <div className="flex items-center text-3xl">
                     <span className="text-gray-300 dark:text-gray-600">
                       {'('}
@@ -145,7 +149,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       onValueChange={(v) => {
                         withCheckpoint(() => {
                           setAction((draft) => {
-                            draft.location = [v, draft.location?.[1]]
+                            draft.location = [v, draft.location?.[1] ?? 0]
                           })
                           return {
                             action:
@@ -168,7 +172,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       onValueChange={(v) => {
                         withCheckpoint(() => {
                           setAction((draft) => {
-                            draft.location = [draft.location?.[0], v]
+                            draft.location = [draft.location?.[0] ?? 0, v]
                           })
                           return {
                             action:
@@ -192,7 +196,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
             [CopilotDocV1.Type.Deploy],
             ({ action, setAction }) => (
               <>
-                <Divider className="self-stretch rotate-12" />
+                <div className="grow self-stretch max-w-10 flex items-stretch justify-center">
+                  <Divider className="rotate-12" />
+                </div>
                 <div className="mt-2 !text-inherit">
                   <div className="flex items-center !text-inherit">
                     {Object.values(CopilotDocV1.Direction).map((dir) => (
@@ -253,7 +259,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   : findOperatorSkillUsage(action.skillUsage)
               return (
                 <>
-                  <Divider className="self-stretch rotate-12" />
+                  <div className="grow self-stretch max-w-10 flex items-stretch justify-center">
+                    <Divider className="rotate-12" />
+                  </div>
                   <div className="">
                     <div className="flex items-baseline gap-1 text-xl">
                       <DetailedSelect
@@ -316,6 +324,48 @@ export const ActionItem: FC<ActionItemProps> = memo(
               )
             },
           )}
+          <div className="ml-auto flex">
+            <Button
+              minimal
+              large
+              icon="duplicate"
+              title="复制一份"
+              onClick={() => {
+                withCheckpoint(() => {
+                  dispatchActions({
+                    type: 'insert',
+                    value: createAction(action),
+                    before: actionAtom,
+                  })
+                  return {
+                    action: 'copy-action-' + getInternalId(action),
+                    desc: '复制动作',
+                    squash: false,
+                  }
+                })
+              }}
+            />
+            <Button
+              minimal
+              large
+              icon="cross"
+              title="删除"
+              intent="danger"
+              onClick={() => {
+                withCheckpoint(() => {
+                  dispatchActions({
+                    type: 'remove',
+                    atom: actionAtom,
+                  })
+                  return {
+                    action: 'delete-action-' + getInternalId(action),
+                    desc: '删除动作',
+                    squash: false,
+                  }
+                })
+              }}
+            />
+          </div>
         </Card>
       </div>
     )
@@ -383,6 +433,7 @@ const ActionTarget: FC<{
   return (
     <OperatorSelect
       liftPicked
+      className="shrink-0"
       value={action.name}
       onSelect={(name) => {
         withCheckpoint(() => {

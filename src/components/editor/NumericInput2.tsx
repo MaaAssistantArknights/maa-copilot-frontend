@@ -26,6 +26,7 @@ export const NumericInput2 = ({
   minorStepSize,
   value,
   onValueChange,
+  onFocus,
   onWheelFocused,
   wheelStepSize,
   ...props
@@ -82,6 +83,7 @@ export const NumericInput2 = ({
       inputRef={inputRef}
       value={endsWithDot ? value + '.' : value}
       onFocus={(e) => {
+        onFocus?.(e)
         if (
           (onWheelFocused || wheelStepSize !== undefined) &&
           !handleWheelRegistered.current
