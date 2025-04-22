@@ -58,7 +58,11 @@ export const DifficultyPicker: FC<DifficultyPickerProps> = ({
         onItemSelect={(item) => onChange(item.value as OpDifficulty, false)}
       >
         {
-          <Button rightIcon="double-caret-vertical" disabled={!isValidLevel}>
+          <Button
+            className="!border-gray-300 dark:!border-gray-600"
+            rightIcon="double-caret-vertical"
+            disabled={!isValidLevel}
+          >
             {
               (
                 DIFFICULTIES.find((item) => item.value === value) ??

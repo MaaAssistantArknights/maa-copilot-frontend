@@ -24,7 +24,13 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
   const { withCheckpoint } = useEditorControls()
 
   return (
-    <div className={clsx('mb-4 [&>.bp4-inline>.bp4-label]:w-20', className)}>
+    <div
+      className={clsx(
+        'mb-4 [&>.bp4-inline>.bp4-label]:w-20',
+        '[&_[type="text"]]:!border-0 [&_textarea]:!outline-none [&_[type="text"]]:shadow-[inset_0_0_2px_0_rgba(0,0,0,0.4)] [&_textarea:not(:focus)]:!shadow-[inset_0_0_2px_0_rgba(0,0,0,0.4)]',
+        className,
+      )}
+    >
       <FormGroup inline contentClassName="grow" label="标题" labelInfo="*">
         <InputGroup
           large

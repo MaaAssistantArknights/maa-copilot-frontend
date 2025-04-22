@@ -60,7 +60,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
       elevation={Elevation.ONE}
       className={clsx(
         '!p-0 flex flex-col overflow-hidden',
-        isActive ? 'ring ring-blue-500 !border-0 !shadow-none' : '',
+        isActive ? 'ring ring-purple-500 !border-0 !shadow-none' : '',
       )}
     >
       <div className="flex">
@@ -228,7 +228,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
         className={clsx(
           'flex',
           isActive
-            ? '!bg-blue-500 hover:!bg-blue-600 dark:!bg-blue-900 !text-white'
+            ? '!bg-purple-500 hover:!bg-purple-600 dark:!bg-purple-900 !text-white'
             : '!bg-gray-200 dark:!bg-gray-600',
         )}
       >
