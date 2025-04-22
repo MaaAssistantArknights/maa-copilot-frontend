@@ -103,7 +103,7 @@ export const CreateActionMenu = forwardRef<
                     withCheckpoint(() => {
                       dispatchActions({
                         type: 'insert',
-                        value: createAction(value),
+                        value: createAction({ type: value }),
                         before: actionAtom,
                       })
                       return {

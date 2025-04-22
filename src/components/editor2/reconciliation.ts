@@ -1,4 +1,5 @@
-import { uniqueId } from 'lodash-es'
+import { defaults, uniqueId } from 'lodash-es'
+import { SetRequired } from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import {
@@ -22,11 +23,10 @@ export function getInternalId(target: WithInternalId) {
   return target._id
 }
 
-export function createAction(type: CopilotDocV1.Type) {
-  const action: EditorAction = {
-    _id: uniqueId(),
-    type,
-  }
+export function createAction(
+  initialValues: SetRequired<Partial<Omit<EditorAction, '_id'>>, 'type'>,
+) {
+  const action: EditorAction = defaults({}, initialValues, { _id: uniqueId() })
   if (action.type === CopilotDocV1.Type.SkillUsage) {
     action.skillUsage = CopilotDocV1.SkillUsageType.ReadyToUse
   }
@@ -36,21 +36,18 @@ export function createAction(type: CopilotDocV1.Type) {
 export function createGroup(
   initialValues: Partial<Omit<EditorGroup, '_id' | 'opers'>> = {},
 ): EditorGroup {
-  const group: EditorGroup = {
+  const group: EditorGroup = defaults({ name: '', opers: [] }, initialValues, {
     _id: uniqueId(),
-    name: initialValues.name || '',
-    opers: [],
-  }
+  })
   return group
 }
 
 export function createOperator(
   initialValues: Omit<EditorOperator, '_id'>,
 ): EditorOperator {
-  const operator: EditorOperator = {
+  const operator: EditorOperator = defaults({ skill: 1 }, initialValues, {
     _id: uniqueId(),
-    name: initialValues.name,
-  }
+  })
   return operator
 }
 

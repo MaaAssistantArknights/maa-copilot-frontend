@@ -14,7 +14,11 @@ import {
   editorAtoms,
   useEditorControls,
 } from '../../editor-state'
-import { getInternalId } from '../../reconciliation'
+import {
+  createGroup,
+  createOperator,
+  getInternalId,
+} from '../../reconciliation'
 import { SheetList } from './SheetList'
 
 export const OperatorSheet = () => {
@@ -98,14 +102,15 @@ export const OperatorSheet = () => {
                 squash: false,
               }
             } else {
+              const newOperator = createOperator(operator)
               const { activeGroupId } = get(editorAtoms.ui)
               if (activeGroupId) {
                 const activeGroup = draft.groups.find(
                   (g) => getInternalId(g) === activeGroupId,
                 )
-                activeGroup?.opers.push(operator)
+                activeGroup?.opers.push(newOperator)
               } else {
-                draft.opers.push(operator)
+                draft.opers.push(newOperator)
               }
               checkpoint = {
                 action: 'add-operator',
@@ -143,7 +148,7 @@ export const OperatorSheet = () => {
                 squash: false,
               }
             } else {
-              draft.groups.push(group)
+              draft.groups.push(createGroup(group))
               checkpoint = {
                 action: 'add-group',
                 desc: '添加干员组',

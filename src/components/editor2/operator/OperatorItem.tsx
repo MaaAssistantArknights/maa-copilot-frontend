@@ -116,7 +116,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   intOnly
                   min={1}
                   buttonPosition="none"
-                  title="使用鼠标滚轮调整等级"
+                  title="选中后使用鼠标滚轮调整等级"
                   value={requirements.level}
                   inputClassName="!w-9 h-9 !p-0 !leading-9 !rounded-full !border-2 !border-yellow-300 !bg-black/50 text-lg text-white font-semibold text-center !shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
                   onValueChange={(value) => {
@@ -234,7 +234,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   className={clsx(
                     'relative',
                     selected
-                      ? '!bg-blue-100 dark:!bg-blue-900 dark:text-blue-200 text-blue-800'
+                      ? available
+                        ? '!bg-blue-100 dark:!bg-blue-900 dark:text-blue-200 text-blue-800'
+                        : '!bg-red-100 dark:!bg-red-900 dark:text-red-200 text-red-800'
                       : '!bg-gray-300 dark:!bg-gray-600 opacity-15 dark:opacity-25 hover:opacity-30 dark:hover:opacity-50',
                   )}
                 >
@@ -251,19 +253,21 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     buttonPosition="none"
                     value={skillLevel <= 7 ? skillLevel : ''} // 大于 7 级时置空然后用 padding 占位，以留出空间在上面放置专精图标
                     inputClassName={clsx(
-                      '!w-8 h-8 !p-0 !leading-8 !bg-transparent text-center font-bold text-xl !rounded-none !border-2 !border-current cursor-pointer focus:cursor-text',
+                      '!w-8 h-8 !p-0 !leading-8 !bg-transparent text-center font-bold text-xl !text-inherit !rounded-none !border-2 !border-current cursor-pointer focus:cursor-text',
                       skillLevel > 7 && '!pl-4',
                     )}
-                    onClick={() => {
-                      withCheckpoint(() => {
-                        onChange?.({ ...operator, skill: skillNumber })
-                        return {
-                          action:
-                            'set-operator-skill-' + getInternalId(operator),
-                          desc: '修改干员技能',
-                          squash: false,
-                        }
-                      })
+                    onFocus={() => {
+                      if (operator.skill !== skillNumber) {
+                        withCheckpoint(() => {
+                          onChange?.({ ...operator, skill: skillNumber })
+                          return {
+                            action:
+                              'set-operator-skill-' + getInternalId(operator),
+                            desc: '修改干员技能',
+                            squash: false,
+                          }
+                        })
+                      }
                     }}
                     onValueChange={(value) => {
                       withCheckpoint(() => {

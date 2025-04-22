@@ -186,12 +186,14 @@ export const ACTION_CONDITIONS: Record<
   intermediatePreDelay: {
     title: '前置延迟',
     icon: 'time',
-    description: '延迟一定时间后，开始检查其他条件',
+    description:
+      '延迟一定时间后，开始检查其他条件。注意：这里的含义和旧版编辑器以及 MAA 作业协议里的前置延迟是相反的',
   },
   intermediatePostDelay: {
     title: '后置延迟',
     icon: 'time',
-    description: '所有条件全部满足后，延迟一定时间',
+    description:
+      '所有条件全部满足后，延迟一定时间。注意：这里的含义和旧版编辑器以及 MAA 作业协议里的后置延迟是相反的',
   },
   costs: {
     title: '费用',

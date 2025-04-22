@@ -43,6 +43,7 @@ const groupedOperatorNamesAtom = selectAtom(
 const dummyArrayAtom = atom<string[]>([])
 
 interface OperatorSelectProps {
+  className?: string
   liftPicked?: boolean
   markPicked?: boolean
   value?: string
@@ -51,7 +52,7 @@ interface OperatorSelectProps {
 }
 
 export const OperatorSelect: FC<OperatorSelectProps> = memo(
-  ({ liftPicked, markPicked, value, onSelect, children }) => {
+  ({ className, liftPicked, markPicked, value, onSelect, children }) => {
     const operatorNames = useAtomValue(operatorNamesAtom)
     const groupNames = useAtomValue(
       liftPicked ? groupNamesAtom : dummyArrayAtom,
@@ -109,7 +110,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
     return (
       <Select<Item>
         query={query}
-        className="inline"
+        className={clsx('inline', className)}
         onQueryChange={(query) => updateQuery(query, false)}
         items={OPERATORS}
         itemDisabled={(item) => !!item.isHeader}
