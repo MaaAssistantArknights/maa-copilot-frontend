@@ -17,6 +17,7 @@ import { FC, useState } from 'react'
 import { joinJSX } from '../../utils/react'
 import { RelativeTime } from '../RelativeTime'
 import { useEditorControls, useEditorHistory } from './editor-state'
+import { SourceEditorButton } from './source/SourceEditor'
 
 interface EditorToolbarProps {
   title?: string
@@ -39,7 +40,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   const [historyListIsOpen, setHistoryListIsOpen] = useState(false)
 
   return (
-    <div className="px-8 flex items-baseline flex-wrap bg-white dark:bg-[#383e47]">
+    <div className="px-8 flex flex-wrap bg-white dark:bg-[#383e47]">
       <div className="py-2 flex items-center ">
         <Icon icon="document" />
         <H1 className="!text-lg font-normal ml-1 mb-0">作业编辑器v2</H1>
@@ -64,12 +65,32 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
             <Divider className="self-center h-[1em]" />,
           )}
       </Tabs>
-      <div className="ml-auto py-2 flex items-center">
+      <div className="grow py-2 flex flex-wrap items-center">
+        <span className="grow" />
+        <Button
+          minimal
+          large
+          icon="undo"
+          title="撤销 (Ctrl+Z)"
+          disabled={!canUndo}
+          onClick={undo}
+        />
+        <Button
+          minimal
+          large
+          icon="redo"
+          title="重做 (Ctrl+Y)"
+          disabled={!canRedo}
+          onClick={redo}
+        />
         <Popover2
           content={
             historyListIsOpen ? (
               <Menu>
-                <MenuDivider className="pb-2 border-b" title="操作历史" />
+                <MenuDivider
+                  className="pb-2 border-b"
+                  title={`操作历史 (上限${history.limit})`}
+                />
                 {[...history.stack].reverse().map((record, reversedIndex) => {
                   const index = history.stack.length - 1 - reversedIndex
                   return (
@@ -102,28 +123,12 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         >
           <Button
             minimal
-            large
             icon="history"
             text={history.index + 1 + '/' + history.stack.length}
           />
         </Popover2>
-        <Button
-          minimal
-          large
-          icon="undo"
-          title="撤销 (Ctrl+Z)"
-          disabled={!canUndo}
-          onClick={undo}
-        />
-        <Button
-          minimal
-          large
-          className="mr-8"
-          icon="redo"
-          title="重做 (Ctrl+Y)"
-          disabled={!canRedo}
-          onClick={redo}
-        />
+        <SourceEditorButton minimal />
+        <div className="grow max-w-6" />
         <Button
           large
           intent="primary"
