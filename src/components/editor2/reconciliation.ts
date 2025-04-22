@@ -1,7 +1,8 @@
 import { defaults, uniqueId } from 'lodash-es'
-import { SetRequired } from 'type-fest'
+import { PartialDeep, SetRequired } from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
+import { snakeCaseKeysUnicode } from '../../utils/object'
 import {
   EditorAction,
   EditorGroup,
@@ -54,7 +55,8 @@ export function createOperator(
 export function toEditorOperation(
   operation: CopilotDocV1.Operation,
 ): EditorOperation {
-  const values = {
+  operation = JSON.parse(JSON.stringify(operation))
+  const converted = {
     ...operation,
     opers:
       operation.opers?.map((operator) => ({ ...operator, _id: uniqueId() })) ||
@@ -96,5 +98,58 @@ export function toEditorOperation(
       }) || [],
   }
 
-  return values
+  return converted
+}
+
+/**
+ * To MAA's standard format. No validation is performed so it's not guaranteed to be valid.
+ */
+export function toMaaOperation(
+  operation: EditorOperation,
+): PartialDeep<CopilotDocV1.OperationSnakeCased, { recurseIntoArrays: true }> {
+  operation = JSON.parse(JSON.stringify(operation))
+  const converted = {
+    ...operation,
+    opers: operation.opers.map(({ _id, ...operator }) => operator),
+    groups: operation.groups.map(({ _id, opers, ...group }) => ({
+      ...group,
+      opers: opers.map(({ _id, ...operator }) => operator),
+    })),
+    actions: operation.actions.map((action, index, actions) => {
+      type Action = PartialDeep<
+        CopilotDocV1.Action,
+        { recurseIntoArrays: true }
+      >
+      const {
+        _id,
+        intermediatePreDelay,
+        intermediatePostDelay,
+        ...newAction
+      }: EditorAction & Action = action
+      // preDelay 等于当前动作的 intermediatePostDelay
+      if (intermediatePostDelay !== undefined) {
+        newAction.preDelay = intermediatePostDelay
+      }
+      if (index < actions.length - 1) {
+        // postDelay 等于下一个动作的 intermediatePreDelay
+        const nextAction = actions[index + 1]
+        if (nextAction.intermediatePreDelay !== undefined) {
+          newAction.postDelay = nextAction.intermediatePreDelay
+        }
+      }
+
+      // 类型检查
+      newAction satisfies Action
+      // 检查多余的属性
+      '114514' as Exclude<
+        keyof Action,
+        // TODO: 兼容性处理，等到 _id 被去掉之后就可以去掉 Exclude _id 了
+        '_id'
+      > satisfies keyof typeof newAction
+
+      return newAction
+    }),
+  }
+
+  return snakeCaseKeysUnicode(converted, { deep: true })
 }

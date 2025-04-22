@@ -29,10 +29,19 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
     const [selectedTab, setSelectedTab] = useState(tabs[0].id)
 
     useEffect(() => {
+      const shouldUseNativeUndo = (e: Event) => {
+        return (
+          e.target instanceof HTMLElement &&
+          e.target.getAttribute('data-use-native-undo')
+        )
+      }
       const throttledUndo = throttle(undo, 100)
       const throttledRedo = throttle(redo, 100)
       const onKeyDown = (e: KeyboardEvent) => {
         if (e.code === 'KeyZ' && (e.ctrlKey || e.metaKey)) {
+          if (shouldUseNativeUndo(e)) {
+            return
+          }
           if (e.shiftKey) {
             throttledRedo()
           } else {
@@ -42,6 +51,9 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
         }
       }
       const onBeforeInput = (e: InputEvent) => {
+        if (shouldUseNativeUndo(e)) {
+          return
+        }
         if (e.inputType === 'historyUndo' || e.inputType === 'historyRedo') {
           e.preventDefault()
         }
