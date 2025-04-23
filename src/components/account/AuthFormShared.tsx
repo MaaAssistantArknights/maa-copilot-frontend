@@ -7,7 +7,7 @@ import {
 } from 'react-hook-form'
 
 import { FormField, FormFieldProps } from 'components/FormField'
-import { REGEX_EMAIL } from 'utils/regexes'
+import { REGEX_EMAIL, REGEX_USERNAME } from 'utils/regexes'
 
 export type RuleKeys = 'email' | 'password' | 'username' | 'registertoken'
 
@@ -25,6 +25,7 @@ export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
     required: '用户名为必填项',
     minLength: { value: 4, message: '用户名长度不能小于 4 位' },
     maxLength: { value: 24, message: '用户名长度不能大于 24 位' },
+    pattern: { value: REGEX_USERNAME, message: '用户名前后不能包含空格' },
   },
   registertoken: {
     required: '邮箱验证码为必填项',
