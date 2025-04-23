@@ -249,12 +249,12 @@ export interface ActionDocColor {
 // https://github.com/MaaAssistantArknights/MaaAssistantArknights/blob/50f5f94dfcc2ec175556bbaa55d0ffec74128a8e/src/MeoAsstGui/Helper/LogColor.cs
 export const actionDocColors: ActionDocColor[] = [
   {
-    title: i18nDefer.models.operator.color.black,
-    value: 'Black',
-  },
-  {
     title: i18nDefer.models.operator.color.gray,
     value: 'Gray',
+  },
+  {
+    title: i18nDefer.models.operator.color.black,
+    value: 'Black',
   },
   {
     title: i18nDefer.models.operator.color.dark_red,
