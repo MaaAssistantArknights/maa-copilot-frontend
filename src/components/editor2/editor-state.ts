@@ -5,7 +5,8 @@ import {
   useAtomValue,
   useSetAtom,
 } from 'jotai'
-import { atomFamily, splitAtom, useAtomCallback } from 'jotai/utils'
+import { splitAtom, useAtomCallback } from 'jotai/utils'
+import { noop } from 'lodash-es'
 import { useCallback } from 'react'
 import { PartialDeep, SetRequired, Simplify } from 'type-fest'
 
@@ -33,17 +34,13 @@ type EditorOperationBase = Simplify<
 export type EditorOperator = Simplify<
   WithInternalId<SetRequired<PartialDeep<CopilotDocV1.Operator>, 'name'>>
 >
-export type BaseEditorGroup = Simplify<
+export type EditorGroup = Simplify<
   WithInternalId<
     PartialDeep<Omit<CopilotDocV1.Group, 'opers'>> & {
       name: string
+      opers: EditorOperator[]
     }
   >
->
-export type EditorGroup = Simplify<
-  BaseEditorGroup & {
-    opers: EditorOperator[]
-  }
 >
 export type EditorAction = GenerateEditorAction<CopilotDocV1.Action>
 type GenerateEditorAction<T extends CopilotDocV1.Action> = T extends never
@@ -65,12 +62,21 @@ export interface EditorOperation extends EditorOperationBase {
   actions: EditorAction[]
 }
 
+// splitAtom() 有重载，无法用正常方法来构造类型
+const operAtomsAtom = (noop as typeof splitAtom)(
+  {} as PrimitiveAtom<EditorOperator[]>,
+  getInternalId,
+)
+export type BaseEditorGroup = Simplify<
+  Omit<EditorGroup, 'opers'> & {
+    opersAtom: PrimitiveAtom<EditorOperator[]>
+    operAtomsAtom: typeof operAtomsAtom
+  }
+>
+
 const baseAtom = atom<EditorOperationBase>({ doc: {} })
 const operatorsAtom = atom<EditorOperator[]>([])
 const baseGroupsAtom = atom<BaseEditorGroup[]>([])
-const groupOperatorsAtom = atomFamily((groupId: string) =>
-  atom<EditorOperator[]>([]),
-)
 const groupCache = new WeakMap<
   BaseEditorGroup,
   [EditorGroup, EditorOperator[]]
@@ -78,7 +84,7 @@ const groupCache = new WeakMap<
 const groupsAtom: PrimitiveAtom<EditorGroup[]> = atom(
   (get) =>
     get(baseGroupsAtom).map((baseGroup) => {
-      const opers = get(groupOperatorsAtom(getInternalId(baseGroup)))
+      const opers = get(baseGroup.opersAtom)
       const cached = groupCache.get(baseGroup)
       if (cached?.[1] === opers) {
         // base 和 opers 都没有变化，返回缓存的值，避免 rerender
@@ -99,9 +105,22 @@ const groupsAtom: PrimitiveAtom<EditorGroup[]> = atom(
       if (group === originalGroups[index]) {
         return originalBaseGroups[index]
       }
-      set(groupOperatorsAtom(getInternalId(group)), group.opers)
-      const { opers, ...baseGroup } = group
-      return baseGroup
+      const { opers, ...rest } = group
+      const originalBaseGroup = originalBaseGroups.find(
+        (original) => getInternalId(original) === getInternalId(group),
+      )
+
+      // 读取之前的 opersAtom 和 operAtomsAtom，如果没有就创建新的
+      const opersAtom = originalBaseGroup?.opersAtom ?? atom(opers)
+      set(opersAtom, opers)
+      const operAtomsAtom =
+        originalBaseGroup?.operAtomsAtom ?? splitAtom(opersAtom, getInternalId)
+
+      return {
+        ...rest,
+        opersAtom,
+        operAtomsAtom,
+      }
     })
     set(baseGroupsAtom, baseGroups)
   },
@@ -204,12 +223,9 @@ export const editorAtoms = {
   operators: operatorsAtom,
   operatorAtoms: splitAtom(operatorsAtom, getInternalId),
   groups: groupsAtom,
-  baseGroupAtoms: splitAtom(baseGroupsAtom, getInternalId),
   groupAtoms: splitAtom(groupsAtom, getInternalId),
-  groupOperators: groupOperatorsAtom,
-  groupOperatorAtoms: atomFamily((groupId: string) =>
-    splitAtom(groupOperatorsAtom(groupId), getInternalId),
-  ),
+  baseGroups: baseGroupsAtom,
+  baseGroupAtoms: splitAtom(baseGroupsAtom, getInternalId),
   actions: actionsAtom,
   actionAtoms: splitAtom(actionsAtom, getInternalId),
   ui: uiAtom,

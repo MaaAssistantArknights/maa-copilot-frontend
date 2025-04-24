@@ -43,7 +43,7 @@ export const OperatorEditor: FC = memo(() => {
     }),
   )
   const [operatorAtoms, dispatchOperators] = useAtom(editorAtoms.operatorAtoms)
-  const [groupAtoms] = useAtom(editorAtoms.groupAtoms)
+  const [baseGroupAtoms] = useAtom(editorAtoms.baseGroupAtoms)
 
   const handleDragEnd = useAtomCallback(
     useCallback(
@@ -181,8 +181,11 @@ export const OperatorEditor: FC = memo(() => {
           </SortableContext>
         </Droppable>
         <ul className="mt-4 flex flex-wrap gap-2">
-          {groupAtoms.map((groupAtom) => (
-            <GroupItem key={groupAtom.toString()} groupAtom={groupAtom} />
+          {baseGroupAtoms.map((baseGroupAtom) => (
+            <GroupItem
+              key={baseGroupAtom.toString()}
+              baseGroupAtom={baseGroupAtom}
+            />
           ))}
         </ul>
         <div className="mt-4 -ml-2 pb-96 flex items-center gap-2">
