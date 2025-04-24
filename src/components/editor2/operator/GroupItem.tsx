@@ -11,40 +11,53 @@ import { Popover2 } from '@blueprintjs/popover2'
 import { SortableContext } from '@dnd-kit/sortable'
 
 import clsx from 'clsx'
-import { PrimitiveAtom, useAtom } from 'jotai'
+import { PrimitiveAtom, useAtom, useAtomValue } from 'jotai'
 import { useImmerAtom } from 'jotai-immer'
-import { FC, memo, useEffect, useRef } from 'react'
+import { selectAtom } from 'jotai/utils'
+import { FC, memo, useEffect, useMemo, useRef } from 'react'
 
-import { Droppable, Sortable, useStableArray } from '../../dnd'
+import { Droppable, Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
-import { EditorGroup, editorAtoms, useEditorControls } from '../editor-state'
+import {
+  BaseEditorGroup,
+  editorAtoms,
+  useEditorControls,
+} from '../editor-state'
 import { createOperator, getInternalId } from '../reconciliation'
 import { OperatorItem } from './OperatorItem'
 import { OperatorSelect } from './OperatorSelect'
 import { useAddOperator } from './useAddOperator'
 
 interface GroupItemProps {
-  groupAtom: PrimitiveAtom<EditorGroup>
+  baseGroupAtom: PrimitiveAtom<BaseEditorGroup>
 }
 
-export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
-  const [group, setGroup] = useImmerAtom(groupAtom)
-  const [groupAtoms, dispatchGroups] = useAtom(editorAtoms.groupAtoms)
-  const [operatorAtoms, dispatchOperators] = useAtom(
-    editorAtoms.groupOperatorAtoms(getInternalId(group)),
+export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
+  const { withCheckpoint } = useEditorControls()
+  const [baseGroup, setGroup] = useImmerAtom(baseGroupAtom)
+  const [baseGroupAtoms, dispatchBaseGroups] = useAtom(
+    editorAtoms.baseGroupAtoms,
   )
+  const [operatorAtoms, dispatchOperators] = useAtom(baseGroup.operAtomsAtom)
+  const operatorIdsAtom = useMemo(() => {
+    return selectAtom(
+      baseGroup.opersAtom,
+      (opers) => opers.map(getInternalId),
+      (a, b) => a.join() === b.join(),
+    )
+  }, [baseGroup.opersAtom])
   const [{ activeGroupId, newlyAddedGroupId }, setUI] = useImmerAtom(
     editorAtoms.ui,
   )
-  const { withCheckpoint } = useEditorControls()
+  const operatorIds = useAtomValue(operatorIdsAtom)
   const addOperator = useAddOperator()
+
   const titleInputRef = useRef<HTMLInputElement>(null)
   const actionContainerRef = useRef<HTMLDivElement>(null)
   const actionContainerInitialWidthRef = useRef(0)
 
-  const operatorIds = useStableArray(group.opers.map(getInternalId))
-  const isActive = getInternalId(group) === activeGroupId
-  const id = getInternalId(group)
+  const id = getInternalId(baseGroup)
+  const isActive = id === activeGroupId
 
   useEffect(() => {
     if (newlyAddedGroupId === id) {
@@ -70,14 +83,14 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
           size={10}
           placeholder="干员组名称"
           inputRef={titleInputRef}
-          value={group.name}
+          value={baseGroup.name}
           onChange={(e) => {
             withCheckpoint(() => {
               setGroup((draft) => {
                 draft.name = e.target.value
               })
               return {
-                action: 'set-group-name-' + getInternalId(group),
+                action: 'set-group-name-' + getInternalId(baseGroup),
                 desc: '修改干员组名称',
                 squash: true,
               }
@@ -92,13 +105,16 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
               <MenuItem
                 icon="arrow-left"
                 text="左移"
-                disabled={groupAtoms.indexOf(groupAtom) === 0}
+                disabled={baseGroupAtoms.indexOf(baseGroupAtom) === 0}
                 onClick={() => {
                   withCheckpoint(() => {
-                    dispatchGroups({
+                    dispatchBaseGroups({
                       type: 'move',
-                      atom: groupAtom,
-                      before: groupAtoms[groupAtoms.indexOf(groupAtom) - 1],
+                      atom: baseGroupAtom,
+                      before:
+                        baseGroupAtoms[
+                          baseGroupAtoms.indexOf(baseGroupAtom) - 1
+                        ],
                     })
                     return {
                       action: 'move-group',
@@ -112,14 +128,18 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
                 icon="arrow-right"
                 text="右移"
                 disabled={
-                  groupAtoms.indexOf(groupAtom) === groupAtoms.length - 1
+                  baseGroupAtoms.indexOf(baseGroupAtom) ===
+                  baseGroupAtoms.length - 1
                 }
                 onClick={() => {
                   withCheckpoint(() => {
-                    dispatchGroups({
+                    dispatchBaseGroups({
                       type: 'move',
-                      atom: groupAtom,
-                      before: groupAtoms[groupAtoms.indexOf(groupAtom) + 2],
+                      atom: baseGroupAtom,
+                      before:
+                        baseGroupAtoms[
+                          baseGroupAtoms.indexOf(baseGroupAtom) + 2
+                        ],
                     })
                     return {
                       action: 'move-group',
@@ -135,9 +155,9 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
                 intent="danger"
                 onClick={() => {
                   withCheckpoint(() => {
-                    dispatchGroups({
+                    dispatchBaseGroups({
                       type: 'remove',
-                      atom: groupAtom,
+                      atom: baseGroupAtom,
                     })
                     return {
                       action: 'remove-group',
@@ -159,7 +179,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
       </div>
       <Droppable
         className="grow px-4 py-2"
-        id={getInternalId(group)}
+        id={getInternalId(baseGroup)}
         data={{ type: 'group' }}
       >
         <SortableContext items={operatorIds}>
@@ -174,7 +194,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
                     key={getInternalId(operator)}
                     data={{
                       type: 'operator',
-                      container: getInternalId(group),
+                      container: getInternalId(baseGroup),
                     }}
                   >
                     {(attrs) => (
@@ -203,7 +223,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
             ))}
           </ul>
         </SortableContext>
-        {group.opers.length === 0 && (
+        {operatorAtoms.length === 0 && (
           <div className="relative min-h-36 flex flex-col items-center justify-center text-xs text-zinc-500">
             {isActive ? (
               '从列表中选择干员'
@@ -260,7 +280,9 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
                 actionContainerInitialWidthRef.current = rect.width
               }
               setUI((ui) => {
-                ui.activeGroupId = isActive ? undefined : getInternalId(group)
+                ui.activeGroupId = isActive
+                  ? undefined
+                  : getInternalId(baseGroup)
               })
             }}
           >
@@ -270,7 +292,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ groupAtom }) => {
             <OperatorSelect
               markPicked
               onSelect={(name) => {
-                addOperator(createOperator({ name }), getInternalId(group))
+                addOperator(createOperator({ name }), getInternalId(baseGroup))
               }}
             >
               <Button
