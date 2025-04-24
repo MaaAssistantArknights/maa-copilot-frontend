@@ -11,6 +11,7 @@ import { ActionEditor } from './action/ActionEditor'
 import { useEditorControls } from './editor-state'
 import { OperatorEditor } from './operator/OperatorEditor'
 import { OperatorSheet } from './operator/sheet/OperatorSheet'
+import { useAutosave } from './useAutoSave'
 
 interface OperationEditorProps {
   title?: string
@@ -25,6 +26,7 @@ const tabs = [
 
 export const OperationEditor: FC<OperationEditorProps> = memo(
   ({ title, submitAction, onSubmit }) => {
+    useAutosave()
     const { undo, redo } = useEditorControls()
     const [selectedTab, setSelectedTab] = useState(tabs[0].id)
 

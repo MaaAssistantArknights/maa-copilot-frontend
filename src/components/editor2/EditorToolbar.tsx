@@ -1,5 +1,6 @@
 import {
   Button,
+  Callout,
   Divider,
   H1,
   Icon,
@@ -12,12 +13,26 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { FC, useState } from 'react'
 
+import { formatError } from '../../utils/error'
 import { joinJSX } from '../../utils/react'
+import { formatRelativeTime } from '../../utils/times'
 import { RelativeTime } from '../RelativeTime'
-import { useEditorControls, useEditorHistory } from './editor-state'
+import { AppToaster } from '../Toaster'
+import {
+  editorAtoms,
+  useEditorControls,
+  useEditorHistory,
+} from './editor-state'
 import { SourceEditorButton } from './source/SourceEditor'
+import {
+  AUTO_SAVE_INTERVAL,
+  AUTO_SAVE_LIMIT,
+  editorArchiveAtom,
+  editorSaveAtom,
+} from './useAutoSave'
 
 interface EditorToolbarProps {
   title?: string
@@ -35,10 +50,6 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   submitAction,
   onSubmit,
 }) => {
-  const { history, canRedo, canUndo } = useEditorHistory()
-  const { undo, redo, checkout } = useEditorControls()
-  const [historyListIsOpen, setHistoryListIsOpen] = useState(false)
-
   return (
     <div className="px-8 flex flex-wrap bg-white dark:bg-[#383e47]">
       <div className="py-2 flex items-center ">
@@ -67,68 +78,10 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
       </Tabs>
       <div className="grow py-2 flex flex-wrap items-center">
         <span className="grow" />
-        <Button
-          minimal
-          large
-          icon="undo"
-          title="撤销 (Ctrl+Z)"
-          disabled={!canUndo}
-          onClick={undo}
-        />
-        <Button
-          minimal
-          large
-          icon="redo"
-          title="重做 (Ctrl+Y)"
-          disabled={!canRedo}
-          onClick={redo}
-        />
-        <Popover2
-          content={
-            historyListIsOpen ? (
-              <Menu>
-                <MenuDivider
-                  className="pb-2 border-b"
-                  title={`操作历史 (上限${history.limit})`}
-                />
-                {[...history.stack].reverse().map((record, reversedIndex) => {
-                  const index = history.stack.length - 1 - reversedIndex
-                  return (
-                    <MenuItem
-                      key={index}
-                      className={clsx(
-                        index === 0 && 'italic',
-                        index === history.index ? 'font-bold' : undefined,
-                      )}
-                      text={index + 1 + '. ' + record.desc}
-                      labelElement={
-                        <RelativeTime
-                          className="ml-4 text-xs"
-                          detailTooltip={false}
-                          moment={record.time}
-                        />
-                      }
-                      onClick={() => checkout(index)}
-                    />
-                  )
-                })}
-              </Menu>
-            ) : (
-              <span />
-            )
-          }
-          placement="bottom"
-          onOpening={() => setHistoryListIsOpen(true)}
-          onClosed={() => setHistoryListIsOpen(false)}
-        >
-          <Button
-            minimal
-            icon="history"
-            text={history.index + 1 + '/' + history.stack.length}
-          />
-        </Popover2>
+        <AutoSaveButton />
+        <HistoryButtons />
         <SourceEditorButton minimal />
-        <div className="grow max-w-6" />
+        <span className="grow max-w-6" />
         <Button
           large
           intent="primary"
@@ -139,5 +92,148 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         />
       </div>
     </div>
+  )
+}
+
+const AutoSaveButton = () => {
+  const { withCheckpoint } = useEditorControls()
+  const archive = useAtomValue(editorArchiveAtom)
+  const save = useSetAtom(editorSaveAtom)
+  const setEditorState = useSetAtom(editorAtoms.editor)
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <Popover2
+      content={
+        isOpen ? (
+          <>
+            <Callout
+              intent="primary"
+              icon={null}
+              className="p-0 pl-2 flex items-center"
+            >
+              每隔 {AUTO_SAVE_INTERVAL / 1000 / 60} 分钟自动保存编辑过的内容 (
+              {archive.length}/{AUTO_SAVE_LIMIT})
+              <Button
+                minimal
+                icon="floppy-disk"
+                intent="primary"
+                className=""
+                onClick={() => {
+                  try {
+                    save()
+                  } catch (e) {
+                    AppToaster.show({
+                      message: '无法保存: ' + formatError(e),
+                      intent: 'danger',
+                    })
+                  }
+                }}
+              >
+                立即保存
+              </Button>
+            </Callout>
+            <Menu className="mt-2 p-0">
+              {archive.map((record) => (
+                <MenuItem
+                  multiline
+                  icon="time"
+                  text={record.v.operation.doc.title || '无标题'}
+                  label={formatRelativeTime(record.t)}
+                  key={record.t}
+                  onClick={() => {
+                    withCheckpoint(() => {
+                      setEditorState(record.v)
+                      return {
+                        action: 'restore',
+                        desc: '从自动保存恢复',
+                        squash: false,
+                      }
+                    })
+                  }}
+                />
+              ))}
+            </Menu>
+          </>
+        ) : (
+          <span />
+        )
+      }
+      placement="bottom"
+      onOpening={() => setIsOpen(true)}
+      onClosed={() => setIsOpen(false)}
+    >
+      <Button minimal large icon="projects" title="自动保存" />
+    </Popover2>
+  )
+}
+
+const HistoryButtons = () => {
+  const { history, canRedo, canUndo } = useEditorHistory()
+  const { undo, redo, checkout } = useEditorControls()
+  const [isOpen, setIsOpen] = useState(false)
+  return (
+    <>
+      <Button
+        minimal
+        large
+        icon="undo"
+        title="撤销 (Ctrl+Z)"
+        disabled={!canUndo}
+        onClick={undo}
+      />
+      <Button
+        minimal
+        large
+        icon="redo"
+        title="重做 (Ctrl+Y)"
+        disabled={!canRedo}
+        onClick={redo}
+      />
+      <Popover2
+        content={
+          isOpen ? (
+            <Menu>
+              <MenuDivider
+                className="pb-2 border-b"
+                title={`操作历史 (上限${history.limit})`}
+              />
+              {[...history.stack].reverse().map((record, reversedIndex) => {
+                const index = history.stack.length - 1 - reversedIndex
+                return (
+                  <MenuItem
+                    key={index}
+                    className={clsx(
+                      index === 0 && 'italic',
+                      index === history.index ? 'font-bold' : undefined,
+                    )}
+                    text={index + 1 + '. ' + record.desc}
+                    labelElement={
+                      <RelativeTime
+                        className="ml-4 text-xs"
+                        detailTooltip={false}
+                        moment={record.time}
+                      />
+                    }
+                    onClick={() => checkout(index)}
+                  />
+                )
+              })}
+            </Menu>
+          ) : (
+            <span />
+          )
+        }
+        placement="bottom"
+        onOpening={() => setIsOpen(true)}
+        onClosed={() => setIsOpen(false)}
+      >
+        <Button
+          minimal
+          icon="history"
+          title="操作历史"
+          text={history.index + 1 + '/' + history.stack.length}
+        />
+      </Popover2>
+    </>
   )
 }
