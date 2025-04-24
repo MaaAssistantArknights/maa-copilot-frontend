@@ -1,4 +1,4 @@
-import { Divider } from '@blueprintjs/core'
+import { Button, Divider } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { throttle } from 'lodash-es'
@@ -71,7 +71,7 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
     }, [undo, redo])
 
     return (
-      <div className="copilot-editor h-[calc(100vh-3.5rem)] flex flex-col">
+      <div className="h-[calc(100vh-3.5rem)] flex flex-col">
         <EditorToolbar
           tabs={tabs}
           selectedTab={selectedTab}
@@ -80,7 +80,6 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
           submitAction={submitAction}
           onSubmit={onSubmit}
         />
-
         <div
           className={clsx(
             'grow min-h-0 flex',
@@ -105,6 +104,14 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
           </PanelGroup>
         </div>
         <ActionEditor className={clsx(selectedTab !== 'action' && 'hidden')} />
+        <Button
+          intent="primary"
+          icon={selectedTab === 'main' ? 'arrow-right' : 'arrow-left'}
+          className="fixed bottom-4 right-4 w-12 h-12 !rounded-full"
+          onClick={() => {
+            setSelectedTab((prev) => (prev === 'main' ? 'action' : 'main'))
+          }}
+        />
       </div>
     )
   },

@@ -7,6 +7,7 @@ import {
   InputGroup,
   MenuItem,
 } from '@blueprintjs/core'
+import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { Draft } from 'immer'
@@ -162,8 +163,22 @@ export const ActionItem: FC<ActionItemProps> = memo(
               ],
               ({ action, setAction }) => (
                 <>
-                  <div className="grow self-stretch max-w-10 flex items-stretch justify-center">
-                    <Divider className="rotate-12" />
+                  <div className="grow self-stretch max-w-10 flex flex-col items-center text-xs">
+                    {action.type === CopilotDocV1.Type.Skill ||
+                    action.type === CopilotDocV1.Type.BulletTime ? (
+                      <>
+                        <Divider className="grow rotate-12 ml-3" />
+                        <Tooltip2
+                          placement="top"
+                          content="目标或位置只需填入其中一项"
+                        >
+                          或
+                        </Tooltip2>
+                        <Divider className="grow rotate-12 mr-3" />
+                      </>
+                    ) : (
+                      <Divider className="grow rotate-12" />
+                    )}
                   </div>
                   <div className="shrink-0">
                     <div className="flex items-center text-3xl">
@@ -470,6 +485,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   color: action.docColor ?? actionDocColors[0].value,
                 }}
                 inputRef={setDocInput}
+                placeholder="MAA 执行此动作时显示的文字"
                 value={doc}
                 onChange={(e) => {
                   withCheckpoint(() => {
@@ -552,7 +568,7 @@ const ActionTarget: FC<{
   const displayName =
     operatorInfo?.name ||
     action.name ||
-    (isGroup(action.name) ? '(未命名干员组)' : '请选择干员')
+    (isGroup(action.name) ? '(未命名干员组)' : '请选择目标')
   const skillUsage =
     operator &&
     '技能' +
