@@ -2,7 +2,8 @@ import { Button, Divider, Icon } from '@blueprintjs/core'
 import {
   DndContext,
   DragEndEvent,
-  PointerSensor,
+  MouseSensor,
+  TouchSensor,
   useSensor,
   useSensors,
 } from '@dnd-kit/core'
@@ -14,6 +15,7 @@ import { selectAtom, useAtomCallback } from 'jotai/utils'
 import { FC, useCallback, useEffect, useRef } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
+import { useCurrentSize } from '../../../utils/useCurrenSize'
 import { Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import { editorAtoms, useEditorControls } from '../editor-state'
@@ -33,10 +35,16 @@ const actionIdsAtom = selectAtom(
 )
 
 export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
+  const { isMD } = useCurrentSize()
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
   const actionIds = useAtomValue(actionIdsAtom)
   const { withCheckpoint } = useEditorControls()
-  const sensors = useSensors(useSensor(PointerSensor))
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 5 },
+    }),
+  )
   const createActionMenuRef = useRef<CreateActionMenuRef>(null)
 
   const handleDragEnd = useAtomCallback(
@@ -94,64 +102,72 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
     }
   }, [])
 
-  return (
-    <div className={clsx('relative grow min-h-0 flex', className)}>
-      <PanelGroup autoSaveId="editor-actions" direction="horizontal">
-        <Panel>
-          <PanelGroup autoSaveId="editor-actions-left" direction="vertical">
-            <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
-              <LevelMap className="h-full" />
-            </Panel>
-            <PanelResizeHandle className="h-1 bg-white dark:bg-[#383e47]" />
-            <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
-              干员列表（待实现）
-            </Panel>
-          </PanelGroup>
-        </Panel>
-        <PanelResizeHandle className="w-1 bg-white dark:bg-[#383e47]" />
-        <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)] !overflow-auto p-4 pr-8 pb-96">
-          <div className="flex items-center">
-            <h3 className="text-xl font-bold">
-              动作序列 ({actionAtoms.length})
-            </h3>
-            <Divider className="grow" />
-          </div>
-          <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-            <SortableContext items={actionIds}>
-              <ul className="flex flex-col">
-                {actionAtoms.map((actionAtom) => (
-                  <AtomRenderer
-                    key={actionAtom.toString()}
-                    atom={actionAtom}
-                    render={(action) => (
-                      <Sortable
-                        id={getInternalId(action)}
-                        key={getInternalId(action)}
-                      >
-                        {(attrs) => (
-                          <ActionItem actionAtom={actionAtom} {...attrs} />
-                        )}
-                      </Sortable>
+  const rightPanelContent = (
+    <>
+      <div className="flex items-center">
+        <h3 className="text-xl font-bold">动作序列 ({actionAtoms.length})</h3>
+        <Divider className="grow" />
+      </div>
+      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+        <SortableContext items={actionIds}>
+          <ul className="flex flex-col">
+            {actionAtoms.map((actionAtom) => (
+              <AtomRenderer
+                key={actionAtom.toString()}
+                atom={actionAtom}
+                render={(action) => (
+                  <Sortable
+                    id={getInternalId(action)}
+                    key={getInternalId(action)}
+                  >
+                    {(attrs) => (
+                      <ActionItem actionAtom={actionAtom} {...attrs} />
                     )}
-                  />
-                ))}
-              </ul>
-            </SortableContext>
-          </DndContext>
-          <Button
-            minimal
-            outlined
-            icon={<Icon icon="plus" size={24} />}
-            intent="primary"
-            className="relative mt-6 w-full h-16 !text-xl"
-            onClick={(e) => {
-              createActionMenuRef.current?.open(e.clientX, e.clientY)
-            }}
-          >
-            添加动作 (Shift + A)
-          </Button>
-        </Panel>
-      </PanelGroup>
+                  </Sortable>
+                )}
+              />
+            ))}
+          </ul>
+        </SortableContext>
+      </DndContext>
+      <Button
+        minimal
+        outlined
+        icon={<Icon icon="plus" size={24} />}
+        intent="primary"
+        className="relative mt-6 w-full h-16 !text-xl"
+        onClick={(e) => {
+          createActionMenuRef.current?.open(e.clientX, e.clientY)
+        }}
+      >
+        添加动作 (Shift + A)
+      </Button>
+    </>
+  )
+
+  return (
+    <div className={clsx('relative grow min-h-0', className)}>
+      {isMD ? (
+        <div className="p-4 pb-96">{rightPanelContent}</div>
+      ) : (
+        <PanelGroup autoSaveId="editor-actions" direction="horizontal">
+          <Panel>
+            <PanelGroup autoSaveId="editor-actions-left" direction="vertical">
+              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
+                <LevelMap className="h-full" />
+              </Panel>
+              <PanelResizeHandle className="h-1 bg-white dark:bg-[#383e47]" />
+              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
+                干员列表（待实现）
+              </Panel>
+            </PanelGroup>
+          </Panel>
+          <PanelResizeHandle className="w-1 bg-white dark:bg-[#383e47]" />
+          <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)] !overflow-auto p-4 pb-96">
+            {rightPanelContent}
+          </Panel>
+        </PanelGroup>
+      )}
       <CreateActionMenu
         ref={createActionMenuRef}
         renderTarget={({ ref, locatorRef, onClick }) => (
