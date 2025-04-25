@@ -1,4 +1,10 @@
-import { Button, ButtonProps, Callout, Drawer } from '@blueprintjs/core'
+import {
+  Button,
+  ButtonProps,
+  Callout,
+  Drawer,
+  DrawerSize,
+} from '@blueprintjs/core'
 
 import camelcaseKeys from 'camelcase-keys'
 import { useAtom } from 'jotai'
@@ -100,7 +106,12 @@ export const SourceEditorButton: FC<SourceEditorButtonProps> = memo(
             setDrawerOpen(true)
           }}
         />
-        <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)}>
+        <Drawer
+          className="max-w-[800px]"
+          size={DrawerSize.LARGE}
+          isOpen={drawerOpen}
+          onClose={() => setDrawerOpen(false)}
+        >
           {drawerOpen && <SourceEditor />}
         </Drawer>
       </>

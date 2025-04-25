@@ -108,10 +108,10 @@ export const ActionItem: FC<ActionItemProps> = memo(
             typeInfo.accentText,
           )}
         >
-          <div className="flex items-center">
+          <div className="flex flex-wrap items-center">
             <h4
               className={clsx(
-                'relative shrink-0 self-stretch w-[5em] text-2xl font-bold font-serif bg-gray-100 dark:bg-gray-700 cursor-move',
+                'relative shrink-0 self-stretch w-[5em] text-2xl font-bold font-serif bg-gray-100 dark:bg-gray-700 cursor-move select-none touch-manipulation',
                 // regarding the calc(), we try to make the right border tilt by 12deg, so the x coordinate
                 // of the bottom right corner will be 100% - height * tan(12deg), where height turns out to be 4.5rem
                 '[clip-path:polygon(0_0,100%_0,calc(100%-.96rem)_100%,0_100%)]',

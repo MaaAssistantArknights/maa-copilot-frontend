@@ -51,7 +51,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   onSubmit,
 }) => {
   return (
-    <div className="px-8 flex flex-wrap bg-white dark:bg-[#383e47]">
+    <div className="px-4 md:px-8 flex flex-wrap bg-white dark:bg-[#383e47]">
       <div className="py-2 flex items-center ">
         <Icon icon="document" />
         <H1 className="!text-lg font-normal ml-1 mb-0">作业编辑器v2</H1>

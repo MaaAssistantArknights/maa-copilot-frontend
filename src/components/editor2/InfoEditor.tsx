@@ -26,12 +26,12 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
   return (
     <div
       className={clsx(
-        'mb-4 [&>.bp4-inline>.bp4-label]:w-20',
+        'mb-4 md:[&>.bp4-form-group]:flex-row md:[&>.bp4-form-group>.bp4-label]:w-20',
         '[&_[type="text"]]:!border-0 [&_textarea]:!outline-none [&_[type="text"]]:shadow-[inset_0_0_2px_0_rgba(0,0,0,0.4)] [&_textarea:not(:focus)]:!shadow-[inset_0_0_2px_0_rgba(0,0,0,0.4)]',
         className,
       )}
     >
-      <FormGroup inline contentClassName="grow" label="标题" labelInfo="*">
+      <FormGroup contentClassName="grow" label="标题" labelInfo="*">
         <InputGroup
           large
           fill
@@ -51,7 +51,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           }}
         />
       </FormGroup>
-      <FormGroup inline contentClassName="grow" label="描述">
+      <FormGroup contentClassName="grow" label="描述">
         <TextArea
           fill
           rows={4}
@@ -72,7 +72,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           }}
         />
       </FormGroup>
-      <FormGroup inline contentClassName="grow" label="关卡" labelInfo="*">
+      <FormGroup contentClassName="grow" label="关卡" labelInfo="*">
         <LevelSelect
           difficulty={info.difficulty}
           value={info.stageName}
@@ -90,7 +90,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           }}
         />
       </FormGroup>
-      <FormGroup inline contentClassName="grow" label="适用难度">
+      <FormGroup contentClassName="grow" label="适用难度">
         <DifficultyPicker
           stageName={info.stageName}
           onChange={(value, programmatically) => {
@@ -111,7 +111,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           }}
         />
       </FormGroup>
-      <FormGroup inline contentClassName="grow" label="可见范围">
+      <FormGroup contentClassName="grow" label="可见范围">
         <RadioGroup
           inline
           selectedValue={metadata.visibility}

@@ -60,6 +60,8 @@ export const Sortable: FC<SortableProps> = ({
     transition,
   }
 
+  className = clsx('touch-manipulation', className)
+
   if (typeof children === 'function') {
     return (
       <li ref={setNodeRef} style={style} className={className}>
@@ -101,7 +103,7 @@ export const Droppable: FC<DroppableProps> = ({
   const isOverAsContainer = isOver || over?.data.current?.container === id
 
   className = clsx(
-    'relative',
+    'relative touch-manipulation',
     active &&
       "before:content-[''] before:absolute before:inset-0 before:border-2 before:border-dashed before:border-blue-400 before:pointer-events-none",
     isOverAsContainer && 'before:bg-blue-500/10',

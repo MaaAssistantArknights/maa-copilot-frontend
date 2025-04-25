@@ -4,8 +4,9 @@ import {
   DndContext,
   DragEndEvent,
   DragOverlay,
+  MouseSensor,
   Over,
-  PointerSensor,
+  TouchSensor,
   useDndContext,
   useSensor,
   useSensors,
@@ -38,8 +39,11 @@ export const OperatorEditor: FC = memo(() => {
   const operatorIds = useAtomValue(operatorIdsAtom)
   const { withCheckpoint } = useEditorControls()
   const sensors = useSensors(
-    useSensor(PointerSensor, {
+    useSensor(MouseSensor, {
       activationConstraint: { distance: 5 },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: { delay: 250, tolerance: 5 },
     }),
   )
   const [operatorAtoms, dispatchOperators] = useAtom(editorAtoms.operatorAtoms)

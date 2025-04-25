@@ -230,9 +230,9 @@ const ConditionChain: FC<{
   }
 
   return (
-    <div className="ml-4 h-8 flex items-center gap-1">
+    <div className="ml-4 flex flex-wrap items-center gap-1">
       <svg
-        className="h-full"
+        className="h-8"
         viewBox="0 0 40 50"
         fill="none"
         stroke="currentColor"
@@ -250,7 +250,7 @@ const ConditionChain: FC<{
       {joinJSX(
         conditionNodes,
         <svg
-          className="h-full"
+          className="h-8"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 50 50"
           stroke="currentColor"
@@ -260,7 +260,7 @@ const ConditionChain: FC<{
         </svg>,
       )}
       <svg
-        className="h-full"
+        className="h-8"
         viewBox="50 50 50 50"
         fill="none"
         stroke="currentColor"
