@@ -13,8 +13,8 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useAtomValue, useSetAtom } from 'jotai'
-import { FC, useState } from 'react'
+import { useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { FC, useRef, useState } from 'react'
 
 import { formatError } from '../../utils/error'
 import { joinJSX } from '../../utils/react'
@@ -33,14 +33,18 @@ import {
   editorArchiveAtom,
   editorSaveAtom,
 } from './useAutoSave'
+import { getLabeledPath } from './validation/schema'
+import {
+  editorEntityErrorsAtom,
+  editorErrorsVisibleAtom,
+  editorGlobalErrorsAtom,
+} from './validation/validation'
 
-interface EditorToolbarProps {
+interface EditorToolbarProps extends SubmitButtonProps {
   title?: string
   tabs: { id: string; name: string }[]
   selectedTab: string
   onTabChange: (id: string) => void
-  submitAction: string
-  onSubmit: () => void
 }
 
 export const EditorToolbar: FC<EditorToolbarProps> = ({
@@ -80,18 +84,52 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         <span className="grow" />
         <AutoSaveButton />
         <HistoryButtons />
+        <ErrorVisibleButton />
+        <ErrorButton />
         <SourceEditorButton minimal />
         <span className="grow max-w-6" />
-        <Button
-          large
-          intent="primary"
-          className="!px-8"
-          icon="upload"
-          text={submitAction}
-          onClick={onSubmit}
-        />
+        <SubmitButton submitAction={submitAction} onSubmit={onSubmit} />
       </div>
     </div>
+  )
+}
+
+interface SubmitButtonProps {
+  submitAction: string
+  onSubmit: () => Promise<void> | void
+}
+
+const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
+  const [submitting, setSubmitting] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  const handleSubmit = async () => {
+    if (successTimer.current) {
+      clearTimeout(successTimer.current)
+      successTimer.current = null
+    }
+    setSubmitting(true)
+    try {
+      await onSubmit()
+      setSuccess(true)
+      successTimer.current = setTimeout(() => setSuccess(false), 2000)
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setSubmitting(false)
+    }
+  }
+  return (
+    <Button
+      large
+      intent={success ? 'success' : 'primary'}
+      className="w-40"
+      icon={success ? 'tick' : 'upload'}
+      loading={submitting}
+      text={submitAction}
+      onClick={handleSubmit}
+    />
   )
 }
 
@@ -235,5 +273,59 @@ const HistoryButtons = () => {
         />
       </Popover2>
     </>
+  )
+}
+
+const ErrorButton = () => {
+  const globalErrors = useAtomValue(editorGlobalErrorsAtom)
+  const entityErrors = useAtomValue(editorEntityErrorsAtom)
+  const [isOpen, setIsOpen] = useState(false)
+  const allErrors = globalErrors.concat(Object.values(entityErrors).flat())
+  return (
+    <Popover2
+      content={
+        isOpen ? (
+          <>
+            <MenuDivider className="pb-2 border-b" title="错误" />
+            <ul className="m-2 text-red-500">
+              {allErrors.map(({ path, message }) => (
+                <li key={path.join()}>
+                  <span className="font-bold">{getLabeledPath(path)}: </span>
+                  {message}
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : (
+          <span />
+        )
+      }
+      placement="bottom"
+      isOpen={isOpen}
+      onInteraction={(isOpen) => setIsOpen(allErrors.length > 0 && isOpen)}
+    >
+      <Button
+        minimal
+        large
+        icon={allErrors.length > 0 ? 'cross-circle' : 'tick-circle'}
+        intent={allErrors.length > 0 ? 'danger' : 'success'}
+        title={allErrors.length > 0 ? '错误' : '无错误'}
+        text={allErrors.length || undefined}
+      />
+    </Popover2>
+  )
+}
+
+const ErrorVisibleButton = () => {
+  const [visible, setVisible] = useAtom(editorErrorsVisibleAtom)
+  return (
+    <Button
+      minimal
+      large
+      icon="eye-open"
+      active={visible}
+      onClick={() => setVisible(!visible)}
+      title="在编辑器中显示错误"
+    />
   )
 }

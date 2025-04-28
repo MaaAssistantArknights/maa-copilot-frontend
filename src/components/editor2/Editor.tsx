@@ -1,18 +1,20 @@
 import { Button, Divider } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import { useAtomCallback } from 'jotai/utils'
 import { throttle } from 'lodash-es'
-import { FC, memo, useEffect, useState } from 'react'
+import { FC, memo, useCallback, useEffect, useState } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
 import { useCurrentSize } from '../../utils/useCurrenSize'
 import { EditorToolbar } from './EditorToolbar'
 import { InfoEditor } from './InfoEditor'
 import { ActionEditor } from './action/ActionEditor'
-import { useEditorControls } from './editor-state'
+import { editorAtoms, useEditorControls } from './editor-state'
 import { OperatorEditor } from './operator/OperatorEditor'
 import { OperatorSheet } from './operator/sheet/OperatorSheet'
 import { useAutosave } from './useAutoSave'
+import { Validator } from './validation/Validator'
 
 interface OperationEditorProps {
   title?: string
@@ -32,47 +34,56 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
     const { undo, redo } = useEditorControls()
     const [selectedTab, setSelectedTab] = useState(tabs[0].id)
 
+    const handleUndoRedo = useAtomCallback(
+      useCallback(
+        (get, set) => {
+          const shouldUseNativeUndo = () => {
+            return get(editorAtoms.sourceEditorIsOpen)
+          }
+          const throttledUndo = throttle(undo, 100)
+          const throttledRedo = throttle(redo, 100)
+          const onKeyDown = (e: KeyboardEvent) => {
+            if (e.code === 'KeyZ' && (e.ctrlKey || e.metaKey)) {
+              if (shouldUseNativeUndo()) {
+                return
+              }
+              if (e.shiftKey) {
+                throttledRedo()
+              } else {
+                throttledUndo()
+              }
+              e.preventDefault()
+            }
+          }
+          const onBeforeInput = (e: InputEvent) => {
+            if (shouldUseNativeUndo()) {
+              return
+            }
+            if (
+              e.inputType === 'historyUndo' ||
+              e.inputType === 'historyRedo'
+            ) {
+              e.preventDefault()
+            }
+          }
+          document.addEventListener('keydown', onKeyDown)
+          document.addEventListener('beforeinput', onBeforeInput, {
+            capture: true,
+          })
+          return () => {
+            document.removeEventListener('keydown', onKeyDown)
+            document.removeEventListener('beforeinput', onBeforeInput, {
+              capture: true,
+            })
+          }
+        },
+        [undo, redo],
+      ),
+    )
+
     useEffect(() => {
-      const shouldUseNativeUndo = (e: Event) => {
-        return (
-          e.target instanceof HTMLElement &&
-          e.target.getAttribute('data-use-native-undo')
-        )
-      }
-      const throttledUndo = throttle(undo, 100)
-      const throttledRedo = throttle(redo, 100)
-      const onKeyDown = (e: KeyboardEvent) => {
-        if (e.code === 'KeyZ' && (e.ctrlKey || e.metaKey)) {
-          if (shouldUseNativeUndo(e)) {
-            return
-          }
-          if (e.shiftKey) {
-            throttledRedo()
-          } else {
-            throttledUndo()
-          }
-          e.preventDefault()
-        }
-      }
-      const onBeforeInput = (e: InputEvent) => {
-        if (shouldUseNativeUndo(e)) {
-          return
-        }
-        if (e.inputType === 'historyUndo' || e.inputType === 'historyRedo') {
-          e.preventDefault()
-        }
-      }
-      document.addEventListener('keydown', onKeyDown)
-      document.addEventListener('beforeinput', onBeforeInput, {
-        capture: true,
-      })
-      return () => {
-        document.removeEventListener('keydown', onKeyDown)
-        document.removeEventListener('beforeinput', onBeforeInput, {
-          capture: true,
-        })
-      }
-    }, [undo, redo])
+      return handleUndoRedo()
+    }, [handleUndoRedo])
 
     const rightPanelContent = (
       <>
@@ -87,6 +98,7 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
 
     return (
       <div className="-mt-14 pt-14 md:h-screen flex flex-col">
+        <Validator />
         <EditorToolbar
           tabs={tabs}
           selectedTab={selectedTab}

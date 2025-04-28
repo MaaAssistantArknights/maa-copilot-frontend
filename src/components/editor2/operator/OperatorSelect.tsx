@@ -67,7 +67,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
     const isGroup = (name?: string) =>
       name !== undefined && groupNames.includes(name)
 
-    type Item = (OperatorInfo | { name: string }) & { isHeader?: boolean }
+    type Item = (OperatorInfo | { name?: string }) & { isHeader?: boolean }
     const items: Item[] = useMemo(() => {
       if (!isOpen) return []
       if (!liftPicked) return OPERATORS
@@ -157,10 +157,14 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
               onMouseDown={onOptionMouseDown}
               selected={
                 value === item.name ||
-                (markPicked && overallOperatorNames.includes(item.name))
+                (markPicked &&
+                  !!item.name &&
+                  overallOperatorNames.includes(item.name))
               }
               labelElement={
-                markPicked && overallOperatorNames.includes(item.name) ? (
+                markPicked &&
+                item.name &&
+                overallOperatorNames.includes(item.name) ? (
                   <Icon icon="tick" />
                 ) : undefined
               }
@@ -189,7 +193,11 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
           onOpening: () => setIsOpen(true),
           onClosed: () => setIsOpen(false),
         }}
-        onItemSelect={(item) => onSelect?.(item.name)}
+        onItemSelect={(item) => {
+          if (item.name) {
+            onSelect?.(item.name)
+          }
+        }}
       >
         {children}
       </Select>

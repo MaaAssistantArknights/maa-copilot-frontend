@@ -1,5 +1,6 @@
 import {
   Button,
+  Callout,
   Card,
   Classes,
   Divider,
@@ -41,6 +42,7 @@ import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
 import { OperatorSelect } from '../operator/OperatorSelect'
 import { createAction, getInternalId } from '../reconciliation'
+import { useEntityErrors } from '../validation/validation'
 import { ActionLinker } from './ActionLinker'
 
 interface ActionItemProps extends Partial<SortableItemProps> {
@@ -54,6 +56,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
     const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
     const [action, setAction] = useImmerAtom(actionAtom)
     const [ui, setUI] = useImmerAtom(editorAtoms.ui)
+    const errors = useEntityErrors(getInternalId(action))
     const [docDraft, setDocDraft] = useState<string | undefined>()
     const [docInput, setDocInput] = useState<HTMLInputElement | null>(null)
     const shouldFocusDocInput = useRef(false)
@@ -520,6 +523,20 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 }}
               />
             </div>
+          )}
+          {errors && (
+            <Callout
+              icon={null}
+              intent="danger"
+              className="!p-2 !rounded-none text-xs"
+            >
+              {errors.map(({ path, message, fieldLabel }) => (
+                <p key={path.join()}>
+                  {fieldLabel && fieldLabel + ': '}
+                  {message}
+                </p>
+              ))}
+            </Callout>
           )}
         </Card>
       </div>

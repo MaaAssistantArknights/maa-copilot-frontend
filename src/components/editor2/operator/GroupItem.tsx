@@ -1,5 +1,6 @@
 import {
   Button,
+  Callout,
   Card,
   Elevation,
   Icon,
@@ -24,6 +25,7 @@ import {
   useEditorControls,
 } from '../editor-state'
 import { createOperator, getInternalId } from '../reconciliation'
+import { useEntityErrors } from '../validation/validation'
 import { OperatorItem } from './OperatorItem'
 import { OperatorSelect } from './OperatorSelect'
 import { useAddOperator } from './useAddOperator'
@@ -50,13 +52,14 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
     editorAtoms.ui,
   )
   const operatorIds = useAtomValue(operatorIdsAtom)
+  const id = getInternalId(baseGroup)
+  const errors = useEntityErrors(id)
   const addOperator = useAddOperator()
 
   const titleInputRef = useRef<HTMLInputElement>(null)
   const actionContainerRef = useRef<HTMLDivElement>(null)
   const actionContainerInitialWidthRef = useRef(0)
 
-  const id = getInternalId(baseGroup)
   const isActive = id === activeGroupId
 
   useEffect(() => {
@@ -81,7 +84,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
           className="grow"
           inputClassName="!p-4 !pr-0 !border-0 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-600 dark:focus:bg-gray-600 !shadow-none font-bold text-gray-800"
           size={10}
-          placeholder="干员组名称"
+          placeholder="干员组名称*"
           inputRef={titleInputRef}
           value={baseGroup.name}
           onChange={(e) => {
@@ -177,6 +180,20 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
           />
         </Popover2>
       </div>
+      {errors && (
+        <Callout
+          icon={null}
+          intent="danger"
+          className="!p-2 !rounded-none text-xs"
+        >
+          {errors.map(({ path, message, fieldLabel }) => (
+            <p key={path.join()}>
+              {fieldLabel && fieldLabel + ': '}
+              {message}
+            </p>
+          ))}
+        </Callout>
+      )}
       <Droppable
         className="grow px-4 py-2"
         id={getInternalId(baseGroup)}
