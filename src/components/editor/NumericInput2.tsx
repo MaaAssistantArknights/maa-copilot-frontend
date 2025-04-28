@@ -4,6 +4,7 @@ import {
   NumericInputProps,
 } from '@blueprintjs/core'
 
+import { clamp, noop } from 'lodash-es'
 import {
   WheelEventHandler,
   useCallback,
@@ -23,6 +24,7 @@ export interface NumericInput2Props extends MixedNumericInputProps {
 export const NumericInput2 = ({
   intOnly,
   min,
+  max,
   minorStepSize,
   value,
   onValueChange,
@@ -32,16 +34,6 @@ export const NumericInput2 = ({
   ...props
 }: NumericInput2Props) => {
   const allowNegative = min === undefined || min < 0
-
-  const onWheelFocusedRef = useRef(onWheelFocused)
-  onWheelFocusedRef.current = onWheelFocused
-  const onValueChangeRef = useRef(onValueChange)
-  onValueChangeRef.current = onValueChange
-  const wheelStepSizeRef = useRef(wheelStepSize)
-  wheelStepSizeRef.current = wheelStepSize
-  const valueRef = useRef(value)
-  valueRef.current = value
-
   const handleWheelRegistered = useRef(false)
   const inputRef = useRef<HTMLInputElement>(null)
   const [endsWithDot, setEndsWithDot] = useState(false)
@@ -54,18 +46,24 @@ export const NumericInput2 = ({
     minorStepSize = 0.001
   }
 
-  const handleWheel: WheelEventHandler<HTMLInputElement> = useCallback((e) => {
-    onWheelFocusedRef.current?.(e)
-    if (wheelStepSizeRef.current) {
+  const handleWheelImpl = useRef<WheelEventHandler<HTMLInputElement>>(noop)
+  handleWheelImpl.current = (e) => {
+    onWheelFocused?.(e)
+    if (wheelStepSize) {
       e.preventDefault()
-      const newValue =
-        (Number(valueRef.current) || 0) -
-        Math.sign(e.deltaY) * wheelStepSizeRef.current
-
-      if (newValue !== valueRef.current) {
-        onValueChangeRef.current?.(newValue, String(newValue), inputRef.current)
+      const newValue = clamp(
+        (Number(value) || 0) - Math.sign(e.deltaY) * wheelStepSize,
+        min ?? -Number.MAX_VALUE,
+        max ?? Number.MAX_VALUE,
+      )
+      if (newValue !== value) {
+        onValueChange?.(newValue, String(newValue), e.currentTarget)
       }
     }
+  }
+
+  const handleWheel: WheelEventHandler<HTMLInputElement> = useCallback((e) => {
+    handleWheelImpl.current(e)
   }, [])
 
   useEffect(() => {
@@ -79,6 +77,7 @@ export const NumericInput2 = ({
     <NumericInput
       allowNumericCharactersOnly
       min={min}
+      max={max}
       minorStepSize={minorStepSize}
       inputRef={inputRef}
       value={endsWithDot ? value + '.' : value}
@@ -94,10 +93,10 @@ export const NumericInput2 = ({
           })
         }
       }}
-      onBlur={() => {
+      onBlur={(e) => {
         setEndsWithDot(false)
         if (handleWheelRegistered.current) {
-          inputRef.current?.removeEventListener('wheel', handleWheel as any)
+          e.currentTarget.removeEventListener('wheel', handleWheel as any)
           handleWheelRegistered.current = false
         }
       }}

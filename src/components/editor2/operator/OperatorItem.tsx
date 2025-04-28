@@ -13,7 +13,7 @@ import clsx from 'clsx'
 import { clamp } from 'lodash-es'
 import { FC, memo } from 'react'
 
-import type { CopilotDocV1 } from 'models/copilot.schema'
+import { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
   OPERATORS,
@@ -21,11 +21,13 @@ import {
   defaultSkills,
   getDefaultRequirements,
   getSkillUsageTitle,
+  operatorSkillUsages,
   withDefaultRequirements,
 } from '../../../models/operator'
 import { MasteryIcon } from '../../MasteryIcon'
 import { Select } from '../../Select'
 import { SortableItemProps } from '../../dnd'
+import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorOperator, useEditorControls } from '../editor-state'
@@ -61,9 +63,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
     const skillUsage =
       '技能' +
       getSkillUsageTitle(
-        operator.skillUsage ?? 0,
+        operator.skillUsage ?? CopilotDocV1.SkillUsageType.None,
         operator.skillTimes ?? 1,
-      ).replace(/（(\d)次）/, 'x$1')
+      ).replace(/（(\d+)次）/, 'x$1')
     const skills = info ? info.skills : defaultSkills
     const requirements = withDefaultRequirements(
       operator.requirements,
@@ -206,16 +208,74 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
           </Popover2>
           <div className="flex h-6">
             {controlsEnabled && (
-              <Button
-                small
-                minimal
-                className={clsx(
-                  '!px-0 !min-h-0 !border-none !text-xs !leading-3 !font-normal',
-                  skillUsageClasses[operator.skillUsage ?? 0],
+              <DetailedSelect
+                items={operatorSkillUsages.map((item) =>
+                  item.value === CopilotDocV1.SkillUsageType.ReadyToUseTimes
+                    ? {
+                        ...item,
+                        menuItemProps: { shouldDismissPopover: false },
+                        description: (
+                          <>
+                            <div>{item.description}</div>
+                            <span className="mr-2 text-lg">x</span>
+                            <NumericInput2
+                              intOnly
+                              min={1}
+                              className="inline-flex"
+                              inputClassName="!p-0 !w-8 text-center font-semibold"
+                              value={operator.skillTimes ?? 1}
+                              wheelStepSize={1}
+                              onValueChange={(v) => {
+                                withCheckpoint(() => {
+                                  onChange?.({
+                                    ...operator,
+                                    skillTimes: v,
+                                  })
+                                  return {
+                                    action:
+                                      'set-operator-skillTimes-' +
+                                      getInternalId(operator),
+                                    desc: '修改技能次数',
+                                    squash: true,
+                                  }
+                                })
+                              }}
+                            />
+                          </>
+                        ),
+                      }
+                    : item,
                 )}
+                value={operator.skillUsage ?? CopilotDocV1.SkillUsageType.None}
+                onItemSelect={(item) => {
+                  if (item.value === operator.skillUsage) return
+                  withCheckpoint(() => {
+                    onChange?.({
+                      ...operator,
+                      skillUsage: item.value as number,
+                    })
+                    return {
+                      action:
+                        'set-operator-skillUsage-' + getInternalId(operator),
+                      desc: '修改技能用法',
+                      squash: false,
+                    }
+                  })
+                }}
               >
-                {skillUsage}
-              </Button>
+                <Button
+                  small
+                  minimal
+                  className={clsx(
+                    '!px-0 h-full !border-none !text-xs !leading-3 !font-normal',
+                    skillUsageClasses[
+                      operator.skillUsage ?? CopilotDocV1.SkillUsageType.None
+                    ],
+                  )}
+                >
+                  {skillUsage}
+                </Button>
+              </DetailedSelect>
             )}
           </div>
         </div>

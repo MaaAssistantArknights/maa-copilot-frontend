@@ -168,6 +168,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 <>
                   <div className="grow self-stretch max-w-10 flex flex-col items-center text-xs">
                     {action.type === CopilotDocV1.Type.Skill ||
+                    action.type === CopilotDocV1.Type.Retreat ||
                     action.type === CopilotDocV1.Type.BulletTime ? (
                       <>
                         <Divider className="grow rotate-12 ml-3" />
@@ -358,10 +359,10 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                   })
                                   return {
                                     action:
-                                      'set-action-skill-times-' +
+                                      'set-action-skillTimes-' +
                                       getInternalId(action),
                                     desc: '修改技能次数',
-                                    squash: false,
+                                    squash: true,
                                   }
                                 })
                               }}
@@ -592,7 +593,7 @@ const ActionTarget: FC<{
       getSkillUsageTitle(
         operator.skillUsage ?? 0,
         operator.skillTimes ?? 1,
-      ).replace(/（(\d)次）/, 'x$1')
+      ).replace(/（(\d+)次）/, 'x$1')
   const subtitle = isGroup(action.name)
     ? '干员组'
     : skillUsage ||
