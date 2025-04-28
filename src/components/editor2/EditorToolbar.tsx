@@ -96,24 +96,28 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
 
 interface SubmitButtonProps {
   submitAction: string
-  onSubmit: () => Promise<void> | void
+  onSubmit: () => Promise<void | false> | false | void
 }
 
 const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
   const [submitting, setSubmitting] = useState(false)
-  const [success, setSuccess] = useState(false)
-  const successTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
+  const statusResetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleSubmit = async () => {
-    if (successTimer.current) {
-      clearTimeout(successTimer.current)
-      successTimer.current = null
-    }
+    if (submitting || status !== 'idle') return
     setSubmitting(true)
     try {
-      await onSubmit()
-      setSuccess(true)
-      successTimer.current = setTimeout(() => setSuccess(false), 2000)
+      const result = await onSubmit()
+      if (result !== false) {
+        setStatus('success')
+      } else {
+        setStatus('error')
+      }
+      statusResetTimer.current = setTimeout(() => {
+        statusResetTimer.current = null
+        setStatus('idle')
+      }, 2000)
     } catch (e) {
       console.error(e)
     } finally {
@@ -123,9 +127,15 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
   return (
     <Button
       large
-      intent={success ? 'success' : 'primary'}
+      intent={
+        status === 'success'
+          ? 'success'
+          : status === 'error'
+            ? 'danger'
+            : 'primary'
+      }
       className="w-40"
-      icon={success ? 'tick' : 'upload'}
+      icon={status === 'success' ? 'tick' : 'upload'}
       loading={submitting}
       text={submitAction}
       onClick={handleSubmit}

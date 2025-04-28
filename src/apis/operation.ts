@@ -195,7 +195,8 @@ export async function createOperation(req: {
   content: string
   status: CopilotInfoStatusEnum
 }) {
-  await new OperationApi().uploadCopilot({ copilotCUDRequest: req })
+  return (await new OperationApi().uploadCopilot({ copilotCUDRequest: req }))
+    .data
 }
 
 export async function updateOperation(req: {
