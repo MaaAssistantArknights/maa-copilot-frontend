@@ -1,4 +1,11 @@
-import { Classes, H6, Icon, IconName, MenuItem } from '@blueprintjs/core'
+import {
+  Classes,
+  H6,
+  Icon,
+  IconName,
+  MenuItem,
+  MenuItemProps,
+} from '@blueprintjs/core'
 import { Select2Props } from '@blueprintjs/select'
 
 import clsx from 'clsx'
@@ -17,6 +24,7 @@ export interface DetailedSelectChoice {
   value: string | number
   description?: ReactNode | (() => ReactNode)
   disabled?: boolean
+  menuItemProps?: Partial<MenuItemProps>
 }
 
 export const DetailedSelect: FCC<
@@ -74,6 +82,7 @@ export const DetailedSelect: FCC<
                 </div>
               </div>
             }
+            {...action.menuItemProps}
           />
         )
       }}
