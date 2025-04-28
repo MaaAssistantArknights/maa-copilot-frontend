@@ -21,7 +21,10 @@ import {
 } from '../components/editor2/editor-state'
 import { toEditorOperation } from '../components/editor2/reconciliation'
 import { operationLooseSchema } from '../components/editor2/validation/schema'
-import { editorValidationAtom } from '../components/editor2/validation/validation'
+import {
+  editorErrorsVisibleAtom,
+  editorValidationAtom,
+} from '../components/editor2/validation/validation'
 import { toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
 import { AtomsHydrator } from '../utils/react'
@@ -75,11 +78,12 @@ export const EditorPage = withGlobalErrorBoundary(
         async (get, set) => {
           const result = set(editorValidationAtom)
           if (!result.success) {
+            set(editorErrorsVisibleAtom, true)
             AppToaster.show({
               message: '作业内容存在错误，请检查',
               intent: 'danger',
             })
-            return
+            return false
           }
           const operation = result.data
           const status =
@@ -97,26 +101,22 @@ export const EditorPage = withGlobalErrorBoundary(
               AppToaster.show({
                 message: '作业更新成功',
                 intent: 'success',
-                action: {
-                  text: '点击查看',
-                  className: '!px-1',
-                  onClick: () => navigate(`/?op=${id}`),
-                },
               })
+              navigate(`/?op=${id}`)
             } else {
-              await createOperation({
+              const newId = await createOperation({
                 content: JSON.stringify(operation),
                 status,
               })
               AppToaster.show({
                 message: '作业创建成功',
                 intent: 'success',
-                action: {
-                  text: '点击查看',
-                  className: '!px-1',
-                  onClick: () => navigate(`/?op=${id}`),
-                },
               })
+              if (newId) {
+                navigate(`/?op=${newId}`)
+              } else {
+                navigate('/')
+              }
             }
           }
 
@@ -124,6 +124,8 @@ export const EditorPage = withGlobalErrorBoundary(
             (e) => '上传失败: ' + formatError(e),
             upload(),
           ).catch(console.warn)
+
+          return true
         },
         [id, navigate],
       ),
