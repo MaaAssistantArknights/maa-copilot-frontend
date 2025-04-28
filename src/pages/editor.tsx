@@ -1,3 +1,4 @@
+import { Provider } from 'jotai'
 import { useAtomDevtools } from 'jotai-devtools'
 import { useAtomCallback } from 'jotai/utils'
 import { CopilotInfoStatusEnum } from 'maa-copilot-client'
@@ -132,13 +133,15 @@ export const EditorPage = withGlobalErrorBoundary(
     )
 
     return (
-      <AtomsHydrator atomValues={initialEditorAtomValue}>
-        <OperationEditor
-          title={isNew ? '创建作业' : '修改作业 - ' + toShortCode({ id })}
-          submitAction={isNew ? '发布作业' : '更新作业'}
-          onSubmit={handleSubmit}
-        />
-      </AtomsHydrator>
+      <Provider>
+        <AtomsHydrator atomValues={initialEditorAtomValue}>
+          <OperationEditor
+            title={isNew ? '创建作业' : '修改作业 - ' + toShortCode({ id })}
+            submitAction={isNew ? '发布作业' : '更新作业'}
+            onSubmit={handleSubmit}
+          />
+        </AtomsHydrator>
+      </Provider>
     )
   }),
 )
