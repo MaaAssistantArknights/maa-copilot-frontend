@@ -1,28 +1,32 @@
 import { PrimitiveAtom, SetStateAction, atom } from 'jotai'
 import { splitAtom } from 'jotai/utils'
 import { noop } from 'lodash-es'
-import { PartialDeep, SetRequired, Simplify } from 'type-fest'
+import { SetRequired, Simplify } from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
+import { PartialDeep } from '../../utils/partial-deep'
 import {
   createHistoryAtom,
   useHistoryControls,
   useHistoryValue,
 } from './history'
-import { WithInternalId, getInternalId } from './reconciliation'
+import {
+  WithInternalId,
+  WithPartialCoordinates,
+  getInternalId,
+  toEditorOperation,
+} from './reconciliation'
+import { operationLooseSchema } from './validation/schema'
 
 export interface EditorState {
   operation: EditorOperation
   metadata: EditorMetadata
 }
 
+const defaultOperation = operationLooseSchema.parse({})
+
 export const defaultEditorState: EditorState = {
-  operation: {
-    doc: {},
-    opers: [],
-    groups: [],
-    actions: [],
-  },
+  operation: toEditorOperation(defaultOperation),
   metadata: {
     visibility: 'public',
   },
@@ -37,6 +41,7 @@ type EditorOperationBase = Simplify<
     PartialDeep<CopilotDocV1.Operation>,
     'doc' | 'opers' | 'groups' | 'actions'
   > & {
+    minimumRequired: string
     doc: PartialDeep<CopilotDocV1.Doc>
   }
 >
@@ -56,9 +61,11 @@ export type EditorAction = GenerateEditorAction<CopilotDocV1.Action>
 type GenerateEditorAction<T extends CopilotDocV1.Action> = T extends never
   ? never
   : Simplify<
-      Omit<
-        SetRequired<PartialDeep<T, { recurseIntoArrays: true }>, 'type'>,
-        'preDelay' | 'postDelay' | 'rearDelay'
+      WithPartialCoordinates<
+        Omit<
+          SetRequired<PartialDeep<T>, 'type'>,
+          'preDelay' | 'postDelay' | 'rearDelay'
+        >
       > &
         WithInternalId<{
           intermediatePreDelay?: number
@@ -84,7 +91,10 @@ export type BaseEditorGroup = Simplify<
   }
 >
 
-const baseAtom = atom<EditorOperationBase>({ doc: {} })
+const baseAtom = atom<EditorOperationBase>({
+  minimumRequired: defaultOperation.minimum_required,
+  doc: defaultOperation.doc,
+})
 const operatorsAtom = atom<EditorOperator[]>([])
 const baseGroupsAtom = atom<BaseEditorGroup[]>([])
 const groupCache = new WeakMap<
@@ -100,7 +110,7 @@ const groupsAtom: PrimitiveAtom<EditorGroup[]> = atom(
         // base 和 opers 都没有变化，返回缓存的值，避免 rerender
         return cached[0]
       }
-      const newGroup = { ...baseGroup, opers }
+      const { opersAtom, operAtomsAtom, ...newGroup } = { ...baseGroup, opers }
       groupCache.set(baseGroup, [newGroup, opers])
       return newGroup
     }),
@@ -191,6 +201,7 @@ export const editorAtoms = {
   actions: actionsAtom,
   actionAtoms: splitAtom(actionsAtom, getInternalId),
   ui: uiAtom,
+  sourceEditorIsOpen: atom(false),
 }
 
 export function useEditorHistory() {
@@ -199,4 +210,21 @@ export function useEditorHistory() {
 
 export function useEditorControls() {
   return useHistoryControls(historyAtom)
+}
+
+export function traverseOperators<T>(
+  { opers, groups }: { opers: EditorOperator[]; groups: EditorGroup[] },
+  fn: (oper: EditorOperator) => T,
+): NonNullable<T> | undefined {
+  for (const oper of opers) {
+    const result = fn(oper)
+    if (result) return result
+  }
+  for (const group of groups) {
+    for (const oper of group.opers) {
+      const result = fn(oper)
+      if (result) return result
+    }
+  }
+  return undefined
 }

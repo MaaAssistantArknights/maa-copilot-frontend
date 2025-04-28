@@ -1,4 +1,5 @@
 import {
+  Callout,
   FormGroup,
   InputGroup,
   Radio,
@@ -7,12 +8,16 @@ import {
 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 import { useImmerAtom } from 'jotai-immer'
 import { memo } from 'react'
+import { Paths } from 'type-fest'
 
 import { DifficultyPicker } from './DifficultyPicker'
 import { LevelSelect } from './LevelSelect'
 import { editorAtoms, useEditorControls } from './editor-state'
+import { CopilotOperation, getLabeledPath } from './validation/schema'
+import { editorVisibleGlobalErrorsAtom } from './validation/validation'
 
 interface InfoEditorProps {
   className?: string
@@ -50,6 +55,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
             })
           }}
         />
+        <FieldError path="doc.title" />
       </FormGroup>
       <FormGroup contentClassName="grow" label="描述">
         <TextArea
@@ -71,6 +77,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
             })
           }}
         />
+        <FieldError path="doc.details" />
       </FormGroup>
       <FormGroup contentClassName="grow" label="关卡" labelInfo="*">
         <LevelSelect
@@ -89,6 +96,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
             })
           }}
         />
+        <FieldError path="stage_name" />
       </FormGroup>
       <FormGroup contentClassName="grow" label="适用难度">
         <DifficultyPicker
@@ -110,6 +118,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
             })
           }}
         />
+        <FieldError path="difficulty" />
       </FormGroup>
       <FormGroup contentClassName="grow" label="可见范围">
         <RadioGroup
@@ -141,3 +150,18 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
   )
 })
 InfoEditor.displayName = 'InfoEditor'
+
+const FieldError = ({ path }: { path: Paths<CopilotOperation> }) => {
+  const globalErrors = useAtomValue(editorVisibleGlobalErrorsAtom)
+  const errors = globalErrors?.filter((e) => e.path.join('.') === path)
+  if (!errors?.length) return null
+  return (
+    <Callout intent="danger" icon={null} className="mt-1 p-2 text-xs">
+      {errors.map(({ path, message }) => (
+        <p key={path.join()}>
+          {getLabeledPath(path)}: {message}
+        </p>
+      ))}
+    </Callout>
+  )
+}

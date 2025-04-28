@@ -1,0 +1,311 @@
+import { get, isNumber, isString } from 'lodash-es'
+import { Primitive } from 'type-fest'
+import * as z from 'zod'
+
+import { CopilotDocV1 } from '../../../models/copilot.schema'
+import { OpDifficulty } from '../../../models/operation'
+
+export type ZodIssue = z.core.$ZodIssue
+
+const stage_name = z.string().optional()
+const difficulty = z.enum(OpDifficulty).optional()
+const minimum_required = z
+  .string()
+  .regex(
+    /^v((0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?)$/,
+  )
+  .default('v4.0.0')
+
+const doc = z.looseObject({
+  title: z.string().optional(),
+  details: z.string().optional(),
+  title_color: z.string().optional(),
+  details_color: z.string().optional(),
+})
+
+const docStrict = doc.extend({
+  title: doc.shape.title.unwrap().min(1),
+})
+
+const operator_requirements = z.looseObject({
+  elite: z.number().int().min(0).max(2).optional(),
+  level: z.number().int().min(0).optional(),
+  skill_level: z.number().int().min(0).max(10).optional(),
+  module: z.number().int().min(0).optional(),
+  potentiality: z.number().int().min(0).max(6).optional(),
+})
+
+const operator = z.looseObject({
+  name: z.string().min(1),
+  skill: z.number().int().min(1).max(3).optional(),
+  skill_usage: z.number().int().min(0).max(3).optional(),
+  requirements: operator_requirements.optional(),
+})
+
+const group = z.looseObject({
+  name: z.string(),
+  opers: z.array(operator).default([]),
+})
+
+const groupStrict = group.extend({
+  name: group.shape.name.min(1),
+})
+
+const actionShape = {
+  name: z.string().min(1).optional(),
+  location: z
+    .tuple([z.number().int().optional(), z.number().int().optional()])
+    .optional(),
+  direction: z.string().optional(),
+  distance: z.tuple([z.number().optional(), z.number().optional()]).optional(),
+  skill_usage: operator.shape.skill_usage,
+
+  // common fields
+  kills: z.number().int().min(0).optional(),
+  costs: z.number().int().min(0).optional(),
+  cost_changes: z.number().int().optional(),
+  pre_delay: z.number().int().min(0).optional(),
+  rear_delay: z.number().int().min(0).optional(),
+  post_delay: z.number().int().min(0).optional(),
+  doc: z.string().optional(),
+  doc_color: z.string().optional(),
+}
+// we have to put `distance: z.string()` in actionShape and validate it using another schema,
+// because if we put `distance: z.enum()` in actionShape, it becomes the second discriminator key,
+// which leads to very counterintuitive behavior when parsing. See: https://github.com/colinhacks/zod/issues/4280
+const actionWithDirection = z.object({
+  direction: z.enum(CopilotDocV1.Direction),
+})
+const action = z
+  .discriminatedUnion('type', [
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.Deploy),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.SkillUsage),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.Skill),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.Retreat),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.BulletTime),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.MoveCamera),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.SpeedUp),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.SkillDaemon),
+      ...actionShape,
+    }),
+    z.looseObject({
+      type: z.literal(CopilotDocV1.Type.Output),
+      ...actionShape,
+    }),
+  ])
+  .check(({ value, issues }) => {
+    if ('direction' in value && value.direction !== undefined) {
+      const result = actionWithDirection.safeParse(value)
+      if (result.error) {
+        issues.push(...result.error.issues)
+      }
+    }
+  })
+
+const actionShapeStrict = {
+  ...actionShape,
+  location: z.tuple([z.number().int(), z.number().int()]).optional(),
+  distance: z.tuple([z.number(), z.number()]).optional(),
+}
+const actionStrict = z
+  .discriminatedUnion('type', [
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.Deploy),
+      name: actionShapeStrict.name.unwrap(),
+      location: actionShapeStrict.location.unwrap(),
+      direction: actionShapeStrict.direction.unwrap(),
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.SkillUsage),
+      name: actionShapeStrict.name.unwrap(),
+      skill_usage: actionShapeStrict.skill_usage.unwrap(),
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.Skill),
+      name: actionShapeStrict.name,
+      location: actionShapeStrict.location,
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.Retreat),
+      name: actionShapeStrict.name,
+      location: actionShapeStrict.location,
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.BulletTime),
+      name: actionShapeStrict.name,
+      location: actionShapeStrict.location,
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.MoveCamera),
+      distance: actionShapeStrict.distance.unwrap(),
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.SpeedUp),
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.SkillDaemon),
+    }),
+    z.looseObject({
+      ...actionShapeStrict,
+      type: z.literal(CopilotDocV1.Type.Output),
+    }),
+  ])
+  .check(({ value, issues }) => {
+    if ('direction' in value && value.direction !== undefined) {
+      const result = actionWithDirection.safeParse(value)
+      if (result.error) {
+        issues.push(...result.error.issues)
+      }
+    }
+    if (
+      (value.type === CopilotDocV1.Type.Retreat ||
+        value.type === CopilotDocV1.Type.Skill ||
+        value.type === CopilotDocV1.Type.BulletTime) &&
+      value.name === undefined &&
+      value.location === undefined
+    ) {
+      issues.push({
+        code: 'custom',
+        input: value,
+        message: 'Either name or location must be provided',
+        continue: true,
+      })
+    }
+  })
+
+export type CopilotOperationLoose = z.infer<typeof operationLooseSchema>
+export const operationLooseSchema = z.object({
+  stage_name,
+  difficulty,
+  minimum_required,
+  doc: doc.default({}),
+  opers: z.array(operator).default([]),
+  groups: z.array(group).default([]),
+  actions: z.array(action).default([]),
+})
+
+export type CopilotOperation = z.infer<typeof operationSchema>
+export const operationSchema = z.object({
+  stage_name: stage_name.unwrap(),
+  difficulty,
+  minimum_required,
+  doc: docStrict,
+  opers: z.array(operator).default([]),
+  groups: z.array(groupStrict).default([]),
+  actions: z.array(actionStrict).default([]),
+})
+
+type Labeled<T> = T extends Primitive
+  ? string
+  : T extends ReadonlyArray<infer U> // test for array and tuple
+    ? U[] extends T // test for array (non-tuple)
+      ? { _label: string } & Labeled<U>
+      : string
+    : { [K in keyof T as string extends K ? never : K]-?: Labeled<T[K]> }
+
+const OPERATOR_LABELS: Labeled<CopilotOperation['opers']> = {
+  _label: '干员',
+  name: '名称',
+  skill: '技能',
+  skill_usage: '技能使用次数',
+  requirements: {
+    elite: '精英等级',
+    level: '等级',
+    skill_level: '技能等级',
+    module: '模组',
+    potentiality: '潜能',
+  },
+}
+
+const OPERATION_LABELS: Labeled<CopilotOperation> = {
+  stage_name: '关卡名称',
+  minimum_required: '最低要求 MAA 版本',
+  difficulty: '难度',
+  doc: {
+    title: '标题',
+    details: '详情',
+    title_color: '标题颜色',
+    details_color: '详情颜色',
+  },
+  opers: OPERATOR_LABELS,
+  groups: {
+    _label: '干员组',
+    name: '名称',
+    opers: OPERATOR_LABELS,
+  },
+  actions: {
+    _label: '动作',
+    type: '动作类型',
+    name: '目标',
+    location: '位置',
+    distance: '距离',
+    direction: '方向',
+    skill_usage: '技能使用次数',
+    kills: '击杀数',
+    costs: '费用',
+    cost_changes: '费用变化',
+    pre_delay: '前置延迟',
+    rear_delay: '后置延迟',
+    post_delay: '后置延迟',
+    doc: '文档',
+    doc_color: '文档颜色',
+  },
+}
+
+export function getLabel(path: PropertyKey[]) {
+  const labelOrObject = get(OPERATION_LABELS, path.filter(isString))
+  if (isString(labelOrObject)) {
+    return labelOrObject
+  }
+  if ('_label' in labelOrObject) {
+    return labelOrObject._label as string
+  }
+  return undefined
+}
+
+export function getLabeledPath(path: PropertyKey[]): string {
+  if (path.length === 0) {
+    return ''
+  }
+
+  let label: string | undefined
+  const maybeIndex = path[path.length - 1]
+
+  if (isNumber(maybeIndex)) {
+    label = maybeIndex + 1 + ''
+  } else {
+    label = getLabel(path)
+  }
+
+  return [getLabeledPath(path.slice(0, -1)), label].filter(Boolean).join('/')
+}

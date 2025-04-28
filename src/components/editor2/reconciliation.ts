@@ -1,5 +1,6 @@
+import camelcaseKeys from 'camelcase-keys'
 import { defaults, uniqueId } from 'lodash-es'
-import { PartialDeep, SetRequired } from 'type-fest'
+import { CamelCasedPropertiesDeep, PartialDeep, SetRequired } from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { snakeCaseKeysUnicode } from '../../utils/object'
@@ -9,6 +10,21 @@ import {
   EditorOperation,
   EditorOperator,
 } from './editor-state'
+import { CopilotOperationLoose } from './validation/schema'
+
+export type WithPartialCoordinates<T> = T extends {
+  location?: [number, number]
+}
+  ? Omit<T, 'location'> & {
+      location?: [number | undefined, number | undefined]
+    }
+  : T extends {
+        distance?: [number, number]
+      }
+    ? Omit<T, 'distance'> & {
+        distance?: [number | undefined, number | undefined]
+      }
+    : T
 
 export type WithInternalId<T = {}> = T extends never
   ? never
@@ -53,49 +69,48 @@ export function createOperator(
 }
 
 export function toEditorOperation(
-  operation: CopilotDocV1.Operation,
+  source: CopilotOperationLoose,
 ): EditorOperation {
-  operation = JSON.parse(JSON.stringify(operation))
+  const camelCased = camelcaseKeys(source, { deep: true })
+  const operation = JSON.parse(JSON.stringify(camelCased))
   const converted = {
     ...operation,
-    opers:
-      operation.opers?.map((operator) => ({ ...operator, _id: uniqueId() })) ||
-      [],
-    groups:
-      operation.groups?.map((group) => ({
-        ...group,
+    opers: operation.opers.map((operator) => ({
+      ...operator,
+      _id: uniqueId(),
+    })),
+    groups: operation.groups.map((group) => ({
+      ...group,
+      _id: uniqueId(),
+      opers: group.opers.map((operator) => ({ ...operator, _id: uniqueId() })),
+    })),
+    actions: operation.actions.map((action, index) => {
+      const {
+        preDelay,
+        postDelay,
+        rearDelay,
+        ...newAction
+      }: EditorAction &
+        CamelCasedPropertiesDeep<CopilotOperationLoose['actions'][number]> = {
+        ...action,
         _id: uniqueId(),
-        opers:
-          group.opers?.map((operator) => ({ ...operator, _id: uniqueId() })) ||
-          [],
-      })) || [],
-    actions:
-      operation.actions?.map((action, index) => {
-        const {
-          preDelay,
-          postDelay,
-          rearDelay,
-          ...newAction
-        }: EditorAction & CopilotDocV1.Action = {
-          ...action,
-          _id: uniqueId(),
+      }
+      // intermediatePostDelay 等于当前动作的 preDelay
+      if (preDelay !== undefined) {
+        newAction.intermediatePostDelay = preDelay
+      }
+      if (index > 0 && action.type === 'SpeedUp') {
+        // intermediatePreDelay 等于前一个动作的 postDelay
+        const prevAction = operation.actions![index - 1]
+        if (prevAction.rearDelay !== undefined) {
+          newAction.intermediatePreDelay = prevAction.rearDelay
         }
-        // intermediatePostDelay 等于当前动作的 preDelay
-        if (preDelay !== undefined) {
-          newAction.intermediatePostDelay = preDelay
+        if (prevAction.postDelay !== undefined) {
+          newAction.intermediatePreDelay = prevAction.postDelay
         }
-        if (index > 0) {
-          // intermediatePreDelay 等于前一个动作的 postDelay
-          const prevAction = operation.actions![index - 1]
-          if (prevAction.rearDelay !== undefined) {
-            newAction.intermediatePreDelay = prevAction.rearDelay
-          }
-          if (prevAction.postDelay !== undefined) {
-            newAction.intermediatePreDelay = prevAction.postDelay
-          }
-        }
-        return newAction satisfies EditorAction
-      }) || [],
+      }
+      return newAction satisfies EditorAction
+    }),
   }
 
   return converted
@@ -106,7 +121,7 @@ export function toEditorOperation(
  */
 export function toMaaOperation(
   operation: EditorOperation,
-): PartialDeep<CopilotDocV1.OperationSnakeCased, { recurseIntoArrays: true }> {
+): CopilotOperationLoose {
   operation = JSON.parse(JSON.stringify(operation))
   const converted = {
     ...operation,
@@ -116,10 +131,7 @@ export function toMaaOperation(
       opers: opers.map(({ _id, ...operator }) => operator),
     })),
     actions: operation.actions.map((action, index, actions) => {
-      type Action = PartialDeep<
-        CopilotDocV1.Action,
-        { recurseIntoArrays: true }
-      >
+      type Action = PartialDeep<WithPartialCoordinates<CopilotDocV1.Action>>
       const {
         _id,
         intermediatePreDelay,

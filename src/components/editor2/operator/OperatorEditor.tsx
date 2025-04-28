@@ -1,4 +1,4 @@
-import { Button, Divider } from '@blueprintjs/core'
+import { Button, Callout, Divider } from '@blueprintjs/core'
 import {
   Active,
   DndContext,
@@ -20,8 +20,17 @@ import { FC, memo, useCallback, useMemo } from 'react'
 
 import { Droppable, Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
-import { EditorOperator, editorAtoms, useEditorControls } from '../editor-state'
+import {
+  EditorOperator,
+  editorAtoms,
+  traverseOperators,
+  useEditorControls,
+} from '../editor-state'
 import { createGroup, createOperator, getInternalId } from '../reconciliation'
+import {
+  EntityIssue,
+  editorVisibleEntityErrorsAtom,
+} from '../validation/validation'
 import { GroupItem } from './GroupItem'
 import { OperatorItem } from './OperatorItem'
 import { OperatorSelect } from './OperatorSelect'
@@ -141,6 +150,7 @@ export const OperatorEditor: FC = memo(() => {
         </h2>
         <Divider className="grow" />
       </div>
+      <OperatorError />
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <Droppable id={globalContainerId} data={{ type: 'group' }}>
           <SortableContext items={operatorIds}>
@@ -281,5 +291,49 @@ const OperatorDragOverlay = () => {
     <DragOverlay>
       {activeOperator && <OperatorItem onOverlay operator={activeOperator} />}
     </DragOverlay>
+  )
+}
+
+const operatorErrorsAtom = atom((get) => {
+  const entityErrors = get(editorVisibleEntityErrorsAtom)
+  if (!entityErrors) return undefined
+
+  const opers = get(editorAtoms.operators)
+  const groups = get(editorAtoms.groups)
+  const operatorErrors: { operator: EditorOperator; errors: EntityIssue[] }[] =
+    []
+
+  for (const [id, errors] of Object.entries(entityErrors)) {
+    traverseOperators({ opers, groups }, (operator) => {
+      if (getInternalId(operator) === id) {
+        operatorErrors.push({ operator, errors })
+        return true
+      }
+      return false
+    })
+  }
+  return operatorErrors.length ? operatorErrors : undefined
+})
+
+const OperatorError = () => {
+  const errors = useAtomValue(operatorErrorsAtom)
+  if (!errors) return null
+
+  return (
+    <Callout intent="danger" icon={null} className="mb-4 p-2 text-xs">
+      {errors.map(({ operator, errors }) =>
+        errors.map(({ path, fieldLabel, message }) => (
+          <p
+            key={getInternalId(operator) + path.join()}
+            className="error-message"
+          >
+            {fieldLabel
+              ? `"${operator.name}"的${fieldLabel}: `
+              : `"${operator.name}": `}
+            {message}
+          </p>
+        )),
+      )}
+    </Callout>
   )
 }
