@@ -1,8 +1,15 @@
 import camelcaseKeys from 'camelcase-keys'
+import { atom } from 'jotai'
 import { defaults, uniqueId } from 'lodash-es'
-import { CamelCasedPropertiesDeep, PartialDeep, SetRequired } from 'type-fest'
+import {
+  CamelCasedPropertiesDeep,
+  PartialDeep,
+  SetOptional,
+  SetRequired,
+} from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
+import { FavGroup, favGroupAtom } from '../../store/useFavGroups'
 import { snakeCaseKeysUnicode } from '../../utils/object'
 import {
   EditorAction,
@@ -67,6 +74,67 @@ export function createOperator(
   })
   return operator
 }
+
+const favGroupCache = new WeakMap<FavGroup, WithInternalId<FavGroup>>()
+const favGroupReverseCache = new WeakMap<
+  WithInternalId<FavGroup> | EditorGroup,
+  FavGroup
+>()
+export const editorFavGroupsAtom = atom(
+  (get) =>
+    get(favGroupAtom).map((group) => {
+      const cached = favGroupCache.get(group)
+      if (cached) {
+        return cached
+      }
+      const newGroup = { ...group, _id: uniqueId() }
+      favGroupCache.set(group, newGroup)
+      favGroupReverseCache.set(newGroup, group)
+      return newGroup
+    }),
+  (
+    get,
+    set,
+    update:
+      | (WithInternalId<FavGroup> | EditorGroup)[]
+      | ((
+          prev: WithInternalId<FavGroup>[],
+        ) => (WithInternalId<FavGroup> | EditorGroup)[]),
+  ) => {
+    if (typeof update === 'function') {
+      update = update(get(editorFavGroupsAtom))
+    }
+    const newGroups = update.map((group) => {
+      const cached = favGroupReverseCache.get(group)
+      if (cached) {
+        return cached
+      }
+      const { _id, ...newGroup } = {
+        ...group,
+        _id: '',
+        opers: group.opers?.map(
+          (operator: CopilotDocV1.Operator | EditorOperator) => {
+            const { _id, ...newOperator } = {
+              ...operator,
+              _id: '',
+            }
+            return newOperator
+          },
+        ),
+      }
+      favGroupCache.set(newGroup, group)
+      favGroupReverseCache.set(group, newGroup)
+      return newGroup
+    })
+
+    // 检查有没有多余的属性
+    0 as unknown as FavGroup satisfies SetOptional<
+      (typeof newGroups)[number],
+      'opers'
+    >
+    set(favGroupAtom, newGroups)
+  },
+)
 
 export function toEditorOperation(
   source: CopilotOperationLoose,

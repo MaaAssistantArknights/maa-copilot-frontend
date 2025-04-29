@@ -2,9 +2,10 @@ import {
   Button,
   Callout,
   Card,
+  Classes,
+  Dialog,
   Elevation,
   Icon,
-  InputGroup,
   Menu,
   MenuItem,
 } from '@blueprintjs/core'
@@ -12,11 +13,23 @@ import { Popover2 } from '@blueprintjs/popover2'
 import { SortableContext } from '@dnd-kit/sortable'
 
 import clsx from 'clsx'
+import Fuse from 'fuse.js'
 import { PrimitiveAtom, useAtom, useAtomValue } from 'jotai'
-import { useImmerAtom } from 'jotai-immer'
-import { selectAtom } from 'jotai/utils'
-import { FC, memo, useEffect, useMemo, useRef } from 'react'
+import { selectAtom, useAtomCallback } from 'jotai/utils'
+import {
+  FC,
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
+import { FavGroup } from '../../../store/useFavGroups'
+import { useDebouncedQuery } from '../../../utils/useDebouncedQuery'
+import { Suggest } from '../../Suggest'
+import { AppToaster } from '../../Toaster'
 import { Droppable, Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import {
@@ -25,7 +38,12 @@ import {
   useActiveState,
   useEditorControls,
 } from '../editor-state'
-import { createOperator, getInternalId } from '../reconciliation'
+import {
+  WithInternalId,
+  createOperator,
+  editorFavGroupsAtom,
+  getInternalId,
+} from '../reconciliation'
 import { useEntityErrors } from '../validation/validation'
 import { OperatorItem } from './OperatorItem'
 import { OperatorSelect } from './OperatorSelect'
@@ -37,7 +55,7 @@ interface GroupItemProps {
 
 export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
   const { withCheckpoint } = useEditorControls()
-  const [baseGroup, setGroup] = useImmerAtom(baseGroupAtom)
+  const baseGroup = useAtomValue(baseGroupAtom)
   const [baseGroupAtoms, dispatchBaseGroups] = useAtom(
     editorAtoms.baseGroupAtoms,
   )
@@ -51,24 +69,31 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
   }, [baseGroup.opersAtom])
   const id = getInternalId(baseGroup)
   const [active, setActive] = useActiveState(editorAtoms.activeGroupIdAtom, id)
-  const [isNewlyAdded, setIsNewlyAdded] = useActiveState(
-    editorAtoms.newlyAddedGroupIdAtom,
-    id,
-  )
   const operatorIds = useAtomValue(operatorIdsAtom)
   const errors = useEntityErrors(id)
   const addOperator = useAddOperator()
 
-  const titleInputRef = useRef<HTMLInputElement>(null)
   const actionContainerRef = useRef<HTMLDivElement>(null)
   const actionContainerInitialWidthRef = useRef(0)
 
-  useEffect(() => {
-    if (isNewlyAdded) {
-      titleInputRef.current?.focus()
-      setIsNewlyAdded(false)
-    }
-  }, [isNewlyAdded, setIsNewlyAdded])
+  const addToFavorite = useAtomCallback(
+    useCallback(
+      (get, set) => {
+        const baseGroupAtoms = get(editorAtoms.baseGroupAtoms)
+        const index = baseGroupAtoms.indexOf(baseGroupAtom)
+        const group = get(editorAtoms.groups)[index]
+        if (!group) {
+          return
+        }
+        set(editorFavGroupsAtom, (prev) => [...prev, group])
+        AppToaster.show({
+          message: '已添加到收藏',
+          intent: 'success',
+        })
+      },
+      [baseGroupAtom],
+    ),
+  )
 
   return (
     <Card
@@ -79,31 +104,12 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
       )}
     >
       <div className="flex">
-        <InputGroup
-          className="grow"
-          inputClassName="!p-4 !pr-0 !border-0 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-600 dark:focus:bg-gray-600 !shadow-none font-bold text-gray-800"
-          size={10}
-          placeholder="干员组名称*"
-          inputRef={titleInputRef}
-          value={baseGroup.name}
-          onChange={(e) => {
-            withCheckpoint(() => {
-              setGroup((draft) => {
-                draft.name = e.target.value
-              })
-              return {
-                action: 'set-group-name-' + getInternalId(baseGroup),
-                desc: '修改干员组名称',
-                squash: true,
-              }
-            })
-          }}
-        />
+        <GroupTitle baseGroupAtom={baseGroupAtom} />
         <Popover2
           placement="bottom"
           content={
             <Menu>
-              <MenuItem icon="star" text="添加到收藏夹（待实现）" disabled />
+              <MenuItem icon="star" text="添加到收藏" onClick={addToFavorite} />
               <MenuItem
                 icon="arrow-left"
                 text="左移"
@@ -321,3 +327,201 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
   )
 })
 GroupItem.displayName = 'GroupItem'
+
+interface GroupItemProps {
+  baseGroupAtom: PrimitiveAtom<BaseEditorGroup>
+}
+const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
+  const { withCheckpoint } = useEditorControls()
+  const favGroups = useAtomValue(editorFavGroupsAtom)
+  const [baseGroup, setBaseGroup] = useAtom(baseGroupAtom)
+  const id = getInternalId(baseGroup)
+  const [isNewlyAdded, setIsNewlyAdded] = useActiveState(
+    editorAtoms.newlyAddedGroupIdAtom,
+    id,
+  )
+  const [confirming, setConfirming] = useState(false)
+  const titleInputRef = useRef<HTMLInputElement>(null)
+  const pendingFavGroup = useRef<WithInternalId<FavGroup> | undefined>()
+
+  const fuse = useMemo(() => {
+    return new Fuse(favGroups, {
+      keys: ['name'],
+      threshold: 0.3,
+    })
+  }, [favGroups])
+
+  useEffect(() => {
+    if (isNewlyAdded) {
+      titleInputRef.current?.focus()
+      setIsNewlyAdded(false)
+    }
+  }, [isNewlyAdded, setIsNewlyAdded])
+
+  const { debouncedQuery, updateQuery, onOptionMouseDown } = useDebouncedQuery({
+    query: baseGroup.name,
+    onQueryChange(query) {
+      withCheckpoint(() => {
+        setBaseGroup((prev) => ({ ...prev, name: query }))
+        return {
+          action: 'set-group-name-' + getInternalId(baseGroup),
+          desc: '修改干员组名称',
+          squash: true,
+        }
+      })
+    },
+  })
+
+  const filteredItems = useMemo(
+    () =>
+      debouncedQuery
+        ? fuse.search(debouncedQuery).map((el) => el.item)
+        : favGroups,
+    [favGroups, fuse, debouncedQuery],
+  )
+
+  const setFromFavorite = useAtomCallback(
+    useCallback(
+      (get, set, mode: 'determine' | 'append' | 'overwrite') => {
+        const favGroup = pendingFavGroup.current
+        if (!favGroup || !favGroup.opers?.length) {
+          return
+        }
+        const baseGroupAtoms = get(editorAtoms.baseGroupAtoms)
+        const index = baseGroupAtoms.indexOf(baseGroupAtom)
+        const groupAtom = get(editorAtoms.groupAtoms)[index]
+        if (!groupAtom) {
+          return
+        }
+        const group = get(groupAtom)
+        if (mode === 'determine' && group.opers.length > 0) {
+          setConfirming(true)
+          return
+        }
+        const globalOperators = get(editorAtoms.operators)
+        const favOperators = favGroup
+          .opers!.map(createOperator)
+          // 过滤掉已经存在的全局干员
+          .filter(
+            (favOperator) =>
+              !globalOperators.find(
+                (operator) =>
+                  getInternalId(operator) === getInternalId(favOperator),
+              ),
+          )
+        withCheckpoint(() => {
+          if (mode === 'append') {
+            set(groupAtom, (prev) => ({
+              ...prev,
+              name: favGroup.name,
+              opers: [
+                ...prev.opers,
+                // 过滤掉组内干员
+                ...favOperators.filter(
+                  (favOperator) =>
+                    !prev.opers.find(
+                      (operator) =>
+                        getInternalId(operator) === getInternalId(favOperator),
+                    ),
+                ),
+              ],
+            }))
+          } else {
+            set(groupAtom, (prev) => ({
+              ...prev,
+              name: favGroup.name,
+              opers: favOperators,
+            }))
+          }
+          return {
+            action: 'set-group-from-fav-' + getInternalId(group),
+            desc: '从收藏中读取干员组',
+            squash: false,
+          }
+        })
+      },
+      [baseGroupAtom, withCheckpoint],
+    ),
+  )
+
+  return (
+    <>
+      <Suggest<(typeof favGroups)[0]>
+        className="grow"
+        items={favGroups}
+        itemListPredicate={() => filteredItems}
+        resetOnQuery={false}
+        query={baseGroup.name}
+        onQueryChange={(query) => updateQuery(query, false)}
+        itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
+          <MenuItem
+            roleStructure="listoption"
+            key={getInternalId(item)}
+            className={clsx(modifiers.active && Classes.ACTIVE)}
+            text={item.name}
+            labelElement={
+              <div className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                <Icon icon="person" size={12} />
+                {item.opers?.length ?? 0}
+              </div>
+            }
+            onClick={handleClick}
+            onFocus={handleFocus}
+            onMouseDown={onOptionMouseDown}
+          />
+        )}
+        inputValueRenderer={() => baseGroup.name}
+        onItemSelect={(item) => {
+          pendingFavGroup.current = item
+          setFromFavorite('determine')
+        }}
+        noResults={
+          <MenuItem
+            disabled
+            text={favGroups.length ? '没有匹配的干员组' : '没有已收藏的干员组'}
+          />
+        }
+        inputProps={{
+          inputClassName:
+            '!p-4 !pr-0 !border-0 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-600 dark:focus:bg-gray-600 !shadow-none font-bold text-gray-800',
+          size: 10,
+          placeholder: '干员组名称*',
+          inputRef: titleInputRef,
+        }}
+        popoverProps={{
+          minimal: true,
+        }}
+      />
+      <Dialog
+        isOpen={confirming}
+        className={Classes.ALERT}
+        onClose={() => setConfirming(false)}
+      >
+        <div className={Classes.ALERT_BODY}>
+          <Icon icon="info-sign" size={40} />
+          <div className={Classes.ALERT_CONTENTS}>是否要替换掉已有的干员？</div>
+        </div>
+        <div className={Classes.ALERT_FOOTER}>
+          <Button
+            intent="primary"
+            text="追加"
+            onClick={() => {
+              setFromFavorite('append')
+              setConfirming(false)
+            }}
+          />
+          <Button
+            intent="primary"
+            text="覆盖"
+            onClick={() => {
+              setFromFavorite('overwrite')
+              setConfirming(false)
+            }}
+          />
+          <Button text="取消" onClick={() => setConfirming(false)} />
+        </div>
+      </Dialog>
+    </>
+  )
+})
+GroupTitle.displayName = 'GroupTitle'
