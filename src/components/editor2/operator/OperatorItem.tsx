@@ -20,6 +20,7 @@ import {
   adjustOperatorLevel,
   defaultSkills,
   getDefaultRequirements,
+  getEliteIconUrl,
   getSkillUsageTitle,
   operatorSkillUsages,
   withDefaultRequirements,
@@ -108,7 +109,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 >
                   <img
                     className="w-8 h-7 object-contain"
-                    src={`/assets/icons/elite_${requirements.elite}.png`}
+                    src={getEliteIconUrl(requirements.elite)}
                     alt={'精英' + requirements.elite}
                   />
                 </Button>

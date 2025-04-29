@@ -300,3 +300,7 @@ export function useLocalizedOperatorName(name: string): string {
   const lang = useAtomValue(languageAtom)
   return getLocalizedOperatorName(name, lang)
 }
+
+export function getEliteIconUrl(elite: number) {
+  return new URL(`/src/assets/icons/elite_${elite}.png`, import.meta.url).href
+}
