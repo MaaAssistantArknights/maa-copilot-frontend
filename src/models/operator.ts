@@ -282,3 +282,7 @@ export const actionDocColors: ActionDocColor[] = [
     value: '#d63384',
   },
 ]
+
+export function getEliteIconUrl(elite: number) {
+  return new URL(`/src/assets/icons/elite_${elite}.png`, import.meta.url).href
+}
