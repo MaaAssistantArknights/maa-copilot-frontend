@@ -22,6 +22,7 @@ import { AtomRenderer } from '../AtomRenderer'
 import {
   BaseEditorGroup,
   editorAtoms,
+  useActiveState,
   useEditorControls,
 } from '../editor-state'
 import { createOperator, getInternalId } from '../reconciliation'
@@ -48,11 +49,13 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
       (a, b) => a.join() === b.join(),
     )
   }, [baseGroup.opersAtom])
-  const [{ activeGroupId, newlyAddedGroupId }, setUI] = useImmerAtom(
-    editorAtoms.ui,
+  const id = getInternalId(baseGroup)
+  const [active, setActive] = useActiveState(editorAtoms.activeGroupIdAtom, id)
+  const [isNewlyAdded, setIsNewlyAdded] = useActiveState(
+    editorAtoms.newlyAddedGroupIdAtom,
+    id,
   )
   const operatorIds = useAtomValue(operatorIdsAtom)
-  const id = getInternalId(baseGroup)
   const errors = useEntityErrors(id)
   const addOperator = useAddOperator()
 
@@ -60,23 +63,19 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
   const actionContainerRef = useRef<HTMLDivElement>(null)
   const actionContainerInitialWidthRef = useRef(0)
 
-  const isActive = id === activeGroupId
-
   useEffect(() => {
-    if (newlyAddedGroupId === id) {
+    if (isNewlyAdded) {
       titleInputRef.current?.focus()
-      setUI((ui) => {
-        ui.newlyAddedGroupId = undefined
-      })
+      setIsNewlyAdded(false)
     }
-  }, [newlyAddedGroupId, id, setUI])
+  }, [isNewlyAdded, setIsNewlyAdded])
 
   return (
     <Card
       elevation={Elevation.ONE}
       className={clsx(
         '!p-0 flex flex-col overflow-hidden',
-        isActive ? 'ring ring-purple-500 !border-0 !shadow-none' : '',
+        active ? 'ring ring-purple-500 !border-0 !shadow-none' : '',
       )}
     >
       <div className="flex">
@@ -242,7 +241,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
         </SortableContext>
         {operatorAtoms.length === 0 && (
           <div className="relative min-h-36 flex flex-col items-center justify-center text-xs text-zinc-500">
-            {isActive ? (
+            {active ? (
               '从列表中选择干员'
             ) : (
               <div className="absolute top-0 right-0 left-0">
@@ -264,16 +263,16 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
       <div
         className={clsx(
           'flex',
-          isActive
+          active
             ? '!bg-purple-500 hover:!bg-purple-600 dark:!bg-purple-900 !text-white'
             : '!bg-gray-200 dark:!bg-gray-600',
         )}
       >
         <div
-          className={clsx('flex items-center', isActive && 'grow')}
+          className={clsx('flex items-center', active && 'grow')}
           ref={actionContainerRef}
           style={{
-            minWidth: isActive
+            minWidth: active
               ? actionContainerInitialWidthRef.current
               : undefined,
           }}
@@ -282,30 +281,26 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
             minimal
             icon={
               <Icon
-                icon={isActive ? 'tick' : 'aimpoints-target'}
+                icon={active ? 'tick' : 'aimpoints-target'}
                 className="!text-inherit"
               />
             }
             className={clsx(
               '!rounded-none !text-inherit',
-              isActive && 'grow !justify-start',
+              active && 'grow !justify-start',
             )}
             onClick={() => {
               // 进入编辑模式时会少一个按钮，所以要把宽度固定住，防止布局突然变化
-              if (!isActive && actionContainerRef.current) {
+              if (!active && actionContainerRef.current) {
                 const rect = actionContainerRef.current.getBoundingClientRect()
                 actionContainerInitialWidthRef.current = rect.width
               }
-              setUI((ui) => {
-                ui.activeGroupId = isActive
-                  ? undefined
-                  : getInternalId(baseGroup)
-              })
+              setActive(!active)
             }}
           >
-            {isActive ? '完成' : '快捷编辑'}
+            {active ? '完成' : '快捷编辑'}
           </Button>
-          {!isActive && (
+          {!active && (
             <OperatorSelect
               markPicked
               onSelect={(name) => {

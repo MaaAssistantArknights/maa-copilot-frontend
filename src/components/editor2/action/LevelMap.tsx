@@ -1,11 +1,12 @@
 import { NonIdealState, Spinner } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { SetStateAction, atom, useAtom, useAtomValue } from 'jotai'
-import { noop } from 'lodash-es'
+import { produce } from 'immer'
+import { Getter, atom, useAtom, useAtomValue } from 'jotai'
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useLevels } from '../../../apis/level'
+import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { findLevelByStageName } from '../../../models/level'
 import { sendMessage, useMessage } from '../../../utils/messenger'
 import {
@@ -16,7 +17,7 @@ import {
   TileClickMessage,
   getMapUrl,
 } from '../../editor/floatingMap/connection'
-import { EditorAction, editorAtoms } from '../editor-state'
+import { editorAtoms } from '../editor-state'
 import { getInternalId } from '../reconciliation'
 
 interface LevelMapProps {
@@ -26,21 +27,44 @@ interface LevelMapProps {
 type MapStatus = 'idle' | 'loading' | 'contentLoading' | 'ready' | 'error'
 
 const stageNameAtom = atom((get) => get(editorAtoms.operationBase).stageName)
-const activeActionAtomAtom = atom((get) => {
-  const { activeActionId } = get(editorAtoms.ui)
+
+const findActiveActionAtom = (get: Getter) => {
+  const activeActionId = get(editorAtoms.activeActionIdAtom)
   const actionAtoms = get(editorAtoms.actionAtoms)
-  return (
-    actionAtoms.find((atom) => getInternalId(get(atom)) === activeActionId) ||
-    // return a placeholder atom that does nothing, because we always need an atom to be used on useAtom()
-    atom<undefined, [SetStateAction<EditorAction>], void>(() => undefined, noop)
-  )
-})
+  return actionAtoms.find((atom) => getInternalId(get(atom)) === activeActionId)
+}
+const activeActionLocationAtom = atom(
+  (get) => {
+    const actionAtom = findActiveActionAtom(get)
+    if (!actionAtom) return undefined
+    const action = get(actionAtom)
+    if ('location' in action) {
+      return action.location
+    }
+    return undefined
+  },
+  (get, set, location: [number, number]) => {
+    const actionAtom = findActiveActionAtom(get)
+    if (!actionAtom) return
+    set(actionAtom, (prev) =>
+      produce(prev, (draft) => {
+        if (
+          draft.type === CopilotDocV1.Type.Deploy ||
+          draft.type === CopilotDocV1.Type.Retreat ||
+          draft.type === CopilotDocV1.Type.Skill ||
+          draft.type === CopilotDocV1.Type.BulletTime
+        ) {
+          draft.location = location
+        }
+      }),
+    )
+  },
+)
 
 export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
   const { data: levels } = useLevels()
   const stageName = useAtomValue(stageNameAtom)
-  const activeActionAtom = useAtomValue(activeActionAtomAtom)
-  const [activeAction, setActiveAction] = useAtom(activeActionAtom)
+  const [activeLocation, setActiveLocation] = useAtom(activeActionLocationAtom)
   const level = useMemo(
     () => (stageName ? findLevelByStageName(levels, stageName) : undefined),
     [stageName, levels],
@@ -56,11 +80,6 @@ export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
       return 'idle'
     })
   }, [level])
-
-  const activeLocation =
-    activeAction && 'location' in activeAction
-      ? activeAction.location
-      : undefined
 
   // update or reset the active tiles when active action's location changes
   const setMapState = useCallback(() => {
@@ -81,7 +100,7 @@ export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
 
   useMessage<TileClickMessage>(MAP_ORIGIN, 'tileClick', (e) => {
     const location = e.message.data.maaLocation
-    setActiveAction((action) => action && { ...action, location })
+    setActiveLocation(location)
   })
 
   useMessage<MapReadyMessage>(MAP_ORIGIN, 'mapReady', () => {

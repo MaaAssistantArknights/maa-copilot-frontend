@@ -39,7 +39,12 @@ import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
-import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
+import {
+  EditorAction,
+  editorAtoms,
+  useActiveState,
+  useEditorControls,
+} from '../editor-state'
 import { OperatorSelect } from '../operator/OperatorSelect'
 import { createAction, getInternalId } from '../reconciliation'
 import { useEntityErrors } from '../validation/validation'
@@ -55,13 +60,15 @@ export const ActionItem: FC<ActionItemProps> = memo(
     const { withCheckpoint } = useEditorControls()
     const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
     const [action, setAction] = useImmerAtom(actionAtom)
-    const [ui, setUI] = useImmerAtom(editorAtoms.ui)
+    const [active, setActive] = useActiveState(
+      editorAtoms.activeActionIdAtom,
+      getInternalId(action),
+    )
     const errors = useEntityErrors(getInternalId(action))
     const [docDraft, setDocDraft] = useState<string | undefined>()
     const [docInput, setDocInput] = useState<HTMLInputElement | null>(null)
     const shouldFocusDocInput = useRef(false)
     const typeInfo = findActionType(action.type)
-    const isActive = getInternalId(action) === ui.activeActionId
     const doc = action.doc ?? docDraft
 
     useEffect(() => {
@@ -92,13 +99,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
     }
 
     return (
-      <div
-        onMouseDownCapture={() => {
-          setUI((ui) => {
-            ui.activeActionId = getInternalId(action)
-          })
-        }}
-      >
+      <div onMouseDownCapture={() => setActive(true)}>
         <ActionLinker
           actionAtom={actionAtom}
           isDragging={isDragging}
@@ -126,7 +127,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 className={clsx(
                   'p-1 pl-2 w-full',
                   // hide the underneath element later to avoid edge cases where the above element does not align perfectly
-                  isActive && 'opacity-0 transition-opacity delay-100',
+                  active && 'opacity-0 transition-opacity delay-100',
                 )}
               >
                 {typeInfo.shortTitle}
@@ -136,7 +137,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   'p-1 pl-2 w-full',
                   'absolute top-0 bottom-0 left-0 text-white transition-[clip-path]',
                   typeInfo.accentBg,
-                  isActive
+                  active
                     ? '[clip-path:polygon(0_0,100%_0,100%_100%,0_100%)]'
                     : '[clip-path:polygon(0_0,4px_0,4px_100%,0_100%)]',
                 )}

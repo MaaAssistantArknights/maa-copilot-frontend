@@ -56,14 +56,13 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
             }
           }
           const onBeforeInput = (e: InputEvent) => {
-            if (shouldUseNativeUndo()) {
-              return
-            }
             if (
               e.inputType === 'historyUndo' ||
               e.inputType === 'historyRedo'
             ) {
-              e.preventDefault()
+              if (!shouldUseNativeUndo()) {
+                e.preventDefault()
+              }
             }
           }
           document.addEventListener('keydown', onKeyDown)
