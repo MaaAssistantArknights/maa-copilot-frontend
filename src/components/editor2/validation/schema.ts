@@ -4,8 +4,11 @@ import * as z from 'zod'
 
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { OpDifficulty } from '../../../models/operation'
+import cn from './error-map-cn'
 
 export type ZodIssue = z.core.$ZodIssue
+
+z.config(cn())
 
 const stage_name = z.string().optional()
 const difficulty = z.enum(OpDifficulty).optional()
@@ -197,7 +200,7 @@ const actionStrict = z
       issues.push({
         code: 'custom',
         input: value,
-        message: 'Either name or location must be provided',
+        message: '目标或位置至少需要填写一项',
         continue: true,
       })
     }
@@ -269,7 +272,7 @@ const OPERATION_LABELS: Labeled<CopilotOperation> = {
     name: '目标',
     location: '位置',
     distance: '距离',
-    direction: '方向',
+    direction: '朝向',
     skill_usage: '技能使用次数',
     kills: '击杀数',
     costs: '费用',
