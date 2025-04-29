@@ -3,11 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "build:skiptsc": "vite build",
-    "build:azure": "yarn build:skiptsc && node post-build.mjs",
-    "preview": "vite preview",
+    "dev": "node scripts/split-translations.js && vite",
+    "build": "node scripts/split-translations.js && tsc && vite build",
+    "build:skiptsc": "node scripts/split-translations.js && vite build",
+    "build:azure": "node scripts/split-translations.js && yarn build:skiptsc && node post-build.mjs",
+    "preview": "node scripts/split-translations.js && vite preview",
     "lint": "npm-run-all --parallel lint:check:eslint lint:check:prettier",
     "lint:check:eslint": "eslint src/**/*",
     "lint:check:prettier": "prettier --check src/**/*",
@@ -17,7 +17,8 @@
     "scripts:update": "yarn install && npm-run-all --parallel scripts:update-operators scripts:update-operator-avatars scripts:update-prof-icons",
     "scripts:update-operators": "esno scripts/update-operators.ts",
     "scripts:update-operator-avatars": "esno scripts/update-operator-avatars.ts",
-    "scripts:update-prof-icons": "yarn install && esno scripts/update-prof-icons.ts"
+    "scripts:update-prof-icons": "yarn install && esno scripts/update-prof-icons.ts",
+    "scripts:split-translations": "node scripts/split-translations.js"
   },
   "dependencies": {
     "@blueprintjs/core": "^4.15.1",
@@ -42,6 +43,7 @@
     "fuse.js": "^6.6.2",
     "i18next": "^25.0.0",
     "i18next-browser-languagedetector": "^8.0.4",
+    "i18next-http-backend": "^3.0.2",
     "jotai": "^2.7.0",
     "linkify-react": "^3.0.4",
     "linkifyjs": "^3.0.5",
