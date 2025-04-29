@@ -231,7 +231,7 @@ const CreateOperatorButton: FC<{}> = () => {
 
 const CreateGroupButton: FC<{}> = () => {
   const dispatchGroups = useSetAtom(editorAtoms.groupAtoms)
-  const setUI = useSetAtom(editorAtoms.ui)
+  const setNewlyAddedGroupId = useSetAtom(editorAtoms.newlyAddedGroupIdAtom)
   const { withCheckpoint } = useEditorControls()
   return (
     <Button
@@ -252,10 +252,7 @@ const CreateGroupButton: FC<{}> = () => {
             squash: false,
           }
         })
-        setUI((prev) => ({
-          ...prev,
-          newlyAddedGroupId: getInternalId(newGroup),
-        }))
+        setNewlyAddedGroupId(getInternalId(newGroup))
       }}
     >
       添加干员组

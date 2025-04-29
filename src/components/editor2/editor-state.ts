@@ -1,6 +1,7 @@
-import { PrimitiveAtom, SetStateAction, atom } from 'jotai'
+import { PrimitiveAtom, SetStateAction, atom, useAtom } from 'jotai'
 import { splitAtom } from 'jotai/utils'
 import { noop } from 'lodash-es'
+import { useMemo } from 'react'
 import { SetRequired, Simplify } from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
@@ -178,14 +179,6 @@ const editorAtom = atom(
     set(metadataAtom, update.metadata)
   },
 )
-export const historyAtom = createHistoryAtom(editorAtom)
-
-interface EditorUIState {
-  activeGroupId?: string
-  newlyAddedGroupId?: string
-  activeActionId?: string
-}
-const uiAtom = atom<EditorUIState>({})
 
 export const editorAtoms = {
   editor: editorAtom,
@@ -200,9 +193,15 @@ export const editorAtoms = {
   baseGroupAtoms: splitAtom(baseGroupsAtom, getInternalId),
   actions: actionsAtom,
   actionAtoms: splitAtom(actionsAtom, getInternalId),
-  ui: uiAtom,
+
+  // UI state
+  activeGroupIdAtom: atom<string | undefined>(undefined),
+  newlyAddedGroupIdAtom: atom<string | undefined>(undefined),
+  activeActionIdAtom: atom<string | undefined>(undefined),
   sourceEditorIsOpen: atom(false),
 }
+
+export const historyAtom = createHistoryAtom(editorAtom)
 
 export function useEditorHistory() {
   return useHistoryValue(historyAtom)
@@ -210,6 +209,20 @@ export function useEditorHistory() {
 
 export function useEditorControls() {
   return useHistoryControls(historyAtom)
+}
+
+export function useActiveState(
+  targetAtom: PrimitiveAtom<string | undefined>,
+  id: string,
+) {
+  return useAtom(
+    useMemo(() => {
+      return atom(
+        (get) => get(targetAtom) === id,
+        (get, set, value: boolean) => set(targetAtom, value ? id : undefined),
+      )
+    }, [id, targetAtom]),
+  )
 }
 
 export function traverseOperators<T>(

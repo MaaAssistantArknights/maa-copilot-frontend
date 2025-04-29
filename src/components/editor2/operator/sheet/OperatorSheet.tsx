@@ -21,56 +21,51 @@ import {
 } from '../../reconciliation'
 import { SheetList } from './SheetList'
 
+// TODO: 兼容性处理，以后要去掉
+const ensureEditorOperator = (
+  operation: EditorOperation,
+  operator: CopilotDocV1.Operator,
+): EditorOperator => {
+  if (operator._id) {
+    return operator as EditorOperator
+  }
+  const matchedOperator = operation.opers.find(
+    (op) => op.name === operator.name,
+  )
+  if (matchedOperator) {
+    return matchedOperator
+  }
+  for (const group of operation.groups) {
+    const matchedOperator = group.opers.find((op) => op.name === operator.name)
+    if (matchedOperator) {
+      return matchedOperator
+    }
+  }
+  return { ...operator, _id: uniqueId() }
+}
+
+const ensureEditorGroup = (
+  operation: EditorOperation,
+  group: CopilotDocV1.Group,
+): EditorGroup => {
+  if (group._id) {
+    return group as EditorGroup
+  }
+  const matchedGroup = operation.groups.find((g) => g.name === group.name)
+  if (matchedGroup) {
+    return matchedGroup
+  }
+  return {
+    ...group,
+    _id: uniqueId(),
+    opers: group.opers?.map((op) => ensureEditorOperator(operation, op)) || [],
+  }
+}
+
 export const OperatorSheet = () => {
-  const { withCheckpoint } = useEditorControls()
   const [operators] = useAtom(editorAtoms.operators)
   const [groups] = useAtom(editorAtoms.groups)
-
-  // TODO: 兼容性处理，以后要去掉
-  const ensureEditorOperator = useCallback(
-    (
-      operation: EditorOperation,
-      operator: CopilotDocV1.Operator,
-    ): EditorOperator => {
-      if (operator._id) {
-        return operator as EditorOperator
-      }
-      const matchedOperator = operation.opers.find(
-        (op) => op.name === operator.name,
-      )
-      if (matchedOperator) {
-        return matchedOperator
-      }
-      for (const group of operation.groups) {
-        const matchedOperator = group.opers.find(
-          (op) => op.name === operator.name,
-        )
-        if (matchedOperator) {
-          return matchedOperator
-        }
-      }
-      return { ...operator, _id: uniqueId() }
-    },
-    [],
-  )
-  const ensureEditorGroup = useCallback(
-    (operation: EditorOperation, group: CopilotDocV1.Group): EditorGroup => {
-      if (group._id) {
-        return group as EditorGroup
-      }
-      const matchedGroup = operation.groups.find((g) => g.name === group.name)
-      if (matchedGroup) {
-        return matchedGroup
-      }
-      return {
-        ...group,
-        _id: uniqueId(),
-        opers:
-          group.opers?.map((op) => ensureEditorOperator(operation, op)) || [],
-      }
-    },
-    [ensureEditorOperator],
-  )
+  const { withCheckpoint } = useEditorControls()
 
   const submitOperator = useAtomCallback(
     useCallback(
@@ -103,7 +98,7 @@ export const OperatorSheet = () => {
               }
             } else {
               const newOperator = createOperator(operator)
-              const { activeGroupId } = get(editorAtoms.ui)
+              const activeGroupId = get(editorAtoms.activeGroupIdAtom)
               if (activeGroupId) {
                 const activeGroup = draft.groups.find(
                   (g) => getInternalId(g) === activeGroupId,
@@ -124,7 +119,7 @@ export const OperatorSheet = () => {
         })
         return true
       },
-      [ensureEditorOperator, withCheckpoint],
+      [withCheckpoint],
     ),
   )
 
@@ -161,7 +156,7 @@ export const OperatorSheet = () => {
         })
         return true
       },
-      [ensureEditorGroup, withCheckpoint],
+      [withCheckpoint],
     ),
   )
 
