@@ -117,6 +117,15 @@ const ManageMenu: FC<{
             />
           </ReLink>
         </li>
+        <li>
+          <ReLink
+            className="hover:text-inherit hover:no-underline"
+            to={`/editor/${operation.id}`}
+            target="_blank"
+          >
+            <MenuItem tagName="div" icon="edit" text="修改作业(v2)" />
+          </ReLink>
+        </li>
         {operation.commentStatus === BanCommentsStatusEnum.Enabled && (
           <Confirm
             intent="danger"
