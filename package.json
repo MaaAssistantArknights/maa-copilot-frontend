@@ -49,13 +49,12 @@
     "lodash-es": "^4.17.21",
     "maa-copilot-client": "https://github.com/MaaAssistantArknights/maa-copilot-client-ts.git#0.1.0-SNAPSHOT.824.f8ad839",
     "mitt": "^3.0.1",
-    "microdiff": "^1.5.0",
     "normalize.css": "^8.0.1",
     "prettier": "^3.2.5",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-ga-neo": "^2.2.0",
-    "react-hook-form": "^7.55.0",
+    "react-hook-form": "^7.33.1",
     "react-markdown": "^8.0.5",
     "react-rating": "^2.0.5",
     "react-resizable-panels": "^2.1.8",
@@ -73,7 +72,7 @@
     "zod": "^4.0.0-beta.20250424T163858"
   },
   "devDependencies": {
-    "@hookform/devtools": "^4.4.0",
+    "@hookform/devtools": "^4.1.1",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/lodash-es": "^4.17.6",
     "@types/node": "^18.0.0",
