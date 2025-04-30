@@ -2,7 +2,7 @@ import { Tooltip2, Tooltip2Props } from '@blueprintjs/popover2'
 
 import { FC, useEffect, useState } from 'react'
 
-import { formatDate, formatRelativeTime } from '../utils/times'
+import { formatDateTime, formatRelativeTime } from '../utils/times'
 
 interface RelativeTimeProps {
   moment: string | number | Date
@@ -21,7 +21,7 @@ export const RelativeTime: FC<RelativeTimeProps> = ({
       ? new Date(moment).getTime()
       : moment
 
-  const formattedDate = formatDate(timestamp)
+  const formattedDate = formatDateTime(timestamp)
   const [relativeTime, setRelativeTime] = useState(
     formatRelativeTime(timestamp),
   )
