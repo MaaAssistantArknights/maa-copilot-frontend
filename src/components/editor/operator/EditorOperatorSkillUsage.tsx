@@ -37,7 +37,7 @@ export const EditorOperatorSkillUsage = <
       onItemSelect={(item) => {
         onChange(item.value)
       }}
-      activeItem={selectedAction}
+      value={selectedAction?.value}
     >
       <Button
         icon={selectedAction?.icon || 'slash'}

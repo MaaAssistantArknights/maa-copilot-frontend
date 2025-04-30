@@ -18,7 +18,7 @@ import { useCurrentSize } from '../utils/useCurrenSize'
 export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   const { isMD } = useCurrentSize()
   return (
-    <div className="flex flex-col md:flex-row px-4 mt-4 md:px-8 md:mt-8 max-w-[96rem] mx-auto">
+    <div className="flex flex-col md:flex-row px-4 pb-16 mt-4 md:px-8 md:mt-8 max-w-[96rem] mx-auto">
       {isMD && <Ad />}
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8 mt-4 md:mt-0">
         <Operations />

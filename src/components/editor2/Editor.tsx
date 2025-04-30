@@ -1,0 +1,144 @@
+import { Button, Divider } from '@blueprintjs/core'
+
+import clsx from 'clsx'
+import { useAtomCallback } from 'jotai/utils'
+import { throttle } from 'lodash-es'
+import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
+
+import { useCurrentSize } from '../../utils/useCurrenSize'
+import { EditorToolbar } from './EditorToolbar'
+import { InfoEditor } from './InfoEditor'
+import { ActionEditor } from './action/ActionEditor'
+import { editorAtoms, useEditorControls } from './editor-state'
+import { OperatorEditor } from './operator/OperatorEditor'
+import { OperatorSheet } from './operator/sheet/OperatorSheet'
+import { useAutosave } from './useAutoSave'
+import { Validator } from './validation/Validator'
+
+interface OperationEditorProps {
+  title?: string
+  submitAction: string
+  onSubmit: () => void
+}
+
+const tabs = [
+  { id: 'main', name: '作业信息' },
+  { id: 'action', name: '动作序列' },
+]
+
+export const OperationEditor: FC<OperationEditorProps> = memo(
+  ({ title, submitAction, onSubmit }) => {
+    useAutosave()
+    const { isMD } = useCurrentSize()
+    const { undo, redo } = useEditorControls()
+    const [selectedTab, setSelectedTab] = useState(tabs[0].id)
+
+    const handleUndoRedo = useAtomCallback(
+      useCallback(
+        (get, set) => {
+          const shouldUseNativeUndo = () => {
+            return get(editorAtoms.sourceEditorIsOpen)
+          }
+          const throttledUndo = throttle(undo, 100)
+          const throttledRedo = throttle(redo, 100)
+          const onKeyDown = (e: KeyboardEvent) => {
+            if (e.code === 'KeyZ' && (e.ctrlKey || e.metaKey)) {
+              if (shouldUseNativeUndo()) {
+                return
+              }
+              if (e.shiftKey) {
+                throttledRedo()
+              } else {
+                throttledUndo()
+              }
+              e.preventDefault()
+            }
+          }
+          const onBeforeInput = (e: InputEvent) => {
+            if (
+              e.inputType === 'historyUndo' ||
+              e.inputType === 'historyRedo'
+            ) {
+              if (!shouldUseNativeUndo()) {
+                e.preventDefault()
+              }
+            }
+          }
+          document.addEventListener('keydown', onKeyDown)
+          document.addEventListener('beforeinput', onBeforeInput, {
+            capture: true,
+          })
+          return () => {
+            document.removeEventListener('keydown', onKeyDown)
+            document.removeEventListener('beforeinput', onBeforeInput, {
+              capture: true,
+            })
+          }
+        },
+        [undo, redo],
+      ),
+    )
+
+    useEffect(() => {
+      return handleUndoRedo()
+    }, [handleUndoRedo])
+
+    const rightPanelContent = (
+      <>
+        <div className="flex items-center mb-4">
+          <h2 className="text-xl font-bold">作业信息</h2>
+          <Divider className="grow" />
+        </div>
+        <InfoEditor className="mb-4 [&>.bp4-inline>.bp4-label]:w-20" />
+        <OperatorEditor />
+      </>
+    )
+
+    return (
+      <div className="-mt-14 pt-14 md:h-screen flex flex-col">
+        <Validator />
+        <EditorToolbar
+          tabs={tabs}
+          selectedTab={selectedTab}
+          onTabChange={setSelectedTab}
+          title={title}
+          submitAction={submitAction}
+          onSubmit={onSubmit}
+        />
+        <div
+          className={clsx('grow min-h-0', selectedTab !== 'main' && 'hidden')}
+        >
+          {isMD ? (
+            <div className="p-4 shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
+              {rightPanelContent}
+            </div>
+          ) : (
+            <PanelGroup autoSaveId="editor-main" direction="horizontal">
+              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
+                <OperatorSheet />
+              </Panel>
+              <PanelResizeHandle className="w-1 bg-white dark:bg-[#383e47]" />
+              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)] p-4 !overflow-auto">
+                {rightPanelContent}
+              </Panel>
+            </PanelGroup>
+          )}
+        </div>
+        <ActionEditor className={clsx(selectedTab !== 'action' && 'hidden')} />
+        <Button
+          intent="primary"
+          icon={selectedTab === 'main' ? 'arrow-right' : 'arrow-left'}
+          className={clsx(
+            'fixed  !rounded-full',
+            isMD ? 'bottom-4 right-16 w-10 h-10' : 'bottom-4 right-4 w-12 h-12',
+          )}
+          onClick={() => {
+            setSelectedTab((prev) => (prev === 'main' ? 'action' : 'main'))
+          }}
+        />
+      </div>
+    )
+  },
+)
+OperationEditor.displayName = 'OperationEditor'

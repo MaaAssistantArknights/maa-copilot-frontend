@@ -1,5 +1,5 @@
 import { access } from 'fs/promises'
-import { uniq, uniqBy } from 'lodash-es'
+import { compact, last, uniq, uniqBy } from 'lodash-es'
 import fetch from 'node-fetch'
 import { pinyin } from 'pinyin'
 import simplebig from 'simplebig'
@@ -52,6 +52,8 @@ const CHARACTER_TABLE_JSON_URL =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/character_table.json'
 const UNIEQUIP_TABLE_JSON_URL =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/uniequip_table.json'
+const SKILL_TABLE_JSON_URL =
+  'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/skill_table.json'
 
 const CHARACTER_BLOCKLIST = [
   'char_512_aprot', // 暮落(集成战略)：It's just not gonna be there.
@@ -74,12 +76,20 @@ async function json(url: string) {
 }
 
 export async function getOperators() {
-  const [charTable, uniequipTable] = await Promise.all([
+  const [charTable, uniequipTable, skillTable] = await Promise.all([
     json(CHARACTER_TABLE_JSON_URL),
     json(UNIEQUIP_TABLE_JSON_URL),
+    json(SKILL_TABLE_JSON_URL),
   ])
-
-  const { subProfDict } = uniequipTable
+  const { equipDict, subProfDict } = uniequipTable
+  const equipsByOperatorId = Object.values(equipDict).reduce(
+    (acc: Record<string, any[]>, equip: any) => {
+      acc[equip.charId] ||= []
+      acc[equip.charId].push(equip)
+      return acc
+    },
+    {},
+  )
 
   const opIds = Object.keys(charTable)
   const professions: Professions = []
@@ -108,6 +118,29 @@ export async function getOperators() {
           })
         }
       }
+      const equips = equipsByOperatorId[id]
+        ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
+        .map(({ typeName1, typeName2 }) => {
+          return typeName1 === 'ORIGINAL' ? '' : typeName2
+        })
+      const skills = ['TOKEN'].includes(op.profession)
+        ? [] // 召唤物无需选择技能，所以不需要技能信息
+        : compact(
+            (op.skills as any[]).map(
+              ({ skillId }: { skillId: string | null }) => {
+                if (!skillId) return null
+                // 技能的每级都有一个 name，直接取等级最高的那个，以防鹰角背刺
+                const name = last<{ name: string }>(
+                  skillTable[skillId].levels,
+                )?.name
+                if (!name) {
+                  console.error(`Invalid skill: ${op.name} - ${skillId}`)
+                  return null
+                }
+                return name
+              },
+            ),
+          )
       return [
         {
           id: id,
@@ -119,10 +152,12 @@ export async function getOperators() {
               ? 0
               : Number(op.rarity?.split('TIER_').join('') || 0),
           alt_name: op.appellation,
+          skills,
+          equips,
         },
       ]
     }),
-    (el) => el.name,
+    (el) => el.id,
   ).sort((a, b) => {
     // 默认的 pinyin.compare() 没有传入 locale 参数，导致在不同的系统上有不同的排序结果，
     // 所以这里手动实现一下，并带上 locale

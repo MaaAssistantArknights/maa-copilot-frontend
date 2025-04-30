@@ -19,6 +19,11 @@ export const NAV_LINKS: {
     icon: 'add',
   },
   {
+    to: '/editor',
+    label: '作业编辑器v2',
+    icon: 'annotation',
+  },
+  {
     to: '/about',
     label: '关于',
     icon: 'info-sign',
