@@ -2515,8 +2515,20 @@
     },
     "Suspensable": {
       "loading": {
-        "cn": "加载中...",
-        "en": "Loading..."
+        "cn": "加载中",
+        "en": "Loading"
+      },
+      "loadFailed": {
+        "cn": "加载失败",
+        "en": "Load Failed"
+      },
+      "dataLoadFailedRetry": {
+        "cn": "数据加载失败，请重试",
+        "en": "Data load failed, please retry"
+      },
+      "retry": {
+        "cn": "重试",
+        "en": "Retry"
       }
     },
     "UserFilter": {

@@ -19,11 +19,14 @@ interface SuspensableProps {
 export const Suspensable: FCC<SuspensableProps> = ({
   children,
   retryDeps = [],
-  pendingTitle = '加载中',
+  pendingTitle,
   fetcher,
   errorFallback,
 }) => {
   const resetError = useRef<() => void>()
+  const { t } = useTranslation()
+
+  pendingTitle = pendingTitle ?? t('components.Suspensable.loading')
 
   useEffect(() => {
     resetError.current?.()
@@ -44,8 +47,12 @@ export const Suspensable: FCC<SuspensableProps> = ({
         return (
           <NonIdealState
             icon="issue"
-            title="加载失败"
-            description={fetcher ? '数据加载失败，请重试' : error.message}
+            title={t('components.Suspensable.loadFailed')}
+            description={
+              fetcher
+                ? t('components.Suspensable.dataLoadFailedRetry')
+                : error.message
+            }
             className="py-8"
             action={
               fetcher && (
@@ -58,7 +65,7 @@ export const Suspensable: FCC<SuspensableProps> = ({
                     fetcher()
                   }}
                 >
-                  重试
+                  {t('components.Suspensable.retry')}
                 </Button>
               )
             }
@@ -94,43 +101,31 @@ export function withSuspensable<P extends object>(
   Component: ComponentType<P>,
   options: SuspensableOptions = {},
 ): FC<P> {
-  const { pendingTitle, retryOnChange = [] } = options
+  const { pendingTitle, retryOnChange = [], errorFallback } = options
 
   const SuspensableComponent: FC<P> = (props) => {
-    const { t } = useTranslation()
-    const resetErrorRef = useRef<(() => void) | undefined>()
-
-    useEffect(
-      () => {
-        resetErrorRef.current?.()
-        resetErrorRef.current = undefined
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-      },
-      retryOnChange.map((key) => (props as any)[key]),
-    )
-
-    const title =
-      typeof pendingTitle === 'function'
-        ? pendingTitle(t)
-        : pendingTitle || t('components.Suspensable.loading')
+    const retryDeps = retryOnChange.map((key) => (props as any)[key])
 
     return (
-      <Suspense
-        fallback={
-          <div className="flex justify-center p-8">
-            <div className="flex items-center gap-4">
-              <Spinner size={20} />
-              <div>{title}</div>
-            </div>
-          </div>
+      <Suspensable
+        pendingTitle={
+          typeof pendingTitle === 'function'
+            ? pendingTitle(useTranslation().t)
+            : pendingTitle
+        }
+        retryDeps={retryDeps}
+        errorFallback={({ error }) =>
+          errorFallback
+            ? errorFallback({ error, resetError: () => {} })
+            : undefined
         }
       >
         <Component {...props} />
-      </Suspense>
+      </Suspensable>
     )
   }
 
-  // Debug
+  // Format for display in DevTools
   SuspensableComponent.displayName = `Suspensable(${
     Component.displayName || Component.name || 'Component'
   })`
