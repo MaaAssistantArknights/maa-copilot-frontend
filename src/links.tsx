@@ -1,8 +1,13 @@
+import { Icon as BlueprintIcon, IconName } from '@blueprintjs/core'
+import { Icon as IconifyIcon } from '@iconify/react'
 import simpleIconsGitHub from '@iconify/icons-simple-icons/github'
 import simpleIconsQQ from '@iconify/icons-simple-icons/tencentqq'
 
-// Keep only the static configuration data
-export const NAV_CONFIG = [
+export const NAV_CONFIG: {
+  to: string
+  labelKey: string
+  icon: IconName
+}[] = [
   {
     to: '/',
     labelKey: 'links.home',
@@ -17,50 +22,43 @@ export const NAV_CONFIG = [
     to: '/about',
     labelKey: 'links.about',
     icon: 'info-sign',
-  },
+  }
 ]
 
 export const SOCIAL_CONFIG = [
   {
-    iconType: 'blueprint',
-    iconName: 'globe',
+    icon: <BlueprintIcon icon="globe" className="mr-2" size={12} />,
     href: 'https://maa.plus',
     labelKey: 'links.official_site',
   },
   {
-    iconType: 'blueprint',
-    iconName: 'edit',
+    icon: <BlueprintIcon icon="edit" className="mr-2" size={12} />,
     href: 'https://github.com/MaaAssistantArknights/maa-copilot-frontend/issues/new/choose',
     labelKey: 'links.feedback',
   },
   {
-    iconType: 'iconify',
-    iconSource: simpleIconsGitHub,
+    icon: <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />,
     href: 'https://github.com/MaaAssistantArknights/MaaAssistantArknights',
     labelKey: 'links.maa_repo',
   },
   {
-    iconType: 'iconify',
-    iconSource: simpleIconsGitHub,
+    icon: <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />,
     href: 'https://github.com/MaaAssistantArknights/maa-copilot-frontend',
     labelKey: 'links.frontend_repo',
   },
   {
-    iconType: 'iconify',
-    iconSource: simpleIconsGitHub,
+    icon: <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />,
     href: 'https://github.com/MaaAssistantArknights/MaaBackendCenter',
     labelKey: 'links.backend_repo',
   },
   {
-    iconType: 'iconify',
-    iconSource: simpleIconsQQ,
+    icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
     href: 'https://jq.qq.com/?_wv=1027&k=ElimpMzQ',
     labelKey: 'links.creator_group',
-    labelParams: { groupNumber: '1169188429' }, // Modifiable group number
+    labelParams: { groupNumber: '1169188429' },
   },
   {
-    iconType: 'iconify',
-    iconSource: simpleIconsQQ,
+    icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
     href: 'https://ota.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
     labelKey: 'links.sharing_group',
   },
