@@ -278,5 +278,17 @@ export function toMaaOperation(
     }),
   }
 
+  // 如果没有版本号，则自动检测是否要设置一个
+  if (converted.version === undefined) {
+    if (
+      converted.opers.some((operator) => operator.requirements) ||
+      converted.groups.some((group) =>
+        group.opers.some((operator) => operator.requirements),
+      )
+    ) {
+      converted.version = 2
+    }
+  }
+
   return snakeCaseKeysUnicode(converted, { deep: true })
 }

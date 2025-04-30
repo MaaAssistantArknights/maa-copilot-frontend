@@ -10,6 +10,7 @@ export type ZodIssue = z.core.$ZodIssue
 
 z.config(cn())
 
+const version = z.number().optional()
 const stage_name = z.string().optional()
 const difficulty = z.enum(OpDifficulty).optional()
 const minimum_required = z
@@ -208,6 +209,7 @@ const actionStrict = z
 
 export type CopilotOperationLoose = z.infer<typeof operationLooseSchema>
 export const operationLooseSchema = z.object({
+  version,
   stage_name,
   difficulty,
   minimum_required,
@@ -219,6 +221,7 @@ export const operationLooseSchema = z.object({
 
 export type CopilotOperation = z.infer<typeof operationSchema>
 export const operationSchema = z.object({
+  version,
   stage_name: stage_name.unwrap(),
   difficulty,
   minimum_required,
@@ -251,6 +254,7 @@ const OPERATOR_LABELS: Labeled<CopilotOperation['opers']> = {
 }
 
 const OPERATION_LABELS: Labeled<CopilotOperation> = {
+  version: '版本号',
   stage_name: '关卡名称',
   minimum_required: '最低要求 MAA 版本',
   difficulty: '难度',
