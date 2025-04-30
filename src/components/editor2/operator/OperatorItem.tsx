@@ -10,6 +10,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useSetAtom } from 'jotai'
 import { clamp } from 'lodash-es'
 import { FC, memo } from 'react'
 
@@ -27,12 +28,13 @@ import {
 } from '../../../models/operator'
 import { MasteryIcon } from '../../MasteryIcon'
 import { Select } from '../../Select'
+import { AppToaster } from '../../Toaster'
 import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorOperator, useEditorControls } from '../editor-state'
-import { getInternalId } from '../reconciliation'
+import { editorFavOperatorsAtom, getInternalId } from '../reconciliation'
 
 interface OperatorItemProps extends Partial<SortableItemProps> {
   operator: EditorOperator
@@ -60,6 +62,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
     listeners,
   }) => {
     const { withCheckpoint } = useEditorControls()
+    const setFavOperators = useSetAtom(editorFavOperatorsAtom)
     const info = OPERATORS.find(({ name }) => name === operator.name)
     const skillUsage =
       '技能' +
@@ -168,6 +171,17 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
             placement="top"
             content={
               <Menu>
+                <MenuItem
+                  icon="star"
+                  text="添加到收藏"
+                  onClick={() => {
+                    setFavOperators((prev) => [...prev, operator])
+                    AppToaster.show({
+                      message: '已添加到收藏',
+                      intent: 'success',
+                    })
+                  }}
+                />
                 <MenuItem
                   icon="trash"
                   text="删除"
