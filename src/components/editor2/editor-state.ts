@@ -24,7 +24,7 @@ export interface EditorState {
   metadata: EditorMetadata
 }
 
-const defaultOperation = operationLooseSchema.parse({})
+const defaultOperation = operationLooseSchema.parse({ version: 2 })
 
 export const defaultEditorState: EditorState = {
   operation: toEditorOperation(defaultOperation),
@@ -93,6 +93,7 @@ export type BaseEditorGroup = Simplify<
 >
 
 const baseAtom = atom<EditorOperationBase>({
+  version: defaultOperation.version,
   minimumRequired: defaultOperation.minimum_required,
   doc: defaultOperation.doc,
 })
