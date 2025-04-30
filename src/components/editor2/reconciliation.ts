@@ -10,6 +10,7 @@ import {
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { FavGroup, favGroupAtom } from '../../store/useFavGroups'
+import { FavOperator, favOperatorAtom } from '../../store/useFavOperators'
 import { snakeCaseKeysUnicode } from '../../utils/object'
 import {
   EditorAction,
@@ -74,6 +75,52 @@ export function createOperator(
   })
   return operator
 }
+
+const favOperatorCache = new WeakMap<FavOperator, WithInternalId<FavOperator>>()
+const favOperatorReverseCache = new WeakMap<
+  WithInternalId<FavOperator> | EditorOperator,
+  FavOperator
+>()
+export const editorFavOperatorsAtom = atom(
+  (get) =>
+    get(favOperatorAtom).map((operator) => {
+      const cached = favOperatorCache.get(operator)
+      if (cached) {
+        return cached
+      }
+      const newOperator = { ...operator, _id: uniqueId() }
+      favOperatorCache.set(operator, newOperator)
+      favOperatorReverseCache.set(newOperator, operator)
+      return newOperator
+    }),
+  (
+    get,
+    set,
+    update:
+      | (WithInternalId<FavOperator> | EditorOperator)[]
+      | ((
+          prev: WithInternalId<FavOperator>[],
+        ) => (WithInternalId<FavOperator> | EditorOperator)[]),
+  ) => {
+    if (typeof update === 'function') {
+      update = update(get(editorFavOperatorsAtom))
+    }
+    const newOperators = update.map((operator) => {
+      const cached = favOperatorReverseCache.get(operator)
+      if (cached) {
+        return cached
+      }
+      const { _id, ...newOperator } = { ...operator, _id: '' }
+      favOperatorCache.set(newOperator, operator)
+      favOperatorReverseCache.set(operator, newOperator)
+      return newOperator
+    })
+
+    // 检查有没有多余的属性
+    0 as unknown as FavOperator[] satisfies typeof newOperators
+    set(favOperatorAtom, newOperators)
+  },
+)
 
 const favGroupCache = new WeakMap<FavGroup, WithInternalId<FavGroup>>()
 const favGroupReverseCache = new WeakMap<
