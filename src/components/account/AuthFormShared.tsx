@@ -1,36 +1,64 @@
 import { InputGroup, InputGroupProps2 } from '@blueprintjs/core'
-import { ControllerProps, FieldValues, UseControllerProps } from 'react-hook-form'
+
+import {
+  ControllerProps,
+  FieldValues,
+  UseControllerProps,
+} from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
+
 import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL, REGEX_USERNAME } from 'utils/regexes'
 
 export type RuleKeys = 'email' | 'password' | 'username' | 'registertoken'
 
-// Define rules with translation keys
 export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
   email: {
     required: 'components.account.AuthFormShared.email_required',
-    pattern: { value: REGEX_EMAIL, message: 'components.account.AuthFormShared.email_invalid' },
+    pattern: {
+      value: REGEX_EMAIL,
+      message: 'components.account.AuthFormShared.email_invalid',
+    },
   },
   password: {
     required: 'components.account.AuthFormShared.password_required',
-    minLength: { value: 8, message: 'components.account.AuthFormShared.password_min_length' },
-    maxLength: { value: 32, message: 'components.account.AuthFormShared.password_max_length' },
+    minLength: {
+      value: 8,
+      message: 'components.account.AuthFormShared.password_min_length',
+    },
+    maxLength: {
+      value: 32,
+      message: 'components.account.AuthFormShared.password_max_length',
+    },
   },
   username: {
     required: 'components.account.AuthFormShared.username_required',
-    minLength: { value: 4, message: 'components.account.AuthFormShared.username_min_length' },
-    maxLength: { value: 24, message: 'components.account.AuthFormShared.username_max_length' },
-    pattern: { value: REGEX_USERNAME, message: 'components.account.AuthFormShared.username_pattern' },
+    minLength: {
+      value: 4,
+      message: 'components.account.AuthFormShared.username_min_length',
+    },
+    maxLength: {
+      value: 24,
+      message: 'components.account.AuthFormShared.username_max_length',
+    },
+    pattern: {
+      value: REGEX_USERNAME,
+      message: 'components.account.AuthFormShared.username_pattern',
+    },
   },
   registertoken: {
     required: 'components.account.AuthFormShared.token_required',
-    minLength: { value: 6, message: 'components.account.AuthFormShared.token_length' },
-    maxLength: { value: 6, message: 'components.account.AuthFormShared.token_length' },
+    minLength: {
+      value: 6,
+      message: 'components.account.AuthFormShared.token_length',
+    },
+    maxLength: {
+      value: 6,
+      message: 'components.account.AuthFormShared.token_length',
+    },
   },
 }
 
-// Helper function that translates rule messages
 function useTranslatedRules() {
   const { t } = useTranslation()
 
@@ -102,7 +130,9 @@ export const AuthFormEmailField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText: register && t('components.account.AuthFormShared.email_verification_note'),
+        helperText:
+          register &&
+          t('components.account.AuthFormShared.email_verification_note'),
       }}
     />
   )
@@ -140,7 +170,9 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText: register && t('components.account.AuthFormShared.token_verification_note'),
+        helperText:
+          register &&
+          t('components.account.AuthFormShared.token_verification_note'),
       }}
     />
   )

@@ -1,7 +1,7 @@
 import { Icon as BlueprintIcon, IconName } from '@blueprintjs/core'
-import { Icon as IconifyIcon } from '@iconify/react'
 import simpleIconsGitHub from '@iconify/icons-simple-icons/github'
 import simpleIconsQQ from '@iconify/icons-simple-icons/tencentqq'
+import { Icon as IconifyIcon } from '@iconify/react'
 
 export const NAV_CONFIG: {
   to: string
@@ -22,7 +22,7 @@ export const NAV_CONFIG: {
     to: '/about',
     labelKey: 'links.about',
     icon: 'info-sign',
-  }
+  },
 ]
 
 export const SOCIAL_CONFIG = [
@@ -37,17 +37,23 @@ export const SOCIAL_CONFIG = [
     labelKey: 'links.feedback',
   },
   {
-    icon: <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />,
+    icon: (
+      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
+    ),
     href: 'https://github.com/MaaAssistantArknights/MaaAssistantArknights',
     labelKey: 'links.maa_repo',
   },
   {
-    icon: <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />,
+    icon: (
+      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
+    ),
     href: 'https://github.com/MaaAssistantArknights/maa-copilot-frontend',
     labelKey: 'links.frontend_repo',
   },
   {
-    icon: <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />,
+    icon: (
+      <IconifyIcon icon={simpleIconsGitHub} className="mr-2" fontSize="12px" />
+    ),
     href: 'https://github.com/MaaAssistantArknights/MaaBackendCenter',
     labelKey: 'links.backend_repo',
   },
