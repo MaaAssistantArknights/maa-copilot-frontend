@@ -1,88 +1,60 @@
 import { InputGroup, InputGroupProps2 } from '@blueprintjs/core'
-
-import {
-  ControllerProps,
-  FieldValues,
-  UseControllerProps,
-} from 'react-hook-form'
+import { ControllerProps, FieldValues, UseControllerProps } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
-
 import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL, REGEX_USERNAME } from 'utils/regexes'
 
 export type RuleKeys = 'email' | 'password' | 'username' | 'registertoken'
 
-export function useAuthRules() {
-  const { t } = useTranslation()
-
-  return {
-    email: {
-      required: t('components.account.AuthFormShared.email_required'),
-      pattern: {
-        value: REGEX_EMAIL,
-        message: t('components.account.AuthFormShared.email_invalid'),
-      },
-    },
-    password: {
-      required: t('components.account.AuthFormShared.password_required'),
-      minLength: {
-        value: 8,
-        message: t('components.account.AuthFormShared.password_min_length'),
-      },
-      maxLength: {
-        value: 32,
-        message: t('components.account.AuthFormShared.password_max_length'),
-      },
-    },
-    username: {
-      required: t('components.account.AuthFormShared.username_required'),
-      minLength: {
-        value: 4,
-        message: t('components.account.AuthFormShared.username_min_length'),
-      },
-      maxLength: {
-        value: 24,
-        message: t('components.account.AuthFormShared.username_max_length'),
-      },
-    },
-    registertoken: {
-      required: t('components.account.AuthFormShared.token_required'),
-      minLength: {
-        value: 6,
-        message: t('components.account.AuthFormShared.token_length'),
-      },
-      maxLength: {
-        value: 6,
-        message: t('components.account.AuthFormShared.token_length'),
-      },
-    },
-  }
-}
-
+// Define rules with translation keys
 export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
   email: {
-    required: '邮箱为必填项',
-    pattern: { value: REGEX_EMAIL, message: '不合法的邮箱' },
+    required: 'components.account.AuthFormShared.email_required',
+    pattern: { value: REGEX_EMAIL, message: 'components.account.AuthFormShared.email_invalid' },
   },
   password: {
-    required: '密码为必填项',
-    minLength: { value: 8, message: '密码长度不能小于 8 位' },
-    maxLength: { value: 32, message: '密码长度不能大于 32 位' },
+    required: 'components.account.AuthFormShared.password_required',
+    minLength: { value: 8, message: 'components.account.AuthFormShared.password_min_length' },
+    maxLength: { value: 32, message: 'components.account.AuthFormShared.password_max_length' },
   },
   username: {
-    required: '用户名为必填项',
-    minLength: { value: 4, message: '用户名长度不能小于 4 位' },
-    maxLength: { value: 24, message: '用户名长度不能大于 24 位' },
-    pattern: { value: REGEX_USERNAME, message: '用户名前后不能包含空格' },
+    required: 'components.account.AuthFormShared.username_required',
+    minLength: { value: 4, message: 'components.account.AuthFormShared.username_min_length' },
+    maxLength: { value: 24, message: 'components.account.AuthFormShared.username_max_length' },
+    pattern: { value: REGEX_USERNAME, message: 'components.account.AuthFormShared.username_pattern' },
   },
   registertoken: {
-    required: '邮箱验证码为必填项',
-    minLength: { value: 6, message: '邮箱验证码长度为 6 位' },
-    maxLength: { value: 6, message: '邮箱验证码长度为 6 位' },
+    required: 'components.account.AuthFormShared.token_required',
+    minLength: { value: 6, message: 'components.account.AuthFormShared.token_length' },
+    maxLength: { value: 6, message: 'components.account.AuthFormShared.token_length' },
   },
 }
 
-// --- **Opinioned** AuthForm Field Components ---
+// Helper function that translates rule messages
+function useTranslatedRules() {
+  const { t } = useTranslation()
+
+  return function translateRule(ruleObj: UseControllerProps['rules']) {
+    if (!ruleObj) return ruleObj
+
+    const result: UseControllerProps['rules'] = {}
+
+    for (const [key, value] of Object.entries(ruleObj)) {
+      if (typeof value === 'string') {
+        result[key] = t(value)
+      } else if (typeof value === 'object' && value !== null) {
+        result[key] = { ...value }
+        if (typeof value.message === 'string') {
+          result[key].message = t(value.message)
+        }
+      } else {
+        result[key] = value
+      }
+    }
+
+    return result
+  }
+}
 
 export type AuthFormFieldProps<T extends FieldValues> = Pick<
   FormFieldProps<T, any>,
@@ -106,15 +78,16 @@ export const AuthFormEmailField = <T extends FieldValues>({
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
   const { t } = useTranslation()
-  label = label || t('components.account.AuthFormShared.email')
+  const translateRule = useTranslatedRules()
+
   return (
     <FormField
-      label={label}
+      label={label || t('components.account.AuthFormShared.email')}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: rule.email,
+        rules: translateRule(rule.email),
         render: (renderProps) => (
           <InputGroup
             id={field}
@@ -129,9 +102,7 @@ export const AuthFormEmailField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText:
-          register &&
-          t('components.account.AuthFormShared.email_verification_note'),
+        helperText: register && t('components.account.AuthFormShared.email_verification_note'),
       }}
     />
   )
@@ -147,16 +118,16 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
   const { t } = useTranslation()
-  label =
-    label || t('components.account.AuthFormShared.email_verification_code')
+  const translateRule = useTranslatedRules()
+
   return (
     <FormField
-      label={label}
+      label={label || t('components.account.AuthFormShared.token')}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: rule.registertoken,
+        rules: translateRule(rule.registertoken),
         render: (renderProps) => (
           <InputGroup
             id={field}
@@ -169,8 +140,7 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
         ),
       }}
       FormGroupProps={{
-        helperText:
-          register && t('components.account.AuthFormShared.enter_email_code'),
+        helperText: register && t('components.account.AuthFormShared.token_verification_note'),
       }}
     />
   )
@@ -185,15 +155,16 @@ export const AuthFormPasswordField = <T extends FieldValues>({
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
   const { t } = useTranslation()
-  label = label || t('components.account.AuthFormShared.password')
+  const translateRule = useTranslatedRules()
+
   return (
     <FormField
-      label={label}
+      label={label || t('components.account.AuthFormShared.password')}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: rule.password,
+        rules: translateRule(rule.password),
         render: (renderProps) => (
           <InputGroup
             id={field}
@@ -219,15 +190,16 @@ export const AuthFormUsernameField = <T extends FieldValues>({
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
   const { t } = useTranslation()
-  label = label || t('components.account.AuthFormShared.username')
+  const translateRule = useTranslatedRules()
+
   return (
     <FormField
-      label={label}
+      label={label || t('components.account.AuthFormShared.username')}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: rule.username,
+        rules: translateRule(rule.username),
         render: (renderProps) => (
           <InputGroup
             id={field}

@@ -58,6 +58,10 @@
           "cn": "用户名长度不能大于 24 位",
           "en": "Username cannot be longer than 24 characters"
         },
+        "username_pattern": {
+          "cn": "用户名前后不能包含空格",
+          "en": "Username cannot start or end with spaces"
+        },
         "token_required": {
           "cn": "邮箱验证码为必填项",
           "en": "Email verification code is required"
