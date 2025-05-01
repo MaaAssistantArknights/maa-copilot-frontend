@@ -92,7 +92,7 @@ export const EditorOperatorName = <T extends FieldValues>({
       onReset={() => onChange('')}
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
-          key={item.name}
+          key={'id' in item ? item.id : item.name}
           text={item.name}
           icon={
             isOperator(item) ? (
