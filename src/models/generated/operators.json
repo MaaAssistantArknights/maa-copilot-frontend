@@ -82,6 +82,15 @@
       "alt_name": "Aak"
     },
     {
+      "id": "char_4178_alanna",
+      "prof": "SUPPORT",
+      "subProf": "craftsman",
+      "name": "阿兰娜",
+      "alias": "alanna alannuo elanna elannuo aln eln 阿蘭娜",
+      "rarity": 5,
+      "alt_name": "Alanna"
+    },
+    {
       "id": "char_446_aroma",
       "prof": "CASTER",
       "subProf": "blastcaster",
@@ -307,6 +316,15 @@
       "alt_name": "Stainless™ Multifunctional platform"
     },
     {
+      "id": "token_10027_ironmn_pile2",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "白铁™多功能平台",
+      "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
+      "rarity": 0,
+      "alt_name": "Stainless™ Multifunctional platform"
+    },
+    {
       "id": "char_118_yuki",
       "prof": "SNIPER",
       "subProf": "aoesniper",
@@ -478,6 +496,15 @@
       "alt_name": "Ch'en"
     },
     {
+      "id": "char_445_wscoot",
+      "prof": "WARRIOR",
+      "subProf": "librator",
+      "name": "骋风",
+      "alias": "chengfeng cf 騁風",
+      "rarity": 4,
+      "alt_name": "Windscoot"
+    },
+    {
       "id": "char_377_gdglow",
       "prof": "CASTER",
       "subProf": "funnel",
@@ -566,6 +593,15 @@
       "alias": "cimianxiangdi cmxd 此麵向敵",
       "rarity": 0,
       "alt_name": "F.T.E"
+    },
+    {
+      "id": "char_4188_confes",
+      "prof": "PIONEER",
+      "subProf": "pioneer",
+      "name": "CONFESS-47",
+      "alias": "CONFESS-47",
+      "rarity": 1,
+      "alt_name": "CONFESS-47"
     },
     {
       "id": "token_10039_ulpia_block",
@@ -1666,6 +1702,15 @@
       "alt_name": "GRZMOT Mine"
     },
     {
+      "id": "char_4193_lemuen",
+      "prof": "SNIPER",
+      "subProf": "longrange",
+      "name": "蕾缪安",
+      "alias": "leimouan leimiuan leimiaoan leimuan leiliaoan lma lla 蕾繆安",
+      "rarity": 6,
+      "alt_name": "Lemuen"
+    },
+    {
       "id": "char_107_liskam",
       "prof": "TANK",
       "subProf": "shotprotector",
@@ -1781,6 +1826,15 @@
       "alias": "linglan ll 鈴蘭",
       "rarity": 6,
       "alt_name": "Suzuran"
+    },
+    {
+      "id": "char_4187_graceb",
+      "prof": "WARRIOR",
+      "subProf": "primguard",
+      "name": "聆音",
+      "alias": "lingyin ly 聆音",
+      "rarity": 5,
+      "alt_name": "Gracebearer"
     },
     {
       "id": "char_192_falco",
@@ -2107,6 +2161,15 @@
       "alt_name": "Myrrh"
     },
     {
+      "id": "char_4179_monstr",
+      "prof": "MEDIC",
+      "subProf": "chainhealer",
+      "name": "Mon3tr",
+      "alias": "Mon3tr",
+      "rarity": 6,
+      "alt_name": "Mon3tr"
+    },
+    {
       "id": "token_10002_kalts_mon3tr",
       "prof": "TOKEN",
       "subProf": "notchar1",
@@ -2123,6 +2186,15 @@
       "alias": "mouersaisi mouersaisai miuersaisi miuersaisai miaoersaisi miaoersaisai muersaisi muersaisai liaoersaisi liaoersaisai mess less 繆爾賽思",
       "rarity": 6,
       "alt_name": "Muelsyse"
+    },
+    {
+      "id": "char_4025_aprot2",
+      "prof": "TANK",
+      "subProf": "artsprotector",
+      "name": "暮落",
+      "alias": "muluo mula mulao ml 暮落",
+      "rarity": 5,
+      "alt_name": "Shalem"
     },
     {
       "id": "token_10042_tecno_puppet",
@@ -2275,6 +2347,15 @@
       "name": "Pith",
       "alias": "Pith",
       "rarity": 5,
+      "alt_name": "Pith"
+    },
+    {
+      "id": "char_612_accast",
+      "prof": "CASTER",
+      "subProf": "splashcaster",
+      "name": "Pith",
+      "alias": "Pith",
+      "rarity": 6,
       "alt_name": "Pith"
     },
     {
@@ -2482,6 +2563,15 @@
       "name": "Sharp",
       "alias": "Sharp",
       "rarity": 5,
+      "alt_name": "Sharp"
+    },
+    {
+      "id": "char_609_acguad",
+      "prof": "WARRIOR",
+      "subProf": "fearless",
+      "name": "Sharp",
+      "alias": "Sharp",
+      "rarity": 6,
       "alt_name": "Sharp"
     },
     {
@@ -2764,6 +2854,15 @@
       "alt_name": "Stormeye"
     },
     {
+      "id": "char_611_acnipe",
+      "prof": "SNIPER",
+      "subProf": "fastshot",
+      "name": "Stormeye",
+      "alias": "Stormeye",
+      "rarity": 6,
+      "alt_name": "Stormeye"
+    },
+    {
       "id": "char_298_susuro",
       "prof": "MEDIC",
       "subProf": "physician",
@@ -2890,12 +2989,30 @@
       "alt_name": "Prototype of Feist's Metal Crab"
     },
     {
+      "id": "token_10056_angel2_target",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "投递坐标",
+      "alias": "toudizuobiao tdzb 投遞坐標",
+      "rarity": 0,
+      "alt_name": "临时命名"
+    },
+    {
       "id": "char_510_amedic",
       "prof": "MEDIC",
       "subProf": "physician",
       "name": "Touch",
       "alias": "Touch",
       "rarity": 5,
+      "alt_name": "Touch"
+    },
+    {
+      "id": "char_613_acmedc",
+      "prof": "MEDIC",
+      "subProf": "physician",
+      "name": "Touch",
+      "alias": "Touch",
+      "rarity": 6,
       "alt_name": "Touch"
     },
     {
@@ -3124,6 +3241,15 @@
       "alt_name": "Cantabile"
     },
     {
+      "id": "token_10045_alanna_crane",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "小螺帽",
+      "alias": "xiaoluomao xlm 小螺帽",
+      "rarity": 0,
+      "alt_name": "Nutlet"
+    },
+    {
       "id": "char_4122_grabds",
       "prof": "SUPPORT",
       "subProf": "slower",
@@ -3131,6 +3257,24 @@
       "alias": "xiaoman xm 小滿",
       "rarity": 5,
       "alt_name": "Grain Buds"
+    },
+    {
+      "id": "char_4194_rmixer",
+      "prof": "TANK",
+      "subProf": "shotprotector",
+      "name": "信仰搅拌机",
+      "alias": "xinyangjiaobanji xinyangjiaopanji xinangjiaobanji xinangjiaopanji shenyangjiaobanji shenyangjiaopanji shenangjiaobanji shenangjiaopanji xyjbj xyjpj xajbj xajpj syjbj syjpj sajbj sajpj 信仰攪拌機",
+      "rarity": 6,
+      "alt_name": "Sankta Miksaparato"
+    },
+    {
+      "id": "char_1041_angel2",
+      "prof": "SPECIAL",
+      "subProf": "geek",
+      "name": "新约能天使",
+      "alias": "xinyuenengtianshi xinyuenaitianshi xinyaonengtianshi xinyaonaitianshi xynts 新約能天使",
+      "rarity": 6,
+      "alt_name": "Exusiai the New Covenant"
     },
     {
       "id": "char_274_astesi",
@@ -3583,6 +3727,15 @@
       "alt_name": "Reserve (Sniper)"
     },
     {
+      "id": "char_603_csnipe",
+      "prof": "SNIPER",
+      "subProf": "fastshot",
+      "name": "预备干员-狙击",
+      "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Sniper"
+    },
+    {
       "id": "char_505_rcast",
       "prof": "CASTER",
       "subProf": "corecaster",
@@ -3590,6 +3743,15 @@
       "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
       "rarity": 3,
       "alt_name": "Reserve (Caster)"
+    },
+    {
+      "id": "char_604_ccast",
+      "prof": "CASTER",
+      "subProf": "corecaster",
+      "name": "预备干员-术师",
+      "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Caster"
     },
     {
       "id": "char_607_cspec",
@@ -3628,12 +3790,30 @@
       "alt_name": "Reserve (Defender)"
     },
     {
+      "id": "char_602_cdfend",
+      "prof": "TANK",
+      "subProf": "protector",
+      "name": "预备干员-重装",
+      "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
+      "rarity": 4,
+      "alt_name": "Reserve Operator - Defender"
+    },
+    {
       "id": "char_513_apionr",
       "prof": "PIONEER",
       "subProf": "pioneer",
       "name": "郁金香",
       "alias": "yujinxiang yjx 鬱金香",
       "rarity": 5,
+      "alt_name": "Tulip"
+    },
+    {
+      "id": "char_608_acpion",
+      "prof": "PIONEER",
+      "subProf": "pioneer",
+      "name": "郁金香",
+      "alias": "yujinxiang yjx 鬱金香",
+      "rarity": 6,
       "alt_name": "Tulip"
     },
     {
@@ -3781,6 +3961,15 @@
       "alt_name": "Lessing"
     },
     {
+      "id": "token_10050_monstr_prosts",
+      "prof": "TOKEN",
+      "subProf": "notchar1",
+      "name": "重构体",
+      "alias": "zhonggouti chonggouti zgt cgt 重構體",
+      "rarity": 0,
+      "alt_name": "Reconstruct"
+    },
+    {
       "id": "char_2024_chyue",
       "prof": "WARRIOR",
       "subProf": "fighter",
@@ -3888,9 +4077,10 @@
         { "id": "musha", "name": "武者" },
         { "id": "crusher", "name": "重剑手" },
         { "id": "reaper", "name": "收割者" },
-        { "id": "fighter", "name": "斗士" },
         { "id": "librator", "name": "解放者" },
-        { "id": "hammer", "name": "撼地者" }
+        { "id": "fighter", "name": "斗士" },
+        { "id": "hammer", "name": "撼地者" },
+        { "id": "primguard", "name": "本源近卫" }
       ]
     },
     {
