@@ -153,7 +153,7 @@ export const OperationSetViewer: ComponentType<{
         title={
           <>
             <Icon icon="document" />
-            <span className="ml-2">MAA Copilot 作业集</span>
+            <span className="ml-2">PRTS Plus 作业集</span>
 
             <div className="flex-1" />
 
