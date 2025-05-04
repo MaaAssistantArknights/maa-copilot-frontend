@@ -1,9 +1,9 @@
-name: azure-deploy
+name: githubio-deploy
 
 on:
   push:
-    # branches:
-      # - main
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -30,8 +30,9 @@ jobs:
         run: yarn build:azure
 
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3  # 使用 GitHub Pages 专用 Action
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}  # 使用内置 Token 无需额外配置
-          publish_dir: ./dist  # 静态文件目录（与构建输出目录一致）
-          keep_files: false  # 是否保留历史文件（按需调整）
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          keep_files: false
+          cname: zoot.plus
