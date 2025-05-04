@@ -3,8 +3,7 @@ name: azure-deploy
 on:
   push:
     branches:
-      - main
-      - dev
+      # - main
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
