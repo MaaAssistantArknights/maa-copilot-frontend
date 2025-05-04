@@ -106,7 +106,7 @@ export const AccountAuthDialog: ComponentType<{
 
   return (
     <Dialog
-      title="ZOOT Plus 账户"
+      title="PRTS Plus 账户"
       icon="user"
       isOpen={open}
       onClose={onClose}
