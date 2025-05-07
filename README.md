@@ -1,13 +1,13 @@
-# prts-plus-frontend
+# zoot-plus-frontend
 
-PRTS Plus 前端！
+zoot Plus 前端！
 
 ## 文档
 
-- ~~后端接口文档~~ (暂无，请参考 [prts-plus-client](https://github.com/MaaAssistantArknights/maa-copilot-client-ts) 的 TS 类型，或者从后端 [Actions](https://github.com/MaaAssistantArknights/MaaBackendCenter/actions/workflows/openapi.yml) 的 Artifacts 里下载最新的 OpenAPI 文档)
+- ~~后端接口文档~~ (暂无，请参考 [zoot-plus-client](https://github.com/MaaAssistantArknights/maa-copilot-client-ts) 的 TS 类型，或者从后端 [Actions](https://github.com/MaaAssistantArknights/MaaBackendCenter/actions/workflows/openapi.yml) 的 Artifacts 里下载最新的 OpenAPI 文档)
 - 作业格式：[战斗流程协议](https://maa.plus/docs/zh-cn/protocol/copilot-schema.html)
 
-更新 prts-plus-client 时，需要在 [Tags](https://github.com/MaaAssistantArknights/maa-copilot-client-ts/tags) 中复制版本号，然后替换掉 `package.json` 中的 `maa-copilot-client` 版本号，再运行 `yarn` 安装依赖
+更新 zoot-plus-client 时，需要在 [Tags](https://github.com/MaaAssistantArknights/maa-copilot-client-ts/tags) 中复制版本号，然后替换掉 `package.json` 中的 `maa-copilot-client` 版本号，再运行 `yarn` 安装依赖
 
 ## 开发流程
 
