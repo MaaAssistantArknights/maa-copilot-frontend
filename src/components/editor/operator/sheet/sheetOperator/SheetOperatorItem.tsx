@@ -5,13 +5,13 @@ import clsx from 'clsx'
 import { useAtom } from 'jotai'
 import { isEqual, omit } from 'lodash-es'
 import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
 
+import { useTranslation } from '../../../../../i18n/i18n'
 import { OperatorAvatar } from '../../EditorOperator'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
 import { useSheet } from '../SheetProvider'
@@ -21,7 +21,7 @@ export interface SheetOperatorItemProp {
 }
 
 export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const {
     existedOperators,
     existedGroups,
@@ -58,10 +58,10 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
   const onOperatorSelect = () => {
     if (grouped)
       AppToaster.show({
-        message: t(
-          'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.operator_in_group',
-          { name },
-        ),
+        message:
+          t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem.operator_in_group(
+            { name },
+          ),
         intent: Intent.DANGER,
       })
     else {
@@ -138,12 +138,10 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
                       />
                       <span>
                         {pinned
-                          ? t(
-                              'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.remove_from_favorites',
-                            )
-                          : t(
-                              'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.will_replace_operator',
-                            )}
+                          ? t.components.editor.operator.sheet.sheetOperator
+                              .SheetOperatorItem.remove_from_favorites
+                          : t.components.editor.operator.sheet.sheetOperator
+                              .SheetOperatorItem.will_replace_operator}
                       </span>
                     </Button>
                   }
@@ -174,9 +172,10 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
       {grouped && (
         <span className="text-xs font-bold mt-3">
           <Icon icon="warning-sign" size={15} />
-          {t(
-            'components.editor.operator.sheet.sheetOperator.SheetOperatorItem.in_group',
-          )}
+          {
+            t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem
+              .in_group
+          }
         </span>
       )}
     </Card>

@@ -1,6 +1,6 @@
 import { FC, useCallback, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../../../../i18n/i18n'
 import { SheetContainerSkeleton } from './SheetContainerSkeleton'
 import { OperatorNoData } from './SheetNoneData'
 import { ProfClassificationWithFilters } from './sheetOperator/ProfClassificationWithFilters'
@@ -56,12 +56,10 @@ const SheetOperator: FC<SheetOperatorProps> = () => {
 export const SheetOperatorContainer = (
   sheetOperatorProp: SheetOperatorProps,
 ) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   return (
     <SheetContainerSkeleton
-      title={t(
-        'components.editor.operator.sheet.SheetOperator.select_operator',
-      )}
+      title={t.components.editor.operator.sheet.SheetOperator.select_operator}
       icon="person"
     >
       <OperatorFilterProvider>

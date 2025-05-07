@@ -2,7 +2,6 @@ import { Button, ButtonGroup, Card } from '@blueprintjs/core'
 
 import { useAtom } from 'jotai'
 import { ComponentType, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { Navigate, useParams } from 'react-router-dom'
 
 import { OperationList } from 'components/OperationList'
@@ -13,14 +12,15 @@ import { authAtom } from 'store/auth'
 import { useUserInfo } from '../apis/user'
 import { CardTitle } from '../components/CardTitle'
 import { withSuspensable } from '../components/Suspensable'
+import { useTranslation } from '../i18n/i18n'
 import { NotFoundError } from '../utils/error'
 
 const _ProfilePage: ComponentType = () => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { id } = useParams()
   if (!id) {
     // edge case?
-    throw new Error(t('pages.profile.invalid_id'))
+    throw new Error(t.pages.profile.invalid_id)
   }
 
   const { data: userInfo } = useUserInfo({ userId: id, suspense: true })
@@ -43,7 +43,7 @@ const _ProfilePage: ComponentType = () => {
               active={listMode === 'operation'}
               onClick={() => setListMode('operation')}
             >
-              {t('pages.profile.tasks')}
+              {t.pages.profile.tasks}
               {operationCount === -1 ? '' : ` (${operationCount})`}
             </Button>
             <Button
@@ -51,7 +51,7 @@ const _ProfilePage: ComponentType = () => {
               active={listMode === 'operationSet'}
               onClick={() => setListMode('operationSet')}
             >
-              {t('pages.profile.task_sets')}
+              {t.pages.profile.task_sets}
               {operationSetCount === -1 ? '' : ` (${operationSetCount})`}
             </Button>
           </ButtonGroup>

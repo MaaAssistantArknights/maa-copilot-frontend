@@ -3,10 +3,10 @@ import { UniqueIdentifier } from '@dnd-kit/core'
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 import { clsx } from 'clsx'
-import { useTranslation } from 'react-i18next'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { Sortable, SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { EditorOperatorItem } from './EditorOperatorItem'
@@ -39,7 +39,7 @@ export const EditorGroupItem = ({
   attributes,
   listeners,
 }: EditorGroupItemProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   return (
     <Card
@@ -88,9 +88,7 @@ export const EditorGroupItem = ({
 
         {!group.opers?.length && (
           <NonIdealState>
-            {t(
-              'components.editor.operator.EditorGroupItem.drag_operators_here',
-            )}
+            {t.components.editor.operator.EditorGroupItem.drag_operators_here}
           </NonIdealState>
         )}
       </SortableContext>

@@ -18,7 +18,6 @@ import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { compact, isEqual } from 'lodash-es'
 import { FC, memo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 
 import { AppToaster } from 'components/Toaster'
@@ -26,6 +25,7 @@ import { OperationSetEditorDialog } from 'components/operation-set/OperationSetE
 import { formatError } from 'utils/error'
 import { useNetworkState } from 'utils/useNetworkState'
 
+import { useTranslation } from '../../i18n/i18n'
 import { authAtom } from '../../store/auth'
 
 interface AddToOperationSetButtonProps extends ButtonProps {
@@ -34,7 +34,7 @@ interface AddToOperationSetButtonProps extends ButtonProps {
 
 export const AddToOperationSetButton: FC<AddToOperationSetButtonProps> = memo(
   ({ operationIds, ...props }) => {
-    const { t } = useTranslation()
+    const t = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -45,9 +45,10 @@ export const AddToOperationSetButton: FC<AddToOperationSetButtonProps> = memo(
           onClick={() => setIsOpen(true)}
         />
         <Dialog
-          title={t(
-            'components.operation-set.AddToOperationSet.add_to_job_set_title',
-            { count: operationIds.length },
+          title={t.components.operationSet.AddToOperationSet.add_to_job_set_title(
+            {
+              count: operationIds.length,
+            },
           )}
           icon="add-to-folder"
           isOpen={isOpen}
@@ -77,7 +78,7 @@ function AddToOperationSet({
   operationIds,
   onSuccess,
 }: AddToOperationSetProps) {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const singleOperationId =
@@ -111,7 +112,7 @@ function AddToOperationSet({
     submitError ||
     listError ||
     (!auth.userId
-      ? t('components.operation-set.AddToOperationSet.not_logged_in')
+      ? t.components.operationSet.AddToOperationSet.not_logged_in
       : undefined)
 
   const operationSetList =
@@ -168,7 +169,7 @@ function AddToOperationSet({
           const search = new URLSearchParams(searchParams)
           search.set('opset', processedIds[0].toString())
           action = {
-            text: t('components.operation-set.AddToOperationSet.click_to_view'),
+            text: t.components.operationSet.AddToOperationSet.click_to_view,
             className: '!px-1',
             onClick: () => navigate({ search: search.toString() }),
           }
@@ -176,9 +177,7 @@ function AddToOperationSet({
 
         AppToaster.show({
           intent: 'success',
-          message: t(
-            'components.operation-set.AddToOperationSet.added_to_job_set',
-          ),
+          message: t.components.operationSet.AddToOperationSet.added_to_job_set,
           action,
         })
       }
@@ -197,7 +196,7 @@ function AddToOperationSet({
           <Callout
             intent="danger"
             icon="error"
-            title={t('components.operation-set.AddToOperationSet.error')}
+            title={t.components.operationSet.AddToOperationSet.error}
           >
             {formatError(error)}
           </Callout>
@@ -208,12 +207,9 @@ function AddToOperationSet({
             icon="helicopter"
             description={
               operationSets?.length === 0
-                ? t(
-                    'components.operation-set.AddToOperationSet.no_job_sets_yet',
-                  )
-                : t(
-                    'components.operation-set.AddToOperationSet.no_added_job_sets_yet',
-                  )
+                ? t.components.operationSet.AddToOperationSet.no_job_sets_yet
+                : t.components.operationSet.AddToOperationSet
+                    .no_added_job_sets_yet
             }
           />
         )}
@@ -236,7 +232,7 @@ function AddToOperationSet({
               >
                 {status === 'PRIVATE' && (
                   <Tag minimal className="mr-1">
-                    {t('components.operation-set.AddToOperationSet.private')}
+                    {t.components.operationSet.AddToOperationSet.private}
                   </Tag>
                 )}
                 {name}
@@ -250,7 +246,7 @@ function AddToOperationSet({
               minimal
               small
               loading={isValidating}
-              text={t('components.operation-set.AddToOperationSet.load_more')}
+              text={t.components.operationSet.AddToOperationSet.load_more}
               icon="more"
               className="mt-2 ml-1.5"
               onClick={() => setSize((size) => size + 1)}
@@ -264,9 +260,7 @@ function AddToOperationSet({
       <div className="flex p-4 gap-3">
         {!!singleOperationId && (
           <Checkbox
-            label={t(
-              'components.operation-set.AddToOperationSet.show_only_added',
-            )}
+            label={t.components.operationSet.AddToOperationSet.show_only_added}
             checked={onlyShowAdded}
             onChange={(e) =>
               setOnlyShowAdded((e.target as HTMLInputElement).checked)
@@ -274,7 +268,7 @@ function AddToOperationSet({
           />
         )}
         <Button className="ml-auto" onClick={() => setEditorOpen(true)}>
-          {t('components.operation-set.AddToOperationSet.create_job_set')}
+          {t.components.operationSet.AddToOperationSet.create_job_set}
         </Button>
         <Button
           disabled={!operationSets?.length}
@@ -282,7 +276,7 @@ function AddToOperationSet({
           intent="primary"
           onClick={onSubmit}
         >
-          {t('components.operation-set.AddToOperationSet.confirm')}
+          {t.components.operationSet.AddToOperationSet.confirm}
         </Button>
       </div>
 

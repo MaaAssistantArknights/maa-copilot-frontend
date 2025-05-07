@@ -1,11 +1,11 @@
 import { useFormState } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { SetOptional } from 'type-fest'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { EditorIntegerInput } from 'components/editor/EditorIntegerInput'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { FormField2 } from '../../FormField'
 
 interface EditorActionDelayProps
@@ -16,24 +16,22 @@ export const EditorActionPreDelay = ({
   control,
   ...controllerProps
 }: EditorActionDelayProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label={t('components.editor.action.EditorActionDelay.pre_delay')}
+      label={t.components.editor.action.EditorActionDelay.pre_delay}
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description={t(
-        'components.editor.action.EditorActionDelay.delay_description',
-      )}
+      description={
+        t.components.editor.action.EditorActionDelay.delay_description
+      }
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: t(
-            'components.editor.action.EditorActionDelay.pre_delay',
-          ),
+          placeholder: t.components.editor.action.EditorActionDelay.pre_delay,
           min: 0,
           stepSize: 100,
           minorStepSize: 10,
@@ -52,23 +50,21 @@ export const EditorActionRearDelay = ({
   control,
   ...controllerProps
 }: EditorActionDelayProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label={t('components.editor.action.EditorActionDelay.post_delay')}
+      label={t.components.editor.action.EditorActionDelay.post_delay}
       field={name}
       error={errors[name]}
-      description={t(
-        'components.editor.action.EditorActionDelay.delay_description',
-      )}
+      description={
+        t.components.editor.action.EditorActionDelay.delay_description
+      }
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: t(
-            'components.editor.action.EditorActionDelay.post_delay',
-          ),
+          placeholder: t.components.editor.action.EditorActionDelay.post_delay,
           min: 0,
           stepSize: 100,
           minorStepSize: 10,

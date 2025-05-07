@@ -15,20 +15,20 @@ import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
 import { MaaUserInfo } from 'maa-copilot-client'
 import { ComponentType, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { neoLayoutAtom } from 'store/pref'
 
+import { useTranslation } from '../i18n/i18n'
 import { LevelSelect } from './LevelSelect'
 import { OperatorFilter, useOperatorFilter } from './OperatorFilter'
 import { withSuspensable } from './Suspensable'
 import { UserFilter } from './UserFilter'
 
 export const Operations: ComponentType = withSuspensable(() => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [queryParams, setQueryParams] = useState<
     Omit<UseOperationsParams, 'operator'>
   >({
@@ -65,7 +65,7 @@ export const Operations: ComponentType = withSuspensable(() => {
                 tab !== 'operation' && 'opacity-75',
               )}
               id="operation"
-              title={t('components.Operations.operations')}
+              title={t.components.Operations.operations}
             />
             <Divider className="self-center h-[1em]" />
             <Tab
@@ -74,13 +74,13 @@ export const Operations: ComponentType = withSuspensable(() => {
                 tab !== 'operationSet' && 'opacity-75',
               )}
               id="operationSet"
-              title={t('components.Operations.operation_sets')}
+              title={t.components.Operations.operation_sets}
             />
           </Tabs>
           <Button
             minimal
             icon="multi-select"
-            title={t('components.Operations.enable_multi_select')}
+            title={t.components.Operations.enable_multi_select}
             className="ml-auto mr-2"
             active={multiselect}
             onClick={() => setMultiselect((v) => !v)}
@@ -103,7 +103,7 @@ export const Operations: ComponentType = withSuspensable(() => {
             <div className="flex flex-wrap items-center gap-2">
               <InputGroup
                 className="max-w-md [&>input]:!rounded-md"
-                placeholder={t('components.Operations.search_placeholder')}
+                placeholder={t.components.Operations.search_placeholder}
                 leftIcon="search"
                 size={64}
                 large
@@ -148,26 +148,26 @@ export const Operations: ComponentType = withSuspensable(() => {
               />
               <div className="flex flex-wrap items-center ml-auto">
                 <H6 className="mb-0 mr-1 opacity-75">
-                  {t('components.Operations.sort_by')}
+                  {t.components.Operations.sort_by}
                 </H6>
                 <ButtonGroup minimal className="flex-wrap">
                   {(
                     [
                       {
                         icon: 'flame',
-                        text: t('components.Operations.popularity'),
+                        text: t.components.Operations.popularity,
                         orderBy: 'hot',
                         active: queryParams.orderBy === 'hot',
                       },
                       {
                         icon: 'time',
-                        text: t('components.Operations.newest'),
+                        text: t.components.Operations.newest,
                         orderBy: 'id',
                         active: queryParams.orderBy === 'id',
                       },
                       {
                         icon: 'eye-open',
-                        text: t('components.Operations.views'),
+                        text: t.components.Operations.views,
                         orderBy: 'views',
                         active: queryParams.orderBy === 'views',
                       },
@@ -198,7 +198,7 @@ export const Operations: ComponentType = withSuspensable(() => {
           <div className="flex flex-wrap items-center gap-2">
             <InputGroup
               className="max-w-md [&>input]:!rounded-md"
-              placeholder={t('components.Operations.search_placeholder')}
+              placeholder={t.components.Operations.search_placeholder}
               leftIcon="search"
               size={64}
               large

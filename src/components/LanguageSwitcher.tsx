@@ -1,53 +1,41 @@
-import { Button, Menu, MenuItem, Position } from '@blueprintjs/core'
-import { Popover2 } from '@blueprintjs/popover2'
+import { Button } from '@blueprintjs/core'
 
+import { useAtom } from 'jotai'
 import { ComponentType } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { useCurrentSize } from 'utils/useCurrenSize'
 
+import { allEssentials, languageAtom, languages } from '../i18n/i18n'
 import { withGlobalErrorBoundary } from './GlobalErrorBoundary'
+import { DetailedSelect } from './editor/DetailedSelect'
+
+const options = languages
+  .map((lang) => ({
+    type: 'choice' as const,
+    title: allEssentials[lang].language,
+    value: lang,
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title))
 
 export const LanguageSwitcher: ComponentType = withGlobalErrorBoundary(() => {
-  const { i18n } = useTranslation()
   const { isSM } = useCurrentSize()
-
-  const changeLanguage = (lng: string) => {
-    i18n.changeLanguage(lng)
-  }
+  const [language, setLanguage] = useAtom(languageAtom)
 
   return (
-    <Popover2
-      content={
-        <Menu
-          style={{
-            width: '103.5px', // 103.5px to get same width as the button
-            padding: '4px 0',
-            minWidth: 'unset',
-          }}
-        >
-          <MenuItem
-            text="English"
-            icon={i18n.language === 'en' ? 'tick' : undefined}
-            onClick={() => changeLanguage('en')}
-          />
-          <MenuItem
-            text="中文"
-            icon={i18n.language === 'cn' ? 'tick' : undefined}
-            onClick={() => changeLanguage('cn')}
-          />
-        </Menu>
+    <DetailedSelect
+      items={options}
+      onItemSelect={(item) =>
+        setLanguage(item.value as (typeof options)[number]['value'])
       }
-      position={Position.BOTTOM_RIGHT}
+      popoverProps={{
+        matchTargetWidth: !isSM,
+      }}
     >
       <Button
         icon="translate"
-        text={!isSM && (i18n.language === 'cn' ? '中文' : 'English')}
-        rightIcon="caret-down"
-        style={{
-          width: '120px',
-        }}
+        text={!isSM && allEssentials[language].language}
+        rightIcon={isSM ? undefined : 'caret-down'}
       />
-    </Popover2>
+    </DetailedSelect>
   )
 })

@@ -15,13 +15,13 @@ import { useLevels } from 'apis/level'
 import { createOperation } from 'apis/operation'
 import { CopilotInfoStatusEnum } from 'maa-copilot-client'
 import { ComponentType, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { useList } from 'react-use'
 
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
 import { DrawerLayout } from 'components/drawer/DrawerLayout'
 
+import { useTranslation } from '../../i18n/i18n'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { formatError } from '../../utils/error'
 import { parseOperationFile, patchOperation, validateOperation } from './utils'
@@ -34,7 +34,7 @@ interface FileEntry {
 }
 
 export const OperationUploader: ComponentType = withSuspensable(() => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [files, { set: setFiles, update: updateFileWhere }] =
     useList<FileEntry>([])
 
@@ -47,16 +47,16 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
 
   // reasons are in the order of keys
   const nonUploadableReason = Object.entries({
-    [t('components.uploader.OperationUploader.wait_upload')]: isUploading,
-    [t('components.uploader.OperationUploader.wait_parsing')]: isProcessing,
-    [t('components.uploader.OperationUploader.select_files')]: !files.length,
-    [t('components.uploader.OperationUploader.contains_uploaded')]: files.some(
+    [t.components.uploader.OperationUploader.wait_upload]: isUploading,
+    [t.components.uploader.OperationUploader.wait_parsing]: isProcessing,
+    [t.components.uploader.OperationUploader.select_files]: !files.length,
+    [t.components.uploader.OperationUploader.contains_uploaded]: files.some(
       (file) => file.uploaded,
     ),
-    [t('components.uploader.OperationUploader.file_errors')]: files.some(
+    [t.components.uploader.OperationUploader.file_errors]: files.some(
       (file) => file.error,
     ),
-    [t('components.uploader.OperationUploader.errors_exist')]:
+    [t.components.uploader.OperationUploader.errors_exist]:
       globalErrors?.length,
   }).find(([, value]) => value)?.[0]
 
@@ -128,10 +128,9 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
               console.warn(e)
               updateFileWhere((candidate) => candidate === file, {
                 ...file,
-                error: t(
-                  'components.uploader.OperationUploader.upload_failed',
-                  { error: formatError(e) },
-                ),
+                error: t.components.uploader.OperationUploader.upload_failed({
+                  error: formatError(e),
+                }),
               })
             }),
         ),
@@ -141,7 +140,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
 
       AppToaster.show({
         intent: 'success',
-        message: t('components.uploader.OperationUploader.upload_complete', {
+        message: t.components.uploader.OperationUploader.upload_complete({
           successCount,
           errorCount,
         }),
@@ -157,45 +156,43 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
         <>
           <Icon icon="cloud-upload" />
           <span className="ml-2 mr-4">
-            {t('components.uploader.OperationUploader.upload_local_jobs')}
+            {t.components.uploader.OperationUploader.upload_local_jobs}
           </span>
         </>
       }
     >
       <div className="h-full overflow-auto py-4 px-8 pt-8 mr-0.5 leading-relaxed">
-        <H4>{t('components.uploader.OperationUploader.upload_local_jobs')}</H4>
+        <H4>{t.components.uploader.OperationUploader.upload_local_jobs}</H4>
 
         <p>
-          {t(
-            'components.uploader.OperationUploader.edit_before_upload_message',
-          )}
+          {t.components.uploader.OperationUploader.edit_before_upload_message}
           <Tag minimal className="mx-1">
-            {t('components.uploader.OperationUploader.edit_json')}
+            {t.components.uploader.OperationUploader.edit_json}
           </Tag>
-          {t('components.uploader.OperationUploader.import_job')}
+          {t.components.uploader.OperationUploader.import_job}
         </p>
 
         <FormGroup
           className="mt-4"
           label={
             <span className="font-bold">
-              {t('components.uploader.OperationUploader.select_job_files')}
+              {t.components.uploader.OperationUploader.select_job_files}
             </span>
           }
           labelFor="file-input"
-          labelInfo={t('components.uploader.OperationUploader.json_files_only')}
+          labelInfo={t.components.uploader.OperationUploader.json_files_only}
         >
           <FileInput
             large
             fill
             disabled={isUploading || isProcessing}
-            buttonText={t('components.uploader.OperationUploader.browse')}
+            buttonText={t.components.uploader.OperationUploader.browse}
             text={
               files.length
-                ? t('components.uploader.OperationUploader.file_count', {
+                ? t.components.uploader.OperationUploader.file_count({
                     count: files.length,
                   })
-                : t('components.uploader.OperationUploader.choose_files')
+                : t.components.uploader.OperationUploader.choose_files
             }
             inputProps={{
               accept: '.json',
@@ -237,7 +234,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
               >
                 {isUploading
                   ? `${settledCount}/${files.length}`
-                  : t('components.uploader.OperationUploader.upload')}
+                  : t.components.uploader.OperationUploader.upload}
               </AnchorButton>
             )
           })()}
@@ -248,7 +245,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
             className="mt-4"
             intent="danger"
             icon="error"
-            title={t('components.uploader.OperationUploader.error')}
+            title={t.components.uploader.OperationUploader.error}
           >
             {globalErrors.map((error) => (
               <li key={error}>{error}</li>
@@ -258,7 +255,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
 
         {!!files.length && (
           <div className="mt-4 font-bold">
-            {t('components.uploader.OperationUploader.file_details')}
+            {t.components.uploader.OperationUploader.file_details}
           </div>
         )}
         {files.map(({ file, uploaded, error, operation }, index) => (
@@ -272,7 +269,7 @@ export const OperationUploader: ComponentType = withSuspensable(() => {
             <p className="text-black/60">
               {operation
                 ? operation.doc.title ||
-                  t('components.uploader.OperationUploader.untitled')
+                  t.components.uploader.OperationUploader.untitled
                 : null}
             </p>
             {error && <p className="text-red-500">{error}</p>}

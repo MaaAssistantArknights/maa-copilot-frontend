@@ -2,25 +2,25 @@ import { Button, NonIdealState } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
 
 import { ComponentType } from 'react'
-import { useTranslation } from 'react-i18next'
 import { FCC } from 'types'
 
+import { i18n } from '../i18n/i18n'
+
 export const GlobalErrorBoundary: FCC = ({ children }) => {
-  const { t } = useTranslation()
   return (
     <ErrorBoundary
       fallback={
         <NonIdealState
           icon="issue"
-          title={t('components.GlobalErrorBoundary.error_occurred')}
-          description={t('components.GlobalErrorBoundary.render_error')}
+          title={i18n.essentials.error_occurred}
+          description={i18n.essentials.render_error}
           action={
             <Button
               intent="primary"
               icon="refresh"
               onClick={() => window.location.reload()}
             >
-              {t('components.GlobalErrorBoundary.refresh_page')}
+              {i18n.essentials.refresh_page}
             </Button>
           }
         />

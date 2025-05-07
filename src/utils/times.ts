@@ -2,17 +2,21 @@ import dayjs from 'dayjs'
 import 'dayjs/locale/en'
 import 'dayjs/locale/zh-cn'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import i18n from 'i18next'
+import { getDefaultStore } from 'jotai'
+
+import { Language, languageAtom } from '../i18n/i18n'
 
 dayjs.extend(relativeTime)
 
-function updateDayjsLocale() {
-  dayjs.locale(i18n.language === 'cn' ? 'zh-cn' : 'en')
+function updateDayjsLocale(language: Language) {
+  dayjs.locale(language === 'cn' ? 'zh-cn' : 'en')
 }
 
-updateDayjsLocale()
+updateDayjsLocale(getDefaultStore().get(languageAtom))
 
-i18n.on('languageChanged', updateDayjsLocale)
+getDefaultStore().sub(languageAtom, () => {
+  updateDayjsLocale(getDefaultStore().get(languageAtom))
+})
 
 export type DayjsInput = string | number | dayjs.Dayjs | Date | null | undefined
 

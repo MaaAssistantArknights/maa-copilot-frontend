@@ -12,8 +12,8 @@ import clsx from 'clsx'
 import { getDefaultStore, useAtom } from 'jotai'
 import { compact } from 'lodash-es'
 import { FC, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../i18n/i18n'
 import { OPERATORS } from '../models/operator'
 import {
   DEFAULT_OPERATOR_FILTER,
@@ -52,7 +52,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
   filter,
   onChange,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [savedFilter, setSavedFilter] = useAtom(operatorFilterAtom)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingFilter, setEditingFilter] = useState<typeof savedFilter>(filter)
@@ -166,7 +166,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
           <Button
             minimal
             icon="power"
-            title={t('components.OperatorFilter.disable_operator_selection')}
+            title={t.components.OperatorFilter.disable_operator_selection}
             active={!editingFilter.enabled}
             onClick={() => handleEnable(!editingFilter.enabled)}
           />
@@ -178,38 +178,38 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
           icon="plus"
           onClick={() => setDialogOpen(true)}
         >
-          {t('components.OperatorFilter.operators')}
+          {t.components.OperatorFilter.operators}
         </Button>
       )}
       <Dialog
         isOpen={dialogOpen}
         onClose={() => setDialogOpen(false)}
-        title={t('components.OperatorFilter.select_operators')}
+        title={t.components.OperatorFilter.select_operators}
       >
         <DialogBody>
           <H6 className="mb-4">
-            {t('components.OperatorFilter.included_operators')}
+            {t.components.OperatorFilter.included_operators}
           </H6>
           <OperatorSelect
             operators={editingFilter.included}
             onChange={(included) => updateEditingFilter(included, undefined)}
           />
           <H6 className="mt-6 mb-4">
-            {t('components.OperatorFilter.excluded_operators')}
+            {t.components.OperatorFilter.excluded_operators}
           </H6>
           <OperatorSelect
             operators={editingFilter.excluded}
             onChange={(excluded) => updateEditingFilter(undefined, excluded)}
           />
           <p className="mt-2 opacity-75">
-            {t('components.OperatorFilter.search_help')}
+            {t.components.OperatorFilter.search_help}
           </p>
         </DialogBody>
         <DialogFooter
           actions={
             <>
               <Button minimal icon="cross" onClick={() => setDialogOpen(false)}>
-                {t('components.OperatorFilter.cancel')}
+                {t.components.OperatorFilter.cancel}
               </Button>
               <Button
                 intent="primary"
@@ -219,7 +219,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
                   setDialogOpen(false)
                 }}
               >
-                {t('components.OperatorFilter.confirm')}
+                {t.components.OperatorFilter.confirm}
               </Button>
             </>
           }
@@ -229,7 +229,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
             checked={editingFilter.save}
             onChange={(e) => handleSave(e.currentTarget.checked)}
           >
-            {t('components.OperatorFilter.remember_selection')}
+            {t.components.OperatorFilter.remember_selection}
           </Checkbox>
         </DialogFooter>
       </Dialog>

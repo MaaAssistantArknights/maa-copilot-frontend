@@ -1,7 +1,8 @@
 import { Callout } from '@blueprintjs/core'
 
 import { FieldError, FieldErrors, FieldValues } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
+
+import { useTranslation } from '../../i18n/i18n'
 
 interface FormErrorProps<T extends FieldValues> {
   errors: FieldErrors<T>
@@ -10,7 +11,7 @@ interface FormErrorProps<T extends FieldValues> {
 export const FormError = <T extends FieldValues>({
   errors,
 }: FormErrorProps<T>) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const errorsArray = Object.values(errors) as FieldError[]
 
   if (errorsArray.length === 0) {
@@ -21,12 +22,12 @@ export const FormError = <T extends FieldValues>({
     <Callout
       intent="danger"
       className="mt-2"
-      title={t('components.editor.FormError.error_occurred')}
+      title={t.components.editor.FormError.error_occurred}
     >
       <ol className="list-decimal list-inside">
         {errorsArray.map((error, i) => (
           <li key={i}>
-            {error?.message || t('components.editor.FormError.unknown_error')}
+            {error?.message || t.components.editor.FormError.unknown_error}
           </li>
         ))}
       </ol>

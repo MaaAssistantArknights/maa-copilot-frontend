@@ -3,13 +3,13 @@ import { Popover2, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { FormField2 } from 'components/FormField'
 import { DetailedSelectChoice } from 'components/editor/DetailedSelect'
 import { CopilotDocV1 } from 'models/copilot.schema'
 import { operatorSkillUsages } from 'models/operator'
 
+import { useTranslation } from '../../../../i18n/i18n'
 import { EditorOperatorSkill } from '../EditorOperatorSkill'
 import { EditorOperatorSkillTimes } from '../EditorOperatorSkillTimes'
 import { EditorOperatorSkillUsage } from '../EditorOperatorSkillUsage'
@@ -28,7 +28,7 @@ export const SkillAboutTrigger = ({
   operator,
   onSkillChange,
 }: SkillAboutProps) => {
-  const { t, i18n } = useTranslation()
+  const t = useTranslation()
 
   const {
     control,
@@ -58,9 +58,9 @@ export const SkillAboutTrigger = ({
       <div onClick={(e) => e.stopPropagation()} role="presentation">
         <div className="flex flex-wrap">
           <FormField2
-            label={t(
-              'components.editor.operator.sheet.SheetOperatorSkillAbout.skill',
-            )}
+            label={
+              t.components.editor.operator.sheet.SheetOperatorSkillAbout.skill
+            }
             field="skill"
             error={errors.skill}
             className="mr-1"
@@ -68,9 +68,10 @@ export const SkillAboutTrigger = ({
             <EditorOperatorSkill control={control} name="skill" />
           </FormField2>
           <FormField2
-            label={t(
-              'components.editor.operator.sheet.SheetOperatorSkillAbout.skill_usage',
-            )}
+            label={
+              t.components.editor.operator.sheet.SheetOperatorSkillAbout
+                .skill_usage
+            }
             field="skillUsage"
             error={errors.skillUsage}
           >
@@ -80,9 +81,10 @@ export const SkillAboutTrigger = ({
 
         {needSkillTime && (
           <FormField2
-            label={t(
-              'components.editor.operator.sheet.SheetOperatorSkillAbout.skill_usage_count',
-            )}
+            label={
+              t.components.editor.operator.sheet.SheetOperatorSkillAbout
+                .skill_usage_count
+            }
             field="skillTimes"
             error={errors.skillTimes}
           >
@@ -92,16 +94,17 @@ export const SkillAboutTrigger = ({
       </div>
       <div className="flex items-center">
         <Button
-          text={t(
-            'components.editor.operator.sheet.SheetOperatorSkillAbout.confirm',
-          )}
+          text={
+            t.components.editor.operator.sheet.SheetOperatorSkillAbout.confirm
+          }
           type="submit"
           className={Classes.POPOVER_DISMISS}
         />
         <Tooltip2
-          content={t(
-            'components.editor.operator.sheet.SheetOperatorSkillAbout.default_settings_tooltip',
-          )}
+          content={
+            t.components.editor.operator.sheet.SheetOperatorSkillAbout
+              .default_settings_tooltip
+          }
           className="ml-1"
         >
           <Icon icon="help" />
@@ -120,11 +123,9 @@ export const SkillAboutTrigger = ({
         <Icon icon="info-sign" size={12} className="flex items-center mr-1" />
       )}
       <p>
-        {i18n.language === 'cn'
-          ? `${operator?.skill || '未设置'}技能`
-          : !operator?.skill
-            ? 'Skill not set'
-            : `S${operator.skill}`}
+        {operator?.skill
+          ? t.models.operator.skill_number({ count: operator.skill })
+          : t.components.editor.operator.sheet.SheetOperatorSkillAbout.not_set}
         {operator?.skillUsage !== undefined && ' ·'}
       </p>
       {operator?.skillUsage !== undefined && (

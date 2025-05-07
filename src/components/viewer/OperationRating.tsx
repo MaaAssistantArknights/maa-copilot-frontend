@@ -3,11 +3,12 @@ import { Popover2InteractionKind, Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
 import Rating from 'react-rating'
 
 import { Operation } from 'models/operation'
 import { ratingLevelToString } from 'models/rating'
+
+import { useTranslation } from '../../i18n/i18n'
 
 type PickedOperation = Pick<
   Operation,
@@ -18,7 +19,7 @@ const GetLevelDescription: FC<{
   operation: PickedOperation
   layout?: 'horizontal' | 'vertical'
 }> = ({ operation, layout }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const likePercent = Math.round(
     (operation.like / (operation.like + operation.dislike)) * 100,
   )
@@ -26,19 +27,17 @@ const GetLevelDescription: FC<{
 
   return operation.notEnoughRating ? (
     layout === 'vertical' ? (
-      <span>
-        {t('components.viewer.OperationRating.not_enough_ratings_long')}
-      </span>
+      <span>{t.components.viewer.OperationRating.not_enough_ratings_long}</span>
     ) : (
       <span>
-        {t('components.viewer.OperationRating.not_enough_ratings_short')}
+        {t.components.viewer.OperationRating.not_enough_ratings_short}
       </span>
     )
   ) : (
     <Tooltip2
       className="!inline-block !mt-0"
       interactionKind={Popover2InteractionKind.HOVER}
-      content={t('components.viewer.OperationRating.liked_percentage', {
+      content={t.components.viewer.OperationRating.liked_percentage({
         percent: likePercent,
         ratio: likeRatio,
       })}

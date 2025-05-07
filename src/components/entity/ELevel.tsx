@@ -1,22 +1,22 @@
 import { H4, Tag } from '@blueprintjs/core'
 
 import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { EDifficulty } from 'components/entity/EDifficulty'
 import { Level, OpDifficulty } from 'models/operation'
 
+import { useTranslation } from '../../i18n/i18n'
 import { isCustomLevel } from '../../models/level'
 
 export const NeoELevel: FC<{
   className?: string
   level: Level
 }> = ({ level }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   let { catOne, catTwo, catThree } = level
 
   if (isCustomLevel(level)) {
-    catOne = t('components.entity.ELevel.custom_level')
+    catOne = t.components.entity.ELevel.custom_level
     catTwo = ''
     catThree = level.name
   }
@@ -40,11 +40,11 @@ export const ELevel: FC<{
   className?: string
   level: Level
 }> = ({ level }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   let { catOne, catTwo, catThree } = level
 
   if (isCustomLevel(level)) {
-    catOne = t('components.entity.ELevel.custom_level')
+    catOne = t.components.entity.ELevel.custom_level
     catTwo = ''
     catThree = level.name
   }

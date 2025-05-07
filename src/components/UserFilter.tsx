@@ -4,9 +4,9 @@ import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { MaaUserInfo } from 'maa-copilot-client'
 import { FC, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { useUserSearch } from '../apis/user'
+import { useTranslation } from '../i18n/i18n'
 import { authAtom } from '../store/auth'
 import { formatError } from '../utils/error'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
@@ -33,7 +33,7 @@ export const UserFilter: FC<UserFilterProps> = ({
   user,
   onChange,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const auth = useAtomValue(authAtom)
   const { query, debouncedQuery, updateQuery, onOptionMouseDown } =
     useDebouncedQuery({ debounceTime: 500 })
@@ -80,18 +80,17 @@ export const UserFilter: FC<UserFilterProps> = ({
             disabled
             text={
               isLoading
-                ? t('components.UserFilter.searching')
+                ? t.components.UserFilter.searching
                 : error
-                  ? t('components.UserFilter.search_failed') +
-                    formatError(error)
+                  ? t.components.UserFilter.search_failed + formatError(error)
                   : query && debouncedQuery
-                    ? t('components.UserFilter.no_user_found')
-                    : t('components.UserFilter.enter_username')
+                    ? t.components.UserFilter.no_user_found
+                    : t.components.UserFilter.enter_username
             }
           />
         }
         inputProps={{
-          placeholder: t('components.UserFilter.username_placeholder'),
+          placeholder: t.components.UserFilter.username_placeholder,
           leftElement: isValidating ? (
             <Spinner className="m-[7px] mr-[9px]" size={IconSize.STANDARD} />
           ) : undefined,
@@ -108,7 +107,7 @@ export const UserFilter: FC<UserFilterProps> = ({
         >
           {user && !isMyself(user)
             ? user.userName
-            : t('components.UserFilter.author')}
+            : t.components.UserFilter.author}
         </Button>
       </Select>
       {!!auth.token && (
@@ -116,7 +115,7 @@ export const UserFilter: FC<UserFilterProps> = ({
           minimal
           icon="user"
           className="!px-3"
-          title={t('components.UserFilter.view_my_jobs')}
+          title={t.components.UserFilter.view_my_jobs}
           active={isMyself(user)}
           intent={isMyself(user) ? 'primary' : 'none'}
           onClick={() => {
@@ -127,7 +126,7 @@ export const UserFilter: FC<UserFilterProps> = ({
             }
           }}
         >
-          {t('components.UserFilter.view_mine')}
+          {t.components.UserFilter.view_mine}
         </Button>
       )}
     </>

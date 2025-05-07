@@ -6,8 +6,8 @@ import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { compact } from 'lodash-es'
 import { FC, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../i18n/i18n'
 import { OPERATORS } from '../models/operator'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
 import { OperatorAvatar } from './editor/operator/EditorOperator'
@@ -25,7 +25,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   operators,
   onChange,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { query, trimmedDebouncedQuery, updateQuery, onOptionMouseDown } =
     useDebouncedQuery()
 
@@ -106,7 +106,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
           <MenuItem
             roleStructure="listoption"
             disabled
-            text={t('components.OperatorSelect.no_matching_operators')}
+            text={t.components.OperatorSelect.no_matching_operators}
           />
         ) : undefined
       }

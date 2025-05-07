@@ -1,16 +1,16 @@
 import { Button, NonIdealState, Spinner } from '@blueprintjs/core'
 import { ErrorBoundary } from '@sentry/react'
 
-import { TFunction } from 'i18next'
-import { ComponentType, FC, Suspense, useEffect, useRef } from 'react'
-import { useTranslation } from 'react-i18next'
+import { ComponentType, Suspense, useEffect, useRef } from 'react'
 import { FCC } from 'types'
+
+import { useTranslation } from '../i18n/i18n'
 
 interface SuspensableProps {
   // deps that will cause the Suspense's error to reset
   retryDeps?: readonly any[]
 
-  pendingTitle?: string
+  pendingTitle?: string | (() => string)
 
   fetcher?: () => void
   errorFallback?: (params: { error: Error }) => JSX.Element | undefined
@@ -24,9 +24,12 @@ export const Suspensable: FCC<SuspensableProps> = ({
   errorFallback,
 }) => {
   const resetError = useRef<() => void>()
-  const { t } = useTranslation()
+  const t = useTranslation()
 
-  pendingTitle = pendingTitle ?? t('components.Suspensable.loading')
+  if (typeof pendingTitle === 'function') {
+    pendingTitle = pendingTitle()
+  }
+  pendingTitle ??= t.components.Suspensable.loading
 
   useEffect(() => {
     resetError.current?.()
@@ -47,10 +50,10 @@ export const Suspensable: FCC<SuspensableProps> = ({
         return (
           <NonIdealState
             icon="issue"
-            title={t('components.Suspensable.loadFailed')}
+            title={t.components.Suspensable.loadFailed}
             description={
               fetcher
-                ? t('components.Suspensable.dataLoadFailedRetry')
+                ? t.components.Suspensable.dataLoadFailedRetry
                 : error.message
             }
             className="py-8"
@@ -65,7 +68,7 @@ export const Suspensable: FCC<SuspensableProps> = ({
                     fetcher()
                   }}
                 >
-                  {t('components.Suspensable.retry')}
+                  {t.components.Suspensable.retry}
                 </Button>
               )
             }
@@ -88,37 +91,21 @@ export const Suspensable: FCC<SuspensableProps> = ({
   )
 }
 
-interface SuspensableOptions {
-  pendingTitle?: string | ((t: TFunction) => string)
-  retryOnChange?: string[]
-  errorFallback?: (params: {
-    error: Error
-    resetError: () => void
-  }) => JSX.Element | undefined
-}
-
-export function withSuspensable<P extends object>(
+export function withSuspensable<P extends {}>(
   Component: ComponentType<P>,
-  options: SuspensableOptions = {},
-): FC<P> {
-  const { pendingTitle, retryOnChange = [], errorFallback } = options
-
-  const SuspensableComponent: FC<P> = (props) => {
-    const retryDeps = retryOnChange.map((key) => (props as any)[key])
-
+  {
+    retryOnChange,
+    ...suspensableProps
+  }: Omit<SuspensableProps, 'retryDeps'> & {
+    // keys of a subset of props that will be passed as `retryDeps` to Suspensable
+    retryOnChange?: readonly (keyof P)[]
+  } = {},
+): ComponentType<P> {
+  const Wrapped: ComponentType<P> = (props) => {
     return (
       <Suspensable
-        pendingTitle={
-          typeof pendingTitle === 'function'
-            ? pendingTitle(useTranslation().t)
-            : pendingTitle
-        }
-        retryDeps={retryDeps}
-        errorFallback={({ error }) =>
-          errorFallback
-            ? errorFallback({ error, resetError: () => {} })
-            : undefined
-        }
+        {...suspensableProps}
+        retryDeps={retryOnChange?.map((key) => props[key])}
       >
         <Component {...props} />
       </Suspensable>
@@ -126,9 +113,8 @@ export function withSuspensable<P extends object>(
   }
 
   // Format for display in DevTools
-  SuspensableComponent.displayName = `Suspensable(${
-    Component.displayName || Component.name || 'Component'
-  })`
+  const name = Component.displayName || Component.name || 'Unknown'
+  Wrapped.displayName = `withSuspensable(${name})`
 
-  return SuspensableComponent
+  return Wrapped
 }

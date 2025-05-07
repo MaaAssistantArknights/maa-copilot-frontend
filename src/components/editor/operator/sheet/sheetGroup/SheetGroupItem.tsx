@@ -15,11 +15,11 @@ import { useAtom } from 'jotai'
 import { cloneDeep, isEqual, omit } from 'lodash-es'
 import { FC, ReactNode, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { CardDeleteOption } from 'components/editor/CardOptions'
 import { favGroupAtom, ignoreKeyDic } from 'store/useFavGroups'
 
+import { useTranslation } from '../../../../../i18n/i18n'
 import { Group, Operator } from '../../EditorSheet'
 import { GroupListModifyProp } from '../SheetGroup'
 import { OperatorNoData } from '../SheetNoneData'
@@ -47,7 +47,7 @@ const GroupTitle = ({
   renameSubmit?: (newName: string) => void
   groupTitle: string
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const editable = !!renameSubmit
   const [editName, setEditName] = useState('')
   const [nameEditState, setNameEditState] = useState(false)
@@ -85,18 +85,19 @@ const GroupTitle = ({
         onConfirm={editContinue}
         intent={Intent.DANGER}
         onCancel={editCancel}
-        confirmButtonText={t(
-          'components.editor.operator.sheet.sheetGroup.SheetGroupItem.cancel',
-        )}
-        cancelButtonText={t(
-          'components.editor.operator.sheet.sheetGroup.SheetGroupItem.confirm',
-        )}
+        confirmButtonText={
+          t.components.editor.operator.sheet.sheetGroup.SheetGroupItem.cancel
+        }
+        cancelButtonText={
+          t.components.editor.operator.sheet.sheetGroup.SheetGroupItem.confirm
+        }
         isOpen={alertState}
       >
         <p>
-          {t(
-            'components.editor.operator.sheet.sheetGroup.SheetGroupItem.unsaved_changes',
-          )}
+          {
+            t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+              .unsaved_changes
+          }
         </p>
       </Alert>
       <form
@@ -111,9 +112,10 @@ const GroupTitle = ({
         <div className="flex items-center w-full">
           <Icon icon="people" />
           <input
-            title={t(
-              'components.editor.operator.sheet.sheetGroup.SheetGroupItem.edit_group_name',
-            )}
+            title={
+              t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+                .edit_group_name
+            }
             className={clsx(
               'ml-1 w-full bg-transparent text-xs',
               !editable && 'placeholder:text-current',
@@ -217,7 +219,7 @@ const useSheetGroupItemController = ({
   groupInfo: { name, opers = [], ...rest },
   itemType,
 }: SheetGroupItemProp): SheetGroupItemController => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { submitGroupInSheet, removeGroup, existedGroups } = useSheet()
   const [favGroup, setFavGroup] = useAtom(favGroupAtom)
 
@@ -284,9 +286,10 @@ const useSheetGroupItemController = ({
             <Button
               minimal
               icon="arrow-left"
-              title={t(
-                'components.editor.operator.sheet.sheetGroup.SheetGroupItem.use_recommended_group',
-              )}
+              title={
+                t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+                  .use_recommended_group
+              }
               onClick={() => submitGroupInSheet({ name, opers })}
             />
           </>
@@ -340,15 +343,12 @@ const useSheetGroupItemController = ({
               title={
                 selected
                   ? equal
-                    ? t(
-                        'components.editor.operator.sheet.sheetGroup.SheetGroupItem.already_added',
-                      )
-                    : t(
-                        'components.editor.operator.sheet.sheetGroup.SheetGroupItem.same_name_detected',
-                      )
-                  : t(
-                      'components.editor.operator.sheet.sheetGroup.SheetGroupItem.use_recommended_group',
-                    )
+                    ? t.components.editor.operator.sheet.sheetGroup
+                        .SheetGroupItem.already_added
+                    : t.components.editor.operator.sheet.sheetGroup
+                        .SheetGroupItem.same_name_detected
+                  : t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+                      .use_recommended_group
               }
               onClick={() => submitGroupInSheet({ name, opers })}
             />
@@ -379,19 +379,16 @@ const GroupPinOption: FC<GroupPinOptionProp> = ({
   onPinChange,
   isDuplicate = false,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const pinText = pinned
-    ? t(
-        'components.editor.operator.sheet.sheetGroup.SheetGroupItem.remove_from_favorites',
-      )
+    ? t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+        .remove_from_favorites
     : isDuplicate
-      ? t(
-          'components.editor.operator.sheet.sheetGroup.SheetGroupItem.will_replace_same_name',
-        )
-      : t(
-          'components.editor.operator.sheet.sheetGroup.SheetGroupItem.add_to_favorites',
-        )
+      ? t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+          .will_replace_same_name
+      : t.components.editor.operator.sheet.sheetGroup.SheetGroupItem
+          .add_to_favorites
 
   return (
     <Popover2

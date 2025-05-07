@@ -2,10 +2,10 @@ import { Button, Card, MenuItem } from '@blueprintjs/core'
 import { Select2 } from '@blueprintjs/select'
 
 import { FC, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import {
   EditorPerformerGroup,
   EditorPerformerGroupProps,
@@ -43,18 +43,16 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   submitOperator,
   submitGroup,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const performerSelectItems: PerformerSelectItem[] = useMemo(
     () => [
       {
-        label: t('components.editor.operator.EditorPerformerAdd.operator'),
+        label: t.components.editor.operator.EditorPerformerAdd.operator,
         value: 'operator',
       },
       {
-        label: t(
-          'components.editor.operator.EditorPerformerAdd.operator_group',
-        ),
+        label: t.components.editor.operator.EditorPerformerAdd.operator_group,
         value: 'group',
       },
     ],
@@ -68,7 +66,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   const selector = useMemo(
     () => (
       <>
-        {t('components.editor.operator.EditorPerformerAdd.add')}
+        {t.components.editor.operator.EditorPerformerAdd.add}
         <Select2<PerformerSelectItem>
           filterable={false}
           items={performerSelectItems}

@@ -10,16 +10,16 @@ import {
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
 
 import { uniqueId, unset } from 'lodash-es'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { Control, useFieldArray } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { Sortable } from '../../dnd'
 import { EditorActionAdd, EditorActionAddProps } from './EditorActionAdd'
 import { EditorActionItem } from './EditorActionItem'
-import { createValidateAction } from './validation'
+import { validateAction } from './validation'
 
 export interface EditorActionsProps {
   control: Control<CopilotDocV1.Operation>
@@ -31,8 +31,7 @@ const getId = (action: CopilotDocV1.Action) => {
 }
 
 export const EditorActions = ({ control }: EditorActionsProps) => {
-  const { t } = useTranslation()
-  const validateAction = useMemo(() => createValidateAction(t), [t])
+  const t = useTranslation()
   const [draggingAction, setDraggingAction] = useState<CopilotDocV1.Action>()
 
   const { fields, append, insert, update, move, remove } = useFieldArray({
@@ -86,9 +85,8 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
         setEditingAction(undefined)
       } else {
         setError('global' as any, {
-          message: t(
-            'components.editor.action.EditorActions.update_action_not_found',
-          ),
+          message:
+            t.components.editor.action.EditorActions.update_action_not_found,
         })
         return false
       }
@@ -160,7 +158,7 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
 
           {actions.length === 0 && (
             <NonIdealState
-              title={t('components.editor.action.EditorActions.no_actions')}
+              title={t.components.editor.action.EditorActions.no_actions}
               className=""
               icon="inbox"
             />

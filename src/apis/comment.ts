@@ -2,11 +2,11 @@ import {
   CommentsAreaInfo,
   QueriesCommentsAreaRequest,
 } from 'maa-copilot-client'
-import { useTranslation } from 'react-i18next'
 import useSWRInfinite from 'swr/infinite'
 
 import { CommentApi } from 'utils/maa-copilot-client'
 
+import { i18n } from '../i18n/i18n'
 import { CommentRating } from '../models/comment'
 import { Operation } from '../models/operation'
 
@@ -24,7 +24,6 @@ export function useComments({
   orderBy,
   suspense,
 }: UseCommentsParams) {
-  const { t } = useTranslation()
   const {
     data: pages,
     setSize,
@@ -37,7 +36,7 @@ export function useComments({
       }
 
       if (!isFinite(+operationId)) {
-        throw new Error(t('apis.comment.invalid_operation_id'))
+        throw new Error(i18n.apis.comment.invalid_operation_id)
       }
 
       return [

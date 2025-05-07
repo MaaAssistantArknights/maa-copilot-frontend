@@ -4,10 +4,10 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 import { UseOperationsParams, useOperations } from 'apis/operation'
 import { useAtomValue } from 'jotai'
 import { ComponentType, ReactNode, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { neoLayoutAtom } from 'store/pref'
 
+import { useTranslation } from '../i18n/i18n'
 import { Operation } from '../models/operation'
 import { NeoOperationCard, OperationCard } from './OperationCard'
 import { withSuspensable } from './Suspensable'
@@ -20,7 +20,7 @@ interface OperationListProps extends UseOperationsParams {
 
 export const OperationList: ComponentType<OperationListProps> = withSuspensable(
   ({ multiselect, onUpdate, ...params }) => {
-    const { t } = useTranslation()
+    const t = useTranslation()
     const neoLayout = useAtomValue(neoLayoutAtom)
 
     const { operations, total, setSize, isValidating, isReachingEnd } =
@@ -84,7 +84,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
           <Callout className="mb-4 p-0 select-none">
             <details>
               <summary className="px-2 py-4 cursor-pointer hover:bg-zinc-500 hover:bg-opacity-5">
-                {t('components.OperationList.selected_jobs', {
+                {t.components.OperationList.selected_jobs({
                   count: selectedOperations.length,
                 })}
               </summary>
@@ -105,7 +105,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
             </details>
             <div className="absolute top-2 right-2 flex">
               <Tooltip2
-                content={t('components.OperationList.only_loaded_items')}
+                content={t.components.OperationList.only_loaded_items}
                 placement="top"
               >
                 <Button
@@ -113,7 +113,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
                   icon="tick"
                   onClick={() => updateSelection(operations, [])}
                 >
-                  {t('components.OperationList.select_all')}
+                  {t.components.OperationList.select_all}
                 </Button>
               </Tooltip2>
               <Button
@@ -122,7 +122,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
                 icon="trash"
                 onClick={() => setSelectedOperations([])}
               >
-                {t('components.OperationList.clear')}
+                {t.components.OperationList.clear}
               </Button>
               <AddToOperationSetButton
                 minimal
@@ -133,7 +133,7 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
                 disabled={selectedOperations.length === 0}
                 operationIds={selectedOperations.map((op) => op.id)}
               >
-                {t('components.OperationList.add_to_job_set')}
+                {t.components.OperationList.add_to_job_set}
               </AddToOperationSetButton>
             </div>
           </Callout>
@@ -144,21 +144,21 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
         {isReachingEnd && operations.length === 0 && (
           <NonIdealState
             icon="slash"
-            title={t('components.OperationList.no_jobs_found')}
-            description={t('components.OperationList.sad_face')}
+            title={t.components.OperationList.no_jobs_found}
+            description={t.components.OperationList.sad_face}
           />
         )}
 
         {isReachingEnd && operations.length !== 0 && (
           <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
-            {t('components.OperationList.reached_bottom')}
+            {t.components.OperationList.reached_bottom}
           </div>
         )}
 
         {!isReachingEnd && (
           <Button
             loading={isValidating}
-            text={t('components.OperationList.load_more')}
+            text={t.components.OperationList.load_more}
             icon="more"
             className="mt-2"
             large

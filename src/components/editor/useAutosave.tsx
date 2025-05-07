@@ -11,8 +11,8 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import { first, isEqual } from 'lodash-es'
 import { ReactNode, useCallback, useEffect, useRef, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../../i18n/i18n'
 import { formatRelativeTime } from '../../utils/times'
 
 export interface AutosaveOptions<T> {
@@ -145,7 +145,7 @@ export const AutosaveSheet = <T,>({
   onRestore,
   ...buttonProps
 }: AutosaveSheetProps<T>) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false)
   const restoringRecord = useRef<Record<T>>()
 
@@ -168,7 +168,7 @@ export const AutosaveSheet = <T,>({
         content={
           <>
             <Callout intent="primary">
-              {t('components.editor.useAutosave.autosave_info', {
+              {t.components.editor.useAutosave.autosave_info({
                 minutes: ~~(interval / 1000 / 60),
                 limit,
               })}
@@ -201,10 +201,10 @@ export const AutosaveSheet = <T,>({
           icon="history"
           text={
             archive.length
-              ? t('components.editor.useAutosave.autosaved_at', {
+              ? t.components.editor.useAutosave.autosaved_at({
                   time: formatTime(first(archive)?.t),
                 })
-              : t('components.editor.useAutosave.not_saved')
+              : t.components.editor.useAutosave.not_saved
           }
           {...buttonProps}
         />
@@ -212,16 +212,16 @@ export const AutosaveSheet = <T,>({
 
       <Alert
         isOpen={restoreDialogOpen}
-        cancelButtonText={t('components.editor.useAutosave.cancel')}
-        confirmButtonText={t('components.editor.useAutosave.confirm')}
+        cancelButtonText={t.components.editor.useAutosave.cancel}
+        confirmButtonText={t.components.editor.useAutosave.confirm}
         icon="rotate-document"
         intent="danger"
         canOutsideClickCancel
         onCancel={() => setRestoreDialogOpen(false)}
         onConfirm={handleRestore}
       >
-        <H4>{t('components.editor.useAutosave.restore_content')}</H4>
-        <p>{t('components.editor.useAutosave.restore_confirmation')}</p>
+        <H4>{t.components.editor.useAutosave.restore_content}</H4>
+        <p>{t.components.editor.useAutosave.restore_confirmation}</p>
       </Alert>
     </>
   )

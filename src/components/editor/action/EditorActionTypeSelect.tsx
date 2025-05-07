@@ -3,7 +3,6 @@ import { Button } from '@blueprintjs/core'
 import { groupBy } from 'lodash-es'
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import {
   DetailedSelect,
@@ -12,19 +11,20 @@ import {
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { ACTION_TYPES, findActionType } from '../../../models/types'
 
 export const EditorActionTypeSelect = (
   props: EditorFieldProps<CopilotDocV1.Action, CopilotDocV1.Type>,
 ) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
     rules: {
-      required: t(
-        'components.editor.action.EditorActionTypeSelect.select_action_type_required',
-      ),
+      required:
+        t.components.editor.action.EditorActionTypeSelect
+          .select_action_type_required,
     },
     ...props,
   })
@@ -54,8 +54,8 @@ export const EditorActionTypeSelect = (
         icon={selectedAction?.icon || 'slash'}
         text={
           selectedAction
-            ? selectedAction.title
-            : t('components.editor.action.EditorActionTypeSelect.select_action')
+            ? selectedAction.title()
+            : t.components.editor.action.EditorActionTypeSelect.select_action
         }
         rightIcon="double-caret-vertical"
         onBlur={onBlur}

@@ -3,7 +3,6 @@ import { Card } from '@blueprintjs/core'
 import dayjs from 'dayjs'
 import { useLinks } from 'hooks/useLinks'
 import { ComponentType } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { CardTitle } from 'components/CardTitle'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
@@ -14,11 +13,12 @@ import { OperationSetEditorLauncher } from 'components/operation-set/OperationSe
 import { OperationUploaderLauncher } from 'components/uploader/OperationUploaderLauncher'
 
 import { AnnPanel } from '../components/announcement/AnnPanel'
+import { useTranslation } from '../i18n/i18n'
 import { useCurrentSize } from '../utils/useCurrenSize'
 
 export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   const { isMD } = useCurrentSize()
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { SOCIAL_LINKS } = useLinks()
   return (
     <div className="flex flex-col md:flex-row px-4 mt-4 md:px-8 md:mt-8 max-w-[96rem] mx-auto">
@@ -31,7 +31,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
           <div className="top-20">
             <Card className="flex flex-col mb-4 space-y-2">
               <CardTitle icon="add" className="mb-4">
-                {t('pages.index.create_new_task')}
+                {t.pages.index.create_new_task}
               </CardTitle>
 
               <OperationEditorLauncher />
@@ -74,7 +74,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
 
 const Ad = dayjs().isBefore('2025-05-11 00:00:00+8')
   ? () => {
-      const { t } = useTranslation()
+      const t = useTranslation()
       return (
         // eslint-disable-next-line react/jsx-no-target-blank
         <a
@@ -84,7 +84,7 @@ const Ad = dayjs().isBefore('2025-05-11 00:00:00+8')
         >
           <img src="/ad_leidian.jpg" alt="雷电模拟器" />
           <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1 ">
-            {t('pages.index.advertisement')}
+            {t.pages.index.advertisement}
           </div>
         </a>
       )

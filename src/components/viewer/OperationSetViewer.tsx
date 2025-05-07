@@ -19,7 +19,6 @@ import {
 } from 'apis/operation-set'
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import { copyShortCode } from 'services/operation'
 
 import { FactItem } from 'components/FactItem'
@@ -34,6 +33,7 @@ import { OperationSet } from 'models/operation-set'
 import { authAtom } from 'store/auth'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
+import { i18nDefer, useTranslation } from '../../i18n/i18n'
 import { formatError } from '../../utils/error'
 import { UserName } from '../UserName'
 
@@ -41,7 +41,7 @@ const ManageMenu: FC<{
   operationSet: OperationSet
   onUpdate: () => void
 }> = ({ operationSet, onUpdate }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const refreshOperationSets = useRefreshOperationSets()
 
   const [loading, setLoading] = useState(false)
@@ -53,7 +53,7 @@ const ManageMenu: FC<{
     try {
       await wrapErrorMessage(
         (e) =>
-          t('components.viewer.OperationSetViewer.delete_failed', {
+          t.components.viewer.OperationSetViewer.delete_failed({
             error: formatError(e),
           }),
         deleteOperationSet({ id: operationSet.id }),
@@ -63,7 +63,7 @@ const ManageMenu: FC<{
 
       AppToaster.show({
         intent: 'success',
-        message: t('components.viewer.OperationSetViewer.delete_success'),
+        message: t.components.viewer.OperationSetViewer.delete_success,
       })
       setDeleteDialogOpen(false)
       onUpdate()
@@ -78,8 +78,8 @@ const ManageMenu: FC<{
     <>
       <Alert
         isOpen={deleteDialogOpen}
-        cancelButtonText={t('components.viewer.OperationSetViewer.cancel')}
-        confirmButtonText={t('components.viewer.OperationSetViewer.delete')}
+        cancelButtonText={t.components.viewer.OperationSetViewer.cancel}
+        confirmButtonText={t.components.viewer.OperationSetViewer.delete}
         icon="log-out"
         intent="danger"
         canOutsideClickCancel
@@ -87,10 +87,8 @@ const ManageMenu: FC<{
         onCancel={() => setDeleteDialogOpen(false)}
         onConfirm={handleDelete}
       >
-        <H4>{t('components.viewer.OperationSetViewer.delete_task_set')}</H4>
-        <p>
-          {t('components.viewer.OperationSetViewer.confirm_delete_task_set')}
-        </p>
+        <H4>{t.components.viewer.OperationSetViewer.delete_task_set}</H4>
+        <p>{t.components.viewer.OperationSetViewer.confirm_delete_task_set}</p>
       </Alert>
 
       <OperationSetEditorDialog
@@ -102,14 +100,14 @@ const ManageMenu: FC<{
       <Menu>
         <MenuItem
           icon="edit"
-          text={t('components.viewer.OperationSetViewer.edit_task_set')}
+          text={t.components.viewer.OperationSetViewer.edit_task_set}
           shouldDismissPopover={false}
           onClick={() => setEditorOpen(true)}
         />
         <MenuItem
           icon="delete"
           intent="danger"
-          text={t('components.viewer.OperationSetViewer.delete_task_set')}
+          text={t.components.viewer.OperationSetViewer.delete_task_set}
           shouldDismissPopover={false}
           onClick={() => setDeleteDialogOpen(true)}
         />
@@ -123,7 +121,7 @@ export const OperationSetViewer: ComponentType<{
   onCloseDrawer: () => void
 }> = withSuspensable(
   function OperationSetViewer({ operationSetId, onCloseDrawer }) {
-    const { t } = useTranslation()
+    const t = useTranslation()
     const { data: operationSet, error } = useOperationSet({
       id: operationSetId,
       suspense: true,
@@ -151,7 +149,7 @@ export const OperationSetViewer: ComponentType<{
       if (error) {
         AppToaster.show({
           intent: 'danger',
-          message: t('components.viewer.OperationSetViewer.refresh_failed', {
+          message: t.components.viewer.OperationSetViewer.refresh_failed({
             error: formatError(error),
           }),
         })
@@ -164,7 +162,7 @@ export const OperationSetViewer: ComponentType<{
           <>
             <Icon icon="document" />
             <span className="ml-2">
-              {t('components.viewer.OperationSetViewer.maa_copilot_task_set')}
+              {t.components.viewer.OperationSetViewer.maa_copilot_task_set}
             </span>
 
             <div className="flex-1" />
@@ -181,7 +179,7 @@ export const OperationSetViewer: ComponentType<{
                 <Button
                   className="ml-4"
                   icon="wrench"
-                  text={t('components.viewer.OperationSetViewer.manage')}
+                  text={t.components.viewer.OperationSetViewer.manage}
                   rightIcon="caret-down"
                 />
               </Popover2>
@@ -190,7 +188,7 @@ export const OperationSetViewer: ComponentType<{
             <Button
               className="ml-4"
               icon="clipboard"
-              text={t('components.viewer.OperationSetViewer.copy_secret_code')}
+              text={t.components.viewer.OperationSetViewer.copy_secret_code}
               intent="primary"
               onClick={() => copyShortCode(operationSet)}
             />
@@ -201,10 +199,10 @@ export const OperationSetViewer: ComponentType<{
           fallback={
             <NonIdealState
               icon="issue"
-              title={t('components.viewer.OperationSetViewer.render_error')}
-              description={t(
-                'components.viewer.OperationSetViewer.render_problem',
-              )}
+              title={t.components.viewer.OperationSetViewer.render_error}
+              description={
+                t.components.viewer.OperationSetViewer.render_problem
+              }
             />
           }
         >
@@ -214,8 +212,8 @@ export const OperationSetViewer: ComponentType<{
     )
   },
   {
-    pendingTitle: (t) =>
-      t('components.viewer.OperationSetViewer.loading_task_set'),
+    pendingTitle:
+      i18nDefer.components.viewer.OperationSetViewer.loading_task_set,
   },
 )
 
@@ -224,7 +222,7 @@ function OperationSetViewerInner({
 }: {
   operationSet: OperationSet
 }) {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   return (
     <div className="h-full overflow-auto py-4 px-8 pt-8">
@@ -237,7 +235,7 @@ function OperationSetViewerInner({
 
         <div className="flex flex-col items-start select-none tabular-nums">
           <FactItem
-            title={t('components.viewer.OperationSetViewer.published_at')}
+            title={t.components.viewer.OperationSetViewer.published_at}
             icon="time"
           >
             <span className="text-gray-800 dark:text-slate-100 font-bold">
@@ -246,7 +244,7 @@ function OperationSetViewerInner({
           </FactItem>
 
           <FactItem
-            title={t('components.viewer.OperationSetViewer.author')}
+            title={t.components.viewer.OperationSetViewer.author}
             icon="user"
           >
             <UserName
@@ -265,10 +263,10 @@ function OperationSetViewerInner({
         fallback={
           <NonIdealState
             icon="issue"
-            title={t('components.viewer.OperationSetViewer.render_error')}
-            description={t(
-              'components.viewer.OperationSetViewer.render_preview_problem',
-            )}
+            title={t.components.viewer.OperationSetViewer.render_error}
+            description={
+              t.components.viewer.OperationSetViewer.render_preview_problem
+            }
             className="h-96 bg-stripe rounded"
           />
         }
@@ -284,12 +282,12 @@ function OperationSetViewerInnerDetails({
 }: {
   operationSet: OperationSet
 }) {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   return (
     <div className="flex flex-col">
       <H5 className="mb-4 text-slate-600">
-        {t('components.viewer.OperationSetViewer.task_list')}(
+        {t.components.viewer.OperationSetViewer.task_list}(
         {operationSet.copilotIds.length})
       </H5>
       <div className="flex flex-col mb-4 max-w-screen-2xl">

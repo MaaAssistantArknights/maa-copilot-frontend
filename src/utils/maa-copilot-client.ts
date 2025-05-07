@@ -19,7 +19,7 @@ import {
 } from 'utils/error'
 import { TokenManager } from 'utils/token-manager'
 
-import i18n from '../i18n'
+import { i18n } from '../i18n/i18n'
 
 declare module 'maa-copilot-client' {
   interface Configuration {
@@ -218,7 +218,7 @@ JSONApiResponse.prototype.value = async function value() {
   if (validateStatusCode === 'always' || requireData) {
     if (!isObject(result)) {
       console.error('response is not an object', result)
-      throw new ApiError(i18n.t('utils.maa_copilot_client.invalid_response'))
+      throw new ApiError(i18n.utils.maa_copilot_client.invalid_response)
     }
   }
 
@@ -229,7 +229,7 @@ JSONApiResponse.prototype.value = async function value() {
     if (result.statusCode !== 200) {
       console.error('response.statusCode is not 200', result)
       throw new ApiError(
-        result.message || i18n.t('utils.maa_copilot_client.server_error'),
+        result.message || i18n.utils.maa_copilot_client.server_error,
       )
     }
   }
@@ -237,7 +237,7 @@ JSONApiResponse.prototype.value = async function value() {
   if (requireData && (result.data === undefined || result.data === null)) {
     console.error('response.data is missing', result)
     throw new ApiError(
-      result.message || i18n.t('utils.maa_copilot_client.invalid_response'),
+      result.message || i18n.utils.maa_copilot_client.invalid_response,
     )
   }
 

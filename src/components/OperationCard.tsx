@@ -3,7 +3,6 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { CopilotInfoStatusEnum } from 'maa-copilot-client'
-import { useTranslation } from 'react-i18next'
 import { copyShortCode, handleLazyDownloadJSON } from 'services/operation'
 
 import { RelativeTime } from 'components/RelativeTime'
@@ -12,6 +11,7 @@ import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
 
 import { useLevels } from '../apis/level'
+import { useTranslation } from '../i18n/i18n'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { ReLinkDiv } from './ReLinkDiv'
@@ -30,7 +30,7 @@ export const NeoOperationCard = ({
   selected?: boolean
   onSelect?: (operation: Operation, selected: boolean) => void
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { data: levels } = useLevels()
 
   return (
@@ -50,7 +50,7 @@ export const NeoOperationCard = ({
               </span>
               {operation.status === CopilotInfoStatusEnum.Private && (
                 <Tag minimal className="ml-2 shrink-0 font-normal opacity-75">
-                  {t('components.OperationCard.private')}
+                  {t.components.OperationCard.private}
                 </Tag>
               )}
             </H4>
@@ -82,7 +82,7 @@ export const NeoOperationCard = ({
           </div>
           <div>
             <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
-              {t('components.OperationCard.operators_and_groups')}
+              {t.components.OperationCard.operators_and_groups}
             </div>
             <OperatorTags operation={operation} />
           </div>
@@ -101,7 +101,7 @@ export const NeoOperationCard = ({
 
           <Tooltip2
             placement="top"
-            content={t('components.OperationCard.views_count', {
+            content={t.components.OperationCard.views_count({
               count: operation.views,
             })}
           >
@@ -142,7 +142,7 @@ export const NeoOperationCard = ({
 }
 
 export const OperationCard = ({ operation }: { operation: Operation }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { data: levels } = useLevels()
 
   return (
@@ -160,7 +160,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
                 {operation.parsedContent.doc.title}
                 {operation.status === CopilotInfoStatusEnum.Private && (
                   <Tag minimal className="ml-2 font-normal opacity-75">
-                    {t('components.OperationCard.private')}
+                    {t.components.OperationCard.private}
                   </Tag>
                 )}
               </H4>
@@ -193,7 +193,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
 
             <Tooltip2
               placement="top"
-              content={t('components.OperationCard.views_count', {
+              content={t.components.OperationCard.views_count({
                 count: operation.views,
               })}
             >
@@ -228,7 +228,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
           </div>
           <div className="md:w-1/2">
             <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
-              {t('components.OperationCard.operators_and_groups')}
+              {t.components.OperationCard.operators_and_groups}
             </div>
             <OperatorTags operation={operation} />
           </div>
@@ -244,7 +244,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
 }
 
 const OperatorTags = ({ operation }: { operation: Operation }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { opers, groups } = operation.parsedContent
 
   return opers?.length || groups?.length ? (
@@ -262,7 +262,7 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
           content={
             opers
               ?.map(({ name, skill }) => `${name} ${skill ?? 1}`)
-              .join(', ') || t('components.OperationCard.no_operators')
+              .join(', ') || t.components.OperationCard.no_operators
           }
         >
           <Tag>[{name}]</Tag>
@@ -270,9 +270,7 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
       ))}
     </div>
   ) : (
-    <div className="text-gray-500">
-      {t('components.OperationCard.no_records')}
-    </div>
+    <div className="text-gray-500">{t.components.OperationCard.no_records}</div>
   )
 }
 
@@ -289,7 +287,7 @@ const CardActions = ({
   selected?: boolean
   onSelect?: (operation: Operation, selected: boolean) => void
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   return selectable ? (
     <Button
       small
@@ -306,7 +304,7 @@ const CardActions = ({
         placement="bottom"
         content={
           <div className="max-w-sm dark:text-slate-900">
-            {t('components.OperationCard.download_json')}
+            {t.components.OperationCard.download_json}
           </div>
         }
       >
@@ -325,7 +323,7 @@ const CardActions = ({
         placement="bottom"
         content={
           <div className="max-w-sm dark:text-slate-900">
-            {t('components.OperationCard.copy_secret_code')}
+            {t.components.OperationCard.copy_secret_code}
           </div>
         }
       >
@@ -339,7 +337,7 @@ const CardActions = ({
         placement="bottom"
         content={
           <div className="max-w-sm dark:text-slate-900">
-            {t('components.OperationCard.add_to_job_set')}
+            {t.components.OperationCard.add_to_job_set}
           </div>
         }
       >

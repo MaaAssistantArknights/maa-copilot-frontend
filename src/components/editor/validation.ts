@@ -1,5 +1,4 @@
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
-import i18next from 'i18next'
 import {
   DeepPartial,
   ErrorOption,
@@ -9,6 +8,7 @@ import {
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { i18n } from '../../i18n/i18n'
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
 import {
   findActionType,
@@ -23,7 +23,6 @@ export function validateOperation(
     Record<FieldPath<CopilotDocV1.Operation> | 'global', ErrorOption>
   > = {}
   const globalErrors: string[] = []
-  const t = i18next.t
 
   const { actions, groups } = operation
 
@@ -31,7 +30,9 @@ export function validateOperation(
 
   if (emptyGroup) {
     globalErrors.push(
-      t('components.editor.validation.empty_group', { name: emptyGroup.name }),
+      i18n.components.editor.validation.empty_group({
+        name: emptyGroup.name || '',
+      }),
     )
   }
 
@@ -44,12 +45,12 @@ export function validateOperation(
 
         if (!nextType || !validTypesFollowingBulletTime.includes(nextType)) {
           globalErrors.push(
-            t('components.editor.validation.bullet_time_error', {
+            i18n.components.editor.validation.bullet_time_error({
               index: i + 1,
               actionType: findActionType(action.type).alternativeValue,
               validTypes: validTypesFollowingBulletTime
                 .map((type) => findActionType(type).alternativeValue)
-                .join(t('components.editor.validation.bullet_time_separator')),
+                .join(i18n.components.editor.validation.bullet_time_separator),
             }),
           )
         }
@@ -79,7 +80,7 @@ export function validateOperation(
   )
 
   if (!jsonSchemaValidation && copilotSchemaValidator.errors) {
-    if (i18next.language === 'cn') {
+    if (i18n.essentials.language === '简体中文') {
       ajvLocalizeZh(copilotSchemaValidator.errors)
     }
 

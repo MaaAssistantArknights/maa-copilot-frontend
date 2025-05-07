@@ -4,13 +4,13 @@ import { login } from 'apis/auth'
 import { useSetAtom } from 'jotai'
 import { FC, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { AppToaster } from 'components/Toaster'
 import { authAtom, fromCredentials } from 'store/auth'
 import { formatError } from 'utils/error'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
+import { useTranslation } from '../../i18n/i18n'
 import { AuthFormEmailField, AuthFormPasswordField } from './AuthFormShared'
 import { ResetPasswordDialog } from './ResetPasswordDialog'
 
@@ -23,7 +23,7 @@ export const LoginPanel: FC<{
   onNavigateRegisterPanel: () => void
   onComplete: () => void
 }> = ({ onNavigateRegisterPanel, onComplete }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false)
 
   const {
@@ -36,7 +36,7 @@ export const LoginPanel: FC<{
   const onSubmit = async ({ email, password }: LoginFormValues) => {
     const res = await wrapErrorMessage(
       (e) =>
-        t('components.account.LoginPanel.login_failed', {
+        t.components.account.LoginPanel.login_failed({
           error: formatError(e),
         }),
       login({ email, password }),
@@ -44,7 +44,7 @@ export const LoginPanel: FC<{
     setAuthState(fromCredentials(res))
     AppToaster.show({
       intent: 'success',
-      message: t('components.account.LoginPanel.login_success', {
+      message: t.components.account.LoginPanel.login_success({
         name: res.userInfo.userName,
       }),
     })
@@ -72,7 +72,7 @@ export const LoginPanel: FC<{
                 icon="key"
                 onClick={() => setResetPasswordDialogOpen(true)}
               >
-                {t('components.account.LoginPanel.forgot_password')}
+                {t.components.account.LoginPanel.forgot_password}
               </Button>
             ),
           })}
@@ -80,10 +80,10 @@ export const LoginPanel: FC<{
 
         <div className="mt-6 flex items-center">
           <span className="text-zinc-500">
-            {t('components.account.LoginPanel.no_account')}
+            {t.components.account.LoginPanel.no_account}
           </span>
           <Button minimal onClick={onNavigateRegisterPanel}>
-            {t('components.account.LoginPanel.go_register')}
+            {t.components.account.LoginPanel.go_register}
           </Button>
 
           <div className="flex-1" />
@@ -96,7 +96,7 @@ export const LoginPanel: FC<{
             icon="log-in"
             className="self-stretch"
           >
-            {t('components.account.LoginPanel.login')}
+            {t.components.account.LoginPanel.login}
           </Button>
         </div>
       </form>

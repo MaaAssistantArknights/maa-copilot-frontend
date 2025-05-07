@@ -43,7 +43,6 @@ import {
   useState,
 } from 'react'
 import { Controller, UseFormSetError, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { FormField } from 'components/FormField'
 import { AppToaster } from 'components/Toaster'
@@ -53,16 +52,17 @@ import { OperationSet } from 'models/operation-set'
 import { formatError } from 'utils/error'
 
 import { useLevels } from '../../apis/level'
+import { useTranslation } from '../../i18n/i18n'
 import { findLevelByStageName } from '../../models/level'
 
 export function OperationSetEditorLauncher() {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <>
       <Button large fill icon="folder-close" onClick={() => setIsOpen(true)}>
-        {t('components.operation-set.OperationSetEditor.create_job_set')}
+        {t.components.operationSet.OperationSetEditor.create_job_set}
       </Button>
       <OperationSetEditorDialog
         isOpen={isOpen}
@@ -84,7 +84,7 @@ export function OperationSetEditorDialog({
   operationSet,
   ...props
 }: OperationSetEditorDialogProps) {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const isEdit = !!operationSet
 
   const refreshOperationSets = useRefreshOperationSets()
@@ -110,9 +110,7 @@ export function OperationSetEditorDialog({
 
         AppToaster.show({
           intent: 'success',
-          message: t(
-            'components.operation-set.OperationSetEditor.update_success',
-          ),
+          message: t.components.operationSet.OperationSetEditor.update_success,
         })
       } else {
         await createOperationSet({
@@ -124,9 +122,7 @@ export function OperationSetEditorDialog({
 
         AppToaster.show({
           intent: 'success',
-          message: t(
-            'components.operation-set.OperationSetEditor.create_success',
-          ),
+          message: t.components.operationSet.OperationSetEditor.create_success,
         })
       }
 
@@ -146,8 +142,8 @@ export function OperationSetEditorDialog({
     <Dialog
       title={
         isEdit
-          ? t('components.operation-set.OperationSetEditor.edit_job_set')
-          : t('components.operation-set.OperationSetEditor.create_job_set')
+          ? t.components.operationSet.OperationSetEditor.edit_job_set
+          : t.components.operationSet.OperationSetEditor.create_job_set
       }
       icon="folder-close"
       className="w-auto"
@@ -183,7 +179,7 @@ interface FormValues {
 }
 
 function OperationSetForm({ operationSet, onSubmit }: FormProps) {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const isEdit = !!operationSet
 
   const operationSelectorRef = useRef<OperationSelectorRef>(null)
@@ -239,13 +235,9 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
                 icon="helicopter"
                 description={
                   <>
-                    {t(
-                      'components.operation-set.OperationSetEditor.no_jobs_yet',
-                    )}
+                    {t.components.operationSet.OperationSetEditor.no_jobs_yet}
                     <br />
-                    {t(
-                      'components.operation-set.OperationSetEditor.add_from_list',
-                    )}
+                    {t.components.operationSet.OperationSetEditor.add_from_list}
                   </>
                 }
               />
@@ -255,15 +247,14 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
 
         <div className="grow basis-full lg:overflow-y-auto">
           <FormField
-            label={t('components.operation-set.OperationSetEditor.title')}
+            label={t.components.operationSet.OperationSetEditor.title}
             field="name"
             control={control}
             error={errors.name}
             ControllerProps={{
               rules: {
-                required: t(
-                  'components.operation-set.OperationSetEditor.title_required',
-                ),
+                required:
+                  t.components.operationSet.OperationSetEditor.title_required,
               },
               render: (renderProps) => (
                 <InputGroup
@@ -275,7 +266,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           />
 
           <FormField
-            label={t('components.operation-set.OperationSetEditor.description')}
+            label={t.components.operationSet.OperationSetEditor.description}
             field="description"
             control={control}
             error={errors.description}
@@ -305,9 +296,9 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
                       : 'PRIVATE',
                   )
                 }
-                label={t(
-                  'components.operation-set.OperationSetEditor.visible_to_all',
-                )}
+                label={
+                  t.components.operationSet.OperationSetEditor.visible_to_all
+                }
               />
             )}
           />
@@ -318,7 +309,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
         {isEdit && (
           <div className="text-xs text-gray-500">
             <Icon icon="info-sign" />{' '}
-            {t('components.operation-set.OperationSetEditor.click_save')}
+            {t.components.operationSet.OperationSetEditor.click_save}
           </div>
         )}
 
@@ -331,8 +322,8 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
           className="ml-auto"
         >
           {isEdit
-            ? t('components.operation-set.OperationSetEditor.save')
-            : t('components.operation-set.OperationSetEditor.create')}
+            ? t.components.operationSet.OperationSetEditor.save
+            : t.components.operationSet.OperationSetEditor.create}
         </Button>
       </div>
 
@@ -340,7 +331,7 @@ function OperationSetForm({ operationSet, onSubmit }: FormProps) {
         <Callout
           intent="danger"
           icon="error"
-          title={t('components.operation-set.OperationSetEditor.error')}
+          title={t.components.operationSet.OperationSetEditor.error}
         >
           {globalError}
         </Callout>
@@ -366,7 +357,7 @@ function OperationSelector({
   operationSet,
   selectorRef,
 }: OperationSelectorProps) {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { operations, error } = useOperations({
     operationIds: operationSet.copilotIds,
   })
@@ -472,18 +463,15 @@ function OperationSelector({
                 disabled={levelLoading}
                 icon="sort-alphabetical"
                 text={
-                  t(
-                    'components.operation-set.OperationSetEditor.sort_by_level',
-                  ) +
+                  t.components.operationSet.OperationSetEditor.sort_by_level +
                   (levelLoading
                     ? ' (' +
-                      t('components.operation-set.OperationSetEditor.loading') +
+                      t.components.operationSet.OperationSetEditor.loading +
                       ')'
                     : levelError
                       ? ' (' +
-                        t(
-                          'components.operation-set.OperationSetEditor.level_load_failed',
-                        ) +
+                        t.components.operationSet.OperationSetEditor
+                          .level_load_failed +
                         ')'
                       : '')
                 }
@@ -491,16 +479,14 @@ function OperationSelector({
               />
               <MenuItem
                 icon="sort-alphabetical"
-                text={t(
-                  'components.operation-set.OperationSetEditor.sort_by_title',
-                )}
+                text={
+                  t.components.operationSet.OperationSetEditor.sort_by_title
+                }
                 onClick={() => sort('title')}
               />
               <MenuItem
                 icon="sort-numerical"
-                text={t(
-                  'components.operation-set.OperationSetEditor.sort_by_id',
-                )}
+                text={t.components.operationSet.OperationSetEditor.sort_by_id}
                 onClick={() => sort('id')}
               />
             </Menu>
@@ -511,8 +497,7 @@ function OperationSelector({
             minimal
             icon="sort"
             text={
-              t('components.operation-set.OperationSetEditor.quick_sort') +
-              '...'
+              t.components.operationSet.OperationSetEditor.quick_sort + '...'
             }
           />
         </Popover2>
@@ -520,7 +505,7 @@ function OperationSelector({
           small
           minimal
           icon="reset"
-          text={t('components.operation-set.OperationSetEditor.reverse_list')}
+          text={t.components.operationSet.OperationSetEditor.reverse_list}
           onClick={() => sort('reverse')}
         />
       </div>
@@ -529,7 +514,7 @@ function OperationSelector({
         <Callout
           intent="danger"
           icon="error"
-          title={t('components.operation-set.OperationSetEditor.error')}
+          title={t.components.operationSet.OperationSetEditor.error}
         >
           {formatError(error)}
         </Callout>

@@ -4,10 +4,10 @@ import clsx from 'clsx'
 import { clamp, isNil } from 'lodash-es'
 import { useCallback, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useTranslation } from 'react-i18next'
 import { Rnd, RndResizeCallback } from 'react-rnd'
 import { useWindowSize } from 'react-use'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { Level } from '../../../models/operation'
 import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
@@ -49,7 +49,7 @@ const enum MapStatus {
 }
 
 export function FloatingMap() {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const [config, setConfig] = useLazyStorage<FloatingMapConfig>(
     STORAGE_KEY,
@@ -203,9 +203,8 @@ export function FloatingMap() {
                     description={
                       iframeWindow
                         ? undefined
-                        : t(
-                            'components.editor.floatingMap.FloatingMap.waiting_connection',
-                          )
+                        : t.components.editor.floatingMap.FloatingMap
+                            .waiting_connection
                     }
                   />
                 )}
@@ -213,9 +212,9 @@ export function FloatingMap() {
             ) : (
               <NonIdealState
                 icon="area-of-interest"
-                title={t(
-                  'components.editor.floatingMap.FloatingMap.no_stage_selected',
-                )}
+                title={
+                  t.components.editor.floatingMap.FloatingMap.no_stage_selected
+                }
               />
             )}
           </Card>
@@ -243,13 +242,13 @@ function FloatingMapHeader({
   config: FloatingMapConfig
   setConfig: (config: FloatingMapConfig) => void
 }) {
-  const { t } = useTranslation()
+  const t = useTranslation()
   let levelName = config.level?.name
 
   if (isNil(levelName)) {
-    levelName = t('components.editor.floatingMap.FloatingMap.no_stage_selected')
+    levelName = t.components.editor.floatingMap.FloatingMap.no_stage_selected
   } else if (!levelName.trim()) {
-    levelName = t('components.editor.floatingMap.FloatingMap.unnamed_stage')
+    levelName = t.components.editor.floatingMap.FloatingMap.unnamed_stage
   }
 
   return (
@@ -268,13 +267,13 @@ function FloatingMapHeader({
         className="px-4"
         title={
           config.show
-            ? t('components.editor.floatingMap.FloatingMap.hide_map')
-            : t('components.editor.floatingMap.FloatingMap.show_map')
+            ? t.components.editor.floatingMap.FloatingMap.hide_map
+            : t.components.editor.floatingMap.FloatingMap.show_map
         }
         icon={config.show ? 'caret-down' : 'caret-up'}
         onClick={() => setConfig({ ...config, show: !config.show })}
       >
-        {t('components.editor.floatingMap.FloatingMap.map')}
+        {t.components.editor.floatingMap.FloatingMap.map}
         {config.show && ` - ${levelName}`}
       </Button>
     </div>

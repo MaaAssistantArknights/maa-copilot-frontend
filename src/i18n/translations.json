@@ -1,4 +1,30 @@
 {
+  "essentials": {
+    "language": {
+      "cn": "简体中文",
+      "en": "English"
+    },
+    "error_occurred": {
+      "cn": "エラー発生",
+      "en": "Error Occurred"
+    },
+    "render_error": {
+      "cn": "页面渲染出现错误；请尝试:",
+      "en": "An error occurred while rendering the page; please try"
+    },
+    "refresh_page": {
+      "cn": "刷新页面",
+      "en": "Refreshing the Page"
+    },
+    "translations_not_loaded": {
+      "cn": "翻译未加载",
+      "en": "Translations have not been loaded."
+    },
+    "translation_load_failed": {
+      "cn": "翻译加载失败",
+      "en": "Failed to load translations."
+    }
+  },
   "apis": {
     "announcement": {
       "network_error": {
@@ -845,8 +871,8 @@
               "en": "If no settings are applied, default values will be used (Skill 1 · Do not use automatically · Usage count: 1)"
             },
             "not_set": {
-              "cn": "未设置",
-              "en": "@@@CURRENTLY NOT IN USE@@@Not set"
+              "cn": "未设置技能",
+              "en": "Skill not set"
             }
           }
         },
@@ -897,25 +923,19 @@
           }
         },
         "EditorOperatorItem": {
-          "first_skill": {
-            "cn": "一",
-            "en": "First"
-          },
-          "second_skill": {
-            "cn": "二",
-            "en": "Second"
-          },
-          "third_skill": {
-            "cn": "三",
-            "en": "Third"
-          },
-          "unknown": {
-            "cn": "未知",
-            "en": "Unknown Skill"
-          },
-          "skill": {
-            "cn": "技能",
-            "en": "Skill"
+          "skill_number": {
+            "cn": {
+              "1": "一技能",
+              "2": "二技能",
+              "3": "三技能",
+              "other": "未知技能"
+            },
+            "en": {
+              "1": "Skill 1",
+              "2": "Skill 2",
+              "3": "Skill 3",
+              "other": "Unknown Skill"
+            }
           }
         },
         "EditorOperatorSelect": {
@@ -1009,17 +1029,19 @@
           }
         },
         "EditorOperatorSkill": {
-          "first_skill": {
-            "cn": "一技能",
-            "en": "Skill 1"
-          },
-          "second_skill": {
-            "cn": "二技能",
-            "en": "Skill 2"
-          },
-          "third_skill": {
-            "cn": "三技能",
-            "en": "Skill 3"
+          "skill_number": {
+            "cn": {
+              "1": "一技能",
+              "2": "二技能",
+              "3": "三技能",
+              "other": "未知技能"
+            },
+            "en": {
+              "1": "Skill 1",
+              "2": "Skill 2",
+              "3": "Skill 3",
+              "other": "Unknown Skill"
+            }
           }
         },
         "EditorOperatorSkillTimes": {
@@ -1525,8 +1547,8 @@
       },
       "validation": {
         "empty_group": {
-          "cn": "干员组\"$t(name)\"不能为空",
-          "en": "Operator group \"$t(name)\" cannot be empty"
+          "cn": "干员组\"{{name}}\"不能为空",
+          "en": "Operator group \"{{name}}\" cannot be empty"
         },
         "bullet_time_error": {
           "cn": "第{{index}}个动作是\"{{actionType}}\"，但它的下一个动作不是\"{{validTypes}}\"其中之一",
@@ -1572,7 +1594,7 @@
         }
       }
     },
-    "operation-set": {
+    "operationSet": {
       "AddToOperationSet": {
         "add_to_job_set_title": {
           "cn": "添加 {{count}} 份作业到作业集",
@@ -2294,21 +2316,6 @@
         "en": "Confirm"
       }
     },
-    "GlobalErrorBoundary": {
-      "error_occurred": {
-        "cn": "发生错误",
-        "en": "Error Occurred",
-        "ja": "エラー発生"
-      },
-      "render_error": {
-        "cn": "页面渲染出现错误；请尝试",
-        "en": "An error occurred while rendering the page; please try"
-      },
-      "refresh_page": {
-        "cn": "刷新页面",
-        "en": "Refreshing the Page"
-      }
-    },
     "LevelSelect": {
       "annihilation": {
         "cn": "剿灭作战",
@@ -2588,6 +2595,20 @@
       }
     },
     "operator": {
+      "skill_number": {
+        "cn": {
+          "1": "一技能",
+          "2": "二技能",
+          "3": "三技能",
+          "other": "未知技能"
+        },
+        "en": {
+          "1": "Skill 1",
+          "2": "Skill 2",
+          "3": "Skill 3",
+          "other": "Unknown Skill"
+        }
+      },
       "skill_usage": {
         "none_title": {
           "cn": "不自动使用",
@@ -2770,10 +2791,6 @@
             "cn": "部署",
             "en": "Deploy"
           },
-          "alternativeValue": {
-            "cn": "部署",
-            "en": "Deploy"
-          },
           "description": {
             "cn": "部署干员至指定位置。当费用不够时，会一直等待到费用够（除非 timeout）",
             "en": "Deploy operator to specified location. When DP is insufficient, will wait until enough (unless timeout)"
@@ -2781,10 +2798,6 @@
         },
         "retreat": {
           "title": {
-            "cn": "撤退",
-            "en": "Retreat"
-          },
-          "alternativeValue": {
             "cn": "撤退",
             "en": "Retreat"
           },
@@ -2798,10 +2811,6 @@
             "cn": "使用技能",
             "en": "Use Skill"
           },
-          "alternativeValue": {
-            "cn": "技能",
-            "en": "Skill"
-          },
           "description": {
             "cn": "当技能 CD 没转好时，一直等待到技能 CD 好（除非 timeout）",
             "en": "When skill cooldown isn't ready, will wait until it is (unless timeout)"
@@ -2811,10 +2820,6 @@
           "title": {
             "cn": "切换技能用法",
             "en": "Switch Skill Usage"
-          },
-          "alternativeValue": {
-            "cn": "技能用法",
-            "en": "Skill Usage"
           },
           "description": {
             "cn": "切换干员技能用法。例如，刚下桃金娘、需要她帮忙打几个怪，但此时不能自动开技能否则会漏怪，等中后期平稳了才需要她自动开技能，则可以在对应时刻后，将桃金娘的技能用法从「不自动使用」改为「好了就用」。",
@@ -2826,10 +2831,6 @@
             "cn": "切换二倍速",
             "en": "Toggle 2× Speed"
           },
-          "alternativeValue": {
-            "cn": "二倍速",
-            "en": "2× Speed"
-          },
           "description": {
             "cn": "执行后切换至二倍速，再次执行切换至一倍速",
             "en": "After execution, switches to 2× speed; executing again switches to 1× speed"
@@ -2840,10 +2841,6 @@
             "cn": "进入子弹时间",
             "en": "Enter Bullet Time"
           },
-          "alternativeValue": {
-            "cn": "子弹时间",
-            "en": "Bullet Time"
-          },
           "description": {
             "cn": "执行后将点击任意干员，进入 1/5 速度状态；再进行任意动作会恢复正常速度。下一个任务必须是\"部署\"、\"技能\"、\"撤退\"其中之一，此时会提前点开该干员，等待满足条件后再执行。",
             "en": "After execution, click any operator to enter 1/5 speed state; any further action will restore normal speed. The next task must be one of 'Deploy', 'Skill', or 'Retreat', which will select that operator in advance and wait until conditions are met before executing."
@@ -2851,10 +2848,6 @@
         },
         "move_camera": {
           "title": {
-            "cn": "移动相机",
-            "en": "Move Camera"
-          },
-          "alternativeValue": {
             "cn": "移动相机",
             "en": "Move Camera"
           },
@@ -2868,10 +2861,6 @@
             "cn": "开始挂机",
             "en": "Start Auto Mode"
           },
-          "alternativeValue": {
-            "cn": "摆完挂机",
-            "en": "Auto Deploy"
-          },
           "description": {
             "cn": "进入挂机模式。仅使用 \"好了就用\" 的技能，其他什么都不做，直到战斗结束",
             "en": "Enter auto mode. Only uses skills set to 'Use when ready', does nothing else until battle ends"
@@ -2881,10 +2870,6 @@
           "title": {
             "cn": "打印描述内容",
             "en": "Print Description"
-          },
-          "alternativeValue": {
-            "cn": "打印",
-            "en": "Print"
           },
           "description": {
             "cn": "对作战没有实际作用，仅用于输出描述内容（用来做字幕之类的）",
@@ -2896,10 +2881,6 @@
             "cn": "未知类型",
             "en": "Unknown Type"
           },
-          "alternativeValue": {
-            "cn": "未知",
-            "en": "Unknown"
-          },
           "description": {
             "cn": "未知动作类型",
             "en": "Unknown action type"
@@ -2909,7 +2890,7 @@
     }
   },
   "pages": {
-    "404": {
+    "_404": {
       "page_not_found": {
         "cn": "未找到页面",
         "en": "Page Not Found"

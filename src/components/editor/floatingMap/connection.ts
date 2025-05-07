@@ -1,19 +1,7 @@
-import { useTranslation } from 'react-i18next'
-
 import { Level } from '../../../models/operation'
 import { Message } from '../../../utils/messenger'
 
 export const MAP_SERVER = import.meta.env.VITE_THERESA_SERVER as string
-
-export function createConnectionError() {
-  const { t } = useTranslation()
-  if (!MAP_SERVER) {
-    throw new Error(
-      t('components.editor.floatingMap.connection.env_var_not_defined'),
-    )
-  }
-  return MAP_SERVER
-}
 
 if (!MAP_SERVER) {
   throw new Error('Environment variable VITE_THERESA_SERVER is not defined.')

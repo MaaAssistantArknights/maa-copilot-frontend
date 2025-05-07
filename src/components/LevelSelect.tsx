@@ -4,9 +4,9 @@ import { getCreateNewItem } from '@blueprintjs/select'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { FC, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { useLevels } from '../apis/level'
+import { useTranslation } from '../i18n/i18n'
 import { createCustomLevel, isCustomLevel, isHardMode } from '../models/level'
 import { Level } from '../models/operation'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
@@ -23,7 +23,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
   value,
   onChange,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { data } = useLevels()
   const levels = useMemo(
     () =>
@@ -74,7 +74,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       let headerName: string
 
       if (selectedLevel.catOne === '剿灭作战') {
-        headerName = t('components.LevelSelect.annihilation')
+        headerName = t.components.LevelSelect.annihilation
         similarLevels = levels.filter(
           (el) => el.catOne === selectedLevel.catOne,
         )
@@ -83,7 +83,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         selectedLevel.stageId.includes('crisis')
       ) {
         // 危机合约分类非常混乱，直接全塞到一起
-        headerName = t('components.LevelSelect.contingency_contract')
+        headerName = t.components.LevelSelect.contingency_contract
         similarLevels = levels.filter(
           (el) => el.stageId.includes('rune') || el.stageId.includes('crisis'),
         )
@@ -94,7 +94,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         )
       } else {
         // catTwo 为空的时候用 levelId 来分类
-        headerName = t('components.LevelSelect.related_levels')
+        headerName = t.components.LevelSelect.related_levels
         const levelIdPrefix = selectedLevel.levelId
           .split('/')
           .slice(0, -1)
@@ -114,7 +114,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
     return debouncedQuery.trim()
       ? fuse.search(debouncedQuery).map((el) => el.item)
       : levels
-  }, [debouncedQuery, selectedLevel, levels, fuse])
+  }, [debouncedQuery, selectedLevel, levels, fuse, t])
 
   useEffect(() => {
     if (!selectedLevel) {
@@ -173,14 +173,14 @@ export const LevelSelect: FC<LevelSelectProps> = ({
           key="create-new-item"
           roleStructure="listoption"
           className={clsx(active && Classes.ACTIVE)}
-          text={t('components.LevelSelect.search_level', { query })}
+          text={t.components.LevelSelect.search_level({ query })}
           icon="text-highlight"
           onClick={handleClick}
           selected={selectedLevel && isCustomLevel(selectedLevel)}
         />
       )}
       inputProps={{
-        placeholder: t('components.LevelSelect.level_search_placeholder'),
+        placeholder: t.components.LevelSelect.level_search_placeholder,
       }}
       popoverProps={{
         minimal: true,
@@ -195,7 +195,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         >
           {selectedLevel
             ? selectedLevel.catThree
-            : t('components.LevelSelect.level')}
+            : t.components.LevelSelect.level}
         </Button>
       }
     </Select>

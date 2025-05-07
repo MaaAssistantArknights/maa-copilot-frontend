@@ -1,5 +1,6 @@
-import i18n from 'i18n'
 import { chunk, compact } from 'lodash-es'
+
+import { i18n } from '../i18n/i18n'
 
 export interface Announcement {
   sections: AnnouncementSection[]
@@ -51,7 +52,7 @@ export function parseAnnouncement(raw: string): Announcement {
 
         const title =
           segments[0]?.replace(/^#+/, '').trim() ||
-          i18n.t('models.announcement.default_title', { defaultValue: '公告' })
+          i18n.models.announcement.default_title
 
         let meta: AnnouncementSectionMeta | undefined
         const jsonBlockStart = '```json'

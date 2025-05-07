@@ -5,82 +5,61 @@ import {
   FieldValues,
   UseControllerProps,
 } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { FormField, FormFieldProps } from 'components/FormField'
 import { REGEX_EMAIL, REGEX_USERNAME } from 'utils/regexes'
 
+import { useTranslation } from '../../i18n/i18n'
+
 export type RuleKeys = 'email' | 'password' | 'username' | 'registertoken'
 
-export const rule: Record<RuleKeys, UseControllerProps['rules']> = {
-  email: {
-    required: 'components.account.AuthFormShared.email_required',
-    pattern: {
-      value: REGEX_EMAIL,
-      message: 'components.account.AuthFormShared.email_invalid',
+function useRules(): Record<RuleKeys, UseControllerProps['rules']> {
+  const t = useTranslation()
+  return {
+    email: {
+      required: t.components.account.AuthFormShared.email_required,
+      pattern: {
+        value: REGEX_EMAIL,
+        message: t.components.account.AuthFormShared.email_invalid,
+      },
     },
-  },
-  password: {
-    required: 'components.account.AuthFormShared.password_required',
-    minLength: {
-      value: 8,
-      message: 'components.account.AuthFormShared.password_min_length',
+    password: {
+      required: t.components.account.AuthFormShared.password_required,
+      minLength: {
+        value: 8,
+        message: t.components.account.AuthFormShared.password_min_length,
+      },
+      maxLength: {
+        value: 32,
+        message: t.components.account.AuthFormShared.password_max_length,
+      },
     },
-    maxLength: {
-      value: 32,
-      message: 'components.account.AuthFormShared.password_max_length',
+    username: {
+      required: t.components.account.AuthFormShared.username_required,
+      minLength: {
+        value: 4,
+        message: t.components.account.AuthFormShared.username_min_length,
+      },
+      maxLength: {
+        value: 24,
+        message: t.components.account.AuthFormShared.username_max_length,
+      },
+      pattern: {
+        value: REGEX_USERNAME,
+        message: t.components.account.AuthFormShared.username_pattern,
+      },
     },
-  },
-  username: {
-    required: 'components.account.AuthFormShared.username_required',
-    minLength: {
-      value: 4,
-      message: 'components.account.AuthFormShared.username_min_length',
+    registertoken: {
+      required: t.components.account.AuthFormShared.token_required,
+      minLength: {
+        value: 6,
+        message: t.components.account.AuthFormShared.token_length,
+      },
+      maxLength: {
+        value: 6,
+        message: t.components.account.AuthFormShared.token_length,
+      },
     },
-    maxLength: {
-      value: 24,
-      message: 'components.account.AuthFormShared.username_max_length',
-    },
-    pattern: {
-      value: REGEX_USERNAME,
-      message: 'components.account.AuthFormShared.username_pattern',
-    },
-  },
-  registertoken: {
-    required: 'components.account.AuthFormShared.token_required',
-    minLength: {
-      value: 6,
-      message: 'components.account.AuthFormShared.token_length',
-    },
-    maxLength: {
-      value: 6,
-      message: 'components.account.AuthFormShared.token_length',
-    },
-  },
-}
-
-function useTranslatedRules() {
-  const { t } = useTranslation()
-
-  return function translateRule(ruleObj: UseControllerProps['rules']) {
-    if (!ruleObj) return ruleObj
-
-    const result: UseControllerProps['rules'] = {}
-
-    for (const [key, value] of Object.entries(ruleObj)) {
-      if (typeof value === 'string') {
-        result[key] = t(value)
-      } else if (typeof value === 'object' && value !== null) {
-        result[key] = { ...value }
-        if (typeof value.message === 'string') {
-          result[key].message = t(value.message)
-        }
-      } else {
-        result[key] = value
-      }
-    }
-
-    return result
   }
 }
 
@@ -105,17 +84,17 @@ export const AuthFormEmailField = <T extends FieldValues>({
   autoComplete = 'email',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
-  const { t } = useTranslation()
-  const translateRule = useTranslatedRules()
+  const t = useTranslation()
+  const rules = useRules()
 
   return (
     <FormField
-      label={label || t('components.account.AuthFormShared.email')}
+      label={label || t.components.account.AuthFormShared.email}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: translateRule(rule.email),
+        rules: rules.email,
         render: (renderProps) => (
           <InputGroup
             id={field}
@@ -132,7 +111,7 @@ export const AuthFormEmailField = <T extends FieldValues>({
       FormGroupProps={{
         helperText:
           register &&
-          t('components.account.AuthFormShared.email_verification_note'),
+          t.components.account.AuthFormShared.email_verification_note,
       }}
     />
   )
@@ -147,17 +126,19 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
   autoComplete = '',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
-  const { t } = useTranslation()
-  const translateRule = useTranslatedRules()
+  const t = useTranslation()
+  const rules = useRules()
 
   return (
     <FormField
-      label={label || t('components.account.AuthFormShared.token')}
+      label={
+        label || t.components.account.AuthFormShared.email_verification_code
+      }
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: translateRule(rule.registertoken),
+        rules: rules.registertoken,
         render: (renderProps) => (
           <InputGroup
             id={field}
@@ -171,8 +152,7 @@ export const AuthRegistrationTokenField = <T extends FieldValues>({
       }}
       FormGroupProps={{
         helperText:
-          register &&
-          t('components.account.AuthFormShared.token_verification_note'),
+          register && t.components.account.AuthFormShared.enter_email_code,
       }}
     />
   )
@@ -186,17 +166,17 @@ export const AuthFormPasswordField = <T extends FieldValues>({
   autoComplete = 'current-password',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
-  const { t } = useTranslation()
-  const translateRule = useTranslatedRules()
+  const t = useTranslation()
+  const rules = useRules()
 
   return (
     <FormField
-      label={label || t('components.account.AuthFormShared.password')}
+      label={label || t.components.account.AuthFormShared.password}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: translateRule(rule.password),
+        rules: rules.password,
         render: (renderProps) => (
           <InputGroup
             id={field}
@@ -221,17 +201,17 @@ export const AuthFormUsernameField = <T extends FieldValues>({
   autoComplete = 'username',
   inputGroupProps,
 }: AuthFormFieldProps<T>) => {
-  const { t } = useTranslation()
-  const translateRule = useTranslatedRules()
+  const t = useTranslation()
+  const rules = useRules()
 
   return (
     <FormField
-      label={label || t('components.account.AuthFormShared.username')}
+      label={label || t.components.account.AuthFormShared.username}
       field={field}
       control={control}
       error={error}
       ControllerProps={{
-        rules: translateRule(rule.username),
+        rules: rules.username,
         render: (renderProps) => (
           <InputGroup
             id={field}

@@ -16,12 +16,12 @@ import { Popover2 } from '@blueprintjs/popover2'
 
 import { useAtom } from 'jotai'
 import { ComponentType, FC, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { LoginPanel } from 'components/account/LoginPanel'
 import { authAtom } from 'store/auth'
 import { useCurrentSize } from 'utils/useCurrenSize'
 
+import { useTranslation } from '../i18n/i18n'
 import {
   GlobalErrorBoundary,
   withGlobalErrorBoundary,
@@ -31,7 +31,7 @@ import { EditDialog } from './account/EditDialog'
 import { RegisterPanel } from './account/RegisterPanel'
 
 const AccountMenu: FC = () => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
@@ -41,7 +41,7 @@ const AccountMenu: FC = () => {
     setAuthState({})
     AppToaster.show({
       intent: 'success',
-      message: t('components.AccountManager.logout_success'),
+      message: t.components.AccountManager.logout_success,
     })
   }
 
@@ -49,16 +49,16 @@ const AccountMenu: FC = () => {
     <>
       <Alert
         isOpen={logoutDialogOpen}
-        cancelButtonText={t('components.AccountManager.cancel')}
-        confirmButtonText={t('components.AccountManager.logout')}
+        cancelButtonText={t.components.AccountManager.cancel}
+        confirmButtonText={t.components.AccountManager.logout}
         icon="log-out"
         intent="danger"
         canOutsideClickCancel
         onCancel={() => setLogoutDialogOpen(false)}
         onConfirm={handleLogout}
       >
-        <H4>{t('components.AccountManager.logout')}</H4>
-        <p>{t('components.AccountManager.logout_confirm')}</p>
+        <H4>{t.components.AccountManager.logout}</H4>
+        <p>{t.components.AccountManager.logout_confirm}</p>
       </Alert>
 
       <EditDialog
@@ -71,7 +71,7 @@ const AccountMenu: FC = () => {
           <MenuItem
             disabled
             icon="warning-sign"
-            text={t('components.AccountManager.account_not_activated')}
+            text={t.components.AccountManager.account_not_activated}
           />
         )}
 
@@ -79,14 +79,14 @@ const AccountMenu: FC = () => {
           icon="person"
           text={
             (isSM ? authState.username + ' - ' : '') +
-            t('components.AccountManager.profile')
+            t.components.AccountManager.profile
           }
           href={`/profile/${authState.userId}`}
         />
         <MenuItem
           shouldDismissPopover={false}
           icon="edit"
-          text={t('components.AccountManager.edit_info')}
+          text={t.components.AccountManager.edit_info}
           onClick={() => setEditDialogOpen(true)}
         />
         <MenuDivider />
@@ -95,7 +95,7 @@ const AccountMenu: FC = () => {
           shouldDismissPopover={false}
           intent="danger"
           icon="log-out"
-          text={t('components.AccountManager.logout')}
+          text={t.components.AccountManager.logout}
           onClick={() => setLogoutDialogOpen(true)}
         />
       </Menu>
@@ -107,12 +107,12 @@ export const AccountAuthDialog: ComponentType<{
   open?: boolean
   onClose?: () => void
 }> = withGlobalErrorBoundary(({ open, onClose }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [activeTab, setActiveTab] = useState<TabId>('login')
 
   return (
     <Dialog
-      title={t('components.AccountManager.maa_account')}
+      title={t.components.AccountManager.maa_account}
       icon="user"
       isOpen={open}
       onClose={onClose}
@@ -134,7 +134,7 @@ export const AccountAuthDialog: ComponentType<{
                 <div>
                   <Icon icon="person" />
                   <span className="ml-1">
-                    {t('components.AccountManager.login')}
+                    {t.components.AccountManager.login}
                   </span>
                 </div>
               }
@@ -151,7 +151,7 @@ export const AccountAuthDialog: ComponentType<{
                 <div>
                   <Icon icon="new-person" />
                   <span className="ml-1">
-                    {t('components.AccountManager.register')}
+                    {t.components.AccountManager.register}
                   </span>
                 </div>
               }
@@ -165,7 +165,7 @@ export const AccountAuthDialog: ComponentType<{
 })
 
 export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [open, setOpen] = useState(false)
   const [authState] = useAtom(authAtom)
   const { isSM } = useCurrentSize()
@@ -184,7 +184,7 @@ export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
         </Popover2>
       ) : (
         <Button className="ml-auto" icon="user" onClick={() => setOpen(true)}>
-          {!isSM && t('components.AccountManager.login_register')}
+          {!isSM && t.components.AccountManager.login_register}
         </Button>
       )}
     </>

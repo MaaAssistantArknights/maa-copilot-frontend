@@ -1,11 +1,11 @@
 import { useFormState } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { SetOptional } from 'type-fest'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import { EditorIntegerInput } from 'components/editor/EditorIntegerInput'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { FormField2 } from '../../FormField'
 
 interface EditorActionExecPredicateProps
@@ -16,26 +16,27 @@ export const EditorActionExecPredicateKills = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label={t(
-        'components.editor.action.EditorActionExecPredicate.kill_count_condition',
-      )}
+      label={
+        t.components.editor.action.EditorActionExecPredicate
+          .kill_count_condition
+      }
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description={t(
-        'components.editor.action.EditorActionExecPredicate.kill_count_description',
-      )}
+      description={
+        t.components.editor.action.EditorActionExecPredicate
+          .kill_count_description
+      }
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: t(
-            'components.editor.action.EditorActionExecPredicate.kill_count',
-          ),
+          placeholder:
+            t.components.editor.action.EditorActionExecPredicate.kill_count,
           min: 0,
         }}
         control={control}
@@ -51,26 +52,26 @@ export const EditorActionExecPredicateCosts = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label={t(
-        'components.editor.action.EditorActionExecPredicate.cost_condition',
-      )}
+      label={
+        t.components.editor.action.EditorActionExecPredicate.cost_condition
+      }
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description={t(
-        'components.editor.action.EditorActionExecPredicate.cost_condition_description',
-      )}
+      description={
+        t.components.editor.action.EditorActionExecPredicate
+          .cost_condition_description
+      }
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: t(
-            'components.editor.action.EditorActionExecPredicate.dp_cost',
-          ),
+          placeholder:
+            t.components.editor.action.EditorActionExecPredicate.dp_cost,
           min: 0,
         }}
         control={control}
@@ -86,26 +87,28 @@ export const EditorActionExecPredicateCostChange = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label={t(
-        'components.editor.action.EditorActionExecPredicate.cost_change_condition',
-      )}
+      label={
+        t.components.editor.action.EditorActionExecPredicate
+          .cost_change_condition
+      }
       className="mr-2 lg:mr-4"
       field={name}
       error={errors[name]}
-      description={t(
-        'components.editor.action.EditorActionExecPredicate.cost_change_description',
-      )}
+      description={
+        t.components.editor.action.EditorActionExecPredicate
+          .cost_change_description
+      }
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: t(
-            'components.editor.action.EditorActionExecPredicate.dp_change_amount',
-          ),
+          placeholder:
+            t.components.editor.action.EditorActionExecPredicate
+              .dp_change_amount,
         }}
         control={control}
         name={name}
@@ -120,25 +123,26 @@ export const EditorActionExecPredicateCooling = ({
   control,
   ...controllerProps
 }: EditorActionExecPredicateProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { errors } = useFormState({ control, name })
 
   return (
     <FormField2
-      label={t(
-        'components.editor.action.EditorActionExecPredicate.cooldown_operator_condition',
-      )}
+      label={
+        t.components.editor.action.EditorActionExecPredicate
+          .cooldown_operator_condition
+      }
       field={name}
       error={errors[name]}
-      description={t(
-        'components.editor.action.EditorActionExecPredicate.cooldown_description',
-      )}
+      description={
+        t.components.editor.action.EditorActionExecPredicate
+          .cooldown_description
+      }
     >
       <EditorIntegerInput
         NumericInputProps={{
-          placeholder: t(
-            'components.editor.action.EditorActionExecPredicate.cooldown_count',
-          ),
+          placeholder:
+            t.components.editor.action.EditorActionExecPredicate.cooldown_count,
           min: 0,
         }}
         control={control}

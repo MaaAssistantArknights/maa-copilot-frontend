@@ -3,10 +3,11 @@ import { Select2 } from '@blueprintjs/select'
 
 import { useMemo } from 'react'
 import { useController } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
+
+import { useTranslation } from '../../../i18n/i18n'
 
 interface EditorOperatorSkillChoice {
   icon?: IconName
@@ -21,7 +22,7 @@ export const EditorOperatorSkill = ({
   name,
   control,
 }: EditorOperatorSkillProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const {
     field: { onChange, onBlur, value, ref },
@@ -34,17 +35,23 @@ export const EditorOperatorSkill = ({
     () => [
       {
         icon: 'cog',
-        title: t('components.editor.operator.EditorOperatorSkill.first_skill'),
+        title: t.components.editor.operator.EditorOperatorSkill.skill_number({
+          count: 1,
+        }),
         value: 1,
       },
       {
         icon: 'cog',
-        title: t('components.editor.operator.EditorOperatorSkill.second_skill'),
+        title: t.components.editor.operator.EditorOperatorSkill.skill_number({
+          count: 2,
+        }),
         value: 2,
       },
       {
         icon: 'cog',
-        title: t('components.editor.operator.EditorOperatorSkill.third_skill'),
+        title: t.components.editor.operator.EditorOperatorSkill.skill_number({
+          count: 3,
+        }),
         value: 3,
       },
     ],

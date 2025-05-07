@@ -1,15 +1,15 @@
 import { Button } from '@blueprintjs/core'
 
 import { FC, useMemo } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../../../../../../i18n/i18n'
 import { useSheet } from '../../SheetProvider'
 import { useOperatorFilterProvider } from '../SheetOperatorFilterProvider'
 
 export interface OperatorMutipleSelectProp {}
 
 export const OperatorMutipleSelect: FC<OperatorMutipleSelectProp> = () => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const {
     operatorFiltered: { data: operatorFilteredData },
   } = useOperatorFilterProvider()
@@ -47,8 +47,7 @@ export const OperatorMutipleSelect: FC<OperatorMutipleSelectProp> = () => {
         minimal
         icon="circle"
         disabled={cancelAllDisabled}
-        title={t(
-          'components.editor.operator.sheet.sheetOperator.toolbox.OperatorMutipleSelect.deselect_all_operators',
+        title={t.components.editor.operator.sheet.sheetOperator.toolbox.OperatorMutipleSelect.deselect_all_operators(
           { count: existedOperators.length },
         )}
         onClick={cancelAll}
@@ -56,8 +55,7 @@ export const OperatorMutipleSelect: FC<OperatorMutipleSelectProp> = () => {
       <Button
         minimal
         icon="selection"
-        title={t(
-          'components.editor.operator.sheet.sheetOperator.toolbox.OperatorMutipleSelect.select_all_operators',
+        title={t.components.editor.operator.sheet.sheetOperator.toolbox.OperatorMutipleSelect.select_all_operators(
           { count: operatorFilteredData.length },
         )}
         disabled={selectAllDisabled}

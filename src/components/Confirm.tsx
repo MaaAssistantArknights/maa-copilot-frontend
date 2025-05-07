@@ -1,8 +1,8 @@
 import { Alert, AlertProps } from '@blueprintjs/core'
 
 import { useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../i18n/i18n'
 import { FCC } from '../types'
 
 interface ConfirmProps extends Omit<AlertProps, 'isOpen' | 'onConfirm'> {
@@ -19,13 +19,13 @@ export const Confirm: FCC<ConfirmProps> = ({
   onConfirm,
   ...props
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [isOpen, setIsOpen] = useState(false)
   const [confirming, setConfirming] = useState(false)
   const [remainingRepeats, setRemainingRepeats] = useState(repeats)
 
   // Set default confirmButtonText if not provided
-  confirmButtonText = confirmButtonText || t('components.Confirm.confirm')
+  confirmButtonText = confirmButtonText || t.components.Confirm.confirm
 
   useEffect(() => {
     if (isOpen) {
@@ -54,7 +54,7 @@ export const Confirm: FCC<ConfirmProps> = ({
     <>
       {trigger({ handleClick: () => setIsOpen(true) })}
       <Alert
-        cancelButtonText={t('components.Confirm.cancel')}
+        cancelButtonText={t.components.Confirm.cancel}
         icon={
           intent === 'danger' || intent === 'warning' ? 'error' : 'info-sign'
         }

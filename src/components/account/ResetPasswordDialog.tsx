@@ -3,8 +3,8 @@ import { Button, Callout, Dialog, InputGroup } from '@blueprintjs/core'
 import { resetPassword, sendResetPasswordEmail } from 'apis/auth'
 import { FC, useState } from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../../i18n/i18n'
 import { formatError } from '../../utils/error'
 import { useNetworkState } from '../../utils/useNetworkState'
 import { wrapErrorMessage } from '../../utils/wrapErrorMessage'
@@ -28,7 +28,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const {
     control,
@@ -50,7 +50,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
 
       AppToaster.show({
         intent: 'success',
-        message: t('components.account.ResetPasswordDialog.reset_success'),
+        message: t.components.account.ResetPasswordDialog.reset_success,
       })
       onClose()
     } catch (e) {
@@ -62,7 +62,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
   return (
     <Dialog
       usePortal={false}
-      title={t('components.account.ResetPasswordDialog.reset_password')}
+      title={t.components.account.ResetPasswordDialog.reset_password}
       icon="key"
       isOpen={isOpen}
       onClose={onClose}
@@ -74,7 +74,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
               <Callout
                 intent="danger"
                 icon="error"
-                title={t('components.account.ResetPasswordDialog.error')}
+                title={t.components.account.ResetPasswordDialog.error}
               >
                 {globalError}
               </Callout>
@@ -95,25 +95,22 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
             />
 
             <FormField
-              label={t(
-                'components.account.ResetPasswordDialog.verification_code',
-              )}
+              label={t.components.account.ResetPasswordDialog.verification_code}
               field="token"
               control={control}
               error={errors.token}
               ControllerProps={{
                 rules: {
-                  required: t(
-                    'components.account.ResetPasswordDialog.code_required',
-                  ),
+                  required:
+                    t.components.account.ResetPasswordDialog.code_required,
                 },
                 render: ({ field: { value, ...binding } }) => (
                   <InputGroup
                     id="token"
                     value={value || ''}
-                    placeholder={t(
-                      'components.account.ResetPasswordDialog.enter_email_code',
-                    )}
+                    placeholder={
+                      t.components.account.ResetPasswordDialog.enter_email_code
+                    }
                     {...binding}
                   />
                 ),
@@ -139,7 +136,7 @@ export const ResetPasswordDialog: FC<ResetPasswordDialogProps> = ({
                   onSubmit(e)
                 }}
               >
-                {t('components.account.ResetPasswordDialog.save')}
+                {t.components.account.ResetPasswordDialog.save}
               </Button>
             </div>
           </form>
@@ -156,7 +153,7 @@ const RequestTokenButton = ({
   email: string
   disabled: boolean
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { networkState, start, finish } = useNetworkState()
   const [sent, setSent] = useState(false)
 
@@ -164,7 +161,7 @@ const RequestTokenButton = ({
     start()
     wrapErrorMessage(
       (e) =>
-        t('components.account.ResetPasswordDialog.get_code_failed', {
+        t.components.account.ResetPasswordDialog.get_code_failed({
           error: formatError(e),
         }),
       sendResetPasswordEmail({ email }),
@@ -173,7 +170,7 @@ const RequestTokenButton = ({
         finish(null)
         setSent(true)
         AppToaster.show({
-          message: t('components.account.ResetPasswordDialog.code_sent'),
+          message: t.components.account.ResetPasswordDialog.code_sent,
           intent: 'success',
         })
       })
@@ -190,8 +187,8 @@ const RequestTokenButton = ({
       loading={networkState.loading}
     >
       {sent
-        ? t('components.account.ResetPasswordDialog.resend')
-        : t('components.account.ResetPasswordDialog.get_code')}
+        ? t.components.account.ResetPasswordDialog.resend
+        : t.components.account.ResetPasswordDialog.get_code}
     </Button>
   )
 }

@@ -12,11 +12,11 @@ import { updatePassword, updateUserInfo } from 'apis/auth'
 import { useAtom } from 'jotai'
 import { FC, useEffect, useState } from 'react'
 import { FieldErrors, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { useLatest } from 'react-use'
 
 import { AppToaster } from 'components/Toaster'
 
+import { useTranslation } from '../../i18n/i18n'
 import { authAtom } from '../../store/auth'
 import { formatError } from '../../utils/error'
 import { GlobalErrorBoundary } from '../GlobalErrorBoundary'
@@ -29,12 +29,12 @@ interface EditDialogProps {
 }
 
 export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [activeTab, setActiveTab] = useState<TabId>('info')
 
   return (
     <Dialog
-      title={t('components.account.EditDialog.edit_account_info')}
+      title={t.components.account.EditDialog.edit_account_info}
       icon="user"
       isOpen={isOpen}
       onClose={onClose}
@@ -56,7 +56,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
                 <div>
                   <Icon icon="manually-entered-data" />
                   <span className="ml-1">
-                    {t('components.account.EditDialog.account_info')}
+                    {t.components.account.EditDialog.account_info}
                   </span>
                 </div>
               }
@@ -68,7 +68,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
                 <div>
                   <Icon icon="key" />
                   <span className="ml-1">
-                    {t('components.account.EditDialog.password')}
+                    {t.components.account.EditDialog.password}
                   </span>
                 </div>
               }
@@ -82,7 +82,7 @@ export const EditDialog: FC<EditDialogProps> = ({ isOpen, onClose }) => {
 }
 
 const InfoPanel = ({ onClose }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   interface FormValues {
     username: string
@@ -120,7 +120,7 @@ const InfoPanel = ({ onClose }) => {
 
       AppToaster.show({
         intent: 'success',
-        message: t('components.account.EditDialog.update_success'),
+        message: t.components.account.EditDialog.update_success,
       })
       onClose(false)
     } catch (e) {
@@ -135,7 +135,7 @@ const InfoPanel = ({ onClose }) => {
         <Callout
           intent="danger"
           icon="error"
-          title={t('components.account.EditDialog.error')}
+          title={t.components.account.EditDialog.error}
         >
           {globalError}
         </Callout>
@@ -160,7 +160,7 @@ const InfoPanel = ({ onClose }) => {
             onSubmit(e)
           }}
         >
-          {t('components.account.EditDialog.save')}
+          {t.components.account.EditDialog.save}
         </Button>
       </div>
     </form>
@@ -168,7 +168,7 @@ const InfoPanel = ({ onClose }) => {
 }
 
 const PasswordPanel = ({ onClose }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   interface FormValues {
     original: string
@@ -192,7 +192,7 @@ const PasswordPanel = ({ onClose }) => {
     async ({ original, newPassword, newPassword2 }) => {
       if (newPassword !== newPassword2) {
         setError('newPassword2', {
-          message: t('components.account.EditDialog.passwords_dont_match'),
+          message: t.components.account.EditDialog.passwords_dont_match,
         })
         return
       }
@@ -202,7 +202,7 @@ const PasswordPanel = ({ onClose }) => {
 
         AppToaster.show({
           intent: 'success',
-          message: t('components.account.EditDialog.update_success'),
+          message: t.components.account.EditDialog.update_success,
         })
         onClose(false)
       } catch (e) {
@@ -219,27 +219,27 @@ const PasswordPanel = ({ onClose }) => {
           <Callout
             intent="danger"
             icon="error"
-            title={t('components.account.EditDialog.error')}
+            title={t.components.account.EditDialog.error}
           >
             {globalError}
           </Callout>
         )}
 
         <AuthFormPasswordField
-          label={t('components.account.EditDialog.current_password')}
+          label={t.components.account.EditDialog.current_password}
           field="original"
           control={control}
           error={errors.original}
         />
         <AuthFormPasswordField
-          label={t('components.account.EditDialog.new_password')}
+          label={t.components.account.EditDialog.new_password}
           field="newPassword"
           control={control}
           error={errors.newPassword}
           autoComplete="off"
         />
         <AuthFormPasswordField
-          label={t('components.account.EditDialog.confirm_new_password')}
+          label={t.components.account.EditDialog.confirm_new_password}
           field="newPassword2"
           control={control}
           error={errors.newPassword2}
@@ -253,7 +253,7 @@ const PasswordPanel = ({ onClose }) => {
             icon="key"
             onClick={() => setResetPasswordDialogOpen(true)}
           >
-            {t('components.account.EditDialog.forgot_password')}
+            {t.components.account.EditDialog.forgot_password}
           </Button>
           <Button
             disabled={!isDirty || isSubmitting}
@@ -267,7 +267,7 @@ const PasswordPanel = ({ onClose }) => {
               onSubmit(e)
             }}
           >
-            {t('components.account.EditDialog.save')}
+            {t.components.account.EditDialog.save}
           </Button>
         </div>
       </form>

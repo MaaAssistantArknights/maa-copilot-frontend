@@ -12,7 +12,6 @@ import {
   useMemo,
   useState,
 } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import {
   deleteComment,
@@ -20,6 +19,7 @@ import {
   topComment,
   useComments,
 } from '../../../apis/comment'
+import { useTranslation } from '../../../i18n/i18n'
 import {
   AUTHOR_MAX_COMMENT_LENGTH,
   CommentInfo,
@@ -58,7 +58,7 @@ export const CommentAreaContext = createContext<CommentAreaContext>({} as any)
 export const CommentArea = withSuspensable(function ViewerComments({
   operationId,
 }: CommentAreaProps) {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { comments, isValidating, isReachingEnd, setSize, mutate } =
     useComments({
       operationId,
@@ -130,21 +130,21 @@ export const CommentArea = withSuspensable(function ViewerComments({
         {isReachingEnd && !comments?.length && (
           <NonIdealState
             icon="comment"
-            title={t('components.viewer.comment.no_comments')}
-            description={t('components.viewer.comment.encourage_author')}
+            title={t.components.viewer.comment.no_comments}
+            description={t.components.viewer.comment.encourage_author}
           />
         )}
 
         {isReachingEnd && !!comments?.length && (
           <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
-            {t('components.viewer.comment.reached_bottom')}
+            {t.components.viewer.comment.reached_bottom}
           </div>
         )}
 
         {!isReachingEnd && (
           <Button
             loading={isValidating}
-            text={t('components.viewer.comment.load_more')}
+            text={t.components.viewer.comment.load_more}
             icon="more"
             className="mt-2"
             large
@@ -192,14 +192,14 @@ const SubComment = ({
   comment: SubCommentInfo
   fromComment?: SubCommentInfo
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   return (
     <div className={clsx(className, 'pl-8')}>
       <CommentHeader comment={comment} />
       {comment.deleted ? (
         <div className="italic text-gray-500">
-          {t('components.viewer.comment.deleted')}
+          {t.components.viewer.comment.deleted}
         </div>
       ) : (
         <div>
@@ -207,7 +207,7 @@ const SubComment = ({
             {fromComment && (
               <>
                 <Tag minimal className="mr-px">
-                  {t('components.viewer.comment.reply')}
+                  {t.components.viewer.comment.reply}
                   <UserName userId={fromComment.uploaderId}>
                     @{fromComment.uploader}
                   </UserName>
@@ -231,7 +231,7 @@ const CommentHeader = ({
   className?: string
   comment: CommentInfo
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { uploader, uploaderId, uploadTime } = comment
   const topping = isMainComment(comment) ? comment.topping : false
   const [{ userId }] = useAtom(authAtom)
@@ -252,7 +252,7 @@ const CommentHeader = ({
       </div>
       {topping && (
         <Tag minimal className="ml-2" intent="primary" icon="pin">
-          {t('components.viewer.comment.pinned')}
+          {t.components.viewer.comment.pinned}
         </Tag>
       )}
     </div>
@@ -276,7 +276,7 @@ const CommentActions = ({
   className?: string
   comment: CommentInfo
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [{ userId }] = useAtom(authAtom)
   const { operationOwned, replyTo, setReplyTo, reload } =
     useContext(CommentAreaContext)
@@ -296,7 +296,7 @@ const CommentActions = ({
 
     await wrapErrorMessage(
       (e) =>
-        t('components.viewer.comment.rating_failed', { error: formatError(e) }),
+        t.components.viewer.comment.rating_failed({ error: formatError(e) }),
       deleteComment({ commentId: comment.commentId }),
     ).catch(console.warn)
 
@@ -320,7 +320,7 @@ const CommentActions = ({
           active={replyTo === comment}
           onClick={() => setReplyTo(replyTo === comment ? undefined : comment)}
         >
-          {t('components.viewer.comment.reply')}
+          {t.components.viewer.comment.reply}
         </Button>
         {operationOwned && isMainComment(comment) && (
           <CommentTopButton comment={comment} />
@@ -332,14 +332,14 @@ const CommentActions = ({
             className="!font-normal !text-[13px]"
             onClick={() => setDeleteDialogOpen(true)}
           >
-            {t('components.viewer.comment.delete')}
+            {t.components.viewer.comment.delete}
           </Button>
         )}
 
         <Alert
           isOpen={deleteDialogOpen}
-          cancelButtonText={t('components.viewer.comment.cancel')}
-          confirmButtonText={t('components.viewer.comment.delete')}
+          cancelButtonText={t.components.viewer.comment.cancel}
+          confirmButtonText={t.components.viewer.comment.delete}
           icon="trash"
           intent="danger"
           canOutsideClickCancel
@@ -347,11 +347,11 @@ const CommentActions = ({
           onCancel={() => setDeleteDialogOpen(false)}
           onConfirm={handleDelete}
         >
-          <H4>{t('components.viewer.comment.delete_comment')}</H4>
+          <H4>{t.components.viewer.comment.delete_comment}</H4>
           <p>
-            {t('components.viewer.comment.confirm_delete')}
+            {t.components.viewer.comment.confirm_delete}
             {isMainComment(comment) &&
-              t('components.viewer.comment.all_subcomments_deleted')}
+              t.components.viewer.comment.all_subcomments_deleted}
           </p>
         </Alert>
       </div>
@@ -363,7 +363,7 @@ const CommentActions = ({
 }
 
 const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { commentId, like } = comment
   const { reload } = useContext(CommentAreaContext)
 
@@ -378,7 +378,7 @@ const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
 
     await wrapErrorMessage(
       (e) =>
-        t('components.viewer.comment.rating_failed', { error: formatError(e) }),
+        t.components.viewer.comment.rating_failed({ error: formatError(e) }),
       rateComment({ commentId, rating }),
     ).catch(console.warn)
 
@@ -408,7 +408,7 @@ const CommentRatingButtons = ({ comment }: { comment: CommentInfo }) => {
 }
 
 const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { commentId, topping } = comment
   const { reload } = useContext(CommentAreaContext)
 
@@ -422,8 +422,7 @@ const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
     setPending(true)
 
     await wrapErrorMessage(
-      (e) =>
-        t('components.viewer.comment.pin_failed', { error: formatError(e) }),
+      (e) => t.components.viewer.comment.pin_failed({ error: formatError(e) }),
       topComment({ commentId, topping: !topping }),
     ).catch(console.warn)
 
@@ -434,8 +433,8 @@ const CommentTopButton = ({ comment }: { comment: MainCommentInfo }) => {
   return (
     <Button minimal small className="!font-normal !text-[13px]" onClick={top}>
       {topping
-        ? t('components.viewer.comment.unpin')
-        : t('components.viewer.comment.pin')}
+        ? t.components.viewer.comment.unpin
+        : t.components.viewer.comment.pin}
     </Button>
   )
 }

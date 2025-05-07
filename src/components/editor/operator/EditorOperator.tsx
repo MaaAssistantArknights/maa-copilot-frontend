@@ -4,10 +4,10 @@ import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { OPERATORS } from '../../../models/operator'
 import { Suggest } from '../../Suggest'
@@ -42,13 +42,13 @@ export const EditorOperatorName = <T extends FieldValues>({
   groups?: CopilotDocV1.Group[]
   operators?: CopilotDocV1.Operator[]
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const entityName = useMemo(
     () =>
       groups
-        ? t('components.editor.operator.EditorOperator.operator_or_group')
-        : t('components.editor.operator.EditorOperator.operator'),
+        ? t.components.editor.operator.EditorOperator.operator_or_group
+        : t.components.editor.operator.EditorOperator.operator,
     [groups, t],
   )
 
@@ -59,10 +59,9 @@ export const EditorOperatorName = <T extends FieldValues>({
     name,
     control,
     rules: {
-      required: t(
-        'components.editor.operator.EditorOperator.please_enter_name',
-        { entityName },
-      ),
+      required: t.components.editor.operator.EditorOperator.please_enter_name({
+        entityName,
+      }),
       ...rules,
     },
     ...controllerProps,
@@ -129,7 +128,7 @@ export const EditorOperatorName = <T extends FieldValues>({
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem
           key="create-new-item"
-          text={t('components.editor.operator.EditorOperator.use_custom_name', {
+          text={t.components.editor.operator.EditorOperator.use_custom_name({
             entityName,
             query,
           })}
@@ -141,17 +140,15 @@ export const EditorOperatorName = <T extends FieldValues>({
       noResults={
         <MenuItem
           disabled
-          text={t(
-            'components.editor.operator.EditorOperator.no_matching_entity',
-            { entityName },
-          )}
+          text={t.components.editor.operator.EditorOperator.no_matching_entity({
+            entityName,
+          })}
         />
       }
       inputProps={{
-        placeholder: t(
-          'components.editor.operator.EditorOperator.entity_name',
-          { entityName },
-        ),
+        placeholder: t.components.editor.operator.EditorOperator.entity_name({
+          entityName,
+        }),
         large: true,
         onBlur,
       }}

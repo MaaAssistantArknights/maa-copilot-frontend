@@ -25,11 +25,11 @@ import {
   useFieldArray,
   useWatch,
 } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 import { SetRequired } from 'type-fest'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { FactItem } from '../../FactItem'
 import { Droppable, Sortable } from '../../dnd'
 import { EditorGroupItem } from './EditorGroupItem'
@@ -56,7 +56,7 @@ const getId = (performer: Operator | Group) => {
 }
 
 export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const [editMode, setEditMode] = useState<PerformerType>('operator')
   const sensors = useSensors(useSensor(PointerSensor))
@@ -258,9 +258,8 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       )
     ) {
       setError?.('name', {
-        message: t(
-          'components.editor.operator.EditorPerformer.operator_already_exists',
-        ),
+        message:
+          t.components.editor.operator.EditorPerformer.operator_already_exists,
       })
       return false
     }
@@ -330,9 +329,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         setEditingOperator(undefined)
       } else {
         setError?.('global' as any, {
-          message: t(
-            'components.editor.operator.EditorPerformer.update_operator_not_found',
-          ),
+          message:
+            t.components.editor.operator.EditorPerformer
+              .update_operator_not_found,
         })
         return false
       }
@@ -352,9 +351,8 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
       groups.find(({ name, _id }) => name === group.name && _id !== group._id)
     ) {
       setError?.('name', {
-        message: t(
-          'components.editor.operator.EditorPerformer.group_already_exists',
-        ),
+        message:
+          t.components.editor.operator.EditorPerformer.group_already_exists,
       })
       return false
     }
@@ -371,9 +369,8 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         setEditingGroup(undefined)
       } else {
         setError?.('global' as any, {
-          message: t(
-            'components.editor.operator.EditorPerformer.update_group_not_found',
-          ),
+          message:
+            t.components.editor.operator.EditorPerformer.update_group_not_found,
         })
         return false
       }
@@ -430,9 +427,7 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               intent="primary"
             >
               <Icon icon="info-sign" className="mr-1" />
-              {t(
-                'components.editor.operator.EditorPerformer.ungrouped_operators',
-              )}
+              {t.components.editor.operator.EditorPerformer.ungrouped_operators}
               : {additionalOperatorsFromActions.join(', ')}
             </Callout>
           )}
@@ -446,18 +441,16 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
             >
               <Droppable id={nonGroupedContainerId}>
                 <FactItem
-                  title={t(
-                    'components.editor.operator.EditorPerformer.operators',
-                  )}
+                  title={t.components.editor.operator.EditorPerformer.operators}
                   icon="person"
                   className="font-bold"
                 />
 
                 {operators.length === 0 && (
                   <NonIdealState
-                    title={t(
-                      'components.editor.operator.EditorPerformer.no_operators',
-                    )}
+                    title={
+                      t.components.editor.operator.EditorPerformer.no_operators
+                    }
                   />
                 )}
 
@@ -497,9 +490,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               </Droppable>
 
               <FactItem
-                title={t(
-                  'components.editor.operator.EditorPerformer.operator_groups',
-                )}
+                title={
+                  t.components.editor.operator.EditorPerformer.operator_groups
+                }
                 icon="people"
                 className="font-bold mt-8"
               />
@@ -508,9 +501,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
                 // extra div container: NonIdealState is using height: 100% which causes unexpected overflow
                 <div className="relative">
                   <NonIdealState
-                    title={t(
-                      'components.editor.operator.EditorPerformer.no_operator_groups',
-                    )}
+                    title={
+                      t.components.editor.operator.EditorPerformer
+                        .no_operator_groups
+                    }
                   />
                 </div>
               )}

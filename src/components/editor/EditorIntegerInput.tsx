@@ -2,10 +2,10 @@ import { NumericInputProps } from '@blueprintjs/core'
 
 import { isNil } from 'lodash-es'
 import { FieldValues, useController } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
+import { useTranslation } from '../../i18n/i18n'
 import { FieldResetButton } from '../FieldResetButton'
 import { NumericInput2 } from './NumericInput2'
 
@@ -24,7 +24,7 @@ export const EditorIntegerInput = <T extends FieldValues>({
   NumericInputProps,
   ...controllerProps
 }: EditorIntegerInputProps<T>) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { min } = NumericInputProps
 
   const {
@@ -39,7 +39,7 @@ export const EditorIntegerInput = <T extends FieldValues>({
         ? undefined
         : {
             value: min,
-            message: t('components.editor.EditorIntegerInput.min_value', {
+            message: t.components.editor.EditorIntegerInput.min_value({
               min,
             }),
           },

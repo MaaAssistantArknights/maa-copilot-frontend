@@ -2,9 +2,9 @@ import { Card, Icon } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import { FC, ReactNode, useEffect, useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { useAnnouncement } from '../../apis/announcement'
+import { useTranslation } from '../../i18n/i18n'
 import {
   AnnouncementSection,
   parseAnnouncement,
@@ -20,7 +20,7 @@ interface AnnPanelProps {
 }
 
 export const AnnPanel: FC<AnnPanelProps> = ({ className, trigger }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { data, error } = useAnnouncement()
   const announcement = useMemo(
     () => (data ? parseAnnouncement(data) : undefined),
@@ -56,7 +56,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className, trigger }) => {
   trigger ??= ({ handleClick }) => (
     <Card interactive className={clsx(className)} onClick={handleClick}>
       <CardTitle icon="info-sign">
-        {t('components.announcement.AnnPanel.title')}
+        {t.components.announcement.AnnPanel.title}
       </CardTitle>
 
       <div className="flex">
@@ -69,7 +69,7 @@ export const AnnPanel: FC<AnnPanelProps> = ({ className, trigger }) => {
         )}
         {!announcement && error && (
           <div className="grow text-red-500">
-            {t('components.announcement.AnnPanel.load_failed', {
+            {t.components.announcement.AnnPanel.load_failed({
               error: formatError(error),
             })}
           </div>

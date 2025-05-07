@@ -1,6 +1,6 @@
 import { AppToaster } from 'components/Toaster'
 
-import i18n from '../i18n'
+import { i18n } from '../i18n/i18n'
 import { CopilotDocV1 } from '../models/copilot.schema'
 import { ShortCodeContent, toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
@@ -32,7 +32,7 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   doTriggerDownloadJSON(json, `MAACopilot_${operationDoc.doc.title}.json`)
 
   AppToaster.show({
-    message: i18n.t('services.operation.json_downloaded'),
+    message: i18n.services.operation.json_downloaded,
     intent: 'success',
   })
 }
@@ -40,7 +40,7 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
 export const handleLazyDownloadJSON = async (id: number, title: string) => {
   const resp = await wrapErrorMessage(
     (e) =>
-      i18n.t('services.operation.json_download_failed', {
+      i18n.services.operation.json_download_failed({
         error: formatError(e),
       }),
     new OperationApi().getCopilotById({
@@ -56,13 +56,13 @@ export const handleLazyDownloadJSON = async (id: number, title: string) => {
     )
     doTriggerDownloadJSON(json, `MAACopilot_${title}.json`)
     AppToaster.show({
-      message: i18n.t('services.operation.json_downloaded'),
+      message: i18n.services.operation.json_downloaded,
       intent: 'success',
     })
   } catch (e) {
     console.error(e)
     AppToaster.show({
-      message: i18n.t('services.operation.json_data_error'),
+      message: i18n.services.operation.json_data_error,
       intent: 'danger',
     })
   }
@@ -81,12 +81,12 @@ export const copyShortCode = async (target: { id: number }) => {
     navigator.clipboard.writeText(shortCode)
 
     AppToaster.show({
-      message: i18n.t('services.operation.shortcode_copied'),
+      message: i18n.services.operation.shortcode_copied,
       intent: 'success',
     })
   } catch (e) {
     AppToaster.show({
-      message: i18n.t('services.operation.shortcode_copy_failed', {
+      message: i18n.services.operation.shortcode_copy_failed({
         error: formatError(e),
       }),
       intent: 'danger',

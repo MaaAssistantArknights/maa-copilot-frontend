@@ -3,10 +3,8 @@ import { Button, Dialog, InputGroup, MenuItem } from '@blueprintjs/core'
 import { getOperation } from 'apis/operation'
 import { FC, useState } from 'react'
 import { useController, useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
-import { INVALID_OPERATION_CONTENT } from 'models/converter'
-
+import { useTranslation } from '../../../i18n/i18n'
 import { parseShortCode } from '../../../models/shortCode'
 import { formatError } from '../../../utils/error'
 import { FormField2 } from '../../FormField'
@@ -18,7 +16,7 @@ interface ShortCodeForm {
 export const ShortCodeImporter: FC<{
   onImport: (content: string) => void
 }> = ({ onImport }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [dialogOpen, setDialogOpen] = useState(false)
   const [pending, setPending] = useState(false)
 
@@ -35,7 +33,7 @@ export const ShortCodeImporter: FC<{
     control,
     name: 'code',
     rules: {
-      required: t('components.editor.source.ShortCodeImporter.enter_shortcode'),
+      required: t.components.editor.source.ShortCodeImporter.enter_shortcode,
     },
   })
 
@@ -47,16 +45,19 @@ export const ShortCodeImporter: FC<{
 
       if (!shortCodeContent) {
         throw new Error(
-          t('components.editor.source.ShortCodeImporter.invalid_shortcode'),
+          t.components.editor.source.ShortCodeImporter.invalid_shortcode,
         )
       }
 
       const { id } = shortCodeContent
       const operationContent = (await getOperation({ id })).parsedContent
 
-      if (operationContent === INVALID_OPERATION_CONTENT) {
+      if (
+        operationContent.doc.title ===
+        t.models.converter.invalid_operation_content
+      ) {
         throw new Error(
-          t('components.editor.source.ShortCodeImporter.cannot_parse_content'),
+          t.components.editor.source.ShortCodeImporter.cannot_parse_content,
         )
       }
 
@@ -73,7 +74,7 @@ export const ShortCodeImporter: FC<{
       console.warn(e)
       setError('code', {
         message:
-          t('components.editor.source.ShortCodeImporter.load_failed') +
+          t.components.editor.source.ShortCodeImporter.load_failed +
           formatError(e),
       })
     } finally {
@@ -85,16 +86,16 @@ export const ShortCodeImporter: FC<{
     <>
       <MenuItem
         icon="backlink"
-        text={t('components.editor.source.ShortCodeImporter.import_shortcode')}
+        text={t.components.editor.source.ShortCodeImporter.import_shortcode}
         shouldDismissPopover={false}
         onClick={() => setDialogOpen(true)}
       />
       <Dialog
         className="w-full max-w-xl"
         isOpen={dialogOpen}
-        title={t(
-          'components.editor.source.ShortCodeImporter.import_shortcode_title',
-        )}
+        title={
+          t.components.editor.source.ShortCodeImporter.import_shortcode_title
+        }
         icon="backlink"
         onClose={() => {
           setPending(false)
@@ -104,12 +105,10 @@ export const ShortCodeImporter: FC<{
         <form className="flex flex-col px-4 pt-4 pb-6" onSubmit={onSubmit}>
           <FormField2
             field="code"
-            label={t(
-              'components.editor.source.ShortCodeImporter.shortcode_label',
-            )}
-            description={t(
-              'components.editor.source.ShortCodeImporter.shortcode_description',
-            )}
+            label={t.components.editor.source.ShortCodeImporter.shortcode_label}
+            description={
+              t.components.editor.source.ShortCodeImporter.shortcode_description
+            }
             error={errors.code}
           >
             <InputGroup
@@ -128,7 +127,7 @@ export const ShortCodeImporter: FC<{
             icon="import"
             large
           >
-            {t('components.editor.source.ShortCodeImporter.import_button')}
+            {t.components.editor.source.ShortCodeImporter.import_button}
           </Button>
         </form>
       </Dialog>

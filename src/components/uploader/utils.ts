@@ -3,7 +3,7 @@ import { isString } from '@sentry/utils'
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 import { isFinite, isPlainObject } from 'lodash-es'
 
-import i18n from '../../i18n'
+import { i18n } from '../../i18n/i18n'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
 import {
@@ -17,10 +17,8 @@ import { formatError } from '../../utils/error'
 import { AppToaster } from '../Toaster'
 
 export async function parseOperationFile(file: File): Promise<object> {
-  const { t } = i18n
-
   if (file.type !== 'application/json') {
-    throw new Error(t('components.uploader.utils.select_json_file'))
+    throw new Error(i18n.components.uploader.utils.select_json_file)
   }
 
   try {
@@ -29,20 +27,18 @@ export async function parseOperationFile(file: File): Promise<object> {
     const json = JSON.parse(fileText)
 
     if (!isPlainObject(json)) {
-      throw new Error(t('components.uploader.utils.invalid_object'))
+      throw new Error(i18n.components.uploader.utils.invalid_object)
     }
 
     return json
   } catch (e) {
     throw new Error(
-      t('components.uploader.utils.json_parse_failed') + formatError(e),
+      i18n.components.uploader.utils.json_parse_failed + formatError(e),
     )
   }
 }
 
 export function patchOperation(operation: object, levels: Level[]): object {
-  const { t } = i18n
-
   try {
     // this part is quite dirty, do not use in other parts
     // backend compatibility of minimum_required
@@ -73,10 +69,10 @@ export function patchOperation(operation: object, levels: Level[]): object {
         !isString(operation['doc']['details']) ||
         operation['doc']['details'] === ''
       ) {
-        operation['doc']['details'] = t(
-          'components.uploader.utils.job_with_stage_name',
-          { stageName: stage_name },
-        )
+        operation['doc']['details'] =
+          i18n.components.uploader.utils.job_with_stage_name({
+            stageName: stage_name,
+          })
       }
 
       // i18n compatibility of level id
@@ -101,8 +97,8 @@ export function patchOperation(operation: object, levels: Level[]): object {
       } else {
         const reason =
           uniqueStageIds.size > 0
-            ? t('components.uploader.utils.stage_not_unique')
-            : t('components.uploader.utils.stage_not_found')
+            ? i18n.components.uploader.utils.stage_not_unique
+            : i18n.components.uploader.utils.stage_not_found
         const error = new Error(`${reason}(${stage_name})`)
 
         ;(error as any).matchedLevels = matchedLevels
@@ -113,7 +109,7 @@ export function patchOperation(operation: object, levels: Level[]): object {
   } catch (e) {
     console.warn(e)
     AppToaster.show({
-      message: t('components.uploader.utils.auto_fix_failed') + formatError(e),
+      message: i18n.components.uploader.utils.auto_fix_failed + formatError(e),
       intent: 'warning',
     })
   }
@@ -126,8 +122,6 @@ export function patchOperation(operation: object, levels: Level[]): object {
 export function validateOperation(
   operation: object,
 ): asserts operation is CopilotDocV1.OperationSnakeCased {
-  const { t } = i18n
-
   try {
     const jsonSchemaValidation = copilotSchemaValidator.validate(
       'copilot',
@@ -149,7 +143,7 @@ export function validateOperation(
     }
   } catch (e) {
     throw new Error(
-      t('components.uploader.utils.validation_failed') + formatError(e),
+      i18n.components.uploader.utils.validation_failed + formatError(e),
     )
   }
 }

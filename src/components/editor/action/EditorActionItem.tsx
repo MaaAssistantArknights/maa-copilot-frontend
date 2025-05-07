@@ -48,7 +48,7 @@ export const EditorActionItem: FC<EditorActionItemProps> = ({
             {...listeners}
           />
           <CardTitle className="mb-0 flex-grow" icon={type.icon}>
-            <span className="mr-2">{type.title}</span>
+            <span className="mr-2">{type.title()}</span>
             <CardEditOption active={editing} onClick={onEdit} />
             <CardDuplicateOption onClick={onDuplicate} />
             <CardDeleteOption onClick={onRemove} />

@@ -1,8 +1,8 @@
 import { H6 } from '@blueprintjs/core'
 
 import { FC, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 
+import { useTranslation } from '../../../../../i18n/i18n'
 import {
   defaultPagination,
   useOperatorFilterProvider,
@@ -13,7 +13,7 @@ export interface ShowMoreProp {
 }
 
 export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const {
     operatorFiltered: {
       meta: { dataTotal },
@@ -32,8 +32,7 @@ export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
       {lastIndex >= dataTotal ? (
         <>
           <H6>
-            {t(
-              'components.editor.operator.sheet.sheetOperator.ShowMore.showing_all_operators',
+            {t.components.editor.operator.sheet.sheetOperator.ShowMore.showing_all_operators(
               { total: dataTotal },
             )}
           </H6>
@@ -42,9 +41,10 @@ export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
               className="ml-1 cursor-pointer text-sm text-gray-500 hover:text-inherit hover:underline"
               onClick={() => setPagination(defaultPagination)}
             >
-              {t(
-                'components.editor.operator.sheet.sheetOperator.ShowMore.collapse',
-              )}
+              {
+                t.components.editor.operator.sheet.sheetOperator.ShowMore
+                  .collapse
+              }
             </H6>
           )}
         </>
@@ -58,10 +58,9 @@ export const ShowMore: FC<ShowMoreProp> = ({ toTop }) => {
             }))
           }
         >
-          {t(
-            'components.editor.operator.sheet.sheetOperator.ShowMore.show_more',
-            { remaining: dataTotal - lastIndex },
-          )}
+          {t.components.editor.operator.sheet.sheetOperator.ShowMore.show_more({
+            remaining: dataTotal - lastIndex,
+          })}
         </H6>
       )}
     </div>

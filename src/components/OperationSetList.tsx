@@ -6,10 +6,10 @@ import {
 } from 'apis/operation-set'
 import { useAtomValue } from 'jotai'
 import { ComponentType, ReactNode, useEffect } from 'react'
-import { useTranslation } from 'react-i18next'
 
 import { neoLayoutAtom } from 'store/pref'
 
+import { useTranslation } from '../i18n/i18n'
 import { NeoOperationSetCard, OperationSetCard } from './OperationSetCard'
 import { withSuspensable } from './Suspensable'
 
@@ -20,7 +20,7 @@ interface OperationSetListProps extends UseOperationSetsParams {
 export const OperationSetList: ComponentType<OperationSetListProps> =
   withSuspensable(
     ({ onUpdate, ...params }) => {
-      const { t } = useTranslation()
+      const t = useTranslation()
       const neoLayout = useAtomValue(neoLayoutAtom)
 
       const { operationSets, total, setSize, isValidating, isReachingEnd } =
@@ -60,21 +60,21 @@ export const OperationSetList: ComponentType<OperationSetListProps> =
           {isReachingEnd && operationSets.length === 0 && (
             <NonIdealState
               icon="slash"
-              title={t('components.OperationSetList.no_job_sets_found')}
-              description={t('components.OperationSetList.sad_face')}
+              title={t.components.OperationSetList.no_job_sets_found}
+              description={t.components.OperationSetList.sad_face}
             />
           )}
 
           {isReachingEnd && operationSets.length !== 0 && (
             <div className="mt-8 w-full tracking-wider text-center select-none text-slate-500">
-              {t('components.OperationSetList.reached_bottom')}
+              {t.components.OperationSetList.reached_bottom}
             </div>
           )}
 
           {!isReachingEnd && (
             <Button
               loading={isValidating}
-              text={t('components.OperationSetList.load_more')}
+              text={t.components.OperationSetList.load_more}
               icon="more"
               className="mt-2"
               large

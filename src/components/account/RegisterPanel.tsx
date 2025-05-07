@@ -3,13 +3,13 @@ import { Button } from '@blueprintjs/core'
 import { register, sendRegistrationEmail } from 'apis/auth'
 import { FC, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { AppToaster } from 'components/Toaster'
 import { formatError } from 'utils/error'
 import { REGEX_EMAIL } from 'utils/regexes'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
+import { useTranslation } from '../../i18n/i18n'
 import {
   AuthFormEmailField,
   AuthFormPasswordField,
@@ -27,7 +27,7 @@ export interface RegisterFormValues {
 export const RegisterPanel: FC<{
   onComplete: () => void
 }> = ({ onComplete }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
 
   const {
     control,
@@ -41,7 +41,7 @@ export const RegisterPanel: FC<{
   const onSubmit = async (val: RegisterFormValues) => {
     await wrapErrorMessage(
       (e) =>
-        t('components.account.RegisterPanel.registration_failed', {
+        t.components.account.RegisterPanel.registration_failed({
           error: formatError(e),
         }),
       register({
@@ -53,7 +53,7 @@ export const RegisterPanel: FC<{
     )
     AppToaster.show({
       intent: 'success',
-      message: t('components.account.RegisterPanel.registration_success'),
+      message: t.components.account.RegisterPanel.registration_success,
     })
     onComplete()
   }
@@ -77,20 +77,20 @@ export const RegisterPanel: FC<{
       if (!REGEX_EMAIL.test(val.email)) {
         AppToaster.show({
           intent: 'danger',
-          message: t('components.account.RegisterPanel.invalid_email'),
+          message: t.components.account.RegisterPanel.invalid_email,
         })
         return
       }
       await wrapErrorMessage(
         (e) =>
-          t('components.account.RegisterPanel.send_failed', {
+          t.components.account.RegisterPanel.send_failed({
             error: formatError(e),
           }),
         sendRegistrationEmail({ email: val.email }),
       )
       AppToaster.show({
         intent: 'success',
-        message: t('components.account.RegisterPanel.email_sent_success'),
+        message: t.components.account.RegisterPanel.email_sent_success,
       })
       setSendEmailButtonDisabled(true)
     } catch (e) {
@@ -117,10 +117,10 @@ export const RegisterPanel: FC<{
           onClick={onEmailSubmit}
         >
           {isSendEmailButtonDisabled
-            ? t('components.account.RegisterPanel.retry_seconds', {
+            ? t.components.account.RegisterPanel.retry_seconds({
                 seconds: countdown,
               })
-            : t('components.account.RegisterPanel.send_verification_code')}
+            : t.components.account.RegisterPanel.send_verification_code}
         </Button>
       </div>
       <AuthRegistrationTokenField
@@ -151,7 +151,7 @@ export const RegisterPanel: FC<{
           icon="envelope"
           className="self-stretch"
         >
-          {t('components.account.RegisterPanel.register')}
+          {t.components.account.RegisterPanel.register}
         </Button>
       </div>
     </form>

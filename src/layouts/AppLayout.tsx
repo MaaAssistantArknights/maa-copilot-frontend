@@ -37,7 +37,7 @@ export const AppLayout: FCC = ({ children }) => {
               className="text-sm text-zinc-600 dark:text-slate-100 !no-underline ml-2"
             >
               {({ isActive }) => (
-                <Button minimal icon={link.icon as any} active={isActive}>
+                <Button minimal icon={link.icon} active={isActive}>
                   {link.label}
                 </Button>
               )}

@@ -22,13 +22,13 @@ import {
   useController,
   useWatch,
 } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { FormField, FormField2 } from 'components/FormField'
 import { HelperText } from 'components/HelperText'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { Level, OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
+import { useTranslation } from '../../i18n/i18n'
 import {
   createCustomLevel,
   findLevelByStageName,
@@ -56,14 +56,14 @@ import {
 export const StageNameInput: FC<{
   control: Control<CopilotDocV1.Operation, object>
 }> = ({ control }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const {
     field: { value, onChange, onBlur },
     fieldState,
   } = useController({
     name: 'stageName',
     control,
-    rules: { required: t('components.editor.OperationEditor.stage_required') },
+    rules: { required: t.components.editor.OperationEditor.stage_required },
   })
 
   // we are going to manually handle loading state so we could show the skeleton state easily,
@@ -118,18 +118,16 @@ export const StageNameInput: FC<{
 
   return (
     <FormField2
-      label={t('components.editor.OperationEditor.stage')}
+      label={t.components.editor.OperationEditor.stage}
       field="stageName"
       error={levelError ? formatError(levelError) : fieldState.error}
       asterisk
       FormGroupProps={{
         helperText: (
           <>
-            <p>{t('components.editor.OperationEditor.type_to_search')}</p>
-            <p>
-              {t('components.editor.OperationEditor.for_main_event_stages')}
-            </p>
-            <p>{t('components.editor.OperationEditor.for_paradox_stages')}</p>
+            <p>{t.components.editor.OperationEditor.type_to_search}</p>
+            <p>{t.components.editor.OperationEditor.for_main_event_stages}</p>
+            <p>{t.components.editor.OperationEditor.for_paradox_stages}</p>
           </>
         ),
       }}
@@ -158,20 +156,20 @@ export const StageNameInput: FC<{
           onItemSelect={selectLevel}
           inputValueRenderer={(item) =>
             isCustomLevel(item)
-              ? `${item.name} (${t('components.editor.OperationEditor.custom')})`
+              ? `${item.name} (${t.components.editor.OperationEditor.custom})`
               : `${item.catThree} ${item.name}`
           }
           noResults={
             <MenuItem
               disabled
-              text={t('components.editor.OperationEditor.no_matching_stages')}
+              text={t.components.editor.OperationEditor.no_matching_stages}
             />
           }
           createNewItemFromQuery={(query) => createCustomLevel(query)}
           createNewItemRenderer={(query, active, handleClick) => (
             <MenuItem
               key="create-new-item"
-              text={t('components.editor.OperationEditor.use_custom_stage', {
+              text={t.components.editor.OperationEditor.use_custom_stage({
                 query,
               })}
               icon="text-highlight"
@@ -180,14 +178,14 @@ export const StageNameInput: FC<{
             />
           )}
           inputProps={{
-            placeholder: t('components.editor.OperationEditor.stage'),
+            placeholder: t.components.editor.OperationEditor.stage,
             large: true,
             onBlur,
           }}
         />
         <Tooltip2
           placement="top"
-          content={t('components.editor.OperationEditor.view_in_prts_map')}
+          content={t.components.editor.OperationEditor.view_in_prts_map}
         >
           <AnchorButton
             large
@@ -205,7 +203,7 @@ export const StageNameInput: FC<{
 const DifficultyPicker: FC<{
   control: Control<CopilotDocV1.Operation>
 }> = ({ control }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const {
     field: { value = OpDifficulty.UNKNOWN, onChange },
     fieldState: { error },
@@ -241,13 +239,11 @@ const DifficultyPicker: FC<{
 
   return (
     <FormField2
-      label={t('components.editor.OperationEditor.stage_difficulty')}
-      description={t(
-        'components.editor.OperationEditor.difficulty_description',
-      )}
+      label={t.components.editor.OperationEditor.stage_difficulty}
+      description={t.components.editor.OperationEditor.difficulty_description}
       FormGroupProps={{
         helperText: invalid
-          ? t('components.editor.OperationEditor.no_challenge_mode')
+          ? t.components.editor.OperationEditor.no_challenge_mode
           : '',
       }}
       field="difficulty"
@@ -259,14 +255,14 @@ const DifficultyPicker: FC<{
           active={!!(value & OpDifficultyBitFlag.REGULAR)}
           onClick={() => toggle(OpDifficultyBitFlag.REGULAR)}
         >
-          {t('components.editor.OperationEditor.normal')}
+          {t.components.editor.OperationEditor.normal}
         </Button>
         <Button
           disabled={invalid}
           active={!!(value & OpDifficultyBitFlag.HARD)}
           onClick={() => toggle(OpDifficultyBitFlag.HARD)}
         >
-          {t('components.editor.OperationEditor.challenge')}
+          {t.components.editor.OperationEditor.challenge}
         </Button>
       </ButtonGroup>
     </FormField2>
@@ -288,7 +284,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
   },
   toolbar,
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const { data: levels } = useLevels()
 
   const stageName = watch('stageName')
@@ -319,7 +315,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         <div className="px-8 text-lg font-medium flex items-center flex-wrap w-full">
           <Icon icon="document" />
           <span className="ml-2 mr-4">
-            {t('components.editor.OperationEditor.job_editor')}
+            {t.components.editor.OperationEditor.job_editor}
           </span>
           <div className="flex-1" />
 
@@ -331,7 +327,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
             className="mt-4"
             intent="danger"
             icon="error"
-            title={t('components.editor.OperationEditor.error')}
+            title={t.components.editor.OperationEditor.error}
           >
             {globalError.split('\n').map((line) => (
               <p key={line}>{line}</p>
@@ -340,30 +336,29 @@ export const OperationEditor: FC<OperationEditorProps> = ({
         )}
 
         <div className="px-8 mr-0.5">
-          <H4>{t('components.editor.OperationEditor.job_metadata')}</H4>
+          <H4>{t.components.editor.OperationEditor.job_metadata}</H4>
           <div className="flex flex-col md:flex-row">
             <div className="w-full md:w-1/4 md:mr-8">
               <StageNameInput control={control} />
             </div>
             <div className="w-full md:w-3/4">
               <FormField
-                label={t('components.editor.OperationEditor.job_title')}
+                label={t.components.editor.OperationEditor.job_title}
                 field="doc.title"
                 control={control}
                 error={errors.doc?.title}
                 ControllerProps={{
                   rules: {
-                    required: t(
-                      'components.editor.OperationEditor.title_required',
-                    ),
+                    required:
+                      t.components.editor.OperationEditor.title_required,
                   },
                   render: ({ field }) => (
                     <InputGroup
                       large
                       id="doc.title"
-                      placeholder={t(
-                        'components.editor.OperationEditor.title_placeholder',
-                      )}
+                      placeholder={
+                        t.components.editor.OperationEditor.title_placeholder
+                      }
                       {...field}
                       value={field.value || ''}
                     />
@@ -379,7 +374,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
             </div>
             <div className="w-full md:w-3/4">
               <FormField
-                label={t('components.editor.OperationEditor.job_description')}
+                label={t.components.editor.OperationEditor.job_description}
                 field="doc.details"
                 control={control}
                 error={errors.doc?.details}
@@ -391,9 +386,10 @@ export const OperationEditor: FC<OperationEditorProps> = ({
                       growVertically
                       large
                       id="doc.details"
-                      placeholder={t(
-                        'components.editor.OperationEditor.description_placeholder',
-                      )}
+                      placeholder={
+                        t.components.editor.OperationEditor
+                          .description_placeholder
+                      }
                       {...field}
                       value={field.value || ''}
                     />
@@ -410,10 +406,10 @@ export const OperationEditor: FC<OperationEditorProps> = ({
               <EditorPerformerPanel control={control} />
             </div>
             <div className="w-full pb-8">
-              <H4>{t('components.editor.OperationEditor.action_sequence')}</H4>
+              <H4>{t.components.editor.OperationEditor.action_sequence}</H4>
               <HelperText className="mb-4">
                 <span>
-                  {t('components.editor.OperationEditor.drag_to_reorder')}
+                  {t.components.editor.OperationEditor.drag_to_reorder}
                 </span>
               </HelperText>
               <EditorActions control={control} />
@@ -428,7 +424,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 }
 
 const EditorPerformerPanel: FC<EditorPerformerProps> = (props) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const [reload, setReload] = useState(false)
 
   // temporary workaround for https://github.com/clauderic/dnd-kit/issues/799
@@ -439,21 +435,21 @@ const EditorPerformerPanel: FC<EditorPerformerProps> = (props) => {
 
   return (
     <>
-      <H4>{t('components.editor.OperationEditor.operators_and_groups')}</H4>
+      <H4>{t.components.editor.OperationEditor.operators_and_groups}</H4>
       <HelperText className="mb-4">
         <span>
-          {t('components.editor.OperationEditor.drag_to_reorder_operators')}
+          {t.components.editor.OperationEditor.drag_to_reorder_operators}
         </span>
         <span>
-          {t('components.editor.OperationEditor.drag_too_fast_issue')}
+          {t.components.editor.OperationEditor.drag_too_fast_issue}
           <Button
             minimal
             className="!inline !p-0 !min-h-0 ![font-size:inherit] !leading-none !align-baseline underline"
             onClick={() => setReload(true)}
           >
-            {t('components.editor.OperationEditor.refresh_ui')}
+            {t.components.editor.OperationEditor.refresh_ui}
           </Button>
-          {t('components.editor.OperationEditor.to_fix_no_data_loss')}
+          {t.components.editor.OperationEditor.to_fix_no_data_loss}
         </span>
       </HelperText>
       <EditorPerformer {...props} />

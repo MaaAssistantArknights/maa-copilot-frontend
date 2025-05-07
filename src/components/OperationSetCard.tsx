@@ -1,13 +1,13 @@
 import { Button, Card, Elevation, H4, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
-import { useTranslation } from 'react-i18next'
 import { copyShortCode } from 'services/operation'
 
 import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationSetListItem } from 'models/operation-set'
 
+import { useTranslation } from '../i18n/i18n'
 import { Paragraphs } from './Paragraphs'
 import { UserName } from './UserName'
 
@@ -16,7 +16,7 @@ export const NeoOperationSetCard = ({
 }: {
   operationSet: OperationSetListItem
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   return (
     <Card
       interactive={true}
@@ -36,7 +36,7 @@ export const NeoOperationSetCard = ({
             <H4 className="p-0 m-0 mr-20 whitespace-nowrap overflow-hidden text-ellipsis">
               {operationSet.status === 'PRIVATE' && (
                 <Tag className="mr-1">
-                  {t('components.OperationSetCard.private')}
+                  {t.components.OperationSetCard.private}
                 </Tag>
               )}
               {operationSet.name}
@@ -56,7 +56,7 @@ export const NeoOperationSetCard = ({
           <div className="flex items-center text-zinc-500">
             <Icon icon="document" className="mr-1" />
             <span>
-              {t('components.OperationSetCard.jobs_count', {
+              {t.components.OperationSetCard.jobs_count({
                 count: operationSet.copilotIds.length,
               })}
             </span>
@@ -90,7 +90,7 @@ export const OperationSetCard = ({
 }: {
   operationSet: OperationSetListItem
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   return (
     <Card
       interactive={true}
@@ -118,7 +118,7 @@ export const OperationSetCard = ({
             <div className="flex items-center">
               <Icon icon="document" className="mr-1" />
               <span>
-                {t('components.OperationSetCard.jobs_count', {
+                {t.components.OperationSetCard.jobs_count({
                   count: operationSet.copilotIds.length,
                 })}
               </span>
@@ -162,14 +162,14 @@ const CardActions = ({
   className?: string
   operationSet: OperationSetListItem
 }) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   return (
     <div className={className}>
       <Tooltip2
         placement="bottom"
         content={
           <div className="max-w-sm dark:text-slate-900">
-            {t('components.OperationSetCard.copy_secret_code')}
+            {t.components.OperationSetCard.copy_secret_code}
           </div>
         }
       >

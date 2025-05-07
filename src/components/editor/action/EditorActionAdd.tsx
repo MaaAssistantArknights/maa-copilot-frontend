@@ -10,7 +10,6 @@ import {
   useForm,
   useWatch,
 } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
 
 import { CardTitle } from 'components/CardTitle'
 import { FormField, FormField2 } from 'components/FormField'
@@ -30,6 +29,7 @@ import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTyp
 import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { useLevels } from '../../../apis/level'
+import { useTranslation } from '../../../i18n/i18n'
 import { findLevelByStageName } from '../../../models/level'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillTimes } from '../operator/EditorOperatorSkillTimes'
@@ -66,7 +66,7 @@ export const EditorActionAdd = ({
   onSubmit: _onSubmit,
   onCancel,
 }: EditorActionAddProps) => {
-  const { t } = useTranslation()
+  const t = useTranslation()
   const isNew = !editingAction
   const operatorGroups = useWatch({ control: operationControl, name: 'groups' })
   const operators = useWatch({ control: operationControl, name: 'opers' })
@@ -200,9 +200,9 @@ export const EditorActionAdd = ({
           <CardTitle className="mb-0" icon={isNew ? 'add' : 'edit'}>
             <span>
               {isNew
-                ? t('components.editor.action.EditorActionAdd.add')
-                : t('components.editor.action.EditorActionAdd.edit')}
-              {t('components.editor.action.EditorActionAdd.action')}
+                ? t.components.editor.action.EditorActionAdd.add
+                : t.components.editor.action.EditorActionAdd.edit}
+              {t.components.editor.action.EditorActionAdd.action}
             </span>
           </CardTitle>
 
@@ -210,15 +210,15 @@ export const EditorActionAdd = ({
 
           <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
             {isNew
-              ? t('components.editor.action.EditorActionAdd.add')
-              : t('components.editor.action.EditorActionAdd.save')}
+              ? t.components.editor.action.EditorActionAdd.add
+              : t.components.editor.action.EditorActionAdd.save}
           </FormSubmitButton>
 
           <EditorResetButton
             reset={() => reset(resettingValues)}
-            entityName={t(
-              'components.editor.action.EditorActionAdd.current_action',
-            )}
+            entityName={
+              t.components.editor.action.EditorActionAdd.current_action
+            }
           />
         </div>
 
@@ -227,7 +227,7 @@ export const EditorActionAdd = ({
         <div className="flex flex-col lg:flex-row">
           <div className="flex flex-1">
             <FormField2
-              label={t('components.editor.action.EditorActionAdd.action_type')}
+              label={t.components.editor.action.EditorActionAdd.action_type}
               field="type"
               error={errors.type}
               asterisk
@@ -247,12 +247,13 @@ export const EditorActionAdd = ({
               | CopilotDocV1.ActionDeploy
               | CopilotDocV1.ActionSkillOrRetreatOrBulletTime
             >
-              label={t(
-                'components.editor.action.EditorActionAdd.operator_group_name',
-              )}
-              description={t(
-                'components.editor.action.EditorActionAdd.select_operator_description',
-              )}
+              label={
+                t.components.editor.action.EditorActionAdd.operator_group_name
+              }
+              description={
+                t.components.editor.action.EditorActionAdd
+                  .select_operator_description
+              }
               field="name"
               error={
                 (
@@ -267,14 +268,16 @@ export const EditorActionAdd = ({
                 helperText: (
                   <>
                     <p>
-                      {t(
-                        'components.editor.action.EditorActionAdd.search_operator_hint',
-                      )}
+                      {
+                        t.components.editor.action.EditorActionAdd
+                          .search_operator_hint
+                      }
                     </p>
                     <p>
-                      {t(
-                        'components.editor.action.EditorActionAdd.reference_group_hint',
-                      )}
+                      {
+                        t.components.editor.action.EditorActionAdd
+                          .reference_group_hint
+                      }
                     </p>
                   </>
                 ),
@@ -289,9 +292,8 @@ export const EditorActionAdd = ({
                 rules={{
                   required:
                     (type === 'Deploy' || type === 'SkillUsage') &&
-                    t(
-                      'components.editor.action.EditorActionAdd.operator_required',
-                    ),
+                    t.components.editor.action.EditorActionAdd
+                      .operator_required,
                 }}
               />
             </FormField2>
@@ -326,7 +328,7 @@ export const EditorActionAdd = ({
         {type === 'SkillUsage' && (
           <div className="flex gap-2">
             <FormField2
-              label={t('components.editor.action.EditorActionAdd.skill_usage')}
+              label={t.components.editor.action.EditorActionAdd.skill_usage}
               field="skillUsage"
               error={
                 (errors as FieldErrors<CopilotDocV1.ActionSkillUsage>)
@@ -343,9 +345,9 @@ export const EditorActionAdd = ({
 
             {skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes && (
               <FormField2
-                label={t(
-                  'components.editor.action.EditorActionAdd.skill_usage_count',
-                )}
+                label={
+                  t.components.editor.action.EditorActionAdd.skill_usage_count
+                }
                 field="skillTimes"
                 error={
                   (errors as FieldErrors<CopilotDocV1.ActionSkillUsage>)
@@ -364,9 +366,7 @@ export const EditorActionAdd = ({
         {type === 'MoveCamera' && (
           <>
             <Callout>
-              {t(
-                'components.editor.action.EditorActionAdd.camera_movement_hint',
-              )}
+              {t.components.editor.action.EditorActionAdd.camera_movement_hint}
             </Callout>
             <div className="flex mt-2">
               <EditorActionDistance
@@ -381,9 +381,9 @@ export const EditorActionAdd = ({
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
         <EditorActionModule
-          title={t(
-            'components.editor.action.EditorActionAdd.execution_conditions',
-          )}
+          title={
+            t.components.editor.action.EditorActionAdd.execution_conditions
+          }
           icon="stopwatch"
           className="font-bold"
         >
@@ -403,7 +403,7 @@ export const EditorActionAdd = ({
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
         <EditorActionModule
-          title={t('components.editor.action.EditorActionAdd.log')}
+          title={t.components.editor.action.EditorActionAdd.log}
           icon="annotation"
           className="font-bold"
         >
@@ -415,7 +415,7 @@ export const EditorActionAdd = ({
             />
 
             <FormField
-              label={t('components.editor.action.EditorActionAdd.description')}
+              label={t.components.editor.action.EditorActionAdd.description}
               field="doc"
               control={control}
               ControllerProps={{
@@ -426,9 +426,10 @@ export const EditorActionAdd = ({
                     growVertically
                     large
                     id="doc"
-                    placeholder={t(
-                      'components.editor.action.EditorActionAdd.description_placeholder',
-                    )}
+                    placeholder={
+                      t.components.editor.action.EditorActionAdd
+                        .description_placeholder
+                    }
                     {...field}
                     value={field.value || ''}
                   />
@@ -441,13 +442,13 @@ export const EditorActionAdd = ({
         <div className="mt-4 flex">
           <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
             {isNew
-              ? t('components.editor.action.EditorActionAdd.add')
-              : t('components.editor.action.EditorActionAdd.save')}
+              ? t.components.editor.action.EditorActionAdd.add
+              : t.components.editor.action.EditorActionAdd.save}
           </FormSubmitButton>
 
           {!isNew && (
             <Button icon="cross" className="ml-2" onClick={onCancel}>
-              {t('components.editor.action.EditorActionAdd.cancel_edit')}
+              {t.components.editor.action.EditorActionAdd.cancel_edit}
             </Button>
           )}
         </div>

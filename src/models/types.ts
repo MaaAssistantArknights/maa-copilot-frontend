@@ -1,17 +1,17 @@
 import { IconName } from '@blueprintjs/core'
 
-import i18n from '../i18n'
+import { i18nDefer } from '../i18n/i18n'
 import { CopilotDocV1 } from './copilot.schema'
 
 interface ActionType {
   type: 'choice'
   icon: IconName
   accent: string
-  title: string
+  title: () => string
   value: CopilotDocV1.Type | 'Unknown'
   alternativeValue: string
-  description: string
-  group: string
+  description: () => string
+  group: () => string
 }
 
 const accent = {
@@ -31,107 +31,91 @@ export const ACTION_TYPES: ActionType[] = [
     type: 'choice',
     icon: 'new-object',
     accent: accent.red,
-    title: i18n.t('models.types.action_type.deploy.title'),
+    title: i18nDefer.models.types.action_type.deploy.title,
     value: CopilotDocV1.Type.Deploy,
-    alternativeValue: i18n.t(
-      'models.types.action_type.deploy.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.deploy.description'),
-    group: i18n.t('models.types.action_group.operator_deploy_retreat'),
+    alternativeValue: '部署',
+    description: i18nDefer.models.types.action_type.deploy.description,
+    group: i18nDefer.models.types.action_group.operator_deploy_retreat,
   },
   {
     type: 'choice',
     icon: 'graph-remove',
     accent: accent.amber,
-    title: i18n.t('models.types.action_type.retreat.title'),
+    title: i18nDefer.models.types.action_type.retreat.title,
     value: CopilotDocV1.Type.Retreat,
-    alternativeValue: i18n.t(
-      'models.types.action_type.retreat.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.retreat.description'),
-    group: i18n.t('models.types.action_group.operator_deploy_retreat'),
+    alternativeValue: '撤退',
+    description: i18nDefer.models.types.action_type.retreat.description,
+    group: i18nDefer.models.types.action_group.operator_deploy_retreat,
   },
   {
     type: 'choice',
     icon: 'target',
     accent: accent.lime,
-    title: i18n.t('models.types.action_type.skill.title'),
+    title: i18nDefer.models.types.action_type.skill.title,
     value: CopilotDocV1.Type.Skill,
-    alternativeValue: i18n.t('models.types.action_type.skill.alternativeValue'),
-    description: i18n.t('models.types.action_type.skill.description'),
-    group: i18n.t('models.types.action_group.operator_skills'),
+    alternativeValue: '技能',
+    description: i18nDefer.models.types.action_type.skill.description,
+    group: i18nDefer.models.types.action_group.operator_skills,
   },
   {
     type: 'choice',
     icon: 'swap-horizontal',
     accent: accent.emerald,
-    title: i18n.t('models.types.action_type.skill_usage.title'),
+    title: i18nDefer.models.types.action_type.skill_usage.title,
     value: CopilotDocV1.Type.SkillUsage,
-    alternativeValue: i18n.t(
-      'models.types.action_type.skill_usage.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.skill_usage.description'),
-    group: i18n.t('models.types.action_group.operator_skills'),
+    alternativeValue: '技能用法',
+    description: i18nDefer.models.types.action_type.skill_usage.description,
+    group: i18nDefer.models.types.action_group.operator_skills,
   },
   {
     type: 'choice',
     icon: 'fast-forward',
     accent: accent.cyan,
-    title: i18n.t('models.types.action_type.speed_up.title'),
+    title: i18nDefer.models.types.action_type.speed_up.title,
     value: CopilotDocV1.Type.SpeedUp,
-    alternativeValue: i18n.t(
-      'models.types.action_type.speed_up.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.speed_up.description'),
-    group: i18n.t('models.types.action_group.battle_control'),
+    alternativeValue: '二倍速',
+    description: i18nDefer.models.types.action_type.speed_up.description,
+    group: i18nDefer.models.types.action_group.battle_control,
   },
   {
     type: 'choice',
     icon: 'fast-backward',
     accent: accent.blue,
-    title: i18n.t('models.types.action_type.bullet_time.title'),
+    title: i18nDefer.models.types.action_type.bullet_time.title,
     value: CopilotDocV1.Type.BulletTime,
-    alternativeValue: i18n.t(
-      'models.types.action_type.bullet_time.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.bullet_time.description'),
-    group: i18n.t('models.types.action_group.battle_control'),
+    alternativeValue: '子弹时间',
+    description: i18nDefer.models.types.action_type.bullet_time.description,
+    group: i18nDefer.models.types.action_group.battle_control,
   },
   {
     type: 'choice',
     icon: 'camera',
     accent: accent.blue,
-    title: i18n.t('models.types.action_type.move_camera.title'),
+    title: i18nDefer.models.types.action_type.move_camera.title,
     value: CopilotDocV1.Type.MoveCamera,
-    alternativeValue: i18n.t(
-      'models.types.action_type.move_camera.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.move_camera.description'),
-    group: i18n.t('models.types.action_group.battle_control'),
+    alternativeValue: '移动相机',
+    description: i18nDefer.models.types.action_type.move_camera.description,
+    group: i18nDefer.models.types.action_group.battle_control,
   },
   {
     type: 'choice',
     icon: 'antenna',
     accent: accent.violet,
-    title: i18n.t('models.types.action_type.skill_daemon.title'),
+    title: i18nDefer.models.types.action_type.skill_daemon.title,
     value: CopilotDocV1.Type.SkillDaemon,
-    alternativeValue: i18n.t(
-      'models.types.action_type.skill_daemon.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.skill_daemon.description'),
-    group: i18n.t('models.types.action_group.battle_control'),
+    alternativeValue: '摆完挂机',
+    description: i18nDefer.models.types.action_type.skill_daemon.description,
+    group: i18nDefer.models.types.action_group.battle_control,
   },
   {
     type: 'choice',
     icon: 'paragraph',
     accent: accent.fuchsia,
-    title: i18n.t('models.types.action_type.output.title'),
+    title: i18nDefer.models.types.action_type.output.title,
     value: CopilotDocV1.Type.Output,
-    alternativeValue: i18n.t(
-      'models.types.action_type.output.alternativeValue',
-    ),
-    description: i18n.t('models.types.action_type.output.description'),
-    group: i18n.t('models.types.action_group.miscellaneous'),
+    alternativeValue: '打印',
+    description: i18nDefer.models.types.action_type.output.description,
+    group: i18nDefer.models.types.action_group.miscellaneous,
   },
 ]
 
@@ -145,11 +129,11 @@ const notFoundActionType: ActionType = {
   type: 'choice',
   icon: 'help',
   accent: accent.zinc,
-  title: i18n.t('models.types.action_type.unknown.title'),
+  title: i18nDefer.models.types.action_type.unknown.title,
   value: 'Unknown',
-  alternativeValue: i18n.t('models.types.action_type.unknown.alternativeValue'),
-  description: i18n.t('models.types.action_type.unknown.description'),
-  group: i18n.t('models.types.action_group.unknown'),
+  alternativeValue: '',
+  description: i18nDefer.models.types.action_type.unknown.description,
+  group: i18nDefer.models.types.action_group.unknown,
 }
 
 export const findActionType = (type?: string) => {
