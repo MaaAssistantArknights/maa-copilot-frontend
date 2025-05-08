@@ -14,47 +14,58 @@ const updater = mitt()
 
 export type Language = (typeof languages)[number]
 
-export type I18NTranslations = ParseObject<
+export type I18NTranslations = MakeTranslations<
   | typeof import('./generated/cn').default
   | typeof import('./generated/en').default
 > & { essentials: I18NEssentials }
 
-type I18NEssentials = ParseObject<(typeof ESSENTIALS)[Language]>
+type I18NEssentials = MakeTranslations<(typeof ESSENTIALS)[Language]>
 
-type ParseObject<T> = T extends string
+type MakeTranslations<T> = MakeEndpoints<ParseValue<T>>
+
+type ParseValue<T> = T extends string
   ? ParseMessage<T, []>
   : T extends PluralObject
     ? ParseMessage<T['other'], ['count']>
-    : { [K in keyof T]: ParseObject<T[K]> }
+    : { [P in keyof T]: ParseValue<T[P]> }
 
-type PluralObject = Record<`${number}` | 'other', string>
-
-type ParseMessage<T extends string, InitialKeys extends unknown[]> =
-  InterpolationKeys<T, InitialKeys> extends infer Keys
-    ? Keys extends []
-      ? string
-      : Keys extends unknown[]
-        ? Endpoint<Keys>
-        : never
-    : never
-
-type Endpoint<Keys extends unknown[]> = Keys extends IndexKey[]
-  ? <T extends { [K in keyof Keys]?: ReactNode }>(
-      ...args: T
-    ) => T[number] extends string | number ? string : ReactElement
-  : <T extends { [K in Extract<Keys[number], string>]?: ReactNode }>(
-      ...args: [T]
-    ) => ValueOf<T> extends string | number ? string : ReactElement
+type ParseMessage<
+  T extends string,
+  InitialKeys extends unknown[],
+  Keys = InterpolationKeys<T, InitialKeys>,
+> = Keys extends [] ? string : Keys
 
 type InterpolationKeys<
   Str,
   Keys extends unknown[],
 > = Str extends `${string}{{${infer Key}}}${infer End}`
-  ? InterpolationKeys<End, [...Keys, Key extends '' ? IndexKey : Key]>
+  ? InterpolationKeys<End, [...Keys, Key extends '' ? UnnamedKey : Key]>
   : Keys
 
-declare const indexKey: unique symbol
-type IndexKey = typeof indexKey
+type PluralObject = Record<`${number}` | 'other', string>
+
+type MakeEndpoints<T, K extends keyof T = keyof T> = string extends T
+  ? T
+  : [T] extends [unknown[]]
+    ? Endpoint<T>
+    : { [P in K]: MakeEndpoints<T[P]> }
+
+type Endpoint<Keys extends unknown[]> = Keys[number] extends UnnamedKey
+  ? UnnamedInterpolation<{ [K in keyof Keys]: ReactNode }>
+  : Interpolation<{ [K in Extract<Keys[number], string>]: ReactNode }>
+
+type Interpolation<Arg> = <T extends Arg>(
+  ...args: [T]
+) => InterpolationResult<ValueOf<T>>
+
+type UnnamedInterpolation<Arg extends unknown[]> = <T extends Arg>(
+  ...args: T
+) => InterpolationResult<T[number]>
+
+type InterpolationResult<T> = T extends string | number ? string : ReactElement
+
+declare const unnamedKey: unique symbol
+type UnnamedKey = typeof unnamedKey
 
 export const allEssentials = Object.fromEntries(
   Object.entries(ESSENTIALS).map(([language, data]) => [
@@ -81,7 +92,7 @@ export const i18n = new Proxy({} as I18NTranslations, {
       // before the translations are loaded, in which case you should change it to i18nDefer.*
       throw new Error(allEssentials[currentLanguage].translations_not_loaded)
     }
-    return currentTranslations[prop as keyof I18NTranslations] || prop
+    return currentTranslations[prop] || prop
   },
 })
 
