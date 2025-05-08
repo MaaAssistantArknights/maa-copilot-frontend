@@ -868,7 +868,7 @@
             },
             "default_settings_tooltip": {
               "cn": "若不进行任何设置, 将使用默认值 (一技能 · 不自动使用 · 技能使用次数: 1次)",
-              "en": "If no settings are applied, default values will be used (Skill 1 · Do not use automatically · Usage count: 1)"
+              "en": "If no settings are applied, default values will be used (Skill 1 · Don't use automatically · Usage count: 1)"
             },
             "not_set": {
               "cn": "未设置技能",
@@ -931,9 +931,9 @@
               "other": "未知技能"
             },
             "en": {
-              "1": "Skill 1",
-              "2": "Skill 2",
-              "3": "Skill 3",
+              "1": "S1",
+              "2": "S2",
+              "3": "S3",
               "other": "Unknown Skill"
             }
           }
@@ -981,7 +981,7 @@
           },
           "switch_skill_usage_description": {
             "cn": "切换干员技能用法。例如，刚下桃金娘、需要她帮忙打几个怪，但此时不能自动开技能否则会漏怪，等中后期平稳了才需要她自动开技能，则可以在对应时刻后，将桃金娘的技能用法从「不自动使用」改为「好了就用」。",
-            "en": "Switch operator skill usage. For example, when Perfumer is just deployed and needs to help defeat some enemies, but automatic skill activation would miss enemies, and only in mid/late game should she activate skills automatically, you can change Perfumer's skill usage from 'Do not use automatically' to 'Use when ready'."
+            "en": "Switch operator skill usage. For example, when Perfumer is just deployed and needs to help defeat some enemies, but automatic skill activation would miss enemies, and only in mid/late game should she activate skills automatically, you can change Perfumer's skill usage from 'Don't use automatically' to 'Use when ready'."
           },
           "battle_control": {
             "cn": "作战控制",
@@ -2603,16 +2603,16 @@
           "other": "未知技能"
         },
         "en": {
-          "1": "Skill 1",
-          "2": "Skill 2",
-          "3": "Skill 3",
+          "1": "S1",
+          "2": "S2",
+          "3": "S3",
           "other": "Unknown Skill"
         }
       },
       "skill_usage": {
         "none_title": {
           "cn": "不自动使用",
-          "en": "Do not use automatically"
+          "en": "Don't use automatically"
         },
         "none_description": {
           "cn": "不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作",
@@ -2823,7 +2823,7 @@
           },
           "description": {
             "cn": "切换干员技能用法。例如，刚下桃金娘、需要她帮忙打几个怪，但此时不能自动开技能否则会漏怪，等中后期平稳了才需要她自动开技能，则可以在对应时刻后，将桃金娘的技能用法从「不自动使用」改为「好了就用」。",
-            "en": "Switch operator skill usage. For example, when Perfumer is just deployed and needs to help defeat some enemies, but automatic skill activation would miss enemies, and only in mid/late game should she activate skills automatically, you can change Perfumer's skill usage from 'Do not use automatically' to 'Use when ready'."
+            "en": "Switch operator skill usage. For example, when Perfumer is just deployed and needs to help defeat some enemies, but automatic skill activation would miss enemies, and only in mid/late game should she activate skills automatically, you can change Perfumer's skill usage from 'Don't use automatically' to 'Use when ready'."
           }
         },
         "speed_up": {
