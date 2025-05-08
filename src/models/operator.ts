@@ -78,6 +78,7 @@ export function getSkillUsageTitle(
   if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
     return skillTimes
       ? i18n.models.operator.skill_usage.format_times({
+          count: skillTimes,
           times: skillTimes,
         })
       : i18n.models.operator.skill_usage.format_specific_times

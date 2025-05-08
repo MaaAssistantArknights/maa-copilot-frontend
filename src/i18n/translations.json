@@ -2648,7 +2648,10 @@
         },
         "format_times": {
           "cn": "好了就用（{{times}}次）",
-          "en": "Use when ready ({{times}} times)"
+          "en": {
+            "1": "Use when ready (1 time)",
+            "other": "Use when ready ({{times}} times)"
+          }
         },
         "format_specific_times": {
           "cn": "好了就用（指定次数）",
