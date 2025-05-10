@@ -2007,8 +2007,8 @@
           "en": "Failed to refresh Job set: {{error}}"
         },
         "maa_copilot_task_set": {
-          "cn": "MAA Copilot 作业集",
-          "en": "MAA Copilot Job Set"
+          "cn": "PRTS Plus 作业集",
+          "en": "PRTS Plus Job Set"
         },
         "manage": {
           "cn": "管理",
@@ -2109,8 +2109,8 @@
           "en": "Failed to submit rating: {{error}}"
         },
         "maa_copilot_task": {
-          "cn": "MAA Copilot 作业",
-          "en": "MAA Copilot Job"
+          "cn": "PRTS Plus 作业",
+          "en": "PRTS Plus Job"
         },
         "manage": {
           "cn": "管理",
@@ -2252,8 +2252,8 @@
         "en": "Edit Information"
       },
       "maa_account": {
-        "cn": "MAA Copilot 账户",
-        "en": "MAA Copilot Account"
+        "cn": "PRTS Plus 账户",
+        "en": "PRTS Plus Account"
       },
       "login": {
         "cn": "登录",
@@ -2615,8 +2615,8 @@
           "en": "Don't use automatically"
         },
         "none_description": {
-          "cn": "不由 MAA Copilot 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作",
-          "en": "Skills won't be activated automatically by MAA Copilot, or for operators whose skills don't need manual activation (auto-trigger). If you need to manually activate a skill, add a 'Use Skill' action"
+          "cn": "不由 MAA 自动开启技能、或干员技能并不需要操作开启（自动触发）。若需要手动开启技能，请添加「使用技能」动作",
+          "en": "Skills won't be activated automatically by MAA, or for operators whose skills don't need manual activation (auto-trigger). If you need to manually activate a skill, add a 'Use Skill' action"
         },
         "ready_to_use_title": {
           "cn": "好了就用",
