@@ -104,22 +104,13 @@
       "id": "char_4178_alanna",
       "prof": "SUPPORT",
       "subProf": "craftsman",
+      "name_en": "Alanna",
       "name": "阿兰娜",
       "alias": "alanna alannuo elanna elannuo aln eln 阿蘭娜",
       "rarity": 5,
       "alt_name": "Alanna",
       "skills": ["气动增压", "“万斤顶”"],
       "equips": ["", "X"]
-    },
-    {
-      "id": "char_4178_alanna",
-      "prof": "SUPPORT",
-      "subProf": "craftsman",
-      "name_en": "Alanna",
-      "name": "阿兰娜",
-      "alias": "alanna alannuo elanna elannuo aln eln 阿蘭娜",
-      "rarity": 5,
-      "alt_name": "Alanna"
     },
     {
       "id": "char_446_aroma",
@@ -422,21 +413,12 @@
       "id": "token_10027_ironmn_pile2",
       "prof": "TOKEN",
       "subProf": "notchar1",
+      "name_en": "Stainless™ Multifunctional Platform",
       "name": "白铁™多功能平台",
       "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
       "rarity": 0,
       "alt_name": "Stainless™ Multifunctional platform",
       "skills": []
-    },
-    {
-      "id": "token_10027_ironmn_pile2",
-      "prof": "TOKEN",
-      "subProf": "notchar1",
-      "name_en": "Stainless™ Multifunctional Platform",
-      "name": "白铁™多功能平台",
-      "alias": "baitie™duogongnengpingtai baitie™duogongnaipingtai bt™dgnpt 白鐵™多功能平台",
-      "rarity": 0,
-      "alt_name": "Stainless™ Multifunctional platform"
     },
     {
       "id": "char_118_yuki",
@@ -666,21 +648,13 @@
       "id": "char_445_wscoot",
       "prof": "WARRIOR",
       "subProf": "librator",
-      "name": "骋风",
-      "alias": "chengfeng cf 騁風",
-      "rarity": 4,
-      "alt_name": "Windscoot",
-      "skills": ["以攻为守", "招无虚发"]
-    },
-    {
-      "id": "char_445_wscoot",
-      "prof": "WARRIOR",
-      "subProf": "librator",
       "name_en": "Windscoot",
       "name": "骋风",
       "alias": "chengfeng cf 騁風",
       "rarity": 4,
-      "alt_name": "Windscoot"
+      "alt_name": "Windscoot",
+      "skills": ["以攻为守", "招无虚发"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_377_gdglow",
@@ -808,7 +782,8 @@
       "name": "CONFESS-47",
       "alias": "CONFESS-47",
       "rarity": 1,
-      "alt_name": "CONFESS-47"
+      "alt_name": "CONFESS-47",
+      "skills": []
     },
     {
       "id": "token_10039_ulpia_block",
@@ -831,7 +806,7 @@
       "rarity": 6,
       "alt_name": "Silence the Paradigmatic",
       "skills": ["进取之心", "俯瞰视界", "无畏者协议"],
-      "equips": ["", "X"]
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_362_saga",
@@ -1695,7 +1670,7 @@
       "rarity": 6,
       "alt_name": "Thorns",
       "skills": ["攻击力强化·γ型", "护身尖刺", "至高之术"],
-      "equips": ["", "X"]
+      "equips": ["", "X", "D"]
     },
     {
       "id": "token_10032_jesca2_jckshd",
@@ -2106,7 +2081,7 @@
       "rarity": 6,
       "alt_name": "Archetto",
       "skills": ["箭矢·散逸", "箭矢·追猎", "箭矢·暴风"],
-      "equips": ["", "X", "Y"]
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_405_absin",
@@ -2256,7 +2231,9 @@
       "name": "蕾缪安",
       "alias": "leimouan leimiuan leimiaoan leimuan leiliaoan lma lla 蕾繆安",
       "rarity": 6,
-      "alt_name": "Lemuen"
+      "alt_name": "Lemuen",
+      "skills": ["重逢问候", "归乡邀约", "礼炮·强制追思"],
+      "equips": ["", "Y"]
     },
     {
       "id": "char_107_liskam",
@@ -2421,7 +2398,8 @@
       "name": "聆音",
       "alias": "lingyin ly 聆音",
       "rarity": 5,
-      "alt_name": "Gracebearer"
+      "alt_name": "Gracebearer",
+      "skills": ["开颅挽歌", "破膛弥撒"]
     },
     {
       "id": "char_192_falco",
@@ -2490,7 +2468,8 @@
       "alias": "longshelan lsl 龍舌蘭",
       "rarity": 5,
       "alt_name": "Tequila",
-      "skills": ["当机立断", "剑走偏锋"]
+      "skills": ["当机立断", "剑走偏锋"],
+      "equips": ["", "X"]
     },
     {
       "id": "token_10005_mgllan_drone3",
@@ -2618,7 +2597,8 @@
       "alias": "maenna men 瑪恩納",
       "rarity": 6,
       "alt_name": "Młynar",
-      "skills": ["未声张的怒火", "未宽解的悲哀", "未照耀的荣光"]
+      "skills": ["未声张的怒火", "未宽解的悲哀", "未照耀的荣光"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_4141_marcil",
@@ -2848,21 +2828,12 @@
       "id": "char_4179_monstr",
       "prof": "MEDIC",
       "subProf": "chainhealer",
+      "name_en": "Mon3tr",
       "name": "Mon3tr",
       "alias": "Mon3tr",
       "rarity": 6,
       "alt_name": "Mon3tr",
       "skills": ["策略：超压链接", "策略：超负荷", "策略：熔毁"]
-    },
-    {
-      "id": "char_4179_monstr",
-      "prof": "MEDIC",
-      "subProf": "chainhealer",
-      "name_en": "Mon3tr",
-      "name": "Mon3tr",
-      "alias": "Mon3tr",
-      "rarity": 6,
-      "alt_name": "Mon3tr"
     },
     {
       "id": "token_10002_kalts_mon3tr",
@@ -2885,17 +2856,7 @@
       "rarity": 6,
       "alt_name": "Muelsyse",
       "skills": ["渐进性润化", "生态耦合", "浅层非熵适应"],
-      "equips": ["", "X"]
-    },
-    {
-      "id": "char_4025_aprot2",
-      "prof": "TANK",
-      "subProf": "artsprotector",
-      "name": "暮落",
-      "alias": "muluo mula mulao ml 暮落",
-      "rarity": 5,
-      "alt_name": "Shalem",
-      "skills": ["速战速决", "燃命狂欢"]
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_4025_aprot2",
@@ -2905,7 +2866,8 @@
       "name": "暮落",
       "alias": "muluo mula mulao ml 暮落",
       "rarity": 5,
-      "alt_name": "Shalem"
+      "alt_name": "Shalem",
+      "skills": ["速战速决", "燃命狂欢"]
     },
     {
       "id": "token_10042_tecno_puppet",
@@ -3107,22 +3069,13 @@
       "id": "char_612_accast",
       "prof": "CASTER",
       "subProf": "splashcaster",
+      "name_en": "Pith",
       "name": "Pith",
       "alias": "Pith",
       "rarity": 6,
       "alt_name": "Pith",
       "skills": ["“书我所书”", "“为我所为”", "“驭我所驭”"],
       "equips": ["", "X"]
-    },
-    {
-      "id": "char_612_accast",
-      "prof": "CASTER",
-      "subProf": "splashcaster",
-      "name_en": "Pith",
-      "name": "Pith",
-      "alias": "Pith",
-      "rarity": 6,
-      "alt_name": "Pith"
     },
     {
       "id": "char_145_prove",
@@ -3400,22 +3353,13 @@
       "id": "char_609_acguad",
       "prof": "WARRIOR",
       "subProf": "fearless",
+      "name_en": "Sharp",
       "name": "Sharp",
       "alias": "Sharp",
       "rarity": 6,
       "alt_name": "Sharp",
       "skills": ["快刀", "亮剑", "力战不竭"],
       "equips": ["", "X"]
-    },
-    {
-      "id": "char_609_acguad",
-      "prof": "WARRIOR",
-      "subProf": "fearless",
-      "name_en": "Sharp",
-      "name": "Sharp",
-      "alias": "Sharp",
-      "rarity": 6,
-      "alt_name": "Sharp"
     },
     {
       "id": "char_379_sesa",
@@ -3546,7 +3490,7 @@
       "rarity": 6,
       "alt_name": "Crownslayer",
       "skills": ["尘烟蔽目", "硝烟震爆", "烽烟行刑场"],
-      "equips": ["", "X"]
+      "equips": ["", "X", "Y"]
     },
     {
       "id": "char_378_asbest",
@@ -3688,7 +3632,7 @@
       "rarity": 6,
       "alt_name": "Mizuki",
       "skills": ["唤醒", "囚徒困境", "镜花水月"],
-      "equips": ["", "X", "Y"]
+      "equips": ["", "X", "Y", "A"]
     },
     {
       "id": "char_263_skadi",
@@ -3787,22 +3731,13 @@
       "id": "char_611_acnipe",
       "prof": "SNIPER",
       "subProf": "fastshot",
+      "name_en": "Stormeye",
       "name": "Stormeye",
       "alias": "Stormeye",
       "rarity": 6,
       "alt_name": "Stormeye",
       "skills": ["破空", "心手合一", "旋臂"],
       "equips": ["", "X"]
-    },
-    {
-      "id": "char_611_acnipe",
-      "prof": "SNIPER",
-      "subProf": "fastshot",
-      "name_en": "Stormeye",
-      "name": "Stormeye",
-      "alias": "Stormeye",
-      "rarity": 6,
-      "alt_name": "Stormeye"
     },
     {
       "id": "char_298_susuro",
@@ -3975,7 +3910,8 @@
       "name": "投递坐标",
       "alias": "toudizuobiao tdzb 投遞坐標",
       "rarity": 0,
-      "alt_name": "临时命名"
+      "alt_name": "临时命名",
+      "skills": []
     },
     {
       "id": "char_510_amedic",
@@ -3992,22 +3928,13 @@
       "id": "char_613_acmedc",
       "prof": "MEDIC",
       "subProf": "physician",
+      "name_en": "Touch",
       "name": "Touch",
       "alias": "Touch",
       "rarity": 6,
       "alt_name": "Touch",
       "skills": ["慨赠", "宛如天启", "恳切福音"],
       "equips": ["", "X"]
-    },
-    {
-      "id": "char_613_acmedc",
-      "prof": "MEDIC",
-      "subProf": "physician",
-      "name_en": "Touch",
-      "name": "Touch",
-      "alias": "Touch",
-      "rarity": 6,
-      "alt_name": "Touch"
     },
     {
       "id": "char_402_tuye",
@@ -4309,21 +4236,12 @@
       "id": "token_10045_alanna_crane",
       "prof": "TOKEN",
       "subProf": "notchar1",
+      "name_en": "Nutlet",
       "name": "小螺帽",
       "alias": "xiaoluomao xlm 小螺帽",
       "rarity": 0,
       "alt_name": "Nutlet",
       "skills": []
-    },
-    {
-      "id": "token_10045_alanna_crane",
-      "prof": "TOKEN",
-      "subProf": "notchar1",
-      "name_en": "Nutlet",
-      "name": "小螺帽",
-      "alias": "xiaoluomao xlm 小螺帽",
-      "rarity": 0,
-      "alt_name": "Nutlet"
     },
     {
       "id": "char_4122_grabds",
@@ -4345,7 +4263,9 @@
       "name": "信仰搅拌机",
       "alias": "xinyangjiaobanji xinyangjiaopanji xinangjiaobanji xinangjiaopanji shenyangjiaobanji shenyangjiaopanji shenangjiaobanji shenangjiaopanji xyjbj xyjpj xajbj xajpj syjbj syjpj sajbj sajpj 信仰攪拌機",
       "rarity": 6,
-      "alt_name": "Sankta Miksaparato"
+      "alt_name": "Sankta Miksaparato",
+      "skills": ["铳骑主考官", "八臂电锯侠", "退休前布道"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_1041_angel2",
@@ -4355,7 +4275,9 @@
       "name": "新约能天使",
       "alias": "xinyuenengtianshi xinyuenaitianshi xinyaonengtianshi xinyaonaitianshi xynts 新約能天使",
       "rarity": 6,
-      "alt_name": "Exusiai the New Covenant"
+      "alt_name": "Exusiai the New Covenant",
+      "skills": ["天空大扫除", "开火成瘾症", "使命必达！"],
+      "equips": ["", "X"]
     },
     {
       "id": "char_274_astesi",
@@ -4947,21 +4869,12 @@
       "id": "char_603_csnipe",
       "prof": "SNIPER",
       "subProf": "fastshot",
+      "name_en": "Reserve Operator - Sniper",
       "name": "预备干员-狙击",
       "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
       "rarity": 4,
       "alt_name": "Reserve Operator - Sniper",
       "skills": ["攻击力强化·α型", "攻击力强化·β型", "攻击力强化·γ型"]
-    },
-    {
-      "id": "char_603_csnipe",
-      "prof": "SNIPER",
-      "subProf": "fastshot",
-      "name_en": "Reserve Operator - Sniper",
-      "name": "预备干员-狙击",
-      "alias": "yubeiganyuan-juji yubeiganyun-juji ybgy-jj 預備幹員-狙擊",
-      "rarity": 4,
-      "alt_name": "Reserve Operator - Sniper"
     },
     {
       "id": "char_505_rcast",
@@ -4978,21 +4891,12 @@
       "id": "char_604_ccast",
       "prof": "CASTER",
       "subProf": "corecaster",
+      "name_en": "Reserve Operator - Caster",
       "name": "预备干员-术师",
       "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
       "rarity": 4,
       "alt_name": "Reserve Operator - Caster",
       "skills": ["战术咏唱·α型", "战术咏唱·β型", "战术咏唱·γ型"]
-    },
-    {
-      "id": "char_604_ccast",
-      "prof": "CASTER",
-      "subProf": "corecaster",
-      "name_en": "Reserve Operator - Caster",
-      "name": "预备干员-术师",
-      "alias": "yubeiganyuan-shushi yubeiganyuan-zhushi yubeiganyun-shushi yubeiganyun-zhushi ybgy-ss ybgy-zs 預備幹員-術師",
-      "rarity": 4,
-      "alt_name": "Reserve Operator - Caster"
     },
     {
       "id": "char_607_cspec",
@@ -5042,21 +4946,12 @@
       "id": "char_602_cdfend",
       "prof": "TANK",
       "subProf": "protector",
+      "name_en": "Reserve Operator - Defender",
       "name": "预备干员-重装",
       "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
       "rarity": 4,
       "alt_name": "Reserve Operator - Defender",
       "skills": ["防御力强化·α型", "防御力强化·β型", "防御力强化·γ型"]
-    },
-    {
-      "id": "char_602_cdfend",
-      "prof": "TANK",
-      "subProf": "protector",
-      "name_en": "Reserve Operator - Defender",
-      "name": "预备干员-重装",
-      "alias": "yubeiganyuan-zhongzhuang yubeiganyuan-chongzhuang yubeiganyun-zhongzhuang yubeiganyun-chongzhuang ybgy-zz ybgy-cz 預備幹員-重裝",
-      "rarity": 4,
-      "alt_name": "Reserve Operator - Defender"
     },
     {
       "id": "char_513_apionr",
@@ -5073,22 +4968,13 @@
       "id": "char_608_acpion",
       "prof": "PIONEER",
       "subProf": "pioneer",
+      "name_en": "Tulip",
       "name": "郁金香",
       "alias": "yujinxiang yjx 鬱金香",
       "rarity": 6,
       "alt_name": "Tulip",
       "skills": ["钻心", "迅瞬", "只余芬芳"],
       "equips": ["", "X"]
-    },
-    {
-      "id": "char_608_acpion",
-      "prof": "PIONEER",
-      "subProf": "pioneer",
-      "name_en": "Tulip",
-      "name": "郁金香",
-      "alias": "yujinxiang yjx 鬱金香",
-      "rarity": 6,
-      "alt_name": "Tulip"
     },
     {
       "id": "char_421_crow",
@@ -5280,21 +5166,12 @@
       "id": "token_10050_monstr_prosts",
       "prof": "TOKEN",
       "subProf": "notchar1",
+      "name_en": "Reconstruct",
       "name": "重构体",
       "alias": "zhonggouti chonggouti zgt cgt 重構體",
       "rarity": 0,
       "alt_name": "Reconstruct",
       "skills": []
-    },
-    {
-      "id": "token_10050_monstr_prosts",
-      "prof": "TOKEN",
-      "subProf": "notchar1",
-      "name_en": "Reconstruct",
-      "name": "重构体",
-      "alias": "zhonggouti chonggouti zgt cgt 重構體",
-      "rarity": 0,
-      "alt_name": "Reconstruct"
     },
     {
       "id": "char_2024_chyue",

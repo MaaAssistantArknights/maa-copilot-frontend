@@ -231,7 +231,11 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         menuItemProps: { shouldDismissPopover: false },
                         description: (
                           <>
-                            <div>{item.description}</div>
+                            <div>
+                              {typeof item.description === 'function'
+                                ? item.description()
+                                : item.description}
+                            </div>
                             <span className="mr-2 text-lg">x</span>
                             <NumericInput2
                               intOnly

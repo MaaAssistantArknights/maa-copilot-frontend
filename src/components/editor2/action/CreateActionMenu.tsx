@@ -90,9 +90,9 @@ export const CreateActionMenu = forwardRef<
                 <MenuItem
                   key={value}
                   icon={icon}
-                  text={title}
+                  text={title()}
                   labelElement={
-                    <Tooltip2 content={description}>
+                    <Tooltip2 content={description()}>
                       <Icon
                         className="!text-gray-300 dark:!text-gray-500"
                         icon="info-sign"

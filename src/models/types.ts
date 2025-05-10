@@ -1,8 +1,8 @@
 import { IconName } from '@blueprintjs/core'
 
-import { i18nDefer } from '../i18n/i18n'
 import { groupBy } from 'lodash-es'
 
+import { i18nDefer } from '../i18n/i18n'
 import { CopilotDocV1 } from './copilot.schema'
 
 interface ActionType {

@@ -449,7 +449,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     text={
                       <div className="flex items-center gap-2">
                         <Icon icon="full-circle" />
-                        {color.title}
+                        {color.title()}
                       </div>
                     }
                     selected={

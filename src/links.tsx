@@ -18,8 +18,8 @@ export const NAV_CONFIG = [
   },
   {
     to: '/editor',
-    label: '作业编辑器v2',
-    icon: 'annotation',
+    labelKey: () => '作业编辑器v2',
+    icon: <Icon icon="annotation" />,
   },
   {
     to: '/about',

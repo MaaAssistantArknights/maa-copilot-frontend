@@ -14,12 +14,12 @@ interface DifficultyPickerProps {
   onChange: (value: OpDifficulty, programmatically: boolean) => void
 }
 
-const DIFFICULTIES: DetailedSelectChoice[] = [
+const DIFFICULTIES = [
   { type: 'choice', title: '默认', value: OpDifficulty.UNKNOWN },
   { type: 'choice', title: '普通', value: OpDifficulty.REGULAR },
   { type: 'choice', title: '突袭', value: OpDifficulty.HARD },
   { type: 'choice', title: '普通+突袭', value: OpDifficulty.REGULAR_HARD },
-]
+] satisfies DetailedSelectChoice[]
 
 export const DifficultyPicker: FC<DifficultyPickerProps> = ({
   stageName,

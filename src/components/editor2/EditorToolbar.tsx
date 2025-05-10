@@ -258,7 +258,6 @@ const HistoryButtons = () => {
                     labelElement={
                       <RelativeTime
                         className="ml-4 text-xs"
-                        detailTooltip={false}
                         moment={record.time}
                       />
                     }
