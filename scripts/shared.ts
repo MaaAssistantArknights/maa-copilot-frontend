@@ -122,7 +122,7 @@ export async function getOperators() {
         },
       ]
     }),
-    (el) => el.name,
+    (el) => el.id,
   ).sort((a, b) => {
     // 默认的 pinyin.compare() 没有传入 locale 参数，导致在不同的系统上有不同的排序结果，
     // 所以这里手动实现一下，并带上 locale

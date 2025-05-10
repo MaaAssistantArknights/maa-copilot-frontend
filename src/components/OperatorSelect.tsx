@@ -74,7 +74,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
             modifiers.active && Classes.ACTIVE,
             selectedItems.includes(item) && Classes.SELECTED,
           )}
-          key={item.name}
+          key={item.id}
           text={
             <div className="flex items-center gap-2">
               <OperatorAvatar

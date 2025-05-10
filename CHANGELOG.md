@@ -1,5 +1,16 @@
+## 2025-05-02
+
+- 添加用户名重复校验 [@dragove](https://github.com/dragove)
+
+## 2025-04-19
+
+- 首页作业多选功能 [@guansss](https://github.com/guansss)
+- 作业集内自动排序功能 [@guansss](https://github.com/guansss)
+- 优化了资源缓存 [@martinwang2002](https://github.com/martinwang2002)
+
 ## 2025-04-10
 
+- 修复了搜索时按关卡过滤不够精准的问题 [@Aliothmoon](https://github.com/Aliothmoon)
 - 修改作业时会在新标签页打开 [@guansss](https://github.com/guansss)
 - 对搜索面板进行了正面优化（确信） [@guansss](https://github.com/guansss)
 - 广告更新
