@@ -1,11 +1,10 @@
-import { Provider } from 'jotai'
+import { useSetAtom } from 'jotai'
 import { useAtomDevtools } from 'jotai-devtools'
 import { useAtomCallback } from 'jotai/utils'
 import { CopilotInfoStatusEnum } from 'maa-copilot-client'
-import { FC, useCallback, useMemo } from 'react'
+import { useCallback, useLayoutEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 
-import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
 import { OperationEditor } from 'components/editor2/Editor'
 
 import {
@@ -13,6 +12,7 @@ import {
   updateOperation,
   useOperation,
 } from '../apis/operation'
+import { withSuspensable } from '../components/Suspensable'
 import { AppToaster } from '../components/Toaster'
 import {
   defaultEditorState,
@@ -27,10 +27,9 @@ import {
 } from '../components/editor2/validation/validation'
 import { toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
-import { AtomsHydrator } from '../utils/react'
 import { wrapErrorMessage } from '../utils/wrapErrorMessage'
 
-const _EditorPage: FC = () => {
+export const EditorPage = withSuspensable(() => {
   const params = useParams()
   const navigate = useNavigate()
   const id = params.id ? +params.id : undefined
@@ -42,34 +41,30 @@ const _EditorPage: FC = () => {
     revalidateIfStale: false,
     revalidateOnReconnect: false,
   }).data
+  const setEditorState = useSetAtom(editorAtoms.editor)
 
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useAtomDevtools(historyAtom, { name: 'editorStateAtom' })
   }
 
-  const initialEditorAtomValue = useMemo(
-    () =>
-      [
-        [
-          editorAtoms.editor,
-          apiOperation
-            ? {
-                operation: toEditorOperation(
-                  operationLooseSchema.parse(JSON.parse(apiOperation.content)),
-                ),
-                metadata: {
-                  visibility:
-                    apiOperation.status === CopilotInfoStatusEnum.Public
-                      ? 'public'
-                      : 'private',
-                },
-              }
-            : defaultEditorState,
-        ],
-      ] as const,
-    [apiOperation],
-  )
+  useLayoutEffect(() => {
+    if (apiOperation) {
+      setEditorState({
+        operation: toEditorOperation(
+          operationLooseSchema.parse(JSON.parse(apiOperation.content)),
+        ),
+        metadata: {
+          visibility:
+            apiOperation.status === CopilotInfoStatusEnum.Public
+              ? 'public'
+              : 'private',
+        },
+      })
+    } else {
+      setEditorState(defaultEditorState)
+    }
+  }, [apiOperation, setEditorState])
 
   const handleSubmit = useAtomCallback(
     useCallback(
@@ -130,19 +125,10 @@ const _EditorPage: FC = () => {
   )
 
   return (
-    <AtomsHydrator atomValues={initialEditorAtomValue}>
-      <OperationEditor
-        title={isNew ? '创建作业' : '修改作业 - ' + toShortCode({ id })}
-        submitAction={isNew ? '发布作业' : '更新作业'}
-        onSubmit={handleSubmit}
-      />
-    </AtomsHydrator>
+    <OperationEditor
+      title={isNew ? '创建作业' : '修改作业 - ' + toShortCode({ id })}
+      submitAction={isNew ? '发布作业' : '更新作业'}
+      onSubmit={handleSubmit}
+    />
   )
-}
-
-export const EditorPage = withGlobalErrorBoundary(() => (
-  <Provider>
-    <_EditorPage />
-  </Provider>
-))
-EditorPage.displayName = 'EditorPage'
+})
