@@ -64,12 +64,6 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
     const edit = useEdit()
     const setFavOperators = useSetAtom(editorFavOperatorsAtom)
     const info = OPERATORS.find(({ name }) => name === operator.name)
-    const skillUsage =
-      '技能' +
-      getSkillUsageTitle(
-        operator.skillUsage ?? CopilotDocV1.SkillUsageType.None,
-        operator.skillTimes ?? 1,
-      ).replace(/（(\d+)次）/, 'x$1')
     const skills = info ? info.skills : defaultSkills
     const requirements = withDefaultRequirements(
       operator.requirements,
@@ -292,7 +286,11 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     ],
                   )}
                 >
-                  {skillUsage}
+                  技能
+                  {getSkillUsageTitle(
+                    operator.skillUsage ?? CopilotDocV1.SkillUsageType.None,
+                    operator.skillTimes ?? 1,
+                  )}
                 </Button>
               </DetailedSelect>
             )}

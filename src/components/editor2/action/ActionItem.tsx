@@ -588,13 +588,12 @@ const ActionTarget: FC<{
     operatorInfo?.name ||
     action.name ||
     (isGroup(action.name) ? '(未命名干员组)' : '请选择目标')
-  const skillUsage =
-    operator &&
-    '技能' +
-      getSkillUsageTitle(
-        operator.skillUsage ?? 0,
-        operator.skillTimes ?? 1,
-      ).replace(/（(\d+)次）/, 'x$1')
+  const skillUsage = operator && (
+    <>
+      技能
+      {getSkillUsageTitle(operator.skillUsage ?? 0, operator.skillTimes ?? 1)}
+    </>
+  )
   const subtitle = isGroup(action.name)
     ? '干员组'
     : skillUsage ||
