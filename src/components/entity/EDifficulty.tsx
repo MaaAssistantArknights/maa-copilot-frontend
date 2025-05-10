@@ -6,16 +6,7 @@ import { FC, ReactNode } from 'react'
 
 import { OpDifficulty, OpDifficultyBitFlag } from 'models/operation'
 
-const descriptions = {
-  regular: {
-    title: '普通',
-    description: '本作业支持普通难度作战',
-  },
-  hard: {
-    title: '突袭',
-    description: '本作业支持突袭难度作战',
-  },
-}
+import { useTranslation } from '../../i18n/i18n'
 
 const DifficultyTag: FC<{
   tooltip?: string | JSX.Element
@@ -44,6 +35,18 @@ const DifficultyTag: FC<{
 export const EDifficulty: FC<{
   difficulty: OpDifficulty
 }> = ({ difficulty }) => {
+  const t = useTranslation()
+  const descriptions = {
+    regular: {
+      title: t.components.entity.EDifficulty.regular,
+      description: t.components.entity.EDifficulty.regular_description,
+    },
+    hard: {
+      title: t.components.entity.EDifficulty.hard,
+      description: t.components.entity.EDifficulty.hard_description,
+    },
+  }
+
   if (difficulty === OpDifficulty.UNKNOWN) {
     return <></>
     // return (

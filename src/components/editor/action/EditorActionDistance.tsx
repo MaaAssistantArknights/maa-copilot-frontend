@@ -3,6 +3,7 @@ import { useController } from 'react-hook-form'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { FieldResetButton } from '../../FieldResetButton'
 import { FormField2 } from '../../FormField'
 import { NumericInput2 } from '../NumericInput2'
@@ -16,6 +17,8 @@ export const EditorActionDistance = ({
   rules,
   ...controllerProps
 }: EditorActionDistanceProps) => {
+  const t = useTranslation()
+
   const {
     field: { onChange, onBlur, value },
     formState: { errors },
@@ -23,7 +26,8 @@ export const EditorActionDistance = ({
     name,
     control,
     rules: {
-      required: '必须填写移动距离',
+      required:
+        t.components.editor.action.EditorActionDistance.distance_required,
       validate: (v) => {
         // v being undefined is allowed because the `required` rule will handle it properly
         if (v) {
@@ -34,7 +38,8 @@ export const EditorActionDistance = ({
               v.every((i) => Number.isFinite(i))
             )
           ) {
-            return '不是有效的数字'
+            return t.components.editor.action.EditorActionDistance
+              .not_valid_number
           }
         }
         return undefined
@@ -64,7 +69,7 @@ export const EditorActionDistance = ({
   return (
     <FormField2
       asterisk
-      label="移动距离"
+      label={t.components.editor.action.EditorActionDistance.movement_distance}
       field={name}
       error={errors[name]}
       className="mr-4"
@@ -73,7 +78,9 @@ export const EditorActionDistance = ({
         <NumericInput2
           selectAllOnFocus
           className="mr-2"
-          placeholder="X 距离"
+          placeholder={
+            t.components.editor.action.EditorActionDistance.x_distance
+          }
           stepSize={0.5}
           onValueChange={(value) => onChange(transform.fromX(value))}
           onBlur={onBlur}
@@ -88,7 +95,9 @@ export const EditorActionDistance = ({
 
         <NumericInput2
           selectAllOnFocus
-          placeholder="Y 距离"
+          placeholder={
+            t.components.editor.action.EditorActionDistance.y_distance
+          }
           stepSize={0.5}
           onValueChange={(value) => onChange(transform.fromY(value))}
           onBlur={onBlur}

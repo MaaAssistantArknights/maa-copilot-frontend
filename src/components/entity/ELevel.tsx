@@ -5,16 +5,18 @@ import { FC } from 'react'
 import { EDifficulty } from 'components/entity/EDifficulty'
 import { Level, OpDifficulty } from 'models/operation'
 
+import { useTranslation } from '../../i18n/i18n'
 import { isCustomLevel } from '../../models/level'
 
 export const NeoELevel: FC<{
   className?: string
   level: Level
 }> = ({ level }) => {
+  const t = useTranslation()
   let { catOne, catTwo, catThree } = level
 
   if (isCustomLevel(level)) {
-    catOne = '自定义关卡'
+    catOne = t.components.entity.ELevel.custom_level
     catTwo = ''
     catThree = level.name
   }
@@ -38,10 +40,11 @@ export const ELevel: FC<{
   className?: string
   level: Level
 }> = ({ level }) => {
+  const t = useTranslation()
   let { catOne, catTwo, catThree } = level
 
   if (isCustomLevel(level)) {
-    catOne = '自定义关卡'
+    catOne = t.components.entity.ELevel.custom_level
     catTwo = ''
     catThree = level.name
   }

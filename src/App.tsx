@@ -6,6 +6,7 @@ import { authAtom } from 'store/auth'
 import { TokenManager } from 'utils/token-manager'
 
 import { GlobalErrorBoundary } from './components/GlobalErrorBoundary'
+import { I18NProvider } from './i18n/I18NProvider'
 import { FCC } from './types'
 
 // jotai 在没有 Provider 时会使用默认的 store
@@ -14,18 +15,18 @@ TokenManager.setAuthSetter((v) => getDefaultStore().set(authAtom, v))
 
 export const App: FCC = ({ children }) => {
   return (
-    <>
-      <SWRConfig
-        value={{
-          focusThrottleInterval: 1000 * 60,
-          errorRetryInterval: 1000 * 3,
-          errorRetryCount: 3,
-        }}
-      >
-        <GlobalErrorBoundary>
+    <SWRConfig
+      value={{
+        focusThrottleInterval: 1000 * 60,
+        errorRetryInterval: 1000 * 3,
+        errorRetryCount: 3,
+      }}
+    >
+      <GlobalErrorBoundary>
+        <I18NProvider>
           <BrowserRouter>{children}</BrowserRouter>
-        </GlobalErrorBoundary>
-      </SWRConfig>
-    </>
+        </I18NProvider>
+      </GlobalErrorBoundary>
+    </SWRConfig>
   )
 }

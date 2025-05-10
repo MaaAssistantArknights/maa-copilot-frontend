@@ -3,6 +3,7 @@ import { useController } from 'react-hook-form'
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { NumericInput2 } from '../NumericInput2'
 
 export const EditorOperatorSkillTimes = <
@@ -12,6 +13,8 @@ export const EditorOperatorSkillTimes = <
   control,
   ...controllerProps
 }: EditorFieldProps<T, CopilotDocV1.SkillTimes>) => {
+  const t = useTranslation()
+
   const {
     field: { onChange, onBlur, value },
   } = useController({
@@ -26,7 +29,9 @@ export const EditorOperatorSkillTimes = <
       defaultValue={0}
       onValueChange={(val) => onChange(Math.min(val, 100))}
       onBlur={onBlur}
-      placeholder="技能使用次数"
+      placeholder={
+        t.components.editor.operator.EditorOperatorSkillTimes.skill_usage_count
+      }
       value={value ?? ''}
       large
       min={1}

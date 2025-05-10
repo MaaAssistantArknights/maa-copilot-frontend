@@ -3,14 +3,7 @@ import { CopilotInfo } from 'maa-copilot-client'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-export const INVALID_OPERATION_CONTENT: CopilotDocV1.Operation = Object.freeze({
-  doc: {
-    title: '无法解析作业内容',
-  },
-  minimumRequired: 'v4.0.0',
-  actions: [],
-  stageName: '',
-})
+import { i18n } from '../i18n/i18n'
 
 export function toCopilotOperation(
   apiOperation: CopilotInfo,
@@ -22,5 +15,12 @@ export function toCopilotOperation(
     console.error('Failed to parse operation', apiOperation, e)
   }
 
-  return INVALID_OPERATION_CONTENT
+  return {
+    doc: {
+      title: i18n.models.converter.invalid_operation_content,
+    },
+    minimumRequired: 'v4.0.0',
+    actions: [],
+    stageName: '',
+  }
 }

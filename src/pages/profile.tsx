@@ -12,13 +12,15 @@ import { authAtom } from 'store/auth'
 import { useUserInfo } from '../apis/user'
 import { CardTitle } from '../components/CardTitle'
 import { withSuspensable } from '../components/Suspensable'
+import { useTranslation } from '../i18n/i18n'
 import { NotFoundError } from '../utils/error'
 
 const _ProfilePage: ComponentType = () => {
+  const t = useTranslation()
   const { id } = useParams()
   if (!id) {
     // edge case?
-    throw new Error('ID 无效')
+    throw new Error(t.pages.profile.invalid_id)
   }
 
   const { data: userInfo } = useUserInfo({ userId: id, suspense: true })
@@ -41,14 +43,16 @@ const _ProfilePage: ComponentType = () => {
               active={listMode === 'operation'}
               onClick={() => setListMode('operation')}
             >
-              作业{operationCount === -1 ? '' : ` (${operationCount})`}
+              {t.pages.profile.tasks}
+              {operationCount === -1 ? '' : ` (${operationCount})`}
             </Button>
             <Button
               icon="folder-close"
               active={listMode === 'operationSet'}
               onClick={() => setListMode('operationSet')}
             >
-              作业集{operationSetCount === -1 ? '' : ` (${operationSetCount})`}
+              {t.pages.profile.task_sets}
+              {operationSetCount === -1 ? '' : ` (${operationSetCount})`}
             </Button>
           </ButtonGroup>
         </div>

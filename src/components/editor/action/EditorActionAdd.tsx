@@ -29,6 +29,7 @@ import { EditorActionTypeSelect } from 'components/editor/action/EditorActionTyp
 import { CopilotDocV1 } from 'models/copilot.schema'
 
 import { useLevels } from '../../../apis/level'
+import { useTranslation } from '../../../i18n/i18n'
 import { findLevelByStageName } from '../../../models/level'
 import { EditorOperatorName } from '../operator/EditorOperator'
 import { EditorOperatorSkillTimes } from '../operator/EditorOperatorSkillTimes'
@@ -65,6 +66,7 @@ export const EditorActionAdd = ({
   onSubmit: _onSubmit,
   onCancel,
 }: EditorActionAddProps) => {
+  const t = useTranslation()
   const isNew = !editingAction
   const operatorGroups = useWatch({ control: operationControl, name: 'groups' })
   const operators = useWatch({ control: operationControl, name: 'opers' })
@@ -114,7 +116,7 @@ export const EditorActionAdd = ({
       // 当重置时没办法正常清空item组件内部的值。
       // 放入setTimeout中，延迟赋值，就可以避免丢失绑定的问题
       setTimeout(() => {
-        // 修复先点击“部署”动作的编辑按钮，再连续点击“二倍速”动作的编辑按钮，“部署”的数据丢失
+        // 修复先点击"部署"动作的编辑按钮，再连续点击"二倍速"动作的编辑按钮，"部署"的数据丢失
         // 原因：通过reset方式赋值给form，相当于将action变量跟form绑定，
         // 当再通过reset(undefined)后，会将action的值置为null，
         // 通过setValue的方式，不会将action和form绑定
@@ -196,18 +198,27 @@ export const EditorActionAdd = ({
       <Card className="mb-2 pb-8 pt-4 overflow-auto">
         <div className="flex items-center mb-4">
           <CardTitle className="mb-0" icon={isNew ? 'add' : 'edit'}>
-            <span>{isNew ? '添加' : '编辑'}动作</span>
+            <span>
+              {isNew
+                ? t.components.editor.action.EditorActionAdd.add
+                : t.components.editor.action.EditorActionAdd.edit}
+              {t.components.editor.action.EditorActionAdd.action}
+            </span>
           </CardTitle>
 
           <div className="flex-1" />
 
           <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
-            {isNew ? '添加' : '保存'}
+            {isNew
+              ? t.components.editor.action.EditorActionAdd.add
+              : t.components.editor.action.EditorActionAdd.save}
           </FormSubmitButton>
 
           <EditorResetButton
             reset={() => reset(resettingValues)}
-            entityName="正在编辑的动作"
+            entityName={
+              t.components.editor.action.EditorActionAdd.current_action
+            }
           />
         </div>
 
@@ -216,7 +227,7 @@ export const EditorActionAdd = ({
         <div className="flex flex-col lg:flex-row">
           <div className="flex flex-1">
             <FormField2
-              label="动作类型"
+              label={t.components.editor.action.EditorActionAdd.action_type}
               field="type"
               error={errors.type}
               asterisk
@@ -236,8 +247,13 @@ export const EditorActionAdd = ({
               | CopilotDocV1.ActionDeploy
               | CopilotDocV1.ActionSkillOrRetreatOrBulletTime
             >
-              label="干员或干员组名"
-              description="选择干员、使用干员名、或使用干员组名引用"
+              label={
+                t.components.editor.action.EditorActionAdd.operator_group_name
+              }
+              description={
+                t.components.editor.action.EditorActionAdd
+                  .select_operator_description
+              }
               field="name"
               error={
                 (
@@ -251,8 +267,18 @@ export const EditorActionAdd = ({
               FormGroupProps={{
                 helperText: (
                   <>
-                    <p>键入干员名、拼音或拼音首字母以搜索干员列表</p>
-                    <p>键入干员组名以引用干员组配置</p>
+                    <p>
+                      {
+                        t.components.editor.action.EditorActionAdd
+                          .search_operator_hint
+                      }
+                    </p>
+                    <p>
+                      {
+                        t.components.editor.action.EditorActionAdd
+                          .reference_group_hint
+                      }
+                    </p>
                   </>
                 ),
               }}
@@ -266,7 +292,8 @@ export const EditorActionAdd = ({
                 rules={{
                   required:
                     (type === 'Deploy' || type === 'SkillUsage') &&
-                    '必须填写干员或干员组名',
+                    t.components.editor.action.EditorActionAdd
+                      .operator_required,
                 }}
               />
             </FormField2>
@@ -301,7 +328,7 @@ export const EditorActionAdd = ({
         {type === 'SkillUsage' && (
           <div className="flex gap-2">
             <FormField2
-              label="技能用法"
+              label={t.components.editor.action.EditorActionAdd.skill_usage}
               field="skillUsage"
               error={
                 (errors as FieldErrors<CopilotDocV1.ActionSkillUsage>)
@@ -318,7 +345,9 @@ export const EditorActionAdd = ({
 
             {skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes && (
               <FormField2
-                label="技能使用次数"
+                label={
+                  t.components.editor.action.EditorActionAdd.skill_usage_count
+                }
                 field="skillTimes"
                 error={
                   (errors as FieldErrors<CopilotDocV1.ActionSkillUsage>)
@@ -337,7 +366,7 @@ export const EditorActionAdd = ({
         {type === 'MoveCamera' && (
           <>
             <Callout>
-              移动距离一般不需要修改，只填写前置延迟（15000）和击杀数条件即可
+              {t.components.editor.action.EditorActionAdd.camera_movement_hint}
             </Callout>
             <div className="flex mt-2">
               <EditorActionDistance
@@ -352,7 +381,9 @@ export const EditorActionAdd = ({
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
         <EditorActionModule
-          title="执行条件"
+          title={
+            t.components.editor.action.EditorActionAdd.execution_conditions
+          }
           icon="stopwatch"
           className="font-bold"
         >
@@ -372,7 +403,7 @@ export const EditorActionAdd = ({
         <div className="h-px w-full bg-gray-200 mt-4 mb-6" />
 
         <EditorActionModule
-          title="日志"
+          title={t.components.editor.action.EditorActionAdd.log}
           icon="annotation"
           className="font-bold"
         >
@@ -384,7 +415,7 @@ export const EditorActionAdd = ({
             />
 
             <FormField
-              label="描述"
+              label={t.components.editor.action.EditorActionAdd.description}
               field="doc"
               control={control}
               ControllerProps={{
@@ -395,7 +426,10 @@ export const EditorActionAdd = ({
                     growVertically
                     large
                     id="doc"
-                    placeholder="描述，可选。会显示在界面上，没有实际作用"
+                    placeholder={
+                      t.components.editor.action.EditorActionAdd
+                        .description_placeholder
+                    }
                     {...field}
                     value={field.value || ''}
                   />
@@ -407,12 +441,14 @@ export const EditorActionAdd = ({
 
         <div className="mt-4 flex">
           <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
-            {isNew ? '添加' : '保存'}
+            {isNew
+              ? t.components.editor.action.EditorActionAdd.add
+              : t.components.editor.action.EditorActionAdd.save}
           </FormSubmitButton>
 
           {!isNew && (
             <Button icon="cross" className="ml-2" onClick={onCancel}>
-              取消编辑
+              {t.components.editor.action.EditorActionAdd.cancel_edit}
             </Button>
           )}
         </div>

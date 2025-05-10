@@ -7,6 +7,7 @@ import { ReLink } from 'components/ReLink'
 import { RelativeTime } from 'components/RelativeTime'
 import { OperationSetListItem } from 'models/operation-set'
 
+import { useTranslation } from '../i18n/i18n'
 import { Paragraphs } from './Paragraphs'
 import { UserName } from './UserName'
 
@@ -15,6 +16,7 @@ export const NeoOperationSetCard = ({
 }: {
   operationSet: OperationSetListItem
 }) => {
+  const t = useTranslation()
   return (
     <Card
       interactive={true}
@@ -33,7 +35,9 @@ export const NeoOperationSetCard = ({
           >
             <H4 className="p-0 m-0 mr-20 whitespace-nowrap overflow-hidden text-ellipsis">
               {operationSet.status === 'PRIVATE' && (
-                <Tag className="mr-1">私有</Tag>
+                <Tag className="mr-1">
+                  {t.components.OperationSetCard.private}
+                </Tag>
               )}
               {operationSet.name}
             </H4>
@@ -51,7 +55,11 @@ export const NeoOperationSetCard = ({
         <div className="flex">
           <div className="flex items-center text-zinc-500">
             <Icon icon="document" className="mr-1" />
-            <span>{operationSet.copilotIds.length}份作业</span>
+            <span>
+              {t.components.OperationSetCard.jobs_count({
+                count: operationSet.copilotIds.length,
+              })}
+            </span>
 
             <Icon icon="time" className="ml-4 mr-1" />
             <RelativeTime
@@ -82,6 +90,7 @@ export const OperationSetCard = ({
 }: {
   operationSet: OperationSetListItem
 }) => {
+  const t = useTranslation()
   return (
     <Card
       interactive={true}
@@ -108,7 +117,11 @@ export const OperationSetCard = ({
           <div className="flex flex-wrap items-start gap-x-4 gap-y-1 text-zinc-500">
             <div className="flex items-center">
               <Icon icon="document" className="mr-1" />
-              <span>{operationSet.copilotIds.length}份作业</span>
+              <span>
+                {t.components.OperationSetCard.jobs_count({
+                  count: operationSet.copilotIds.length,
+                })}
+              </span>
 
               <Icon icon="time" className="ml-4 mr-1" />
               <RelativeTime
@@ -149,12 +162,15 @@ const CardActions = ({
   className?: string
   operationSet: OperationSetListItem
 }) => {
+  const t = useTranslation()
   return (
     <div className={className}>
       <Tooltip2
         placement="bottom"
         content={
-          <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
+          <div className="max-w-sm dark:text-slate-900">
+            {t.components.OperationSetCard.copy_secret_code}
+          </div>
         }
       >
         <Button

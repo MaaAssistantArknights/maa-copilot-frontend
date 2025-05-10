@@ -3,6 +3,7 @@ import { isString } from '@sentry/utils'
 import ajvLocalizeZh from 'ajv-i18n/localize/zh'
 import { isFinite, isPlainObject } from 'lodash-es'
 
+import { i18n } from '../../i18n/i18n'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { copilotSchemaValidator } from '../../models/copilot.schema.validator'
 import {
@@ -17,7 +18,7 @@ import { AppToaster } from '../Toaster'
 
 export async function parseOperationFile(file: File): Promise<object> {
   if (file.type !== 'application/json') {
-    throw new Error('请选择 JSON 文件')
+    throw new Error(i18n.components.uploader.utils.select_json_file)
   }
 
   try {
@@ -26,12 +27,14 @@ export async function parseOperationFile(file: File): Promise<object> {
     const json = JSON.parse(fileText)
 
     if (!isPlainObject(json)) {
-      throw new Error('不是有效的对象')
+      throw new Error(i18n.components.uploader.utils.invalid_object)
     }
 
     return json
   } catch (e) {
-    throw new Error('请选择合法的 JSON 文件：JSON 解析失败：' + formatError(e))
+    throw new Error(
+      i18n.components.uploader.utils.json_parse_failed + formatError(e),
+    )
   }
 }
 
@@ -66,7 +69,10 @@ export function patchOperation(operation: object, levels: Level[]): object {
         !isString(operation['doc']['details']) ||
         operation['doc']['details'] === ''
       ) {
-        operation['doc']['details'] = `作业 ${stage_name}`
+        operation['doc']['details'] =
+          i18n.components.uploader.utils.job_with_stage_name({
+            stageName: stage_name,
+          })
       }
 
       // i18n compatibility of level id
@@ -90,7 +96,9 @@ export function patchOperation(operation: object, levels: Level[]): object {
         operation['stage_name'] = [...uniqueStageIds][0]
       } else {
         const reason =
-          uniqueStageIds.size > 0 ? '匹配到的关卡不唯一' : '未找到对应关卡'
+          uniqueStageIds.size > 0
+            ? i18n.components.uploader.utils.stage_not_unique
+            : i18n.components.uploader.utils.stage_not_found
         const error = new Error(`${reason}(${stage_name})`)
 
         ;(error as any).matchedLevels = matchedLevels
@@ -101,7 +109,7 @@ export function patchOperation(operation: object, levels: Level[]): object {
   } catch (e) {
     console.warn(e)
     AppToaster.show({
-      message: '自动修正失败：' + formatError(e),
+      message: i18n.components.uploader.utils.auto_fix_failed + formatError(e),
       intent: 'warning',
     })
   }
@@ -134,6 +142,8 @@ export function validateOperation(
       )
     }
   } catch (e) {
-    throw new Error('验证失败：' + formatError(e))
+    throw new Error(
+      i18n.components.uploader.utils.validation_failed + formatError(e),
+    )
   }
 }

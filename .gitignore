@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 build/
+public/locales/*.json
+src/i18n/generated

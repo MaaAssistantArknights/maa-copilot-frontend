@@ -47,6 +47,7 @@ import { authAtom } from 'store/auth'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
 import { useLevels } from '../../apis/level'
+import { i18nDefer, useTranslation } from '../../i18n/i18n'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
@@ -63,11 +64,15 @@ const ManageMenu: FC<{
   onRevalidateOperation: () => void
   onDelete: () => void
 }> = ({ operation, onRevalidateOperation, onDelete }) => {
+  const t = useTranslation()
   const refreshOperations = useRefreshOperations()
 
   const handleBanComments = async (status: BanCommentsStatusEnum) => {
     await wrapErrorMessage(
-      (e) => '操作失败：' + formatError(e),
+      (e) =>
+        t.components.viewer.OperationViewer.operation_failed({
+          error: formatError(e),
+        }),
       banComments({ operationId: operation.id, status }),
     ).catch(console.warn)
 
@@ -77,7 +82,10 @@ const ManageMenu: FC<{
   const handleDelete = async () => {
     try {
       await wrapErrorMessage(
-        (e) => `删除失败：${formatError(e)}`,
+        (e) =>
+          t.components.viewer.OperationViewer.delete_failed({
+            error: formatError(e),
+          }),
         deleteOperation({ id: operation.id }),
       )
 
@@ -85,7 +93,7 @@ const ManageMenu: FC<{
 
       AppToaster.show({
         intent: 'success',
-        message: `删除成功`,
+        message: t.components.viewer.OperationViewer.delete_success,
       })
       onDelete()
     } catch (e) {
@@ -102,7 +110,11 @@ const ManageMenu: FC<{
             to={`/create/${operation.id}`}
             target="_blank"
           >
-            <MenuItem tagName="div" icon="edit" text="修改作业" />
+            <MenuItem
+              tagName="div"
+              icon="edit"
+              text={t.components.viewer.OperationViewer.modify_task}
+            />
           </ReLink>
         </li>
         {operation.commentStatus === BanCommentsStatusEnum.Enabled && (
@@ -111,16 +123,18 @@ const ManageMenu: FC<{
             trigger={({ handleClick }) => (
               <MenuItem
                 icon="comment"
-                text="关闭评论区"
+                text={t.components.viewer.OperationViewer.close_comments}
                 shouldDismissPopover={false}
                 onClick={handleClick}
               />
             )}
             onConfirm={() => handleBanComments(BanCommentsStatusEnum.Disabled)}
           >
-            <H6>关闭评论区</H6>
-            <p>确定要关闭评论区吗？</p>
-            <p>已有的评论不会被删除，重新开启后会恢复显示</p>
+            <H6>{t.components.viewer.OperationViewer.close_comments}</H6>
+            <p>{t.components.viewer.OperationViewer.confirm_close_comments}</p>
+            <p>
+              {t.components.viewer.OperationViewer.existing_comments_preserved}
+            </p>
           </Confirm>
         )}
         {operation.commentStatus === BanCommentsStatusEnum.Disabled && (
@@ -128,36 +142,36 @@ const ManageMenu: FC<{
             trigger={({ handleClick }) => (
               <MenuItem
                 icon="comment"
-                text="开启评论区"
+                text={t.components.viewer.OperationViewer.open_comments}
                 shouldDismissPopover={false}
                 onClick={handleClick}
               />
             )}
             onConfirm={() => handleBanComments(BanCommentsStatusEnum.Enabled)}
           >
-            <H6>开启评论区</H6>
-            <p>确定要开启评论区吗？</p>
+            <H6>{t.components.viewer.OperationViewer.open_comments}</H6>
+            <p>{t.components.viewer.OperationViewer.confirm_open_comments}</p>
           </Confirm>
         )}
         <MenuDivider />
         <Confirm
           intent="danger"
-          confirmButtonText="删除"
+          confirmButtonText={t.components.viewer.OperationViewer.delete}
           repeats={3}
           onConfirm={handleDelete}
           trigger={({ handleClick }) => (
             <MenuItem
               icon="delete"
               intent="danger"
-              text="删除作业"
+              text={t.components.viewer.OperationViewer.delete_task}
               shouldDismissPopover={false}
               onClick={handleClick}
             />
           )}
         >
-          <H4>删除作业</H4>
-          <p>确定要删除作业吗？</p>
-          <p>需要三次确认以删除</p>
+          <H4>{t.components.viewer.OperationViewer.delete_task}</H4>
+          <p>{t.components.viewer.OperationViewer.confirm_delete_task}</p>
+          <p>{t.components.viewer.OperationViewer.three_confirmations}</p>
         </Confirm>
       </Menu>
     </>
@@ -169,6 +183,7 @@ export const OperationViewer: ComponentType<{
   onCloseDrawer: () => void
 }> = withSuspensable(
   function OperationViewer({ operationId, onCloseDrawer }) {
+    const t = useTranslation()
     const {
       data: operation,
       error,
@@ -202,10 +217,12 @@ export const OperationViewer: ComponentType<{
       if (error) {
         AppToaster.show({
           intent: 'danger',
-          message: `刷新作业失败：${formatError(error)}`,
+          message: t.components.viewer.OperationViewer.refresh_failed({
+            error: formatError(error),
+          }),
         })
       }
-    }, [error])
+    }, [error, t])
 
     const handleRating = async (decision: OpRatingType) => {
       // cancel rating if already rated by the same type
@@ -214,7 +231,10 @@ export const OperationViewer: ComponentType<{
       }
 
       wrapErrorMessage(
-        (e) => `提交评分失败：${formatError(e)}`,
+        (e) =>
+          t.components.viewer.OperationViewer.submit_rating_failed({
+            error: formatError(e),
+          }),
         mutate(async (val) => {
           await rateOperation({
             id: operationId,
@@ -230,7 +250,9 @@ export const OperationViewer: ComponentType<{
         title={
           <>
             <Icon icon="document" />
-            <span className="ml-2">PRTS Plus 作业</span>
+            <span className="ml-2">
+              {t.components.viewer.OperationViewer.maa_copilot_task}
+            </span>
 
             <div className="flex-1" />
 
@@ -245,19 +267,23 @@ export const OperationViewer: ComponentType<{
                     />
                   }
                 >
-                  <Button icon="wrench" text="管理" rightIcon="caret-down" />
+                  <Button
+                    icon="wrench"
+                    text={t.components.viewer.OperationViewer.manage}
+                    rightIcon="caret-down"
+                  />
                 </Popover2>
               )}
 
               <Button
                 icon="download"
-                text="下载原 JSON"
+                text={t.components.viewer.OperationViewer.download_json}
                 onClick={() => handleDownloadJSON(operation.parsedContent)}
               />
 
               <Button
                 icon="clipboard"
-                text="复制神秘代码"
+                text={t.components.viewer.OperationViewer.copy_secret_code}
                 intent="primary"
                 onClick={() => copyShortCode(operation)}
               />
@@ -269,8 +295,8 @@ export const OperationViewer: ComponentType<{
           fallback={
             <NonIdealState
               icon="issue"
-              title="渲染错误"
-              description="渲染此作业时出现了问题。是否是还未支持的作业类型？"
+              title={t.components.viewer.OperationViewer.render_error}
+              description={t.components.viewer.OperationViewer.render_problem}
             />
           }
         >
@@ -284,16 +310,17 @@ export const OperationViewer: ComponentType<{
     )
   },
   {
-    pendingTitle: '作业加载中',
+    pendingTitle: i18nDefer.components.viewer.OperationViewer.loading_task,
   },
 )
 
 const OperatorCard: FC<{
   operator: CopilotDocV1.Operator
 }> = ({ operator }) => {
+  const t = useTranslation()
   const { name, skill } = operator
   const info = OPERATORS.find((o) => o.name === name)
-  const skillStr = [null, '一', '二', '三'][skill ?? 1] ?? '未知'
+
   return (
     <div className="min-w-24 flex flex-col items-center">
       <OperatorAvatar
@@ -302,7 +329,9 @@ const OperatorCard: FC<{
         className="w-16 h-16 mb-1"
       />
       <span className={clsx('mb-1 font-bold')}>{name}</span>
-      <span className="text-xs text-zinc-500">{skillStr}技能</span>
+      <span className="text-xs text-zinc-300">
+        {t.models.operator.skill_number({ count: skill ?? 1 })}
+      </span>
     </div>
   )
 }
@@ -316,13 +345,14 @@ function OperationViewerInner({
   operation: Operation
   handleRating: (decision: OpRatingType) => Promise<void>
 }) {
+  const t = useTranslation()
   return (
     <div className="h-full overflow-auto p-4 md:p-8">
       <H3>
         {operation.parsedContent.doc.title}
         {operation.status === CopilotInfoStatusEnum.Private && (
           <Tag minimal className="ml-2 font-normal opacity-75">
-            私有
+            {t.components.viewer.OperationViewer.private}
           </Tag>
         )}
       </H3>
@@ -333,7 +363,7 @@ function OperationViewerInner({
         </div>
 
         <div className="flex flex-col">
-          <FactItem title="作战">
+          <FactItem title={t.components.viewer.OperationViewer.stage}>
             <EDifficultyLevel
               level={
                 findLevelByStageName(
@@ -345,7 +375,11 @@ function OperationViewerInner({
             />
           </FactItem>
 
-          <FactItem relaxed className="items-start" title="作业评分">
+          <FactItem
+            relaxed
+            className="items-start"
+            title={t.components.viewer.OperationViewer.task_rating}
+          >
             <OperationRating operation={operation} className="mr-2" />
 
             <ButtonGroup className="flex items-center ml-2">
@@ -362,7 +396,7 @@ function OperationViewerInner({
                   onClick={() => handleRating(OpRatingType.Like)}
                 />
               </Tooltip2>
-              <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
+              <Tooltip2 content=" ヽ(。>д<)ｐ" placement="bottom">
                 <Button
                   icon="thumbs-down"
                   intent={
@@ -379,19 +413,31 @@ function OperationViewerInner({
         </div>
 
         <div className="flex flex-wrap md:flex-col items-start select-none tabular-nums gap-4">
-          <FactItem dense title="浏览量" icon="eye-open">
+          <FactItem
+            dense
+            title={t.components.viewer.OperationViewer.views}
+            icon="eye-open"
+          >
             <span className="text-gray-800 dark:text-slate-100 font-bold">
               {operation.views}
             </span>
           </FactItem>
 
-          <FactItem dense title="发布于" icon="time">
+          <FactItem
+            dense
+            title={t.components.viewer.OperationViewer.published_at}
+            icon="time"
+          >
             <span className="text-gray-800 dark:text-slate-100 font-bold">
               <RelativeTime moment={operation.uploadTime} />
             </span>
           </FactItem>
 
-          <FactItem dense title="作者" icon="user">
+          <FactItem
+            dense
+            title={t.components.viewer.OperationViewer.author}
+            icon="user"
+          >
             <UserName
               className="text-gray-800 dark:text-slate-100 font-bold"
               userId={operation.uploaderId}
@@ -408,8 +454,10 @@ function OperationViewerInner({
         fallback={
           <NonIdealState
             icon="issue"
-            title="渲染错误"
-            description="渲染此作业的预览时出现了问题。是否是还未支持的作业类型？"
+            title={t.components.viewer.OperationViewer.render_error}
+            description={
+              t.components.viewer.OperationViewer.render_preview_problem
+            }
             className="h-96 bg-stripe rounded"
           />
         }
@@ -422,14 +470,16 @@ function OperationViewerInner({
       <div className="mb-6">
         <H4 className="mb-4" id="comment">
           {operation.commentStatus === BanCommentsStatusEnum.Disabled
-            ? '评论'
-            : `评论 (${operation.commentsCount})`}
+            ? t.components.viewer.OperationViewer.comments
+            : t.components.viewer.OperationViewer.comments_count({
+                count: operation.commentsCount,
+              })}
         </H4>
         {operation.commentStatus === BanCommentsStatusEnum.Disabled ? (
           <NonIdealState
             icon="tree"
-            title="评论区已关闭"
-            description="感受…宁静……"
+            title={t.components.viewer.OperationViewer.comments_closed}
+            description={t.components.viewer.OperationViewer.feel_the_silence}
           />
         ) : (
           <CommentArea operationId={operation.id} />
@@ -439,6 +489,7 @@ function OperationViewerInner({
   )
 }
 function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
+  const t = useTranslation()
   const [showOperators, setShowOperators] = useState(true)
   const [showActions, setShowActions] = useState(false)
 
@@ -448,11 +499,11 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
         className="inline-flex items-center cursor-pointer hover:text-violet-500"
         onClick={() => setShowOperators((v) => !v)}
       >
-        干员与干员组
+        {t.components.viewer.OperationViewer.operators_and_groups}
         <Tooltip2
           className="!flex items-center"
           placement="top"
-          content="干员组：组内干员可以任选其一，自动编队时按最高练度来选择"
+          content={t.components.viewer.OperationViewer.operator_group_tooltip}
         >
           <Icon icon="info-sign" size={12} className="text-zinc-500 ml-1" />
         </Tooltip2>
@@ -470,8 +521,10 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
             !operation.parsedContent.groups?.length && (
               <NonIdealState
                 className="my-2"
-                title="暂无干员"
-                description="作业并未添加干员"
+                title={t.components.viewer.OperationViewer.no_operators}
+                description={
+                  t.components.viewer.OperationViewer.no_operators_added
+                }
                 icon="slash"
                 layout="horizontal"
               />
@@ -496,7 +549,9 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
                   ))}
 
                 {group.opers?.filter(Boolean).length === 0 && (
-                  <span className="text-zinc-500">无干员</span>
+                  <span className="text-zinc-500">
+                    {t.components.viewer.OperationViewer.no_operator}
+                  </span>
                 )}
               </div>
             </Card>
@@ -508,7 +563,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
         className="mt-6 inline-flex items-center cursor-pointer hover:text-violet-500"
         onClick={() => setShowActions((v) => !v)}
       >
-        动作序列
+        {t.components.viewer.OperationViewer.action_sequence}
         <Icon
           icon="chevron-down"
           className={clsx(
@@ -527,8 +582,8 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
         ) : (
           <NonIdealState
             className="my-2"
-            title="暂无动作"
-            description="作业并未定义任何动作"
+            title={t.components.viewer.OperationViewer.no_actions}
+            description={t.components.viewer.OperationViewer.no_actions_defined}
             icon="slash"
             layout="horizontal"
           />

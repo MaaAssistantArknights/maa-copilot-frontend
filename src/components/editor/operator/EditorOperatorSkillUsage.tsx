@@ -10,6 +10,7 @@ import {
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { operatorSkillUsages } from '../../../models/operator'
 
 export const EditorOperatorSkillUsage = <
@@ -19,6 +20,8 @@ export const EditorOperatorSkillUsage = <
   control,
   ...controllerProps
 }: EditorFieldProps<T, CopilotDocV1.SkillUsageType>) => {
+  const t = useTranslation()
+
   const {
     field: { onChange, onBlur, value, ref },
   } = useController({
@@ -41,7 +44,14 @@ export const EditorOperatorSkillUsage = <
     >
       <Button
         icon={selectedAction?.icon || 'slash'}
-        text={selectedAction ? selectedAction.title : '选择技能用法'}
+        text={
+          selectedAction
+            ? typeof selectedAction.title === 'function'
+              ? selectedAction.title()
+              : selectedAction.title
+            : t.components.editor.operator.EditorOperatorSkillUsage
+                .select_skill_usage
+        }
         rightIcon="double-caret-vertical"
         onBlur={onBlur}
         ref={ref}

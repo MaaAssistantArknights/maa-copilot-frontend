@@ -4,21 +4,23 @@ import { ErrorBoundary } from '@sentry/react'
 import { ComponentType } from 'react'
 import { FCC } from 'types'
 
+import { i18n } from '../i18n/i18n'
+
 export const GlobalErrorBoundary: FCC = ({ children }) => {
   return (
     <ErrorBoundary
       fallback={
         <NonIdealState
           icon="issue"
-          title="エラー発生"
-          description="页面渲染出现错误；请尝试"
+          title={i18n.essentials.error_occurred}
+          description={i18n.essentials.render_error}
           action={
             <Button
               intent="primary"
               icon="refresh"
               onClick={() => window.location.reload()}
             >
-              刷新页面
+              {i18n.essentials.refresh_page}
             </Button>
           }
         />

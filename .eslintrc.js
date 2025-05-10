@@ -15,7 +15,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:react/jsx-runtime',
-    "plugin:react-hooks/recommended"
+    'plugin:react-hooks/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -25,8 +25,8 @@ module.exports = {
     ecmaVersion: 'latest',
     sourceType: 'module',
 
-    project: './tsconfig.json',
-    tsconfigRootDir: './',
+    project: ['./tsconfig.json', './tsconfig.node.json'],
+    tsconfigRootDir: __dirname,
   },
   plugins: ['react', '@typescript-eslint', 'prettier', 'import'],
   rules: {
@@ -36,7 +36,7 @@ module.exports = {
     'react/self-closing-comp': 'error',
     'no-unused-vars': 'off',
     eqeqeq: 'error',
-    "react-hooks/exhaustive-deps": "error",
+    'react-hooks/exhaustive-deps': 'error',
   },
   settings: {
     react: {

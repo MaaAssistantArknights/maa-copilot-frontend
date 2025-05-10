@@ -25,6 +25,7 @@ import { OperationSetEditorDialog } from 'components/operation-set/OperationSetE
 import { formatError } from 'utils/error'
 import { useNetworkState } from 'utils/useNetworkState'
 
+import { useTranslation } from '../../i18n/i18n'
 import { authAtom } from '../../store/auth'
 
 interface AddToOperationSetButtonProps extends ButtonProps {
@@ -33,6 +34,7 @@ interface AddToOperationSetButtonProps extends ButtonProps {
 
 export const AddToOperationSetButton: FC<AddToOperationSetButtonProps> = memo(
   ({ operationIds, ...props }) => {
+    const t = useTranslation()
     const [isOpen, setIsOpen] = useState(false)
 
     return (
@@ -43,7 +45,11 @@ export const AddToOperationSetButton: FC<AddToOperationSetButtonProps> = memo(
           onClick={() => setIsOpen(true)}
         />
         <Dialog
-          title={`添加 ${operationIds.length} 份作业到作业集`}
+          title={t.components.operationSet.AddToOperationSet.add_to_job_set_title(
+            {
+              count: operationIds.length,
+            },
+          )}
           icon="add-to-folder"
           isOpen={isOpen}
           onClose={() => setIsOpen(false)}
@@ -72,6 +78,7 @@ function AddToOperationSet({
   operationIds,
   onSuccess,
 }: AddToOperationSetProps) {
+  const t = useTranslation()
   const [searchParams] = useSearchParams()
   const navigate = useNavigate()
   const singleOperationId =
@@ -102,7 +109,11 @@ function AddToOperationSet({
   )
 
   const error =
-    submitError || listError || (!auth.userId ? '未登录' : undefined)
+    submitError ||
+    listError ||
+    (!auth.userId
+      ? t.components.operationSet.AddToOperationSet.not_logged_in
+      : undefined)
 
   const operationSetList =
     singleOperationId && onlyShowAdded
@@ -158,7 +169,7 @@ function AddToOperationSet({
           const search = new URLSearchParams(searchParams)
           search.set('opset', processedIds[0].toString())
           action = {
-            text: '点击查看',
+            text: t.components.operationSet.AddToOperationSet.click_to_view,
             className: '!px-1',
             onClick: () => navigate({ search: search.toString() }),
           }
@@ -166,7 +177,7 @@ function AddToOperationSet({
 
         AppToaster.show({
           intent: 'success',
-          message: '已添加到作业集',
+          message: t.components.operationSet.AddToOperationSet.added_to_job_set,
           action,
         })
       }
@@ -182,7 +193,11 @@ function AddToOperationSet({
     <>
       <div className="py-2 px-px">
         {error && (
-          <Callout intent="danger" icon="error" title="错误">
+          <Callout
+            intent="danger"
+            icon="error"
+            title={t.components.operationSet.AddToOperationSet.error}
+          >
             {formatError(error)}
           </Callout>
         )}
@@ -192,8 +207,9 @@ function AddToOperationSet({
             icon="helicopter"
             description={
               operationSets?.length === 0
-                ? '还没有作业集哦(￣▽￣)'
-                : '还没有已添加的作业集哦(￣▽￣)'
+                ? t.components.operationSet.AddToOperationSet.no_job_sets_yet
+                : t.components.operationSet.AddToOperationSet
+                    .no_added_job_sets_yet
             }
           />
         )}
@@ -216,7 +232,7 @@ function AddToOperationSet({
               >
                 {status === 'PRIVATE' && (
                   <Tag minimal className="mr-1">
-                    私有
+                    {t.components.operationSet.AddToOperationSet.private}
                   </Tag>
                 )}
                 {name}
@@ -230,7 +246,7 @@ function AddToOperationSet({
               minimal
               small
               loading={isValidating}
-              text="加载更多"
+              text={t.components.operationSet.AddToOperationSet.load_more}
               icon="more"
               className="mt-2 ml-1.5"
               onClick={() => setSize((size) => size + 1)}
@@ -244,7 +260,7 @@ function AddToOperationSet({
       <div className="flex p-4 gap-3">
         {!!singleOperationId && (
           <Checkbox
-            label="只显示已添加的"
+            label={t.components.operationSet.AddToOperationSet.show_only_added}
             checked={onlyShowAdded}
             onChange={(e) =>
               setOnlyShowAdded((e.target as HTMLInputElement).checked)
@@ -252,7 +268,7 @@ function AddToOperationSet({
           />
         )}
         <Button className="ml-auto" onClick={() => setEditorOpen(true)}>
-          创建作业集...
+          {t.components.operationSet.AddToOperationSet.create_job_set}
         </Button>
         <Button
           disabled={!operationSets?.length}
@@ -260,7 +276,7 @@ function AddToOperationSet({
           intent="primary"
           onClick={onSubmit}
         >
-          确定
+          {t.components.operationSet.AddToOperationSet.confirm}
         </Button>
       </div>
 

@@ -9,6 +9,8 @@ import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 import type { CopilotDocV1 } from 'models/copilot.schema'
 import { actionDocColors } from 'models/operator'
 
+import { useTranslation } from '../../../i18n/i18n'
+
 interface EditorActionDocColorProps
   extends SetOptional<EditorFieldProps<CopilotDocV1.Action, string>, 'name'> {}
 
@@ -17,6 +19,8 @@ export const EditorActionDocColor = ({
   control,
   ...controllerProps
 }: EditorActionDocColorProps) => {
+  const t = useTranslation()
+
   const {
     field: { onChange, onBlur, value, ref },
     formState: { errors },
@@ -31,10 +35,12 @@ export const EditorActionDocColor = ({
 
   return (
     <FormField2
-      label="描述颜色"
+      label={t.components.editor.action.EditorActionDocColor.description_color}
       field={name}
       error={errors[name]}
-      description="在 MAA 中打印描述时的颜色"
+      description={
+        t.components.editor.action.EditorActionDocColor.color_description
+      }
     >
       <Select2
         filterable={false}
@@ -52,7 +58,7 @@ export const EditorActionDocColor = ({
                   color={color?.value}
                   className="mr-2"
                 />
-                <span style={{ color: color?.value }}>{color?.title}</span>
+                <span style={{ color: color?.value }}>{color?.title()}</span>
               </span>
             }
           />
@@ -64,7 +70,7 @@ export const EditorActionDocColor = ({
       >
         <Button rightIcon="double-caret-vertical" onBlur={onBlur} ref={ref}>
           <Icon icon="full-circle" color={selected?.value} />
-          <span style={{ color: selected?.value }}>{selected?.title}</span>
+          <span style={{ color: selected?.value }}>{selected?.title()}</span>
         </Button>
       </Select2>
     </FormField2>

@@ -5,6 +5,7 @@ import camelcaseKeys from 'camelcase-keys'
 import { FC, useMemo, useState } from 'react'
 import { UseFormReturn } from 'react-hook-form'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { useAfterRender } from '../../../utils/useAfterRender'
 import { DrawerLayout } from '../../drawer/DrawerLayout'
@@ -25,6 +26,7 @@ export const SourceEditor: FC<SourceEditorProps> = ({
   },
   triggerValidation,
 }) => {
+  const t = useTranslation()
   const hasValidationErrors = !!Object.keys(errors).length
 
   const initialText = useMemo(() => {
@@ -33,9 +35,9 @@ export const SourceEditor: FC<SourceEditorProps> = ({
       return JSON.stringify(toMaaOperation(initialOperation), null, 2)
     } catch (e) {
       console.warn(e)
-      return '(解析时出现错误)'
+      return t.components.editor.source.SourceEditor.parsing_error
     }
-  }, [getValues])
+  }, [getValues, t])
 
   const { afterRender } = useAfterRender()
 
@@ -54,11 +56,11 @@ export const SourceEditor: FC<SourceEditorProps> = ({
       afterRender(triggerValidation)
     } catch (e) {
       if (e instanceof SyntaxError) {
-        setJsonError('存在语法错误')
+        setJsonError(t.components.editor.source.SourceEditor.syntax_error)
       } else {
         // this will most likely not happen
         console.warn(e)
-        setJsonError('存在结构错误')
+        setJsonError(t.components.editor.source.SourceEditor.structure_error)
       }
     }
   }
@@ -79,25 +81,33 @@ export const SourceEditor: FC<SourceEditorProps> = ({
         <Callout
           className=" [&_h4]:text-sm"
           intent="primary"
-          title="在此处编辑 JSON 将会实时更新表单"
+          title={t.components.editor.source.SourceEditor.json_update_notice}
         />
         <div className="mt-2 flex flex-wrap gap-2 [&_h4]:text-sm">
           {/* wrap in an extra div to work around a flex bug, where the children's sizes are uneven when using flex-1.
               refer to: https://github.com/philipwalton/flexbugs#flexbug-7 */}
           <div className="flex-1">
             <Callout
-              title={'JSON 验证：' + (jsonError ? '语法错误' : '通过')}
+              title={t.components.editor.source.SourceEditor.json_validation({
+                status: jsonError
+                  ? t.components.editor.source.SourceEditor.syntax_error_short
+                  : t.components.editor.source.SourceEditor.passed,
+              })}
               intent={jsonError ? 'warning' : 'success'}
             />
           </div>
           <Tooltip2
             className="flex-1"
-            content="请在表单中查看错误信息"
+            content={t.components.editor.source.SourceEditor.see_errors_in_form}
             position="bottom"
             disabled={!hasValidationErrors}
           >
             <Callout
-              title={'表单验证：' + (hasValidationErrors ? '未通过' : '通过')}
+              title={t.components.editor.source.SourceEditor.form_validation({
+                status: hasValidationErrors
+                  ? t.components.editor.source.SourceEditor.not_passed
+                  : t.components.editor.source.SourceEditor.passed,
+              })}
               intent={hasValidationErrors ? 'warning' : 'success'}
             />
           </Tooltip2>

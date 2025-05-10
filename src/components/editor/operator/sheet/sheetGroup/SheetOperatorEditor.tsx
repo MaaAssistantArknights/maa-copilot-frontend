@@ -21,6 +21,7 @@ import {
   useState,
 } from 'react'
 
+import { useTranslation } from '../../../../../i18n/i18n'
 import { OperatorAvatar } from '../../EditorOperator'
 import { Group } from '../../EditorSheet'
 import {
@@ -36,6 +37,8 @@ export interface SheetOperatorEditorProp extends SheetOperatorEditorFormProp {}
 export const SheetOperatorEditor: FC<SheetOperatorEditorProp> = ({
   ...SheetOperatorEditorFormProps
 }) => {
+  const t = useTranslation()
+
   return (
     <Popover2
       className="w-full"
@@ -45,7 +48,10 @@ export const SheetOperatorEditor: FC<SheetOperatorEditorProp> = ({
       <Card
         className="flex items-center justify-center"
         interactive
-        title="编辑干员组中干员信息"
+        title={
+          t.components.editor.operator.sheet.sheetGroup.SheetOperatorEditor
+            .edit_operator_info
+        }
       >
         <Icon icon="plus" size={30} />
       </Card>
@@ -67,6 +73,7 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
   name,
   opers = [],
 }) => {
+  const t = useTranslation()
   const {
     existedOperators,
     existedGroups,
@@ -153,12 +160,21 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
   }
 
   return (
-    <SheetContainerSkeleton title="选择干员" icon="select">
+    <SheetContainerSkeleton
+      title={
+        t.components.editor.operator.sheet.sheetGroup.SheetOperatorEditor
+          .select_operator
+      }
+      icon="select"
+    >
       <form className="mt-3" onSubmit={onSubmit}>
         <div className="max-h-96 overflow-y-auto overflow-x-hidden">
           <OperatorSelectorSkeleton
             icon="person"
-            title="已选择干员"
+            title={
+              t.components.editor.operator.sheet.sheetGroup.SheetOperatorEditor
+                .selected_operators
+            }
             collapseDisabled={!opers.length}
           >
             <OperatorSelectorItem
@@ -167,7 +183,10 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
           </OperatorSelectorSkeleton>
           <OperatorSelectorSkeleton
             icon="person"
-            title="未选择干员"
+            title={
+              t.components.editor.operator.sheet.sheetGroup.SheetOperatorEditor
+                .unselected_operators
+            }
             collapseDisabled={!existedOperators.length}
           >
             <OperatorSelectorItem
@@ -180,7 +199,10 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
           </OperatorSelectorSkeleton>
           <OperatorSelectorSkeleton
             icon="people"
-            title="其他分组干员"
+            title={
+              t.components.editor.operator.sheet.sheetGroup.SheetOperatorEditor
+                .operators_in_other_groups
+            }
             collapseDisabled={!otherGroups?.length}
           >
             {otherGroups.map(({ name: otherGroupName, opers }) => (
@@ -190,7 +212,10 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
                   <Button
                     minimal
                     icon="arrow-top-left"
-                    title="全选"
+                    title={
+                      t.components.editor.operator.sheet.sheetGroup
+                        .SheetOperatorEditor.select_all
+                    }
                     onClick={() =>
                       opers?.forEach(({ name }) => {
                         if (
@@ -221,7 +246,10 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
         </div>
         <div className="flex p-0.5">
           <Button
-            text="确认"
+            text={
+              t.components.editor.operator.sheet.sheetGroup.SheetOperatorEditor
+                .confirm
+            }
             className={Classes.POPOVER_DISMISS}
             type="submit"
           />
@@ -229,19 +257,40 @@ const SheetOperatorEditorForm: FC<SheetOperatorEditorFormProp> = ({
             captureDismiss
             content={
               <div className="flex items-center">
-                <p>所有未保存的数据均会丢失，确认继续？</p>
+                <p>
+                  {
+                    t.components.editor.operator.sheet.sheetGroup
+                      .SheetOperatorEditor.unsaved_data_warning
+                  }
+                </p>
                 <Button
                   type="reset"
-                  text="继续"
+                  text={
+                    t.components.editor.operator.sheet.sheetGroup
+                      .SheetOperatorEditor.continue
+                  }
                   onClick={onReset}
                   className={clsx(Classes.POPOVER_DISMISS, 'mx-1')}
                 />
-                <Button text="取消" className={Classes.POPOVER_DISMISS} />
+                <Button
+                  text={
+                    t.components.editor.operator.sheet.sheetGroup
+                      .SheetOperatorEditor.cancel
+                  }
+                  className={Classes.POPOVER_DISMISS}
+                />
               </div>
             }
             position={Position.TOP}
           >
-            <Button intent={Intent.DANGER} className="ml-1" text="重置" />
+            <Button
+              intent={Intent.DANGER}
+              className="ml-1"
+              text={
+                t.components.editor.operator.sheet.sheetGroup
+                  .SheetOperatorEditor.reset
+              }
+            />
           </Popover2>
         </div>
       </form>
@@ -315,7 +364,7 @@ const OperatorSelectorSkeleton: FC<{
       }
     >
       {collapseDisabled ? (
-        OperatorNoData
+        <OperatorNoData />
       ) : (
         <Collapse isOpen={isOpen} className="m-0.5">
           {children}

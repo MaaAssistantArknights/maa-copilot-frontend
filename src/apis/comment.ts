@@ -6,6 +6,7 @@ import useSWRInfinite from 'swr/infinite'
 
 import { CommentApi } from 'utils/maa-copilot-client'
 
+import { i18n } from '../i18n/i18n'
 import { CommentRating } from '../models/comment'
 import { Operation } from '../models/operation'
 
@@ -35,7 +36,7 @@ export function useComments({
       }
 
       if (!isFinite(+operationId)) {
-        throw new Error('operationId is not a valid number')
+        throw new Error(i18n.apis.comment.invalid_operation_id)
       }
 
       return [
@@ -86,6 +87,7 @@ export async function sendComment(req: {
       copilotId: req.operationId,
       fromCommentId: req.fromCommentId,
       notification: false,
+      commentStatus: 'ENABLED',
     },
   })
 }
