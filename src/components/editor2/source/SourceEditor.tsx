@@ -19,7 +19,7 @@ import { Confirm } from '../../Confirm'
 import { withSuspensable } from '../../Suspensable'
 import { DrawerLayout } from '../../drawer/DrawerLayout'
 import { SourceEditorHeader } from '../../editor/source/SourceEditorHeader'
-import { editorAtoms, useEditorControls } from '../editor-state'
+import { editorAtoms, useEdit } from '../editor-state'
 import { toEditorOperation, toMaaOperation } from '../reconciliation'
 import { ZodIssue, operationLooseSchema } from '../validation/schema'
 
@@ -31,7 +31,7 @@ const SourceEditor = withSuspensable(
   ({ onUnsavedChanges }: SourceEditorProps) => {
     const onUnsavedChangesRef = useRef(onUnsavedChanges)
     onUnsavedChangesRef.current = onUnsavedChanges
-    const { withCheckpoint } = useEditorControls()
+    const edit = useEdit()
     const [operation, setOperation] = useAtom(editorAtoms.operation)
     const [text, setText] = useState(() =>
       JSON.stringify(toMaaOperation(operation), null, 2),
@@ -46,21 +46,18 @@ const SourceEditor = withSuspensable(
           setPending(false)
           try {
             const json = operationLooseSchema.parse(JSON.parse(text))
-            withCheckpoint((skip) => {
-              let checkpoint = skip
-              setOperation((prev) => {
-                const newOperation = toEditorOperation(json)
-                if (JSON.stringify(prev) === JSON.stringify(newOperation)) {
-                  return prev
-                }
-                checkpoint = {
-                  action: 'edit-json',
-                  desc: '编辑 JSON',
-                  squash: true,
-                }
-                return newOperation
-              })
-              return checkpoint
+            edit((get, set, skip) => {
+              const newOperation = toEditorOperation(json)
+              const operation = get(editorAtoms.operation)
+              if (JSON.stringify(operation) === JSON.stringify(newOperation)) {
+                return skip
+              }
+              setOperation(newOperation)
+              return {
+                action: 'edit-json',
+                desc: '编辑 JSON',
+                squash: true,
+              }
             })
 
             setErrors([])
@@ -76,7 +73,7 @@ const SourceEditor = withSuspensable(
             }
           }
         }, 1000),
-      [withCheckpoint, setOperation],
+      [edit, setOperation],
     )
 
     const handleChange = (text: string) => {

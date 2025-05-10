@@ -36,7 +36,7 @@ import {
   BaseEditorGroup,
   editorAtoms,
   useActiveState,
-  useEditorControls,
+  useEdit,
 } from '../editor-state'
 import {
   WithInternalId,
@@ -54,7 +54,7 @@ interface GroupItemProps {
 }
 
 export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const baseGroup = useAtomValue(baseGroupAtom)
   const [baseGroupAtoms, dispatchBaseGroups] = useAtom(
     editorAtoms.baseGroupAtoms,
@@ -115,7 +115,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                 text="左移"
                 disabled={baseGroupAtoms.indexOf(baseGroupAtom) === 0}
                 onClick={() => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     dispatchBaseGroups({
                       type: 'move',
                       atom: baseGroupAtom,
@@ -140,7 +140,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                   baseGroupAtoms.length - 1
                 }
                 onClick={() => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     dispatchBaseGroups({
                       type: 'move',
                       atom: baseGroupAtom,
@@ -162,7 +162,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                 text="删除"
                 intent="danger"
                 onClick={() => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     dispatchBaseGroups({
                       type: 'remove',
                       atom: baseGroupAtom,
@@ -224,7 +224,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                         operator={operator}
                         onChange={onChange}
                         onRemove={() =>
-                          withCheckpoint(() => {
+                          edit(() => {
                             dispatchOperators({
                               type: 'remove',
                               atom: operatorAtom,
@@ -332,7 +332,7 @@ interface GroupItemProps {
   baseGroupAtom: PrimitiveAtom<BaseEditorGroup>
 }
 const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const favGroups = useAtomValue(editorFavGroupsAtom)
   const [baseGroup, setBaseGroup] = useAtom(baseGroupAtom)
   const id = getInternalId(baseGroup)
@@ -361,7 +361,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
   const { debouncedQuery, updateQuery, onOptionMouseDown } = useDebouncedQuery({
     query: baseGroup.name,
     onQueryChange(query) {
-      withCheckpoint(() => {
+      edit(() => {
         setBaseGroup((prev) => ({ ...prev, name: query }))
         return {
           action: 'set-group-name-' + getInternalId(baseGroup),
@@ -409,7 +409,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
                   getInternalId(operator) === getInternalId(favOperator),
               ),
           )
-        withCheckpoint(() => {
+        edit(() => {
           if (mode === 'append') {
             set(groupAtom, (prev) => ({
               ...prev,
@@ -440,7 +440,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
           }
         })
       },
-      [baseGroupAtom, withCheckpoint],
+      [baseGroupAtom, edit],
     ),
   )
 

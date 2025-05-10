@@ -12,7 +12,7 @@ import { ValueOf } from 'type-fest'
 import { ACTION_CONDITIONS, ActionConditionType } from '../../../models/types'
 import { joinJSX } from '../../../utils/react'
 import { NumericInput2, NumericInput2Props } from '../../editor/NumericInput2'
-import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
+import { EditorAction, editorAtoms, useEdit } from '../editor-state'
 import { CreateActionMenu } from './CreateActionMenu'
 
 interface ActionLinkerProps {
@@ -26,7 +26,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
   isDragging,
   isSorting,
 }) => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
   const [action, setAction] = useImmerAtom(actionAtom)
   const index = actionAtoms.indexOf(actionAtom)
@@ -104,7 +104,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
                         return
                       }
 
-                      withCheckpoint(() => {
+                      edit(() => {
                         setAction((draft) => {
                           switch (conditionType) {
                             case 'intermediatePreDelay':
@@ -296,7 +296,7 @@ const ConditionNode: FC<ConditionNodeProps> = ({
   action,
   setAction,
 }) => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const value = action[conditionKey]!
   const typeInfo = ACTION_CONDITIONS[conditionKey]
   title ??= typeInfo.title
@@ -311,7 +311,7 @@ const ConditionNode: FC<ConditionNodeProps> = ({
               intent="danger"
               text="删除"
               onClick={() => {
-                withCheckpoint(() => {
+                edit(() => {
                   setAction((draft) => {
                     draft[conditionKey] = undefined
                   })
@@ -344,7 +344,7 @@ const ConditionNode: FC<ConditionNodeProps> = ({
         wheelStepSize={1}
         {...inputProps}
         onValueChange={(v) => {
-          withCheckpoint(() => {
+          edit(() => {
             setAction((draft) => {
               draft[conditionKey] = v
             })

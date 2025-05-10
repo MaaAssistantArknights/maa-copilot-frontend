@@ -18,7 +18,7 @@ import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 import { useCurrentSize } from '../../../utils/useCurrenSize'
 import { Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
-import { editorAtoms, useEditorControls } from '../editor-state'
+import { editorAtoms, useEdit } from '../editor-state'
 import { getInternalId } from '../reconciliation'
 import { ActionItem } from './ActionItem'
 import { CreateActionMenu, CreateActionMenuRef } from './CreateActionMenu'
@@ -38,7 +38,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
   const { isMD } = useCurrentSize()
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
   const actionIds = useAtomValue(actionIdsAtom)
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: { distance: 5 },
@@ -62,7 +62,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
           )
           if (oldIndex !== -1 && newIndex !== -1) {
             const actionAtoms = get(editorAtoms.actionAtoms)
-            withCheckpoint(() => {
+            edit(() => {
               // 从后往前移动需要+1，比如从 0 移动到 1，最终位置是 1，实际上是 before 2
               const beforeIndex = oldIndex < newIndex ? newIndex + 1 : newIndex
               set(editorAtoms.actionAtoms, {
@@ -79,7 +79,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
           }
         }
       },
-      [withCheckpoint],
+      [edit],
     ),
   )
 

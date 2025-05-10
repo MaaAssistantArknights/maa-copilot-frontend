@@ -3,11 +3,11 @@ import { useAtomCallback } from 'jotai/utils'
 import { useCallback } from 'react'
 
 import { AppToaster } from '../../Toaster'
-import { EditorOperator, editorAtoms, useEditorControls } from '../editor-state'
+import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
 import { getInternalId } from '../reconciliation'
 
 export function useAddOperator() {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   return useAtomCallback(
     useCallback(
       (get, set, operator: EditorOperator, groupId?: string) => {
@@ -25,7 +25,7 @@ export function useAddOperator() {
           })
           return
         }
-        withCheckpoint(() => {
+        edit(() => {
           if (groupId) {
             set(editorAtoms.groups, (groups) =>
               produce(groups, (draft) => {
@@ -48,7 +48,7 @@ export function useAddOperator() {
           }
         })
       },
-      [withCheckpoint],
+      [edit],
     ),
   )
 }

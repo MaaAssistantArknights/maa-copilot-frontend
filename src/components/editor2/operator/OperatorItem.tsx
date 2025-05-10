@@ -33,7 +33,7 @@ import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
-import { EditorOperator, useEditorControls } from '../editor-state'
+import { EditorOperator, useEdit } from '../editor-state'
 import { editorFavOperatorsAtom, getInternalId } from '../reconciliation'
 
 interface OperatorItemProps extends Partial<SortableItemProps> {
@@ -61,7 +61,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
     attributes,
     listeners,
   }) => {
-    const { withCheckpoint } = useEditorControls()
+    const edit = useEdit()
     const setFavOperators = useSetAtom(editorFavOperatorsAtom)
     const info = OPERATORS.find(({ name }) => name === operator.name)
     const skillUsage =
@@ -94,7 +94,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   minimal
                   className="!p-0 !border-0 pointer-events-auto hover:opacity-80"
                   onClick={() => {
-                    withCheckpoint(() => {
+                    edit(() => {
                       onChange?.({
                         ...operator,
                         requirements: {
@@ -126,7 +126,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   value={requirements.level}
                   inputClassName="!w-9 h-9 !p-0 !leading-9 !rounded-full !border-2 !border-yellow-300 !bg-black/50 text-lg text-white font-semibold text-center !shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
                   onValueChange={(value) => {
-                    withCheckpoint(() => {
+                    edit(() => {
                       onChange?.({
                         ...operator,
                         requirements: {
@@ -143,7 +143,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   }}
                   onWheelFocused={(e) => {
                     e.preventDefault()
-                    withCheckpoint(() => {
+                    edit(() => {
                       onChange?.({
                         ...operator,
                         requirements: {
@@ -245,7 +245,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                               value={operator.skillTimes ?? 1}
                               wheelStepSize={1}
                               onValueChange={(v) => {
-                                withCheckpoint(() => {
+                                edit(() => {
                                   onChange?.({
                                     ...operator,
                                     skillTimes: v,
@@ -268,7 +268,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 value={operator.skillUsage ?? CopilotDocV1.SkillUsageType.None}
                 onItemSelect={(item) => {
                   if (item.value === operator.skillUsage) return
-                  withCheckpoint(() => {
+                  edit(() => {
                     onChange?.({
                       ...operator,
                       skillUsage: item.value as number,
@@ -337,7 +337,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     )}
                     onFocus={() => {
                       if (operator.skill !== skillNumber) {
-                        withCheckpoint(() => {
+                        edit(() => {
                           onChange?.({ ...operator, skill: skillNumber })
                           return {
                             action:
@@ -349,7 +349,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                       }
                     }}
                     onValueChange={(value) => {
-                      withCheckpoint(() => {
+                      edit(() => {
                         // 拿到新输入的一位数字（比如原来是 5，输入 2，变成 52，这里会拿到 2）
                         const acceptedValue =
                           value >= 10
@@ -379,7 +379,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     }}
                     onWheelFocused={(e) => {
                       e.preventDefault()
-                      withCheckpoint(() => {
+                      edit(() => {
                         onChange?.({
                           ...operator,
                           requirements: {
@@ -435,7 +435,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 />
               )}
               onItemSelect={(item) => {
-                withCheckpoint(() => {
+                edit(() => {
                   onChange?.({
                     ...operator,
                     requirements: {

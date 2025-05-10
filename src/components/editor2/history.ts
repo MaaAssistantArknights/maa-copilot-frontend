@@ -1,4 +1,11 @@
-import { PrimitiveAtom, atom, useAtomValue, useSetAtom } from 'jotai'
+import {
+  Getter,
+  PrimitiveAtom,
+  Setter,
+  atom,
+  useAtomValue,
+  useSetAtom,
+} from 'jotai'
 import { useAtomCallback } from 'jotai/utils'
 import { SetStateAction, useCallback } from 'react'
 
@@ -145,11 +152,28 @@ export function useHistoryControls<T extends {}>(
       return { ...prev, index }
     })
   }
-  const withCheckpoint = useAtomCallback(
+
+  return {
+    undo,
+    redo,
+    checkout,
+  }
+}
+
+type HistoryEditFn = ((
+  get: Getter,
+  set: Setter,
+  skip: Checkpoint,
+) => Checkpoint) & {}
+
+export function useHistoryEdit<T extends {}>(
+  historyAtom: PrimitiveAtom<HistoryTracker<T>>,
+) {
+  return useAtomCallback(
     useCallback(
-      (get, set, fn: (skip: Checkpoint) => Checkpoint) => {
+      (get, set, editFn: HistoryEditFn) => {
         const snapshot = get(historyAtom)
-        const checkpoint = fn(skipCheckpoint)
+        const checkpoint = editFn(get, set, skipCheckpoint)
         const history = get(historyAtom)
         if (checkpoint === skipCheckpoint && history === snapshot) {
           return
@@ -185,11 +209,4 @@ export function useHistoryControls<T extends {}>(
       [historyAtom],
     ),
   )
-
-  return {
-    undo,
-    redo,
-    checkout,
-    withCheckpoint,
-  }
 }

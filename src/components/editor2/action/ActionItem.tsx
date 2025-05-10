@@ -43,7 +43,7 @@ import {
   EditorAction,
   editorAtoms,
   useActiveState,
-  useEditorControls,
+  useEdit,
 } from '../editor-state'
 import { OperatorSelect } from '../operator/OperatorSelect'
 import { createAction, getInternalId } from '../reconciliation'
@@ -57,7 +57,7 @@ interface ActionItemProps extends Partial<SortableItemProps> {
 
 export const ActionItem: FC<ActionItemProps> = memo(
   ({ className, actionAtom, isDragging, isSorting, attributes, listeners }) => {
-    const { withCheckpoint } = useEditorControls()
+    const edit = useEdit()
     const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
     const [action, setAction] = useImmerAtom(actionAtom)
     const [active, setActive] = useActiveState(
@@ -197,7 +197,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         value={action.location?.[0] ?? ''}
                         wheelStepSize={1}
                         onValueChange={(v) => {
-                          withCheckpoint(() => {
+                          edit(() => {
                             setAction((draft) => {
                               draft.location = [v, draft.location?.[1] ?? 0]
                             })
@@ -221,7 +221,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         value={action.location?.[1] ?? ''}
                         wheelStepSize={1}
                         onValueChange={(v) => {
-                          withCheckpoint(() => {
+                          edit(() => {
                             setAction((draft) => {
                               draft.location = [draft.location?.[0] ?? 0, v]
                             })
@@ -266,7 +266,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                           key={dir}
                           active={action.direction === dir}
                           onClick={() => {
-                            withCheckpoint(() => {
+                            edit(() => {
                               setAction((draft) => {
                                 draft.direction = dir
                               })
@@ -322,7 +322,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                           value={action.skillUsage}
                           onItemSelect={(item) => {
                             if (item.value === action.skillUsage) return
-                            withCheckpoint(() => {
+                            edit(() => {
                               setAction((draft) => {
                                 draft.skillUsage = item.value as number
                               })
@@ -354,7 +354,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               value={action.skillTimes ?? ''}
                               wheelStepSize={1}
                               onValueChange={(v) => {
-                                withCheckpoint(() => {
+                                edit(() => {
                                   setAction((draft) => {
                                     draft.skillTimes = v
                                   })
@@ -395,7 +395,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 icon="duplicate"
                 title="复制一份"
                 onClick={() => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     dispatchActions({
                       type: 'insert',
                       value: createAction(action),
@@ -416,7 +416,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 title="删除"
                 intent="danger"
                 onClick={() => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     dispatchActions({
                       type: 'remove',
                       atom: actionAtom,
@@ -460,7 +460,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   />
                 )}
                 onItemSelect={(item) => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     setAction((draft) => {
                       draft.docColor = item.value
                     })
@@ -493,7 +493,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 placeholder="MAA 执行此动作时显示的文字"
                 value={doc}
                 onChange={(e) => {
-                  withCheckpoint(() => {
+                  edit(() => {
                     setAction((draft) => {
                       draft.doc = e.target.value
                     })
@@ -509,7 +509,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     setDocDraft(undefined)
 
                     if (action.doc !== undefined) {
-                      withCheckpoint(() => {
+                      edit(() => {
                         setAction((draft) => {
                           draft.doc = undefined
                         })
@@ -568,7 +568,7 @@ const ActionTarget: FC<{
     >
   >
 }> = ({ actionAtom }) => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const [action, setAction] = useAtom(actionAtom)
   const groupNames = useAtomValue(groupNamesAtom)
   const operator = useAtomValue(
@@ -610,7 +610,7 @@ const ActionTarget: FC<{
       className="shrink-0"
       value={action.name}
       onSelect={(name) => {
-        withCheckpoint(() => {
+        edit(() => {
           setAction({ ...action, name })
           return {
             action: 'set-action-name-' + getInternalId(action),

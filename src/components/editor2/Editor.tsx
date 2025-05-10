@@ -10,7 +10,8 @@ import { useCurrentSize } from '../../utils/useCurrenSize'
 import { EditorToolbar } from './EditorToolbar'
 import { InfoEditor } from './InfoEditor'
 import { ActionEditor } from './action/ActionEditor'
-import { editorAtoms, useEditorControls } from './editor-state'
+import { editorAtoms, historyAtom } from './editor-state'
+import { useHistoryControls } from './history'
 import { OperatorEditor } from './operator/OperatorEditor'
 import { OperatorSheet } from './operator/sheet/OperatorSheet'
 import { useAutosave } from './useAutoSave'
@@ -31,7 +32,7 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
   ({ title, submitAction, onSubmit }) => {
     useAutosave()
     const { isMD } = useCurrentSize()
-    const { undo, redo } = useEditorControls()
+    const { undo, redo } = useHistoryControls(historyAtom)
     const [selectedTab, setSelectedTab] = useState(tabs[0].id)
 
     const handleUndoRedo = useAtomCallback(

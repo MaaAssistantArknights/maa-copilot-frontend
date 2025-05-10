@@ -6,11 +6,7 @@ import { SetRequired, Simplify } from 'type-fest'
 
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { PartialDeep } from '../../utils/partial-deep'
-import {
-  createHistoryAtom,
-  useHistoryControls,
-  useHistoryValue,
-} from './history'
+import { createHistoryAtom, useHistoryEdit } from './history'
 import {
   WithInternalId,
   WithPartialCoordinates,
@@ -204,12 +200,8 @@ export const editorAtoms = {
 
 export const historyAtom = createHistoryAtom(editorAtom)
 
-export function useEditorHistory() {
-  return useHistoryValue(historyAtom)
-}
-
-export function useEditorControls() {
-  return useHistoryControls(historyAtom)
+export function useEdit() {
+  return useHistoryEdit(historyAtom)
 }
 
 export function useActiveState(

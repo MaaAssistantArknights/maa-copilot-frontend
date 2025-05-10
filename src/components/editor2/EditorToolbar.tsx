@@ -21,11 +21,8 @@ import { joinJSX } from '../../utils/react'
 import { formatRelativeTime } from '../../utils/times'
 import { RelativeTime } from '../RelativeTime'
 import { AppToaster } from '../Toaster'
-import {
-  editorAtoms,
-  useEditorControls,
-  useEditorHistory,
-} from './editor-state'
+import { editorAtoms, historyAtom, useEdit } from './editor-state'
+import { useHistoryControls, useHistoryValue } from './history'
 import { SourceEditorButton } from './source/SourceEditor'
 import {
   AUTO_SAVE_INTERVAL,
@@ -144,7 +141,7 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
 }
 
 const AutoSaveButton = () => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const archive = useAtomValue(editorArchiveAtom)
   const save = useSetAtom(editorSaveAtom)
   const setEditorState = useSetAtom(editorAtoms.editor)
@@ -189,7 +186,7 @@ const AutoSaveButton = () => {
                   label={formatRelativeTime(record.t)}
                   key={record.t}
                   onClick={() => {
-                    withCheckpoint(() => {
+                    edit(() => {
                       setEditorState(record.v)
                       return {
                         action: 'restore',
@@ -216,8 +213,8 @@ const AutoSaveButton = () => {
 }
 
 const HistoryButtons = () => {
-  const { history, canRedo, canUndo } = useEditorHistory()
-  const { undo, redo, checkout } = useEditorControls()
+  const { history, canRedo, canUndo } = useHistoryValue(historyAtom)
+  const { undo, redo, checkout } = useHistoryControls(historyAtom)
   const [isOpen, setIsOpen] = useState(false)
   return (
     <>

@@ -24,7 +24,7 @@ import {
   EditorOperator,
   editorAtoms,
   traverseOperators,
-  useEditorControls,
+  useEdit,
 } from '../editor-state'
 import { createGroup, createOperator, getInternalId } from '../reconciliation'
 import {
@@ -46,7 +46,7 @@ const operatorIdsAtom = selectAtom(
 
 export const OperatorEditor: FC = memo(() => {
   const operatorIds = useAtomValue(operatorIdsAtom)
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: { distance: 5 },
@@ -128,7 +128,7 @@ export const OperatorEditor: FC = memo(() => {
         })
 
         if (newOperation !== operation) {
-          withCheckpoint(() => {
+          edit(() => {
             set(editorAtoms.operation, newOperation)
             return {
               action: 'move-operator',
@@ -138,7 +138,7 @@ export const OperatorEditor: FC = memo(() => {
           })
         }
       },
-      [withCheckpoint],
+      [edit],
     ),
   )
 
@@ -172,7 +172,7 @@ export const OperatorEditor: FC = memo(() => {
                           operator={operator}
                           onChange={onChange}
                           onRemove={() =>
-                            withCheckpoint(() => {
+                            edit(() => {
                               dispatchOperators({
                                 type: 'remove',
                                 atom: operatorAtom,
@@ -232,7 +232,7 @@ const CreateOperatorButton: FC<{}> = () => {
 const CreateGroupButton: FC<{}> = () => {
   const dispatchGroups = useSetAtom(editorAtoms.groupAtoms)
   const setNewlyAddedGroupId = useSetAtom(editorAtoms.newlyAddedGroupIdAtom)
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   return (
     <Button
       minimal
@@ -241,7 +241,7 @@ const CreateGroupButton: FC<{}> = () => {
       icon="plus"
       onClick={() => {
         const newGroup = createGroup()
-        withCheckpoint(() => {
+        edit(() => {
           dispatchGroups({
             type: 'insert',
             value: newGroup,

@@ -15,7 +15,7 @@ import { Paths } from 'type-fest'
 
 import { DifficultyPicker } from './DifficultyPicker'
 import { LevelSelect } from './LevelSelect'
-import { editorAtoms, useEditorControls } from './editor-state'
+import { editorAtoms, useEdit } from './editor-state'
 import { CopilotOperation, getLabeledPath } from './validation/schema'
 import { editorVisibleGlobalErrorsAtom } from './validation/validation'
 
@@ -26,7 +26,7 @@ interface InfoEditorProps {
 export const InfoEditor = memo(({ className }: InfoEditorProps) => {
   const [info, setInfo] = useImmerAtom(editorAtoms.operationBase)
   const [metadata, setMetadata] = useImmerAtom(editorAtoms.metadata)
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
 
   return (
     <div
@@ -43,7 +43,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           placeholder="起一个引人注目的标题吧"
           value={info.doc?.title || ''}
           onChange={(e) => {
-            withCheckpoint(() => {
+            edit(() => {
               setInfo((prev) => {
                 prev.doc.title = e.target.value
               })
@@ -65,7 +65,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           placeholder="如：作者名、参考的视频攻略链接（如有）等"
           value={info.doc?.details || ''}
           onChange={(e) => {
-            withCheckpoint(() => {
+            edit(() => {
               setInfo((prev) => {
                 prev.doc.details = e.target.value
               })
@@ -84,7 +84,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           difficulty={info.difficulty}
           value={info.stageName}
           onChange={(value) => {
-            withCheckpoint(() => {
+            edit(() => {
               setInfo((prev) => {
                 prev.stageName = value
               })
@@ -102,7 +102,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         <DifficultyPicker
           stageName={info.stageName}
           onChange={(value, programmatically) => {
-            withCheckpoint((skip) => {
+            edit((get, set, skip) => {
               setInfo((prev) => {
                 prev.difficulty = value
               })
@@ -125,7 +125,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           inline
           selectedValue={metadata.visibility}
           onChange={(e) => {
-            withCheckpoint(() => {
+            edit(() => {
               setMetadata((prev) => {
                 prev.visibility = e.currentTarget.value as 'public' | 'private'
               })

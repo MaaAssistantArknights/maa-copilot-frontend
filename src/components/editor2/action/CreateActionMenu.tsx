@@ -19,7 +19,7 @@ import {
 
 import { ACTION_TYPES_BY_GROUP } from '../../../models/types'
 import { joinJSX } from '../../../utils/react'
-import { EditorAction, editorAtoms, useEditorControls } from '../editor-state'
+import { EditorAction, editorAtoms, useEdit } from '../editor-state'
 import { createAction } from '../reconciliation'
 
 interface CreateActionMenuProps {
@@ -40,7 +40,7 @@ export const CreateActionMenu = forwardRef<
   CreateActionMenuRef,
   CreateActionMenuProps
 >(({ actionAtom, renderTarget, children }, ref) => {
-  const { withCheckpoint } = useEditorControls()
+  const edit = useEdit()
   const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
   const containerRef = useRef<HTMLElement>(null)
   const locatorRef = useRef<HTMLElement>(null)
@@ -100,7 +100,7 @@ export const CreateActionMenu = forwardRef<
                     </Tooltip2>
                   }
                   onClick={() => {
-                    withCheckpoint(() => {
+                    edit(() => {
                       dispatchActions({
                         type: 'insert',
                         value: createAction({ type: value }),
