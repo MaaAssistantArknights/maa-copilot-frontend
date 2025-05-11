@@ -1,9 +1,7 @@
-import { Button, Divider } from '@blueprintjs/core'
-
 import clsx from 'clsx'
 import { useAtomCallback } from 'jotai/utils'
 import { throttle } from 'lodash-es'
-import { FC, memo, useCallback, useEffect, useState } from 'react'
+import { FC, memo, useCallback, useEffect } from 'react'
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
 import { useCurrentSize } from '../../utils/useCurrenSize'
@@ -23,17 +21,11 @@ interface OperationEditorProps {
   onSubmit: () => void
 }
 
-const tabs = [
-  { id: 'main', name: '作业信息' },
-  { id: 'action', name: '动作序列' },
-]
-
 export const OperationEditor: FC<OperationEditorProps> = memo(
   ({ title, submitAction, onSubmit }) => {
     useAutosave()
     const { isMD } = useCurrentSize()
     const { undo, redo } = useHistoryControls(historyAtom)
-    const [selectedTab, setSelectedTab] = useState(tabs[0].id)
 
     const handleUndoRedo = useAtomCallback(
       useCallback(
@@ -85,59 +77,46 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
       return handleUndoRedo()
     }, [handleUndoRedo])
 
-    const rightPanelContent = (
-      <>
-        <div className="flex items-center mb-4">
-          <h2 className="text-xl font-bold">作业信息</h2>
-          <Divider className="grow" />
-        </div>
-        <InfoEditor className="mb-4 [&>.bp4-inline>.bp4-label]:w-20" />
-        <OperatorEditor />
-      </>
-    )
-
     return (
       <div className="-mt-14 pt-14 md:h-screen flex flex-col">
         <Validator />
         <EditorToolbar
-          tabs={tabs}
-          selectedTab={selectedTab}
-          onTabChange={setSelectedTab}
           title={title}
           submitAction={submitAction}
           onSubmit={onSubmit}
         />
-        <div
-          className={clsx('grow min-h-0', selectedTab !== 'main' && 'hidden')}
-        >
+        <div className={clsx('grow min-h-0')}>
           {isMD ? (
-            <div className="p-4 shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
-              {rightPanelContent}
+            <div className="panel-shadow">
+              <InfoEditor />
+              <OperatorEditor />
+              <ActionEditor />
             </div>
           ) : (
-            <PanelGroup autoSaveId="editor-main" direction="horizontal">
-              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
-                <OperatorSheet />
+            <PanelGroup autoSaveId="editor-h" direction="horizontal">
+              <Panel>
+                <PanelGroup autoSaveId="editor-v-l" direction="vertical">
+                  <Panel className="panel-shadow">
+                    {/* <LevelMap className="h-full" /> */}
+                    <OperatorSheet />
+                  </Panel>
+                  <PanelResizeHandle className="h-1 bg-white dark:bg-[#383e47]" />
+                  <Panel className="panel-shadow">
+                    <OperatorEditor />
+                  </Panel>
+                </PanelGroup>
               </Panel>
               <PanelResizeHandle className="w-1 bg-white dark:bg-[#383e47]" />
-              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)] p-4 !overflow-auto">
-                {rightPanelContent}
+              <Panel className="panel-shadow">
+                {/* we need a wrapper here because the panel cannot be scrollable, or else the shadow will scroll as well */}
+                <div className="h-full overflow-auto">
+                  <InfoEditor />
+                  <ActionEditor />
+                </div>
               </Panel>
             </PanelGroup>
           )}
         </div>
-        <ActionEditor className={clsx(selectedTab !== 'action' && 'hidden')} />
-        <Button
-          intent="primary"
-          icon={selectedTab === 'main' ? 'arrow-right' : 'arrow-left'}
-          className={clsx(
-            'fixed  !rounded-full',
-            isMD ? 'bottom-4 right-16 w-10 h-10' : 'bottom-4 right-4 w-12 h-12',
-          )}
-          onClick={() => {
-            setSelectedTab((prev) => (prev === 'main' ? 'action' : 'main'))
-          }}
-        />
       </div>
     )
   },

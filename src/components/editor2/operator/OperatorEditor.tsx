@@ -1,4 +1,4 @@
-import { Button, Callout, Divider } from '@blueprintjs/core'
+import { Button, Callout, NonIdealState } from '@blueprintjs/core'
 import {
   Active,
   DndContext,
@@ -143,72 +143,72 @@ export const OperatorEditor: FC = memo(() => {
   )
 
   return (
-    <>
-      <div className="flex items-center mb-4">
-        <h2 className="text-xl font-bold">
-          干员与干员组 ({operatorAtoms.length})
-        </h2>
-        <Divider className="grow" />
+    <div className="h-full flex flex-col">
+      <div className="flex items-center border-b border-gray-200 dark:border-gray-600">
+        <CreateGroupButton />
+        <CreateOperatorButton />
       </div>
-      <OperatorError />
-      <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
-        <Droppable id={globalContainerId} data={{ type: 'group' }}>
-          <SortableContext items={operatorIds}>
-            <ul className="flex flex-wrap gap-4">
-              {operatorAtoms.map((operatorAtom) => (
-                <AtomRenderer
-                  atom={operatorAtom}
-                  key={operatorAtom.toString()}
-                  render={(operator, { onChange }) => (
-                    <Sortable
-                      id={operator.id}
-                      data={{
-                        type: 'operator',
-                        container: globalContainerId,
-                      }}
-                    >
-                      {(attrs) => (
-                        <OperatorItem
-                          operator={operator}
-                          onChange={onChange}
-                          onRemove={() =>
-                            edit(() => {
-                              dispatchOperators({
-                                type: 'remove',
-                                atom: operatorAtom,
-                              })
-                              return {
-                                action: 'remove-operator',
-                                desc: '移除干员',
-                                squash: false,
+      <div className="grow md:overflow-auto px-4 pt-4">
+        <OperatorError />
+        {operatorAtoms.length === 0 && baseGroupAtoms.length === 0 ? (
+          <NonIdealState icon="helicopter" title="暂无干员" />
+        ) : (
+          <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
+            <Droppable id={globalContainerId} data={{ type: 'group' }}>
+              <SortableContext items={operatorIds}>
+                <ul className="flex flex-wrap gap-4">
+                  {operatorAtoms.map((operatorAtom) => (
+                    <AtomRenderer
+                      atom={operatorAtom}
+                      key={operatorAtom.toString()}
+                      render={(operator, { onChange }) => (
+                        <Sortable
+                          id={operator.id}
+                          data={{
+                            type: 'operator',
+                            container: globalContainerId,
+                          }}
+                        >
+                          {(attrs) => (
+                            <OperatorItem
+                              operator={operator}
+                              onChange={onChange}
+                              onRemove={() =>
+                                edit(() => {
+                                  dispatchOperators({
+                                    type: 'remove',
+                                    atom: operatorAtom,
+                                  })
+                                  return {
+                                    action: 'remove-operator',
+                                    desc: '移除干员',
+                                    squash: false,
+                                  }
+                                })
                               }
-                            })
-                          }
-                          {...attrs}
-                        />
+                              {...attrs}
+                            />
+                          )}
+                        </Sortable>
                       )}
-                    </Sortable>
-                  )}
+                    />
+                  ))}
+                </ul>
+              </SortableContext>
+            </Droppable>
+            <ul className="mt-4 flex flex-wrap gap-2 md:pb-48">
+              {baseGroupAtoms.map((baseGroupAtom) => (
+                <GroupItem
+                  key={baseGroupAtom.toString()}
+                  baseGroupAtom={baseGroupAtom}
                 />
               ))}
             </ul>
-          </SortableContext>
-        </Droppable>
-        <ul className="mt-4 flex flex-wrap gap-2">
-          {baseGroupAtoms.map((baseGroupAtom) => (
-            <GroupItem
-              key={baseGroupAtom.toString()}
-              baseGroupAtom={baseGroupAtom}
-            />
-          ))}
-        </ul>
-        <div className="mt-4 -ml-2 pb-96 flex items-center gap-2">
-          <CreateGroupButton />
-          <CreateOperatorButton />
-        </div>
-        <OperatorDragOverlay />
-      </DndContext>
-    </>
+            <OperatorDragOverlay />
+          </DndContext>
+        )}
+      </div>
+    </div>
   )
 })
 OperatorEditor.displayName = 'OperatorPanel'
@@ -222,8 +222,8 @@ const CreateOperatorButton: FC<{}> = () => {
         addOperator(createOperator({ name }))
       }}
     >
-      <Button minimal intent="primary" className="!p-2 !text-base" icon="plus">
-        添加干员...
+      <Button minimal intent="primary" className="!py-1.5" icon="plus">
+        干员
       </Button>
     </OperatorSelect>
   )
@@ -237,7 +237,7 @@ const CreateGroupButton: FC<{}> = () => {
     <Button
       minimal
       intent="primary"
-      className="!p-2 !text-base"
+      className="!py-1.5"
       icon="plus"
       onClick={() => {
         const newGroup = createGroup()
@@ -255,7 +255,7 @@ const CreateGroupButton: FC<{}> = () => {
         setNewlyAddedGroupId(newGroup.id)
       }}
     >
-      添加干员组
+      干员组
     </Button>
   )
 }

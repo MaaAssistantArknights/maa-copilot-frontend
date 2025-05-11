@@ -1,4 +1,4 @@
-import { Button, Divider, Icon } from '@blueprintjs/core'
+import { Button, Icon } from '@blueprintjs/core'
 import {
   DndContext,
   DragEndEvent,
@@ -13,15 +13,12 @@ import clsx from 'clsx'
 import { useAtomValue } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
 import { FC, useCallback, useEffect, useRef } from 'react'
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels'
 
-import { useCurrentSize } from '../../../utils/useCurrenSize'
 import { Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import { editorAtoms, useEdit } from '../editor-state'
 import { ActionItem } from './ActionItem'
 import { CreateActionMenu, CreateActionMenuRef } from './CreateActionMenu'
-import { LevelMap } from './LevelMap'
 
 interface ActionEditorProps {
   className?: string
@@ -34,7 +31,6 @@ const actionIdsAtom = selectAtom(
 )
 
 export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
-  const { isMD } = useCurrentSize()
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
   const actionIds = useAtomValue(actionIdsAtom)
   const edit = useEdit()
@@ -99,12 +95,9 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
     }
   }, [])
 
-  const rightPanelContent = (
-    <>
-      <div className="flex items-center">
-        <h3 className="text-xl font-bold">动作序列 ({actionAtoms.length})</h3>
-        <Divider className="grow" />
-      </div>
+  return (
+    <div className={clsx('px-4 grow min-h-0 pb-96', className)}>
+      <h3 className="text-lg font-bold">动作序列 ({actionAtoms.length})</h3>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <SortableContext items={actionIds}>
           <ul className="flex flex-col">
@@ -136,37 +129,11 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       >
         添加动作 (Shift + A)
       </Button>
-    </>
-  )
-
-  return (
-    <div className={clsx('relative grow min-h-0', className)}>
-      {isMD ? (
-        <div className="p-4 pb-96">{rightPanelContent}</div>
-      ) : (
-        <PanelGroup autoSaveId="editor-actions" direction="horizontal">
-          <Panel>
-            <PanelGroup autoSaveId="editor-actions-left" direction="vertical">
-              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
-                <LevelMap className="h-full" />
-              </Panel>
-              <PanelResizeHandle className="h-1 bg-white dark:bg-[#383e47]" />
-              <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)]">
-                干员列表（待实现）
-              </Panel>
-            </PanelGroup>
-          </Panel>
-          <PanelResizeHandle className="w-1 bg-white dark:bg-[#383e47]" />
-          <Panel className="rounded-lg shadow-[inset_0_0_3px_0_rgba(0,0,0,0.2)] !overflow-auto p-4 pb-96">
-            {rightPanelContent}
-          </Panel>
-        </PanelGroup>
-      )}
       <CreateActionMenu
         ref={createActionMenuRef}
         renderTarget={({ ref, locatorRef, onClick }) => (
           <div
-            className="absolute top-0 right-0 bottom-0 left-0 pointer-events-none"
+            className="fixed top-0 right-0 bottom-0 left-0 pointer-events-none"
             ref={ref}
           >
             {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions */}

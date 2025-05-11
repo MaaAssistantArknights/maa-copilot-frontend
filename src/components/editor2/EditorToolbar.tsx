@@ -1,14 +1,11 @@
 import {
   Button,
   Callout,
-  Divider,
   H1,
   Icon,
   Menu,
   MenuDivider,
   MenuItem,
-  Tab,
-  Tabs,
 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
@@ -17,7 +14,6 @@ import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { FC, useRef, useState } from 'react'
 
 import { formatError } from '../../utils/error'
-import { joinJSX } from '../../utils/react'
 import { formatRelativeTime } from '../../utils/times'
 import { RelativeTime } from '../RelativeTime'
 import { AppToaster } from '../Toaster'
@@ -39,15 +35,9 @@ import {
 
 interface EditorToolbarProps extends SubmitButtonProps {
   title?: string
-  tabs: { id: string; name: string }[]
-  selectedTab: string
-  onTabChange: (id: string) => void
 }
 
 export const EditorToolbar: FC<EditorToolbarProps> = ({
-  tabs,
-  selectedTab,
-  onTabChange,
   submitAction,
   onSubmit,
 }) => {
@@ -57,26 +47,6 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         <Icon icon="document" />
         <H1 className="!text-lg font-normal ml-1 mb-0">作业编辑器v2</H1>
       </div>
-      <Tabs
-        className="ml-4 self-stretch pl-4 pr-2 [&>div]:h-full [&>div]:items-stretch [&>div]:space-x-2 [&>div]:space-x-reverse"
-        id="operation-tabs"
-        large
-        selectedTabId={selectedTab}
-        onChange={(newTab) => onTabChange(newTab as string)}
-      >
-        {tabs.length > 0 &&
-          joinJSX(
-            tabs.map(({ id, name }) => (
-              <Tab
-                className="flex items-center"
-                key={id}
-                id={id}
-                title={name}
-              />
-            )),
-            <Divider className="self-center h-[1em]" />,
-          )}
-      </Tabs>
       <div className="grow py-2 flex flex-wrap items-center">
         <span className="grow" />
         <AutoSaveButton />

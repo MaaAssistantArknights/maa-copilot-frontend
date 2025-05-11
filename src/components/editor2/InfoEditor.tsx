@@ -31,11 +31,12 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
   return (
     <div
       className={clsx(
-        'mb-4 md:[&>.bp4-form-group]:flex-row md:[&>.bp4-form-group>.bp4-label]:w-20',
+        'p-4 md:[&>.bp4-form-group]:flex-row md:[&>.bp4-form-group>.bp4-label]:w-20',
         '[&_[type="text"]]:!border-0 [&_textarea]:!outline-none [&_[type="text"]]:shadow-[inset_0_0_2px_0_rgba(0,0,0,0.4)] [&_textarea:not(:focus)]:!shadow-[inset_0_0_2px_0_rgba(0,0,0,0.4)]',
         className,
       )}
     >
+      <h3 className="mb-2 text-lg font-bold">作业信息</h3>
       <FormGroup contentClassName="grow" label="标题" labelInfo="*">
         <InputGroup
           large
@@ -120,7 +121,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         />
         <FieldError path="difficulty" />
       </FormGroup>
-      <FormGroup contentClassName="grow" label="可见范围">
+      <FormGroup className="mb-0" contentClassName="grow" label="可见范围">
         <RadioGroup
           inline
           selectedValue={metadata.visibility}
@@ -137,8 +138,10 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
             })
           }}
         >
-          <Radio value="public">公开</Radio>
-          <Radio value="private">
+          <Radio className="!mt-0" value="public">
+            公开
+          </Radio>
+          <Radio className="!mt-0" value="private">
             仅自己可见
             <span className="ml-2 text-xs opacity-50">
               其他人无法在列表中看见，但可以通过神秘代码访问
