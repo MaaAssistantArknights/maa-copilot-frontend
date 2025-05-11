@@ -27,13 +27,12 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
   isSorting,
 }) => {
   const edit = useEdit()
+  const { showLinkerButtons } = useAtomValue(editorAtoms.config)
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
   const [action, setAction] = useImmerAtom(actionAtom)
   const index = actionAtoms.indexOf(actionAtom)
-  // edge case?
-  if (index === -1) {
-    return null
-  }
+  const visibilityClasses =
+    !showLinkerButtons && 'opacity-0 focus:opacity-100 group-hover:opacity-100'
   return (
     <div className="group flex items-center text-gray-400">
       <div
@@ -47,7 +46,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
             small
             minimal
             icon={<Icon icon="plus" className="!text-inherit" />}
-            className="h-8 !text-inherit opacity-0 focus:opacity-100 group-hover:opacity-100"
+            className={clsx('h-8 !text-inherit', visibilityClasses)}
           >
             动作
           </Button>
@@ -145,7 +144,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
             small
             minimal
             icon={<Icon icon="plus" className="!text-inherit" />}
-            className="h-8 !text-inherit opacity-0 focus:opacity-100 group-hover:opacity-100"
+            className={clsx('h-8 !text-inherit', visibilityClasses)}
           >
             条件
           </Button>

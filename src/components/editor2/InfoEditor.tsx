@@ -17,7 +17,6 @@ import { DifficultyPicker } from './DifficultyPicker'
 import { LevelSelect } from './LevelSelect'
 import { editorAtoms, useEdit } from './editor-state'
 import { CopilotOperation, getLabeledPath } from './validation/schema'
-import { editorVisibleGlobalErrorsAtom } from './validation/validation'
 
 interface InfoEditorProps {
   className?: string
@@ -155,7 +154,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
 InfoEditor.displayName = 'InfoEditor'
 
 const FieldError = ({ path }: { path: Paths<CopilotOperation> }) => {
-  const globalErrors = useAtomValue(editorVisibleGlobalErrorsAtom)
+  const globalErrors = useAtomValue(editorAtoms.visibleGlobalErrors)
   const errors = globalErrors?.filter((e) => e.path.join('.') === path)
   if (!errors?.length) return null
   return (

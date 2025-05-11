@@ -34,9 +34,9 @@ interface HistoryTracker<T extends {}> {
   _current?: HistoryRecord<T>
 }
 
-function createInitialEditorHistoryState<
-  T extends {},
->(): InternalHistoryTracker<T> {
+function createInitialEditorHistoryState<T extends {}>(
+  limit: number,
+): InternalHistoryTracker<T> {
   const record = {
     state: null,
     action: 'init',
@@ -47,12 +47,15 @@ function createInitialEditorHistoryState<
   return {
     stack: [record],
     index: 0,
-    limit: 20,
+    limit,
   }
 }
 
-export function createHistoryAtom<T extends {}>(stateAtom: PrimitiveAtom<T>) {
-  const historyTrackerAtom = atom(createInitialEditorHistoryState<T>())
+export function createHistoryAtom<T extends {}>(
+  stateAtom: PrimitiveAtom<T>,
+  limit: number,
+) {
+  const historyTrackerAtom = atom(createInitialEditorHistoryState<T>(limit))
 
   const fromInternal = <T extends {}>(
     tracker: InternalHistoryTracker<T>,

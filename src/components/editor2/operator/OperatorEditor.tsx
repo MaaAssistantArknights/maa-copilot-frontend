@@ -27,10 +27,7 @@ import {
   useEdit,
 } from '../editor-state'
 import { createGroup, createOperator } from '../reconciliation'
-import {
-  EntityIssue,
-  editorVisibleEntityErrorsAtom,
-} from '../validation/validation'
+import { EntityIssue } from '../validation/validation'
 import { GroupItem } from './GroupItem'
 import { OperatorItem } from './OperatorItem'
 import { OperatorSelect } from './OperatorSelect'
@@ -57,6 +54,7 @@ export const OperatorEditor: FC = memo(() => {
   )
   const [operatorAtoms, dispatchOperators] = useAtom(editorAtoms.operatorAtoms)
   const [baseGroupAtoms] = useAtom(editorAtoms.baseGroupAtoms)
+  const { toggleSelectorPanel } = useAtomValue(editorAtoms.config)
   const setSelectorMode = useSetAtom(editorAtoms.selectorPanelMode)
 
   const handleDragEnd = useAtomCallback(
@@ -146,7 +144,9 @@ export const OperatorEditor: FC = memo(() => {
   return (
     <div
       className="h-full flex flex-col"
-      onMouseDownCapture={() => setSelectorMode('operator')}
+      onMouseDownCapture={() =>
+        toggleSelectorPanel && setSelectorMode('operator')
+      }
     >
       <div className="flex items-center border-b border-gray-200 dark:border-gray-600">
         <CreateGroupButton />
@@ -296,7 +296,7 @@ const OperatorDragOverlay = () => {
 }
 
 const operatorErrorsAtom = atom((get) => {
-  const entityErrors = get(editorVisibleEntityErrorsAtom)
+  const entityErrors = get(editorAtoms.visibleEntityErrors)
   if (!entityErrors) return undefined
 
   const opers = get(editorAtoms.operators)

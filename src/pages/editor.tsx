@@ -21,10 +21,7 @@ import {
 } from '../components/editor2/editor-state'
 import { toEditorOperation } from '../components/editor2/reconciliation'
 import { operationLooseSchema } from '../components/editor2/validation/schema'
-import {
-  editorErrorsVisibleAtom,
-  editorValidationAtom,
-} from '../components/editor2/validation/validation'
+import { editorValidationAtom } from '../components/editor2/validation/validation'
 import { toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
 import { wrapErrorMessage } from '../utils/wrapErrorMessage'
@@ -71,7 +68,7 @@ export const EditorPage = withSuspensable(() => {
       async (get, set) => {
         const result = set(editorValidationAtom)
         if (!result.success) {
-          set(editorErrorsVisibleAtom, true)
+          set(editorAtoms.errorsVisible, true)
           AppToaster.show({
             message: '作业内容存在错误，请检查',
             intent: 'danger',

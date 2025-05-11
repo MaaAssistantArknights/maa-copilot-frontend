@@ -1,5 +1,11 @@
-import { PrimitiveAtom, SetStateAction, atom, useAtom } from 'jotai'
-import { splitAtom } from 'jotai/utils'
+import {
+  PrimitiveAtom,
+  SetStateAction,
+  atom,
+  getDefaultStore,
+  useAtom,
+} from 'jotai'
+import { atomWithStorage, splitAtom } from 'jotai/utils'
 import { noop } from 'lodash-es'
 import { useMemo } from 'react'
 import { SetRequired, Simplify } from 'type-fest'
@@ -12,7 +18,8 @@ import {
   WithPartialCoordinates,
   toEditorOperation,
 } from './reconciliation'
-import { operationLooseSchema } from './validation/schema'
+import { ZodIssue, operationLooseSchema } from './validation/schema'
+import { EntityIssue } from './validation/validation'
 
 export interface EditorState {
   operation: EditorOperation
@@ -175,6 +182,61 @@ const editorAtom = atom(
   },
 )
 
+interface EditorConfig {
+  showLinkerButtons: boolean
+  toggleSelectorPanel: boolean
+  historyLimit: number
+  showErrorsByDefault: boolean
+}
+const defaultConfig: EditorConfig = {
+  showLinkerButtons: false,
+  toggleSelectorPanel: true,
+  historyLimit: 20,
+  showErrorsByDefault: false,
+}
+const localConfigAtom = atomWithStorage<Partial<EditorConfig>>(
+  'prts-editor-config',
+  {},
+  undefined,
+  { getOnInit: true },
+)
+const initialConfig = {
+  ...defaultConfig,
+  ...getDefaultStore().get(localConfigAtom),
+}
+const configAtom = atom(
+  (get) => ({
+    ...defaultConfig,
+    ...get(localConfigAtom),
+  }),
+  (get, set, update: SetStateAction<Partial<EditorConfig>>) => {
+    if (typeof update === 'function') {
+      update = update(get(configAtom))
+    }
+    set(localConfigAtom, (prev) => ({ ...prev, ...update }))
+
+    if (update.showErrorsByDefault) {
+      set(editorErrorsVisibleAtom, true)
+    }
+    if (update.historyLimit !== undefined) {
+      set(historyAtom, (prev) => ({
+        ...prev,
+        limit: update.historyLimit!,
+      }))
+    }
+  },
+)
+
+const editorGlobalErrorsAtom = atom<ZodIssue[]>([])
+const editorEntityErrorsAtom = atom<Record<string, EntityIssue[]>>({})
+const editorErrorsVisibleAtom = atom(initialConfig.showErrorsByDefault)
+const editorVisibleGlobalErrorsAtom = atom((get) =>
+  get(editorErrorsVisibleAtom) ? get(editorGlobalErrorsAtom) : undefined,
+)
+const editorVisibleEntityErrorsAtom = atom((get) =>
+  get(editorErrorsVisibleAtom) ? get(editorEntityErrorsAtom) : undefined,
+)
+
 export const editorAtoms = {
   editor: editorAtom,
   operation: operationAtom,
@@ -189,15 +251,28 @@ export const editorAtoms = {
   actions: actionsAtom,
   actionAtoms: splitAtom(actionsAtom, getId),
 
-  // UI state
+  // config
+  config: configAtom,
+
+  // UI
   activeGroupIdAtom: atom<string | undefined>(undefined),
   newlyAddedGroupIdAtom: atom<string | undefined>(undefined),
   activeActionIdAtom: atom<string | undefined>(undefined),
   sourceEditorIsOpen: atom(false),
   selectorPanelMode: atom<'operator' | 'map'>('operator'),
+
+  // validation
+  globalErrors: editorGlobalErrorsAtom,
+  entityErrors: editorEntityErrorsAtom,
+  errorsVisible: editorErrorsVisibleAtom,
+  visibleGlobalErrors: editorVisibleGlobalErrorsAtom,
+  visibleEntityErrors: editorVisibleEntityErrorsAtom,
 }
 
-export const historyAtom = createHistoryAtom(editorAtom)
+export const historyAtom = createHistoryAtom(
+  editorAtom,
+  initialConfig.historyLimit,
+)
 
 export function useEdit() {
   return useHistoryEdit(historyAtom)

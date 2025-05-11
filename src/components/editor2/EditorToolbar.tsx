@@ -17,6 +17,7 @@ import { formatError } from '../../utils/error'
 import { formatRelativeTime } from '../../utils/times'
 import { RelativeTime } from '../RelativeTime'
 import { AppToaster } from '../Toaster'
+import { Settings } from './Settings'
 import { editorAtoms, historyAtom, useEdit } from './editor-state'
 import { useHistoryControls, useHistoryValue } from './history'
 import { SourceEditorButton } from './source/SourceEditor'
@@ -27,11 +28,6 @@ import {
   editorSaveAtom,
 } from './useAutoSave'
 import { getLabeledPath } from './validation/schema'
-import {
-  editorEntityErrorsAtom,
-  editorErrorsVisibleAtom,
-  editorGlobalErrorsAtom,
-} from './validation/validation'
 
 interface EditorToolbarProps extends SubmitButtonProps {
   title?: string
@@ -49,6 +45,7 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
       </div>
       <div className="grow py-2 flex flex-wrap items-center">
         <span className="grow" />
+        <Settings />
         <AutoSaveButton />
         <HistoryButtons />
         <ErrorVisibleButton />
@@ -253,8 +250,8 @@ const HistoryButtons = () => {
 }
 
 const ErrorButton = () => {
-  const globalErrors = useAtomValue(editorGlobalErrorsAtom)
-  const entityErrors = useAtomValue(editorEntityErrorsAtom)
+  const globalErrors = useAtomValue(editorAtoms.globalErrors)
+  const entityErrors = useAtomValue(editorAtoms.entityErrors)
   const [isOpen, setIsOpen] = useState(false)
   const allErrors = globalErrors.concat(Object.values(entityErrors).flat())
   return (
@@ -293,7 +290,7 @@ const ErrorButton = () => {
 }
 
 const ErrorVisibleButton = () => {
-  const [visible, setVisible] = useAtom(editorErrorsVisibleAtom)
+  const [visible, setVisible] = useAtom(editorAtoms.errorsVisible)
   return (
     <Button
       minimal

@@ -42,6 +42,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       activationConstraint: { delay: 250, tolerance: 5 },
     }),
   )
+  const { toggleSelectorPanel } = useAtomValue(editorAtoms.config)
   const setSelectorMode = useSetAtom(editorAtoms.selectorPanelMode)
   const createActionMenuRef = useRef<CreateActionMenuRef>(null)
 
@@ -99,7 +100,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
   return (
     <div
       className={clsx('px-4 grow min-h-0 pb-96', className)}
-      onMouseDownCapture={() => setSelectorMode('map')}
+      onMouseDownCapture={() => toggleSelectorPanel && setSelectorMode('map')}
     >
       <h3 className="text-lg font-bold">动作序列 ({actionAtoms.length})</h3>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
