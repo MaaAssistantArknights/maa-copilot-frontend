@@ -1,5 +1,6 @@
 import { AppToaster } from 'components/Toaster'
 
+import { i18n } from '../i18n/i18n'
 import { CopilotDocV1 } from '../models/copilot.schema'
 import { ShortCodeContent, toShortCode } from '../models/shortCode'
 import { formatError } from '../utils/error'
@@ -31,14 +32,17 @@ export const handleDownloadJSON = (operationDoc: CopilotDocV1.Operation) => {
   doTriggerDownloadJSON(json, `MAACopilot_${operationDoc.doc.title}.json`)
 
   AppToaster.show({
-    message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
+    message: i18n.services.operation.json_downloaded,
     intent: 'success',
   })
 }
 
 export const handleLazyDownloadJSON = async (id: number, title: string) => {
   const resp = await wrapErrorMessage(
-    (e) => `JSON下载失败：${formatError(e)}`,
+    (e) =>
+      i18n.services.operation.json_download_failed({
+        error: formatError(e),
+      }),
     new OperationApi().getCopilotById({
       id: id,
     }),
@@ -52,13 +56,13 @@ export const handleLazyDownloadJSON = async (id: number, title: string) => {
     )
     doTriggerDownloadJSON(json, `MAACopilot_${title}.json`)
     AppToaster.show({
-      message: '已下载作业 JSON 文件，前往 MAA 选择即可使用~',
+      message: i18n.services.operation.json_downloaded,
       intent: 'success',
     })
   } catch (e) {
     console.error(e)
     AppToaster.show({
-      message: 'JSON 数据错误，请联系开发者',
+      message: i18n.services.operation.json_data_error,
       intent: 'danger',
     })
   }
@@ -77,12 +81,14 @@ export const copyShortCode = async (target: { id: number }) => {
     navigator.clipboard.writeText(shortCode)
 
     AppToaster.show({
-      message: '已复制神秘代码，前往 MAA 粘贴即可使用~',
+      message: i18n.services.operation.shortcode_copied,
       intent: 'success',
     })
   } catch (e) {
     AppToaster.show({
-      message: '复制神秘代码失败：' + formatError(e),
+      message: i18n.services.operation.shortcode_copy_failed({
+        error: formatError(e),
+      }),
       intent: 'danger',
     })
   }

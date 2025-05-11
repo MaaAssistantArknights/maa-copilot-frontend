@@ -29,6 +29,7 @@ import { SetRequired } from 'type-fest'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { FactItem } from '../../FactItem'
 import { Droppable, Sortable } from '../../dnd'
 import { EditorGroupItem } from './EditorGroupItem'
@@ -55,6 +56,8 @@ const getId = (performer: Operator | Group) => {
 }
 
 export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
+  const t = useTranslation()
+
   const [editMode, setEditMode] = useState<PerformerType>('operator')
   const sensors = useSensors(useSensor(PointerSensor))
   const actions = useWatch({ control, name: 'actions' })
@@ -254,7 +257,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         ({ name, _id }) => name === operator.name && _id !== operator._id,
       )
     ) {
-      setError?.('name', { message: '干员已存在' })
+      setError?.('name', {
+        message:
+          t.components.editor.operator.EditorPerformer.operator_already_exists,
+      })
       return false
     }
 
@@ -322,7 +328,11 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
 
         setEditingOperator(undefined)
       } else {
-        setError?.('global' as any, { message: '未能找到要更新的干员' })
+        setError?.('global' as any, {
+          message:
+            t.components.editor.operator.EditorPerformer
+              .update_operator_not_found,
+        })
         return false
       }
     } else {
@@ -340,7 +350,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
     if (
       groups.find(({ name, _id }) => name === group.name && _id !== group._id)
     ) {
-      setError?.('name', { message: '干员组已存在' })
+      setError?.('name', {
+        message:
+          t.components.editor.operator.EditorPerformer.group_already_exists,
+      })
       return false
     }
     if (editingGroup || (fromSheet && group._id)) {
@@ -355,7 +368,10 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
         )
         setEditingGroup(undefined)
       } else {
-        setError?.('global' as any, { message: '未能找到要更新的干员组' })
+        setError?.('global' as any, {
+          message:
+            t.components.editor.operator.EditorPerformer.update_group_not_found,
+        })
         return false
       }
     } else {
@@ -411,7 +427,8 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               intent="primary"
             >
               <Icon icon="info-sign" className="mr-1" />
-              未加入干员：{additionalOperatorsFromActions.join(', ')}
+              {t.components.editor.operator.EditorPerformer.ungrouped_operators}
+              : {additionalOperatorsFromActions.join(', ')}
             </Callout>
           )}
           <div className="mt-2 relative">
@@ -423,9 +440,19 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               onDragCancel={handleDragEnd}
             >
               <Droppable id={nonGroupedContainerId}>
-                <FactItem title="干员" icon="person" className="font-bold" />
+                <FactItem
+                  title={t.components.editor.operator.EditorPerformer.operators}
+                  icon="person"
+                  className="font-bold"
+                />
 
-                {operators.length === 0 && <NonIdealState title="暂无干员" />}
+                {operators.length === 0 && (
+                  <NonIdealState
+                    title={
+                      t.components.editor.operator.EditorPerformer.no_operators
+                    }
+                  />
+                )}
 
                 <SortableContext
                   items={operators.map(getId)}
@@ -463,7 +490,9 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               </Droppable>
 
               <FactItem
-                title="干员组"
+                title={
+                  t.components.editor.operator.EditorPerformer.operator_groups
+                }
                 icon="people"
                 className="font-bold mt-8"
               />
@@ -471,7 +500,12 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               {groups.length === 0 && (
                 // extra div container: NonIdealState is using height: 100% which causes unexpected overflow
                 <div className="relative">
-                  <NonIdealState title="暂无干员组" />
+                  <NonIdealState
+                    title={
+                      t.components.editor.operator.EditorPerformer
+                        .no_operator_groups
+                    }
+                  />
                 </div>
               )}
 

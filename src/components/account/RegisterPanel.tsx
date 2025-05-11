@@ -9,6 +9,7 @@ import { formatError } from 'utils/error'
 import { REGEX_EMAIL } from 'utils/regexes'
 import { wrapErrorMessage } from 'utils/wrapErrorMessage'
 
+import { useTranslation } from '../../i18n/i18n'
 import {
   AuthFormEmailField,
   AuthFormPasswordField,
@@ -26,6 +27,8 @@ export interface RegisterFormValues {
 export const RegisterPanel: FC<{
   onComplete: () => void
 }> = ({ onComplete }) => {
+  const t = useTranslation()
+
   const {
     control,
     handleSubmit,
@@ -37,7 +40,10 @@ export const RegisterPanel: FC<{
   const [countdown, setCountdown] = useState(60)
   const onSubmit = async (val: RegisterFormValues) => {
     await wrapErrorMessage(
-      (e) => `注册失败：${formatError(e)}`,
+      (e) =>
+        t.components.account.RegisterPanel.registration_failed({
+          error: formatError(e),
+        }),
       register({
         email: val.email,
         registrationToken: val.registrationToken,
@@ -47,7 +53,7 @@ export const RegisterPanel: FC<{
     )
     AppToaster.show({
       intent: 'success',
-      message: `注册成功`,
+      message: t.components.account.RegisterPanel.registration_success,
     })
     onComplete()
   }
@@ -71,17 +77,20 @@ export const RegisterPanel: FC<{
       if (!REGEX_EMAIL.test(val.email)) {
         AppToaster.show({
           intent: 'danger',
-          message: `邮箱输入为空或格式错误,请重新输入`,
+          message: t.components.account.RegisterPanel.invalid_email,
         })
         return
       }
       await wrapErrorMessage(
-        (e) => `发送失败：${formatError(e)}`,
+        (e) =>
+          t.components.account.RegisterPanel.send_failed({
+            error: formatError(e),
+          }),
         sendRegistrationEmail({ email: val.email }),
       )
       AppToaster.show({
         intent: 'success',
-        message: `邮件发送成功`,
+        message: t.components.account.RegisterPanel.email_sent_success,
       })
       setSendEmailButtonDisabled(true)
     } catch (e) {
@@ -107,7 +116,11 @@ export const RegisterPanel: FC<{
           className="self-stretch"
           onClick={onEmailSubmit}
         >
-          {isSendEmailButtonDisabled ? `${countdown} 秒再试` : '发送验证码'}
+          {isSendEmailButtonDisabled
+            ? t.components.account.RegisterPanel.retry_seconds({
+                seconds: countdown,
+              })
+            : t.components.account.RegisterPanel.send_verification_code}
         </Button>
       </div>
       <AuthRegistrationTokenField
@@ -138,7 +151,7 @@ export const RegisterPanel: FC<{
           icon="envelope"
           className="self-stretch"
         >
-          注册
+          {t.components.account.RegisterPanel.register}
         </Button>
       </div>
     </form>

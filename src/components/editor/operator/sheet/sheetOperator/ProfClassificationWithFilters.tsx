@@ -6,6 +6,7 @@ import { FC, ImgHTMLAttributes, useEffect, useMemo } from 'react'
 
 import { PROFESSIONS } from 'models/operator'
 
+import { useTranslation } from '../../../../../i18n/i18n'
 import {
   DEFAULTPROFID,
   DEFAULTSUBPROFID,
@@ -16,25 +17,6 @@ import { OperatorBackToTop } from './toolBox/OperatorBackToTop'
 import { OperatorMutipleSelect } from './toolBox/OperatorMutipleSelect'
 import { OperatorRaritySelect } from './toolBox/OperatorRaritySelect'
 
-const formattedProfessions = [
-  {
-    id: DEFAULTPROFID.ALL,
-    name: '全部',
-    sub: [],
-  },
-  {
-    id: DEFAULTPROFID.FAV,
-    name: '收藏',
-    sub: [],
-  },
-  ...PROFESSIONS,
-  {
-    id: DEFAULTPROFID.OTHERS,
-    name: '其它',
-    sub: [],
-  },
-]
-
 export interface ProfClassificationWithFiltersProp {
   toTop: () => void
 }
@@ -42,19 +24,52 @@ export interface ProfClassificationWithFiltersProp {
 export const ProfClassificationWithFilters: FC<
   ProfClassificationWithFiltersProp
 > = ({ toTop }) => {
+  const t = useTranslation()
   const {
     useProfFilterState: [{ selectedProf }, setProfFilter],
     usePaginationFilterState: [_, setPaginationFilter],
   } = useOperatorFilterProvider()
 
+  const formattedProfessions = useMemo(
+    () => [
+      {
+        id: DEFAULTPROFID.ALL,
+        name: t.components.editor.operator.sheet.sheetOperator
+          .ProfClassificationWithFilters.all,
+        sub: [],
+      },
+      {
+        id: DEFAULTPROFID.FAV,
+        name: t.components.editor.operator.sheet.sheetOperator
+          .ProfClassificationWithFilters.favorites,
+        sub: [],
+      },
+      ...PROFESSIONS,
+      {
+        id: DEFAULTPROFID.OTHERS,
+        name: t.components.editor.operator.sheet.sheetOperator
+          .ProfClassificationWithFilters.others,
+        sub: [],
+      },
+    ],
+    [t],
+  )
   const subProfs = useMemo(() => {
     return [
-      { id: DEFAULTSUBPROFID.ALL, name: '全部' },
-      { id: DEFAULTSUBPROFID.SELECTED, name: '已选择' },
+      {
+        id: DEFAULTSUBPROFID.ALL,
+        name: t.components.editor.operator.sheet.sheetOperator
+          .ProfClassificationWithFilters.all,
+      },
+      {
+        id: DEFAULTSUBPROFID.SELECTED,
+        name: t.components.editor.operator.sheet.sheetOperator
+          .ProfClassificationWithFilters.selected,
+      },
       ...(formattedProfessions.find(({ id }) => id === selectedProf[0])?.sub ||
         []),
     ]
-  }, [selectedProf])
+  }, [selectedProf, formattedProfessions, t])
 
   useEffect(() => {
     toTop()

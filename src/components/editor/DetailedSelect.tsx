@@ -10,9 +10,9 @@ export type DetailedSelectItem =
 export interface DetailedSelectChoice {
   type: 'choice'
   icon?: IconName
-  title: string
+  title: ReactNode | (() => ReactNode)
   value: string | number
-  description: string
+  description?: ReactNode | (() => ReactNode)
   disabled?: boolean
 }
 
@@ -53,8 +53,16 @@ export const DetailedSelect: FCC<
                   <Icon icon={action.icon} className="pt-0.5 mr-2" />
                 )}
                 <div className="flex flex-col">
-                  <div className="flex-1">{action.title}</div>
-                  <div className="text-xs opacity-75">{action.description}</div>
+                  <div className="flex-1">
+                    {typeof action.title === 'function'
+                      ? action.title()
+                      : action.title}
+                  </div>
+                  <div className="text-xs opacity-75">
+                    {typeof action.description === 'function'
+                      ? action.description()
+                      : action.description}
+                  </div>
                 </div>
               </div>
             }

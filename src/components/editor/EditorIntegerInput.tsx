@@ -5,6 +5,7 @@ import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
+import { useTranslation } from '../../i18n/i18n'
 import { FieldResetButton } from '../FieldResetButton'
 import { NumericInput2 } from './NumericInput2'
 
@@ -23,6 +24,7 @@ export const EditorIntegerInput = <T extends FieldValues>({
   NumericInputProps,
   ...controllerProps
 }: EditorIntegerInputProps<T>) => {
+  const t = useTranslation()
   const { min } = NumericInputProps
 
   const {
@@ -33,7 +35,14 @@ export const EditorIntegerInput = <T extends FieldValues>({
     control,
     ...controllerProps,
     rules: {
-      min: isNil(min) ? undefined : { value: min, message: '最小为 ${min}' },
+      min: isNil(min)
+        ? undefined
+        : {
+            value: min,
+            message: t.components.editor.EditorIntegerInput.min_value({
+              min,
+            }),
+          },
       ...rules,
     },
   })

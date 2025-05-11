@@ -9,10 +9,7 @@
     "jsx": "react-jsx",
     "moduleResolution": "node",
     "allowSyntheticDefaultImports": true,
-    "lib": [
-      "es6",
-      "dom"
-    ],
+    "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "rootDir": "./",
@@ -22,26 +19,13 @@
     "noImplicitAny": false,
     "importHelpers": true,
     "strictNullChecks": true,
-    "suppressImplicitAnyIndexErrors": true,
     "noUnusedLocals": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "resolveJsonModule": true,
-    // "paths": {
-    //   "src/*": [
-    //     "*"
-    //   ]
-    // }
+    "resolveJsonModule": true
   },
-  // "include": [
-  //   "src"
-  // ],
-  "exclude": [
-    "node_modules",
-    "build",
-    "public"
-  ],
+  "include": ["src"],
   "references": [
     {
       "path": "./tsconfig.node.json"

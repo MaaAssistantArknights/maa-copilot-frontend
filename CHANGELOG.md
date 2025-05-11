@@ -1,3 +1,7 @@
+## 2025-05-11
+
+- 添加 i18n 及英文翻译 [@Constrat](https://github.com/Constrat) [@guansss](https://github.com/guansss)
+
 ## 2025-05-02
 
 - 添加用户名重复校验 [@dragove](https://github.com/dragove)

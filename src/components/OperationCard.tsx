@@ -11,6 +11,7 @@ import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
 
 import { useLevels } from '../apis/level'
+import { useTranslation } from '../i18n/i18n'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
 import { Paragraphs } from './Paragraphs'
 import { ReLinkDiv } from './ReLinkDiv'
@@ -29,6 +30,7 @@ export const NeoOperationCard = ({
   selected?: boolean
   onSelect?: (operation: Operation, selected: boolean) => void
 }) => {
+  const t = useTranslation()
   const { data: levels } = useLevels()
 
   return (
@@ -48,7 +50,7 @@ export const NeoOperationCard = ({
               </span>
               {operation.status === CopilotInfoStatusEnum.Private && (
                 <Tag minimal className="ml-2 shrink-0 font-normal opacity-75">
-                  私有
+                  {t.components.OperationCard.private}
                 </Tag>
               )}
             </H4>
@@ -80,7 +82,7 @@ export const NeoOperationCard = ({
           </div>
           <div>
             <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
-              干员/干员组
+              {t.components.OperationCard.operators_and_groups}
             </div>
             <OperatorTags operation={operation} />
           </div>
@@ -97,7 +99,12 @@ export const NeoOperationCard = ({
           </div>
           <div className="flex-1" />
 
-          <Tooltip2 placement="top" content={`访问量：${operation.views}`}>
+          <Tooltip2
+            placement="top"
+            content={t.components.OperationCard.views_count({
+              count: operation.views,
+            })}
+          >
             <div>
               <Icon icon="eye-open" className="mr-1.5" />
               <span>{operation.views}</span>
@@ -135,6 +142,7 @@ export const NeoOperationCard = ({
 }
 
 export const OperationCard = ({ operation }: { operation: Operation }) => {
+  const t = useTranslation()
   const { data: levels } = useLevels()
 
   return (
@@ -152,7 +160,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
                 {operation.parsedContent.doc.title}
                 {operation.status === CopilotInfoStatusEnum.Private && (
                   <Tag minimal className="ml-2 font-normal opacity-75">
-                    私有
+                    {t.components.OperationCard.private}
                   </Tag>
                 )}
               </H4>
@@ -183,7 +191,12 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
               />
             </div>
 
-            <Tooltip2 placement="top" content={`访问量：${operation.views}`}>
+            <Tooltip2
+              placement="top"
+              content={t.components.OperationCard.views_count({
+                count: operation.views,
+              })}
+            >
               <div>
                 <Icon icon="eye-open" className="mr-1.5" />
                 <span>{operation.views}</span>
@@ -215,7 +228,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
           </div>
           <div className="md:w-1/2">
             <div className="text-sm text-zinc-600 dark:text-slate-100 mb-2 font-bold">
-              干员/干员组
+              {t.components.OperationCard.operators_and_groups}
             </div>
             <OperatorTags operation={operation} />
           </div>
@@ -231,6 +244,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
 }
 
 const OperatorTags = ({ operation }: { operation: Operation }) => {
+  const t = useTranslation()
   const { opers, groups } = operation.parsedContent
 
   return opers?.length || groups?.length ? (
@@ -248,7 +262,7 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
           content={
             opers
               ?.map(({ name, skill }) => `${name} ${skill ?? 1}`)
-              .join(', ') || '无干员'
+              .join(', ') || t.components.OperationCard.no_operators
           }
         >
           <Tag>[{name}]</Tag>
@@ -256,7 +270,7 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
       ))}
     </div>
   ) : (
-    <div className="text-gray-500">无记录</div>
+    <div className="text-gray-500">{t.components.OperationCard.no_records}</div>
   )
 }
 
@@ -273,6 +287,7 @@ const CardActions = ({
   selected?: boolean
   onSelect?: (operation: Operation, selected: boolean) => void
 }) => {
+  const t = useTranslation()
   return selectable ? (
     <Button
       small
@@ -288,7 +303,9 @@ const CardActions = ({
       <Tooltip2
         placement="bottom"
         content={
-          <div className="max-w-sm dark:text-slate-900">下载原 JSON</div>
+          <div className="max-w-sm dark:text-slate-900">
+            {t.components.OperationCard.download_json}
+          </div>
         }
       >
         <Button
@@ -305,7 +322,9 @@ const CardActions = ({
       <Tooltip2
         placement="bottom"
         content={
-          <div className="max-w-sm dark:text-slate-900">复制神秘代码</div>
+          <div className="max-w-sm dark:text-slate-900">
+            {t.components.OperationCard.copy_secret_code}
+          </div>
         }
       >
         <Button
@@ -317,7 +336,9 @@ const CardActions = ({
       <Tooltip2
         placement="bottom"
         content={
-          <div className="max-w-sm dark:text-slate-900">添加到作业集</div>
+          <div className="max-w-sm dark:text-slate-900">
+            {t.components.OperationCard.add_to_job_set}
+          </div>
         }
       >
         <AddToOperationSetButton

@@ -4,6 +4,7 @@ import clsx from 'clsx'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { OPERATORS, getSkillUsageTitle } from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
@@ -25,15 +26,13 @@ export const EditorOperatorItem = ({
   attributes,
   listeners,
 }: EditorOperatorItemProps) => {
+  const t = useTranslation()
+
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
   const skillUsage = getSkillUsageTitle(
     operator.skillUsage as CopilotDocV1.SkillUsageType,
     operator.skillTimes,
   )
-
-  const skill = `${
-    [null, '一', '二', '三'][operator.skill ?? 1] ?? '未知'
-  }技能：${skillUsage}`
 
   return (
     <Card
@@ -54,7 +53,12 @@ export const EditorOperatorItem = ({
       <OperatorAvatar id={id} size="large" />
       <div className="ml-4 flex-grow">
         <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
-        <div className="text-gray-400 text-xs">{skill}</div>
+        <div className="text-gray-400 text-xs">
+          {t.components.editor.operator.EditorOperatorItem.skill_number({
+            count: operator.skill,
+          })}
+          : {skillUsage}
+        </div>
       </div>
 
       <CardEditOption active={editing} onClick={onEdit} />

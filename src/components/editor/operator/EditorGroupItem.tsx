@@ -6,6 +6,7 @@ import { clsx } from 'clsx'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { Sortable, SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { EditorOperatorItem } from './EditorOperatorItem'
@@ -38,6 +39,8 @@ export const EditorGroupItem = ({
   attributes,
   listeners,
 }: EditorGroupItemProps) => {
+  const t = useTranslation()
+
   return (
     <Card
       elevation={Elevation.TWO}
@@ -84,7 +87,9 @@ export const EditorGroupItem = ({
         </ul>
 
         {!group.opers?.length && (
-          <NonIdealState>将干员拖拽到此处</NonIdealState>
+          <NonIdealState>
+            {t.components.editor.operator.EditorGroupItem.drag_operators_here}
+          </NonIdealState>
         )}
       </SortableContext>
     </Card>

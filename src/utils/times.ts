@@ -1,9 +1,22 @@
 import dayjs from 'dayjs'
+import 'dayjs/locale/en'
 import 'dayjs/locale/zh-cn'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import { getDefaultStore } from 'jotai'
+
+import { Language, languageAtom } from '../i18n/i18n'
 
 dayjs.extend(relativeTime)
-dayjs.locale('zh-cn')
+
+function updateDayjsLocale(language: Language) {
+  dayjs.locale(language === 'cn' ? 'zh-cn' : 'en')
+}
+
+updateDayjsLocale(getDefaultStore().get(languageAtom))
+
+getDefaultStore().sub(languageAtom, () => {
+  updateDayjsLocale(getDefaultStore().get(languageAtom))
+})
 
 export type DayjsInput = string | number | dayjs.Dayjs | Date | null | undefined
 

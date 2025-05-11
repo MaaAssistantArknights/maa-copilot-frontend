@@ -7,6 +7,7 @@ import { AppToaster } from 'components/Toaster'
 import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { favGroupAtom } from 'store/useFavGroups'
 
+import { useTranslation } from '../../../../i18n/i18n'
 import { Group, Operator } from '../EditorSheet'
 import {
   SheetContainerSkeleton,
@@ -26,6 +27,7 @@ export interface GroupListModifyProp {
 }
 
 const EditorGroupName: FC = () => {
+  const t = useTranslation()
   const [groupName, setGroupName] = useState('')
 
   const { submitGroupInSheet } = useSheet()
@@ -34,7 +36,7 @@ const EditorGroupName: FC = () => {
     const name = groupName.trim()
     if (!name) {
       AppToaster.show({
-        message: '干员组名不能为空',
+        message: t.components.editor.operator.sheet.SheetGroup.group_name_empty,
         intent: Intent.DANGER,
       })
     } else {
@@ -48,16 +50,23 @@ const EditorGroupName: FC = () => {
       <InputGroup
         type="text"
         value={groupName}
-        placeholder="输入干员组名"
+        placeholder={
+          t.components.editor.operator.sheet.SheetGroup.enter_group_name
+        }
         onChange={(e) => setGroupName(e.target.value)}
         fill
       />
       <div className="flex items-center">
-        <Button minimal icon="tick" title="添加" onClick={addGroupHandle} />
+        <Button
+          minimal
+          icon="tick"
+          title={t.components.editor.operator.sheet.SheetGroup.add}
+          onClick={addGroupHandle}
+        />
         <Button
           minimal
           icon="reset"
-          title="重置"
+          title={t.components.editor.operator.sheet.SheetGroup.reset}
           onClick={() => setGroupName('')}
         />
       </div>
@@ -66,6 +75,7 @@ const EditorGroupName: FC = () => {
 }
 
 const SheetGroup: FC<SheetGroupProps> = () => {
+  const t = useTranslation()
   const { existedGroups, existedOperators } = useSheet()
 
   const defaultGroup = useMemo<Group[]>(
@@ -104,7 +114,9 @@ const SheetGroup: FC<SheetGroupProps> = () => {
         <div className="flex-1 sticky top-0 h-screen flex flex-col">
           <div className="grow overflow-y-auto">
             <SheetContainerSkeleton
-              title="添加干员组"
+              title={
+                t.components.editor.operator.sheet.SheetGroup.add_operator_group
+              }
               icon="add"
               mini
               className="sticky top-0 z-10 backdrop-blur-lg py-1"
@@ -112,7 +124,9 @@ const SheetGroup: FC<SheetGroupProps> = () => {
               <EditorGroupName />
             </SheetContainerSkeleton>
             <SheetGroupItemsWithSkeleton
-              title="已设置的干员组"
+              title={
+                t.components.editor.operator.sheet.SheetGroup.configured_groups
+              }
               icon="cog"
               mini
               groups={existedGroups}
@@ -120,7 +134,9 @@ const SheetGroup: FC<SheetGroupProps> = () => {
             />
             {!!existedGroups.length && (
               <H6 className="my-2 text-center">
-                已显示全部 {existedGroups.length} 个干员组
+                {t.components.editor.operator.sheet.SheetGroup.group_count({
+                  count: existedGroups.length,
+                })}
               </H6>
             )}
           </div>
@@ -128,14 +144,18 @@ const SheetGroup: FC<SheetGroupProps> = () => {
         <Divider />
         <div className="flex-1">
           <SheetGroupItemsWithSkeleton
-            title="推荐分组"
+            title={
+              t.components.editor.operator.sheet.SheetGroup.recommended_groups
+            }
             icon="thumbs-up"
             mini
             groups={defaultGroup}
             itemType="recommend"
           />
           <SheetGroupItemsWithSkeleton
-            title="收藏分组"
+            title={
+              t.components.editor.operator.sheet.SheetGroup.favorite_groups
+            }
             icon="star"
             mini
             groups={favGroups}
@@ -147,11 +167,17 @@ const SheetGroup: FC<SheetGroupProps> = () => {
   )
 }
 
-export const SheetGroupContainer: FC<SheetGroupProps> = () => (
-  <SheetContainerSkeleton title="设置干员组" icon="people">
-    <SheetGroup />
-  </SheetContainerSkeleton>
-)
+export const SheetGroupContainer: FC<SheetGroupProps> = () => {
+  const t = useTranslation()
+  return (
+    <SheetContainerSkeleton
+      title={t.components.editor.operator.sheet.SheetGroup.set_operator_groups}
+      icon="people"
+    >
+      <SheetGroup />
+    </SheetContainerSkeleton>
+  )
+}
 
 const SheetGroupItemsWithSkeleton: FC<
   SheetContainerSkeletonProps & {
@@ -161,15 +187,17 @@ const SheetGroupItemsWithSkeleton: FC<
 > = ({ groups, itemType, ...sheetContainerSkeletonProps }) => (
   <SheetContainerSkeleton {...sheetContainerSkeletonProps}>
     <div>
-      {groups.length
-        ? groups.map((item) => (
-            <SheetGroupItem
-              key={item.name}
-              groupInfo={item}
-              itemType={itemType}
-            />
-          ))
-        : GroupNoData}
+      {groups.length ? (
+        groups.map((item) => (
+          <SheetGroupItem
+            key={item.name}
+            groupInfo={item}
+            itemType={itemType}
+          />
+        ))
+      ) : (
+        <GroupNoData />
+      )}
     </div>
   </SheetContainerSkeleton>
 )

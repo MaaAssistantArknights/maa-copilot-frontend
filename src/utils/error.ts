@@ -1,4 +1,9 @@
-export function formatError(e: unknown, fallback = '未知错误'): string {
+import { i18n } from '../i18n/i18n'
+
+export function formatError(
+  e: unknown,
+  fallback = i18n.utils.error.unknown_error,
+): string {
   if (typeof e === 'string') {
     return e || fallback
   }
@@ -16,25 +21,25 @@ export function formatError(e: unknown, fallback = '未知错误'): string {
 }
 
 export class UnauthorizedError extends Error {
-  message = this.message || '未登录，请先登录'
+  message: string = this.message || i18n.utils.error.unauthorized
 }
 
 export class TokenExpiredError extends Error {
-  message = this.message || '登录已过期，请重新登录'
+  message: string = this.message || i18n.utils.error.token_expired
 }
 
 export class InvalidTokenError extends Error {
-  message = this.message || '登录失效，请重新登录'
+  message: string = this.message || i18n.utils.error.invalid_token
 }
 
 export class NotFoundError extends Error {
-  message = this.message || '资源不存在'
+  message: string = this.message || i18n.utils.error.not_found
 }
 
 export class NetworkError extends Error {
-  message = this.message || '网络错误'
+  message: string = this.message || i18n.utils.error.network_error
 }
 
 export class ApiError extends Error {
-  message = this.message || '请求错误'
+  message: string = this.message || i18n.utils.error.api_error
 }

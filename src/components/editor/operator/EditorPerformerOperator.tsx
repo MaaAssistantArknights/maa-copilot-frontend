@@ -9,6 +9,7 @@ import { FormError } from 'components/editor/FormError'
 import { FormSubmitButton } from 'components/editor/FormSubmitButton'
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { FormField2 } from '../../FormField'
 import { EditorOperatorName } from './EditorOperator'
 import { EditorOperatorGroupSelect } from './EditorOperatorGroupSelect'
@@ -39,6 +40,7 @@ export const EditorPerformerOperator = ({
   onCancel,
   categorySelector,
 }: EditorPerformerOperatorProps) => {
+  const t = useTranslation()
   const isNew = !operator
 
   const {
@@ -108,26 +110,40 @@ export const EditorPerformerOperator = ({
 
         <EditorResetButton<CopilotDocV1.Operator>
           reset={reset}
-          entityName="正在编辑的干员"
+          entityName={
+            t.components.editor.operator.EditorPerformerOperator
+              .editing_operator
+          }
         />
       </div>
 
       <FormField2
-        label="干员名"
-        description="选择干员或直接使用搜索内容创建干员"
+        label={
+          t.components.editor.operator.EditorPerformerOperator.operator_name
+        }
+        description={
+          t.components.editor.operator.EditorPerformerOperator
+            .operator_description
+        }
         field="name"
         error={errors.name}
         asterisk
         FormGroupProps={{
-          helperText: '键入干员名、拼音或拼音首字母以从干员列表中搜索',
+          helperText:
+            t.components.editor.operator.EditorPerformerOperator.search_hint,
         }}
       >
         <EditorOperatorName control={control} name="name" />
       </FormField2>
 
       <FormField2
-        label="所属干员组"
-        description="该干员的所属干员组，如果不存在则会自动创建"
+        label={
+          t.components.editor.operator.EditorPerformerOperator.group_membership
+        }
+        description={
+          t.components.editor.operator.EditorPerformerOperator
+            .group_membership_description
+        }
         field="groupName"
         error={errors.groupName}
       >
@@ -139,12 +155,18 @@ export const EditorPerformerOperator = ({
       </FormField2>
 
       <div className="flex flex-col lg:flex-row gap-2 flex-wrap">
-        <FormField2 label="技能" field="skill" error={errors.skill}>
+        <FormField2
+          label={t.components.editor.operator.EditorPerformerOperator.skill}
+          field="skill"
+          error={errors.skill}
+        >
           <EditorOperatorSkill control={control} name="skill" />
         </FormField2>
 
         <FormField2
-          label="技能用法"
+          label={
+            t.components.editor.operator.EditorPerformerOperator.skill_usage
+          }
           field="skillUsage"
           error={errors.skillUsage}
         >
@@ -153,7 +175,10 @@ export const EditorPerformerOperator = ({
 
         {skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes && (
           <FormField2
-            label="技能使用次数"
+            label={
+              t.components.editor.operator.EditorPerformerOperator
+                .skill_usage_count
+            }
             field="skillTimes"
             error={errors.skillTimes}
           >
@@ -164,12 +189,14 @@ export const EditorPerformerOperator = ({
 
       <div className="flex">
         <FormSubmitButton control={control} icon={isNew ? 'add' : 'edit'}>
-          {isNew ? '添加' : '保存'}
+          {isNew
+            ? t.components.editor.operator.EditorPerformerOperator.add
+            : t.components.editor.operator.EditorPerformerOperator.save}
         </FormSubmitButton>
 
         {!isNew && (
           <Button icon="cross" className="ml-2" onClick={onCancel}>
-            取消编辑
+            {t.components.editor.operator.EditorPerformerOperator.cancel_edit}
           </Button>
         )}
       </div>

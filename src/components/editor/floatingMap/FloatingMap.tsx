@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom'
 import { Rnd, RndResizeCallback } from 'react-rnd'
 import { useWindowSize } from 'react-use'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { Level } from '../../../models/operation'
 import { sendMessage, useMessage } from '../../../utils/messenger'
 import { useLazyStorage } from '../../../utils/useLazyStorage'
@@ -48,6 +49,8 @@ const enum MapStatus {
 }
 
 export function FloatingMap() {
+  const t = useTranslation()
+
   const [config, setConfig] = useLazyStorage<FloatingMapConfig>(
     STORAGE_KEY,
     {
@@ -197,12 +200,22 @@ export function FloatingMap() {
                     icon={
                       <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
                     }
-                    description={iframeWindow ? undefined : '等待地图连接...'}
+                    description={
+                      iframeWindow
+                        ? undefined
+                        : t.components.editor.floatingMap.FloatingMap
+                            .waiting_connection
+                    }
                   />
                 )}
               </div>
             ) : (
-              <NonIdealState icon="area-of-interest" title="未选择关卡" />
+              <NonIdealState
+                icon="area-of-interest"
+                title={
+                  t.components.editor.floatingMap.FloatingMap.no_stage_selected
+                }
+              />
             )}
           </Card>
         </Rnd>
@@ -229,12 +242,13 @@ function FloatingMapHeader({
   config: FloatingMapConfig
   setConfig: (config: FloatingMapConfig) => void
 }) {
+  const t = useTranslation()
   let levelName = config.level?.name
 
   if (isNil(levelName)) {
-    levelName = '未选择关卡'
+    levelName = t.components.editor.floatingMap.FloatingMap.no_stage_selected
   } else if (!levelName.trim()) {
-    levelName = '未命名关卡'
+    levelName = t.components.editor.floatingMap.FloatingMap.unnamed_stage
   }
 
   return (
@@ -251,11 +265,15 @@ function FloatingMapHeader({
         minimal
         style={{ height: HEADER_HEIGHT }}
         className="px-4"
-        title={config.show ? '隐藏地图' : '显示地图'}
+        title={
+          config.show
+            ? t.components.editor.floatingMap.FloatingMap.hide_map
+            : t.components.editor.floatingMap.FloatingMap.show_map
+        }
         icon={config.show ? 'caret-down' : 'caret-up'}
         onClick={() => setConfig({ ...config, show: !config.show })}
       >
-        地图
+        {t.components.editor.floatingMap.FloatingMap.map}
         {config.show && ` - ${levelName}`}
       </Button>
     </div>

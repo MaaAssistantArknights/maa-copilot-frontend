@@ -5,6 +5,7 @@ import { FC, useMemo } from 'react'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import {
   EditorPerformerGroup,
   EditorPerformerGroupProps,
@@ -32,11 +33,6 @@ interface PerformerSelectItem {
   value: PerformerType
 }
 
-const performerSelectItems: PerformerSelectItem[] = [
-  { label: '干员', value: 'operator' },
-  { label: '干员组', value: 'group' },
-]
-
 export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   mode,
   operator,
@@ -47,6 +43,22 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   submitOperator,
   submitGroup,
 }) => {
+  const t = useTranslation()
+
+  const performerSelectItems: PerformerSelectItem[] = useMemo(
+    () => [
+      {
+        label: t.components.editor.operator.EditorPerformerAdd.operator,
+        value: 'operator',
+      },
+      {
+        label: t.components.editor.operator.EditorPerformerAdd.operator_group,
+        value: 'group',
+      },
+    ],
+    [t],
+  )
+
   const selectedItem =
     performerSelectItems.find((item) => item.value === mode) ||
     performerSelectItems[0]
@@ -54,7 +66,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
   const selector = useMemo(
     () => (
       <>
-        添加
+        {t.components.editor.operator.EditorPerformerAdd.add}
         <Select2<PerformerSelectItem>
           filterable={false}
           items={performerSelectItems}
@@ -78,7 +90,7 @@ export const EditorPerformerAdd: FC<EditorPerformerAddProps> = ({
         </Select2>
       </>
     ),
-    [mode, onModeChange, selectedItem],
+    [mode, onModeChange, selectedItem, performerSelectItems, t],
   )
 
   const child = useMemo(() => {

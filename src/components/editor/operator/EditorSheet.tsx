@@ -4,6 +4,7 @@ import { FC, useState } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { SheetGroupContainer } from './sheet/SheetGroup'
 import { SheetOperatorContainer } from './sheet/SheetOperator'
 import { SheetProvider, SheetProviderProp } from './sheet/SheetProvider'
@@ -22,7 +23,9 @@ const EditorOperatorSheet = (sheetProps: EditorSheetProps) => (
 )
 
 export const EditorSheetTrigger: FC<EditorSheetProps> = (sheetProps) => {
+  const t = useTranslation()
   const [open, setOpen] = useState(false)
+
   return (
     <>
       <Drawer
@@ -33,7 +36,11 @@ export const EditorSheetTrigger: FC<EditorSheetProps> = (sheetProps) => {
       >
         <EditorOperatorSheet {...sheetProps} />
       </Drawer>
-      <Button onClick={() => setOpen(true)} text="快捷编辑" fill />
+      <Button
+        onClick={() => setOpen(true)}
+        text={t.components.editor.operator.EditorSheet.quick_edit}
+        fill
+      />
     </>
   )
 }

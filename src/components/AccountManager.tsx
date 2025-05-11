@@ -21,6 +21,7 @@ import { LoginPanel } from 'components/account/LoginPanel'
 import { authAtom } from 'store/auth'
 import { useCurrentSize } from 'utils/useCurrenSize'
 
+import { useTranslation } from '../i18n/i18n'
 import {
   GlobalErrorBoundary,
   withGlobalErrorBoundary,
@@ -30,6 +31,7 @@ import { EditDialog } from './account/EditDialog'
 import { RegisterPanel } from './account/RegisterPanel'
 
 const AccountMenu: FC = () => {
+  const t = useTranslation()
   const [authState, setAuthState] = useAtom(authAtom)
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false)
   const [editDialogOpen, setEditDialogOpen] = useState(false)
@@ -39,7 +41,7 @@ const AccountMenu: FC = () => {
     setAuthState({})
     AppToaster.show({
       intent: 'success',
-      message: '已退出登录',
+      message: t.components.AccountManager.logout_success,
     })
   }
 
@@ -47,16 +49,16 @@ const AccountMenu: FC = () => {
     <>
       <Alert
         isOpen={logoutDialogOpen}
-        cancelButtonText="取消"
-        confirmButtonText="退出登录"
+        cancelButtonText={t.components.AccountManager.cancel}
+        confirmButtonText={t.components.AccountManager.logout}
         icon="log-out"
         intent="danger"
         canOutsideClickCancel
         onCancel={() => setLogoutDialogOpen(false)}
         onConfirm={handleLogout}
       >
-        <H4>退出登录</H4>
-        <p>确定要退出登录吗？</p>
+        <H4>{t.components.AccountManager.logout}</H4>
+        <p>{t.components.AccountManager.logout_confirm}</p>
       </Alert>
 
       <EditDialog
@@ -69,19 +71,22 @@ const AccountMenu: FC = () => {
           <MenuItem
             disabled
             icon="warning-sign"
-            text="账号未激活，请在退出登录后，以重置密码的方式激活"
+            text={t.components.AccountManager.account_not_activated}
           />
         )}
 
         <MenuItem
           icon="person"
-          text={(isSM ? authState.username + ' - ' : '') + '个人主页'}
+          text={
+            (isSM ? authState.username + ' - ' : '') +
+            t.components.AccountManager.profile
+          }
           href={`/profile/${authState.userId}`}
         />
         <MenuItem
           shouldDismissPopover={false}
           icon="edit"
-          text="修改信息..."
+          text={t.components.AccountManager.edit_info}
           onClick={() => setEditDialogOpen(true)}
         />
         <MenuDivider />
@@ -90,7 +95,7 @@ const AccountMenu: FC = () => {
           shouldDismissPopover={false}
           intent="danger"
           icon="log-out"
-          text="退出登录"
+          text={t.components.AccountManager.logout}
           onClick={() => setLogoutDialogOpen(true)}
         />
       </Menu>
@@ -102,11 +107,12 @@ export const AccountAuthDialog: ComponentType<{
   open?: boolean
   onClose?: () => void
 }> = withGlobalErrorBoundary(({ open, onClose }) => {
+  const t = useTranslation()
   const [activeTab, setActiveTab] = useState<TabId>('login')
 
   return (
     <Dialog
-      title="PRTS Plus 账户"
+      title={t.components.AccountManager.maa_account}
       icon="user"
       isOpen={open}
       onClose={onClose}
@@ -127,7 +133,9 @@ export const AccountAuthDialog: ComponentType<{
               title={
                 <div>
                   <Icon icon="person" />
-                  <span className="ml-1">登录</span>
+                  <span className="ml-1">
+                    {t.components.AccountManager.login}
+                  </span>
                 </div>
               }
               panel={
@@ -142,7 +150,9 @@ export const AccountAuthDialog: ComponentType<{
               title={
                 <div>
                   <Icon icon="new-person" />
-                  <span className="ml-1">注册</span>
+                  <span className="ml-1">
+                    {t.components.AccountManager.register}
+                  </span>
                 </div>
               }
               panel={<RegisterPanel onComplete={() => setActiveTab('login')} />}
@@ -155,6 +165,7 @@ export const AccountAuthDialog: ComponentType<{
 })
 
 export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
+  const t = useTranslation()
   const [open, setOpen] = useState(false)
   const [authState] = useAtom(authAtom)
   const { isSM } = useCurrentSize()
@@ -173,7 +184,7 @@ export const AccountManager: ComponentType = withGlobalErrorBoundary(() => {
         </Popover2>
       ) : (
         <Button className="ml-auto" icon="user" onClick={() => setOpen(true)}>
-          {!isSM && '登录 / 注册'}
+          {!isSM && t.components.AccountManager.login_register}
         </Button>
       )}
     </>
