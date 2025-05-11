@@ -10,7 +10,7 @@ import {
 import { SortableContext } from '@dnd-kit/sortable'
 
 import clsx from 'clsx'
-import { useAtomValue } from 'jotai'
+import { useAtomValue, useSetAtom } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
 import { FC, useCallback, useEffect, useRef } from 'react'
 
@@ -42,6 +42,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       activationConstraint: { delay: 250, tolerance: 5 },
     }),
   )
+  const setSelectorMode = useSetAtom(editorAtoms.selectorPanelMode)
   const createActionMenuRef = useRef<CreateActionMenuRef>(null)
 
   const handleDragEnd = useAtomCallback(
@@ -96,7 +97,10 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
   }, [])
 
   return (
-    <div className={clsx('px-4 grow min-h-0 pb-96', className)}>
+    <div
+      className={clsx('px-4 grow min-h-0 pb-96', className)}
+      onMouseDownCapture={() => setSelectorMode('map')}
+    >
       <h3 className="text-lg font-bold">动作序列 ({actionAtoms.length})</h3>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <SortableContext items={actionIds}>

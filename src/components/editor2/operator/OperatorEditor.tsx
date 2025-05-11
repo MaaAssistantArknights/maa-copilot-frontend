@@ -57,6 +57,7 @@ export const OperatorEditor: FC = memo(() => {
   )
   const [operatorAtoms, dispatchOperators] = useAtom(editorAtoms.operatorAtoms)
   const [baseGroupAtoms] = useAtom(editorAtoms.baseGroupAtoms)
+  const setSelectorMode = useSetAtom(editorAtoms.selectorPanelMode)
 
   const handleDragEnd = useAtomCallback(
     useCallback(
@@ -143,7 +144,10 @@ export const OperatorEditor: FC = memo(() => {
   )
 
   return (
-    <div className="h-full flex flex-col">
+    <div
+      className="h-full flex flex-col"
+      onMouseDownCapture={() => setSelectorMode('operator')}
+    >
       <div className="flex items-center border-b border-gray-200 dark:border-gray-600">
         <CreateGroupButton />
         <CreateOperatorButton />

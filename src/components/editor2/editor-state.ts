@@ -194,6 +194,7 @@ export const editorAtoms = {
   newlyAddedGroupIdAtom: atom<string | undefined>(undefined),
   activeActionIdAtom: atom<string | undefined>(undefined),
   sourceEditorIsOpen: atom(false),
+  selectorPanelMode: atom<'operator' | 'map'>('operator'),
 }
 
 export const historyAtom = createHistoryAtom(editorAtom)
