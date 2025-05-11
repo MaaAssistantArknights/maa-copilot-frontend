@@ -19,7 +19,6 @@ import { useCurrentSize } from '../../../utils/useCurrenSize'
 import { Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import { editorAtoms, useEdit } from '../editor-state'
-import { getInternalId } from '../reconciliation'
 import { ActionItem } from './ActionItem'
 import { CreateActionMenu, CreateActionMenuRef } from './CreateActionMenu'
 import { LevelMap } from './LevelMap'
@@ -30,7 +29,7 @@ interface ActionEditorProps {
 
 const actionIdsAtom = selectAtom(
   editorAtoms.actions,
-  (actions) => actions.map(getInternalId),
+  (actions) => actions.map((action) => action.id),
   (a, b) => a.join() === b.join(),
 )
 
@@ -54,12 +53,8 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       (get, set, { active, over }: DragEndEvent) => {
         const actions = get(editorAtoms.actions)
         if (over && active.id !== over.id) {
-          const oldIndex = actions.findIndex(
-            (el) => getInternalId(el) === active.id,
-          )
-          const newIndex = actions.findIndex(
-            (el) => getInternalId(el) === over.id,
-          )
+          const oldIndex = actions.findIndex((el) => el.id === active.id)
+          const newIndex = actions.findIndex((el) => el.id === over.id)
           if (oldIndex !== -1 && newIndex !== -1) {
             const actionAtoms = get(editorAtoms.actionAtoms)
             edit(() => {
@@ -118,10 +113,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
                 key={actionAtom.toString()}
                 atom={actionAtom}
                 render={(action) => (
-                  <Sortable
-                    id={getInternalId(action)}
-                    key={getInternalId(action)}
-                  >
+                  <Sortable id={action.id} key={action.id}>
                     {(attrs) => (
                       <ActionItem actionAtom={actionAtom} {...attrs} />
                     )}

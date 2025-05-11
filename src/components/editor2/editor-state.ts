@@ -8,9 +8,8 @@ import { CopilotDocV1 } from '../../models/copilot.schema'
 import { PartialDeep } from '../../utils/partial-deep'
 import { createHistoryAtom, useHistoryEdit } from './history'
 import {
-  WithInternalId,
+  WithId,
   WithPartialCoordinates,
-  getInternalId,
   toEditorOperation,
 } from './reconciliation'
 import { operationLooseSchema } from './validation/schema'
@@ -44,10 +43,10 @@ type EditorOperationBase = Simplify<
 >
 
 export type EditorOperator = Simplify<
-  WithInternalId<SetRequired<PartialDeep<CopilotDocV1.Operator>, 'name'>>
+  WithId<SetRequired<PartialDeep<CopilotDocV1.Operator>, 'name'>>
 >
 export type EditorGroup = Simplify<
-  WithInternalId<
+  WithId<
     PartialDeep<Omit<CopilotDocV1.Group, 'opers'>> & {
       name: string
       opers: EditorOperator[]
@@ -64,7 +63,7 @@ type GenerateEditorAction<T extends CopilotDocV1.Action> = T extends never
           'preDelay' | 'postDelay' | 'rearDelay'
         >
       > &
-        WithInternalId<{
+        WithId<{
           intermediatePreDelay?: number
           intermediatePostDelay?: number
         }>
@@ -78,8 +77,7 @@ export interface EditorOperation extends EditorOperationBase {
 
 // splitAtom() 有重载，无法用正常方法来构造类型
 const __operAtomsAtom = (noop as typeof splitAtom)(
-  {} as PrimitiveAtom<EditorOperator[]>,
-  getInternalId,
+  1 as unknown as PrimitiveAtom<EditorOperator[]>,
 )
 export type BaseEditorGroup = Simplify<
   Omit<EditorGroup, 'opers'> & {
@@ -125,14 +123,14 @@ const groupsAtom: PrimitiveAtom<EditorGroup[]> = atom(
       }
       const { opers, ...rest } = group
       const originalBaseGroup = originalBaseGroups.find(
-        (original) => getInternalId(original) === getInternalId(group),
+        (original) => original.id === group.id,
       )
 
       // 读取之前的 opersAtom 和 operAtomsAtom，如果没有就创建新的
       const opersAtom = originalBaseGroup?.opersAtom ?? atom(opers)
       set(opersAtom, opers)
       const operAtomsAtom =
-        originalBaseGroup?.operAtomsAtom ?? splitAtom(opersAtom, getInternalId)
+        originalBaseGroup?.operAtomsAtom ?? splitAtom(opersAtom, getId)
 
       return {
         ...rest,
@@ -183,13 +181,13 @@ export const editorAtoms = {
   operationBase: baseAtom,
   metadata: metadataAtom,
   operators: operatorsAtom,
-  operatorAtoms: splitAtom(operatorsAtom, getInternalId),
+  operatorAtoms: splitAtom(operatorsAtom, getId),
   groups: groupsAtom,
-  groupAtoms: splitAtom(groupsAtom, getInternalId),
+  groupAtoms: splitAtom(groupsAtom, getId),
   baseGroups: baseGroupsAtom,
-  baseGroupAtoms: splitAtom(baseGroupsAtom, getInternalId),
+  baseGroupAtoms: splitAtom(baseGroupsAtom, getId),
   actions: actionsAtom,
-  actionAtoms: splitAtom(actionsAtom, getInternalId),
+  actionAtoms: splitAtom(actionsAtom, getId),
 
   // UI state
   activeGroupIdAtom: atom<string | undefined>(undefined),
@@ -233,4 +231,8 @@ export function traverseOperators<T>(
     }
   }
   return undefined
+}
+
+function getId(entity: WithId) {
+  return entity.id
 }

@@ -18,7 +18,6 @@ import {
   getMapUrl,
 } from '../../editor/floatingMap/connection'
 import { editorAtoms } from '../editor-state'
-import { getInternalId } from '../reconciliation'
 
 interface LevelMapProps {
   className?: string
@@ -31,7 +30,7 @@ const stageNameAtom = atom((get) => get(editorAtoms.operationBase).stageName)
 const findActiveActionAtom = (get: Getter) => {
   const activeActionId = get(editorAtoms.activeActionIdAtom)
   const actionAtoms = get(editorAtoms.actionAtoms)
-  return actionAtoms.find((atom) => getInternalId(get(atom)) === activeActionId)
+  return actionAtoms.find((atom) => get(atom).id === activeActionId)
 }
 const activeActionLocationAtom = atom(
   (get) => {

@@ -38,12 +38,7 @@ import {
   useActiveState,
   useEdit,
 } from '../editor-state'
-import {
-  WithInternalId,
-  createOperator,
-  editorFavGroupsAtom,
-  getInternalId,
-} from '../reconciliation'
+import { WithId, createOperator, editorFavGroupsAtom } from '../reconciliation'
 import { useEntityErrors } from '../validation/validation'
 import { OperatorItem } from './OperatorItem'
 import { OperatorSelect } from './OperatorSelect'
@@ -63,14 +58,16 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
   const operatorIdsAtom = useMemo(() => {
     return selectAtom(
       baseGroup.opersAtom,
-      (opers) => opers.map(getInternalId),
+      (opers) => opers.map((o) => o.id),
       (a, b) => a.join() === b.join(),
     )
   }, [baseGroup.opersAtom])
-  const id = getInternalId(baseGroup)
-  const [active, setActive] = useActiveState(editorAtoms.activeGroupIdAtom, id)
+  const [active, setActive] = useActiveState(
+    editorAtoms.activeGroupIdAtom,
+    baseGroup.id,
+  )
   const operatorIds = useAtomValue(operatorIdsAtom)
-  const errors = useEntityErrors(id)
+  const errors = useEntityErrors(baseGroup.id)
   const addOperator = useAddOperator()
 
   const actionContainerRef = useRef<HTMLDivElement>(null)
@@ -201,7 +198,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
       )}
       <Droppable
         className="grow px-4 py-2"
-        id={getInternalId(baseGroup)}
+        id={baseGroup.id}
         data={{ type: 'group' }}
       >
         <SortableContext items={operatorIds}>
@@ -212,11 +209,11 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                 key={operatorAtom.toString()}
                 render={(operator, { onChange }) => (
                   <Sortable
-                    id={getInternalId(operator)}
-                    key={getInternalId(operator)}
+                    id={operator.id}
+                    key={operator.id}
                     data={{
                       type: 'operator',
-                      container: getInternalId(baseGroup),
+                      container: baseGroup.id,
                     }}
                   >
                     {(attrs) => (
@@ -310,7 +307,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
             <OperatorSelect
               markPicked
               onSelect={(name) => {
-                addOperator(createOperator({ name }), getInternalId(baseGroup))
+                addOperator(createOperator({ name }), baseGroup.id)
               }}
             >
               <Button
@@ -335,14 +332,14 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
   const edit = useEdit()
   const favGroups = useAtomValue(editorFavGroupsAtom)
   const [baseGroup, setBaseGroup] = useAtom(baseGroupAtom)
-  const id = getInternalId(baseGroup)
+  const id = baseGroup.id
   const [isNewlyAdded, setIsNewlyAdded] = useActiveState(
     editorAtoms.newlyAddedGroupIdAtom,
     id,
   )
   const [confirming, setConfirming] = useState(false)
   const titleInputRef = useRef<HTMLInputElement>(null)
-  const pendingFavGroup = useRef<WithInternalId<FavGroup> | undefined>()
+  const pendingFavGroup = useRef<WithId<FavGroup> | undefined>()
 
   const fuse = useMemo(() => {
     return new Fuse(favGroups, {
@@ -364,7 +361,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
       edit(() => {
         setBaseGroup((prev) => ({ ...prev, name: query }))
         return {
-          action: 'set-group-name-' + getInternalId(baseGroup),
+          action: 'set-group-name-' + baseGroup.id,
           desc: '修改干员组名称',
           squash: true,
         }
@@ -405,8 +402,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
           .filter(
             (favOperator) =>
               !globalOperators.find(
-                (operator) =>
-                  getInternalId(operator) === getInternalId(favOperator),
+                (operator) => operator.id === favOperator.id,
               ),
           )
         edit(() => {
@@ -420,8 +416,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
                 ...favOperators.filter(
                   (favOperator) =>
                     !prev.opers.find(
-                      (operator) =>
-                        getInternalId(operator) === getInternalId(favOperator),
+                      (operator) => operator.id === favOperator.id,
                     ),
                 ),
               ],
@@ -434,7 +429,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
             }))
           }
           return {
-            action: 'set-group-from-fav-' + getInternalId(group),
+            action: 'set-group-from-fav-' + group.id,
             desc: '从收藏中读取干员组',
             squash: false,
           }
@@ -456,7 +451,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
         itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
           <MenuItem
             roleStructure="listoption"
-            key={getInternalId(item)}
+            key={item.id}
             className={clsx(modifiers.active && Classes.ACTIVE)}
             text={item.name}
             labelElement={

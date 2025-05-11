@@ -12,11 +12,7 @@ import {
   editorAtoms,
   useEdit,
 } from '../../editor-state'
-import {
-  createGroup,
-  createOperator,
-  getInternalId,
-} from '../../reconciliation'
+import { createGroup, createOperator } from '../../reconciliation'
 import { SheetList } from './SheetList'
 
 // TODO: 兼容性处理，以后要去掉
@@ -25,7 +21,8 @@ const ensureEditorOperator = (
   operator: CopilotDocV1.Operator,
 ): EditorOperator => {
   if (operator._id) {
-    return operator as EditorOperator
+    const { _id, ...rest } = operator
+    return { ...rest, id: uniqueId() }
   }
   const matchedOperator = operation.opers.find(
     (op) => op.name === operator.name,
@@ -39,7 +36,7 @@ const ensureEditorOperator = (
       return matchedOperator
     }
   }
-  return { ...operator, _id: uniqueId() }
+  return { ...operator, id: uniqueId() }
 }
 
 const ensureEditorGroup = (
@@ -47,7 +44,12 @@ const ensureEditorGroup = (
   group: CopilotDocV1.Group,
 ): EditorGroup => {
   if (group._id) {
-    return group as EditorGroup
+    const { _id, ...rest } = group
+    return {
+      ...rest,
+      id: uniqueId(),
+      opers: rest.opers?.map((o) => ensureEditorOperator(operation, o)) ?? [],
+    }
   }
   const matchedGroup = operation.groups.find((g) => g.name === group.name)
   if (matchedGroup) {
@@ -55,7 +57,7 @@ const ensureEditorGroup = (
   }
   return {
     ...group,
-    _id: uniqueId(),
+    id: uniqueId(),
     opers: group.opers?.map((op) => ensureEditorOperator(operation, op)) || [],
   }
 }
@@ -72,14 +74,10 @@ export const OperatorSheet = () => {
       const operator = ensureEditorOperator(operation, _operator)
 
       const newOperation = produce(operation, (draft) => {
-        let targetOperator = draft.opers.find(
-          (op) => getInternalId(op) === getInternalId(operator),
-        )
+        let targetOperator = draft.opers.find((op) => op.id === operator.id)
         if (!targetOperator) {
           for (const group of draft.groups) {
-            targetOperator = group.opers.find(
-              (op) => getInternalId(op) === getInternalId(operator),
-            )
+            targetOperator = group.opers.find((op) => op.id === operator.id)
             if (targetOperator) {
               break
             }
@@ -96,9 +94,7 @@ export const OperatorSheet = () => {
           const newOperator = createOperator(operator)
           const activeGroupId = get(editorAtoms.activeGroupIdAtom)
           if (activeGroupId) {
-            const activeGroup = draft.groups.find(
-              (g) => getInternalId(g) === activeGroupId,
-            )
+            const activeGroup = draft.groups.find((g) => g.id === activeGroupId)
             activeGroup?.opers.push(newOperator)
           } else {
             draft.opers.push(newOperator)
@@ -123,9 +119,7 @@ export const OperatorSheet = () => {
       const group = ensureEditorGroup(operation, _group)
 
       const newOperation = produce(operation, (draft) => {
-        const targetGroup = draft.groups.find(
-          (g) => getInternalId(g) === getInternalId(group),
-        )
+        const targetGroup = draft.groups.find((g) => g.id === group.id)
         if (targetGroup) {
           Object.assign(targetGroup, group)
           checkpoint = {

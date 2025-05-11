@@ -46,7 +46,7 @@ import {
   useEdit,
 } from '../editor-state'
 import { OperatorSelect } from '../operator/OperatorSelect'
-import { createAction, getInternalId } from '../reconciliation'
+import { createAction } from '../reconciliation'
 import { useEntityErrors } from '../validation/validation'
 import { ActionLinker } from './ActionLinker'
 
@@ -62,9 +62,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
     const [action, setAction] = useImmerAtom(actionAtom)
     const [active, setActive] = useActiveState(
       editorAtoms.activeActionIdAtom,
-      getInternalId(action),
+      action.id,
     )
-    const errors = useEntityErrors(getInternalId(action))
+    const errors = useEntityErrors(action.id)
     const [docDraft, setDocDraft] = useState<string | undefined>()
     const [docInput, setDocInput] = useState<HTMLInputElement | null>(null)
     const shouldFocusDocInput = useRef(false)
@@ -202,9 +202,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               draft.location = [v, draft.location?.[1] ?? 0]
                             })
                             return {
-                              action:
-                                'set-action-location-x-' +
-                                getInternalId(action),
+                              action: 'set-action-location-x-' + action.id,
                               desc: '修改坐标',
                               squash: false,
                             }
@@ -226,9 +224,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               draft.location = [draft.location?.[0] ?? 0, v]
                             })
                             return {
-                              action:
-                                'set-action-location-y-' +
-                                getInternalId(action),
+                              action: 'set-action-location-y-' + action.id,
                               desc: '修改坐标',
                               squash: false,
                             }
@@ -271,9 +267,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                 draft.direction = dir
                               })
                               return {
-                                action:
-                                  'set-action-direction-' +
-                                  getInternalId(action),
+                                action: 'set-action-direction-' + action.id,
                                 desc: '修改朝向',
                                 squash: false,
                               }
@@ -327,9 +321,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                 draft.skillUsage = item.value as number
                               })
                               return {
-                                action:
-                                  'set-action-skillUsage-' +
-                                  getInternalId(action),
+                                action: 'set-action-skillUsage-' + action.id,
                                 desc: '修改技能用法',
                                 squash: false,
                               }
@@ -360,8 +352,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                   })
                                   return {
                                     action:
-                                      'set-action-skillTimes-' +
-                                      getInternalId(action),
+                                      'set-action-skillTimes-' + action.id,
                                     desc: '修改技能次数',
                                     squash: true,
                                   }
@@ -402,7 +393,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       before: actionAtom,
                     })
                     return {
-                      action: 'copy-action-' + getInternalId(action),
+                      action: 'copy-action-' + action.id,
                       desc: '复制动作',
                       squash: false,
                     }
@@ -422,7 +413,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       atom: actionAtom,
                     })
                     return {
-                      action: 'delete-action-' + getInternalId(action),
+                      action: 'delete-action-' + action.id,
                       desc: '删除动作',
                       squash: false,
                     }
@@ -465,7 +456,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       draft.docColor = item.value
                     })
                     return {
-                      action: 'set-action-docColor-' + getInternalId(action),
+                      action: 'set-action-docColor-' + action.id,
                       desc: '修改动作颜色',
                       squash: false,
                     }
@@ -498,7 +489,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       draft.doc = e.target.value
                     })
                     return {
-                      action: 'set-action-doc-' + getInternalId(action),
+                      action: 'set-action-doc-' + action.id,
                       desc: '修改动作日志',
                       squash: true,
                     }
@@ -515,7 +506,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         })
                         return {
                           // 这里的 action 要和正常修改时的 action 一致，不然会导致多出一条记录
-                          action: 'set-action-doc-' + getInternalId(action),
+                          action: 'set-action-doc-' + action.id,
                           desc: '删除动作日志',
                           squash: true,
                         }
@@ -612,7 +603,7 @@ const ActionTarget: FC<{
         edit(() => {
           setAction({ ...action, name })
           return {
-            action: 'set-action-name-' + getInternalId(action),
+            action: 'set-action-name-' + action.id,
             desc: '修改动作目标',
             squash: false,
           }

@@ -4,7 +4,6 @@ import { useCallback } from 'react'
 
 import { AppToaster } from '../../Toaster'
 import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
-import { getInternalId } from '../reconciliation'
 
 export function useAddOperator() {
   const edit = useEdit()
@@ -29,7 +28,7 @@ export function useAddOperator() {
           if (groupId) {
             set(editorAtoms.groups, (groups) =>
               produce(groups, (draft) => {
-                const group = draft.find((g) => getInternalId(g) === groupId)
+                const group = draft.find((g) => g.id === groupId)
                 if (group) {
                   group.opers.push(operator)
                 }

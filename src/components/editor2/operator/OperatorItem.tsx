@@ -34,7 +34,7 @@ import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorOperator, useEdit } from '../editor-state'
-import { editorFavOperatorsAtom, getInternalId } from '../reconciliation'
+import { editorFavOperatorsAtom } from '../reconciliation'
 
 interface OperatorItemProps extends Partial<SortableItemProps> {
   operator: EditorOperator
@@ -97,7 +97,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         },
                       })
                       return {
-                        action: 'set-operator-level-' + getInternalId(operator),
+                        action: 'set-operator-level-' + operator.id,
                         desc: '修改干员等级',
                         squash: true,
                       }
@@ -129,7 +129,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         },
                       })
                       return {
-                        action: 'set-operator-level-' + getInternalId(operator),
+                        action: 'set-operator-level-' + operator.id,
                         desc: '修改干员等级',
                         squash: true,
                       }
@@ -151,7 +151,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         },
                       })
                       return {
-                        action: 'set-operator-level-' + getInternalId(operator),
+                        action: 'set-operator-level-' + operator.id,
                         desc: '修改干员等级',
                         squash: true,
                       }
@@ -246,8 +246,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                                   })
                                   return {
                                     action:
-                                      'set-operator-skillTimes-' +
-                                      getInternalId(operator),
+                                      'set-operator-skillTimes-' + operator.id,
                                     desc: '修改技能次数',
                                     squash: true,
                                   }
@@ -268,8 +267,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                       skillUsage: item.value as number,
                     })
                     return {
-                      action:
-                        'set-operator-skillUsage-' + getInternalId(operator),
+                      action: 'set-operator-skillUsage-' + operator.id,
                       desc: '修改技能用法',
                       squash: false,
                     }
@@ -338,8 +336,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         edit(() => {
                           onChange?.({ ...operator, skill: skillNumber })
                           return {
-                            action:
-                              'set-operator-skill-' + getInternalId(operator),
+                            action: 'set-operator-skill-' + operator.id,
                             desc: '修改干员技能',
                             squash: false,
                           }
@@ -368,8 +365,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                           },
                         })
                         return {
-                          action:
-                            'set-operator-level-' + getInternalId(operator),
+                          action: 'set-operator-level-' + operator.id,
                           desc: '修改技能等级',
                           squash: true,
                         }
@@ -390,8 +386,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                           },
                         })
                         return {
-                          action:
-                            'set-operator-level-' + getInternalId(operator),
+                          action: 'set-operator-level-' + operator.id,
                           desc: '修改技能等级',
                           squash: true,
                         }
@@ -442,7 +437,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     },
                   })
                   return {
-                    action: 'set-operator-module-' + getInternalId(operator),
+                    action: 'set-operator-module-' + operator.id,
                     desc: '修改干员模组',
                     squash: true,
                   }

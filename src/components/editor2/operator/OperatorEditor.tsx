@@ -26,7 +26,7 @@ import {
   traverseOperators,
   useEdit,
 } from '../editor-state'
-import { createGroup, createOperator, getInternalId } from '../reconciliation'
+import { createGroup, createOperator } from '../reconciliation'
 import {
   EntityIssue,
   editorVisibleEntityErrorsAtom,
@@ -40,7 +40,7 @@ const globalContainerId = 'global'
 
 const operatorIdsAtom = selectAtom(
   editorAtoms.operators,
-  (operators) => operators.map(getInternalId),
+  (operators) => operators.map((o) => o.id),
   (a, b) => a.join() === b.join(),
 )
 
@@ -77,12 +77,12 @@ export const OperatorEditor: FC = memo(() => {
           } => {
             if (getType(target) === 'operator') {
               for (const [index, operator] of draft.opers.entries()) {
-                if (getInternalId(operator) === target.id)
+                if (operator.id === target.id)
                   return { container: draft, index }
               }
               for (const group of draft.groups) {
                 for (const [index, operator] of group.opers.entries()) {
-                  if (getInternalId(operator) === target.id)
+                  if (operator.id === target.id)
                     return { container: group, index }
                 }
               }
@@ -91,7 +91,7 @@ export const OperatorEditor: FC = memo(() => {
                 return { container: draft, index: -1 }
               }
               for (const group of draft.groups) {
-                if (getInternalId(group) === target.id)
+                if (group.id === target.id)
                   return { container: group, index: -1 }
               }
             }
@@ -161,7 +161,7 @@ export const OperatorEditor: FC = memo(() => {
                   key={operatorAtom.toString()}
                   render={(operator, { onChange }) => (
                     <Sortable
-                      id={getInternalId(operator)}
+                      id={operator.id}
                       data={{
                         type: 'operator',
                         container: globalContainerId,
@@ -252,7 +252,7 @@ const CreateGroupButton: FC<{}> = () => {
             squash: false,
           }
         })
-        setNewlyAddedGroupId(getInternalId(newGroup))
+        setNewlyAddedGroupId(newGroup.id)
       }}
     >
       添加干员组
@@ -267,13 +267,13 @@ const OperatorDragOverlay = () => {
       atom((get) => {
         if (active?.id) {
           for (const op of get(editorAtoms.operators)) {
-            if (getInternalId(op) === active.id) {
+            if (op.id === active.id) {
               return op
             }
           }
           for (const group of get(editorAtoms.groups)) {
             for (const op of group.opers) {
-              if (getInternalId(op) === active.id) {
+              if (op.id === active.id) {
                 return op
               }
             }
@@ -302,7 +302,7 @@ const operatorErrorsAtom = atom((get) => {
 
   for (const [id, errors] of Object.entries(entityErrors)) {
     traverseOperators({ opers, groups }, (operator) => {
-      if (getInternalId(operator) === id) {
+      if (operator.id === id) {
         operatorErrors.push({ operator, errors })
         return true
       }
@@ -320,10 +320,7 @@ const OperatorError = () => {
     <Callout intent="danger" icon={null} className="mb-4 p-2 text-xs">
       {errors.map(({ operator, errors }) =>
         errors.map(({ path, fieldLabel, message }) => (
-          <p
-            key={getInternalId(operator) + path.join()}
-            className="error-message"
-          >
+          <p key={operator.id + path.join()} className="error-message">
             {fieldLabel
               ? `"${operator.name}"的${fieldLabel}: `
               : `"${operator.name}": `}
