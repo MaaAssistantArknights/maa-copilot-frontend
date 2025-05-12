@@ -15,6 +15,7 @@ import { useTranslation } from '../../../../../i18n/i18n'
 import { OperatorAvatar } from '../../EditorOperator'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
 import { useSheet } from '../SheetProvider'
+import { useLocalizedOperatorName } from 'models/operator'
 
 export interface SheetOperatorItemProp {
   name: string
@@ -111,13 +112,24 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
     >
       <>
         <>
-          <OperatorAvatar name={name} size="large" />
-          <p
-            className={clsx('font-bold leading-none text-center mt-3 truncate')}
-          >
-            {name}
-          </p>
+          {/* Add a container div with fixed height for the avatar */}
+          <div className="h-8 flex items-center justify-center">
+            <OperatorAvatar name={name} size="large" />
+          </div>
+
+          {/* Text container with min-height and auto overflow handling */}
+          <div className="min-h-[2.5rem]  flex items-center justify-center">
+            <p
+              className={clsx(
+                'font-bold leading-none text-center',
+                'break-words' // Allow text to break to next line
+              )}
+            >
+              {useLocalizedOperatorName(name)}
+            </p>
+          </div>
         </>
+
         {selected && (
           <div
             className="absolute top-2 right-2"

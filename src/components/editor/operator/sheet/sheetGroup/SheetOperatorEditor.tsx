@@ -31,6 +31,7 @@ import {
 import { OperatorNoData } from '../SheetNoneData'
 import { useSheet } from '../SheetProvider'
 import { CollapseButton } from './CollapseButton'
+import { useLocalizedOperatorName } from 'models/operator'
 
 export interface SheetOperatorEditorProp extends SheetOperatorEditorFormProp {}
 
@@ -333,7 +334,7 @@ const OperatorSelectorItem: FC<{
           >
             <OperatorAvatar name={name} size="large" />
             <p className="font-bold leading-none text-center mt-3 truncate">
-              {name}
+              {useLocalizedOperatorName(name)}
             </p>
           </Card>
         )

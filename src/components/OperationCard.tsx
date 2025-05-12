@@ -13,6 +13,7 @@ import { OpDifficulty, Operation } from 'models/operation'
 import { useLevels } from '../apis/level'
 import { useTranslation } from '../i18n/i18n'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
+import { useLocalizedOperatorName } from '../models/operator'
 import { Paragraphs } from './Paragraphs'
 import { ReLinkDiv } from './ReLinkDiv'
 import { UserName } from './UserName'
@@ -251,7 +252,7 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
     <div>
       {opers?.map(({ name, skill }, index) => (
         <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
-          {`${name} ${skill ?? 1}`}
+          {`${useLocalizedOperatorName(name)} ${skill ?? 1}`}
         </Tag>
       ))}
       {groups?.map(({ name, opers }, index) => (
@@ -261,7 +262,10 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
           placement="top"
           content={
             opers
-              ?.map(({ name, skill }) => `${name} ${skill ?? 1}`)
+              ?.map(
+                ({ name, skill }) =>
+                  `${useLocalizedOperatorName(name)} ${skill ?? 1}`,
+              )
               .join(', ') || t.components.OperationCard.no_operators
           }
         >
