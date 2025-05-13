@@ -7,6 +7,7 @@ import { selectAtom } from 'jotai/utils'
 import { uniqueId } from 'lodash-es'
 import { FC, ReactNode, memo, useMemo, useState } from 'react'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { OPERATORS, OperatorInfo } from '../../../models/operator'
 import { useDebouncedQuery } from '../../../utils/useDebouncedQuery'
 import { Select } from '../../Select'
@@ -53,6 +54,7 @@ interface OperatorSelectProps {
 
 export const OperatorSelect: FC<OperatorSelectProps> = memo(
   ({ className, liftPicked, markPicked, value, onSelect, children }) => {
+    const t = useTranslation()
     const operatorNames = useAtomValue(operatorNamesAtom)
     const groupNames = useAtomValue(
       liftPicked ? groupNamesAtom : dummyArrayAtom,
@@ -178,14 +180,16 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
           <MenuItem
             key="create-new-item"
             roleStructure="listoption"
-            text={`使用自定义干员 "${query}"`}
+            text={t.components.editor2.OperatorSelect.use_custom_name({
+              name: query,
+            })}
             className={clsx('py-0 items-center', active && Classes.ACTIVE)}
             icon="text-highlight"
             onClick={handleClick}
           />
         )}
         inputProps={{
-          placeholder: '搜索干员',
+          placeholder: t.components.editor2.OperatorSelect.search_operator,
         }}
         resetOnSelect={true}
         popoverProps={{

@@ -22,7 +22,7 @@ import {
 import { toEditorOperation } from '../components/editor2/reconciliation'
 import { operationLooseSchema } from '../components/editor2/validation/schema'
 import { editorValidationAtom } from '../components/editor2/validation/validation'
-import { toShortCode } from '../models/shortCode'
+import { i18n, useTranslation } from '../i18n/i18n'
 import { formatError } from '../utils/error'
 import { wrapErrorMessage } from '../utils/wrapErrorMessage'
 
@@ -38,6 +38,7 @@ export const EditorPage = withSuspensable(() => {
     revalidateIfStale: false,
     revalidateOnReconnect: false,
   }).data
+  const t = useTranslation()
   const setEditorState = useSetAtom(editorAtoms.editor)
 
   if (process.env.NODE_ENV === 'development') {
@@ -70,7 +71,7 @@ export const EditorPage = withSuspensable(() => {
         if (!result.success) {
           set(editorAtoms.errorsVisible, true)
           AppToaster.show({
-            message: '作业内容存在错误，请检查',
+            message: i18n.pages.editor.validation_error,
             intent: 'danger',
           })
           return false
@@ -89,7 +90,7 @@ export const EditorPage = withSuspensable(() => {
               status,
             })
             AppToaster.show({
-              message: '作业更新成功',
+              message: i18n.pages.editor.edit.success,
               intent: 'success',
             })
             navigate(`/?op=${id}`)
@@ -99,7 +100,7 @@ export const EditorPage = withSuspensable(() => {
               status,
             })
             AppToaster.show({
-              message: '作业创建成功',
+              message: i18n.pages.editor.create.success,
               intent: 'success',
             })
             if (newId) {
@@ -111,10 +112,9 @@ export const EditorPage = withSuspensable(() => {
         }
 
         await wrapErrorMessage(
-          (e) => '上传失败: ' + formatError(e),
+          (e) => i18n.pages.editor.upload_failed({ error: formatError(e) }),
           upload(),
-        ).catch(console.warn)
-
+        )
         return true
       },
       [id, navigate],
@@ -123,8 +123,12 @@ export const EditorPage = withSuspensable(() => {
 
   return (
     <OperationEditor
-      title={isNew ? '创建作业' : '修改作业 - ' + toShortCode({ id })}
-      submitAction={isNew ? '发布作业' : '更新作业'}
+      subtitle={
+        isNew ? t.pages.editor.create.subtitle : t.pages.editor.edit.subtitle
+      }
+      submitAction={
+        isNew ? t.pages.editor.create.submit : t.pages.editor.edit.submit
+      }
       onSubmit={handleSubmit}
     />
   )

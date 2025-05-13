@@ -13,6 +13,7 @@ import { useImmerAtom } from 'jotai-immer'
 import { memo } from 'react'
 import { Paths } from 'type-fest'
 
+import { i18n, useTranslation } from '../../i18n/i18n'
 import { DifficultyPicker } from './DifficultyPicker'
 import { LevelSelect } from './LevelSelect'
 import { editorAtoms, useEdit } from './editor-state'
@@ -26,6 +27,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
   const [info, setInfo] = useImmerAtom(editorAtoms.operationBase)
   const [metadata, setMetadata] = useImmerAtom(editorAtoms.metadata)
   const edit = useEdit()
+  const t = useTranslation()
 
   return (
     <div
@@ -35,12 +37,18 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         className,
       )}
     >
-      <h3 className="mb-2 text-lg font-bold">作业信息</h3>
-      <FormGroup contentClassName="grow" label="标题" labelInfo="*">
+      <h3 className="mb-2 text-lg font-bold">
+        {t.components.editor2.InfoEditor.job_info}
+      </h3>
+      <FormGroup
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.title}
+        labelInfo="*"
+      >
         <InputGroup
           large
           fill
-          placeholder="起一个引人注目的标题吧"
+          placeholder={t.components.editor2.InfoEditor.title_placeholder}
           value={info.doc?.title || ''}
           onChange={(e) => {
             edit(() => {
@@ -49,7 +57,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               })
               return {
                 action: 'update-title',
-                desc: '修改标题',
+                desc: i18n.actions.editor2.set_title,
                 squash: true,
               }
             })
@@ -57,12 +65,15 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         />
         <FieldError path="doc.title" />
       </FormGroup>
-      <FormGroup contentClassName="grow" label="描述">
+      <FormGroup
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.description}
+      >
         <TextArea
           fill
           rows={4}
           large
-          placeholder="如：作者名、参考的视频攻略链接（如有）等"
+          placeholder={t.components.editor2.InfoEditor.description_placeholder}
           value={info.doc?.details || ''}
           onChange={(e) => {
             edit(() => {
@@ -71,7 +82,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               })
               return {
                 action: 'update-details',
-                desc: '修改描述',
+                desc: i18n.actions.editor2.set_description,
                 squash: true,
               }
             })
@@ -79,7 +90,11 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         />
         <FieldError path="doc.details" />
       </FormGroup>
-      <FormGroup contentClassName="grow" label="关卡" labelInfo="*">
+      <FormGroup
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.stage}
+        labelInfo="*"
+      >
         <LevelSelect
           difficulty={info.difficulty}
           value={info.stageName}
@@ -90,7 +105,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               })
               return {
                 action: 'update-level',
-                desc: '修改关卡',
+                desc: i18n.actions.editor2.set_level,
                 squash: false,
               }
             })
@@ -98,7 +113,10 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         />
         <FieldError path="stage_name" />
       </FormGroup>
-      <FormGroup contentClassName="grow" label="适用难度">
+      <FormGroup
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.difficulty}
+      >
         <DifficultyPicker
           stageName={info.stageName}
           onChange={(value, programmatically) => {
@@ -112,7 +130,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               }
               return {
                 action: 'update-difficulty',
-                desc: '修改难度',
+                desc: i18n.actions.editor2.set_difficulty,
                 squash: false,
               }
             })
@@ -120,7 +138,11 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         />
         <FieldError path="difficulty" />
       </FormGroup>
-      <FormGroup className="mb-0" contentClassName="grow" label="可见范围">
+      <FormGroup
+        className="mb-0"
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.visibility}
+      >
         <RadioGroup
           inline
           selectedValue={metadata.visibility}
@@ -131,19 +153,19 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               })
               return {
                 action: 'update-visibility',
-                desc: '修改可见范围',
+                desc: i18n.actions.editor2.set_visibility,
                 squash: true,
               }
             })
           }}
         >
           <Radio className="!mt-0" value="public">
-            公开
+            {t.components.editor2.InfoEditor.public}
           </Radio>
           <Radio className="!mt-0" value="private">
-            仅自己可见
+            {t.components.editor2.InfoEditor.private}
             <span className="ml-2 text-xs opacity-50">
-              其他人无法在列表中看见，但可以通过神秘代码访问
+              {t.components.editor2.InfoEditor.private_note}
             </span>
           </Radio>
         </RadioGroup>

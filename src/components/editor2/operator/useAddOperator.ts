@@ -2,6 +2,7 @@ import { produce } from 'immer'
 import { useAtomCallback } from 'jotai/utils'
 import { useCallback } from 'react'
 
+import { i18n } from '../../../i18n/i18n'
 import { AppToaster } from '../../Toaster'
 import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
 
@@ -19,7 +20,9 @@ export function useAddOperator() {
           groupedOperatorNames.includes(operator.name)
         ) {
           AppToaster.show({
-            message: '干员已存在',
+            message: i18n.components.editor2.misc.already_exists({
+              name: operator.name,
+            }),
             intent: 'danger',
           })
           return
@@ -42,7 +45,7 @@ export function useAddOperator() {
           }
           return {
             action: 'add-operator',
-            desc: '添加干员',
+            desc: i18n.actions.editor2.add_operator,
             squash: false,
           }
         })

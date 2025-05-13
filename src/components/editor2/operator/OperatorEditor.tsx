@@ -18,6 +18,7 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
 import { FC, memo, useCallback, useMemo } from 'react'
 
+import { i18n, useTranslation } from '../../../i18n/i18n'
 import { Droppable, Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import {
@@ -44,6 +45,7 @@ const operatorIdsAtom = selectAtom(
 export const OperatorEditor: FC = memo(() => {
   const operatorIds = useAtomValue(operatorIdsAtom)
   const edit = useEdit()
+  const t = useTranslation()
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: { distance: 5 },
@@ -131,7 +133,7 @@ export const OperatorEditor: FC = memo(() => {
             set(editorAtoms.operation, newOperation)
             return {
               action: 'move-operator',
-              desc: '移动干员',
+              desc: i18n.actions.editor2.move_operator,
               squash: false,
             }
           })
@@ -155,7 +157,10 @@ export const OperatorEditor: FC = memo(() => {
       <div className="grow md:overflow-auto px-4 pt-4">
         <OperatorError />
         {operatorAtoms.length === 0 && baseGroupAtoms.length === 0 ? (
-          <NonIdealState icon="helicopter" title="暂无干员" />
+          <NonIdealState
+            icon="helicopter"
+            title={t.components.editor2.OperatorEditor.no_operators}
+          />
         ) : (
           <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
             <Droppable id={globalContainerId} data={{ type: 'group' }}>
@@ -185,7 +190,7 @@ export const OperatorEditor: FC = memo(() => {
                                   })
                                   return {
                                     action: 'remove-operator',
-                                    desc: '移除干员',
+                                    desc: i18n.actions.editor2.delete_operator,
                                     squash: false,
                                   }
                                 })
@@ -219,6 +224,7 @@ OperatorEditor.displayName = 'OperatorPanel'
 
 const CreateOperatorButton: FC<{}> = () => {
   const addOperator = useAddOperator()
+  const t = useTranslation()
   return (
     <OperatorSelect
       markPicked
@@ -227,7 +233,7 @@ const CreateOperatorButton: FC<{}> = () => {
       }}
     >
       <Button minimal intent="primary" className="!py-1.5" icon="plus">
-        干员
+        {t.components.editor2.OperatorEditor.add_operator}
       </Button>
     </OperatorSelect>
   )
@@ -237,6 +243,7 @@ const CreateGroupButton: FC<{}> = () => {
   const dispatchGroups = useSetAtom(editorAtoms.groupAtoms)
   const setNewlyAddedGroupId = useSetAtom(editorAtoms.newlyAddedGroupIdAtom)
   const edit = useEdit()
+  const t = useTranslation()
   return (
     <Button
       minimal
@@ -252,14 +259,14 @@ const CreateGroupButton: FC<{}> = () => {
           })
           return {
             action: 'add-group',
-            desc: '添加干员组',
+            desc: t.actions.editor2.add_group,
             squash: false,
           }
         })
         setNewlyAddedGroupId(newGroup.id)
       }}
     >
-      干员组
+      {t.components.editor2.OperatorEditor.add_group}
     </Button>
   )
 }
@@ -318,6 +325,7 @@ const operatorErrorsAtom = atom((get) => {
 
 const OperatorError = () => {
   const errors = useAtomValue(operatorErrorsAtom)
+  const t = useTranslation()
   if (!errors) return null
 
   return (
@@ -326,9 +334,15 @@ const OperatorError = () => {
         errors.map(({ path, fieldLabel, message }) => (
           <p key={operator.id + path.join()} className="error-message">
             {fieldLabel
-              ? `"${operator.name}"的${fieldLabel}: `
-              : `"${operator.name}": `}
-            {message}
+              ? t.components.editor2.OperatorEditor.operator_field_error({
+                  name: operator.name,
+                  field: fieldLabel,
+                  error: message,
+                })
+              : t.components.editor2.OperatorEditor.operator_error({
+                  name: operator.name,
+                  error: message,
+                })}
           </p>
         )),
       )}

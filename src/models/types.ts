@@ -12,7 +12,7 @@ interface ActionType {
   accentText: string
   accentBg: string
   title: () => string
-  shortTitle: string
+  shortTitle: () => string
   value: CopilotDocV1.Type
   alternativeValue: string
   description: () => string
@@ -26,7 +26,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-red-700 dark:text-red-400',
     accentBg: 'bg-red-700',
     title: i18nDefer.models.types.action_type.deploy.title,
-    shortTitle: '部署',
+    shortTitle: i18nDefer.models.types.action_type.deploy.short_title,
     value: CopilotDocV1.Type.Deploy,
     alternativeValue: '部署',
     description: i18nDefer.models.types.action_type.deploy.description,
@@ -39,7 +39,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-amber-700 dark:text-amber-400',
     accentBg: 'bg-amber-700',
     title: i18nDefer.models.types.action_type.retreat.title,
-    shortTitle: '撤退',
+    shortTitle: i18nDefer.models.types.action_type.retreat.short_title,
     value: CopilotDocV1.Type.Retreat,
     alternativeValue: '撤退',
     description: i18nDefer.models.types.action_type.retreat.description,
@@ -52,7 +52,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-lime-700 dark:text-lime-400',
     accentBg: 'bg-lime-700',
     title: i18nDefer.models.types.action_type.skill.title,
-    shortTitle: '使用技能',
+    shortTitle: i18nDefer.models.types.action_type.skill.short_title,
     value: CopilotDocV1.Type.Skill,
     alternativeValue: '技能',
     description: i18nDefer.models.types.action_type.skill.description,
@@ -65,7 +65,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-emerald-700 dark:text-emerald-400',
     accentBg: 'bg-emerald-700',
     title: i18nDefer.models.types.action_type.skill_usage.title,
-    shortTitle: '技能用法',
+    shortTitle: i18nDefer.models.types.action_type.skill_usage.short_title,
     value: CopilotDocV1.Type.SkillUsage,
     alternativeValue: '技能用法',
     description: i18nDefer.models.types.action_type.skill_usage.description,
@@ -78,7 +78,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-cyan-700 dark:text-cyan-400',
     accentBg: 'bg-cyan-700',
     title: i18nDefer.models.types.action_type.speed_up.title,
-    shortTitle: '二倍速',
+    shortTitle: i18nDefer.models.types.action_type.speed_up.short_title,
     value: CopilotDocV1.Type.SpeedUp,
     alternativeValue: '二倍速',
     description: i18nDefer.models.types.action_type.speed_up.description,
@@ -91,7 +91,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-blue-700 dark:text-blue-400',
     accentBg: 'bg-blue-700',
     title: i18nDefer.models.types.action_type.bullet_time.title,
-    shortTitle: '子弹时间',
+    shortTitle: i18nDefer.models.types.action_type.bullet_time.short_title,
     value: CopilotDocV1.Type.BulletTime,
     alternativeValue: '子弹时间',
     description: i18nDefer.models.types.action_type.bullet_time.description,
@@ -104,7 +104,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-blue-700 dark:text-blue-400',
     accentBg: 'bg-blue-700',
     title: i18nDefer.models.types.action_type.move_camera.title,
-    shortTitle: '移动相机',
+    shortTitle: i18nDefer.models.types.action_type.move_camera.short_title,
     value: CopilotDocV1.Type.MoveCamera,
     alternativeValue: '移动相机',
     description: i18nDefer.models.types.action_type.move_camera.description,
@@ -117,7 +117,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-violet-700 dark:text-violet-400',
     accentBg: 'bg-violet-700',
     title: i18nDefer.models.types.action_type.skill_daemon.title,
-    shortTitle: '开始挂机',
+    shortTitle: i18nDefer.models.types.action_type.skill_daemon.short_title,
     value: CopilotDocV1.Type.SkillDaemon,
     alternativeValue: '摆完挂机',
     description: i18nDefer.models.types.action_type.skill_daemon.description,
@@ -130,7 +130,7 @@ export const ACTION_TYPES: ActionType[] = [
     accentText: 'text-fuchsia-700 dark:text-fuchsia-400',
     accentBg: 'bg-fuchsia-700',
     title: i18nDefer.models.types.action_type.output.title,
-    shortTitle: '打印内容',
+    shortTitle: i18nDefer.models.types.action_type.output.short_title,
     value: CopilotDocV1.Type.Output,
     alternativeValue: '打印',
     description: i18nDefer.models.types.action_type.output.description,
@@ -153,7 +153,7 @@ const notFoundActionType: Omit<ActionType, 'value'> & { value: 'Unknown' } = {
   accentText: 'text-zinc-700 dark:text-zinc-400',
   accentBg: 'bg-zinc-700',
   title: i18nDefer.models.types.action_type.unknown.title,
-  shortTitle: '未知动作',
+  shortTitle: i18nDefer.models.types.action_type.unknown.short_title,
   value: 'Unknown',
   alternativeValue: '',
   description: i18nDefer.models.types.action_type.unknown.description,
@@ -179,42 +179,44 @@ export type ActionConditionType =
 
 export const ACTION_CONDITIONS: Record<
   ActionConditionType,
-  { title: string; icon: IconName; description: string }
+  { title: () => string; icon: IconName; description: () => string }
 > = {
   // 注意这里 intermediatePreDelay/intermediatePostDelay 和动作里 preDelay/rearDelay 的含义是反过来的！！！
   // 主要是便于设计 UI 和易于让用户理解
   intermediatePreDelay: {
-    title: '前置延迟',
+    title: i18nDefer.models.types.action_condition.intermediate_pre_delay.title,
     icon: 'time',
     description:
-      '延迟一定时间后，开始检查其他条件。注意：这里的含义和旧版编辑器以及 MAA 作业协议里的前置延迟是相反的',
+      i18nDefer.models.types.action_condition.intermediate_pre_delay
+        .description,
   },
   intermediatePostDelay: {
-    title: '后置延迟',
+    title:
+      i18nDefer.models.types.action_condition.intermediate_post_delay.title,
     icon: 'time',
     description:
-      '所有条件全部满足后，延迟一定时间。注意：这里的含义和旧版编辑器以及 MAA 作业协议里的后置延迟是相反的',
+      i18nDefer.models.types.action_condition.intermediate_post_delay
+        .description,
   },
   costs: {
-    title: '费用',
+    title: i18nDefer.models.types.action_condition.costs.title,
     icon: 'dollar',
-    description:
-      '达到一定费用后开始执行。费用受潜能等影响，可能并不完全正确，仅适合对时间轴要求不严格的战斗，否则请使用费用变化量条件。仅在费用是两位数的时候识别的比较准，三位数的费用可能会识别错，不推荐使用。',
+    description: i18nDefer.models.types.action_condition.costs.description,
   },
   costChanges: {
-    title: '费用变化量',
+    title: i18nDefer.models.types.action_condition.cost_changes.title,
     icon: 'dollar',
     description:
-      '从前一个动作结束时的费用开始计算，达到一定变化量后开始执行。支持负数，即费用变少了（例如“孑”等吸费干员使得费用变少了）。仅在费用是两位数的时候识别的比较准，三位数的费用可能会识别错，不推荐使用。',
+      i18nDefer.models.types.action_condition.cost_changes.description,
   },
   kills: {
-    title: '击杀数',
+    title: i18nDefer.models.types.action_condition.kills.title,
     icon: 'locate',
-    description: '达到一定击杀数时开始执行',
+    description: i18nDefer.models.types.action_condition.kills.description,
   },
   cooling: {
-    title: '冷却中的干员',
+    title: i18nDefer.models.types.action_condition.cooling.title,
     icon: 'people',
-    description: '冷却中的干员达到一定数量时开始执行',
+    description: i18nDefer.models.types.action_condition.cooling.description,
   },
 }

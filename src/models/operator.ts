@@ -34,7 +34,10 @@ export function findOperatorByName(name: string): OperatorInfo | undefined {
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
 
 export type DetailedOperatorSkillUsage = DetailedSelectChoice & {
-  shortTitle: string
+  value: number
+  title: () => string
+  description: () => string
+  altTitle: () => string
 }
 
 export const defaultSkills: OperatorInfo['skills'] = [
@@ -120,47 +123,54 @@ export const operatorSkillUsages: DetailedOperatorSkillUsage[] = [
   {
     type: 'choice',
     icon: 'disable',
-    title: i18nDefer.models.operator.skill_usage.none_title,
-    shortTitle: '不自动使用',
+    title: i18nDefer.models.operator.skill_usage.none.title,
+    altTitle: i18nDefer.models.operator.skill_usage.none.alt_title,
     value: CopilotDocV1.SkillUsageType.None,
-    description: i18nDefer.models.operator.skill_usage.none_description,
+    description: i18nDefer.models.operator.skill_usage.none.description,
   },
   {
     type: 'choice',
     icon: 'automatic-updates',
-    title: i18nDefer.models.operator.skill_usage.ready_to_use_title,
-    shortTitle: '好了就用',
+    title: i18nDefer.models.operator.skill_usage.ready_to_use.title,
+    altTitle: i18nDefer.models.operator.skill_usage.ready_to_use.alt_title,
     value: CopilotDocV1.SkillUsageType.ReadyToUse,
-    description: i18nDefer.models.operator.skill_usage.ready_to_use_description,
+    description: i18nDefer.models.operator.skill_usage.ready_to_use.description,
   },
   {
     type: 'choice',
     icon: 'circle',
-    title: i18nDefer.models.operator.skill_usage.ready_to_use_times_title,
-    shortTitle: '好了就用',
+    title: i18nDefer.models.operator.skill_usage.ready_to_use_times.title,
+    altTitle:
+      i18nDefer.models.operator.skill_usage.ready_to_use_times.alt_title,
     value: CopilotDocV1.SkillUsageType.ReadyToUseTimes,
     description:
-      i18nDefer.models.operator.skill_usage.ready_to_use_times_description,
+      i18nDefer.models.operator.skill_usage.ready_to_use_times.description,
   },
   {
     type: 'choice',
     icon: 'predictive-analysis',
-    title: i18nDefer.models.operator.skill_usage.automatically_title,
-    shortTitle: '自动判断使用时机',
+    title: i18nDefer.models.operator.skill_usage.automatically.title,
+    altTitle: i18nDefer.models.operator.skill_usage.automatically.alt_title,
     value: CopilotDocV1.SkillUsageType.Automatically,
     description:
-      i18nDefer.models.operator.skill_usage.automatically_description,
+      i18nDefer.models.operator.skill_usage.automatically.description,
     disabled: true,
   },
 ]
 
+export const alternativeOperatorSkillUsages: DetailedOperatorSkillUsage[] =
+  operatorSkillUsages.map((item) => ({
+    ...item,
+    title: item.altTitle,
+  }))
+
 const unknownSkillUsage: DetailedOperatorSkillUsage = {
   type: 'choice',
   icon: 'error',
-  title: i18nDefer.models.operator.skill_usage.unknown_title,
-  shortTitle: '未知用法',
+  title: i18nDefer.models.operator.skill_usage.unknown.title,
+  altTitle: i18nDefer.models.operator.skill_usage.unknown.title,
   value: -1,
-  description: '',
+  description: () => '',
 }
 
 export function findOperatorSkillUsage(
@@ -176,16 +186,29 @@ export function getSkillUsageTitle(
   skillUsage: CopilotDocV1.SkillUsageType,
   skillTimes?: CopilotDocV1.SkillTimes,
 ) {
-  if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
-    return skillTimes
-      ? i18n.models.operator.skill_usage.format_times({
-          count: skillTimes,
-          times: skillTimes,
-        })
-      : i18n.models.operator.skill_usage.format_specific_times
+  if (
+    skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes &&
+    skillTimes !== undefined
+  ) {
+    return i18n.models.operator.skill_usage.ready_to_use_times.format({
+      count: skillTimes,
+      times: skillTimes,
+    })
   }
-  const title = findOperatorSkillUsage(skillUsage).title
-  return typeof title === 'function' ? title() : title
+  return findOperatorSkillUsage(skillUsage).title()
+}
+
+export function getSkillUsageAltTitle(
+  skillUsage: CopilotDocV1.SkillUsageType,
+  skillTimes?: CopilotDocV1.SkillTimes,
+) {
+  if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
+    return i18n.models.operator.skill_usage.ready_to_use_times.alt_format({
+      count: skillTimes ?? 1,
+      times: skillTimes ?? 1,
+    })
+  }
+  return findOperatorSkillUsage(skillUsage).altTitle()
 }
 
 export interface OperatorDirection {

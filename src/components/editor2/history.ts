@@ -40,7 +40,7 @@ function createInitialEditorHistoryState<T extends {}>(
   const record = {
     state: null,
     action: 'init',
-    desc: '初始化（锁定）',
+    desc: 'Initialize (Locked)',
     squash: false,
     time: Date.now(),
   }

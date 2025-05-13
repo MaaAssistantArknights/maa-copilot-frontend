@@ -3,6 +3,7 @@ import { Button } from '@blueprintjs/core'
 import { FC, Ref, useEffect, useMemo } from 'react'
 
 import { useLevels } from '../../apis/level'
+import { i18nDefer, useTranslation } from '../../i18n/i18n'
 import { findLevelByStageName, hasHardMode } from '../../models/level'
 import { OpDifficulty } from '../../models/operation'
 import { DetailedSelect, DetailedSelectChoice } from '../editor/DetailedSelect'
@@ -15,10 +16,26 @@ interface DifficultyPickerProps {
 }
 
 const DIFFICULTIES = [
-  { type: 'choice', title: '默认', value: OpDifficulty.UNKNOWN },
-  { type: 'choice', title: '普通', value: OpDifficulty.REGULAR },
-  { type: 'choice', title: '突袭', value: OpDifficulty.HARD },
-  { type: 'choice', title: '普通+突袭', value: OpDifficulty.REGULAR_HARD },
+  {
+    type: 'choice',
+    title: i18nDefer.components.editor2.DifficultyPicker.default,
+    value: OpDifficulty.UNKNOWN,
+  },
+  {
+    type: 'choice',
+    title: i18nDefer.components.editor2.DifficultyPicker.regular,
+    value: OpDifficulty.REGULAR,
+  },
+  {
+    type: 'choice',
+    title: i18nDefer.components.editor2.DifficultyPicker.hard,
+    value: OpDifficulty.HARD,
+  },
+  {
+    type: 'choice',
+    title: i18nDefer.components.editor2.DifficultyPicker.regular_and_hard,
+    value: OpDifficulty.REGULAR_HARD,
+  },
 ] satisfies DetailedSelectChoice[]
 
 export const DifficultyPicker: FC<DifficultyPickerProps> = ({
@@ -26,6 +43,7 @@ export const DifficultyPicker: FC<DifficultyPickerProps> = ({
   value,
   onChange,
 }) => {
+  const t = useTranslation()
   const { data: levels } = useLevels()
 
   const isValidLevel = useMemo(() => {
@@ -63,20 +81,18 @@ export const DifficultyPicker: FC<DifficultyPickerProps> = ({
             rightIcon="double-caret-vertical"
             disabled={!isValidLevel}
           >
-            {
-              (
-                DIFFICULTIES.find((item) => item.value === value) ??
-                DIFFICULTIES[0]
-              ).title
-            }
+            {(
+              DIFFICULTIES.find((item) => item.value === value) ??
+              DIFFICULTIES[0]
+            ).title()}
           </Button>
         }
       </DetailedSelect>
       <span className="text-xs opacity-50">
         {!stageName
-          ? '请选择关卡'
+          ? t.components.editor2.DifficultyPicker.select_level
           : !isValidLevel
-            ? '该关卡没有突袭难度，无需选择'
+            ? t.components.editor2.DifficultyPicker.no_hard_mode
             : null}
       </span>
     </div>

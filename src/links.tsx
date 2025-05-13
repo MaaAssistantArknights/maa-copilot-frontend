@@ -18,7 +18,7 @@ export const NAV_CONFIG = [
   },
   {
     to: '/editor',
-    labelKey: () => '作业编辑器v2',
+    labelKey: i18nDefer.links.editor,
     icon: <Icon icon="annotation" />,
   },
   {

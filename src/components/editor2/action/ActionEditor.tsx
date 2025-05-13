@@ -14,6 +14,7 @@ import { useAtomValue, useSetAtom } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
 import { FC, useCallback, useEffect, useRef } from 'react'
 
+import { i18n, useTranslation } from '../../../i18n/i18n'
 import { Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import { editorAtoms, useEdit } from '../editor-state'
@@ -34,6 +35,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
   const actionIds = useAtomValue(actionIdsAtom)
   const edit = useEdit()
+  const t = useTranslation()
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: { distance: 5 },
@@ -65,7 +67,7 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
               })
               return {
                 action: 'move-action',
-                desc: '移动动作',
+                desc: i18n.components.editor2.ActionEditor.move_action,
                 squash: false,
               }
             })
@@ -102,7 +104,10 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       className={clsx('px-4 grow min-h-0 pb-96', className)}
       onMouseDownCapture={() => toggleSelectorPanel && setSelectorMode('map')}
     >
-      <h3 className="text-lg font-bold">动作序列 ({actionAtoms.length})</h3>
+      <h3 className="text-lg font-bold">
+        {t.components.editor2.ActionEditor.action_sequence} (
+        {actionAtoms.length})
+      </h3>
       <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
         <SortableContext items={actionIds}>
           <ul className="flex flex-col">
@@ -127,12 +132,12 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
         outlined
         icon={<Icon icon="plus" size={24} />}
         intent="primary"
-        className="relative mt-6 w-full h-16 !text-xl"
+        className="relative mt-6 w-full h-16 !text-lg"
         onClick={(e) => {
           createActionMenuRef.current?.open(e.clientX, e.clientY)
         }}
       >
-        添加动作 (Shift + A)
+        {t.components.editor2.ActionEditor.add_action}
       </Button>
       <CreateActionMenu
         ref={createActionMenuRef}

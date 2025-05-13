@@ -14,6 +14,7 @@ import { debounce } from 'lodash-es'
 import { FC, memo, useMemo, useRef, useState } from 'react'
 import { ZodError } from 'zod'
 
+import { i18n, useTranslation } from '../../../i18n/i18n'
 import { formatError } from '../../../utils/error'
 import { Confirm } from '../../Confirm'
 import { withSuspensable } from '../../Suspensable'
@@ -29,6 +30,7 @@ interface SourceEditorProps {
 
 const SourceEditor = withSuspensable(
   ({ onUnsavedChanges }: SourceEditorProps) => {
+    const t = useTranslation()
     const onUnsavedChangesRef = useRef(onUnsavedChanges)
     onUnsavedChangesRef.current = onUnsavedChanges
     const edit = useEdit()
@@ -55,7 +57,7 @@ const SourceEditor = withSuspensable(
               setOperation(newOperation)
               return {
                 action: 'edit-json',
-                desc: '编辑 JSON',
+                desc: i18n.actions.editor2.edit_json,
                 squash: true,
               }
             })
@@ -65,11 +67,17 @@ const SourceEditor = withSuspensable(
             onUnsavedChangesRef.current?.(false)
           } catch (e) {
             if (e instanceof SyntaxError) {
-              setErrors(['JSON 语法错误'])
+              setErrors([
+                i18n.components.editor2.SourceEditor.json_syntax_error,
+              ])
             } else if (e instanceof ZodError) {
               setErrors(e.issues)
             } else {
-              setErrors(['未知错误: ' + formatError(e)])
+              setErrors([
+                i18n.components.editor2.SourceEditor.unknown_error({
+                  error: formatError(e),
+                }),
+              ])
             }
           }
         }, 1000),
@@ -90,7 +98,7 @@ const SourceEditor = withSuspensable(
       >
         <div className="px-8 py-4 flex-grow flex flex-col gap-2 bg-zinc-50 dark:bg-slate-900 dark:text-white">
           <Callout
-            title="编辑后的 JSON 内容会自动同步到编辑器里"
+            title={t.components.editor2.SourceEditor.auto_sync_note}
             intent={hasUnsavedChanges ? 'primary' : 'success'}
             icon={
               pending ? (
@@ -103,13 +111,19 @@ const SourceEditor = withSuspensable(
             }
           />
           <Callout
-            title={errors.length ? '存在错误' : '验证通过'}
+            title={
+              errors.length
+                ? t.components.editor2.SourceEditor.has_errors
+                : t.components.editor2.SourceEditor.validation_passed
+            }
             intent={errors.length ? 'danger' : 'success'}
           >
             {errors.length > 0 ? (
               <details open>
                 <summary className="cursor-pointer">
-                  {errors.length} 个错误
+                  {t.components.editor2.SourceEditor.error_count({
+                    count: errors.length,
+                  })}
                 </summary>
                 <ul className="">
                   {errors.map((error, index) => (
@@ -150,6 +164,7 @@ interface SourceEditorButtonProps extends ButtonProps {
 
 export const SourceEditorButton: FC<SourceEditorButtonProps> = memo(
   ({ className, ...buttonProps }) => {
+    const t = useTranslation()
     const [isOpen, setIsOpen] = useAtom(editorAtoms.sourceEditorIsOpen)
     const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false)
 
@@ -158,13 +173,13 @@ export const SourceEditorButton: FC<SourceEditorButtonProps> = memo(
         <Button
           className={className}
           icon="manually-entered-data"
-          text="编辑 JSON"
+          text={t.components.editor2.SourceEditor.edit_json}
           {...buttonProps}
           onClick={() => setIsOpen(true)}
         />
         <Confirm
           intent="danger"
-          confirmButtonText="关闭"
+          confirmButtonText={t.common.close}
           onConfirm={() => setIsOpen(false)}
           trigger={({ handleClick }) => (
             <Drawer
@@ -185,8 +200,8 @@ export const SourceEditorButton: FC<SourceEditorButtonProps> = memo(
             </Drawer>
           )}
         >
-          <H6>操作未保存</H6>
-          <p>未保存的操作将在关闭 JSON 编辑器后丢失，是否仍要关闭？</p>
+          <H6>{t.components.editor2.SourceEditor.unsaved_changes}</H6>
+          <p>{t.components.editor2.SourceEditor.unsaved_warning}</p>
         </Confirm>
       </>
     )

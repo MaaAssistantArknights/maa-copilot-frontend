@@ -82,19 +82,25 @@ const languageStorageKey = 'maa-copilot-lang'
 let currentLanguage: Language
 let currentTranslations: I18NTranslations | undefined
 
-export const i18n = new Proxy({} as I18NTranslations, {
-  get(target, prop) {
-    if (!currentTranslations) {
-      if (prop === 'essentials') {
-        return allEssentials[currentLanguage]
+export const i18n = new Proxy(
+  {} as I18NTranslations & { currentLanguage: Language },
+  {
+    get(target, prop) {
+      if (prop === 'currentLanguage') {
+        return currentLanguage
       }
-      // if this error occurs during dev, it's probably because the code containing i18n.* is executed
-      // before the translations are loaded, in which case you should change it to i18nDefer.*
-      throw new Error(allEssentials[currentLanguage].translations_not_loaded)
-    }
-    return currentTranslations[prop] || prop
+      if (!currentTranslations) {
+        if (prop === 'essentials') {
+          return allEssentials[currentLanguage]
+        }
+        // if this error occurs during dev, it's probably because the code containing i18n.* is executed
+        // before the translations are loaded, in which case you should change it to i18nDefer.*
+        throw new Error(allEssentials[currentLanguage].translations_not_loaded)
+      }
+      return currentTranslations[prop] || prop
+    },
   },
-})
+)
 
 type Deferred<T> = T extends string
   ? () => string
@@ -162,7 +168,7 @@ export const rawTranslationsAtom = atom(
   },
 )
 const internalTranslationsAtom = atom<I18NTranslations | undefined>(undefined)
-const translationsAtom = atom(
+export const translationsAtom = atom(
   (get) => {
     const translations = get(internalTranslationsAtom)
     if (!translations) {

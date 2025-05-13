@@ -9,6 +9,7 @@ import { compact } from 'lodash-es'
 import { FC } from 'react'
 import { ValueOf } from 'type-fest'
 
+import { i18n, useTranslation } from '../../../i18n/i18n'
 import { ACTION_CONDITIONS, ActionConditionType } from '../../../models/types'
 import { joinJSX } from '../../../utils/react'
 import { NumericInput2, NumericInput2Props } from '../../editor/NumericInput2'
@@ -26,6 +27,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
   isDragging,
   isSorting,
 }) => {
+  const t = useTranslation()
   const edit = useEdit()
   const { showLinkerButtons } = useAtomValue(editorAtoms.config)
   const actionAtoms = useAtomValue(editorAtoms.actionAtoms)
@@ -48,7 +50,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
             icon={<Icon icon="plus" className="!text-inherit" />}
             className={clsx('h-8 !text-inherit', visibilityClasses)}
           >
-            动作
+            {t.components.editor2.ActionLinker.action}
           </Button>
         </CreateActionMenu>
         <Popover2
@@ -85,9 +87,9 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
                   <MenuItem
                     key={conditionType}
                     icon={icon}
-                    text={title}
+                    text={title()}
                     labelElement={
-                      <Tooltip2 content={description}>
+                      <Tooltip2 content={description()}>
                         <Icon
                           className="!text-gray-300 dark:!text-gray-500"
                           icon="info-sign"
@@ -130,7 +132,9 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
                         })
                         return {
                           action: 'add-action-' + conditionType,
-                          desc: '添加动作条件',
+                          desc: i18n.actions.editor2.add_action_condition({
+                            title: title(),
+                          }),
                           squash: false,
                         }
                       })
@@ -146,7 +150,7 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
             icon={<Icon icon="plus" className="!text-inherit" />}
             className={clsx('h-8 !text-inherit', visibilityClasses)}
           >
-            条件
+            {t.components.editor2.ActionLinker.condition}
           </Button>
         </Popover2>
       </div>
@@ -160,13 +164,14 @@ const ConditionChain: FC<{
   actionAtom: PrimitiveAtom<EditorAction>
   index: number
 }> = ({ actionAtom, index }) => {
+  const t = useTranslation()
   const [action, setAction] = useImmerAtom(actionAtom)
   const conditionNodes = compact([
     index !== 0 && action.intermediatePreDelay !== undefined && (
       <ConditionNode
         key="intermediatePreDelay"
         conditionKey="intermediatePreDelay"
-        title="延迟"
+        title={t.components.editor2.ActionLinker.condition_delay}
         unit="ms"
         inputProps={{ wheelStepSize: 100 }}
         index={index}
@@ -214,7 +219,7 @@ const ConditionChain: FC<{
       <ConditionNode
         key="intermediatePostDelay"
         conditionKey="intermediatePostDelay"
-        title="延迟"
+        title={t.components.editor2.ActionLinker.condition_delay}
         unit="ms"
         inputProps={{ wheelStepSize: 100 }}
         index={index}
@@ -295,10 +300,11 @@ const ConditionNode: FC<ConditionNodeProps> = ({
   action,
   setAction,
 }) => {
+  const t = useTranslation()
   const edit = useEdit()
   const value = action[conditionKey]!
   const typeInfo = ACTION_CONDITIONS[conditionKey]
-  title ??= typeInfo.title
+  title ??= typeInfo.title()
   return (
     <div className="flex items-baseline">
       <Popover2
@@ -308,7 +314,7 @@ const ConditionNode: FC<ConditionNodeProps> = ({
             <MenuItem
               icon="cross"
               intent="danger"
-              text="删除"
+              text={t.common.delete}
               onClick={() => {
                 edit(() => {
                   setAction((draft) => {
@@ -316,7 +322,9 @@ const ConditionNode: FC<ConditionNodeProps> = ({
                   })
                   return {
                     action: `unset-action-${conditionKey}-${index}`,
-                    desc: '删除动作条件-' + typeInfo.title,
+                    desc: i18n.actions.editor2.delete_action_condition({
+                      title: typeInfo.title(),
+                    }),
                     squash: false,
                   }
                 })
@@ -349,7 +357,9 @@ const ConditionNode: FC<ConditionNodeProps> = ({
             })
             return {
               action: `set-action-${conditionKey}-${index}`,
-              desc: '修改动作条件-' + typeInfo.title,
+              desc: i18n.actions.editor2.set_action_condition({
+                title: typeInfo.title(),
+              }),
               squash: true,
             }
           })

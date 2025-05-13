@@ -26,6 +26,7 @@ import {
   useState,
 } from 'react'
 
+import { i18n, useTranslation } from '../../../i18n/i18n'
 import { FavGroup } from '../../../store/useFavGroups'
 import { useDebouncedQuery } from '../../../utils/useDebouncedQuery'
 import { Suggest } from '../../Suggest'
@@ -69,6 +70,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
   const operatorIds = useAtomValue(operatorIdsAtom)
   const errors = useEntityErrors(baseGroup.id)
   const addOperator = useAddOperator()
+  const t = useTranslation()
 
   const actionContainerRef = useRef<HTMLDivElement>(null)
   const actionContainerInitialWidthRef = useRef(0)
@@ -84,7 +86,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
         }
         set(editorFavGroupsAtom, (prev) => [...prev, group])
         AppToaster.show({
-          message: '已添加到收藏',
+          message: i18n.components.editor2.GroupItem.added_to_favorites,
           intent: 'success',
         })
       },
@@ -106,10 +108,14 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
           placement="bottom"
           content={
             <Menu>
-              <MenuItem icon="star" text="添加到收藏" onClick={addToFavorite} />
+              <MenuItem
+                icon="star"
+                text={t.components.editor2.GroupItem.add_to_favorites}
+                onClick={addToFavorite}
+              />
               <MenuItem
                 icon="arrow-left"
-                text="左移"
+                text={t.components.editor2.GroupItem.move_left}
                 disabled={baseGroupAtoms.indexOf(baseGroupAtom) === 0}
                 onClick={() => {
                   edit(() => {
@@ -123,7 +129,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                     })
                     return {
                       action: 'move-group',
-                      desc: '移动干员组',
+                      desc: i18n.actions.editor2.move_group,
                       squash: false,
                     }
                   })
@@ -131,7 +137,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
               />
               <MenuItem
                 icon="arrow-right"
-                text="右移"
+                text={t.components.editor2.GroupItem.move_right}
                 disabled={
                   baseGroupAtoms.indexOf(baseGroupAtom) ===
                   baseGroupAtoms.length - 1
@@ -148,7 +154,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                     })
                     return {
                       action: 'move-group',
-                      desc: '移动干员组',
+                      desc: i18n.actions.editor2.move_group,
                       squash: false,
                     }
                   })
@@ -156,7 +162,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
               />
               <MenuItem
                 icon="trash"
-                text="删除"
+                text={t.common.delete}
                 intent="danger"
                 onClick={() => {
                   edit(() => {
@@ -166,7 +172,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                     })
                     return {
                       action: 'remove-group',
-                      desc: '移除干员组',
+                      desc: i18n.actions.editor2.delete_group,
                       squash: false,
                     }
                   })
@@ -228,7 +234,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                             })
                             return {
                               action: 'remove-operator',
-                              desc: '移除干员',
+                              desc: i18n.actions.editor2.delete_operator,
                               squash: false,
                             }
                           })
@@ -243,22 +249,17 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
           </ul>
         </SortableContext>
         {operatorAtoms.length === 0 && (
-          <div className="relative min-h-36 flex flex-col items-center justify-center text-xs text-zinc-500">
+          <div className="min-h-36 flex flex-col items-center justify-center text-xs text-zinc-500">
             {active ? (
-              '从列表中选择干员'
+              t.components.editor2.GroupItem.select_operator_from_list
             ) : (
-              <div className="absolute top-0 right-0 left-0">
-                干员组表示可替换的干员，用户可使用其中的任意一位，如果让 MAA
-                自动编队则会按最高练度来选择。
-                <br />
-                <br />
-                你可以：
-                <ul className="ml-4 list-[square]">
-                  <li>点击快捷编辑</li>
-                  <li>点击添加干员</li>
-                  <li>拖动上方的干员到这里</li>
-                </ul>
-              </div>
+              <ul className="list-[square]">
+                {t.components.editor2.GroupItem.guide
+                  .split('|')
+                  .map((item, index) => (
+                    <li key={index}>{item}</li>
+                  ))}
+              </ul>
             )}
           </div>
         )}
@@ -301,7 +302,9 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
               setActive(!active)
             }}
           >
-            {active ? '完成' : '快捷编辑'}
+            {active
+              ? t.components.editor2.GroupItem.finish
+              : t.components.editor2.GroupItem.quick_edit}
           </Button>
           {!active && (
             <OperatorSelect
@@ -314,7 +317,7 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                 minimal
                 className="!rounded-none !text-inherit"
                 icon={<Icon icon="plus" />}
-                text="添加干员..."
+                text={t.components.editor2.GroupItem.add_operator}
               />
             </OperatorSelect>
           )}
@@ -329,6 +332,7 @@ interface GroupItemProps {
   baseGroupAtom: PrimitiveAtom<BaseEditorGroup>
 }
 const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
+  const t = useTranslation()
   const edit = useEdit()
   const favGroups = useAtomValue(editorFavGroupsAtom)
   const [baseGroup, setBaseGroup] = useAtom(baseGroupAtom)
@@ -362,7 +366,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
         setBaseGroup((prev) => ({ ...prev, name: query }))
         return {
           action: 'set-group-name-' + baseGroup.id,
-          desc: '修改干员组名称',
+          desc: i18n.actions.editor2.set_group_name,
           squash: true,
         }
       })
@@ -430,7 +434,7 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
           }
           return {
             action: 'set-group-from-fav-' + group.id,
-            desc: '从收藏中读取干员组',
+            desc: i18n.actions.editor2.set_group_from_fav,
             squash: false,
           }
         })
@@ -473,14 +477,18 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
         noResults={
           <MenuItem
             disabled
-            text={favGroups.length ? '没有匹配的干员组' : '没有已收藏的干员组'}
+            text={
+              favGroups.length
+                ? t.components.editor2.GroupItem.no_matching_groups
+                : t.components.editor2.GroupItem.no_fav_groups
+            }
           />
         }
         inputProps={{
           inputClassName:
             '!p-4 !pr-0 !border-0 hover:bg-gray-100 focus:bg-gray-100 dark:hover:bg-gray-600 dark:focus:bg-gray-600 !shadow-none font-bold text-gray-800',
           size: 10,
-          placeholder: '干员组名称*',
+          placeholder: t.components.editor2.GroupItem.group_name + '*',
           inputRef: titleInputRef,
         }}
         popoverProps={{
@@ -494,12 +502,14 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
       >
         <div className={Classes.ALERT_BODY}>
           <Icon icon="info-sign" size={40} />
-          <div className={Classes.ALERT_CONTENTS}>是否要替换掉已有的干员？</div>
+          <div className={Classes.ALERT_CONTENTS}>
+            {t.components.editor2.GroupItem.replace_existing_operators}
+          </div>
         </div>
         <div className={Classes.ALERT_FOOTER}>
           <Button
             intent="primary"
-            text="追加"
+            text={t.components.editor2.GroupItem.append}
             onClick={() => {
               setFromFavorite('append')
               setConfirming(false)
@@ -507,13 +517,13 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
           />
           <Button
             intent="primary"
-            text="覆盖"
+            text={t.components.editor2.GroupItem.overwrite}
             onClick={() => {
               setFromFavorite('overwrite')
               setConfirming(false)
             }}
           />
-          <Button text="取消" onClick={() => setConfirming(false)} />
+          <Button text={t.common.cancel} onClick={() => setConfirming(false)} />
         </div>
       </Dialog>
     </>

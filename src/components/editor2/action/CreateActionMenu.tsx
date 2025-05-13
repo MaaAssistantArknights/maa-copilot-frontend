@@ -17,6 +17,7 @@ import {
   useState,
 } from 'react'
 
+import { useTranslation } from '../../../i18n/i18n'
 import { ACTION_TYPES_BY_GROUP } from '../../../models/types'
 import { joinJSX } from '../../../utils/react'
 import { EditorAction, editorAtoms, useEdit } from '../editor-state'
@@ -47,6 +48,7 @@ export const CreateActionMenu = forwardRef<
   const popperRef =
     useRef<Parameters<NonNullable<PopperCustomModifer['fn']>>[0]['instance']>()
   const [isOpen, setIsOpen] = useState(false)
+  const t = useTranslation()
 
   useImperativeHandle(
     ref,
@@ -108,7 +110,7 @@ export const CreateActionMenu = forwardRef<
                       })
                       return {
                         action: 'add-action',
-                        desc: '添加动作',
+                        desc: t.components.editor2.CreateActionMenu.add_action,
                         squash: false,
                       }
                     })

@@ -2,6 +2,7 @@ import { produce } from 'immer'
 import { useAtom } from 'jotai'
 import { uniqueId } from 'lodash-es'
 
+import { i18n } from '../../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../../models/copilot.schema'
 import { SheetProvider } from '../../../editor/operator/sheet/SheetProvider'
 import { OperatorFilterProvider } from '../../../editor/operator/sheet/sheetOperator/SheetOperatorFilterProvider'
@@ -87,7 +88,7 @@ export const OperatorSheet = () => {
           Object.assign(targetOperator, operator)
           checkpoint = {
             action: 'update-operator',
-            desc: '更新干员',
+            desc: i18n.actions.editor2.update_operator,
             squash: false,
           }
         } else {
@@ -101,7 +102,7 @@ export const OperatorSheet = () => {
           }
           checkpoint = {
             action: 'add-operator',
-            desc: '添加干员',
+            desc: i18n.actions.editor2.add_operator,
             squash: false,
           }
         }
@@ -124,14 +125,14 @@ export const OperatorSheet = () => {
           Object.assign(targetGroup, group)
           checkpoint = {
             action: 'update-group',
-            desc: '更新干员组',
+            desc: i18n.actions.editor2.update_group,
             squash: false,
           }
         } else {
           draft.groups.push(createGroup(group))
           checkpoint = {
             action: 'add-group',
-            desc: '添加干员组',
+            desc: i18n.actions.editor2.add_group,
             squash: false,
           }
         }
@@ -155,7 +156,7 @@ export const OperatorSheet = () => {
       )
       return {
         action: 'remove-operator',
-        desc: '移除干员',
+        desc: i18n.actions.editor2.delete_operator,
         squash: false,
       }
     })
@@ -174,7 +175,7 @@ export const OperatorSheet = () => {
       )
       return {
         action: 'remove-group',
-        desc: '移除干员组',
+        desc: i18n.actions.editor2.delete_group,
         squash: false,
       }
     })

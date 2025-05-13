@@ -6,6 +6,7 @@ import { Getter, atom, useAtom, useAtomValue } from 'jotai'
 import { FC, memo, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useLevels } from '../../../apis/level'
+import { useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { findLevelByStageName } from '../../../models/level'
 import { sendMessage, useMessage } from '../../../utils/messenger'
@@ -61,6 +62,7 @@ const activeActionLocationAtom = atom(
 )
 
 export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
+  const t = useTranslation()
   const { data: levels } = useLevels()
   const stageName = useAtomValue(stageNameAtom)
   const [activeLocation, setActiveLocation] = useAtom(activeActionLocationAtom)
@@ -142,7 +144,9 @@ export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
             )
           }
           description={
-            mapStatus === 'loading' ? '等待地图连接...' : '请选择关卡'
+            mapStatus === 'loading'
+              ? t.common.loading
+              : t.components.editor2.LevelMap.select_level
           }
         />
       )}

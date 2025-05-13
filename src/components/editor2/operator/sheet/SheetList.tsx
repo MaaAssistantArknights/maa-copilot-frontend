@@ -1,7 +1,6 @@
-import { NonIdealState } from '@blueprintjs/core'
-
 import { FC, useCallback, useRef } from 'react'
 
+import { OperatorNoData } from '../../../editor/operator/sheet/SheetNoneData'
 import { ProfClassificationWithFilters } from '../../../editor/operator/sheet/sheetOperator/ProfClassificationWithFilters'
 import { useOperatorFilterProvider } from '../../../editor/operator/sheet/sheetOperator/SheetOperatorFilterProvider'
 import { SheetOperatorItem } from '../../../editor/operator/sheet/sheetOperator/SheetOperatorItem'
@@ -39,7 +38,7 @@ export const SheetList: FC<SheetListProps> = () => {
             <ShowMore {...{ toTop }} />
           </>
         ) : (
-          <NonIdealState title="暂无干员" />
+          <OperatorNoData />
         )}
       </div>
       <ProfClassificationWithFilters {...{ toTop }} />

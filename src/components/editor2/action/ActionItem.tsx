@@ -25,13 +25,13 @@ import {
   useState,
 } from 'react'
 
+import { i18n, languageAtom, useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import {
   actionDocColors,
+  alternativeOperatorSkillUsages,
   findOperatorByName,
-  findOperatorSkillUsage,
-  getSkillUsageTitle,
-  operatorSkillUsages,
+  getSkillUsageAltTitle,
 } from '../../../models/operator'
 import { findActionType } from '../../../models/types'
 import { Select } from '../../Select'
@@ -57,6 +57,8 @@ interface ActionItemProps extends Partial<SortableItemProps> {
 
 export const ActionItem: FC<ActionItemProps> = memo(
   ({ className, actionAtom, isDragging, isSorting, attributes, listeners }) => {
+    const t = useTranslation()
+    const language = useAtomValue(languageAtom)
     const edit = useEdit()
     const dispatchActions = useSetAtom(editorAtoms.actionAtoms)
     const [action, setAction] = useImmerAtom(actionAtom)
@@ -115,10 +117,11 @@ export const ActionItem: FC<ActionItemProps> = memo(
           <div className="flex flex-wrap items-center">
             <h4
               className={clsx(
-                'relative shrink-0 self-stretch w-[5em] text-2xl font-bold font-serif bg-gray-100 dark:bg-gray-700 cursor-move select-none touch-manipulation',
+                'relative shrink-0 self-stretch w-[5em] text-2xl font-serif bg-gray-100 dark:bg-gray-700 cursor-move select-none touch-manipulation',
                 // regarding the calc(), we try to make the right border tilt by 12deg, so the x coordinate
                 // of the bottom right corner will be 100% - height * tan(12deg), where height turns out to be 4.5rem
                 '[clip-path:polygon(0_0,100%_0,calc(100%-.96rem)_100%,0_100%)]',
+                language === 'cn' && 'font-bold',
               )}
               {...attributes}
               {...listeners}
@@ -130,7 +133,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   active && 'opacity-0 transition-opacity delay-100',
                 )}
               >
-                {typeInfo.shortTitle}
+                {typeInfo.shortTitle()}
               </div>
               <div
                 className={clsx(
@@ -142,7 +145,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     : '[clip-path:polygon(0_0,4px_0,4px_100%,0_100%)]',
                 )}
               >
-                {typeInfo.shortTitle}
+                {typeInfo.shortTitle()}
               </div>
             </h4>
             <div className="flex-[0_1_1rem]" />
@@ -175,9 +178,11 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         <Divider className="grow rotate-12 ml-3" />
                         <Tooltip2
                           placement="top"
-                          content="目标或位置只需填入其中一项"
+                          content={
+                            t.components.editor2.ActionItem.target_or_location
+                          }
                         >
-                          或
+                          {t.components.editor2.ActionItem.or}
                         </Tooltip2>
                         <Divider className="grow rotate-12 mr-3" />
                       </>
@@ -203,7 +208,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                             })
                             return {
                               action: 'set-action-location-x-' + action.id,
-                              desc: '修改坐标',
+                              desc: i18n.actions.editor2.set_action_location,
                               squash: false,
                             }
                           })
@@ -225,7 +230,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                             })
                             return {
                               action: 'set-action-location-y-' + action.id,
-                              desc: '修改坐标',
+                              desc: i18n.actions.editor2.set_action_location,
                               squash: false,
                             }
                           })
@@ -235,7 +240,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         {')'}
                       </span>
                     </div>
-                    <div className="text-xs text-gray-500">位置</div>
+                    <div className="text-xs text-gray-500">
+                      {t.components.editor2.label.operation.actions.location}
+                    </div>
                   </div>
                 </>
               ),
@@ -268,7 +275,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               })
                               return {
                                 action: 'set-action-direction-' + action.id,
-                                desc: '修改朝向',
+                                desc: i18n.actions.editor2.set_action_direction,
                                 squash: false,
                               }
                             })
@@ -292,7 +299,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         />
                       ))}
                     </div>
-                    <div className="ml-1 mt-1 text-xs text-gray-500">朝向</div>
+                    <div className="ml-1 mt-1 text-xs text-gray-500">
+                      {t.components.editor2.label.operation.actions.direction}
+                    </div>
                   </div>
                 </>
               ),
@@ -300,10 +309,6 @@ export const ActionItem: FC<ActionItemProps> = memo(
             {renderForTypes(
               [CopilotDocV1.Type.SkillUsage],
               ({ action, setAction }) => {
-                const usageInfo =
-                  action.skillUsage === undefined
-                    ? undefined
-                    : findOperatorSkillUsage(action.skillUsage)
                 return (
                   <>
                     <div className="grow self-stretch max-w-10 flex items-stretch justify-center">
@@ -312,7 +317,46 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     <div className="">
                       <div className="flex items-baseline gap-1 text-xl">
                         <DetailedSelect
-                          items={operatorSkillUsages}
+                          items={alternativeOperatorSkillUsages.map((item) =>
+                            item.value ===
+                            CopilotDocV1.SkillUsageType.ReadyToUseTimes
+                              ? {
+                                  ...item,
+                                  menuItemProps: {
+                                    shouldDismissPopover: false,
+                                  },
+                                  description: (
+                                    <>
+                                      <div>{item.description()}</div>
+                                      <span className="mr-2 text-lg">x</span>
+                                      <NumericInput2
+                                        intOnly
+                                        min={1}
+                                        className="inline-flex"
+                                        inputClassName="!p-0 !w-8 text-center font-semibold"
+                                        value={action.skillTimes ?? 1}
+                                        wheelStepSize={1}
+                                        onValueChange={(v) => {
+                                          edit(() => {
+                                            setAction((draft) => {
+                                              draft.skillTimes = v
+                                            })
+                                            return {
+                                              action:
+                                                'set-action-skillTimes-' +
+                                                action.id,
+                                              desc: i18n.actions.editor2
+                                                .set_action_skill_times,
+                                              squash: true,
+                                            }
+                                          })
+                                        }}
+                                      />
+                                    </>
+                                  ),
+                                }
+                              : item,
+                          )}
                           value={action.skillUsage}
                           onItemSelect={(item) => {
                             if (item.value === action.skillUsage) return
@@ -322,7 +366,8 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               })
                               return {
                                 action: 'set-action-skillUsage-' + action.id,
-                                desc: '修改技能用法',
+                                desc: i18n.actions.editor2
+                                  .set_action_skill_usage,
                                 squash: false,
                               }
                             })
@@ -331,38 +376,23 @@ export const ActionItem: FC<ActionItemProps> = memo(
                           <Button
                             minimal
                             className="-ml-1 !px-1 !py-0 !text-xl !font-normal !text-inherit"
-                            text={usageInfo?.shortTitle || '请选择'}
+                            text={
+                              action.skillUsage
+                                ? getSkillUsageAltTitle(
+                                    action.skillUsage,
+                                    action.skillTimes,
+                                  )
+                                : t.components.editor2.ActionItem.select_usage
+                            }
                           />
                         </DetailedSelect>
-                        {action.skillUsage ===
-                          CopilotDocV1.SkillUsageType.ReadyToUseTimes && (
-                          <>
-                            x
-                            <NumericInput2
-                              intOnly
-                              min={1}
-                              buttonPosition="none"
-                              inputClassName="-ml-1 !w-8 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 !border-0 !rounded [&:not(:focus)]:!shadow-none text-center font-semibold !text-inherit !text-[length:inherit]"
-                              value={action.skillTimes ?? ''}
-                              wheelStepSize={1}
-                              onValueChange={(v) => {
-                                edit(() => {
-                                  setAction((draft) => {
-                                    draft.skillTimes = v
-                                  })
-                                  return {
-                                    action:
-                                      'set-action-skillTimes-' + action.id,
-                                    desc: '修改技能次数',
-                                    squash: true,
-                                  }
-                                })
-                              }}
-                            />
-                          </>
-                        )}
                       </div>
-                      <div className="text-xs text-gray-500">用法</div>
+                      <div className="text-xs text-gray-500">
+                        {
+                          t.components.editor2.label.operation.actions
+                            .skill_usage
+                        }
+                      </div>
                     </div>
                   </>
                 )
@@ -373,7 +403,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 minimal
                 large
                 icon="comment"
-                title="添加日志"
+                title={t.components.editor2.ActionItem.add_doc}
                 disabled={doc !== undefined}
                 onClick={() => {
                   setDocDraft('')
@@ -384,7 +414,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 minimal
                 large
                 icon="duplicate"
-                title="复制一份"
+                title={t.components.editor2.ActionItem.duplicate}
                 onClick={() => {
                   edit(() => {
                     dispatchActions({
@@ -394,7 +424,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     })
                     return {
                       action: 'copy-action-' + action.id,
-                      desc: '复制动作',
+                      desc: i18n.actions.editor2.duplicate_action,
                       squash: false,
                     }
                   })
@@ -404,7 +434,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 minimal
                 large
                 icon="cross"
-                title="删除"
+                title={t.components.editor2.ActionItem.delete}
                 intent="danger"
                 onClick={() => {
                   edit(() => {
@@ -414,7 +444,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     })
                     return {
                       action: 'delete-action-' + action.id,
-                      desc: '删除动作',
+                      desc: i18n.actions.editor2.delete_action,
                       squash: false,
                     }
                   })
@@ -457,7 +487,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     })
                     return {
                       action: 'set-action-docColor-' + action.id,
-                      desc: '修改动作颜色',
+                      desc: i18n.actions.editor2.set_action_doc_color,
                       squash: false,
                     }
                   })
@@ -481,7 +511,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                   color: action.docColor ?? actionDocColors[0].value,
                 }}
                 inputRef={setDocInput}
-                placeholder="MAA 执行此动作时显示的文字"
+                placeholder={t.components.editor2.ActionItem.doc_placeholder}
                 value={doc}
                 onChange={(e) => {
                   edit(() => {
@@ -490,7 +520,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     })
                     return {
                       action: 'set-action-doc-' + action.id,
-                      desc: '修改动作日志',
+                      desc: i18n.actions.editor2.set_action_doc,
                       squash: true,
                     }
                   })
@@ -507,7 +537,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         return {
                           // 这里的 action 要和正常修改时的 action 一致，不然会导致多出一条记录
                           action: 'set-action-doc-' + action.id,
-                          desc: '删除动作日志',
+                          desc: i18n.actions.editor2.delete_action_doc,
                           squash: true,
                         }
                       })
@@ -559,6 +589,7 @@ const ActionTarget: FC<{
     >
   >
 }> = ({ actionAtom }) => {
+  const t = useTranslation()
   const edit = useEdit()
   const [action, setAction] = useAtom(actionAtom)
   const groupNames = useAtomValue(groupNamesAtom)
@@ -578,22 +609,17 @@ const ActionTarget: FC<{
   const displayName =
     operatorInfo?.name ||
     action.name ||
-    (isGroup(action.name) ? '(未命名干员组)' : '请选择目标')
-  const skillUsage = operator && (
-    <>
-      技能
-      {getSkillUsageTitle(operator.skillUsage ?? 0, operator.skillTimes ?? 1)}
-    </>
-  )
+    (isGroup(action.name)
+      ? t.components.editor2.ActionItem.unnamed_group
+      : t.components.editor2.ActionItem.select_target)
   const subtitle = isGroup(action.name)
-    ? '干员组'
-    : skillUsage ||
-      (operatorInfo
-        ? operatorInfo?.prof === 'TOKEN'
-          ? '召唤物'
-          : '干员'
-        : // 自定义干员、关卡里的道具之类
-          '未知单位')
+    ? t.components.editor2.ActionItem.group
+    : operatorInfo
+      ? operatorInfo?.prof === 'TOKEN'
+        ? t.components.editor2.ActionItem.token
+        : t.components.editor2.ActionItem.operator
+      : // 自定义干员、关卡里的道具之类
+        t.components.editor2.ActionItem.unknown_target
   return (
     <OperatorSelect
       liftPicked
@@ -604,7 +630,7 @@ const ActionTarget: FC<{
           setAction({ ...action, name })
           return {
             action: 'set-action-name-' + action.id,
-            desc: '修改动作目标',
+            desc: i18n.actions.editor2.set_action_target,
             squash: false,
           }
         })

@@ -16,14 +16,15 @@ import { FC, memo } from 'react'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
+import { i18n, useTranslation } from '../../../i18n/i18n'
 import {
   OPERATORS,
   adjustOperatorLevel,
+  alternativeOperatorSkillUsages,
   defaultSkills,
   getDefaultRequirements,
   getEliteIconUrl,
-  getSkillUsageTitle,
-  operatorSkillUsages,
+  getSkillUsageAltTitle,
   withDefaultRequirements,
 } from '../../../models/operator'
 import { MasteryIcon } from '../../MasteryIcon'
@@ -61,6 +62,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
     attributes,
     listeners,
   }) => {
+    const t = useTranslation()
     const edit = useEdit()
     const setFavOperators = useSetAtom(editorFavOperatorsAtom)
     const info = OPERATORS.find(({ name }) => name === operator.name)
@@ -98,7 +100,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                       })
                       return {
                         action: 'set-operator-level-' + operator.id,
-                        desc: '修改干员等级',
+                        desc: i18n.actions.editor2.set_operator_level,
                         squash: true,
                       }
                     })
@@ -107,7 +109,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   <img
                     className="w-8 h-7 object-contain"
                     src={getEliteIconUrl(requirements.elite)}
-                    alt={'精英' + requirements.elite}
+                    alt={t.components.editor2.OperatorItem.elite({
+                      level: requirements.elite,
+                    })}
                   />
                 </Button>
               </div>
@@ -116,7 +120,6 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   intOnly
                   min={1}
                   buttonPosition="none"
-                  title="选中后使用鼠标滚轮调整等级"
                   value={requirements.level}
                   inputClassName="!w-9 h-9 !p-0 !leading-9 !rounded-full !border-2 !border-yellow-300 !bg-black/50 text-lg text-white font-semibold text-center !shadow-[0_1px_2px_rgba(0,0,0,0.9)]"
                   onValueChange={(value) => {
@@ -130,7 +133,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                       })
                       return {
                         action: 'set-operator-level-' + operator.id,
-                        desc: '修改干员等级',
+                        desc: i18n.actions.editor2.set_operator_level,
                         squash: true,
                       }
                     })
@@ -152,7 +155,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                       })
                       return {
                         action: 'set-operator-level-' + operator.id,
-                        desc: '修改干员等级',
+                        desc: i18n.actions.editor2.set_operator_level,
                         squash: true,
                       }
                     })
@@ -167,18 +170,19 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
               <Menu>
                 <MenuItem
                   icon="star"
-                  text="添加到收藏"
+                  text={t.components.editor2.OperatorItem.add_to_favorites}
                   onClick={() => {
                     setFavOperators((prev) => [...prev, operator])
                     AppToaster.show({
-                      message: '已添加到收藏',
+                      message:
+                        t.components.editor2.OperatorItem.added_to_favorites,
                       intent: 'success',
                     })
                   }}
                 />
                 <MenuItem
                   icon="trash"
-                  text="删除"
+                  text={t.common.delete}
                   intent="danger"
                   onClick={onRemove}
                 />
@@ -218,7 +222,14 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
           <div className="flex h-6">
             {controlsEnabled && (
               <DetailedSelect
-                items={operatorSkillUsages.map((item) =>
+                items={[
+                  {
+                    type: 'header' as const,
+                    header: t.components.editor2.label.opers.skill_usage,
+                  },
+                  ...alternativeOperatorSkillUsages,
+                ].map((item) =>
+                  item.type === 'choice' &&
                   item.value === CopilotDocV1.SkillUsageType.ReadyToUseTimes
                     ? {
                         ...item,
@@ -247,7 +258,8 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                                   return {
                                     action:
                                       'set-operator-skillTimes-' + operator.id,
-                                    desc: '修改技能次数',
+                                    desc: i18n.actions.editor2
+                                      .set_operator_skill_count,
                                     squash: true,
                                   }
                                 })
@@ -268,7 +280,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     })
                     return {
                       action: 'set-operator-skillUsage-' + operator.id,
-                      desc: '修改技能用法',
+                      desc: i18n.actions.editor2.set_operator_skill_usage,
                       squash: false,
                     }
                   })
@@ -278,14 +290,13 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   small
                   minimal
                   className={clsx(
-                    '!px-0 h-full !border-none !text-xs !leading-3 !font-normal',
+                    '!px-0 h-full !border-none !text-[.7rem] !leading-3 !font-normal',
                     skillUsageClasses[
                       operator.skillUsage ?? CopilotDocV1.SkillUsageType.None
                     ],
                   )}
                 >
-                  技能
-                  {getSkillUsageTitle(
+                  {getSkillUsageAltTitle(
                     operator.skillUsage ?? CopilotDocV1.SkillUsageType.None,
                     operator.skillTimes ?? 1,
                   )}
@@ -319,10 +330,8 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     intOnly
                     title={
                       available
-                        ? selected
-                          ? '选中后使用鼠标滚轮调整技能等级'
-                          : skillNumber + '技能'
-                        : '当前等级未解锁该技能'
+                        ? t.models.operator.skill_number({ count: skillNumber })
+                        : t.components.editor2.OperatorItem.skill_not_available
                     }
                     min={0}
                     buttonPosition="none"
@@ -337,7 +346,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                           onChange?.({ ...operator, skill: skillNumber })
                           return {
                             action: 'set-operator-skill-' + operator.id,
-                            desc: '修改干员技能',
+                            desc: i18n.actions.editor2.set_operator_skill,
                             squash: false,
                           }
                         })
@@ -366,7 +375,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         })
                         return {
                           action: 'set-operator-level-' + operator.id,
-                          desc: '修改技能等级',
+                          desc: i18n.actions.editor2.set_operator_skill_level,
                           squash: true,
                         }
                       })
@@ -387,7 +396,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         })
                         return {
                           action: 'set-operator-level-' + operator.id,
-                          desc: '修改技能等级',
+                          desc: i18n.actions.editor2.set_operator_skill_level,
                           squash: true,
                         }
                       })
@@ -438,7 +447,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   })
                   return {
                     action: 'set-operator-module-' + operator.id,
-                    desc: '修改干员模组',
+                    desc: i18n.actions.editor2.set_operator_module,
                     squash: true,
                   }
                 })
@@ -452,7 +461,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
               <Button
                 small
                 minimal
-                title="模组"
+                title={t.components.editor2.OperatorItem.module}
                 className={clsx(
                   'w-4 h-4 !p-0 flex items-center justify-center font-serif !font-bold !text-base !rounded-none !border-2 !border-current',
                   requirements.module

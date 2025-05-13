@@ -3,6 +3,7 @@ import { atomWithStorage } from 'jotai/utils'
 import { first, noop } from 'lodash-es'
 import { useEffect } from 'react'
 
+import { i18n } from '../../i18n/i18n'
 import { formatError } from '../../utils/error'
 import { AppToaster } from '../Toaster'
 import { EditorState, defaultEditorState, editorAtoms } from './editor-state'
@@ -82,7 +83,9 @@ export function useAutosave() {
         if (!e || !(e instanceof NotChangedError)) {
           AppToaster.show({
             intent: 'danger',
-            message: `自动保存失败: ${formatError(e)}`,
+            message: i18n.components.editor2.misc.autosave_error({
+              error: formatError(e),
+            }),
           })
         }
       }

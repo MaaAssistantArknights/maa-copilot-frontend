@@ -1,7 +1,7 @@
 import {
   Button,
   Callout,
-  H1,
+  H2,
   Icon,
   Menu,
   MenuDivider,
@@ -13,6 +13,7 @@ import clsx from 'clsx'
 import { useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { FC, useRef, useState } from 'react'
 
+import { i18n, useTranslation } from '../../i18n/i18n'
 import { formatError } from '../../utils/error'
 import { formatRelativeTime } from '../../utils/times'
 import { RelativeTime } from '../RelativeTime'
@@ -30,18 +31,27 @@ import {
 import { getLabeledPath } from './validation/schema'
 
 interface EditorToolbarProps extends SubmitButtonProps {
-  title?: string
+  subtitle?: string
 }
 
 export const EditorToolbar: FC<EditorToolbarProps> = ({
+  subtitle,
   submitAction,
   onSubmit,
 }) => {
+  const t = useTranslation()
   return (
-    <div className="px-4 md:px-8 flex flex-wrap bg-white dark:bg-[#383e47]">
-      <div className="py-2 flex items-center ">
-        <Icon icon="document" />
-        <H1 className="!text-lg font-normal ml-1 mb-0">作业编辑器v2</H1>
+    <div className="px-4 md:px-8 flex items-center flex-wrap bg-white dark:bg-[#383e47]">
+      <Icon icon="properties" />
+      <div className="ml-2 flex items-baseline">
+        <H2 className="!text-base mb-0">
+          {t.components.editor2.EditorToolbar.title}
+        </H2>
+        {subtitle && (
+          <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
+            {subtitle}
+          </span>
+        )}
       </div>
       <div className="grow py-2 flex flex-wrap items-center">
         <span className="grow" />
@@ -78,13 +88,14 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
       } else {
         setStatus('error')
       }
+    } catch (e) {
+      setStatus('error')
+      console.error(e)
+    } finally {
       statusResetTimer.current = setTimeout(() => {
         statusResetTimer.current = null
         setStatus('idle')
       }, 2000)
-    } catch (e) {
-      console.error(e)
-    } finally {
       setSubmitting(false)
     }
   }
@@ -108,6 +119,7 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
 }
 
 const AutoSaveButton = () => {
+  const t = useTranslation()
   const edit = useEdit()
   const archive = useAtomValue(editorArchiveAtom)
   const save = useSetAtom(editorSaveAtom)
@@ -123,8 +135,11 @@ const AutoSaveButton = () => {
               icon={null}
               className="p-0 pl-2 flex items-center"
             >
-              每隔 {AUTO_SAVE_INTERVAL / 1000 / 60} 分钟自动保存编辑过的内容 (
-              {archive.length}/{AUTO_SAVE_LIMIT})
+              {t.components.editor2.EditorToolbar.auto_save_interval({
+                count: AUTO_SAVE_INTERVAL / 1000 / 60,
+                records: archive.length,
+                limit: AUTO_SAVE_LIMIT,
+              })}
               <Button
                 minimal
                 icon="floppy-disk"
@@ -135,13 +150,16 @@ const AutoSaveButton = () => {
                     save()
                   } catch (e) {
                     AppToaster.show({
-                      message: '无法保存: ' + formatError(e),
+                      message:
+                        i18n.components.editor2.EditorToolbar.cannot_save({
+                          error: formatError(e),
+                        }),
                       intent: 'danger',
                     })
                   }
                 }}
               >
-                立即保存
+                {t.components.editor2.EditorToolbar.save_now}
               </Button>
             </Callout>
             <Menu className="mt-2 p-0">
@@ -149,7 +167,10 @@ const AutoSaveButton = () => {
                 <MenuItem
                   multiline
                   icon="time"
-                  text={record.v.operation.doc.title || '无标题'}
+                  text={
+                    record.v.operation.doc.title ||
+                    t.components.editor2.EditorToolbar.untitled
+                  }
                   label={formatRelativeTime(record.t)}
                   key={record.t}
                   onClick={() => {
@@ -157,7 +178,7 @@ const AutoSaveButton = () => {
                       setEditorState(record.v)
                       return {
                         action: 'restore',
-                        desc: '从自动保存恢复',
+                        desc: i18n.actions.editor2.restore_from_autosave,
                         squash: false,
                       }
                     })
@@ -174,12 +195,18 @@ const AutoSaveButton = () => {
       onOpening={() => setIsOpen(true)}
       onClosed={() => setIsOpen(false)}
     >
-      <Button minimal large icon="projects" title="自动保存" />
+      <Button
+        minimal
+        large
+        icon="projects"
+        title={t.components.editor2.EditorToolbar.auto_save}
+      />
     </Popover2>
   )
 }
 
 const HistoryButtons = () => {
+  const t = useTranslation()
   const { history, canRedo, canUndo } = useHistoryValue(historyAtom)
   const { undo, redo, checkout } = useHistoryControls(historyAtom)
   const [isOpen, setIsOpen] = useState(false)
@@ -189,7 +216,7 @@ const HistoryButtons = () => {
         minimal
         large
         icon="undo"
-        title="撤销 (Ctrl+Z)"
+        title={t.components.editor2.EditorToolbar.undo}
         disabled={!canUndo}
         onClick={undo}
       />
@@ -197,7 +224,7 @@ const HistoryButtons = () => {
         minimal
         large
         icon="redo"
-        title="重做 (Ctrl+Y)"
+        title={t.components.editor2.EditorToolbar.redo}
         disabled={!canRedo}
         onClick={redo}
       />
@@ -207,7 +234,9 @@ const HistoryButtons = () => {
             <Menu>
               <MenuDivider
                 className="pb-2 border-b"
-                title={`操作历史 (上限${history.limit})`}
+                title={t.components.editor2.EditorToolbar.undo_history_header({
+                  limit: history.limit,
+                })}
               />
               {[...history.stack].reverse().map((record, reversedIndex) => {
                 const index = history.stack.length - 1 - reversedIndex
@@ -218,7 +247,14 @@ const HistoryButtons = () => {
                       index === 0 && 'italic',
                       index === history.index ? 'font-bold' : undefined,
                     )}
-                    text={index + 1 + '. ' + record.desc}
+                    text={
+                      index +
+                      1 +
+                      '. ' +
+                      (record.action === 'init'
+                        ? t.actions.editor2.init
+                        : record.desc)
+                    }
                     labelElement={
                       <RelativeTime
                         className="ml-4 text-xs"
@@ -241,7 +277,7 @@ const HistoryButtons = () => {
         <Button
           minimal
           icon="history"
-          title="操作历史"
+          title={t.components.editor2.EditorToolbar.undo_history}
           text={history.index + 1 + '/' + history.stack.length}
         />
       </Popover2>
@@ -250,6 +286,7 @@ const HistoryButtons = () => {
 }
 
 const ErrorButton = () => {
+  const t = useTranslation()
   const globalErrors = useAtomValue(editorAtoms.globalErrors)
   const entityErrors = useAtomValue(editorAtoms.entityErrors)
   const [isOpen, setIsOpen] = useState(false)
@@ -259,7 +296,10 @@ const ErrorButton = () => {
       content={
         isOpen ? (
           <>
-            <MenuDivider className="pb-2 border-b" title="错误" />
+            <MenuDivider
+              className="pb-2 border-b"
+              title={t.components.editor2.EditorToolbar.errors_header}
+            />
             <ul className="m-2 text-red-500">
               {allErrors.map(({ path, message }) => (
                 <li key={path.join()}>
@@ -282,7 +322,11 @@ const ErrorButton = () => {
         large
         icon={allErrors.length > 0 ? 'cross-circle' : 'tick-circle'}
         intent={allErrors.length > 0 ? 'danger' : 'success'}
-        title={allErrors.length > 0 ? '错误' : '无错误'}
+        title={
+          allErrors.length > 0
+            ? t.components.editor2.EditorToolbar.errors_header
+            : t.components.editor2.EditorToolbar.no_errors
+        }
         text={allErrors.length || undefined}
       />
     </Popover2>
@@ -290,6 +334,7 @@ const ErrorButton = () => {
 }
 
 const ErrorVisibleButton = () => {
+  const t = useTranslation()
   const [visible, setVisible] = useAtom(editorAtoms.errorsVisible)
   return (
     <Button
@@ -298,7 +343,7 @@ const ErrorVisibleButton = () => {
       icon="eye-open"
       active={visible}
       onClick={() => setVisible(!visible)}
-      title="在编辑器中显示错误"
+      title={t.components.editor2.EditorToolbar.show_errors}
     />
   )
 }

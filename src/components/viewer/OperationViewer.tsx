@@ -123,7 +123,11 @@ const ManageMenu: FC<{
             to={`/editor/${operation.id}`}
             target="_blank"
           >
-            <MenuItem tagName="div" icon="edit" text="修改作业(v2)" />
+            <MenuItem
+              tagName="div"
+              icon="edit"
+              text={t.components.viewer.OperationViewer.modify_task_v2}
+            />
           </ReLink>
         </li>
         {operation.commentStatus === BanCommentsStatusEnum.Enabled && (

@@ -7,6 +7,7 @@ import Fuse from 'fuse.js'
 import { FC, Ref, useEffect, useMemo, useState } from 'react'
 
 import { useLevels } from '../../apis/level'
+import { i18n, useTranslation } from '../../i18n/i18n'
 import {
   createCustomLevel,
   getPrtsMapUrl,
@@ -37,6 +38,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
   onChange,
   ...inputProps
 }) => {
+  const t = useTranslation()
   // we are going to manually handle loading state so we could show the skeleton state easily,
   // without swapping the actual element.
   const { data, error: fetchError, isLoading } = useLevels()
@@ -118,7 +120,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         )
       } else {
         // catTwo 为空的时候用 levelId 来分类
-        headerName = '相关关卡'
+        headerName = i18n.components.editor2.LevelSelect.related_levels
         const levelIdPrefix = selectedLevel.levelId
           .split('/')
           .slice(0, -1)
@@ -192,7 +194,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         }
         inputValueRenderer={(item) =>
           isCustomLevel(item)
-            ? `${item.name} (自定义)`
+            ? t.components.editor2.LevelSelect.custom_level({ name: item.name })
             : `${item.catThree} ${item.name}`
         }
         selectedItem={selectedLevel}
@@ -217,7 +219,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
         )}
         inputProps={{
           large: true,
-          placeholder: '关卡名、类型、编号',
+          placeholder: t.components.editor2.LevelSelect.placeholder,
           inputRef,
           ...inputProps,
         }}
@@ -225,7 +227,10 @@ export const LevelSelect: FC<LevelSelectProps> = ({
           minimal: true,
         }}
       />
-      <Tooltip2 placement="top" content="在 PRTS.Map 中查看关卡">
+      <Tooltip2
+        placement="top"
+        content={t.components.editor2.LevelSelect.view_external}
+      >
         <AnchorButton
           minimal
           large
@@ -238,7 +243,9 @@ export const LevelSelect: FC<LevelSelectProps> = ({
       </Tooltip2>
       {fetchError && (
         <span className="text-xs opacity-50">
-          关卡加载失败：{formatError(fetchError)}
+          {t.components.editor2.LevelSelect.load_error({
+            error: formatError(fetchError),
+          })}
         </span>
       )}
     </div>

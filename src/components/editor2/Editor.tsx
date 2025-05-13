@@ -20,13 +20,13 @@ import { useAutosave } from './useAutoSave'
 import { Validator } from './validation/Validator'
 
 interface OperationEditorProps {
-  title?: string
+  subtitle?: string
   submitAction: string
   onSubmit: () => void
 }
 
 export const OperationEditor: FC<OperationEditorProps> = memo(
-  ({ title, submitAction, onSubmit }) => {
+  ({ subtitle, submitAction, onSubmit }) => {
     useAutosave()
     const { isMD } = useCurrentSize()
     const { undo, redo } = useHistoryControls(historyAtom)
@@ -85,7 +85,7 @@ export const OperationEditor: FC<OperationEditorProps> = memo(
       <div className="-mt-14 pt-14 md:h-screen flex flex-col">
         <Validator />
         <EditorToolbar
-          title={title}
+          subtitle={subtitle}
           submitAction={submitAction}
           onSubmit={onSubmit}
         />

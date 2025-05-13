@@ -3,10 +3,10 @@ import type * as errors from '@zod/core/src/errors'
 import { Primitive } from 'type-fest'
 
 const Sizable: Record<string, { unit: string; verb: string }> = {
-  string: { unit: '字符', verb: 'to have' },
-  file: { unit: '字节', verb: 'to have' },
-  array: { unit: '元素', verb: 'to have' },
-  set: { unit: '元素', verb: 'to have' },
+  string: { unit: '字符', verb: '有' },
+  file: { unit: '字节', verb: '有' },
+  array: { unit: '元素', verb: '有' },
+  set: { unit: '元素', verb: '有' },
 }
 
 function getSizing(origin: string): { unit: string; verb: string } | null {
@@ -52,13 +52,9 @@ export function joinValues<T extends Primitive[]>(
   return array.map((val) => stringifyPrimitive(val)).join(separator)
 }
 
-// TODO: when i18n has been implemented, return i18n keys instead of strings
 const error: errors.$ZodErrorMap = (issue) => {
   switch (issue.code) {
     case 'invalid_type':
-      if (issue.input === undefined) {
-        return `不能为空`
-      }
       return `无效的输入：期望 ${issue.expected}，收到 ${parsedType(issue.input)}`
     case 'invalid_value':
       if (issue.values.length === 1)
@@ -72,9 +68,6 @@ const error: errors.$ZodErrorMap = (issue) => {
       return `太大了：期望 ${issue.origin ?? '值'} ${adj}${issue.maximum.toString()}`
     }
     case 'too_small': {
-      if (issue.origin === 'string' && issue.minimum === 1) {
-        return `不能为空`
-      }
       const adj = issue.inclusive ? '>=' : '>'
       const sizing = getSizing(issue.origin)
       if (sizing) {

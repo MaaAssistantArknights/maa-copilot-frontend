@@ -1,14 +1,15 @@
+import { locales } from '@zod/core'
+
 import { get, isNumber, isString } from 'lodash-es'
 import { Primitive } from 'type-fest'
 import * as z from 'zod'
 
+import { i18n } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { OpDifficulty } from '../../../models/operation'
 import cn from './error-map-cn'
 
 export type ZodIssue = z.core.$ZodIssue
-
-z.config(cn())
 
 const version = z.number().optional()
 const stage_name = z.string().optional()
@@ -235,67 +236,25 @@ type Labeled<T> = T extends Primitive
   ? string
   : T extends ReadonlyArray<infer U> // test for array and tuple
     ? U[] extends T // test for array (non-tuple)
-      ? { _label: string } & Labeled<U>
+      ? { _item: string } & Labeled<U>
       : string
     : { [K in keyof T as string extends K ? never : K]-?: Labeled<T[K]> }
 
-const OPERATOR_LABELS: Labeled<CopilotOperation['opers']> = {
-  _label: '干员',
-  name: '名称',
-  skill: '技能',
-  skill_usage: '技能使用次数',
-  requirements: {
-    elite: '精英等级',
-    level: '等级',
-    skill_level: '技能等级',
-    module: '模组',
-    potentiality: '潜能',
-  },
-}
-
-const OPERATION_LABELS: Labeled<CopilotOperation> = {
-  version: '版本号',
-  stage_name: '关卡名称',
-  minimum_required: '最低要求 MAA 版本',
-  difficulty: '难度',
-  doc: {
-    title: '标题',
-    details: '详情',
-    title_color: '标题颜色',
-    details_color: '详情颜色',
-  },
-  opers: OPERATOR_LABELS,
-  groups: {
-    _label: '干员组',
-    name: '名称',
-    opers: OPERATOR_LABELS,
-  },
-  actions: {
-    _label: '动作',
-    type: '动作类型',
-    name: '目标',
-    location: '位置',
-    distance: '距离',
-    direction: '朝向',
-    skill_usage: '技能使用次数',
-    kills: '击杀数',
-    costs: '费用',
-    cost_changes: '费用变化',
-    pre_delay: '前置延迟',
-    rear_delay: '后置延迟',
-    post_delay: '后置延迟',
-    doc: '文档',
-    doc_color: '文档颜色',
-  },
-}
-
 export function getLabel(path: PropertyKey[]) {
-  const labelOrObject = get(OPERATION_LABELS, path.filter(isString))
+  const labels: Labeled<CopilotOperation> = {
+    ...i18n.components.editor2.label.operation,
+    opers: i18n.components.editor2.label.opers,
+    groups: {
+      ...i18n.components.editor2.label.operation.groups,
+      opers: i18n.components.editor2.label.opers,
+    },
+  }
+  const labelOrObject = get(labels, path.filter(isString))
   if (isString(labelOrObject)) {
     return labelOrObject
   }
-  if ('_label' in labelOrObject) {
-    return labelOrObject._label as string
+  if ('_item' in labelOrObject) {
+    return labelOrObject._item as string
   }
   return undefined
 }
@@ -316,3 +275,25 @@ export function getLabeledPath(path: PropertyKey[]): string {
 
   return [getLabeledPath(path.slice(0, -1)), label].filter(Boolean).join('/')
 }
+
+const enError = locales.en()
+const cnError = cn()
+
+z.config({
+  localeError: (issue) => {
+    // the default error message for missing fields is not very user-friendly
+    // so we override it with our own one
+    if (
+      (issue.code === 'invalid_type' && issue.input === undefined) ||
+      (issue.code === 'too_small' &&
+        issue.origin === 'string' &&
+        issue.minimum === 1)
+    ) {
+      return i18n.components.editor2.validation.required
+    }
+
+    return i18n.currentLanguage === 'cn'
+      ? cnError.localeError(issue)
+      : enError.localeError(issue)
+  },
+})
