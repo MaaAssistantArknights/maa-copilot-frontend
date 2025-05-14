@@ -32,17 +32,16 @@ export const editorValidationAtom = atom(null, (get, set) => {
       if (entityIndexIndex !== -1) {
         const entityPath = issue.path.slice(0, entityIndexIndex + 1)
         try {
-          const entity = lodashGet(operation, entityPath)
-          // TODO: do not hardcode "_id"
-          if (entity && '_id' in entity && isString(entity._id)) {
-            ;(entityIssues[entity._id] ||= []).push({
+          const maybeEntity = lodashGet(operation, entityPath)
+          if (maybeEntity && 'id' in maybeEntity && isString(maybeEntity.id)) {
+            ;(entityIssues[maybeEntity.id] ||= []).push({
               ...issue,
               fieldLabel: getLabel(issue.path),
             })
             return
           }
         } catch {
-          /* ignored */
+          console.warn('Failed to get entity at', issue.path)
         }
       }
       globalIssues.push(issue)
