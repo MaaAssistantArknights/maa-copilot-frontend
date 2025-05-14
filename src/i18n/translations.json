@@ -105,6 +105,10 @@
         "cn": "修改动作的位置",
         "en": "Change Action's Location"
       },
+      "set_action_distance": {
+        "cn": "修改动作的距离",
+        "en": "Change Action's Distance"
+      },
       "set_action_direction": {
         "cn": "修改动作的朝向",
         "en": "Change Action's Direction"

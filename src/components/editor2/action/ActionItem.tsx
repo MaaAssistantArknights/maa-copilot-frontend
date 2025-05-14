@@ -198,7 +198,11 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       <NumericInput2
                         intOnly
                         buttonPosition="none"
-                        inputClassName="!w-9 mx-px mt-1 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none !text-inherit text-3xl font-semibold text-center"
+                        inputClassName="!min-w-[2ch] mx-px mt-1 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none !text-inherit text-3xl font-semibold text-center"
+                        style={{
+                          width:
+                            String(action.location?.[0] ?? 0).length + 'ch',
+                        }}
                         value={action.location?.[0] ?? ''}
                         wheelStepSize={1}
                         onValueChange={(v) => {
@@ -209,7 +213,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                             return {
                               action: 'set-action-location-x-' + action.id,
                               desc: i18n.actions.editor2.set_action_location,
-                              squash: false,
+                              squash: true,
                             }
                           })
                         }}
@@ -220,7 +224,11 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       <NumericInput2
                         intOnly
                         buttonPosition="none"
-                        inputClassName="!w-9 mx-px mt-1 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none !text-inherit text-3xl font-semibold text-center"
+                        inputClassName="!min-w-[2ch] mx-px mt-1 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none !text-inherit text-3xl font-semibold text-center"
+                        style={{
+                          width:
+                            String(action.location?.[1] ?? 0).length + 'ch',
+                        }}
                         value={action.location?.[1] ?? ''}
                         wheelStepSize={1}
                         onValueChange={(v) => {
@@ -231,7 +239,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                             return {
                               action: 'set-action-location-y-' + action.id,
                               desc: i18n.actions.editor2.set_action_location,
-                              squash: false,
+                              squash: true,
                             }
                           })
                         }}
@@ -242,6 +250,78 @@ export const ActionItem: FC<ActionItemProps> = memo(
                     </div>
                     <div className="text-xs text-gray-500">
                       {t.components.editor2.label.operation.actions.location}
+                    </div>
+                  </div>
+                </>
+              ),
+            )}
+            {renderForTypes(
+              [CopilotDocV1.Type.MoveCamera],
+              ({ action, setAction }) => (
+                <>
+                  <div className="grow self-stretch max-w-10 flex flex-col items-center text-xs">
+                    <Divider className="grow rotate-12" />
+                  </div>
+                  <div className="shrink-0">
+                    <div className="flex items-center text-3xl">
+                      <span className="text-gray-300 dark:text-gray-600">
+                        {'('}
+                      </span>
+                      <NumericInput2
+                        intOnly
+                        buttonPosition="none"
+                        inputClassName="!min-w-[2ch] mx-px mt-1 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none !text-inherit text-3xl font-semibold text-center"
+                        value={action.distance?.[0] ?? ''}
+                        style={{
+                          width:
+                            String(action.distance?.[0] ?? 0).length + 'ch',
+                        }}
+                        wheelStepSize={1}
+                        onValueChange={(v) => {
+                          edit(() => {
+                            setAction((draft) => {
+                              draft.distance = [v, draft.distance?.[1] ?? 0]
+                            })
+                            return {
+                              action: 'set-action-distance-x-' + action.id,
+                              desc: i18n.actions.editor2.set_action_distance,
+                              squash: true,
+                            }
+                          })
+                        }}
+                      />
+                      <span className="mt-3 text-gray-300 dark:text-gray-600 text-xl font-serif">
+                        ,
+                      </span>
+                      <NumericInput2
+                        intOnly
+                        buttonPosition="none"
+                        inputClassName="!min-w-[2ch] mx-px mt-1 !p-0 !leading-3 hover:!bg-gray-100 focus:!bg-gray-100 dark:hover:!bg-gray-600 dark:focus:!bg-gray-600 !border-0 !rounded [&:not(:focus)]:!shadow-none !text-inherit text-3xl font-semibold text-center"
+                        value={action.distance?.[1] ?? ''}
+                        style={{
+                          width:
+                            String(action.distance?.[1] ?? 0).length + 'ch',
+                        }}
+                        wheelStepSize={1}
+                        onValueChange={(v) => {
+                          edit(() => {
+                            setAction((draft) => {
+                              draft.distance = [draft.distance?.[0] ?? 0, v]
+                            })
+                            return {
+                              action: 'set-action-distance-y-' + action.id,
+                              desc: i18n.actions.editor2.set_action_distance,
+                              squash: true,
+                            }
+                          })
+                        }}
+                      />
+                      <span className="text-gray-300 dark:text-gray-600">
+                        {')'}
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {t.components.editor2.label.operation.actions.distance}
                     </div>
                   </div>
                 </>
