@@ -44,6 +44,7 @@ const operator = z.looseObject({
   name: z.string().min(1),
   skill: z.number().int().min(1).max(3).optional(),
   skill_usage: z.number().int().min(0).max(3).optional(),
+  skill_times: z.number().int().min(0).optional(),
   requirements: operator_requirements.optional(),
 })
 
@@ -64,11 +65,13 @@ const actionShape = {
   direction: z.string().optional(),
   distance: z.tuple([z.number().optional(), z.number().optional()]).optional(),
   skill_usage: operator.shape.skill_usage,
+  skill_times: operator.shape.skill_times,
 
   // common fields
   kills: z.number().int().min(0).optional(),
   costs: z.number().int().min(0).optional(),
   cost_changes: z.number().int().optional(),
+  cooling: z.number().int().min(0).optional(),
   pre_delay: z.number().int().min(0).optional(),
   rear_delay: z.number().int().min(0).optional(),
   post_delay: z.number().int().min(0).optional(),
