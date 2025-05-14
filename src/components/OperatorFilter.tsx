@@ -9,8 +9,7 @@ import {
 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { getDefaultStore, useAtom } from 'jotai'
-import { useAtomValue } from 'jotai'
+import { getDefaultStore, useAtom, useAtomValue } from 'jotai'
 import { compact } from 'lodash-es'
 import { FC, useEffect, useMemo, useState } from 'react'
 

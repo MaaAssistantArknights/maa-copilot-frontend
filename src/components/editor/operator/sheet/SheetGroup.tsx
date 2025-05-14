@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai'
 import { FC, useMemo, useState } from 'react'
 
 import { AppToaster } from 'components/Toaster'
-import { OPERATORS, PROFESSIONS, useLocalizedOperatorName } from 'models/operator'
+import { OPERATORS, PROFESSIONS } from 'models/operator'
 import { favGroupAtom } from 'store/useFavGroups'
 
 import { useTranslation } from '../../../../i18n/i18n'

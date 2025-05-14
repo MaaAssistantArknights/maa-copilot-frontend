@@ -8,6 +8,7 @@ import { FC } from 'react'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
+import { useLocalizedOperatorName } from 'models/operator'
 import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
 
@@ -15,7 +16,6 @@ import { useTranslation } from '../../../../../i18n/i18n'
 import { OperatorAvatar } from '../../EditorOperator'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
 import { useSheet } from '../SheetProvider'
-import { useLocalizedOperatorName } from 'models/operator'
 
 export interface SheetOperatorItemProp {
   name: string
@@ -173,13 +173,19 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
         />
       )}
       {grouped && (
-        <span className="text-xs font-bold mt-1">
-          <Icon icon="warning-sign" size={15} />
-          {
-            t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem
-              .in_group
-          }
-        </span>
+        <div className={clsx('flex mt-1 text-gray-500 items-center text-xs')}>
+          <Icon
+            icon="warning-sign"
+            size={12}
+            className="flex items-center mr-1"
+          />
+          <p className="font-semibold">
+            {
+              t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem
+                .in_group
+            }
+          </p>
+        </div>
       )}
     </Card>
   )

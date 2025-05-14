@@ -2,6 +2,7 @@ import { Button, Card, Elevation, H4, H5, Icon, Tag } from '@blueprintjs/core'
 import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 import { CopilotInfoStatusEnum } from 'maa-copilot-client'
 import { copyShortCode, handleLazyDownloadJSON } from 'services/operation'
 
@@ -11,9 +12,9 @@ import { OperationRating } from 'components/viewer/OperationRating'
 import { OpDifficulty, Operation } from 'models/operation'
 
 import { useLevels } from '../apis/level'
-import { useTranslation } from '../i18n/i18n'
+import { languageAtom, useTranslation } from '../i18n/i18n'
 import { createCustomLevel, findLevelByStageName } from '../models/level'
-import { useLocalizedOperatorName } from '../models/operator'
+import { getLocalizedOperatorName } from '../models/operator'
 import { Paragraphs } from './Paragraphs'
 import { ReLinkDiv } from './ReLinkDiv'
 import { UserName } from './UserName'
@@ -246,13 +247,14 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
 
 const OperatorTags = ({ operation }: { operation: Operation }) => {
   const t = useTranslation()
+  const language = useAtomValue(languageAtom)
   const { opers, groups } = operation.parsedContent
 
   return opers?.length || groups?.length ? (
     <div>
       {opers?.map(({ name, skill }, index) => (
         <Tag key={index} className="mr-2 last:mr-0 mb-1 last:mb-0">
-          {`${useLocalizedOperatorName(name)} ${skill ?? 1}`}
+          {`${getLocalizedOperatorName(name, language)} ${skill ?? 1}`}
         </Tag>
       ))}
       {groups?.map(({ name, opers }, index) => (
@@ -264,7 +266,7 @@ const OperatorTags = ({ operation }: { operation: Operation }) => {
             opers
               ?.map(
                 ({ name, skill }) =>
-                  `${useLocalizedOperatorName(name)} ${skill ?? 1}`,
+                  `${getLocalizedOperatorName(name, language)} ${skill ?? 1}`,
               )
               .join(', ') || t.components.OperationCard.no_operators
           }

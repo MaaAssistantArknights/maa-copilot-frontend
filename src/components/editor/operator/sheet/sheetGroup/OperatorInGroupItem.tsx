@@ -2,10 +2,11 @@ import { Card } from '@blueprintjs/core'
 
 import { FC } from 'react'
 
+import { useLocalizedOperatorName } from 'models/operator'
+
 import { OperatorAvatar } from '../../EditorOperator'
 import { Operator } from '../../EditorSheet'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
-import { useLocalizedOperatorName } from 'models/operator'
 
 export interface OperatorInGroupItemProp {
   operatorInfo: Operator

@@ -11,6 +11,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 import {
   DetailedHTMLProps,
   Dispatch,
@@ -21,7 +22,9 @@ import {
   useState,
 } from 'react'
 
-import { useTranslation } from '../../../../../i18n/i18n'
+import { getLocalizedOperatorName } from 'models/operator'
+
+import { languageAtom, useTranslation } from '../../../../../i18n/i18n'
 import { OperatorAvatar } from '../../EditorOperator'
 import { Group } from '../../EditorSheet'
 import {
@@ -31,7 +34,6 @@ import {
 import { OperatorNoData } from '../SheetNoneData'
 import { useSheet } from '../SheetProvider'
 import { CollapseButton } from './CollapseButton'
-import { useLocalizedOperatorName } from 'models/operator'
 
 export interface SheetOperatorEditorProp extends SheetOperatorEditorFormProp {}
 
@@ -307,6 +309,8 @@ const OperatorSelectorItem: FC<{
   groupName?: OperatorInSheetOperatorEditor['groupName']
   opers: Group['opers']
 }> = ({ selectedOperators, setSelectedOperators, groupName, opers }) => {
+  const language = useAtomValue(languageAtom)
+
   return (
     <div className="flex flex-wrap">
       {opers?.map(({ name }) => {
@@ -334,7 +338,7 @@ const OperatorSelectorItem: FC<{
           >
             <OperatorAvatar name={name} size="large" />
             <p className="mt-1 font-bold leading-tight text-center break-words">
-              {useLocalizedOperatorName(name)}
+              {getLocalizedOperatorName(name, language)}
             </p>
           </Card>
         )
