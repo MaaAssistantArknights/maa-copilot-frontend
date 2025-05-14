@@ -333,7 +333,7 @@ const OperatorSelectorItem: FC<{
             }}
           >
             <OperatorAvatar name={name} size="large" />
-            <p className="font-bold leading-none text-center mt-3 truncate">
+            <p className="mt-1 font-bold leading-tight text-center break-words">
               {useLocalizedOperatorName(name)}
             </p>
           </Card>

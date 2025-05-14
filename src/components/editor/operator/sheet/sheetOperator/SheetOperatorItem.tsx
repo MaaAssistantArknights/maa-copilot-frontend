@@ -103,7 +103,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
   return (
     <Card
       className={clsx(
-        'flex items-center w-full h-full relative cursor-pointer flex-col justify-center',
+        'flex items-center w-full h-full relative cursor-pointer flex-col',
         selectedInView && 'scale-90 bg-gray-200',
       )}
       elevation={grouped ? 0 : 2}
@@ -111,24 +111,15 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
       onClick={onOperatorSelect}
     >
       <>
-        <>
-          {/* Add a container div with fixed height for the avatar */}
-          <div className="h-8 flex items-center justify-center">
-            <OperatorAvatar name={name} size="large" />
-          </div>
-
-          {/* Text container with min-height and auto overflow handling */}
-          <div className="min-h-[2.5rem]  flex items-center justify-center">
-            <p
-              className={clsx(
-                'font-bold leading-none text-center',
-                'break-words' // Allow text to break to next line
-              )}
-            >
-              {useLocalizedOperatorName(name)}
-            </p>
-          </div>
-        </>
+        <OperatorAvatar className="mt-3" name={name} size="large" />
+        <p
+          className={clsx(
+            'mt-1 font-bold leading-tight text-center',
+            'break-words', // Allow text to break to next line
+          )}
+        >
+          {useLocalizedOperatorName(name)}
+        </p>
 
         {selected && (
           <div
@@ -182,7 +173,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
         />
       )}
       {grouped && (
-        <span className="text-xs font-bold mt-3">
+        <span className="text-xs font-bold mt-1">
           <Icon icon="warning-sign" size={15} />
           {
             t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem
