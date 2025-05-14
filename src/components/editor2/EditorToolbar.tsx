@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonProps,
   Callout,
   H2,
   Icon,
@@ -16,6 +17,7 @@ import { FC, useRef, useState } from 'react'
 import { i18n, useTranslation } from '../../i18n/i18n'
 import { formatError } from '../../utils/error'
 import { formatRelativeTime } from '../../utils/times'
+import { useCurrentSize } from '../../utils/useCurrenSize'
 import { RelativeTime } from '../RelativeTime'
 import { AppToaster } from '../Toaster'
 import { Settings } from './Settings'
@@ -40,8 +42,14 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
   onSubmit,
 }) => {
   const t = useTranslation()
+  const { isLG } = useCurrentSize()
+  const buttonProps = {
+    minimal: true,
+    className: isLG ? undefined : 'min-w-10 h-10',
+  } satisfies ButtonProps
+
   return (
-    <div className="px-4 md:px-8 flex items-center flex-wrap bg-white dark:bg-[#383e47]">
+    <div className="px-4 md:px-8 flex items-center flex-wrap [&_.bp4-button-text]:leading-none bg-white dark:bg-[#383e47]">
       <Icon icon="properties" />
       <div className="ml-2 flex items-baseline">
         <H2 className="!text-base mb-0">
@@ -53,27 +61,32 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
           </span>
         )}
       </div>
-      <div className="grow py-2 flex flex-wrap items-center">
+      <div className="grow py-1 flex flex-wrap items-center justify-end">
         <span className="grow" />
-        <Settings />
-        <AutoSaveButton />
-        <HistoryButtons />
-        <ErrorVisibleButton />
-        <ErrorButton />
-        <SourceEditorButton minimal />
-        <span className="grow max-w-6" />
+        <Settings {...buttonProps} />
+        <AutoSaveButton {...buttonProps} />
+        <HistoryButtons {...buttonProps} />
+        <ErrorVisibleButton {...buttonProps} />
+        <ErrorButton {...buttonProps} />
+        <SourceEditorButton {...buttonProps} />
+        <span className="grow max-w-4" />
         <SubmitButton submitAction={submitAction} onSubmit={onSubmit} />
       </div>
     </div>
   )
 }
 
-interface SubmitButtonProps {
+interface SubmitButtonProps extends ButtonProps {
   submitAction: string
   onSubmit: () => Promise<void | false> | false | void
 }
 
-const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
+const SubmitButton = ({
+  submitAction,
+  onSubmit,
+  className,
+  ...buttonProps
+}: SubmitButtonProps) => {
   const [submitting, setSubmitting] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const statusResetTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
@@ -102,6 +115,7 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
   return (
     <Button
       large
+      {...buttonProps}
       intent={
         status === 'success'
           ? 'success'
@@ -109,7 +123,7 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
             ? 'danger'
             : 'primary'
       }
-      className="w-40"
+      className={clsx('w-40', className)}
       icon={status === 'success' ? 'tick' : 'upload'}
       loading={submitting}
       text={submitAction}
@@ -118,7 +132,7 @@ const SubmitButton = ({ submitAction, onSubmit }: SubmitButtonProps) => {
   )
 }
 
-const AutoSaveButton = () => {
+const AutoSaveButton = (buttonProps: ButtonProps) => {
   const t = useTranslation()
   const edit = useEdit()
   const archive = useAtomValue(editorArchiveAtom)
@@ -141,7 +155,6 @@ const AutoSaveButton = () => {
                 limit: AUTO_SAVE_LIMIT,
               })}
               <Button
-                minimal
                 icon="floppy-disk"
                 intent="primary"
                 className=""
@@ -195,8 +208,7 @@ const AutoSaveButton = () => {
       onClosed={() => setIsOpen(false)}
     >
       <Button
-        minimal
-        large
+        {...buttonProps}
         icon="projects"
         title={t.components.editor2.EditorToolbar.auto_save}
       />
@@ -204,7 +216,7 @@ const AutoSaveButton = () => {
   )
 }
 
-const HistoryButtons = () => {
+const HistoryButtons = (buttonProps: ButtonProps) => {
   const t = useTranslation()
   const { history, canRedo, canUndo } = useHistoryValue(historyAtom)
   const { undo, redo, checkout } = useHistoryControls(historyAtom)
@@ -212,16 +224,14 @@ const HistoryButtons = () => {
   return (
     <>
       <Button
-        minimal
-        large
+        {...buttonProps}
         icon="undo"
         title={t.components.editor2.EditorToolbar.undo}
         disabled={!canUndo}
         onClick={undo}
       />
       <Button
-        minimal
-        large
+        {...buttonProps}
         icon="redo"
         title={t.components.editor2.EditorToolbar.redo}
         disabled={!canRedo}
@@ -274,7 +284,7 @@ const HistoryButtons = () => {
         onClosed={() => setIsOpen(false)}
       >
         <Button
-          minimal
+          {...buttonProps}
           icon="history"
           title={t.components.editor2.EditorToolbar.undo_history}
           text={history.index + 1 + '/' + history.stack.length}
@@ -284,7 +294,7 @@ const HistoryButtons = () => {
   )
 }
 
-const ErrorButton = () => {
+const ErrorButton = (buttonProps: ButtonProps) => {
   const t = useTranslation()
   const globalErrors = useAtomValue(editorAtoms.globalErrors)
   const entityErrors = useAtomValue(editorAtoms.entityErrors)
@@ -317,8 +327,7 @@ const ErrorButton = () => {
       onInteraction={(isOpen) => setIsOpen(allErrors.length > 0 && isOpen)}
     >
       <Button
-        minimal
-        large
+        {...buttonProps}
         icon={allErrors.length > 0 ? 'cross-circle' : 'tick-circle'}
         intent={allErrors.length > 0 ? 'danger' : 'success'}
         title={
@@ -332,13 +341,12 @@ const ErrorButton = () => {
   )
 }
 
-const ErrorVisibleButton = () => {
+const ErrorVisibleButton = (buttonProps: ButtonProps) => {
   const t = useTranslation()
   const [visible, setVisible] = useAtom(editorAtoms.errorsVisible)
   return (
     <Button
-      minimal
-      large
+      {...buttonProps}
       icon="eye-open"
       active={visible}
       onClick={() => setVisible(!visible)}

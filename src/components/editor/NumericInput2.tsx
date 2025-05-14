@@ -4,6 +4,7 @@ import {
   NumericInputProps,
 } from '@blueprintjs/core'
 
+import clsx from 'clsx'
 import { clamp, noop } from 'lodash-es'
 import {
   WheelEventHandler,
@@ -31,6 +32,7 @@ export const NumericInput2 = ({
   onFocus,
   onWheelFocused,
   wheelStepSize,
+  inputClassName,
   ...props
 }: NumericInput2Props) => {
   const allowNegative = min === undefined || min < 0
@@ -79,6 +81,11 @@ export const NumericInput2 = ({
       min={min}
       max={max}
       minorStepSize={minorStepSize}
+      inputClassName={clsx(
+        (wheelStepSize !== undefined || onWheelFocused !== undefined) &&
+          'focus:cursor-ns-resize',
+        inputClassName,
+      )}
       inputRef={inputRef}
       value={endsWithDot ? value + '.' : value}
       onFocus={(e) => {

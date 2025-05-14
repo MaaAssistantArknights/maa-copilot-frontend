@@ -1,5 +1,6 @@
 import {
   Button,
+  ButtonProps,
   Dialog,
   DialogBody,
   FormGroup,
@@ -13,7 +14,9 @@ import { useTranslation } from '../../i18n/i18n'
 import { NumericInput2 } from '../editor/NumericInput2'
 import { editorAtoms } from './editor-state'
 
-export const Settings = () => {
+interface SettingsProps extends ButtonProps {}
+
+export const Settings = (props: SettingsProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [config, setConfig] = useAtom(editorAtoms.config)
   const t = useTranslation()
@@ -22,7 +25,7 @@ export const Settings = () => {
     <>
       <Button
         icon="cog"
-        minimal
+        {...props}
         onClick={() => setIsOpen(true)}
         title={t.components.editor2.Settings.title}
       />

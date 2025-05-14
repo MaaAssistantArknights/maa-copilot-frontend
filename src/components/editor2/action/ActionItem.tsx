@@ -110,7 +110,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
         <Card
           className={clsx(
             className,
-            '!p-0  !rounded-none',
+            '!p-0 !rounded overflow-hidden',
             typeInfo.accentText,
           )}
         >
