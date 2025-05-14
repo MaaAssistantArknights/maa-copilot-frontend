@@ -615,6 +615,8 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         }
                       })
                     }
+                  } else {
+                    edit()
                   }
                 }}
               />

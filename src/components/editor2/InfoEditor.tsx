@@ -62,6 +62,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               }
             })
           }}
+          onBlur={() => edit()}
         />
         <FieldError path="doc.title" />
       </FormGroup>
@@ -87,6 +88,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               }
             })
           }}
+          onBlur={() => edit()}
         />
         <FieldError path="doc.details" />
       </FormGroup>
