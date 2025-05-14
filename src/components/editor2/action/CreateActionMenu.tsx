@@ -111,7 +111,6 @@ export const CreateActionMenu = forwardRef<
                       return {
                         action: 'add-action',
                         desc: t.components.editor2.CreateActionMenu.add_action,
-                        squash: false,
                       }
                     })
                   }}

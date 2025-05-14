@@ -99,9 +99,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         },
                       })
                       return {
-                        action: 'set-operator-level-' + operator.id,
+                        action: 'set-operator-level',
                         desc: i18n.actions.editor2.set_operator_level,
-                        squash: true,
+                        squashBy: operator.id,
                       }
                     })
                   }}
@@ -132,9 +132,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         },
                       })
                       return {
-                        action: 'set-operator-level-' + operator.id,
+                        action: 'set-operator-level',
                         desc: i18n.actions.editor2.set_operator_level,
-                        squash: true,
+                        squashBy: operator.id,
                       }
                     })
                   }}
@@ -154,9 +154,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         },
                       })
                       return {
-                        action: 'set-operator-level-' + operator.id,
+                        action: 'set-operator-level',
                         desc: i18n.actions.editor2.set_operator_level,
-                        squash: true,
+                        squashBy: operator.id,
                       }
                     })
                   }}
@@ -256,11 +256,10 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                                     skillTimes: v,
                                   })
                                   return {
-                                    action:
-                                      'set-operator-skillTimes-' + operator.id,
+                                    action: 'set-operator-skillTimes',
                                     desc: i18n.actions.editor2
                                       .set_operator_skill_count,
-                                    squash: true,
+                                    squashBy: operator.id,
                                   }
                                 })
                               }}
@@ -279,9 +278,8 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                       skillUsage: item.value as number,
                     })
                     return {
-                      action: 'set-operator-skillUsage-' + operator.id,
+                      action: 'set-operator-skillUsage',
                       desc: i18n.actions.editor2.set_operator_skill_usage,
-                      squash: false,
                     }
                   })
                 }}
@@ -345,9 +343,8 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         edit(() => {
                           onChange?.({ ...operator, skill: skillNumber })
                           return {
-                            action: 'set-operator-skill-' + operator.id,
+                            action: 'set-operator-skill',
                             desc: i18n.actions.editor2.set_operator_skill,
-                            squash: false,
                           }
                         })
                       }
@@ -374,9 +371,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                           },
                         })
                         return {
-                          action: 'set-operator-level-' + operator.id,
+                          action: 'set-operator-level',
                           desc: i18n.actions.editor2.set_operator_skill_level,
-                          squash: true,
+                          squashBy: operator.id,
                         }
                       })
                     }}
@@ -395,9 +392,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                           },
                         })
                         return {
-                          action: 'set-operator-level-' + operator.id,
+                          action: 'set-operator-level',
                           desc: i18n.actions.editor2.set_operator_skill_level,
-                          squash: true,
+                          squashBy: operator.id,
                         }
                       })
                     }}
@@ -446,9 +443,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     },
                   })
                   return {
-                    action: 'set-operator-module-' + operator.id,
+                    action: 'set-operator-module',
                     desc: i18n.actions.editor2.set_operator_module,
-                    squash: true,
+                    squashBy: operator.id,
                   }
                 })
               }}

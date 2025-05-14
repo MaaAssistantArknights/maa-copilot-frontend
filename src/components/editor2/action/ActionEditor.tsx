@@ -68,7 +68,6 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
               return {
                 action: 'move-action',
                 desc: i18n.components.editor2.ActionEditor.move_action,
-                squash: false,
               }
             })
           }

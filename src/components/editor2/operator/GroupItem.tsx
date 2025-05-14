@@ -130,7 +130,6 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                     return {
                       action: 'move-group',
                       desc: i18n.actions.editor2.move_group,
-                      squash: false,
                     }
                   })
                 }}
@@ -155,7 +154,6 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                     return {
                       action: 'move-group',
                       desc: i18n.actions.editor2.move_group,
-                      squash: false,
                     }
                   })
                 }}
@@ -173,7 +171,6 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                     return {
                       action: 'remove-group',
                       desc: i18n.actions.editor2.delete_group,
-                      squash: false,
                     }
                   })
                 }}
@@ -235,7 +232,6 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
                             return {
                               action: 'remove-operator',
                               desc: i18n.actions.editor2.delete_operator,
-                              squash: false,
                             }
                           })
                         }
@@ -365,9 +361,9 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
       edit(() => {
         setBaseGroup((prev) => ({ ...prev, name: query }))
         return {
-          action: 'set-group-name-' + baseGroup.id,
+          action: 'set-group-name',
           desc: i18n.actions.editor2.set_group_name,
-          squash: true,
+          squashBy: id,
         }
       })
     },
@@ -433,9 +429,8 @@ const GroupTitle = memo(({ baseGroupAtom }: GroupItemProps) => {
             }))
           }
           return {
-            action: 'set-group-from-fav-' + group.id,
+            action: 'set-group-from-fav',
             desc: i18n.actions.editor2.set_group_from_fav,
-            squash: false,
           }
         })
       },

@@ -58,7 +58,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               return {
                 action: 'update-title',
                 desc: i18n.actions.editor2.set_title,
-                squash: true,
+                squashBy: '',
               }
             })
           }}
@@ -83,7 +83,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               return {
                 action: 'update-details',
                 desc: i18n.actions.editor2.set_description,
-                squash: true,
+                squashBy: '',
               }
             })
           }}
@@ -106,7 +106,6 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               return {
                 action: 'update-level',
                 desc: i18n.actions.editor2.set_level,
-                squash: false,
               }
             })
           }}
@@ -131,7 +130,6 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               return {
                 action: 'update-difficulty',
                 desc: i18n.actions.editor2.set_difficulty,
-                squash: false,
               }
             })
           }}
@@ -154,7 +152,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
               return {
                 action: 'update-visibility',
                 desc: i18n.actions.editor2.set_visibility,
-                squash: true,
+                squashBy: '',
               }
             })
           }}

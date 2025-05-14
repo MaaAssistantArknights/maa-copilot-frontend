@@ -46,7 +46,6 @@ export function useAddOperator() {
           return {
             action: 'add-operator',
             desc: i18n.actions.editor2.add_operator,
-            squash: false,
           }
         })
       },

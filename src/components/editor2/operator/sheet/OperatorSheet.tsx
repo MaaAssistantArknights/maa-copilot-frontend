@@ -89,7 +89,6 @@ export const OperatorSheet = () => {
           checkpoint = {
             action: 'update-operator',
             desc: i18n.actions.editor2.update_operator,
-            squash: false,
           }
         } else {
           const newOperator = createOperator(operator)
@@ -103,7 +102,6 @@ export const OperatorSheet = () => {
           checkpoint = {
             action: 'add-operator',
             desc: i18n.actions.editor2.add_operator,
-            squash: false,
           }
         }
       })
@@ -126,14 +124,12 @@ export const OperatorSheet = () => {
           checkpoint = {
             action: 'update-group',
             desc: i18n.actions.editor2.update_group,
-            squash: false,
           }
         } else {
           draft.groups.push(createGroup(group))
           checkpoint = {
             action: 'add-group',
             desc: i18n.actions.editor2.add_group,
-            squash: false,
           }
         }
       })
@@ -157,7 +153,6 @@ export const OperatorSheet = () => {
       return {
         action: 'remove-operator',
         desc: i18n.actions.editor2.delete_operator,
-        squash: false,
       }
     })
   }
@@ -176,7 +171,6 @@ export const OperatorSheet = () => {
       return {
         action: 'remove-group',
         desc: i18n.actions.editor2.delete_group,
-        squash: false,
       }
     })
   }

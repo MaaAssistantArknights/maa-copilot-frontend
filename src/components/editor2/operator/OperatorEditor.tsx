@@ -134,7 +134,6 @@ export const OperatorEditor: FC = memo(() => {
             return {
               action: 'move-operator',
               desc: i18n.actions.editor2.move_operator,
-              squash: false,
             }
           })
         }
@@ -191,7 +190,6 @@ export const OperatorEditor: FC = memo(() => {
                                   return {
                                     action: 'remove-operator',
                                     desc: i18n.actions.editor2.delete_operator,
-                                    squash: false,
                                   }
                                 })
                               }
@@ -260,7 +258,6 @@ const CreateGroupButton: FC<{}> = () => {
           return {
             action: 'add-group',
             desc: t.actions.editor2.add_group,
-            squash: false,
           }
         })
         setNewlyAddedGroupId(newGroup.id)

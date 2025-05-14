@@ -131,11 +131,10 @@ export const ActionLinker: FC<ActionLinkerProps> = ({
                           }
                         })
                         return {
-                          action: 'add-action-' + conditionType,
+                          action: 'add-action',
                           desc: i18n.actions.editor2.add_action_condition({
                             title: title(),
                           }),
-                          squash: false,
                         }
                       })
                     }}
@@ -321,11 +320,10 @@ const ConditionNode: FC<ConditionNodeProps> = ({
                     draft[conditionKey] = undefined
                   })
                   return {
-                    action: `unset-action-${conditionKey}-${index}`,
+                    action: `unset-action-${conditionKey}`,
                     desc: i18n.actions.editor2.delete_action_condition({
                       title: typeInfo.title(),
                     }),
-                    squash: false,
                   }
                 })
               }}
@@ -356,11 +354,11 @@ const ConditionNode: FC<ConditionNodeProps> = ({
               draft[conditionKey] = v
             })
             return {
-              action: `set-action-${conditionKey}-${index}`,
+              action: `set-action-${conditionKey}`,
               desc: i18n.actions.editor2.set_action_condition({
                 title: typeInfo.title(),
               }),
-              squash: true,
+              squashBy: action.id,
             }
           })
         }}

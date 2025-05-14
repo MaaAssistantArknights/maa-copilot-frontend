@@ -211,9 +211,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               draft.location = [v, draft.location?.[1] ?? 0]
                             })
                             return {
-                              action: 'set-action-location-x-' + action.id,
+                              action: 'set-action-location-x',
                               desc: i18n.actions.editor2.set_action_location,
-                              squash: true,
+                              squashBy: action.id,
                             }
                           })
                         }}
@@ -237,9 +237,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               draft.location = [draft.location?.[0] ?? 0, v]
                             })
                             return {
-                              action: 'set-action-location-y-' + action.id,
+                              action: 'set-action-location-y',
                               desc: i18n.actions.editor2.set_action_location,
-                              squash: true,
+                              squashBy: action.id,
                             }
                           })
                         }}
@@ -283,9 +283,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               draft.distance = [v, draft.distance?.[1] ?? 0]
                             })
                             return {
-                              action: 'set-action-distance-x-' + action.id,
+                              action: 'set-action-distance-x',
                               desc: i18n.actions.editor2.set_action_distance,
-                              squash: true,
+                              squashBy: action.id,
                             }
                           })
                         }}
@@ -309,9 +309,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                               draft.distance = [draft.distance?.[0] ?? 0, v]
                             })
                             return {
-                              action: 'set-action-distance-y-' + action.id,
+                              action: 'set-action-distance-y',
                               desc: i18n.actions.editor2.set_action_distance,
-                              squash: true,
+                              squashBy: action.id,
                             }
                           })
                         }}
@@ -354,9 +354,8 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                 draft.direction = dir
                               })
                               return {
-                                action: 'set-action-direction-' + action.id,
+                                action: 'set-action-direction',
                                 desc: i18n.actions.editor2.set_action_direction,
-                                squash: false,
                               }
                             })
                           }}
@@ -422,12 +421,10 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                               draft.skillTimes = v
                                             })
                                             return {
-                                              action:
-                                                'set-action-skillTimes-' +
-                                                action.id,
+                                              action: 'set-action-skillTimes',
                                               desc: i18n.actions.editor2
                                                 .set_action_skill_times,
-                                              squash: true,
+                                              squashBy: action.id,
                                             }
                                           })
                                         }}
@@ -445,10 +442,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                                 draft.skillUsage = item.value as number
                               })
                               return {
-                                action: 'set-action-skillUsage-' + action.id,
+                                action: 'set-action-skillUsage',
                                 desc: i18n.actions.editor2
                                   .set_action_skill_usage,
-                                squash: false,
                               }
                             })
                           }}
@@ -503,9 +499,8 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       before: actionAtom,
                     })
                     return {
-                      action: 'copy-action-' + action.id,
+                      action: 'duplicate-action',
                       desc: i18n.actions.editor2.duplicate_action,
-                      squash: false,
                     }
                   })
                 }}
@@ -523,9 +518,8 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       atom: actionAtom,
                     })
                     return {
-                      action: 'delete-action-' + action.id,
+                      action: 'delete-action',
                       desc: i18n.actions.editor2.delete_action,
-                      squash: false,
                     }
                   })
                 }}
@@ -566,9 +560,8 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       draft.docColor = item.value
                     })
                     return {
-                      action: 'set-action-docColor-' + action.id,
+                      action: 'set-action-docColor',
                       desc: i18n.actions.editor2.set_action_doc_color,
-                      squash: false,
                     }
                   })
                 }}
@@ -599,9 +592,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                       draft.doc = e.target.value
                     })
                     return {
-                      action: 'set-action-doc-' + action.id,
+                      action: 'set-action-doc',
                       desc: i18n.actions.editor2.set_action_doc,
-                      squash: true,
+                      squashBy: action.id,
                     }
                   })
                 }}
@@ -616,9 +609,9 @@ export const ActionItem: FC<ActionItemProps> = memo(
                         })
                         return {
                           // 这里的 action 要和正常修改时的 action 一致，不然会导致多出一条记录
-                          action: 'set-action-doc-' + action.id,
+                          action: 'set-action-doc',
                           desc: i18n.actions.editor2.delete_action_doc,
-                          squash: true,
+                          squashBy: action.id,
                         }
                       })
                     }
@@ -709,9 +702,8 @@ const ActionTarget: FC<{
         edit(() => {
           setAction({ ...action, name })
           return {
-            action: 'set-action-name-' + action.id,
+            action: 'set-action-name',
             desc: i18n.actions.editor2.set_action_target,
-            squash: false,
           }
         })
       }}

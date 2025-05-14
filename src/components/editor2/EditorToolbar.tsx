@@ -179,7 +179,6 @@ const AutoSaveButton = () => {
                       return {
                         action: 'restore',
                         desc: i18n.actions.editor2.restore_from_autosave,
-                        squash: false,
                       }
                     })
                   }}

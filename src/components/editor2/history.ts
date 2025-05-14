@@ -12,7 +12,7 @@ import { SetStateAction, useCallback } from 'react'
 export interface Checkpoint {
   action: string
   desc: string
-  squash: boolean
+  squashBy?: string | number
 }
 
 interface HistoryRecord<T> extends Checkpoint {
@@ -41,7 +41,6 @@ function createInitialEditorHistoryState<T extends {}>(
     state: null,
     action: 'init',
     desc: 'Initialize (Locked)',
-    squash: false,
     time: Date.now(),
   }
   return {
@@ -121,12 +120,6 @@ export function useHistoryValue<T extends {}>(
   }
 }
 
-const skipCheckpoint: Checkpoint = {
-  action: '',
-  desc: '',
-  squash: false,
-}
-
 export function useHistoryControls<T extends {}>(
   historyAtom: PrimitiveAtom<HistoryTracker<T>>,
 ) {
@@ -169,45 +162,109 @@ type HistoryEditFn = ((
   skip: Checkpoint,
 ) => Checkpoint) & {}
 
+// skips the history change
+const skipCheckpoint: Checkpoint = {
+  action: 'skip',
+  desc: 'Skip checkpoint',
+}
+
+// soft checkpoint is a special checkpoint that won't show up in the history
+// but will prevent the next checkpoint from being squashed
+const softCheckpoint: Checkpoint = {
+  action: 'soft',
+  desc: 'Soft checkpoint',
+}
+
 export function useHistoryEdit<T extends {}>(
   historyAtom: PrimitiveAtom<HistoryTracker<T>>,
 ) {
   return useAtomCallback(
     useCallback(
-      (get, set, editFn: HistoryEditFn) => {
+      (get, set, editFn?: HistoryEditFn) => {
+        let checkpoint: Checkpoint
+
+        if (!editFn) {
+          editFn = () => softCheckpoint
+        }
+
         const snapshot = get(historyAtom)
-        const checkpoint = editFn(get, set, skipCheckpoint)
+        checkpoint = editFn(get, set, skipCheckpoint)
         const history = get(historyAtom)
-        if (checkpoint === skipCheckpoint && history === snapshot) {
+
+        if (checkpoint === skipCheckpoint) {
+          if (process.env.NODE_ENV === 'development') {
+            if (history !== snapshot) {
+              console.warn(
+                'History edit: received skip checkpoint but history has changed. If this is intended, use a standard checkpoint with `squashBy` instead.',
+              )
+            }
+          }
           return
         }
+
         const current = history.stack[history.index]
-        if (checkpoint.squash && current.action === checkpoint.action) {
-          return
-        }
         const snapshottedCurrent = snapshot.stack[snapshot.index]
-        if (JSON.stringify(current) === JSON.stringify(snapshottedCurrent)) {
-          return
+
+        // make it a soft checkpoint if the state is unchanged
+        if (
+          current.state === snapshottedCurrent.state &&
+          JSON.stringify(current.state) ===
+            JSON.stringify(snapshottedCurrent.state)
+        ) {
+          checkpoint = softCheckpoint
         }
-        const newRecord = {
-          ...current,
-          ...checkpoint,
-          time: Date.now(),
+
+        let newCurrent: HistoryRecord<T>
+
+        if (checkpoint === softCheckpoint) {
+          // reset squashBy so that the next checkpoint will never be squashed
+          newCurrent = {
+            ...current,
+            squashBy: undefined,
+          }
+        } else {
+          newCurrent = {
+            ...current,
+            ...checkpoint,
+            // explicitly overwrite this property in case it's omitted in the checkpoint
+            squashBy: checkpoint.squashBy,
+            time: Date.now(),
+          }
         }
-        const newStack = [
-          ...history.stack.slice(-(history.limit - 2), history.index),
-          snapshottedCurrent,
-          newRecord,
-        ]
-        // 永远保留第一条记录
-        if (history.index >= history.limit - 2) {
-          newStack.unshift(snapshot.stack[0])
+
+        const shouldSquash =
+          checkpoint.action === current.action &&
+          checkpoint.squashBy !== undefined &&
+          checkpoint.squashBy === current.squashBy &&
+          // only squash if currently on top of the history stack
+          history.index === history.stack.length - 1
+
+        if (shouldSquash || checkpoint === softCheckpoint) {
+          const newStack = [
+            ...history.stack.slice(0, history.index),
+            newCurrent,
+            ...history.stack.slice(history.index + 1),
+          ]
+          set(historyAtom, {
+            ...history,
+            stack: newStack,
+          })
+        } else {
+          const newStack = [
+            ...history.stack.slice(-(history.limit - 2), history.index),
+            snapshottedCurrent,
+            newCurrent,
+          ]
+          // 永远保留第一条记录
+          if (history.index >= history.limit - 2) {
+            newStack.unshift(snapshot.stack[0])
+          }
+          set(historyAtom, {
+            ...history,
+            stack: newStack,
+            index: newStack.length - 1,
+          })
         }
-        set(historyAtom, {
-          ...history,
-          stack: newStack,
-          index: newStack.length - 1,
-        })
       },
       [historyAtom],
     ),
