@@ -1,6 +1,6 @@
 import { atom, getDefaultStore, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import { isObject, isString } from 'lodash-es'
+import { get, isObject, isString } from 'lodash-es'
 import mitt from 'mitt'
 import { Fragment, ReactElement, ReactNode, createElement } from 'react'
 import { ValueOf } from 'type-fest'
@@ -126,7 +126,9 @@ function createDeferredProxy(path: string) {
       if (Object.prototype.hasOwnProperty.call(target, prop)) {
         return target[prop]
       }
-      target[prop] = createDeferredProxy(path + '.' + String(prop))
+      target[prop] = createDeferredProxy(
+        (path ? path + '.' : '') + String(prop),
+      )
       return target[prop]
     },
     apply(target, _this, args) {
@@ -135,6 +137,12 @@ function createDeferredProxy(path: string) {
           return updatedValue(...args)
         }
         return updatedValue
+      }
+      if (currentTranslations) {
+        const translated = get(currentTranslations, path)
+        if (translated) {
+          return translated
+        }
       }
       return toString()
     },
