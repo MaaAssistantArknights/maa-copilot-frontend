@@ -57,7 +57,7 @@ const SourceEditor = withSuspensable(
               setOperation(newOperation)
               return {
                 action: 'edit-json',
-                desc: i18n.actions.editor2.edit_json,
+                desc: i18n.actions.editor2.set_json,
                 squash: true,
               }
             })
