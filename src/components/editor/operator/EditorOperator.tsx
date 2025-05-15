@@ -2,12 +2,13 @@ import { Icon, IconSize, MenuItem } from '@blueprintjs/core'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
+import { useAtomValue } from 'jotai'
 import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
-import { useTranslation } from '../../../i18n/i18n'
+import { languageAtom, useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
 import { OPERATORS } from '../../../models/operator'
 import { Suggest } from '../../Suggest'
@@ -27,6 +28,7 @@ const createArbitraryOperator = (name: string): OperatorInfo => ({
   alias: '',
   alt_name: '',
   subProf: '',
+  name_en: '',
   prof: '',
   rarity: 0,
 })
@@ -43,6 +45,7 @@ export const EditorOperatorName = <T extends FieldValues>({
   operators?: CopilotDocV1.Operator[]
 }) => {
   const t = useTranslation()
+  const language = useAtomValue(languageAtom)
 
   const entityName = useMemo(
     () =>
@@ -90,7 +93,7 @@ export const EditorOperatorName = <T extends FieldValues>({
   const fuse = useMemo(
     () =>
       new Fuse(items, {
-        keys: ['name', 'alias', 'alt_name'],
+        keys: ['name', 'name_en', 'alias', 'alt_name'],
         threshold: 0.3,
       }),
     [items],
@@ -107,7 +110,11 @@ export const EditorOperatorName = <T extends FieldValues>({
       itemRenderer={(item, { handleClick, handleFocus, modifiers }) => (
         <MenuItem
           key={'id' in item ? item.id : item.name}
-          text={item.name}
+          text={
+            isOperator(item) && language === 'en' && item.name_en
+              ? item.name_en
+              : item.name
+          }
           icon={
             isOperator(item) ? (
               <OperatorAvatar id={item.id} size="small" />
@@ -123,7 +130,11 @@ export const EditorOperatorName = <T extends FieldValues>({
       )}
       onItemSelect={(item) => onChange(item.name)}
       selectedItem={createArbitraryOperator((value || '') as string)}
-      inputValueRenderer={(item) => item.name}
+      inputValueRenderer={(item) =>
+        isOperator(item) && language === 'en' && item.name_en
+          ? item.name_en
+          : item.name
+      }
       createNewItemFromQuery={(query) => createArbitraryOperator(query)}
       createNewItemRenderer={(query, active, handleClick) => (
         <MenuItem

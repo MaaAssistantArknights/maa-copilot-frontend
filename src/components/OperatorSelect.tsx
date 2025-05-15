@@ -4,10 +4,11 @@ import { MultiSelect2 } from '@blueprintjs/select'
 
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
+import { useAtomValue } from 'jotai'
 import { compact } from 'lodash-es'
 import { FC, useMemo } from 'react'
 
-import { useTranslation } from '../i18n/i18n'
+import { languageAtom, useTranslation } from '../i18n/i18n'
 import { OPERATORS } from '../models/operator'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
 import { OperatorAvatar } from './editor/operator/EditorOperator'
@@ -26,13 +27,14 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
   onChange,
 }) => {
   const t = useTranslation()
+  const language = useAtomValue(languageAtom)
   const { query, trimmedDebouncedQuery, updateQuery, onOptionMouseDown } =
     useDebouncedQuery()
 
   const fuse = useMemo(
     () =>
       new Fuse(OPERATORS, {
-        keys: ['name', 'alias', 'alt_name'],
+        keys: ['name', 'name_en', 'alias', 'alt_name'],
         threshold: 0.3,
       }),
     [],
@@ -82,7 +84,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
                 id={item.id}
                 rarity={item.rarity}
               />
-              {item.name}
+              {language === 'en' ? item.name_en : item.name}
             </div>
           }
           onClick={handleClick}
@@ -129,7 +131,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = ({
             id={item.id}
             rarity={item.rarity}
           />
-          {item.name}
+          {language === 'en' ? item.name_en : item.name}
         </div>
       )}
       popoverProps={{
