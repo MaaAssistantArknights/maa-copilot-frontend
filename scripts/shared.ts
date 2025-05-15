@@ -56,6 +56,9 @@ const CHARACTER_TABLE_JSON_URL_EN =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/character_table.json'
 const UNIEQUIP_TABLE_JSON_URL_EN =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/uniequip_table.json'
+const SKILL_TABLE_JSON_URL =
+  'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/skill_table.json'
+
 const CHARACTER_BLOCKLIST = [
   'char_512_aprot', // 暮落(集成战略)：It's just not gonna be there.
   'token_10012_rosmon_shield', // 迷迭香的战术装备：It's just not gonna be there.
@@ -77,16 +80,31 @@ async function json(url: string) {
 }
 
 export async function getOperators() {
-  const [charTableCN, uniequipTableCN, charTableEN, uniequipTableEN] =
-    await Promise.all([
-      json(CHARACTER_TABLE_JSON_URL_CN),
-      json(UNIEQUIP_TABLE_JSON_URL_CN),
-      json(CHARACTER_TABLE_JSON_URL_EN),
-      json(UNIEQUIP_TABLE_JSON_URL_EN),
-    ])
+  const [
+    charTableCN,
+    uniequipTableCN,
+    charTableEN,
+    uniequipTableEN,
+    skillTable,
+  ] = await Promise.all([
+    json(CHARACTER_TABLE_JSON_URL_CN),
+    json(UNIEQUIP_TABLE_JSON_URL_CN),
+    json(CHARACTER_TABLE_JSON_URL_EN),
+    json(UNIEQUIP_TABLE_JSON_URL_EN),
+    json(SKILL_TABLE_JSON_URL),
+  ])
 
   const { subProfDict: subProfDictCN } = uniequipTableCN
   const { subProfDict: subProfDictEN } = uniequipTableEN
+  const { equipDict, subProfDict } = uniequipTableCN
+  const equipsByOperatorId = Object.values(equipDict).reduce(
+    (acc: Record<string, any[]>, equip: any) => {
+      acc[equip.charId] ||= []
+      acc[equip.charId].push(equip)
+      return acc
+    },
+    {},
+  )
 
   const opIds = Object.keys(charTableCN)
   const professions: Professions = []
@@ -129,6 +147,11 @@ export async function getOperators() {
           })
         }
       }
+      const modules = equipsByOperatorId[id]
+        ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
+        .map(({ typeName1, typeName2 }) => {
+          return typeName1 === 'ORIGINAL' ? '' : typeName2
+        })
       return [
         {
           id: id,
@@ -141,6 +164,7 @@ export async function getOperators() {
               ? 0
               : Number(op.rarity?.split('TIER_').join('') || 0),
           alt_name: op.appellation,
+          modules,
         },
       ]
     }),

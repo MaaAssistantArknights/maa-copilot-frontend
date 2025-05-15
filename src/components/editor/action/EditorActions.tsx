@@ -124,24 +124,26 @@ export const EditorActions = ({ control }: EditorActionsProps) => {
             >
               <ul>
                 {actions.map((action, i) => (
-                  <li key={getId(action)} className="mt-2">
-                    <Sortable id={getId(action)}>
-                      {(attrs) => (
-                        <EditorActionItem
-                          action={action}
-                          editing={isEditing(action)}
-                          onEdit={() =>
-                            setEditingAction(
-                              isEditing(action) ? undefined : action,
-                            )
-                          }
-                          onDuplicate={() => handleDuplicate(i)}
-                          onRemove={() => remove(i)}
-                          {...attrs}
-                        />
-                      )}
-                    </Sortable>
-                  </li>
+                  <Sortable
+                    id={getId(action)}
+                    key={getId(action)}
+                    className="mt-2"
+                  >
+                    {(attrs) => (
+                      <EditorActionItem
+                        action={action}
+                        editing={isEditing(action)}
+                        onEdit={() =>
+                          setEditingAction(
+                            isEditing(action) ? undefined : action,
+                          )
+                        }
+                        onDuplicate={() => handleDuplicate(i)}
+                        onRemove={() => remove(i)}
+                        {...attrs}
+                      />
+                    )}
+                  </Sortable>
                 ))}
               </ul>
             </SortableContext>

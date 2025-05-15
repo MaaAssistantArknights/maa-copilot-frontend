@@ -1,5 +1,7 @@
 import { debounce } from 'lodash-es'
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+
+import { useEffectEvent } from './react'
 
 export interface UseDebouncedQueryParams {
   query?: string
@@ -20,23 +22,34 @@ export function useDebouncedQuery({
   onQueryChange,
   onDebouncedQueryChange,
 }: UseDebouncedQueryParams = {}) {
-  const onQueryChangeRef = useRef(onQueryChange)
-  onQueryChangeRef.current = onQueryChange
-  const onDebouncedQueryChangeRef = useRef(onDebouncedQueryChange)
-  onDebouncedQueryChangeRef.current = onDebouncedQueryChange
-
   const [query, setQuery] = useState('')
   const [debouncedQuery, setDebouncedQuery] = useState('')
+
+  const handleQueryChange = useEffectEvent((newQuery: string) => {
+    if (
+      // 如果有传入的 query，则使用传入的 query 来比较
+      externalQuery !== undefined
+        ? externalQuery !== newQuery
+        : query !== newQuery
+    ) {
+      onQueryChange?.(newQuery)
+    }
+  })
+  const handleDebouncedQueryChange = useEffectEvent((newQuery: string) => {
+    if (newQuery !== debouncedQuery) {
+      onDebouncedQueryChange?.(newQuery)
+    }
+  })
 
   const updateQuery = useMemo(() => {
     const debouncedUpdateQuery = debounce((query: string) => {
       setDebouncedQuery(query)
-      onDebouncedQueryChangeRef.current?.(query)
+      handleDebouncedQueryChange(query)
     }, debounceTime)
 
     const updateQuery = (query: string, immediately: boolean) => {
       setQuery(query)
-      onQueryChangeRef.current?.(query)
+      handleQueryChange(query)
       debouncedUpdateQuery(query)
       if (immediately) {
         debouncedUpdateQuery.flush()
@@ -45,7 +58,7 @@ export function useDebouncedQuery({
     updateQuery.flush = debouncedUpdateQuery.flush
     updateQuery.cancel = debouncedUpdateQuery.cancel
     return updateQuery
-  }, [debounceTime])
+  }, [debounceTime, handleDebouncedQueryChange, handleQueryChange])
 
   // 立即更新防止后续冲突
   useEffect(() => () => updateQuery.flush(), [updateQuery])

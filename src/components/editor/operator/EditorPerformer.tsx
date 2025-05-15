@@ -460,30 +460,30 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
                 >
                   <ul className="flex flex-wrap">
                     {operators.map((operator) => (
-                      <li className="mt-2 mr-2" key={getId(operator)}>
-                        <Sortable
-                          id={getId(operator)}
-                          data={{ type: 'operator' }}
-                        >
-                          {(attrs) => (
-                            <EditorOperatorItem
-                              operator={operator}
-                              editing={isOperatorEditing(operator)}
-                              onEdit={() =>
-                                setEditingOperator(
-                                  isOperatorEditing(operator)
-                                    ? undefined
-                                    : operator,
-                                )
-                              }
-                              onRemove={() =>
-                                removeOperator(operators.indexOf(operator))
-                              }
-                              {...attrs}
-                            />
-                          )}
-                        </Sortable>
-                      </li>
+                      <Sortable
+                        className="mt-2 mr-2"
+                        key={getId(operator)}
+                        id={getId(operator)}
+                        data={{ type: 'operator' }}
+                      >
+                        {(attrs) => (
+                          <EditorOperatorItem
+                            operator={operator}
+                            editing={isOperatorEditing(operator)}
+                            onEdit={() =>
+                              setEditingOperator(
+                                isOperatorEditing(operator)
+                                  ? undefined
+                                  : operator,
+                              )
+                            }
+                            onRemove={() =>
+                              removeOperator(operators.indexOf(operator))
+                            }
+                            {...attrs}
+                          />
+                        )}
+                      </Sortable>
                     ))}
                   </ul>
                 </SortableContext>
@@ -515,39 +515,42 @@ export const EditorPerformer: FC<EditorPerformerProps> = ({ control }) => {
               >
                 <ul className="flex flex-wrap">
                   {groups.map((group) => (
-                    <li className="mt-4 mr-4" key={getId(group)}>
-                      <Sortable id={getId(group)} data={{ type: 'group' }}>
-                        {(attrs) => (
-                          <EditorGroupItem
-                            group={group}
-                            editing={isGroupEditing(group)}
-                            onEdit={() =>
-                              setEditingGroup(
-                                isGroupEditing(group) ? undefined : group,
-                              )
+                    <Sortable
+                      className="mt-4 mr-4"
+                      key={getId(group)}
+                      id={getId(group)}
+                      data={{ type: 'group' }}
+                    >
+                      {(attrs) => (
+                        <EditorGroupItem
+                          group={group}
+                          editing={isGroupEditing(group)}
+                          onEdit={() =>
+                            setEditingGroup(
+                              isGroupEditing(group) ? undefined : group,
+                            )
+                          }
+                          onRemove={() => removeGroup(groups.indexOf(group))}
+                          getOperatorId={getId}
+                          isOperatorEditing={isOperatorEditing}
+                          onOperatorEdit={(operator) =>
+                            setEditingOperator(
+                              isOperatorEditing(operator)
+                                ? undefined
+                                : operator,
+                            )
+                          }
+                          onOperatorRemove={(operatorIndexInGroup) => {
+                            const groupIndex = groups.indexOf(group)
+                            if (operatorIndexInGroup > -1) {
+                              group.opers?.splice(operatorIndexInGroup, 1)
                             }
-                            onRemove={() => removeGroup(groups.indexOf(group))}
-                            getOperatorId={getId}
-                            isOperatorEditing={isOperatorEditing}
-                            onOperatorEdit={(operator) =>
-                              setEditingOperator(
-                                isOperatorEditing(operator)
-                                  ? undefined
-                                  : operator,
-                              )
-                            }
-                            onOperatorRemove={(operatorIndexInGroup) => {
-                              const groupIndex = groups.indexOf(group)
-                              if (operatorIndexInGroup > -1) {
-                                group.opers?.splice(operatorIndexInGroup, 1)
-                              }
-                              updateGroup(groupIndex, group)
-                            }}
-                            {...attrs}
-                          />
-                        )}
-                      </Sortable>
-                    </li>
+                            updateGroup(groupIndex, group)
+                          }}
+                          {...attrs}
+                        />
+                      )}
+                    </Sortable>
                   ))}
                 </ul>
               </SortableContext>

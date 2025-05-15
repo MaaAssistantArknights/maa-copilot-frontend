@@ -144,6 +144,9 @@ export const EditorActionAdd = ({
         if ('rearDelay' in editingAction) {
           setValue('rearDelay', editingAction.rearDelay)
         }
+        if ('postDelay' in editingAction) {
+          setValue('postDelay', editingAction.postDelay)
+        }
         if ('name' in editingAction) {
           setValue('name', editingAction.name)
         }
