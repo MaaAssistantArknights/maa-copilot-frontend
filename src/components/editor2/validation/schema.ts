@@ -28,9 +28,16 @@ const doc = z.looseObject({
   details_color: z.string().optional(),
 })
 
-const docStrict = doc.extend({
-  title: doc.shape.title.unwrap().min(1),
-})
+const docStrict = doc
+  .extend({
+    title: doc.shape.title.unwrap().min(1),
+  })
+  .transform((doc) => ({
+    ...doc,
+    // the backend requires details to be non-empty, but we don't want to
+    // force the user to fill it in, so we use title as a fallback
+    details: doc.details || doc.title,
+  }))
 
 const operator_requirements = z.looseObject({
   elite: z.number().int().min(0).max(2).optional(),
