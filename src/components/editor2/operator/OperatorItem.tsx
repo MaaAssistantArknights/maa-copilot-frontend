@@ -82,9 +82,65 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
         className={clsx('relative flex items-start', isDragging && 'invisible')}
       >
         <div className="relative">
+          <Popover2
+            placement="top"
+            content={
+              <Menu>
+                <MenuItem
+                  icon="star"
+                  text={t.components.editor2.OperatorItem.add_to_favorites}
+                  onClick={() => {
+                    setFavOperators((prev) => [...prev, operator])
+                    AppToaster.show({
+                      message:
+                        t.components.editor2.OperatorItem.added_to_favorites,
+                      intent: 'success',
+                    })
+                  }}
+                />
+                <MenuItem
+                  icon="trash"
+                  text={t.common.delete}
+                  intent="danger"
+                  onClick={onRemove}
+                />
+              </Menu>
+            }
+          >
+            <Card
+              interactive
+              elevation={Elevation.ONE}
+              className="relative w-24 p-0 !py-0 flex flex-col overflow-hidden select-none pointer-events-auto"
+              {...attributes}
+              {...listeners}
+            >
+              <OperatorAvatar
+                id={info?.id}
+                rarity={info?.rarity}
+                className="w-24 h-24 rounded-b-none"
+                fallback={operator.name}
+              />
+              <h4
+                className={clsx(
+                  'm-1 leading-5 font-bold pointer-events-none',
+                  operator.name && operator.name.length >= 7 && 'text-xs',
+                )}
+              >
+                {operator.name}
+              </h4>
+              {info && info.prof !== 'TOKEN' && (
+                <img
+                  className="absolute top-0 right-0 w-5 h-5 p-px bg-gray-600 pointer-events-none"
+                  src={'/assets/prof-icons/' + info.prof + '.png'}
+                  alt={info.prof}
+                />
+              )}
+            </Card>
+          </Popover2>
+
           {info?.prof !== 'TOKEN' && (
             <>
-              <div className="absolute z-10 top-2 -left-5 ml-[2px] px-3 py-4 rounded-full bg-[radial-gradient(rgba(0,0,0,0.6)_10%,rgba(0,0,0,0.08)_35%,rgba(0,0,0,0)_50%)] pointer-events-none">
+              <div className="absolute top-2 -left-5 ml-[2px] px-3 py-4 rounded-full bg-[radial-gradient(rgba(0,0,0,0.6)_10%,rgba(0,0,0,0.08)_35%,rgba(0,0,0,0)_50%)] pointer-events-none">
                 <Button
                   small
                   minimal
@@ -115,7 +171,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   />
                 </Button>
               </div>
-              <div className="absolute z-10 -top-2 -left-2 flex flex-col items-center">
+              <div className="absolute -top-2 -left-2 flex flex-col items-center">
                 <NumericInput2
                   intOnly
                   min={1}
@@ -164,61 +220,6 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
               </div>
             </>
           )}
-          <Popover2
-            placement="top"
-            content={
-              <Menu>
-                <MenuItem
-                  icon="star"
-                  text={t.components.editor2.OperatorItem.add_to_favorites}
-                  onClick={() => {
-                    setFavOperators((prev) => [...prev, operator])
-                    AppToaster.show({
-                      message:
-                        t.components.editor2.OperatorItem.added_to_favorites,
-                      intent: 'success',
-                    })
-                  }}
-                />
-                <MenuItem
-                  icon="trash"
-                  text={t.common.delete}
-                  intent="danger"
-                  onClick={onRemove}
-                />
-              </Menu>
-            }
-          >
-            <Card
-              interactive
-              elevation={Elevation.ONE}
-              className="relative w-24 p-0 !py-0 flex flex-col overflow-hidden select-none pointer-events-auto"
-              {...attributes}
-              {...listeners}
-            >
-              <OperatorAvatar
-                id={info?.id}
-                rarity={info?.rarity}
-                className="w-24 h-24 rounded-b-none"
-                fallback={operator.name}
-              />
-              <h4
-                className={clsx(
-                  'm-1 leading-5 font-bold pointer-events-none',
-                  operator.name && operator.name.length >= 7 && 'text-xs',
-                )}
-              >
-                {operator.name}
-              </h4>
-              {info?.prof && info.prof !== 'TOKEN' && (
-                <img
-                  className="absolute z-10 top-0 right-0 w-5 h-5 p-px bg-gray-600 pointer-events-none"
-                  src={'/assets/prof-icons/' + info?.prof + '.png'}
-                  alt=""
-                />
-              )}
-            </Card>
-          </Popover2>
           <div className="flex h-6">
             {controlsEnabled && (
               <DetailedSelect
@@ -401,7 +402,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   />
                   {skillLevel > 7 && (
                     <MasteryIcon
-                      className="absolute top-0 bottom-0 left-0 right-0 p-2 pointer-events-none [&_.sub-circle]:fill-gray-300 dark:[&_.sub-circle]:fill-gray-500"
+                      className="absolute top-0 bottom-0 left-0 right-0 p-2 pointer-events-none"
                       mastery={skillLevel - 7}
                     />
                   )}

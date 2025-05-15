@@ -3417,6 +3417,10 @@
           "other": "Unknown Skill"
         }
       },
+      "elite": {
+        "cn": "精英{{level}}",
+        "en": "Elite {{level}}"
+      },
       "skill_usage": {
         "none": {
           "title": {
