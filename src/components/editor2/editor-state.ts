@@ -5,7 +5,7 @@ import {
   getDefaultStore,
   useAtom,
 } from 'jotai'
-import { atomWithStorage, splitAtom } from 'jotai/utils'
+import { atomFamily, atomWithStorage, splitAtom } from 'jotai/utils'
 import { noop } from 'lodash-es'
 import { useMemo } from 'react'
 import { SetRequired, Simplify } from 'type-fest'
@@ -237,6 +237,11 @@ const editorVisibleEntityErrorsAtom = atom((get) =>
   get(editorErrorsVisibleAtom) ? get(editorEntityErrorsAtom) : undefined,
 )
 
+// this atom will cause some memory leak but generally not a big deal
+const skillLevelOverridesAtom = atomFamily((id: string) =>
+  atom<Record<number, number>>({}),
+)
+
 export const editorAtoms = {
   editor: editorAtom,
   operation: operationAtom,
@@ -260,6 +265,9 @@ export const editorAtoms = {
   activeActionIdAtom: atom<string | undefined>(undefined),
   sourceEditorIsOpen: atom(false),
   selectorPanelMode: atom<'operator' | 'map'>('operator'),
+  // this atom will cause some memory leak as it does not clean up until the editor is reset,
+  // but generally it's not a big deal
+  skillLevelOverrides: skillLevelOverridesAtom,
 
   // validation
   globalErrors: editorGlobalErrorsAtom,
@@ -267,6 +275,29 @@ export const editorAtoms = {
   errorsVisible: editorErrorsVisibleAtom,
   visibleGlobalErrors: editorVisibleGlobalErrorsAtom,
   visibleEntityErrors: editorVisibleEntityErrorsAtom,
+
+  reset: atom(
+    null,
+    (get, set, editorState: EditorState = defaultEditorState) => {
+      set(editorAtom, editorState)
+      set(editorGlobalErrorsAtom, [])
+      set(editorEntityErrorsAtom, {})
+
+      skillLevelOverridesAtom.setShouldRemove(() => true)
+      skillLevelOverridesAtom.setShouldRemove(null)
+      const setSkillLevel = (operator: EditorOperator) => {
+        if (operator.skill && operator.requirements?.skillLevel) {
+          set(skillLevelOverridesAtom(operator.id), {
+            [operator.skill]: operator.requirements.skillLevel,
+          })
+        }
+      }
+      editorState.operation.opers.forEach(setSkillLevel)
+      editorState.operation.groups.forEach((group) =>
+        group.opers.forEach(setSkillLevel),
+      )
+    },
+  ),
 }
 
 export const historyAtom = createHistoryAtom(

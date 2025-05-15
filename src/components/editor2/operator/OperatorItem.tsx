@@ -10,7 +10,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
-import { useSetAtom } from 'jotai'
+import { useAtom, useSetAtom } from 'jotai'
 import { clamp } from 'lodash-es'
 import { FC, memo } from 'react'
 
@@ -34,7 +34,7 @@ import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
-import { EditorOperator, useEdit } from '../editor-state'
+import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
 import { editorFavOperatorsAtom } from '../reconciliation'
 
 interface OperatorItemProps extends Partial<SortableItemProps> {
@@ -64,6 +64,9 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
   }) => {
     const t = useTranslation()
     const edit = useEdit()
+    const [skillLevels, setSkillLevels] = useAtom(
+      editorAtoms.skillLevelOverrides(operator.id),
+    )
     const setFavOperators = useSetAtom(editorFavOperatorsAtom)
     const info = OPERATORS.find(({ name }) => name === operator.name)
     const skillCount = info ? getSkillCount(info) : 3
@@ -71,10 +74,6 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
       operator.requirements,
       info?.rarity,
     )
-    const detailedSkills = Array.from({ length: skillCount }, (_, index) => ({
-      available: index <= requirements.elite,
-      defaultLevel: getDefaultRequirements(info?.rarity).skillLevel,
-    }))
     const controlsEnabled = !onOverlay && !isDragging && !isSorting
 
     return (
@@ -307,13 +306,16 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
 
         <ul className="w-8 grid grid-rows-4 gap-1 ml-1 mt-1">
           {controlsEnabled &&
-            detailedSkills.map(({ defaultLevel, available }, index) => {
+            Array.from({ length: skillCount }, (_, index) => {
+              const available = index <= requirements.elite
               const skillNumber = index + 1
               const selected = operator.skill === skillNumber
+              const maxSkillLevel = requirements.elite === 2 ? 10 : 7
               const skillLevel = selected
                 ? requirements.skillLevel
-                : defaultLevel
-              const maxLevel = requirements.elite === 2 ? 10 : 7
+                : skillLevels[skillNumber] ??
+                  getDefaultRequirements(info?.rarity).skillLevel
+
               return (
                 <li
                   key={index}
@@ -343,7 +345,15 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     onFocus={() => {
                       if (operator.skill !== skillNumber) {
                         edit(() => {
-                          onChange?.({ ...operator, skill: skillNumber })
+                          onChange?.({
+                            ...operator,
+                            skill: skillNumber,
+                            requirements: {
+                              ...operator.requirements,
+                              // override with the current skill level
+                              skillLevel,
+                            },
+                          })
                           return {
                             action: 'set-operator-skill',
                             desc: i18n.actions.editor2.set_operator_skill,
@@ -362,8 +372,12 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         if (newLevel === 0) {
                           newLevel = 10
                         }
-                        newLevel = clamp(newLevel, 1, maxLevel)
+                        newLevel = clamp(newLevel, 1, maxSkillLevel)
 
+                        setSkillLevels((prev) => ({
+                          ...prev,
+                          [skillNumber]: newLevel,
+                        }))
                         onChange?.({
                           ...operator,
                           requirements: {
@@ -381,15 +395,20 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     onWheelFocused={(e) => {
                       e.preventDefault()
                       edit(() => {
+                        const newLevel = clamp(
+                          requirements.skillLevel + (e.deltaY > 0 ? -1 : 1),
+                          1,
+                          maxSkillLevel,
+                        )
+                        setSkillLevels((prev) => ({
+                          ...prev,
+                          [skillNumber]: newLevel,
+                        }))
                         onChange?.({
                           ...operator,
                           requirements: {
                             ...operator.requirements,
-                            skillLevel: clamp(
-                              requirements.skillLevel + (e.deltaY > 0 ? -1 : 1),
-                              1,
-                              maxLevel,
-                            ),
+                            skillLevel: newLevel,
                           },
                         })
                         return {

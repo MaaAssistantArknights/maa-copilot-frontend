@@ -39,7 +39,7 @@ export const EditorPage = withSuspensable(() => {
     revalidateOnReconnect: false,
   }).data
   const t = useTranslation()
-  const setEditorState = useSetAtom(editorAtoms.editor)
+  const resetEditor = useSetAtom(editorAtoms.reset)
 
   if (process.env.NODE_ENV === 'development') {
     // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -48,7 +48,7 @@ export const EditorPage = withSuspensable(() => {
 
   useLayoutEffect(() => {
     if (apiOperation) {
-      setEditorState({
+      resetEditor({
         operation: toEditorOperation(
           operationLooseSchema.parse(JSON.parse(apiOperation.content)),
         ),
@@ -60,9 +60,9 @@ export const EditorPage = withSuspensable(() => {
         },
       })
     } else {
-      setEditorState(defaultEditorState)
+      resetEditor(defaultEditorState)
     }
-  }, [apiOperation, setEditorState])
+  }, [apiOperation, resetEditor])
 
   const handleSubmit = useAtomCallback(
     useCallback(
