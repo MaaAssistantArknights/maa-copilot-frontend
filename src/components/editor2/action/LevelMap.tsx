@@ -61,9 +61,19 @@ const activeActionLocationAtom = atom(
   },
 )
 
+// Defer initializing the map until it's visible. It's handled via atoms instead of
+// component states to avoid unnecessary rerenders when the map has already been initialized.
+const initializedAtom = atom(false)
+const shouldInitializeAtom = atom(
+  (get) =>
+    !get(initializedAtom) && get(editorAtoms.selectorPanelMode) === 'map',
+)
+
 export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
   const t = useTranslation()
   const { data: levels } = useLevels()
+  const [initialized, setInitialized] = useAtom(initializedAtom)
+  const shouldInitialize = useAtomValue(shouldInitializeAtom)
   const stageName = useAtomValue(stageNameAtom)
   const [activeLocation, setActiveLocation] = useAtom(activeActionLocationAtom)
   const level = useMemo(
@@ -119,6 +129,16 @@ export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
       })
     }
   }, [iframeWindow])
+
+  useEffect(() => {
+    if (shouldInitialize) {
+      setInitialized(true)
+    }
+  }, [shouldInitialize, setInitialized])
+
+  if (!initialized) {
+    return null
+  }
 
   return (
     <div className={clsx('relative flex-grow', className)}>
