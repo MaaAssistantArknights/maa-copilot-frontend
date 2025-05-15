@@ -147,7 +147,7 @@ const AutoSaveButton = (buttonProps: ButtonProps) => {
             <Callout
               intent="primary"
               icon={null}
-              className="p-0 pl-2 flex items-center"
+              className="p-0 pl-2 flex items-center gap-2"
             >
               {t.components.editor2.EditorToolbar.auto_save_interval({
                 count: AUTO_SAVE_INTERVAL / 1000 / 60,
@@ -157,7 +157,6 @@ const AutoSaveButton = (buttonProps: ButtonProps) => {
               <Button
                 icon="floppy-disk"
                 intent="primary"
-                className=""
                 onClick={() => {
                   try {
                     save()
@@ -335,7 +334,9 @@ const ErrorButton = (buttonProps: ButtonProps) => {
             ? t.components.editor2.EditorToolbar.errors_header
             : t.components.editor2.EditorToolbar.no_errors
         }
-        text={allErrors.length || undefined}
+        text={
+          allErrors.length || <Icon className="!-ml-px" icon="small-tick" />
+        }
       />
     </Popover2>
   )

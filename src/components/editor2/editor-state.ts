@@ -279,6 +279,7 @@ export const editorAtoms = {
   reset: atom(
     null,
     (get, set, editorState: EditorState = defaultEditorState) => {
+      set(historyAtom, 'RESET')
       set(editorAtom, editorState)
       set(editorGlobalErrorsAtom, [])
       set(editorEntityErrorsAtom, {})
