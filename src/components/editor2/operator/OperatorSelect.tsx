@@ -4,25 +4,14 @@ import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { atom, useAtomValue } from 'jotai'
 import { selectAtom } from 'jotai/utils'
-import { uniqueId } from 'lodash-es'
 import { FC, ReactNode, memo, useMemo, useState } from 'react'
 
-import { useTranslation } from '../../../i18n/i18n'
-import { OPERATORS, OperatorInfo } from '../../../models/operator'
+import { languageAtom, useTranslation } from '../../../i18n/i18n'
+import { OPERATORS, getLocalizedOperatorName } from '../../../models/operator'
 import { useDebouncedQuery } from '../../../utils/useDebouncedQuery'
 import { Select } from '../../Select'
 import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { editorAtoms } from '../editor-state'
-
-const createArbitraryOperator = (name: string): OperatorInfo => ({
-  id: '',
-  name,
-  alias: '',
-  alt_name: '',
-  subProf: '',
-  prof: '',
-  rarity: 0,
-})
 
 const operatorNamesAtom = selectAtom(
   editorAtoms.operators,
@@ -53,40 +42,73 @@ interface OperatorSelectProps {
 
 export const OperatorSelect: FC<OperatorSelectProps> = memo(
   ({ className, liftPicked, markPicked, value, onSelect, children }) => {
+    const language = useAtomValue(languageAtom)
     const t = useTranslation()
-    const operatorNames = useAtomValue(operatorNamesAtom)
+    const [isOpen, setIsOpen] = useState(false)
+    const operatorNames = useAtomValue(
+      isOpen ? operatorNamesAtom : dummyArrayAtom,
+    )
     const groupNames = useAtomValue(
-      liftPicked ? groupNamesAtom : dummyArrayAtom,
+      isOpen && liftPicked ? groupNamesAtom : dummyArrayAtom,
     )
     const groupedOperatorNames = useAtomValue(
-      markPicked ? groupedOperatorNamesAtom : dummyArrayAtom,
+      isOpen && markPicked ? groupedOperatorNamesAtom : dummyArrayAtom,
     )
     const overallOperatorNames = [...operatorNames, ...groupedOperatorNames]
-
-    const [isOpen, setIsOpen] = useState(false)
 
     const isGroup = (name?: string) =>
       name !== undefined && groupNames.includes(name)
 
-    type Item = (OperatorInfo | { name?: string }) & { isHeader?: boolean }
+    type Item = {
+      key: string
+      isHeader?: boolean
+      operatorId?: string
+      name?: string
+      value?: string
+    }
     const items: Item[] = useMemo(() => {
       if (!isOpen) return []
-      if (!liftPicked) return OPERATORS
+      if (!liftPicked)
+        return OPERATORS.map((op) => ({
+          key: op.id,
+          operatorId: op.id,
+          name: getLocalizedOperatorName(op.name, language),
+          value: op.name,
+        }))
+
       // 把已选择的干员和干员组放在前面
-      const pickedOperators = operatorNames.map((name) => ({ name }))
-      const unpickedOperators = pickedOperators.length
-        ? OPERATORS.filter((op) => !operatorNames.includes(op.name))
-        : OPERATORS
+      const pickedOperators = operatorNames.map((name) => ({
+        key: name,
+        name: getLocalizedOperatorName(name, language),
+        value: name,
+      }))
+
+      const unpickedOperators = (
+        pickedOperators.length
+          ? OPERATORS.filter((op) => !operatorNames.includes(op.name))
+          : OPERATORS
+      ).map((op) => ({
+        key: op.id,
+        operatorId: op.id,
+        name: getLocalizedOperatorName(op.name, language),
+        value: op.name,
+      }))
+
       const items: Item[] = [
-        ...groupNames.map((name) => ({ name })),
+        ...groupNames.map((name, index) => ({
+          key: name + index,
+          name,
+          value: name,
+        })),
         ...pickedOperators,
       ]
+
       if (items.length > 0) {
-        items.push({ name: uniqueId(), isHeader: true })
+        items.push({ key: '__header__', isHeader: true })
       }
       items.push(...unpickedOperators)
       return items
-    }, [operatorNames, groupNames, isOpen, liftPicked])
+    }, [operatorNames, groupNames, isOpen, language, liftPicked])
 
     const fuse = useMemo(
       () =>
@@ -113,11 +135,11 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
         query={query}
         className={clsx('inline', className)}
         onQueryChange={(query) => updateQuery(query, false)}
-        items={OPERATORS}
+        items={items}
         itemDisabled={(item) => !!item.isHeader}
-        itemRenderer={(item, { index, handleClick, handleFocus, modifiers }) =>
+        itemRenderer={(item, { handleClick, handleFocus, modifiers }) =>
           item.isHeader ? (
-            <MenuDivider key={item.name} />
+            <MenuDivider key={item.key} />
           ) : (
             <MenuItem
               roleStructure="listoption"
@@ -125,11 +147,7 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
                 'py-0 items-center',
                 modifiers.active && Classes.ACTIVE,
               )}
-              // item 是 group 时要处理 name 是空字符串以及 name 与干员或其他 group 重名的情况，
-              // 所以干脆用 index 作为 key 了
-              key={
-                isGroup(item.name) ? index : 'id' in item ? item.id : item.name
-              }
+              key={item.key}
               text={
                 <div className="flex items-center gap-2">
                   {isGroup(item.name) ? (
@@ -146,8 +164,9 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
                   ) : (
                     <OperatorAvatar
                       className="w-8 h-8 leading-3"
-                      id={'id' in item ? item.id : undefined}
-                      name={item.name}
+                      id={item.operatorId}
+                      name={item.value}
+                      fallback={item.name}
                     />
                   )}
                   {item.name}
@@ -157,15 +176,15 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
               onFocus={handleFocus}
               onMouseDown={onOptionMouseDown}
               selected={
-                value === item.name ||
+                value === item.value ||
                 (markPicked &&
-                  !!item.name &&
-                  overallOperatorNames.includes(item.name))
+                  !!item.value &&
+                  overallOperatorNames.includes(item.value))
               }
               labelElement={
                 markPicked &&
-                item.name &&
-                overallOperatorNames.includes(item.name) ? (
+                item.value &&
+                overallOperatorNames.includes(item.value) ? (
                   <Icon icon="tick" />
                 ) : undefined
               }
@@ -197,8 +216,8 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
           onClosed: () => setIsOpen(false),
         }}
         onItemSelect={(item) => {
-          if (item.name) {
-            onSelect?.(item.name)
+          if (item.value) {
+            onSelect?.(item.value)
           }
         }}
       >
@@ -208,3 +227,16 @@ export const OperatorSelect: FC<OperatorSelectProps> = memo(
   },
 )
 OperatorSelect.displayName = 'OperatorSelect'
+
+const createArbitraryOperator = (name: string) => ({
+  id: '',
+  name,
+  name_en: '',
+  alias: '',
+  alt_name: '',
+  subProf: '',
+  prof: '',
+  rarity: 0,
+  key: '',
+  value: name,
+})

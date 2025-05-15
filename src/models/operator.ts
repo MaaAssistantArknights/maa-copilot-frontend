@@ -347,9 +347,10 @@ export const actionDocColors: ActionDocColor[] = [
 ]
 
 export function getLocalizedOperatorName(name: string, lang: Language): string {
-  const operator = OPERATORS.find((op) => op.name === name)
-  if (!operator) return name
-  return lang === 'en' ? operator.name_en : operator.name
+  if (lang === 'cn') return name
+  const operator = findOperatorByName(name)
+  if (operator) return operator.name_en
+  return name
 }
 
 export function useLocalizedOperatorName(name: string): string {

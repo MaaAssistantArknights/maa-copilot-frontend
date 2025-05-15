@@ -18,7 +18,8 @@ import { atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
 import { FC, memo, useCallback, useMemo } from 'react'
 
-import { i18n, useTranslation } from '../../../i18n/i18n'
+import { i18n, languageAtom, useTranslation } from '../../../i18n/i18n'
+import { getLocalizedOperatorName } from '../../../models/operator'
 import { Droppable, Sortable } from '../../dnd'
 import { AtomRenderer } from '../AtomRenderer'
 import {
@@ -322,6 +323,7 @@ const operatorErrorsAtom = atom((get) => {
 
 const OperatorError = () => {
   const errors = useAtomValue(operatorErrorsAtom)
+  const language = useAtomValue(languageAtom)
   const t = useTranslation()
   if (!errors) return null
 
@@ -332,12 +334,12 @@ const OperatorError = () => {
           <p key={operator.id + path.join()} className="error-message">
             {fieldLabel
               ? t.components.editor2.OperatorEditor.operator_field_error({
-                  name: operator.name,
+                  name: getLocalizedOperatorName(operator.name, language),
                   field: fieldLabel,
                   error: message,
                 })
               : t.components.editor2.OperatorEditor.operator_error({
-                  name: operator.name,
+                  name: getLocalizedOperatorName(operator.name, language),
                   error: message,
                 })}
           </p>

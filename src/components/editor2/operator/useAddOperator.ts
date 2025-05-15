@@ -3,6 +3,7 @@ import { useAtomCallback } from 'jotai/utils'
 import { useCallback } from 'react'
 
 import { i18n } from '../../../i18n/i18n'
+import { getLocalizedOperatorName } from '../../../models/operator'
 import { AppToaster } from '../../Toaster'
 import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
 
@@ -21,7 +22,10 @@ export function useAddOperator() {
         ) {
           AppToaster.show({
             message: i18n.components.editor2.misc.already_exists({
-              name: operator.name,
+              name: getLocalizedOperatorName(
+                operator.name,
+                i18n.currentLanguage,
+              ),
             }),
             intent: 'danger',
           })

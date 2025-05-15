@@ -25,6 +25,7 @@ import {
   getEliteIconUrl,
   getSkillCount,
   getSkillUsageAltTitle,
+  useLocalizedOperatorName,
   withDefaultRequirements,
 } from '../../../models/operator'
 import { MasteryIcon } from '../../MasteryIcon'
@@ -64,6 +65,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
   }) => {
     const t = useTranslation()
     const edit = useEdit()
+    const displayName = useLocalizedOperatorName(operator.name)
     const [skillLevels, setSkillLevels] = useAtom(
       editorAtoms.skillLevelOverrides(operator.id),
     )
@@ -117,15 +119,15 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 id={info?.id}
                 rarity={info?.rarity}
                 className="w-24 h-24 rounded-b-none"
-                fallback={operator.name}
+                fallback={displayName}
               />
               <h4
                 className={clsx(
-                  'm-1 leading-5 font-bold pointer-events-none',
-                  operator.name && operator.name.length >= 7 && 'text-xs',
+                  'm-1 leading-4 font-semibold tracking-tighter pointer-events-none',
+                  displayName.length >= 12 && 'text-xs',
                 )}
               >
-                {operator.name}
+                {displayName}
               </h4>
               {info && info.prof !== 'TOKEN' && (
                 <img

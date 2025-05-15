@@ -12,18 +12,10 @@ import { Tooltip2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
 import { Draft } from 'immer'
-import { PrimitiveAtom, atom, useAtom, useAtomValue, useSetAtom } from 'jotai'
+import { PrimitiveAtom, useAtom, useAtomValue, useSetAtom } from 'jotai'
 import { useImmerAtom } from 'jotai-immer'
 import { selectAtom } from 'jotai/utils'
-import {
-  FC,
-  ReactNode,
-  memo,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
+import { FC, ReactNode, memo, useEffect, useRef, useState } from 'react'
 
 import { i18n, languageAtom, useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
@@ -31,6 +23,7 @@ import {
   actionDocColors,
   alternativeOperatorSkillUsages,
   findOperatorByName,
+  getLocalizedOperatorName,
   getSkillUsageAltTitle,
 } from '../../../models/operator'
 import { findActionType } from '../../../models/types'
@@ -664,45 +657,43 @@ const ActionTarget: FC<{
     >
   >
 }> = ({ actionAtom }) => {
+  const language = useAtomValue(languageAtom)
   const t = useTranslation()
   const edit = useEdit()
-  const [action, setAction] = useAtom(actionAtom)
+  const [{ name }, setAction] = useAtom(actionAtom)
   const groupNames = useAtomValue(groupNamesAtom)
-  const operator = useAtomValue(
-    useMemo(
-      () =>
-        atom((get) =>
-          get(editorAtoms.operators).find((op) => op.name === action.name),
-        ),
-      [action.name],
-    ),
-  )
+
   const isGroup = (name?: string) =>
     name !== undefined && groupNames.includes(name)
 
-  const operatorInfo = operator && findOperatorByName(operator.name)
-  const displayName =
-    operatorInfo?.name ||
-    action.name ||
-    (isGroup(action.name)
-      ? t.components.editor2.ActionItem.unnamed_group
-      : t.components.editor2.ActionItem.select_target)
-  const subtitle = isGroup(action.name)
-    ? t.components.editor2.ActionItem.group
-    : operatorInfo
-      ? operatorInfo?.prof === 'TOKEN'
-        ? t.components.editor2.ActionItem.token
-        : t.components.editor2.ActionItem.operator
-      : // 自定义干员、关卡里的道具之类
-        t.components.editor2.ActionItem.unknown_target
+  let displayName: string | undefined
+  let subtitle = '<<<'
+
+  if (name !== undefined) {
+    if (isGroup(name)) {
+      displayName = name || t.components.editor2.ActionItem.unnamed_group
+      subtitle = t.components.editor2.label.operation.groups._item
+    } else {
+      displayName = getLocalizedOperatorName(name, language)
+
+      const operatorInfo = findOperatorByName(name)
+      subtitle = operatorInfo
+        ? operatorInfo.prof === 'TOKEN'
+          ? t.components.editor2.ActionItem.token
+          : t.components.editor2.label.opers._item
+        : // 自定义干员、关卡里的道具之类
+          t.components.editor2.ActionItem.unknown_target
+    }
+  }
+
   return (
     <OperatorSelect
       liftPicked
       className="shrink-0"
-      value={action.name}
+      value={name}
       onSelect={(name) => {
         edit(() => {
-          setAction({ ...action, name })
+          setAction((prev) => ({ ...prev, name }))
           return {
             action: 'set-action-name',
             desc: i18n.actions.editor2.set_action_target,
@@ -714,21 +705,24 @@ const ActionTarget: FC<{
         <div className="flex items-center">
           <OperatorAvatar
             className="w-16 h-16"
-            name={isGroup(action.name) ? undefined : action.name}
-            fallback={
-              isGroup(action.name) ? (
-                <Icon icon="people" size={32} />
-              ) : (
-                action.name
-              )
-            }
+            name={isGroup(name) ? undefined : name}
+            fallback={isGroup(name) ? <Icon icon="people" size={32} /> : name}
           />
           <div className="ml-1 w-[6.5em]">
             <div
-              className={clsx('truncate', displayName.length > 6 && 'text-xs')}
-              title={displayName.length > 6 ? displayName : undefined}
+              className={clsx(
+                'leading-4 tracking-tighter',
+                displayName && displayName?.length > 6 && 'text-xs',
+              )}
+              title={displayName}
             >
-              {displayName}
+              {displayName === undefined ? (
+                <span className="text-gray-500">
+                  {t.components.editor2.ActionItem.select_target}
+                </span>
+              ) : (
+                displayName
+              )}
             </div>
             <Divider className="m-0 mr-1" />
             <div className="text-gray-500 text-xs font-normal truncate">

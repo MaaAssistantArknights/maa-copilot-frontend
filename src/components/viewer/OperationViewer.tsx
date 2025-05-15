@@ -368,7 +368,7 @@ const OperatorCard: FC<{
             </div>
           )}
         </div>
-        <h4 className="mt-1 -mx-2 font-semibold tracking-tighter text-center">
+        <h4 className="mt-1 -mx-2 leading-4 font-semibold tracking-tighter text-center">
           {displayName}
         </h4>
         {info && info.prof !== 'TOKEN' && (
