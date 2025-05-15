@@ -62,7 +62,7 @@ export const SOCIAL_CONFIG = [
   },
   {
     icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
-    href: 'https://ota.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
+    href: 'https://api.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
     labelKey: i18nDefer.links.sharing_group,
   },
 ]
