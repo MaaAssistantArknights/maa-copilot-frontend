@@ -53,8 +53,8 @@ import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
 import {
   OPERATORS,
-  defaultSkills,
   getEliteIconUrl,
+  getSkillCount,
   useLocalizedOperatorName,
   withDefaultRequirements,
 } from '../../models/operator'
@@ -341,11 +341,13 @@ const OperatorCard: FC<{
   const t = useTranslation()
   const displayName = useLocalizedOperatorName(operator.name)
   const info = OPERATORS.find((o) => o.name === operator.name)
-  const skills = info ? info.skills : defaultSkills
   const { level, elite, skillLevel, module } = withDefaultRequirements(
     operator.requirements,
     info?.rarity,
   )
+  const skillCount = info
+    ? Math.max(getSkillCount(info), operator.skill ?? 1)
+    : 3
 
   return (
     <div className="relative flex items-start">
@@ -357,12 +359,12 @@ const OperatorCard: FC<{
             className="w-20 h-20"
             fallback={displayName}
           />
-          {info?.equips && module !== 0 && (
+          {info?.modules && module !== 0 && (
             <div
               title={t.components.editor2.label.opers.requirements.module}
               className="absolute -bottom-1 right-1 font-serif font-bold text-lg text-white [text-shadow:0_0_3px_#a855f7,0_0_5px_#a855f7]"
             >
-              {info.equips[module]}
+              {info.modules[module]}
             </div>
           )}
         </div>
@@ -393,7 +395,7 @@ const OperatorCard: FC<{
       )}
 
       <ul className="flex flex-col gap-1 ml-1">
-        {skills.map((_, index) => {
+        {Array.from({ length: skillCount }, (_, index) => {
           const skillNumber = index + 1
           const selected = operator.skill === skillNumber
           return (

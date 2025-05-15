@@ -22,7 +22,6 @@ const createArbitraryOperator = (name: string): OperatorInfo => ({
   subProf: '',
   prof: '',
   rarity: 0,
-  skills: [],
 })
 
 const operatorNamesAtom = selectAtom(

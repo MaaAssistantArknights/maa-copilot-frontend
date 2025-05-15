@@ -40,11 +40,44 @@ export type DetailedOperatorSkillUsage = DetailedSelectChoice & {
   altTitle: () => string
 }
 
-export const defaultSkills: OperatorInfo['skills'] = [
-  '一技能',
-  '二技能',
-  '三技能',
-]
+// skill counts that do not follow the general rules
+const specialSkillCounts = {
+  char_002_amiya: 3, // 阿米娅
+  char_509_acast: 1, // Pith
+  char_508_aguard: 1, // Sharp
+  char_511_asnipe: 1, // Stormeye
+  char_510_amedic: 1, // Touch
+  char_606_csuppo: 3, // 预备干员-辅助
+  char_506_rmedic: 0, // 预备干员-后勤
+  char_601_cguard: 3, // 预备干员-近卫
+  char_504_rguard: 0, // 预备干员-近战
+  char_507_rsnipe: 0, // 预备干员-狙击
+  char_603_csnipe: 3, // 预备干员-狙击
+  char_505_rcast: 0, // 预备干员-术师
+  char_604_ccast: 3, // 预备干员-术师
+  char_607_cspec: 3, // 预备干员-特种
+  char_600_cpione: 3, // 预备干员-先锋
+  char_605_cmedic: 3, // 预备干员-医疗
+  char_514_rdfend: 0, // 预备干员-重装
+  char_602_cdfend: 3, // 预备干员-重装
+  char_513_apionr: 1, // 郁金香
+}
+
+export function getSkillCount({ id, rarity }: OperatorInfo): number {
+  if (specialSkillCounts[id]) {
+    return specialSkillCounts[id]
+  }
+  if (rarity === 6) {
+    return 3
+  }
+  if (rarity === 5 || rarity === 4) {
+    return 2
+  }
+  if (rarity === 3) {
+    return 1
+  }
+  return 0
+}
 
 const defaultRequirementsByRarity: Record<
   number,

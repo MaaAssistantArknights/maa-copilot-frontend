@@ -21,9 +21,9 @@ import {
   OPERATORS,
   adjustOperatorLevel,
   alternativeOperatorSkillUsages,
-  defaultSkills,
   getDefaultRequirements,
   getEliteIconUrl,
+  getSkillCount,
   getSkillUsageAltTitle,
   withDefaultRequirements,
 } from '../../../models/operator'
@@ -66,12 +66,12 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
     const edit = useEdit()
     const setFavOperators = useSetAtom(editorFavOperatorsAtom)
     const info = OPERATORS.find(({ name }) => name === operator.name)
-    const skills = info ? info.skills : defaultSkills
+    const skillCount = info ? getSkillCount(info) : 3
     const requirements = withDefaultRequirements(
       operator.requirements,
       info?.rarity,
     )
-    const detailedSkills = skills.map((_, index) => ({
+    const detailedSkills = Array.from({ length: skillCount }, (_, index) => ({
       available: index <= requirements.elite,
       defaultLevel: getDefaultRequirements(info?.rarity).skillLevel,
     }))
@@ -313,6 +313,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
               const skillLevel = selected
                 ? requirements.skillLevel
                 : defaultLevel
+              const maxLevel = requirements.elite === 2 ? 10 : 7
               return (
                 <li
                   key={index}
@@ -350,20 +351,19 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                         })
                       }
                     }}
-                    onValueChange={(value) => {
+                    onValueChange={(_, valueStr) => {
                       edit(() => {
                         // 拿到新输入的一位数字（比如原来是 5，输入 2，变成 52，这里会拿到 2）
-                        const acceptedValue =
-                          value >= 10
-                            ? +String(value).replace(
-                                String(requirements.skillLevel),
-                                '',
-                              )
-                            : value
-                        let newLevel = clamp(acceptedValue, 0, 9)
+                        let newLevel =
+                          valueStr.length > 1
+                            ? +String(valueStr).replace(String(skillLevel), '')
+                            : Number(valueStr)
+
                         if (newLevel === 0) {
                           newLevel = 10
                         }
+                        newLevel = clamp(newLevel, 1, maxLevel)
+
                         onChange?.({
                           ...operator,
                           requirements: {
@@ -372,7 +372,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                           },
                         })
                         return {
-                          action: 'set-operator-level',
+                          action: 'set-operator-skillLevel',
                           desc: i18n.actions.editor2.set_operator_skill_level,
                           squashBy: operator.id,
                         }
@@ -388,12 +388,12 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                             skillLevel: clamp(
                               requirements.skillLevel + (e.deltaY > 0 ? -1 : 1),
                               1,
-                              10,
+                              maxLevel,
                             ),
                           },
                         })
                         return {
-                          action: 'set-operator-level',
+                          action: 'set-operator-skillLevel',
                           desc: i18n.actions.editor2.set_operator_skill_level,
                           squashBy: operator.id,
                         }
@@ -412,11 +412,11 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 </li>
               )
             })}
-          {controlsEnabled && info?.equips && (
+          {controlsEnabled && info?.modules && (
             <Select
               className="row-start-4"
               filterable={false}
-              items={info.equips}
+              items={info.modules}
               itemRenderer={(
                 item,
                 { index, handleClick, handleFocus, modifiers },
@@ -440,7 +440,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     ...operator,
                     requirements: {
                       ...operator.requirements,
-                      module: info.equips.indexOf(item),
+                      module: info.modules.indexOf(item),
                     },
                   })
                   return {
@@ -467,7 +467,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     : '!bg-gray-300 dark:!bg-gray-600 opacity-15 dark:opacity-25 hover:opacity-30 dark:hover:opacity-50',
                 )}
               >
-                {info.equips[requirements.module]}
+                {info.modules[requirements.module]}
               </Button>
             </Select>
           )}
