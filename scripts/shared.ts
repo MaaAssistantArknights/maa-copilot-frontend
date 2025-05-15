@@ -56,8 +56,6 @@ const CHARACTER_TABLE_JSON_URL_EN =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/character_table.json'
 const UNIEQUIP_TABLE_JSON_URL_EN =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/uniequip_table.json'
-const SKILL_TABLE_JSON_URL =
-  'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/skill_table.json'
 
 const CHARACTER_BLOCKLIST = [
   'char_512_aprot', // 暮落(集成战略)：It's just not gonna be there.
@@ -80,23 +78,16 @@ async function json(url: string) {
 }
 
 export async function getOperators() {
-  const [
-    charTableCN,
-    uniequipTableCN,
-    charTableEN,
-    uniequipTableEN,
-    skillTable,
-  ] = await Promise.all([
-    json(CHARACTER_TABLE_JSON_URL_CN),
-    json(UNIEQUIP_TABLE_JSON_URL_CN),
-    json(CHARACTER_TABLE_JSON_URL_EN),
-    json(UNIEQUIP_TABLE_JSON_URL_EN),
-    json(SKILL_TABLE_JSON_URL),
-  ])
+  const [charTableCN, uniequipTableCN, charTableEN, uniequipTableEN] =
+    await Promise.all([
+      json(CHARACTER_TABLE_JSON_URL_CN),
+      json(UNIEQUIP_TABLE_JSON_URL_CN),
+      json(CHARACTER_TABLE_JSON_URL_EN),
+      json(UNIEQUIP_TABLE_JSON_URL_EN),
+    ])
 
-  const { subProfDict: subProfDictCN } = uniequipTableCN
+  const { subProfDict: subProfDictCN, equipDict } = uniequipTableCN
   const { subProfDict: subProfDictEN } = uniequipTableEN
-  const { equipDict, subProfDict } = uniequipTableCN
   const equipsByOperatorId = Object.values(equipDict).reduce(
     (acc: Record<string, any[]>, equip: any) => {
       acc[equip.charId] ||= []
