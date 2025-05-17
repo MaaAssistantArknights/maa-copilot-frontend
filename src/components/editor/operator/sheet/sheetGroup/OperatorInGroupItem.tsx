@@ -2,6 +2,8 @@ import { Card } from '@blueprintjs/core'
 
 import { FC } from 'react'
 
+import { useLocalizedOperatorName } from 'models/operator'
+
 import { OperatorAvatar } from '../../EditorOperator'
 import { Operator } from '../../EditorSheet'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
@@ -20,7 +22,7 @@ export const OperatorInGroupItem: FC<OperatorInGroupItemProp> = ({
       <div className="flex items-center">
         <OperatorAvatar name={name} size="large" />
         <p className="font-bold leading-none text-center truncate ml-2 mr-auto">
-          {name}
+          {useLocalizedOperatorName(name)}
         </p>
       </div>
       {!!onOperatorSkillChange && (

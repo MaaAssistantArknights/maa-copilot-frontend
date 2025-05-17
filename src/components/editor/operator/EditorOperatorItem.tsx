@@ -1,11 +1,16 @@
 import { Card, Elevation, Icon } from '@blueprintjs/core'
 
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 
 import type { CopilotDocV1 } from 'models/copilot.schema'
 
-import { useTranslation } from '../../../i18n/i18n'
-import { OPERATORS, getSkillUsageTitle } from '../../../models/operator'
+import { languageAtom, useTranslation } from '../../../i18n/i18n'
+import {
+  OPERATORS,
+  getLocalizedOperatorName,
+  getSkillUsageTitle,
+} from '../../../models/operator'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
 import { OperatorAvatar } from './EditorOperator'
@@ -27,7 +32,7 @@ export const EditorOperatorItem = ({
   listeners,
 }: EditorOperatorItemProps) => {
   const t = useTranslation()
-
+  const language = useAtomValue(languageAtom)
   const id = OPERATORS.find(({ name }) => name === operator.name)?.id
   const skillUsage = getSkillUsageTitle(
     operator.skillUsage as CopilotDocV1.SkillUsageType,
@@ -52,7 +57,9 @@ export const EditorOperatorItem = ({
       />
       <OperatorAvatar id={id} size="large" />
       <div className="ml-4 flex-grow">
-        <h3 className="font-bold leading-none mb-1">{operator.name}</h3>
+        <h3 className="font-bold leading-none mb-1">
+          {getLocalizedOperatorName(operator.name, language)}
+        </h3>
         <div className="text-gray-400 text-xs">
           {t.components.editor.operator.EditorOperatorItem.skill_number({
             count: operator.skill,

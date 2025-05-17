@@ -9,11 +9,11 @@ import {
 } from '@blueprintjs/core'
 
 import clsx from 'clsx'
-import { getDefaultStore, useAtom } from 'jotai'
+import { getDefaultStore, useAtom, useAtomValue } from 'jotai'
 import { compact } from 'lodash-es'
 import { FC, useEffect, useMemo, useState } from 'react'
 
-import { useTranslation } from '../i18n/i18n'
+import { languageAtom, useTranslation } from '../i18n/i18n'
 import { OPERATORS } from '../models/operator'
 import {
   DEFAULT_OPERATOR_FILTER,
@@ -53,6 +53,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
   onChange,
 }) => {
   const t = useTranslation()
+  const language = useAtomValue(languageAtom)
   const [savedFilter, setSavedFilter] = useAtom(operatorFilterAtom)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [editingFilter, setEditingFilter] = useState<typeof savedFilter>(filter)
@@ -137,7 +138,7 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
                 !filter.enabled && 'opacity-30',
               )}
             >
-              {includedOperators.map(({ id, name, rarity }) => (
+              {includedOperators.map(({ id, name, name_en, rarity }) => (
                 <Tag minimal key={id} className="py-0 pl-0" intent="primary">
                   <div className="flex items-center gap-1 text-sm">
                     <OperatorAvatar
@@ -145,11 +146,12 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
                       id={id}
                       rarity={rarity}
                     />
-                    &nbsp;{name}&nbsp;
+                    &nbsp;{language === 'en' ? name_en : name}
+                    &nbsp;
                   </div>
                 </Tag>
               ))}
-              {excludedOperators.map(({ id, name, rarity }) => (
+              {excludedOperators.map(({ id, name, name_en, rarity }) => (
                 <Tag minimal key={id} className="py-0 pl-0" intent="danger">
                   <div className="flex items-center gap-1 text-sm line-through">
                     <OperatorAvatar
@@ -157,7 +159,8 @@ export const OperatorFilter: FC<OperatorFilterProps> = ({
                       id={id}
                       rarity={rarity}
                     />
-                    &nbsp;{name}&nbsp; {/* 两边加空格让删除线更显眼一些 */}
+                    &nbsp;{language === 'en' ? name_en : name}
+                    &nbsp; {/* 两边加空格让删除线更显眼一些 */}
                   </div>
                 </Tag>
               ))}

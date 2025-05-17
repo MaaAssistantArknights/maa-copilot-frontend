@@ -1,5 +1,7 @@
 import { IconName } from '@blueprintjs/core'
 
+import { useAtomValue } from 'jotai'
+
 import { CopilotDocV1 } from 'models/copilot.schema'
 
 import {
@@ -7,7 +9,7 @@ import {
   DetailedSelectItem,
   isChoice,
 } from '../components/editor/DetailedSelect'
-import { i18n, i18nDefer } from '../i18n/i18n'
+import { Language, i18n, i18nDefer, languageAtom } from '../i18n/i18n'
 import { OPERATORS, PROFESSIONS } from '../models/generated/operators.json'
 
 export { OPERATORS, PROFESSIONS }
@@ -188,3 +190,14 @@ export const actionDocColors: ActionDocColor[] = [
     value: '#d63384',
   },
 ]
+
+export function getLocalizedOperatorName(name: string, lang: Language): string {
+  const operator = OPERATORS.find((op) => op.name === name)
+  if (!operator) return name
+  return lang === 'en' ? operator.name_en : operator.name
+}
+
+export function useLocalizedOperatorName(name: string): string {
+  const lang = useAtomValue(languageAtom)
+  return getLocalizedOperatorName(name, lang)
+}

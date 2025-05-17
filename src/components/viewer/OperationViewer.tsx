@@ -51,7 +51,7 @@ import { i18nDefer, useTranslation } from '../../i18n/i18n'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
-import { OPERATORS } from '../../models/operator'
+import { OPERATORS, useLocalizedOperatorName } from '../../models/operator'
 import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { Confirm } from '../Confirm'
@@ -328,7 +328,9 @@ const OperatorCard: FC<{
         rarity={info?.rarity}
         className="w-16 h-16 mb-1"
       />
-      <span className={clsx('mb-1 font-bold')}>{name}</span>
+      <span className={clsx('mb-1 font-bold')}>
+        {useLocalizedOperatorName(name)}
+      </span>
       <span className="text-xs text-zinc-300">
         {t.models.operator.skill_number({ count: skill ?? 1 })}
       </span>

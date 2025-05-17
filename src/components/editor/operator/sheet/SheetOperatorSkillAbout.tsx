@@ -115,7 +115,7 @@ export const SkillAboutTrigger = ({
   const SkillAboutTrigger = (
     <div
       className={clsx(
-        'flex mt-3 text-gray-500 items-center text-xs',
+        'flex mt-1 text-gray-500 items-center text-xs',
         operator && 'hover:text-black',
       )}
     >
