@@ -318,11 +318,11 @@
             },
             "cost_changes": {
               "cn": "费用变化",
-              "en": "DP Changes"
+              "en": "DP Change"
             },
             "cooling": {
               "cn": "冷却中的干员",
-              "en": "Operators On Cooldown"
+              "en": "Operators on Cooldown"
             },
             "pre_delay": {
               "cn": "前置延迟",
@@ -567,7 +567,7 @@
         },
         "show_errors_by_default": {
           "cn": "默认显示验证错误",
-          "en": "Show Validation Errors By Default"
+          "en": "Show Validation Errors by Default"
         },
         "history_limit": {
           "cn": "撤销记录上限",
@@ -1173,7 +1173,7 @@
           },
           "camera_movement_hint": {
             "cn": "移动距离一般不需要修改，只填写前置延迟（15000）和击杀数条件即可",
-            "en": "Movement distance usually doesn't need modification, just fill in pre-delay (15000) and kill count conditions"
+            "en": "Movement distance usually doesn't need modification, just fill in pre-delay (15000) and Kill Count conditions"
           },
           "execution_conditions": {
             "cn": "执行条件",
@@ -1199,7 +1199,7 @@
         "EditorActionDelay": {
           "pre_delay": {
             "cn": "前置延时",
-            "en": "Pre-delay"
+            "en": "Pre-Delay"
           },
           "delay_description": {
             "cn": "可选，默认为 0，单位毫秒",
@@ -1207,7 +1207,7 @@
           },
           "post_delay": {
             "cn": "后置延时",
-            "en": "Post-delay"
+            "en": "Post-Delay"
           }
         },
         "EditorActionDistance": {
@@ -1261,7 +1261,7 @@
           },
           "cost_condition_description": {
             "cn": "如果没达到就一直等待。可选，默认为 0，直接执行。费用受潜能等影响，可能并不完全正确，仅适合对时间轴要求不严格的战斗，否则请使用下面的费用变化量条件。另外仅在费用是两位数的时候识别的比较准，三位数的费用可能会识别错，不推荐使用。",
-            "en": "If not reached, will wait. Optional, defaults to 0. DP costs can be affected by potentials and may not be completely accurate. Only suitable for battles that don't require strict timing; otherwise use the DP change condition below. Recognition is more reliable with two-digit DP costs; three-digit costs may be recognized incorrectly and are not recommended."
+            "en": "If not reached, will wait. Optional, defaults to 0. DP costs can be affected by potentials and may not be completely accurate. Only suitable for battles that don't require strict timing; otherwise use the DP Change condition below. Recognition is more reliable with two-digit DP costs; three-digit costs may be recognized incorrectly and are not recommended."
           },
           "dp_cost": {
             "cn": "费用",
@@ -1273,7 +1273,7 @@
           },
           "cost_change_description": {
             "cn": "如果没达到就一直等待。可选，默认为 0，直接执行。注意：费用变化量是从开始执行本动作时开始计算的（即：使用前一个动作结束时的费用作为基准）。支持负数，即费用变少了（例如\"孑\"等吸费干员使得费用变少了）。另外仅在费用是两位数的时候识别的比较准，三位数的费用可能会识别错，不推荐使用。",
-            "en": "If not reached, will wait. Optional, defaults to 0. Note: DP change is calculated from the start of this action (using the DP at the end of the previous action as baseline). Supports negative values (e.g., when DP decreases due to operators like Jaye). Recognition is more reliable with two-digit DP costs; three-digit costs may be recognized incorrectly and are not recommended."
+            "en": "If not reached, will wait. Optional, defaults to 0. Note: DP Change is calculated from the start of this action (using the DP at the end of the previous action as baseline). Supports negative values (e.g., when DP decreases due to operators like Jaye). Recognition is more reliable with two-digit DP costs; three-digit costs may be recognized incorrectly and are not recommended."
           },
           "dp_change_amount": {
             "cn": "费用变化量",
@@ -3107,11 +3107,11 @@
       },
       "pre_delay": {
         "cn": "前置",
-        "en": "Pre-delay"
+        "en": "Pre-Delay"
       },
       "rear_delay": {
         "cn": "后置",
-        "en": "Post-delay"
+        "en": "Post-Delay"
       }
     },
     "Confirm": {
@@ -3776,7 +3776,7 @@
         "intermediate_pre_delay": {
           "title": {
             "cn": "前置延迟",
-            "en": "Pre-delay"
+            "en": "Pre-Delay"
           },
           "description": {
             "cn": "延迟一定时间后，开始检查其他条件。注意：这里的含义和旧版编辑器以及 MAA 作业协议里的前置延迟是相反的",
@@ -3786,7 +3786,7 @@
         "intermediate_post_delay": {
           "title": {
             "cn": "后置延迟",
-            "en": "Post-delay"
+            "en": "Post-Delay"
           },
           "description": {
             "cn": "所有条件全部满足后，延迟一定时间。注意：这里的含义和旧版编辑器以及 MAA 作业协议里的后置延迟是相反的",
@@ -3816,7 +3816,7 @@
         "kills": {
           "title": {
             "cn": "击杀",
-            "en": "Kill count"
+            "en": "Kill Count"
           },
           "description": {
             "cn": "达到一定击杀数时开始执行",
@@ -3902,7 +3902,7 @@
       },
       "negative_cost_not_supported": {
         "cn": "目前暂不支持上传费用变化量为负数的动作（第{{actionIndex}}个动作）",
-        "en": "Currently, actions with negative DP changes are not supported (action #{{actionIndex}})"
+        "en": "Currently, actions with negative DP Change are not supported (action #{{actionIndex}})"
       },
       "untitled": {
         "cn": "无标题",
