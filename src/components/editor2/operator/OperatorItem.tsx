@@ -206,7 +206,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                             rarity: info?.rarity,
                             level: requirements.level,
                             elite: requirements.elite,
-                            adjustment: e.deltaY > 0 ? -10 : 10,
+                            delta: e.deltaY > 0 ? -10 : 10,
                           }),
                         },
                       })

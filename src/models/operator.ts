@@ -87,7 +87,7 @@ const defaultRequirementsByRarity: Record<
   1: { potentiality: 1, module: 0, elite: 0, level: 30, skillLevel: 1 },
   2: { potentiality: 1, module: 0, elite: 0, level: 30, skillLevel: 1 },
   3: { potentiality: 1, module: 0, elite: 1, level: 55, skillLevel: 7 },
-  4: { potentiality: 1, module: 0, elite: 1, level: 70, skillLevel: 7 },
+  4: { potentiality: 1, module: 0, elite: 1, level: 60, skillLevel: 7 },
   5: { potentiality: 1, module: 0, elite: 2, level: 40, skillLevel: 7 },
   6: { potentiality: 1, module: 0, elite: 2, level: 60, skillLevel: 10 },
 }
@@ -109,41 +109,90 @@ export function adjustOperatorLevel({
   rarity = 6,
   elite,
   level,
-  adjustment,
+  delta,
+  roundTo = Math.abs(delta),
 }: {
   rarity?: number
   elite: number
   level: number
-  adjustment: number
+  delta: number
+  roundTo?: number
 }) {
-  const elite1 = 50
-  const elite2 = elite1 + 70
-  const maxLevel =
-    rarity === 6
-      ? elite2 + 90
-      : rarity === 5
-        ? elite2 + 80
-        : rarity === 4
-          ? elite2 + 70
-          : rarity === 3
-            ? elite1 + 55
-            : 30
+  if (delta === 0) {
+    return { elite, level }
+  }
+
+  let elite1 = 50
+  let elite2: number
+  let maxLevel: number
+
+  if (rarity === 6) {
+    elite2 = elite1 + 80
+    maxLevel = elite2 + 90
+  } else if (rarity === 5) {
+    elite2 = elite1 + 70
+    maxLevel = elite2 + 80
+  } else if (rarity === 4) {
+    elite2 = elite1 + 60
+    maxLevel = elite2 + 70
+  } else if (rarity === 3) {
+    elite2 = 0
+    maxLevel = elite1 + 55
+  } else {
+    elite1 = 0
+    elite2 = 0
+    maxLevel = 30
+  }
+
   if (elite === 1) {
     level += elite1
   } else if (elite === 2) {
     level += elite2
   }
-  level += adjustment
-  // 向 adjustment 的绝对值取整，如果 adjustment=±10，就可以得到整十的等级
-  level =
-    (adjustment < 0 ? Math.ceil : Math.floor)(level / Math.abs(adjustment)) *
-    Math.abs(adjustment)
 
-  level = clamp(level, 1, maxLevel)
-  if (level > elite2) {
+  ;(() => {
+    // 特殊处理：把精英1满级和精英2 1级当成两个边界点，从任何方向尝试跨越时都只能落到这两个点上
+    if (elite2 !== 0) {
+      if (
+        (level > elite2 + 1 && level + delta <= elite2 + 1) ||
+        (level === elite2 && delta > 0)
+      ) {
+        level = elite2 + 1
+        return
+      } else if (
+        (level < elite2 && level + delta >= elite2) ||
+        (level === elite2 + 1 && delta < 0)
+      ) {
+        level = elite2
+        return
+      }
+    }
+    // 同上，处理精英0满级和精英1 1级
+    if (elite1 !== 0) {
+      if (
+        (level > elite1 + 1 && level + delta <= elite1 + 1) ||
+        (level === elite1 && delta > 0)
+      ) {
+        level = elite1 + 1
+        return
+      } else if (
+        (level < elite1 && level + delta >= elite1) ||
+        (level === elite1 + 1 && delta < 0)
+      ) {
+        level = elite1
+        return
+      }
+    }
+
+    level += delta
+    level = (delta < 0 ? Math.ceil : Math.floor)(level / roundTo) * roundTo
+    level = clamp(level, 1, maxLevel)
+  })()
+
+  if (elite2 !== 0 && level > elite2) {
     elite = 2
     level -= elite2
-  } else if (level > elite1) {
+  } else if (elite1 !== 0 && level > elite1) {
     elite = 1
     level -= elite1
   } else {
