@@ -7,6 +7,7 @@ import {
   Menu,
   MenuDivider,
   MenuItem,
+  Tag,
 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
@@ -55,6 +56,9 @@ export const EditorToolbar: FC<EditorToolbarProps> = ({
         <H2 className="!text-base mb-0">
           {t.components.editor2.EditorToolbar.title}
         </H2>
+        <Tag minimal className="ml-1" intent="warning">
+          Beta
+        </Tag>
         {subtitle && (
           <span className="ml-2 text-xs text-gray-500 dark:text-gray-400">
             {subtitle}
