@@ -39,7 +39,7 @@ export type WithId<T = {}> = T extends never ? never : T & { id: string }
 export function createAction(
   initialValues: SetRequired<Partial<Omit<EditorAction, 'id'>>, 'type'>,
 ) {
-  const action: EditorAction = defaults({}, initialValues, { id: uniqueId() })
+  const action: EditorAction = defaults({ id: uniqueId() }, initialValues)
   if (action.type === CopilotDocV1.Type.SkillUsage) {
     action.skillUsage = CopilotDocV1.SkillUsageType.ReadyToUse
   }
@@ -49,8 +49,9 @@ export function createAction(
 export function createGroup(
   initialValues: Partial<Omit<EditorGroup, 'id' | 'opers'>> = {},
 ): EditorGroup {
-  const group: EditorGroup = defaults({ name: '', opers: [] }, initialValues, {
-    id: uniqueId(),
+  const group: EditorGroup = defaults({ id: uniqueId() }, initialValues, {
+    name: '',
+    opers: [],
   })
   return group
 }
@@ -58,9 +59,7 @@ export function createGroup(
 export function createOperator(
   initialValues: Omit<EditorOperator, 'id'>,
 ): EditorOperator {
-  const operator: EditorOperator = defaults({ skill: 1 }, initialValues, {
-    id: uniqueId(),
-  })
+  const operator: EditorOperator = defaults({ id: uniqueId() }, initialValues)
   return operator
 }
 
