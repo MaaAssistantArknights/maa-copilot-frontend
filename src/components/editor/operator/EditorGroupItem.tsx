@@ -67,22 +67,22 @@ export const EditorGroupItem = ({
 
         <ul>
           {group.opers?.map((operator, i) => (
-            <li className="mb-2" key={getOperatorId(operator)}>
-              <Sortable
-                id={getOperatorId(operator)}
-                data={{ type: 'operator' }}
-              >
-                {(attrs) => (
-                  <EditorOperatorItem
-                    operator={operator}
-                    editing={isOperatorEditing?.(operator)}
-                    onEdit={() => onOperatorEdit?.(operator)}
-                    onRemove={() => onOperatorRemove?.(i)}
-                    {...attrs}
-                  />
-                )}
-              </Sortable>
-            </li>
+            <Sortable
+              className="mb-2"
+              key={getOperatorId(operator)}
+              id={getOperatorId(operator)}
+              data={{ type: 'operator' }}
+            >
+              {(attrs) => (
+                <EditorOperatorItem
+                  operator={operator}
+                  editing={isOperatorEditing?.(operator)}
+                  onEdit={() => onOperatorEdit?.(operator)}
+                  onRemove={() => onOperatorRemove?.(i)}
+                  {...attrs}
+                />
+              )}
+            </Sortable>
           ))}
         </ul>
 
