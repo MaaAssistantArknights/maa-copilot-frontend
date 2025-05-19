@@ -12,7 +12,7 @@ import { SortableContext } from '@dnd-kit/sortable'
 import clsx from 'clsx'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { selectAtom, useAtomCallback } from 'jotai/utils'
-import { FC, useCallback, useEffect, useRef } from 'react'
+import { FC, useCallback, useRef } from 'react'
 
 import { i18n, useTranslation } from '../../../i18n/i18n'
 import { Sortable } from '../../dnd'
@@ -76,27 +76,6 @@ export const ActionEditor: FC<ActionEditorProps> = ({ className }) => {
       [edit],
     ),
   )
-
-  useEffect(() => {
-    let mouseX = 0
-    let mouseY = 0
-    const onMouseMove = (e: MouseEvent) => {
-      mouseX = e.clientX
-      mouseY = e.clientY
-    }
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.code === 'KeyA' && e.shiftKey) {
-        createActionMenuRef.current?.open(mouseX, mouseY)
-        e.preventDefault()
-      }
-    }
-    document.addEventListener('mousemove', onMouseMove)
-    document.addEventListener('keydown', onKeyDown)
-    return () => {
-      document.removeEventListener('mousemove', onMouseMove)
-      document.removeEventListener('keydown', onKeyDown)
-    }
-  }, [])
 
   return (
     <div

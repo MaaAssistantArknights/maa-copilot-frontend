@@ -635,8 +635,8 @@
           "en": "Action Sequence"
         },
         "add_action": {
-          "cn": "添加动作 (Shift + A)",
-          "en": "Add Action (Shift + A)"
+          "cn": "添加动作",
+          "en": "Add Action"
         },
         "move_action": {
           "cn": "移动动作",
