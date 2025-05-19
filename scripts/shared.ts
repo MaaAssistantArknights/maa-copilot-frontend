@@ -143,6 +143,7 @@ export async function getOperators() {
         .map(({ typeName1, typeName2 }) => {
           return typeName1 === 'ORIGINAL' ? '' : typeName2
         })
+        .map((m) => (m === 'A' ? 'α' : m === 'D' ? 'Δ' : m))
       return [
         {
           id: id,
