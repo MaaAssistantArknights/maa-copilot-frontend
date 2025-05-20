@@ -2,11 +2,12 @@ import { Button, Divider, H4, H5 } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 import { FC, ImgHTMLAttributes, useEffect, useMemo } from 'react'
 
 import { PROFESSIONS } from 'models/operator'
 
-import { useTranslation } from '../../../../../i18n/i18n'
+import { languageAtom, useTranslation } from '../../../../../i18n/i18n'
 import {
   DEFAULTPROFID,
   DEFAULTSUBPROFID,
@@ -25,6 +26,7 @@ export const ProfClassificationWithFilters: FC<
   ProfClassificationWithFiltersProp
 > = ({ toTop }) => {
   const t = useTranslation()
+  const language = useAtomValue(languageAtom)
   const {
     useProfFilterState: [{ selectedProf }, setProfFilter],
     usePaginationFilterState: [_, setPaginationFilter],
@@ -36,19 +38,31 @@ export const ProfClassificationWithFilters: FC<
         id: DEFAULTPROFID.ALL,
         name: t.components.editor.operator.sheet.sheetOperator
           .ProfClassificationWithFilters.all,
+        name_en:
+          t.components.editor.operator.sheet.sheetOperator
+            .ProfClassificationWithFilters.all,
         sub: [],
       },
       {
         id: DEFAULTPROFID.FAV,
         name: t.components.editor.operator.sheet.sheetOperator
           .ProfClassificationWithFilters.favorites,
+        name_en:
+          t.components.editor.operator.sheet.sheetOperator
+            .ProfClassificationWithFilters.favorites,
         sub: [],
       },
-      ...PROFESSIONS,
+      ...PROFESSIONS.map((profession) => ({
+        ...profession,
+        name_en: profession.name_en || profession.name,
+      })),
       {
         id: DEFAULTPROFID.OTHERS,
         name: t.components.editor.operator.sheet.sheetOperator
           .ProfClassificationWithFilters.others,
+        name_en:
+          t.components.editor.operator.sheet.sheetOperator
+            .ProfClassificationWithFilters.others,
         sub: [],
       },
     ],
@@ -60,11 +74,17 @@ export const ProfClassificationWithFilters: FC<
         id: DEFAULTSUBPROFID.ALL,
         name: t.components.editor.operator.sheet.sheetOperator
           .ProfClassificationWithFilters.all,
+        name_en:
+          t.components.editor.operator.sheet.sheetOperator
+            .ProfClassificationWithFilters.all,
       },
       {
         id: DEFAULTSUBPROFID.SELECTED,
         name: t.components.editor.operator.sheet.sheetOperator
           .ProfClassificationWithFilters.selected,
+        name_en:
+          t.components.editor.operator.sheet.sheetOperator
+            .ProfClassificationWithFilters.selected,
       },
       ...(formattedProfessions.find(({ id }) => id === selectedProf[0])?.sub ||
         []),
@@ -95,16 +115,16 @@ export const ProfClassificationWithFilters: FC<
   return (
     <div className="flex flex-row-reverse relative h-full">
       <ul className="h-full flex flex-col w-6 sm:w-12">
-        {formattedProfessions.map(({ id, name }) => (
+        {formattedProfessions.map((prof) => (
           <ProfIcon
-            key={id}
-            profId={id}
-            name={name}
-            selected={selectedProf.includes(id)}
+            key={prof.id}
+            profId={prof.id}
+            name={language === 'en' && prof.name_en ? prof.name_en : prof.name}
+            selected={selectedProf.includes(prof.id)}
             onProfClick={() =>
               setProfFilter((prev) => ({
                 ...prev,
-                selectedProf: [id, DEFAULTSUBPROFID.ALL],
+                selectedProf: [prof.id, DEFAULTSUBPROFID.ALL],
               }))
             }
           />
@@ -113,22 +133,27 @@ export const ProfClassificationWithFilters: FC<
       <Divider className="mr-0" />
       <div className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
         <ul>
-          {subProfs.map(({ id, name }) => (
-            <li key={id}>
+          {subProfs.map((subProf) => (
+            <li key={subProf.id}>
               <H4
                 className={clsx(
                   'truncate cursor-pointer my-3 opacity-50 hover:underline hover:opacity-90',
-                  selectedProf.includes(id) && '!opacity-100 underline',
-                  name.length > 3 && '!text-base',
+                  selectedProf.includes(subProf.id) && '!opacity-100 underline',
+                  (language === 'en' && subProf.name_en
+                    ? subProf.name_en
+                    : subProf.name
+                  ).length > 3 && '!text-base',
                 )}
                 onClick={() =>
                   setProfFilter(({ selectedProf, ...rest }) => ({
-                    selectedProf: [selectedProf[0], id],
+                    selectedProf: [selectedProf[0], subProf.id],
                     ...rest,
                   }))
                 }
               >
-                {name}
+                {language === 'en' && subProf.name_en
+                  ? subProf.name_en
+                  : subProf.name}
               </H4>
             </li>
           ))}
