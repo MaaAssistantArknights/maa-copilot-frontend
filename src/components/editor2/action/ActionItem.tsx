@@ -519,8 +519,11 @@ export const ActionItem: FC<ActionItemProps> = memo(
               />
             </div>
           </div>
-          {doc !== undefined && (
-            <div className="flex items-center bg-gray-200 text-gray-500">
+          {(doc !== undefined || action.docColor !== undefined) && (
+            <div
+              data-doc-section
+              className="flex items-center bg-gray-200 text-gray-500"
+            >
               <Select
                 filterable={false}
                 items={actionDocColors}
@@ -578,7 +581,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 }}
                 inputRef={setDocInput}
                 placeholder={t.components.editor2.ActionItem.doc_placeholder}
-                value={doc}
+                value={doc ?? ''}
                 onChange={(e) => {
                   edit(() => {
                     setAction((draft) => {
@@ -593,15 +596,18 @@ export const ActionItem: FC<ActionItemProps> = memo(
                 }}
                 onBlur={(e) => {
                   if (e.target.value === '') {
-                    setDocDraft(undefined)
+                    // 如果点击了 data-doc-section 以外的地方，且输入框为空，则删除 doc 和 docColor
+                    if (!e.relatedTarget?.closest('[data-doc-section]')) {
+                      setDocDraft(undefined)
 
-                    if (action.doc !== undefined) {
                       edit(() => {
                         setAction((draft) => {
-                          draft.doc = undefined
+                          delete draft.doc
+                          delete draft.docColor
                         })
                         return {
-                          // 这里的 action 要和正常修改时的 action 一致，不然会导致多出一条记录
+                          // 这里的 action 要和正常修改时的 action 一致，因为如果用户手动清空输入框的话已经有了一条记录，
+                          // 这里不一致的话还会多出一条额外的记录
                           action: 'set-action-doc',
                           desc: i18n.actions.editor2.delete_action_doc,
                           squashBy: action.id,
