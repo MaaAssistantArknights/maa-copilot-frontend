@@ -214,8 +214,19 @@ export function useHistoryEdit<T extends {}>(
         const current = history.stack[history.index]
         const snapshottedCurrent = snapshot.stack[snapshot.index]
 
-        // make it a soft checkpoint if the state is unchanged
+        const shouldSquash =
+          checkpoint.action === current.action &&
+          checkpoint.squashBy !== undefined &&
+          checkpoint.squashBy === current.squashBy &&
+          // only squash if currently on top of the history stack
+          history.index === history.stack.length - 1
+
+        // make it a soft checkpoint if the checkpoint is non-squashable but the state is unchanged,
+        // because we don't want the history to advance when the state is unchanged, but still want to
+        // prevent the next checkpoint from being squashed since a non-squashable checkpoint is being used
+        // and it's supposed to block the squashing even if it's not actually inserted into the history
         if (
+          !shouldSquash &&
           current.state === snapshottedCurrent.state &&
           JSON.stringify(current.state) ===
             JSON.stringify(snapshottedCurrent.state)
@@ -240,13 +251,6 @@ export function useHistoryEdit<T extends {}>(
             time: Date.now(),
           }
         }
-
-        const shouldSquash =
-          checkpoint.action === current.action &&
-          checkpoint.squashBy !== undefined &&
-          checkpoint.squashBy === current.squashBy &&
-          // only squash if currently on top of the history stack
-          history.index === history.stack.length - 1
 
         if (shouldSquash || checkpoint === softCheckpoint) {
           const newStack = [
