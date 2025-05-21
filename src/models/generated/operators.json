@@ -4540,7 +4540,7 @@
         { "id": "librator", "name": "解放者", "name_en": "Liberator" },
         { "id": "fighter", "name": "斗士", "name_en": "Fighter" },
         { "id": "hammer", "name": "撼地者", "name_en": "Earthshaker" },
-        { "id": "primguard", "name": "本源近卫", "name_en": "本源近卫" }
+        { "id": "primguard", "name": "本源近卫", "name_en": "Primguard" }
       ]
     },
     {
@@ -4646,7 +4646,7 @@
         { "id": "phalanx", "name": "阵法术师", "name_en": "Phalanx Caster" },
         { "id": "blastcaster", "name": "轰击术师", "name_en": "Blast Caster" },
         { "id": "primcaster", "name": "本源术师", "name_en": "Primal Caster" },
-        { "id": "soulcaster", "name": "塑灵术师", "name_en": "塑灵术师" }
+        { "id": "soulcaster", "name": "塑灵术师", "name_en": "Soulcaster" }
       ]
     }
   ]
