@@ -120,6 +120,9 @@ function createDeferredProxy(path: string) {
       if (Object.prototype.hasOwnProperty.call(target, prop)) {
         return target[prop]
       }
+      if (typeof prop === 'symbol') {
+        return undefined
+      }
       target[prop] = createDeferredProxy(path + '.' + String(prop))
       return target[prop]
     },
