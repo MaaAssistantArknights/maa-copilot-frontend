@@ -110,8 +110,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
           >
             <Card
               interactive
-              elevation={Elevation.ONE}
-              className="relative w-24 p-0 !py-0 flex flex-col overflow-hidden select-none pointer-events-auto"
+              className="card-shadow-subtle relative w-24 p-0 !py-0 flex flex-col overflow-hidden select-none pointer-events-auto"
               {...attributes}
               {...listeners}
             >

@@ -96,9 +96,8 @@ export const GroupItem: FC<GroupItemProps> = memo(({ baseGroupAtom }) => {
 
   return (
     <Card
-      elevation={Elevation.ONE}
       className={clsx(
-        '!p-0 flex flex-col overflow-hidden',
+        'card-shadow-subtle !p-0 flex flex-col overflow-hidden',
         active ? 'ring ring-purple-500 !border-0 !shadow-none' : '',
       )}
     >
