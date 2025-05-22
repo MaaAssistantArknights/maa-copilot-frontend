@@ -1,5 +1,5 @@
 import { access } from 'fs/promises'
-import { uniq, uniqBy } from 'lodash-es'
+import { capitalize, uniq, uniqBy } from 'lodash-es'
 import fetch from 'node-fetch'
 import { pinyin } from 'pinyin'
 import simplebig from 'simplebig'
@@ -111,7 +111,7 @@ export async function getOperators() {
         if (!prof) {
           const enSubProfName =
             subProfDictEN?.[op.subProfessionId]?.subProfessionName ||
-            subProfDictCN[op.subProfessionId].subProfessionName
+            capitalize(op.subProfessionId)
 
           professions.push({
             id: op.profession,
@@ -129,7 +129,7 @@ export async function getOperators() {
         } else if (!prof.sub.find((p) => p.id === op.subProfessionId)) {
           const enSubProfName =
             subProfDictEN?.[op.subProfessionId]?.subProfessionName ||
-            subProfDictCN[op.subProfessionId].subProfessionName
+            capitalize(op.subProfessionId)
 
           prof.sub.push({
             id: op.subProfessionId,

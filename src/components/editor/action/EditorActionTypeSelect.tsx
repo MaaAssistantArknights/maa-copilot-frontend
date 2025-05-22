@@ -31,12 +31,12 @@ export const EditorActionTypeSelect = (
 
   const menuItems = useMemo<DetailedSelectItem[]>(
     () =>
-      Object.entries(groupBy(ACTION_TYPES, 'group')).flatMap(
-        ([group, items]) => [
-          { type: 'header' as const, header: group },
-          ...items,
-        ],
-      ),
+      Object.values(
+        groupBy(ACTION_TYPES, (item) => item.group.toString()),
+      ).flatMap((items) => [
+        { type: 'header' as const, header: items[0].group },
+        ...items,
+      ]),
     [],
   )
   const selectedAction = findActionType(value)

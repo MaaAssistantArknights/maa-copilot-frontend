@@ -1,6 +1,9 @@
+import { useTranslation } from '../i18n/i18n'
 import { NAV_CONFIG, SOCIAL_CONFIG } from '../links'
 
 export const useLinks = () => {
+  useTranslation()
+
   const NAV_LINKS = NAV_CONFIG.map(({ to, labelKey, icon }) => ({
     to,
     label: labelKey(),

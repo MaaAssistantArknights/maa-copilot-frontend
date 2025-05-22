@@ -14,9 +14,12 @@ import { FCC } from 'types'
 
 import { Select } from '../Select'
 
-export type DetailedSelectItem =
-  | DetailedSelectChoice
-  | { type: 'header'; header: ReactNode }
+export type DetailedSelectItem = DetailedSelectHeader | DetailedSelectChoice
+export type DetailedSelectHeader = {
+  type: 'header'
+  header: ReactNode | (() => ReactNode)
+}
+
 export interface DetailedSelectChoice {
   type: 'choice'
   icon?: IconName
@@ -47,7 +50,11 @@ export const DetailedSelect: FCC<
         if (action.type === 'header') {
           return (
             <li key={'header_' + action.header} className={Classes.MENU_HEADER}>
-              <H6>{action.header}</H6>
+              <H6>
+                {typeof action.header === 'function'
+                  ? action.header()
+                  : action.header}
+              </H6>
             </li>
           )
         }
