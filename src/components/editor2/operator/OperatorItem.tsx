@@ -340,7 +340,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                     buttonPosition="none"
                     value={skillLevel <= 7 ? skillLevel : ''} // 大于 7 级时置空然后用 padding 占位，以留出空间在上面放置专精图标
                     inputClassName={clsx(
-                      '!w-8 h-8 !p-0 !leading-8 !bg-transparent text-center font-bold text-xl !text-inherit !rounded-none !border-2 !border-current cursor-pointer focus:cursor-text',
+                      '!w-8 h-8 !p-0 !leading-8 !bg-transparent text-center font-bold text-xl !text-inherit !rounded-none !border-2 !border-current [&:not(:focus)]:cursor-pointer',
                       skillLevel > 7 && '!pl-4',
                     )}
                     onFocus={() => {
