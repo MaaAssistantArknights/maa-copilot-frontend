@@ -422,7 +422,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   />
                   {skillLevel > 7 && (
                     <MasteryIcon
-                      className="absolute top-0 bottom-0 left-0 right-0 p-2 pointer-events-none"
+                      className="absolute top-0 left-0 w-full h-full p-2 pointer-events-none"
                       mastery={skillLevel - 7}
                     />
                   )}
