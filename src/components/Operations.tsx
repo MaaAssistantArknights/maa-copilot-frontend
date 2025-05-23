@@ -2,30 +2,45 @@ import {
   Button,
   ButtonGroup,
   Card,
+  Classes,
   Divider,
   H6,
   InputGroup,
+  MenuItem,
   Tab,
   Tabs,
 } from '@blueprintjs/core'
+import { MultiSelect2 } from '@blueprintjs/select'
 
 import { UseOperationsParams } from 'apis/operation'
 import clsx from 'clsx'
+import Fuse from 'fuse.js'
 import { useAtom } from 'jotai'
-import { debounce } from 'lodash-es'
 import { MaaUserInfo } from 'maa-copilot-client'
-import { ComponentType, useMemo, useState } from 'react'
+import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
 import { OperationSetList } from 'components/OperationSetList'
 import { neoLayoutAtom } from 'store/pref'
 
+import { useLevels } from '../apis/level'
 import { useTranslation } from '../i18n/i18n'
-import { LevelSelect } from './LevelSelect'
+import { isHardMode } from '../models/level'
+import { Level } from '../models/operation'
+import { useDebouncedQuery } from '../utils/useDebouncedQuery'
 import { OperatorFilter, useOperatorFilter } from './OperatorFilter'
 import { withSuspensable } from './Suspensable'
 import { UserFilter } from './UserFilter'
+
+// 添加 LevelTag 组件用于在 MultiSelect 中显示关卡标签
+const LevelTag: ComponentType<{ level: Level }> = ({ level }) => {
+  return (
+    <div className="flex items-center">
+      {level.catThree} {level.name}
+    </div>
+  )
+}
 
 export const Operations: ComponentType = withSuspensable(() => {
   const t = useTranslation()
@@ -35,16 +50,63 @@ export const Operations: ComponentType = withSuspensable(() => {
     limit: 10,
     orderBy: 'hot',
   })
-  const debouncedSetQueryParams = useMemo(
-    () => debounce(setQueryParams, 500),
-    [],
-  )
 
   const { operatorFilter, setOperatorFilter } = useOperatorFilter()
   const [selectedUser, setSelectedUser] = useState<MaaUserInfo>()
   const [neoLayout, setNeoLayout] = useAtom(neoLayoutAtom)
   const [tab, setTab] = useState<'operation' | 'operationSet'>('operation')
   const [multiselect, setMultiselect] = useState(false)
+  const [searchKeyword, setSearchKeyword] = useState('')
+
+  const { data } = useLevels()
+  const levels = useMemo(
+    () =>
+      data
+        // to simplify the list, we only show levels in normal mode
+        .filter((level) => !isHardMode(level.stageId))
+        .sort((a, b) => a.levelId.localeCompare(b.levelId)),
+    [data],
+  )
+
+  const fuse = useMemo(
+    () =>
+      new Fuse(levels, {
+        keys: ['name', 'catTwo', 'catThree', 'stageId'],
+        threshold: 0.3,
+      }),
+    [levels],
+  )
+
+  const [selectedLevels, setSelectedLevels] = useState<Level[]>([])
+
+  const { query, trimmedDebouncedQuery, updateQuery, onOptionMouseDown } =
+    useDebouncedQuery()
+
+  const updateQueryByLevel = useCallback(() => {
+    const levelKeywords = selectedLevels.map((level) => level.stageId)
+    setQueryParams((old) => ({
+      ...old,
+      levelKeyword: levelKeywords[0] || undefined,
+    }))
+  }, [selectedLevels])
+
+  const handleSearch = useCallback(() => {
+    setQueryParams((old) => ({
+      ...old,
+      keyword: searchKeyword.trim(),
+    }))
+  }, [searchKeyword])
+
+  useEffect(() => {
+    updateQueryByLevel()
+  }, [updateQueryByLevel])
+
+  const filteredLevels = useMemo(() => {
+    if (!trimmedDebouncedQuery) {
+      return []
+    }
+    return fuse.search(trimmedDebouncedQuery).map((el) => el.item)
+  }, [trimmedDebouncedQuery, fuse])
 
   return (
     <>
@@ -101,33 +163,90 @@ export const Operations: ComponentType = withSuspensable(() => {
         {tab === 'operation' && (
           <>
             <div className="flex flex-wrap items-center gap-2">
-              <InputGroup
-                className="max-w-md [&>input]:!rounded-md"
-                placeholder={t.components.Operations.search_placeholder}
-                leftIcon="search"
-                size={64}
-                large
-                type="search"
-                enterKeyHint="search"
-                defaultValue={queryParams.keyword}
-                onChange={(e) =>
-                  debouncedSetQueryParams((old) => ({
-                    ...old,
-                    keyword: e.target.value.trim(),
-                  }))
-                }
-                onBlur={() => debouncedSetQueryParams.flush()}
-              />
-              <div className="flex flex-wrap gap-1">
-                <LevelSelect
-                  value={queryParams.levelKeyword ?? ''}
-                  onChange={(level) =>
-                    setQueryParams((old) => ({
-                      ...old,
-                      levelKeyword: level,
-                    }))
-                  }
+              <div className="flex max-w-md flex-grow ">
+                <MultiSelect2<Level>
+                  className="flex-grow"
+                  query={query}
+                  onQueryChange={(query) => {
+                    updateQuery(query, false)
+                    setSearchKeyword(query)
+                  }}
+                  items={levels}
+                  itemRenderer={(
+                    item,
+                    { handleClick, handleFocus, modifiers },
+                  ) => (
+                    <MenuItem
+                      roleStructure="listoption"
+                      key={item.stageId}
+                      className={clsx(modifiers.active && Classes.ACTIVE)}
+                      text={`${item.catThree} ${item.name}`}
+                      onClick={handleClick}
+                      onFocus={handleFocus}
+                      onMouseDown={onOptionMouseDown}
+                      selected={selectedLevels.some(
+                        (l) => l.stageId === item.stageId,
+                      )}
+                      disabled={modifiers.disabled}
+                    />
+                  )}
+                  itemListPredicate={() => filteredLevels}
+                  selectedItems={selectedLevels}
+                  placeholder={t.components.Operations.search_placeholder}
+                  tagInputProps={{
+                    className: '!flex !p-0 !pl-[5px]',
+                    large: true,
+                    tagProps: {
+                      minimal: true,
+                      className: '!py-0 !pl-0',
+                    },
+                    inputProps: {
+                      className: '!leading-8',
+                      onKeyDown: (e) => {
+                        if (e.key === 'Enter') {
+                          handleSearch()
+                        }
+                      },
+                    },
+                  }}
+                  resetOnSelect={true}
+                  tagRenderer={(item) => <LevelTag level={item} />}
+                  popoverProps={{
+                    popoverClassName: trimmedDebouncedQuery
+                      ? undefined
+                      : '[&_.bp4-popover2-content]:!p-0',
+                    placement: 'bottom-start',
+                    minimal: true,
+                    matchTargetWidth: true,
+                  }}
+                  onItemSelect={(level) => {
+                    if (
+                      !selectedLevels.some((l) => l.stageId === level.stageId)
+                    ) {
+                      // 只选定一个 后端暂未支持多Level查询
+                      setSelectedLevels([level])
+                    }
+                  }}
+                  onRemove={(level) => {
+                    setSelectedLevels(
+                      selectedLevels.filter((l) => l.stageId !== level.stageId),
+                    )
+                  }}
+                  onClear={() => {
+                    setSelectedLevels([])
+                  }}
                 />
+                <Button
+                  minimal
+                  large
+                  icon="search"
+                  text="搜索"
+                  className="ml-2 text-gray-500 hover:text-gray-700 transition-colors"
+                  onClick={handleSearch}
+                  aria-label="搜索"
+                />
+              </div>
+              <div className="flex flex-wrap gap-1">
                 <UserFilter
                   user={selectedUser}
                   onChange={(user) => {
@@ -196,23 +315,32 @@ export const Operations: ComponentType = withSuspensable(() => {
 
         {tab === 'operationSet' && (
           <div className="flex flex-wrap items-center gap-2">
-            <InputGroup
-              className="max-w-md [&>input]:!rounded-md"
-              placeholder={t.components.Operations.search_placeholder}
-              leftIcon="search"
-              size={64}
-              large
-              type="search"
-              enterKeyHint="search"
-              defaultValue={queryParams.keyword}
-              onChange={(e) =>
-                debouncedSetQueryParams((old) => ({
-                  ...old,
-                  keyword: e.target.value.trim(),
-                }))
-              }
-              onBlur={() => debouncedSetQueryParams.flush()}
-            />
+            <div className="flex">
+              <InputGroup
+                className="[&>input]:!rounded-md max-w-md"
+                placeholder={t.components.Operations.search_placeholder}
+                size={64}
+                large
+                type="search"
+                enterKeyHint="search"
+                defaultValue={queryParams.keyword}
+                value={searchKeyword}
+                onChange={(e) => setSearchKeyword(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    handleSearch()
+                  }
+                }}
+              />
+              <Button
+                minimal
+                large
+                icon="search"
+                text="搜索"
+                className=" ml-2 text-gray-500 hover:text-gray-700 transition-colors"
+                onClick={handleSearch}
+              />
+            </div>
             <UserFilter
               user={selectedUser}
               onChange={(user) => {
