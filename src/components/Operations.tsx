@@ -10,6 +10,7 @@ import {
   Tab,
   Tabs,
 } from '@blueprintjs/core'
+import type { Popover2 } from '@blueprintjs/popover2'
 import { MultiSelect2 } from '@blueprintjs/select'
 
 import { UseOperationsParams } from 'apis/operation'
@@ -17,7 +18,14 @@ import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useAtom } from 'jotai'
 import { MaaUserInfo } from 'maa-copilot-client'
-import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react'
+import {
+  ComponentType,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react'
 
 import { CardTitle } from 'components/CardTitle'
 import { OperationList } from 'components/OperationList'
@@ -76,6 +84,7 @@ export const Operations: ComponentType = withSuspensable(() => {
       }),
     [levels],
   )
+  const popoverRef = useRef<Popover2>(null)
 
   const [selectedLevels, setSelectedLevels] = useState<Level[]>([])
 
@@ -105,7 +114,11 @@ export const Operations: ComponentType = withSuspensable(() => {
     if (!trimmedDebouncedQuery) {
       return []
     }
-    return fuse.search(trimmedDebouncedQuery).map((el) => el.item)
+    const ret = fuse.search(trimmedDebouncedQuery).map((el) => el.item)
+    if (ret.length === 0 && popoverRef.current?.popoverElement) {
+      popoverRef.current.popoverElement.style.display = 'none'
+    }
+    return ret
   }, [trimmedDebouncedQuery, fuse])
 
   return (
@@ -163,8 +176,9 @@ export const Operations: ComponentType = withSuspensable(() => {
         {tab === 'operation' && (
           <>
             <div className="flex flex-wrap items-center gap-2">
-              <div className="flex max-w-md flex-grow ">
+              <div className="flex max-w-md flex-grow">
                 <MultiSelect2<Level>
+                  popoverRef={popoverRef}
                   className="flex-grow"
                   query={query}
                   onQueryChange={(query) => {
