@@ -6,7 +6,7 @@ import { CopilotDocV1 } from '../models/copilot.schema'
 
 export const ignoreKeyDic = ['_id', 'id'] as const
 type Group = CopilotDocV1.Group
-type FavGroup = Omit<Group, (typeof ignoreKeyDic)[number]>
+export type FavGroup = Omit<Group, (typeof ignoreKeyDic)[number]>
 
 const favGroupCoreAtom = atomWithStorage<FavGroup[]>(
   'maa-copilot-fav-groups',

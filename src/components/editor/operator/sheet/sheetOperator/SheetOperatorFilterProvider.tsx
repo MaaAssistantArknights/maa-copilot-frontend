@@ -111,6 +111,7 @@ const generateCustomizedOperInfo = (name: string): OperatorInfo => ({
   name,
   prof: 'TOKEN',
   subProf: 'customized',
+  name_en: '',
   alias: 'customized-operator',
   rarity: 0,
   alt_name: 'custormized operator named' + name,

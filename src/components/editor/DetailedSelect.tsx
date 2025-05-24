@@ -1,12 +1,25 @@
-import { Classes, H6, Icon, IconName, MenuItem } from '@blueprintjs/core'
-import { Select2, Select2Props } from '@blueprintjs/select'
+import {
+  Classes,
+  H6,
+  Icon,
+  IconName,
+  MenuItem,
+  MenuItemProps,
+} from '@blueprintjs/core'
+import { Select2Props } from '@blueprintjs/select'
 
+import clsx from 'clsx'
 import { ReactNode } from 'react'
 import { FCC } from 'types'
 
-export type DetailedSelectItem =
-  | DetailedSelectChoice
-  | { type: 'header'; header: ReactNode }
+import { Select } from '../Select'
+
+export type DetailedSelectItem = DetailedSelectHeader | DetailedSelectChoice
+export type DetailedSelectHeader = {
+  type: 'header'
+  header: ReactNode | (() => ReactNode)
+}
+
 export interface DetailedSelectChoice {
   type: 'choice'
   icon?: IconName
@@ -14,34 +27,42 @@ export interface DetailedSelectChoice {
   value: string | number
   description?: ReactNode | (() => ReactNode)
   disabled?: boolean
+  menuItemProps?: Partial<MenuItemProps>
 }
 
-const DetailedSelect2 = Select2.ofType<DetailedSelectItem>()
-
 export const DetailedSelect: FCC<
-  Omit<Select2Props<DetailedSelectItem>, 'itemRenderer' | 'onItemSelect'> & {
+  Omit<
+    Select2Props<DetailedSelectItem>,
+    'itemRenderer' | 'onItemSelect' | 'itemDisabled'
+  > & {
+    value?: string | number
     onItemSelect: (item: DetailedSelectChoice) => void
   }
-> = ({ items, onItemSelect, children, ...props }) => {
+> = ({ className, items, value, onItemSelect, children, ...props }) => {
   return (
-    <DetailedSelect2
-      className="inline-flex"
+    <Select
+      className={clsx('inline-flex', className)}
       items={items}
       filterable={false}
+      resetOnQuery={false}
+      itemDisabled={(item) => item.type === 'header' || !!item.disabled}
       itemRenderer={(action, { handleClick, handleFocus, modifiers }) => {
-        if (!modifiers.matchesPredicate) return null
-
         if (action.type === 'header') {
           return (
             <li key={'header_' + action.header} className={Classes.MENU_HEADER}>
-              <H6>{action.header}</H6>
+              <H6>
+                {typeof action.header === 'function'
+                  ? action.header()
+                  : action.header}
+              </H6>
             </li>
           )
         }
 
         return (
           <MenuItem
-            selected={modifiers.active}
+            className={modifiers.active ? Classes.ACTIVE : undefined}
+            selected={action.value === value}
             key={action.value}
             onClick={handleClick}
             onFocus={handleFocus}
@@ -58,14 +79,17 @@ export const DetailedSelect: FCC<
                       ? action.title()
                       : action.title}
                   </div>
-                  <div className="text-xs opacity-75">
-                    {typeof action.description === 'function'
-                      ? action.description()
-                      : action.description}
-                  </div>
+                  {action.description && (
+                    <div className="text-xs opacity-75">
+                      {typeof action.description === 'function'
+                        ? action.description()
+                        : action.description}
+                    </div>
+                  )}
                 </div>
               </div>
             }
+            {...action.menuItemProps}
           />
         )
       }}
@@ -75,7 +99,7 @@ export const DetailedSelect: FCC<
       {...props}
     >
       {children}
-    </DetailedSelect2>
+    </Select>
   )
 }
 

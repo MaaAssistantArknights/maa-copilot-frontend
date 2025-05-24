@@ -7,7 +7,7 @@ const isMock = process.env.NODE_ENV === 'development'
 
 const announcementURL = isMock
   ? mockFile
-  : 'https://ota.maa.plus/MaaAssistantArknights/api/announcements/copilot.md'
+  : 'https://api.maa.plus/MaaAssistantArknights/api/announcements/copilot.md'
 
 export const announcementBaseURL = isMock
   ? location.href

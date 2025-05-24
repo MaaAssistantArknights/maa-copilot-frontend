@@ -8,6 +8,7 @@ import { FC } from 'react'
 
 import { AppToaster } from 'components/Toaster'
 import { CopilotDocV1 } from 'models/copilot.schema'
+import { useLocalizedOperatorName } from 'models/operator'
 import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
 
@@ -102,7 +103,7 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
   return (
     <Card
       className={clsx(
-        'flex items-center w-full h-full relative cursor-pointer flex-col justify-center',
+        'flex items-center w-full h-full relative cursor-pointer flex-col',
         selectedInView && 'scale-90 bg-gray-200',
       )}
       elevation={grouped ? 0 : 2}
@@ -110,14 +111,16 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
       onClick={onOperatorSelect}
     >
       <>
-        <>
-          <OperatorAvatar name={name} size="large" />
-          <p
-            className={clsx('font-bold leading-none text-center mt-3 truncate')}
-          >
-            {name}
-          </p>
-        </>
+        <OperatorAvatar className="mt-3" name={name} size="large" />
+        <p
+          className={clsx(
+            'mt-1 font-bold leading-tight text-center',
+            'break-words', // Allow text to break to next line
+          )}
+        >
+          {useLocalizedOperatorName(name)}
+        </p>
+
         {selected && (
           <div
             className="absolute top-2 right-2"
@@ -170,13 +173,19 @@ export const SheetOperatorItem: FC<SheetOperatorItemProp> = ({ name }) => {
         />
       )}
       {grouped && (
-        <span className="text-xs font-bold mt-3">
-          <Icon icon="warning-sign" size={15} />
-          {
-            t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem
-              .in_group
-          }
-        </span>
+        <div className={clsx('flex mt-1 text-gray-500 items-center text-xs')}>
+          <Icon
+            icon="warning-sign"
+            size={12}
+            className="flex items-center mr-1"
+          />
+          <p className="font-semibold">
+            {
+              t.components.editor.operator.sheet.sheetOperator.SheetOperatorItem
+                .in_group
+            }
+          </p>
+        </div>
       )}
     </Card>
   )

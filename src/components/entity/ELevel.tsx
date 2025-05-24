@@ -26,8 +26,12 @@ export const NeoELevel: FC<{
       <div className="flex items-center">
         <div className="flex whitespace-pre">
           <span className="inline-block font-bold my-auto">{catThree}</span>
-          {' | '}
-          <span className="text-xs">{catTwo}</span>
+          {catTwo && (
+            <>
+              {' | '}
+              <span className="text-xs">{catTwo}</span>
+            </>
+          )}
           {' | '}
           <span className="text-xs">{catOne}</span>
         </div>

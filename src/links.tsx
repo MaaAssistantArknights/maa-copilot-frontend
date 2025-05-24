@@ -17,6 +17,11 @@ export const NAV_CONFIG = [
     icon: <Icon icon="add" />,
   },
   {
+    to: '/editor',
+    labelKey: i18nDefer.links.editor,
+    icon: <Icon icon="annotation" />,
+  },
+  {
     to: '/about',
     labelKey: i18nDefer.links.about,
     icon: <Icon icon="info-sign" />,
@@ -62,7 +67,7 @@ export const SOCIAL_CONFIG = [
   },
   {
     icon: <IconifyIcon icon={simpleIconsQQ} className="mr-2" fontSize="12px" />,
-    href: 'https://ota.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
+    href: 'https://api.maa.plus/MaaAssistantArknights/api/qqgroup/index.html',
     labelKey: i18nDefer.links.sharing_group,
   },
 ]

@@ -1,10 +1,10 @@
 import { access } from 'fs/promises'
-import { uniq, uniqBy } from 'lodash-es'
+import { capitalize, uniq, uniqBy } from 'lodash-es'
 import fetch from 'node-fetch'
 import { pinyin } from 'pinyin'
 import simplebig from 'simplebig'
 
-type Profession = { id: string; name: string }
+type Profession = { id: string; name: string; name_en?: string }
 type Professions = (Profession & { sub: Profession[] })[]
 
 export async function fileExists(file: string) {
@@ -48,10 +48,14 @@ function transformOperatorName(name: string) {
   }
 }
 
-const CHARACTER_TABLE_JSON_URL =
+const CHARACTER_TABLE_JSON_URL_CN =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/character_table.json'
-const UNIEQUIP_TABLE_JSON_URL =
+const UNIEQUIP_TABLE_JSON_URL_CN =
   'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/excel/uniequip_table.json'
+const CHARACTER_TABLE_JSON_URL_EN =
+  'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/character_table.json'
+const UNIEQUIP_TABLE_JSON_URL_EN =
+  'https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData_YoStar/main/en_US/gamedata/excel/uniequip_table.json'
 
 const CHARACTER_BLOCKLIST = [
   'char_512_aprot', // 暮落(集成战略)：It's just not gonna be there.
@@ -74,51 +78,85 @@ async function json(url: string) {
 }
 
 export async function getOperators() {
-  const [charTable, uniequipTable] = await Promise.all([
-    json(CHARACTER_TABLE_JSON_URL),
-    json(UNIEQUIP_TABLE_JSON_URL),
-  ])
+  const [charTableCN, uniequipTableCN, charTableEN, uniequipTableEN] =
+    await Promise.all([
+      json(CHARACTER_TABLE_JSON_URL_CN),
+      json(UNIEQUIP_TABLE_JSON_URL_CN),
+      json(CHARACTER_TABLE_JSON_URL_EN),
+      json(UNIEQUIP_TABLE_JSON_URL_EN),
+    ])
 
-  const { subProfDict } = uniequipTable
+  const { subProfDict: subProfDictCN, equipDict } = uniequipTableCN
+  const { subProfDict: subProfDictEN } = uniequipTableEN
+  const equipsByOperatorId = Object.values(equipDict).reduce(
+    (acc: Record<string, any[]>, equip: any) => {
+      acc[equip.charId] ||= []
+      acc[equip.charId].push(equip)
+      return acc
+    },
+    {},
+  )
 
-  const opIds = Object.keys(charTable)
+  const opIds = Object.keys(charTableCN)
   const professions: Professions = []
   const result = uniqBy(
     opIds.flatMap((id) => {
-      const op = charTable[id]
+      const op = charTableCN[id]
+      const enName = charTableEN[id]?.name || op.appellation || op.name
+
       if (['TRAP'].includes(op.profession)) return []
 
       if (!['TOKEN'].includes(op.profession)) {
         const prof = professions.find((p) => p.id === op.profession)
         if (!prof) {
+          const enSubProfName =
+            subProfDictEN?.[op.subProfessionId]?.subProfessionName ||
+            capitalize(op.subProfessionId)
+
           professions.push({
             id: op.profession,
             name: PROFESSION_NAMES[op.profession],
+            name_en:
+              op.profession.charAt(0) + op.profession.slice(1).toLowerCase(),
             sub: [
               {
                 id: op.subProfessionId,
-                name: subProfDict[op.subProfessionId].subProfessionName,
+                name: subProfDictCN[op.subProfessionId].subProfessionName,
+                name_en: enSubProfName,
               },
             ],
           })
         } else if (!prof.sub.find((p) => p.id === op.subProfessionId)) {
+          const enSubProfName =
+            subProfDictEN?.[op.subProfessionId]?.subProfessionName ||
+            capitalize(op.subProfessionId)
+
           prof.sub.push({
             id: op.subProfessionId,
-            name: subProfDict[op.subProfessionId].subProfessionName,
+            name: subProfDictCN[op.subProfessionId].subProfessionName,
+            name_en: enSubProfName,
           })
         }
       }
+      const modules = equipsByOperatorId[id]
+        ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
+        .map(({ typeName1, typeName2 }) => {
+          return typeName1 === 'ORIGINAL' ? '' : typeName2
+        })
+        .map((m) => (m === 'A' ? 'α' : m === 'D' ? 'Δ' : m))
       return [
         {
           id: id,
           prof: op.profession,
           subProf: op.subProfessionId,
+          name_en: enName,
           ...transformOperatorName(op.name),
           rarity:
             op.subProfessionId === 'notchar1'
               ? 0
               : Number(op.rarity?.split('TIER_').join('') || 0),
           alt_name: op.appellation,
+          modules,
         },
       ]
     }),

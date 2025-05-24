@@ -54,6 +54,9 @@ clearOutdatedSwrCache()
 const CreatePageLazy = withSuspensable(
   lazy(() => import('./pages/create').then((m) => ({ default: m.CreatePage }))),
 )
+const EditorPageLazy = withSuspensable(
+  lazy(() => import('./pages/editor').then((m) => ({ default: m.EditorPage }))),
+)
 const AboutPageLazy = withSuspensable(
   lazy(() => import('./pages/about').then((m) => ({ default: m.AboutPage }))),
 )
@@ -74,6 +77,8 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
           <Route path="/about" element={<AboutPageLazy />} />
           <Route path="/profile/:id" element={<ProfilePageLazy />} />
           <Route path="/operation/:id" element={<ViewPage />} />
+          <Route path="/editor" element={<EditorPageLazy />} />
+          <Route path="/editor/:id" element={<EditorPageLazy />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </AppLayout>

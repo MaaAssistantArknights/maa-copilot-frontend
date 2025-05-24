@@ -311,7 +311,7 @@ export const OperationEditor: FC<OperationEditorProps> = ({
 
   return (
     <FloatingMapContext>
-      <section className="flex flex-col relative h-full pt-4">
+      <section className="flex flex-col relative h-full pt-4 pb-16">
         <div className="px-8 text-lg font-medium flex items-center flex-wrap w-full">
           <Icon icon="document" />
           <span className="ml-2 mr-4">

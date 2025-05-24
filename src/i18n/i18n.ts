@@ -1,6 +1,6 @@
 import { atom, getDefaultStore, useAtomValue } from 'jotai'
 import { atomWithStorage } from 'jotai/utils'
-import { isObject, isString } from 'lodash-es'
+import { get, isObject, isString } from 'lodash-es'
 import mitt from 'mitt'
 import { Fragment, ReactElement, ReactNode, createElement } from 'react'
 import { ValueOf } from 'type-fest'
@@ -82,19 +82,25 @@ const languageStorageKey = 'maa-copilot-lang'
 let currentLanguage: Language
 let currentTranslations: I18NTranslations | undefined
 
-export const i18n = new Proxy({} as I18NTranslations, {
-  get(target, prop) {
-    if (!currentTranslations) {
-      if (prop === 'essentials') {
-        return allEssentials[currentLanguage]
+export const i18n = new Proxy(
+  {} as I18NTranslations & { currentLanguage: Language },
+  {
+    get(target, prop) {
+      if (prop === 'currentLanguage') {
+        return currentLanguage
       }
-      // if this error occurs during dev, it's probably because the code containing i18n.* is executed
-      // before the translations are loaded, in which case you should change it to i18nDefer.*
-      throw new Error(allEssentials[currentLanguage].translations_not_loaded)
-    }
-    return currentTranslations[prop] || prop
+      if (!currentTranslations) {
+        if (prop === 'essentials') {
+          return allEssentials[currentLanguage]
+        }
+        // if this error occurs during dev, it's probably because the code containing i18n.* is executed
+        // before the translations are loaded, in which case you should change it to i18nDefer.*
+        throw new Error(allEssentials[currentLanguage].translations_not_loaded)
+      }
+      return currentTranslations[prop] || prop
+    },
   },
-})
+)
 
 type Deferred<T> = T extends string
   ? () => string
@@ -120,7 +126,12 @@ function createDeferredProxy(path: string) {
       if (Object.prototype.hasOwnProperty.call(target, prop)) {
         return target[prop]
       }
-      target[prop] = createDeferredProxy(path + '.' + String(prop))
+      if (typeof prop === 'symbol') {
+        return undefined
+      }
+      target[prop] = createDeferredProxy(
+        (path ? path + '.' : '') + String(prop),
+      )
       return target[prop]
     },
     apply(target, _this, args) {
@@ -129,6 +140,12 @@ function createDeferredProxy(path: string) {
           return updatedValue(...args)
         }
         return updatedValue
+      }
+      if (currentTranslations) {
+        const translated = get(currentTranslations, path)
+        if (translated) {
+          return translated
+        }
       }
       return toString()
     },
@@ -162,7 +179,7 @@ export const rawTranslationsAtom = atom(
   },
 )
 const internalTranslationsAtom = atom<I18NTranslations | undefined>(undefined)
-const translationsAtom = atom(
+export const translationsAtom = atom(
   (get) => {
     const translations = get(internalTranslationsAtom)
     if (!translations) {

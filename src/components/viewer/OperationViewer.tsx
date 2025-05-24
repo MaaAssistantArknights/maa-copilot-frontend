@@ -51,10 +51,17 @@ import { i18nDefer, useTranslation } from '../../i18n/i18n'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { createCustomLevel, findLevelByStageName } from '../../models/level'
 import { Level } from '../../models/operation'
-import { OPERATORS } from '../../models/operator'
+import {
+  OPERATORS,
+  getEliteIconUrl,
+  getSkillCount,
+  useLocalizedOperatorName,
+  withDefaultRequirements,
+} from '../../models/operator'
 import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { Confirm } from '../Confirm'
+import { MasteryIcon } from '../MasteryIcon'
 import { ReLink } from '../ReLink'
 import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
@@ -114,6 +121,19 @@ const ManageMenu: FC<{
               tagName="div"
               icon="edit"
               text={t.components.viewer.OperationViewer.modify_task}
+            />
+          </ReLink>
+        </li>
+        <li>
+          <ReLink
+            className="hover:text-inherit hover:no-underline"
+            to={`/editor/${operation.id}`}
+            target="_blank"
+          >
+            <MenuItem
+              tagName="div"
+              icon="edit"
+              text={t.components.viewer.OperationViewer.modify_task_v2}
             />
           </ReLink>
         </li>
@@ -316,22 +336,100 @@ export const OperationViewer: ComponentType<{
 
 const OperatorCard: FC<{
   operator: CopilotDocV1.Operator
-}> = ({ operator }) => {
+  version?: number
+}> = ({ operator, version = 1 }) => {
   const t = useTranslation()
-  const { name, skill } = operator
-  const info = OPERATORS.find((o) => o.name === name)
+  const displayName = useLocalizedOperatorName(operator.name)
+  const info = OPERATORS.find((o) => o.name === operator.name)
+  const { level, elite, skillLevel, module } = withDefaultRequirements(
+    operator.requirements,
+    info?.rarity,
+  )
+  const skillCount = info
+    ? Math.max(getSkillCount(info), operator.skill ?? 1)
+    : 3
 
   return (
-    <div className="min-w-24 flex flex-col items-center">
-      <OperatorAvatar
-        id={info?.id}
-        rarity={info?.rarity}
-        className="w-16 h-16 mb-1"
-      />
-      <span className={clsx('mb-1 font-bold')}>{name}</span>
-      <span className="text-xs text-zinc-300">
-        {t.models.operator.skill_number({ count: skill ?? 1 })}
-      </span>
+    <div className="relative flex items-start">
+      <div className="relative w-20">
+        <div className="relative rounded-lg overflow-hidden shadow-md">
+          <OperatorAvatar
+            id={info?.id}
+            rarity={info?.rarity}
+            className="w-20 h-20"
+            fallback={displayName}
+          />
+          {info?.modules && module !== 0 && (
+            <div
+              title={t.components.editor2.label.opers.requirements.module}
+              className="absolute -bottom-1 right-1 font-serif font-bold text-lg text-white [text-shadow:0_0_3px_#a855f7,0_0_5px_#a855f7]"
+            >
+              {info.modules[module]}
+            </div>
+          )}
+        </div>
+        <h4 className="mt-1 -mx-2 leading-4 font-semibold tracking-tighter text-center">
+          {displayName}
+        </h4>
+        {info && info.prof !== 'TOKEN' && (
+          <img
+            className="absolute top-0 right-0 w-5 h-5 p-px bg-gray-600 rounded-tr-md"
+            src={'/assets/prof-icons/' + info.prof + '.png'}
+            alt={info.prof}
+          />
+        )}
+      </div>
+      {version >= 2 && info?.prof !== 'TOKEN' && (
+        <>
+          <div className="absolute top-1 -left-5 ml-[2px] px-3 py-4 rounded-full bg-[radial-gradient(rgba(0,0,0,0.6)_10%,rgba(0,0,0,0.08)_30%,rgba(0,0,0,0)_45%)] pointer-events-none">
+            <img
+              className="w-7 h-6 object-contain"
+              src={getEliteIconUrl(elite)}
+              alt={t.models.operator.elite({ level: elite })}
+            />
+          </div>
+          <div className="absolute -top-2 -left-2 w-8 h-8 pr-px leading-7 rounded-full border-2 border-yellow-300 bg-black/50 text-lg text-white font-semibold text-center shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+            {level}
+          </div>
+        </>
+      )}
+
+      <ul className="flex flex-col gap-1 ml-1">
+        {Array.from({ length: skillCount }, (_, index) => {
+          const skillNumber = index + 1
+          const selected = operator.skill === skillNumber
+          return (
+            <li
+              key={index}
+              className={clsx(
+                'relative',
+                selected
+                  ? 'bg-purple-100 dark:bg-purple-900 dark:text-purple-200 text-purple-800'
+                  : 'bg-gray-300 dark:bg-gray-600 opacity-15 dark:opacity-25',
+              )}
+              title={t.models.operator.skill_number({ count: skillNumber })}
+            >
+              <div className="w-6 h-6 flex items-center justify-center font-bold text-xl border-2 border-current">
+                {version >= 2 ? (
+                  selected ? (
+                    skillLevel <= 7 ? (
+                      skillLevel
+                    ) : (
+                      <MasteryIcon
+                        className="w-4 h-4"
+                        mastery={skillLevel - 7}
+                        subClassName="fill-gray-300 dark:fill-gray-500"
+                      />
+                    )
+                  ) : undefined
+                ) : (
+                  skillNumber
+                )}
+              </div>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }
@@ -516,7 +614,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
         />
       </H4>
       <Collapse isOpen={showOperators}>
-        <div className="mt-2 flex flex-wrap -ml-4 gap-y-2">
+        <div className="mt-2 flex flex-wrap gap-6">
           {!operation.parsedContent.opers?.length &&
             !operation.parsedContent.groups?.length && (
               <NonIdealState
@@ -530,7 +628,11 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
               />
             )}
           {operation.parsedContent.opers?.map((operator) => (
-            <OperatorCard key={operator.name} operator={operator} />
+            <OperatorCard
+              key={operator.name}
+              operator={operator}
+              version={operation.parsedContent.version}
+            />
           ))}
         </div>
         <div className="flex flex-wrap gap-4 mt-4">
@@ -540,12 +642,16 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
               className="!p-2 flex flex-col items-center"
               key={group.name}
             >
-              <H6 className="text-gray-800">{group.name}</H6>
-              <div className="flex flex-wrap gap-y-2">
+              <H6 className="mb-3 text-gray-800">{group.name}</H6>
+              <div className="flex flex-wrap px-2 gap-6">
                 {group.opers
                   ?.filter(Boolean)
                   .map((operator) => (
-                    <OperatorCard key={operator.name} operator={operator} />
+                    <OperatorCard
+                      key={operator.name}
+                      operator={operator}
+                      version={operation.parsedContent.version}
+                    />
                   ))}
 
                 {group.opers?.filter(Boolean).length === 0 && (

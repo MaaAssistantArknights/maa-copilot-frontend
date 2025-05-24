@@ -11,6 +11,7 @@ import {
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
+import { useAtomValue } from 'jotai'
 import {
   DetailedHTMLProps,
   Dispatch,
@@ -21,7 +22,9 @@ import {
   useState,
 } from 'react'
 
-import { useTranslation } from '../../../../../i18n/i18n'
+import { getLocalizedOperatorName } from 'models/operator'
+
+import { languageAtom, useTranslation } from '../../../../../i18n/i18n'
 import { OperatorAvatar } from '../../EditorOperator'
 import { Group } from '../../EditorSheet'
 import {
@@ -306,6 +309,8 @@ const OperatorSelectorItem: FC<{
   groupName?: OperatorInSheetOperatorEditor['groupName']
   opers: Group['opers']
 }> = ({ selectedOperators, setSelectedOperators, groupName, opers }) => {
+  const language = useAtomValue(languageAtom)
+
   return (
     <div className="flex flex-wrap">
       {opers?.map(({ name }) => {
@@ -332,8 +337,8 @@ const OperatorSelectorItem: FC<{
             }}
           >
             <OperatorAvatar name={name} size="large" />
-            <p className="font-bold leading-none text-center mt-3 truncate">
-              {name}
+            <p className="mt-1 font-bold leading-tight text-center break-words">
+              {getLocalizedOperatorName(name, language)}
             </p>
           </Card>
         )
