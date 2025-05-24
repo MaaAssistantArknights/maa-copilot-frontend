@@ -1,6 +1,14 @@
+## 2025-05-25
+
+- 添加干员和职业的英文名称 [@Constrat](https://github.com/Constrat)
+- 修复了作业列表里的自定义关卡显示不正常的问题 [@Constrat](https://github.com/Constrat)
+- 修复了部分文字的翻译显示不正常的问题 [@guansss](https://github.com/guansss)
+- 添加编辑器v2 [@guansss](https://github.com/guansss)
+- 优化首页搜索逻辑 [@ChingCdesu](https://github.com/ChingCdesu) [@Aliothmoon](https://github.com/Aliothmoon) [@dragove](https://github.com/dragove)
+
 ## 2025-05-11
 
-- 添加 i18n 及英文翻译 [@Constrat](https://github.com/Constrat) [@guansss](https://github.com/guansss)
+- 添加国际化及英文翻译 [@Constrat](https://github.com/Constrat) [@guansss](https://github.com/guansss)
 
 ## 2025-05-02
 
