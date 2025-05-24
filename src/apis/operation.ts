@@ -4,7 +4,7 @@ import {
   CopilotInfoStatusEnum,
   QueriesCopilotRequest,
 } from 'maa-copilot-client'
-import useSWR from 'swr'
+import useSWR, { SWRConfiguration } from 'swr'
 import useSWRInfinite from 'swr/infinite'
 
 import { toCopilotOperation } from 'models/converter'
@@ -161,16 +161,15 @@ export function useRefreshOperations() {
   return () => refresh((key) => key.includes('operations'))
 }
 
-interface UseOperationParams {
+interface UseOperationParams extends SWRConfiguration {
   id?: number
-  suspense?: boolean
 }
 
-export function useOperation({ id, suspense }: UseOperationParams) {
+export function useOperation({ id, ...config }: UseOperationParams) {
   return useSWR(
     id ? ['operation', id] : null,
     () => getOperation({ id: id! }),
-    { suspense },
+    config,
   )
 }
 
@@ -196,7 +195,8 @@ export async function createOperation(req: {
   content: string
   status: CopilotInfoStatusEnum
 }) {
-  await new OperationApi().uploadCopilot({ copilotCUDRequest: req })
+  return (await new OperationApi().uploadCopilot({ copilotCUDRequest: req }))
+    .data
 }
 
 export async function updateOperation(req: {

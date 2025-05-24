@@ -11,5 +11,9 @@ export const ViewPage = () => {
     return null
   }
 
-  return <OperationViewer operationId={+id} onCloseDrawer={() => {}} />
+  return (
+    <div className="pb-16">
+      <OperationViewer operationId={+id} onCloseDrawer={() => {}} />
+    </div>
+  )
 }

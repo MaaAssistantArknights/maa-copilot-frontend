@@ -34,7 +34,7 @@ const _ProfilePage: ComponentType = () => {
   const [operationSetCount, setOperationSetCount] = useState(-1)
 
   return (
-    <div className="flex flex-col md:flex-row px-8 mt-8 max-w-[96rem] mx-auto">
+    <div className="flex flex-col md:flex-row px-8 pb-16 mt-8 max-w-[96rem] mx-auto">
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8">
         <div className="mb-4 flex flex-wrap">
           <ButtonGroup className="mr-2">

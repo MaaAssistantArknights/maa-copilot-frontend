@@ -1,4 +1,5 @@
-import { Button, ButtonProps, Label } from '@blueprintjs/core'
+import { Button, ButtonProps, Classes, Label } from '@blueprintjs/core'
+import { Classes as Popover2Classes } from '@blueprintjs/popover2'
 import {
   QueryList,
   Select2,
@@ -27,8 +28,9 @@ export const Select = <T,>({
   canReset ??= selectedItem !== undefined
 
   return (
-    <Label className={clsx('!flex items-center !mb-0', className)}>
+    <Label className={clsx('!inline-flex items-center !mb-0', className)}>
       <Select2
+        ref={patchHandleItemSelect}
         className="!mt-0"
         resetOnQuery={false} // 这个功能有无限 reset 的 bug，不要用
         inputProps={{
@@ -39,8 +41,6 @@ export const Select = <T,>({
           ),
         }}
         {...props}
-        // 传给 QueryList，给下面的补丁用
-        {...{ _parentType: 'Select' }}
       />
       {canReset && (
         <Button
@@ -60,8 +60,28 @@ export const Select = <T,>({
   )
 }
 
+// 临时实现 PR 里的内容： https://github.com/palantir/blueprint/pull/6070
+// TODO: 升级到 BP 5 后删除
+function patchHandleItemSelect(instance: Select2<any> | null) {
+  if (!instance || instance['handleItemSelect']._patched) return
+  instance['handleItemSelect'] = (
+    item: unknown,
+    event?: React.SyntheticEvent<HTMLElement>,
+  ) => {
+    const target = event?.target as HTMLElement
+    const shouldDismiss =
+      target
+        ?.closest(`.${Classes.MENU_ITEM}`)
+        ?.classList?.contains(Popover2Classes.POPOVER2_DISMISS) ?? true
+
+    instance.setState({ isOpen: !shouldDismiss })
+    instance.props.onItemSelect?.(item, event)
+  }
+  instance['handleItemSelect']._patched = true
+}
+//
+
 // 修复 BP 的远古 bug：https://github.com/palantir/blueprint/issues/3751
-// 补丁只对 Select 组件启用，因为不知道对 Suggest 和 MultiSelect 是否有效，先不管了
 
 const originalSetQuery =
   (QueryList.prototype.setQuery as any)._original ??
@@ -77,10 +97,7 @@ const originalGetActiveIndex =
   (QueryList.prototype['getActiveIndex'] as any)._original ??
   QueryList.prototype['getActiveIndex']
 QueryList.prototype['getActiveIndex'] = function (items) {
-  if (
-    this.props['_parentType'] === 'Select' &&
-    (this as any)._isCallingSetQuery
-  ) {
+  if ((this as any)._isCallingSetQuery) {
     const activeItem =
       this.props.activeItem === undefined
         ? this.state.activeItem

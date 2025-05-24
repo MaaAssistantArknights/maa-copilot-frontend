@@ -3,14 +3,18 @@ import { Icon, IconSize, MenuItem } from '@blueprintjs/core'
 import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useAtomValue } from 'jotai'
-import { useMemo } from 'react'
+import { ReactNode, useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 import { languageAtom, useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
-import { OPERATORS } from '../../../models/operator'
+import {
+  OPERATORS,
+  findOperatorById,
+  findOperatorByName,
+} from '../../../models/operator'
 import { Suggest } from '../../Suggest'
 
 type OperatorInfo = (typeof OPERATORS)[number]
@@ -19,11 +23,8 @@ type PerformerItem = OperatorInfo | CopilotDocV1.Group
 const isOperator = (item: PerformerItem): item is OperatorInfo =>
   !!(item as OperatorInfo).alias
 
-const findOperatorIdByName = (name: string) =>
-  OPERATORS.find((el) => el.name === name)?.id ?? ''
-
 const createArbitraryOperator = (name: string): OperatorInfo => ({
-  id: findOperatorIdByName(name),
+  id: '',
   name,
   alias: '',
   alt_name: '',
@@ -173,26 +174,26 @@ export const EditorOperatorName = <T extends FieldValues>({
 export const OperatorAvatar = ({
   id,
   name,
-  rarity = 0,
+  rarity,
   size,
+  fallback = '?',
   className,
 }: {
   id?: string
   name?: string
   rarity?: number
   size?: 'small' | 'medium' | 'large'
+  fallback?: ReactNode
   className?: string
 }) => {
-  const foundId = (() => {
-    if (id) return id
-
-    if (name) {
-      const found = findOperatorIdByName(name)
-      if (found) return found
-    }
-
-    return ''
-  })()
+  let info: OperatorInfo | undefined
+  if (id) {
+    info = findOperatorById(id)
+  } else if (name) {
+    info = findOperatorByName(name)
+    id = info?.id
+  }
+  rarity ??= info?.rarity
 
   const sizingClassName =
     size &&
@@ -214,7 +215,7 @@ export const OperatorAvatar = ({
   const commonClassName =
     'ring-inset ring-2 border-solid rounded-md object-cover'
 
-  return foundId ? (
+  return id ? (
     <img
       className={clsx(
         sizingClassName,
@@ -222,9 +223,12 @@ export const OperatorAvatar = ({
         commonClassName,
         className,
       )}
-      src={'/assets/operator-avatars/' + foundId + '.png'}
+      src={'/assets/operator-avatars/' + id + '.png'}
       alt={id}
+      // lazy 要配合 width和 height 使用，不然图片提前很多就加载了
       loading="lazy"
+      width="180"
+      height="180"
     />
   ) : (
     <div
@@ -232,11 +236,11 @@ export const OperatorAvatar = ({
         sizingClassName,
         colorClassName,
         commonClassName,
-        'flex items-center justify-center font-bold text-2xl text-slate-300 select-none',
+        'flex items-center justify-center font-bold text-2xl text-slate-300 truncate select-none',
         className,
       )}
     >
-      ?
+      <div className="min-w-0">{fallback}</div>
     </div>
   )
 }

@@ -56,7 +56,7 @@ export const AppLayout: FCC = ({ children }) => {
       </Navbar>
       <NavAside />
 
-      <div className="docs-content-wrapper pt-14 pb-16">{children}</div>
+      <div className="docs-content-wrapper pt-14">{children}</div>
 
       <BackToTop />
     </div>

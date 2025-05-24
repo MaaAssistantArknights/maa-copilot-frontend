@@ -47,7 +47,7 @@ export const EditorActionTypeSelect = (
       onItemSelect={(item) => {
         onChange(item.value)
       }}
-      activeItem={selectedAction}
+      value={selectedAction.value}
     >
       <Button
         large
