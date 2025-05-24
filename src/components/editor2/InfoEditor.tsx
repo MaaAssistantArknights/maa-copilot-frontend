@@ -120,6 +120,7 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
       >
         <DifficultyPicker
           stageName={info.stageName}
+          value={info.difficulty}
           onChange={(value, programmatically) => {
             edit((get, set, skip) => {
               setInfo((prev) => {
