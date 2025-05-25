@@ -68,7 +68,7 @@ export const DifficultyPicker: FC<DifficultyPickerProps> = ({
   }, [isValidLevel, value, onChange])
 
   return (
-    <div className="flex items-baseline">
+    <div className="flex gap-2 items-baseline">
       <DetailedSelect
         disabled={!isValidLevel}
         items={DIFFICULTIES}

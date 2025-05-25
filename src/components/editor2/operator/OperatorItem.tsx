@@ -289,7 +289,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   small
                   minimal
                   className={clsx(
-                    '!px-0 h-full !border-none !text-[.7rem] !leading-3 !font-normal',
+                    '!px-0 h-full !border-none !text-[.7rem] !leading-3 !font-normal !underline underline-offset-2',
                     skillUsageClasses[
                       operator.skillUsage ?? CopilotDocV1.SkillUsageType.None
                     ],

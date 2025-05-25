@@ -289,6 +289,7 @@ const HistoryButtons = (buttonProps: ButtonProps) => {
         <Button
           {...buttonProps}
           icon="history"
+          className={clsx('tabular-nums', buttonProps.className)}
           title={t.components.editor2.EditorToolbar.undo_history}
           text={history.index + 1 + '/' + history.stack.length}
         />
@@ -331,6 +332,7 @@ const ErrorButton = (buttonProps: ButtonProps) => {
     >
       <Button
         {...buttonProps}
+        className={clsx('tabular-nums', buttonProps.className)}
         icon={allErrors.length > 0 ? 'cross-circle' : 'tick-circle'}
         intent={allErrors.length > 0 ? 'danger' : 'success'}
         title={
