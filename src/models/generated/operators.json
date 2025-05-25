@@ -4831,6 +4831,101 @@
   ],
   "PROFESSIONS": [
     {
+      "id": "PIONEER",
+      "name": "先锋",
+      "name_en": "Vanguard",
+      "sub": [
+        { "id": "pioneer", "name": "尖兵", "name_en": "Pioneer" },
+        { "id": "charger", "name": "冲锋手", "name_en": "Charger" },
+        { "id": "tactician", "name": "战术家", "name_en": "Tactician" },
+        { "id": "bearer", "name": "执旗手", "name_en": "Standard Bearer" },
+        { "id": "agent", "name": "情报官", "name_en": "Agent" }
+      ]
+    },
+    {
+      "id": "WARRIOR",
+      "name": "近卫",
+      "name_en": "Guard",
+      "sub": [
+        { "id": "centurion", "name": "强攻手", "name_en": "Centurion" },
+        { "id": "fighter", "name": "斗士", "name_en": "Fighter" },
+        { "id": "artsfghter", "name": "术战者", "name_en": "Arts Fighter" },
+        { "id": "instructor", "name": "教官", "name_en": "Instructor" },
+        { "id": "lord", "name": "领主", "name_en": "Lord" },
+        { "id": "sword", "name": "剑豪", "name_en": "Swordmaster" },
+        { "id": "musha", "name": "武者", "name_en": "Soloblade" },
+        { "id": "fearless", "name": "无畏者", "name_en": "Dreadnought" },
+        { "id": "reaper", "name": "收割者", "name_en": "Reaper" },
+        { "id": "librator", "name": "解放者", "name_en": "Liberator" },
+        { "id": "crusher", "name": "重剑手", "name_en": "Crusher" },
+        { "id": "hammer", "name": "撼地者", "name_en": "Earthshaker" },
+        { "id": "primguard", "name": "本源近卫", "name_en": "Primguard" }
+      ]
+    },
+    {
+      "id": "TANK",
+      "name": "重装",
+      "name_en": "Defender",
+      "sub": [
+        { "id": "protector", "name": "铁卫", "name_en": "Protector" },
+        { "id": "guardian", "name": "守护者", "name_en": "Guardian" },
+        { "id": "unyield", "name": "不屈者", "name_en": "Juggernaut" },
+        {
+          "id": "artsprotector",
+          "name": "驭法铁卫",
+          "name_en": "Arts Protector"
+        },
+        { "id": "duelist", "name": "决战者", "name_en": "Duelist" },
+        { "id": "fortress", "name": "要塞", "name_en": "Fortress" },
+        {
+          "id": "shotprotector",
+          "name": "哨戒铁卫",
+          "name_en": "Sentry Protector"
+        },
+        {
+          "id": "primprotector",
+          "name": "本源铁卫",
+          "name_en": "Primal Protector"
+        }
+      ]
+    },
+    {
+      "id": "SNIPER",
+      "name": "狙击",
+      "name_en": "Sniper",
+      "sub": [
+        { "id": "fastshot", "name": "速射手", "name_en": "Marksman" },
+        { "id": "closerange", "name": "重射手", "name_en": "Heavyshooter" },
+        { "id": "aoesniper", "name": "炮手", "name_en": "Artilleryman" },
+        { "id": "longrange", "name": "神射手", "name_en": "Deadeye" },
+        { "id": "reaperrange", "name": "散射手", "name_en": "Spreadshooter" },
+        { "id": "siegesniper", "name": "攻城手", "name_en": "Besieger" },
+        { "id": "bombarder", "name": "投掷手", "name_en": "Flinger" },
+        { "id": "hunter", "name": "猎手", "name_en": "Hunter" },
+        { "id": "loopshooter", "name": "回环射手", "name_en": "Loopshooter" }
+      ]
+    },
+    {
+      "id": "CASTER",
+      "name": "术师",
+      "name_en": "Caster",
+      "sub": [
+        { "id": "corecaster", "name": "中坚术师", "name_en": "Core Caster" },
+        {
+          "id": "splashcaster",
+          "name": "扩散术师",
+          "name_en": "Splash Caster"
+        },
+        { "id": "funnel", "name": "驭械术师", "name_en": "Mech-accord Caster" },
+        { "id": "phalanx", "name": "阵法术师", "name_en": "Phalanx Caster" },
+        { "id": "mystic", "name": "秘术师", "name_en": "Mystic Caster" },
+        { "id": "chain", "name": "链术师", "name_en": "Chain Caster" },
+        { "id": "blastcaster", "name": "轰击术师", "name_en": "Blast Caster" },
+        { "id": "primcaster", "name": "本源术师", "name_en": "Primal Caster" },
+        { "id": "soulcaster", "name": "塑灵术师", "name_en": "Soulcaster" }
+      ]
+    },
+    {
       "id": "MEDIC",
       "name": "医疗",
       "name_en": "Medic",
@@ -4852,129 +4947,34 @@
       ]
     },
     {
-      "id": "WARRIOR",
-      "name": "近卫",
-      "name_en": "Warrior",
+      "id": "SUPPORT",
+      "name": "辅助",
+      "name_en": "Supporter",
       "sub": [
-        { "id": "fearless", "name": "无畏者", "name_en": "Dreadnought" },
-        { "id": "centurion", "name": "强攻手", "name_en": "Centurion" },
-        { "id": "instructor", "name": "教官", "name_en": "Instructor" },
-        { "id": "lord", "name": "领主", "name_en": "Lord" },
-        { "id": "artsfghter", "name": "术战者", "name_en": "Arts Fighter" },
-        { "id": "sword", "name": "剑豪", "name_en": "Swordmaster" },
-        { "id": "musha", "name": "武者", "name_en": "Soloblade" },
-        { "id": "crusher", "name": "重剑手", "name_en": "Crusher" },
-        { "id": "reaper", "name": "收割者", "name_en": "Reaper" },
-        { "id": "librator", "name": "解放者", "name_en": "Liberator" },
-        { "id": "fighter", "name": "斗士", "name_en": "Fighter" },
-        { "id": "hammer", "name": "撼地者", "name_en": "Earthshaker" },
-        { "id": "primguard", "name": "本源近卫", "name_en": "Primguard" }
+        { "id": "slower", "name": "凝滞师", "name_en": "Decel Binder" },
+        { "id": "underminer", "name": "削弱者", "name_en": "Hexer" },
+        { "id": "bard", "name": "吟游者", "name_en": "Bard" },
+        { "id": "blessing", "name": "护佑者", "name_en": "Abjurer" },
+        { "id": "summoner", "name": "召唤师", "name_en": "Summoner" },
+        { "id": "craftsman", "name": "工匠", "name_en": "Artificer" },
+        { "id": "ritualist", "name": "巫役", "name_en": "Ritualist" }
       ]
     },
     {
       "id": "SPECIAL",
       "name": "特种",
-      "name_en": "Special",
+      "name_en": "Specialist",
       "sub": [
         { "id": "executor", "name": "处决者", "name_en": "Executor" },
-        { "id": "merchant", "name": "行商", "name_en": "Merchant" },
-        { "id": "hookmaster", "name": "钩索师", "name_en": "Hookmaster" },
-        { "id": "stalker", "name": "伏击客", "name_en": "Ambusher" },
         { "id": "pusher", "name": "推击手", "name_en": "Push Stroker" },
-        { "id": "dollkeeper", "name": "傀儡师", "name_en": "Dollkeeper" },
-        { "id": "skywalker", "name": "巡空者", "name_en": "Skyranger" },
+        { "id": "stalker", "name": "伏击客", "name_en": "Ambusher" },
+        { "id": "hookmaster", "name": "钩索师", "name_en": "Hookmaster" },
         { "id": "geek", "name": "怪杰", "name_en": "Geek" },
+        { "id": "merchant", "name": "行商", "name_en": "Merchant" },
         { "id": "traper", "name": "陷阱师", "name_en": "Trapmaster" },
-        { "id": "alchemist", "name": "炼金师", "name_en": "Alchemist" }
-      ]
-    },
-    {
-      "id": "SNIPER",
-      "name": "狙击",
-      "name_en": "Sniper",
-      "sub": [
-        { "id": "fastshot", "name": "速射手", "name_en": "Marksman" },
-        { "id": "bombarder", "name": "投掷手", "name_en": "Flinger" },
-        { "id": "aoesniper", "name": "炮手", "name_en": "Artilleryman" },
-        { "id": "reaperrange", "name": "散射手", "name_en": "Spreadshooter" },
-        { "id": "longrange", "name": "神射手", "name_en": "Deadeye" },
-        { "id": "closerange", "name": "重射手", "name_en": "Heavyshooter" },
-        { "id": "siegesniper", "name": "攻城手", "name_en": "Besieger" },
-        { "id": "loopshooter", "name": "回环射手", "name_en": "Loopshooter" },
-        { "id": "hunter", "name": "猎手", "name_en": "Hunter" }
-      ]
-    },
-    {
-      "id": "SUPPORT",
-      "name": "辅助",
-      "name_en": "Support",
-      "sub": [
-        { "id": "bard", "name": "吟游者", "name_en": "Bard" },
-        { "id": "ritualist", "name": "巫役", "name_en": "Ritualist" },
-        { "id": "slower", "name": "凝滞师", "name_en": "Decel Binder" },
-        { "id": "summoner", "name": "召唤师", "name_en": "Summoner" },
-        { "id": "craftsman", "name": "工匠", "name_en": "Artificer" },
-        { "id": "underminer", "name": "削弱者", "name_en": "Hexer" },
-        { "id": "blessing", "name": "护佑者", "name_en": "Abjurer" }
-      ]
-    },
-    {
-      "id": "TANK",
-      "name": "重装",
-      "name_en": "Tank",
-      "sub": [
-        { "id": "protector", "name": "铁卫", "name_en": "Protector" },
-        { "id": "guardian", "name": "守护者", "name_en": "Guardian" },
-        { "id": "unyield", "name": "不屈者", "name_en": "Juggernaut" },
-        {
-          "id": "artsprotector",
-          "name": "驭法铁卫",
-          "name_en": "Arts Protector"
-        },
-        {
-          "id": "shotprotector",
-          "name": "哨戒铁卫",
-          "name_en": "Sentry Protector"
-        },
-        { "id": "fortress", "name": "要塞", "name_en": "Fortress" },
-        { "id": "duelist", "name": "决战者", "name_en": "Duelist" },
-        {
-          "id": "primprotector",
-          "name": "本源铁卫",
-          "name_en": "Primal Protector"
-        }
-      ]
-    },
-    {
-      "id": "PIONEER",
-      "name": "先锋",
-      "name_en": "Pioneer",
-      "sub": [
-        { "id": "pioneer", "name": "尖兵", "name_en": "Pioneer" },
-        { "id": "charger", "name": "冲锋手", "name_en": "Charger" },
-        { "id": "bearer", "name": "执旗手", "name_en": "Standard Bearer" },
-        { "id": "tactician", "name": "战术家", "name_en": "Tactician" },
-        { "id": "agent", "name": "情报官", "name_en": "Agent" }
-      ]
-    },
-    {
-      "id": "CASTER",
-      "name": "术师",
-      "name_en": "Caster",
-      "sub": [
-        { "id": "corecaster", "name": "中坚术师", "name_en": "Core Caster" },
-        {
-          "id": "splashcaster",
-          "name": "扩散术师",
-          "name_en": "Splash Caster"
-        },
-        { "id": "funnel", "name": "驭械术师", "name_en": "Mech-accord Caster" },
-        { "id": "mystic", "name": "秘术师", "name_en": "Mystic Caster" },
-        { "id": "chain", "name": "链术师", "name_en": "Chain Caster" },
-        { "id": "phalanx", "name": "阵法术师", "name_en": "Phalanx Caster" },
-        { "id": "blastcaster", "name": "轰击术师", "name_en": "Blast Caster" },
-        { "id": "primcaster", "name": "本源术师", "name_en": "Primal Caster" },
-        { "id": "soulcaster", "name": "塑灵术师", "name_en": "Soulcaster" }
+        { "id": "dollkeeper", "name": "傀儡师", "name_en": "Dollkeeper" },
+        { "id": "alchemist", "name": "炼金师", "name_en": "Alchemist" },
+        { "id": "skywalker", "name": "巡空者", "name_en": "Skyranger" }
       ]
     }
   ]
