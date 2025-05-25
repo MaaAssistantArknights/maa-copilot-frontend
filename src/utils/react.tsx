@@ -6,7 +6,10 @@ import {
   useRef,
 } from 'react'
 
-export function joinJSX(elements: ReactNode[], separator: ReactNode) {
+export function joinJSX(
+  elements: ReactNode[],
+  separator: ReactNode,
+): ReactNode[] {
   return elements.reduce((acc: ReactNode[], element, index) => {
     if (index === 0) return [element]
     return [
@@ -15,6 +18,10 @@ export function joinJSX(elements: ReactNode[], separator: ReactNode) {
       element,
     ]
   }, [])
+}
+
+export function preserveLineBreaks(text: string) {
+  return joinJSX(text.split('\n'), <br />)
 }
 
 // The useEvent API has not yet been added to React,

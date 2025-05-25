@@ -286,7 +286,6 @@ export function getSkillUsageAltTitle(
 ) {
   if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
     return i18n.models.operator.skill_usage.ready_to_use_times.alt_format({
-      count: skillTimes ?? 1,
       times: skillTimes ?? 1,
     })
   }
