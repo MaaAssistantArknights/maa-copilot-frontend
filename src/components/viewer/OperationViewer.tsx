@@ -63,7 +63,7 @@ import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { Confirm } from '../Confirm'
 import { MasteryIcon } from '../MasteryIcon'
-import { ReLink } from '../ReLink'
+import { ReLinkRenderer } from '../ReLink'
 import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
 
@@ -112,32 +112,30 @@ const ManageMenu: FC<{
   return (
     <>
       <Menu>
-        <li>
-          <ReLink
-            className="hover:text-inherit hover:no-underline"
-            to={`/create/${operation.id}`}
-            target="_blank"
-          >
+        <ReLinkRenderer
+          className="hover:text-inherit hover:no-underline"
+          to={`/create/${operation.id}`}
+          target="_blank"
+          render={({ className, ...props }) => (
             <MenuItem
-              tagName="div"
               icon="edit"
               text={t.components.viewer.OperationViewer.modify_task}
+              {...props}
             />
-          </ReLink>
-        </li>
-        <li>
-          <ReLink
-            className="hover:text-inherit hover:no-underline"
-            to={`/editor/${operation.id}`}
-            target="_blank"
-          >
+          )}
+        />
+        <ReLinkRenderer
+          className="hover:text-inherit hover:no-underline"
+          to={`/editor/${operation.id}`}
+          target="_blank"
+          render={({ className, ...props }) => (
             <MenuItem
-              tagName="div"
               icon="edit"
               text={t.components.viewer.OperationViewer.modify_task_v2}
+              {...props}
             />
-          </ReLink>
-        </li>
+          )}
+        />
         {operation.commentStatus === BanCommentsStatusEnum.Enabled && (
           <Confirm
             intent="danger"

@@ -56,8 +56,8 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
     }
 
     const items: ReactNode = neoLayout ? (
-      <div
-        className="grid gap-4"
+      <ul
+        className="grid gap-4 items-stretch"
         style={{
           gridTemplateColumns: 'repeat(auto-fill, minmax(20rem, 1fr)',
         }}
@@ -71,11 +71,13 @@ export const OperationList: ComponentType<OperationListProps> = withSuspensable(
             onSelect={onSelect}
           />
         ))}
-      </div>
+      </ul>
     ) : (
-      operations.map((operation) => (
-        <OperationCard operation={operation} key={operation.id} />
-      ))
+      <ul>
+        {operations.map((operation) => (
+          <OperationCard operation={operation} key={operation.id} />
+        ))}
+      </ul>
     )
 
     return (
