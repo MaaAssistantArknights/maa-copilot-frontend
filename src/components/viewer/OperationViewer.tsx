@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Callout,
   Card,
   Collapse,
   Elevation,
@@ -577,7 +578,9 @@ function OperationViewerInner({
           <NonIdealState
             icon="tree"
             title={t.components.viewer.OperationViewer.comments_closed}
-            description={t.components.viewer.OperationViewer.feel_the_silence}
+            description={
+              t.components.viewer.OperationViewer.comments_closed_note
+            }
           />
         ) : (
           <CommentArea operationId={operation.id} />
@@ -594,17 +597,10 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
   return (
     <div>
       <H4
-        className="inline-flex items-center cursor-pointer hover:text-violet-500"
+        className="inline-flex items-center cursor-pointer hover:opacity-80"
         onClick={() => setShowOperators((v) => !v)}
       >
         {t.components.viewer.OperationViewer.operators_and_groups}
-        <Tooltip2
-          className="!flex items-center"
-          placement="top"
-          content={t.components.viewer.OperationViewer.operator_group_tooltip}
-        >
-          <Icon icon="info-sign" size={12} className="text-zinc-500 ml-1" />
-        </Tooltip2>
         <Icon
           icon="chevron-down"
           className={clsx(
@@ -613,6 +609,19 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
           )}
         />
       </H4>
+      <details className="inline">
+        <summary className="inline cursor-pointer">
+          <Icon icon="help" size={14} className="ml-2 mb-1 opacity-50" />
+        </summary>
+        <Callout intent="primary" icon={null} className="mb-4">
+          <p>
+            {t.components.viewer.OperationViewer.operators_and_groups_note.jsx({
+              operators: (s) => <b>{s}</b>,
+              groups: (s) => <b>{s}</b>,
+            })}
+          </p>
+        </Callout>
+      </details>
       <Collapse isOpen={showOperators}>
         <div className="mt-2 flex flex-wrap gap-6">
           {!operation.parsedContent.opers?.length &&
@@ -666,7 +675,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
       </Collapse>
 
       <H4
-        className="mt-6 inline-flex items-center cursor-pointer hover:text-violet-500"
+        className="mt-6 inline-flex items-center cursor-pointer hover:opacity-80"
         onClick={() => setShowActions((v) => !v)}
       >
         {t.components.viewer.OperationViewer.action_sequence}
