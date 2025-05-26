@@ -67,10 +67,23 @@ const groupStrict = group.extend({
 const actionShape = {
   name: z.string().min(1).optional(),
   location: z
-    .tuple([z.number().int().optional(), z.number().int().optional()])
+    .tuple([
+      z.number().int().or(z.undefined()),
+      z.number().int().or(z.undefined()),
+    ])
     .optional(),
-  direction: z.string().optional(),
-  distance: z.tuple([z.number().optional(), z.number().optional()]).optional(),
+
+  // We have to use `distance: z.string()` here and later validate it in `.check()`,
+  // because if we use `distance: z.enum()` here, it becomes the second discriminator key,
+  // which leads to very counterintuitive behavior when parsing. See: https://github.com/colinhacks/zod/issues/4280
+  // We also need to cast its type to match the expected type in `actionWithDirection` below.
+  direction: z.string().optional() as unknown as z.ZodOptional<
+    typeof actionWithDirection.shape.direction
+  >,
+
+  distance: z
+    .tuple([z.number().or(z.undefined()), z.number().or(z.undefined())])
+    .optional(),
   skill_usage: operator.shape.skill_usage,
   skill_times: operator.shape.skill_times,
 
@@ -85,9 +98,6 @@ const actionShape = {
   doc: z.string().optional(),
   doc_color: z.string().optional(),
 }
-// we have to put `distance: z.string()` in actionShape and validate it using another schema,
-// because if we put `distance: z.enum()` in actionShape, it becomes the second discriminator key,
-// which leads to very counterintuitive behavior when parsing. See: https://github.com/colinhacks/zod/issues/4280
 const actionWithDirection = z.object({
   direction: z.enum(CopilotDocV1.Direction),
 })
