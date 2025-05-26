@@ -43,58 +43,6 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
       </h3>
       <FormGroup
         contentClassName="grow"
-        label={t.components.editor2.InfoEditor.title}
-        labelInfo="*"
-      >
-        <InputGroup
-          large
-          fill
-          placeholder={t.components.editor2.InfoEditor.title_placeholder}
-          value={info.doc?.title || ''}
-          onChange={(e) => {
-            edit(() => {
-              setInfo((prev) => {
-                prev.doc.title = e.target.value
-              })
-              return {
-                action: 'update-title',
-                desc: i18n.actions.editor2.set_title,
-                squashBy: '',
-              }
-            })
-          }}
-          onBlur={() => edit()}
-        />
-        <FieldError path="doc.title" />
-      </FormGroup>
-      <FormGroup
-        contentClassName="grow"
-        label={t.components.editor2.InfoEditor.description}
-      >
-        <TextArea
-          fill
-          rows={4}
-          large
-          placeholder={t.components.editor2.InfoEditor.description_placeholder}
-          value={info.doc?.details || ''}
-          onChange={(e) => {
-            edit(() => {
-              setInfo((prev) => {
-                prev.doc.details = e.target.value
-              })
-              return {
-                action: 'update-details',
-                desc: i18n.actions.editor2.set_description,
-                squashBy: '',
-              }
-            })
-          }}
-          onBlur={() => edit()}
-        />
-        <FieldError path="doc.details" />
-      </FormGroup>
-      <FormGroup
-        contentClassName="grow"
         label={t.components.editor2.InfoEditor.stage}
         labelInfo="*"
       >
@@ -148,6 +96,58 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
           }}
         />
         <FieldError path="difficulty" />
+      </FormGroup>
+      <FormGroup
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.title}
+        labelInfo="*"
+      >
+        <InputGroup
+          large
+          fill
+          placeholder={t.components.editor2.InfoEditor.title_placeholder}
+          value={info.doc?.title || ''}
+          onChange={(e) => {
+            edit(() => {
+              setInfo((prev) => {
+                prev.doc.title = e.target.value
+              })
+              return {
+                action: 'update-title',
+                desc: i18n.actions.editor2.set_title,
+                squashBy: '',
+              }
+            })
+          }}
+          onBlur={() => edit()}
+        />
+        <FieldError path="doc.title" />
+      </FormGroup>
+      <FormGroup
+        contentClassName="grow"
+        label={t.components.editor2.InfoEditor.description}
+      >
+        <TextArea
+          fill
+          rows={4}
+          large
+          placeholder={t.components.editor2.InfoEditor.description_placeholder}
+          value={info.doc?.details || ''}
+          onChange={(e) => {
+            edit(() => {
+              setInfo((prev) => {
+                prev.doc.details = e.target.value
+              })
+              return {
+                action: 'update-details',
+                desc: i18n.actions.editor2.set_description,
+                squashBy: '',
+              }
+            })
+          }}
+          onBlur={() => edit()}
+        />
+        <FieldError path="doc.details" />
       </FormGroup>
       <FormGroup
         className="mb-0"
