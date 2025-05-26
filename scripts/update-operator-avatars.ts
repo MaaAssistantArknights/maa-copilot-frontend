@@ -1,7 +1,10 @@
-import { writeFile } from 'fs/promises'
-import fetch from 'node-fetch'
+import { mkdir } from 'fs/promises'
+import path from 'path'
+import sharp from 'sharp'
 
 import { fileExists, getOperators } from './shared'
+
+const avatarsDir = path.resolve(__dirname, '../public/assets/operator-avatars')
 
 async function getAllAvatarsFromPrtsWiki() {
   console.info('fetching all avatars from prts wiki...')
@@ -53,24 +56,72 @@ async function main() {
       (el) => el.name === `头像_${withTokenName}.png`,
     )?.url
     if (!avatarUrl) {
-      console.error(`${name}: cannot found avatar file`)
-      continue
-    }
-    const expectFileAt = `public/assets/operator-avatars/${id}.png`
-    if (await fileExists(expectFileAt)) {
-      // console.log(`${name}: already exists`)
-      continue
-    }
-    console.log(`Downloading ${name} from ${avatarUrl}...`)
-    const resp = await fetch(avatarUrl)
-    if (!resp.ok) {
-      console.error(`${name} failed to download`)
+      console.error(`${id}: cannot found avatar file`)
       continue
     }
 
-    const buffer = await resp.arrayBuffer()
-    await writeFile(expectFileAt, Buffer.from(buffer))
-    console.info(`${name}: downloaded`)
+    let downloadPromise: Promise<ArrayBuffer> | undefined
+
+    const download = () => {
+      if (!downloadPromise) {
+        console.log(`${id}: downloading from ${avatarUrl}`)
+        downloadPromise = fetch(avatarUrl).then((resp) => {
+          if (!resp.ok) {
+            throw new Error(`${id}: failed to download avatar`)
+          }
+          return resp.arrayBuffer()
+        })
+      }
+      return downloadPromise
+    }
+
+    const generateImage = async ({
+      format,
+      size,
+      options,
+    }: {
+      size: number
+      format: Parameters<sharp.Sharp['toFormat']>[0]
+      options: Parameters<sharp.Sharp['toFormat']>[1]
+    }) => {
+      try {
+        const outputDir = path.join(avatarsDir, `${format}${size}`)
+        const outputPath = path.join(outputDir, `${id}.${format}`)
+
+        if (await fileExists(outputPath)) {
+          return
+        }
+
+        if (!(await fileExists(outputDir))) {
+          await mkdir(outputDir, { recursive: true })
+        }
+
+        const buffer = await download()
+
+        await sharp(buffer)
+          .resize(size, size)
+          .toFormat(format, options)
+          .toFile(outputPath)
+
+        return
+      } catch (e) {
+        console.error(`${id}: failed to generate ${format} of size ${size}`, e)
+        return
+      }
+    }
+
+    await Promise.all([
+      generateImage({
+        format: 'webp',
+        size: 32,
+        options: { preset: 'icon', quality: 50 },
+      }),
+      generateImage({
+        format: 'webp',
+        size: 96,
+        options: { preset: 'icon', quality: 80 },
+      }),
+    ])
   }
 }
 

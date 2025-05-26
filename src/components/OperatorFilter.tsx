@@ -20,8 +20,8 @@ import {
   OperatorFilterData,
   operatorFilterAtom,
 } from '../store/selectedOperators'
+import { OperatorAvatar } from './OperatorAvatar'
 import { OperatorSelect } from './OperatorSelect'
-import { OperatorAvatar } from './editor/operator/EditorOperator'
 
 export function useOperatorFilter() {
   const [operatorFilter, setOperatorFilter] = useState<OperatorFilterData>(

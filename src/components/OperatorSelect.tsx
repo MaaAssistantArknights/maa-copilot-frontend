@@ -11,7 +11,7 @@ import { FC, useMemo } from 'react'
 import { languageAtom, useTranslation } from '../i18n/i18n'
 import { OPERATORS } from '../models/operator'
 import { useDebouncedQuery } from '../utils/useDebouncedQuery'
-import { OperatorAvatar } from './editor/operator/EditorOperator'
+import { OperatorAvatar } from './OperatorAvatar'
 
 interface OperatorSelectProps {
   className?: string

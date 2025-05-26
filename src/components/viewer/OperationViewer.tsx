@@ -40,7 +40,6 @@ import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
 import { DrawerLayout } from 'components/drawer/DrawerLayout'
-import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OpRatingType, Operation } from 'models/operation'
@@ -63,6 +62,7 @@ import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { Confirm } from '../Confirm'
 import { MasteryIcon } from '../MasteryIcon'
+import { OperatorAvatar } from '../OperatorAvatar'
 import { ReLinkRenderer } from '../ReLink'
 import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
@@ -357,6 +357,7 @@ const OperatorCard: FC<{
             rarity={info?.rarity}
             className="w-20 h-20"
             fallback={displayName}
+            sourceSize={96}
           />
           {info?.modules && module !== 0 && (
             <div

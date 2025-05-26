@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  Classes,
-  Elevation,
-  Icon,
-  Menu,
-  MenuItem,
-} from '@blueprintjs/core'
+import { Button, Card, Classes, Icon, Menu, MenuItem } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
@@ -29,12 +21,12 @@ import {
   withDefaultRequirements,
 } from '../../../models/operator'
 import { MasteryIcon } from '../../MasteryIcon'
+import { OperatorAvatar } from '../../OperatorAvatar'
 import { Select } from '../../Select'
 import { AppToaster } from '../../Toaster'
 import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
-import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
 import { editorFavOperatorsAtom } from '../reconciliation'
 
@@ -119,6 +111,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 rarity={info?.rarity}
                 className="w-24 h-24 rounded-b-none"
                 fallback={displayName}
+                sourceSize={96}
               />
               <h4
                 className={clsx(

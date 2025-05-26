@@ -1,6 +1,5 @@
 import { access } from 'fs/promises'
 import { capitalize, uniq, uniqBy } from 'lodash-es'
-import fetch from 'node-fetch'
 import { pinyin } from 'pinyin'
 import simplebig from 'simplebig'
 
