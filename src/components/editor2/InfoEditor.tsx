@@ -14,6 +14,7 @@ import { memo } from 'react'
 import { Paths } from 'type-fest'
 
 import { i18n, useTranslation } from '../../i18n/i18n'
+import { isCustomLevel } from '../../models/level'
 import { DifficultyPicker } from './DifficultyPicker'
 import { LevelSelect } from './LevelSelect'
 import { editorAtoms, useEdit } from './editor-state'
@@ -100,10 +101,19 @@ export const InfoEditor = memo(({ className }: InfoEditorProps) => {
         <LevelSelect
           difficulty={info.difficulty}
           value={info.stageName}
-          onChange={(value) => {
+          onChange={(stageId, level) => {
             edit(() => {
               setInfo((prev) => {
-                prev.stageName = value
+                prev.stageName = stageId
+
+                if (level && !prev.doc.title) {
+                  // 如果没有标题，则使用关卡名作为标题
+                  prev.doc.title = isCustomLevel(level)
+                    ? level.name
+                    : [level.catTwo, level.catThree, level.name]
+                        .filter(Boolean)
+                        .join(' - ')
+                }
               })
               return {
                 action: 'update-level',

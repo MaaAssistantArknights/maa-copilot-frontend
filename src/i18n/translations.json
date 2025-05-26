@@ -3402,12 +3402,18 @@
         "en": "Failed to parse operation"
       }
     },
+    "level": {
+      "custom_level": {
+        "cn": "自定义关卡",
+        "en": "Custom Stage"
+      }
+    },
     "operator": {
       "operator": {
         "cn": "干员",
         "en": "Operator"
       },
-      "operator_group":{
+      "operator_group": {
         "cn": "干员组",
         "en": "Operator Group"
       },
