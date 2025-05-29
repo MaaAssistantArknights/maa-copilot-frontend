@@ -27,7 +27,10 @@ export const OperatorBackToTop: FC<OperatorBackToTopProp> = ({ toTop }) => {
         t.components.editor.operator.sheet.sheetOperator.toolbox
           .OperatorBackToTop.back_to_top
       }
-      onClick={() => setPaginationFilter(defaultPagination)}
+      onClick={() => {
+        setPaginationFilter(defaultPagination)
+        toTop()
+      }}
     />
   )
 }
