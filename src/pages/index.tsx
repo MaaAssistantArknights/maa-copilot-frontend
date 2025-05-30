@@ -29,21 +29,25 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
       {!isMD && (
         <div className="md:w-1/3 order-1 md:order-2">
           <div className="top-20">
-            <Card className="flex flex-col mb-4 space-y-2">
-              <CardTitle icon="add" className="mb-4">
+            {/* // 主内容区卡片容器 - 添加阴影和悬停效果 */}
+            <Card className="flex flex-col mb-4 space-y-2 shadow-lg hover:shadow-xl transition-shadow">
+              {/* // 卡片标题 - 加大字号和强调色 */}
+              <CardTitle icon="add" className="mb-4 text-2xl font-bold text-blue-600">
                 {t.pages.index.create_new_task}
               </CardTitle>
-
+              
+              {/* // 功能按钮区域 */}
               <OperationEditorLauncher />
               <OperationUploaderLauncher />
               <OperationSetEditorLauncher />
             </Card>
-
-            <AnnPanel className="mb-4" />
-
-            <div className="flex flex-wrap leading-relaxed mb-4 section-social-links">
+            
+            // 社交链接容器 - 网格布局适配移动端
+            <div className="grid grid-cols-2 md:grid-cols-1 gap-3 mb-4">
               {SOCIAL_LINKS.map((link) => (
+                // 单个社交链接 - 添加悬停反馈效果
                 <a
+                  className="flex items-center p-3 space-x-3 text-gray-600 hover:bg-gray-50 rounded-xl transition-colors"
                   key={link.href}
                   href={link.href}
                   target="_blank"
@@ -51,18 +55,24 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
                   className="flex items-center text-zinc-600 dark:text-slate-100 no-underline"
                 >
                   {link.icon}
-                  <span>{link.label}</span>
+                  <span className="font-medium">{link.label}</span>
                 </a>
-              )).reduce((prev, curr) => (
-                <>
-                  {prev}
-                  <div className="mx-2 opacity-50">·</div>
-                  {curr}
-                </>
               ))}
             </div>
-
-            <Ad />
+            
+            {/* // 广告卡片组件 - 新增圆角和渐变背景 */}
+            <a className="block relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 transition-transform hover:scale-[1.02]">
+              {/* 广告图片 - 添加悬停透明度变化 */}
+              <img 
+                src="/ad_leidian.jpg" 
+                className="rounded-2xl hover:opacity-90 transition-opacity"
+                alt="雷电模拟器" 
+              />
+              {/* // 广告标识 - 毛玻璃效果标签 */}
+              <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/80 backdrop-blur-sm text-xs rounded-full border border-gray-200">
+                {t.pages.index.advertisement}
+              </div>
+            </a>
           </div>
         </div>
       )}
@@ -78,12 +88,13 @@ const Ad = dayjs().isBefore('2025-05-11 00:00:00+8')
       return (
         // eslint-disable-next-line react/jsx-no-target-blank
         <a
-          className="block relative dark:brightness-[85%]"
-          href="https://www.ldmnq.com/ldy/ldymuban/#/landing/9651"
-          target="_blank"
-        >
-          <img src="/ad_leidian.jpg" alt="雷电模拟器" />
-          <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1 ">
+          className="block relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-50 to-purple-50 transition-transform hover:scale-[1.02]">
+          <img 
+            src="/ad_leidian.jpg" 
+            className="rounded-2xl hover:opacity-90 transition-opacity"
+            alt="雷电模拟器" 
+          />
+          <div className="absolute bottom-3 right-3 px-2 py-1 bg-white/80 backdrop-blur-sm text-xs rounded-full border border-gray-200">
             {t.pages.index.advertisement}
           </div>
         </a>
