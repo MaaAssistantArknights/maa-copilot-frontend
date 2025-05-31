@@ -97,7 +97,7 @@ export const ProfClassificationWithFilters: FC<
   }, [selectedProf, setPaginationFilter, toTop])
 
   const ToolBox = (
-    <div className="flex flex-col absolute bottom-0">
+    <div className="flex flex-col absolute bottom-0 right-full">
       <Popover2
         content={
           <>
@@ -114,7 +114,7 @@ export const ProfClassificationWithFilters: FC<
 
   return (
     <div className="flex flex-row-reverse relative h-full">
-      <ul className="h-full flex flex-col w-6 sm:w-12">
+      <ul className="h-full flex flex-col w-6 sm:w-12 overflow-y-auto">
         {formattedProfessions.map((prof) => (
           <ProfIcon
             key={prof.id}
@@ -131,7 +131,7 @@ export const ProfClassificationWithFilters: FC<
         ))}
       </ul>
       <Divider className="mr-0" />
-      <div className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0">
+      <div className="h-full flex flex-col justify-center items-end absolute right-full sm:relative sm:left-0 overflow-y-auto">
         <ul>
           {subProfs.map((subProf) => (
             <li key={subProf.id}>
@@ -158,8 +158,8 @@ export const ProfClassificationWithFilters: FC<
             </li>
           ))}
         </ul>
-        {ToolBox}
       </div>
+      {ToolBox}
     </div>
   )
 }
@@ -180,7 +180,11 @@ const ProfIcon: FC<ProfIconProp> = ({
 }) => {
   return (
     <li
-      className="grow cursor-pointer relative flex justify-center items-center"
+      className={clsx(
+        'grow cursor-pointer relative flex justify-center items-center',
+        selected &&
+          'before:h-full before:w-1 before:bg-black before:dark:bg-white before:absolute before:top-0 before:left-0 before:rounded',
+      )}
       title={name}
       role="presentation"
       onClick={onProfClick}
@@ -195,9 +199,6 @@ const ProfIcon: FC<ProfIconProp> = ({
           alt=""
           title={name}
         />
-      )}
-      {selected && (
-        <div className="h-full w-1 bg-black dark:bg-white absolute top-0 right-full rounded" />
       )}
     </li>
   )
