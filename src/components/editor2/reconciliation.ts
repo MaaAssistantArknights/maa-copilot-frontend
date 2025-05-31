@@ -1,13 +1,9 @@
 import camelcaseKeys from 'camelcase-keys'
 import { atom } from 'jotai'
 import { defaults, uniqueId } from 'lodash-es'
-import {
-  CamelCasedPropertiesDeep,
-  PartialDeep,
-  SetOptional,
-  SetRequired,
-} from 'type-fest'
+import { PartialDeep, SetOptional, SetRequired } from 'type-fest'
 
+import { migrateOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { FavGroup, favGroupAtom } from '../../store/useFavGroups'
 import { FavOperator, favOperatorAtom } from '../../store/useFavOperators'
@@ -35,6 +31,14 @@ export type WithPartialCoordinates<T> = T extends {
     : T
 
 export type WithId<T = {}> = T extends never ? never : T & { id: string }
+
+type DehydratedEditorOperation = WithoutIdDeep<EditorOperation>
+
+type WithoutIdDeep<T> = T extends unknown[]
+  ? { [K in keyof T]: WithoutIdDeep<T[K]> }
+  : T extends object
+    ? Omit<{ [K in keyof T]: WithoutIdDeep<T[K]> }, 'id'>
+    : T
 
 export function createAction(
   initialValues: SetRequired<Partial<Omit<EditorAction, 'id'>>, 'type'>,
@@ -168,33 +172,66 @@ export const editorFavGroupsAtom = atom(
   },
 )
 
+/**
+ * Converts the operation to a dehydrated format that is suitable
+ * for storage or transmission. Essentially, it strips all `id` fields
+ * which only makes sense in the context of the editor.
+ */
+export function dehydrateOperation(
+  source: EditorOperation,
+): DehydratedEditorOperation {
+  return {
+    ...source,
+    opers: source.opers.map(({ id, ...operator }) => operator),
+    groups: source.groups.map(({ id, opers, ...group }) => ({
+      ...group,
+      opers: opers.map(({ id, ...operator }) => operator),
+    })),
+    actions: source.actions.map(({ id, ...action }) => action),
+  }
+}
+
+export function hydrateOperation(
+  source: DehydratedEditorOperation,
+): EditorOperation {
+  return {
+    ...source,
+    opers: source.opers.map((operator) => ({
+      ...operator,
+      id: uniqueId(),
+    })),
+    groups: source.groups.map((group) => ({
+      ...group,
+      id: uniqueId(),
+      opers: group.opers.map((operator) => ({
+        ...operator,
+        id: uniqueId(),
+      })),
+    })),
+    actions: source.actions.map((action) => ({
+      ...action,
+      id: uniqueId(),
+    })),
+  }
+}
+
 export function toEditorOperation(
   source: CopilotOperationLoose,
 ): EditorOperation {
   const camelCased = camelcaseKeys(source, { deep: true })
-  const operation = JSON.parse(JSON.stringify(camelCased))
+  const operation = JSON.parse(
+    JSON.stringify(migrateOperation(camelCased as CopilotDocV1.Operation)),
+  ) as typeof camelCased
   const converted = {
     ...operation,
-    opers: operation.opers.map((operator) => ({
-      ...operator,
-      id: uniqueId(),
-    })),
-    groups: operation.groups.map((group) => ({
-      ...group,
-      id: uniqueId(),
-      opers: group.opers.map((operator) => ({ ...operator, id: uniqueId() })),
-    })),
     actions: operation.actions.map((action, index) => {
       const {
         preDelay,
         postDelay,
         rearDelay,
         ...newAction
-      }: EditorAction &
-        CamelCasedPropertiesDeep<CopilotOperationLoose['actions'][number]> = {
-        ...action,
-        id: uniqueId(),
-      }
+      }: WithoutIdDeep<EditorAction> & (typeof operation)['actions'][number] =
+        action
       // intermediatePostDelay 等于当前动作的 preDelay
       if (preDelay !== undefined) {
         newAction.intermediatePostDelay = preDelay
@@ -209,11 +246,11 @@ export function toEditorOperation(
           newAction.intermediatePreDelay = prevAction.postDelay
         }
       }
-      return newAction satisfies EditorAction
+      return newAction satisfies WithoutIdDeep<EditorAction>
     }),
   }
 
-  return converted
+  return hydrateOperation(converted)
 }
 
 /**
@@ -223,22 +260,17 @@ export function toMaaOperation(
   operation: EditorOperation,
 ): CopilotOperationLoose {
   operation = JSON.parse(JSON.stringify(operation))
+  const dehydrated = dehydrateOperation(operation)
   const converted = {
-    ...operation,
-    opers: operation.opers.map(({ id, ...operator }) => operator),
-    groups: operation.groups.map(({ id, opers, ...group }) => ({
-      ...group,
-      opers: opers.map(({ id, ...operator }) => operator),
-    })),
-    actions: operation.actions.map((action, index, actions) => {
+    ...dehydrated,
+    actions: dehydrated.actions.map((action, index, actions) => {
       type Action = PartialDeep<WithPartialCoordinates<CopilotDocV1.Action>>
       const {
         _id,
-        id,
         intermediatePreDelay,
         intermediatePostDelay,
         ...newAction
-      }: EditorAction & Action = action
+      }: WithoutIdDeep<EditorAction> & Action = action
       // preDelay 等于当前动作的 intermediatePostDelay
       if (intermediatePostDelay !== undefined) {
         newAction.preDelay = intermediatePostDelay
@@ -272,7 +304,7 @@ export function toMaaOperation(
         group.opers.some((operator) => operator.requirements),
       )
     ) {
-      converted.version = 2
+      converted.version = CopilotDocV1.VERSION
     }
   }
 

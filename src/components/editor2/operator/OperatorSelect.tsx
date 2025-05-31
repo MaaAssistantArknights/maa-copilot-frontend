@@ -9,8 +9,8 @@ import { FC, ReactNode, memo, useMemo, useState } from 'react'
 import { languageAtom, useTranslation } from '../../../i18n/i18n'
 import { OPERATORS, getLocalizedOperatorName } from '../../../models/operator'
 import { useDebouncedQuery } from '../../../utils/useDebouncedQuery'
+import { OperatorAvatar } from '../../OperatorAvatar'
 import { Select } from '../../Select'
-import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { editorAtoms } from '../editor-state'
 
 const operatorNamesAtom = selectAtom(

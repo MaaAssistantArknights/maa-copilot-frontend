@@ -11,9 +11,9 @@ import {
   getLocalizedOperatorName,
   getSkillUsageTitle,
 } from '../../../models/operator'
+import { OperatorAvatar } from '../../OperatorAvatar'
 import { SortableItemProps } from '../../dnd'
 import { CardDeleteOption, CardEditOption } from '../CardOptions'
-import { OperatorAvatar } from './EditorOperator'
 
 interface EditorOperatorItemProps extends Partial<SortableItemProps> {
   operator: CopilotDocV1.Operator

@@ -1,12 +1,4 @@
-import {
-  Button,
-  Card,
-  Classes,
-  Elevation,
-  Icon,
-  Menu,
-  MenuItem,
-} from '@blueprintjs/core'
+import { Button, Card, Classes, Icon, Menu, MenuItem } from '@blueprintjs/core'
 import { Popover2 } from '@blueprintjs/popover2'
 
 import clsx from 'clsx'
@@ -23,18 +15,19 @@ import {
   alternativeOperatorSkillUsages,
   getDefaultRequirements,
   getEliteIconUrl,
+  getModuleName,
   getSkillCount,
   getSkillUsageAltTitle,
   useLocalizedOperatorName,
   withDefaultRequirements,
 } from '../../../models/operator'
 import { MasteryIcon } from '../../MasteryIcon'
+import { OperatorAvatar } from '../../OperatorAvatar'
 import { Select } from '../../Select'
 import { AppToaster } from '../../Toaster'
 import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
-import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import { EditorOperator, editorAtoms, useEdit } from '../editor-state'
 import { editorFavOperatorsAtom } from '../reconciliation'
 
@@ -119,6 +112,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                 rarity={info?.rarity}
                 className="w-24 h-24 rounded-b-none"
                 fallback={displayName}
+                sourceSize={96}
               />
               <h4
                 className={clsx(
@@ -289,7 +283,7 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
                   small
                   minimal
                   className={clsx(
-                    '!px-0 h-full !border-none !text-[.7rem] !leading-3 !font-normal',
+                    '!px-0 h-full !border-none !text-[.7rem] !leading-3 !font-normal !underline underline-offset-2',
                     skillUsageClasses[
                       operator.skillUsage ?? CopilotDocV1.SkillUsageType.None
                     ],
@@ -436,31 +430,54 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
             <Select
               className="row-start-4"
               filterable={false}
-              items={info.modules}
+              items={[
+                CopilotDocV1.Module.Default,
+                ...info.modules
+                  .map((m) =>
+                    m
+                      ? (CopilotDocV1.Module[m] as
+                          | CopilotDocV1.Module
+                          | undefined)
+                      : CopilotDocV1.Module.Original,
+                  )
+                  .filter((m) => m !== undefined),
+              ]}
               itemRenderer={(
-                item,
-                { index, handleClick, handleFocus, modifiers },
+                value,
+                { handleClick, handleFocus, modifiers },
               ) => (
                 <MenuItem
                   roleStructure="listoption"
-                  key={item}
+                  key={value}
                   className={clsx(
                     'min-w-12 !rounded-none text-base font-serif font-bold text-center text-slate-600 dark:text-slate-300',
                     modifiers.active && Classes.ACTIVE,
                   )}
-                  text={item || <Icon icon="disable" />}
+                  text={
+                    value === CopilotDocV1.Module.Default ? (
+                      <Icon icon="disable" />
+                    ) : value === CopilotDocV1.Module.Original ? (
+                      <Icon icon="small-square" />
+                    ) : (
+                      getModuleName(value)
+                    )
+                  }
+                  title={t.components.editor2.OperatorItem.module_title({
+                    count: value,
+                    name: getModuleName(value),
+                  })}
                   onClick={handleClick}
                   onFocus={handleFocus}
-                  selected={index === requirements.module}
+                  selected={value === requirements.module}
                 />
               )}
-              onItemSelect={(item) => {
+              onItemSelect={(value) => {
                 edit(() => {
                   onChange?.({
                     ...operator,
                     requirements: {
                       ...operator.requirements,
-                      module: info.modules.indexOf(item),
+                      module: value,
                     },
                   })
                   return {
@@ -479,15 +496,28 @@ export const OperatorItem: FC<OperatorItemProps> = memo(
               <Button
                 small
                 minimal
-                title={t.components.editor2.OperatorItem.module}
+                title={
+                  t.components.editor2.OperatorItem.module +
+                  ': ' +
+                  t.components.editor2.OperatorItem.module_title({
+                    count: requirements.module,
+                    name: getModuleName(requirements.module),
+                  })
+                }
                 className={clsx(
                   'w-4 h-4 !p-0 flex items-center justify-center font-serif !font-bold !text-base !rounded-none !border-2 !border-current',
-                  requirements.module
+                  requirements.module !== CopilotDocV1.Module.Default
                     ? '!bg-purple-100 dark:!bg-purple-900 dark:!text-purple-200 !text-purple-800'
                     : '!bg-gray-300 dark:!bg-gray-600 opacity-15 dark:opacity-25 hover:opacity-30 dark:hover:opacity-50',
                 )}
               >
-                {info.modules[requirements.module]}
+                {requirements.module ===
+                CopilotDocV1.Module.Default ? null : requirements.module ===
+                  CopilotDocV1.Module.Original ? (
+                  <Icon icon="small-square" />
+                ) : (
+                  getModuleName(requirements.module)
+                )}
               </Button>
             </Select>
           )}

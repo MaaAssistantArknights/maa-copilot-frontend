@@ -5,6 +5,8 @@ import { OpDifficulty } from './operation'
  * https://maa.plus/docs/zh-cn/protocol/copilot-schema.html
  */
 export namespace CopilotDocV1 {
+  export const VERSION = 3
+
   export interface Operation {
     version?: number
     actions?: Action[]
@@ -164,8 +166,20 @@ export namespace CopilotDocV1 {
   export interface Requirements {
     elite?: number
     level?: number
-    module?: number
+    module?: Module
     potentiality?: number
     skillLevel?: number
+  }
+
+  export enum Module {
+    /** 默认值，不做任何操作 */
+    Default = -1,
+    /** 切换为初始模组 */
+    Original = 0,
+    /** 切换为对应的模组 */
+    X = 1,
+    Y = 2,
+    A = 3,
+    D = 4,
   }
 }

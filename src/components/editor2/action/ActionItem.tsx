@@ -27,11 +27,11 @@ import {
   getSkillUsageAltTitle,
 } from '../../../models/operator'
 import { findActionType } from '../../../models/types'
+import { OperatorAvatar } from '../../OperatorAvatar'
 import { Select } from '../../Select'
 import { SortableItemProps } from '../../dnd'
 import { DetailedSelect } from '../../editor/DetailedSelect'
 import { NumericInput2 } from '../../editor/NumericInput2'
-import { OperatorAvatar } from '../../editor/operator/EditorOperator'
 import {
   EditorAction,
   editorAtoms,
@@ -713,6 +713,7 @@ const ActionTarget: FC<{
             className="w-16 h-16"
             name={isGroup(name) ? undefined : name}
             fallback={isGroup(name) ? <Icon icon="people" size={32} /> : name}
+            sourceSize={96}
           />
           <div className="ml-1 w-[6.5em]">
             <div

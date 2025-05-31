@@ -7,6 +7,7 @@ import { i18n } from '../../i18n/i18n'
 import { formatError } from '../../utils/error'
 import { AppToaster } from '../Toaster'
 import { EditorState, defaultEditorState, editorAtoms } from './editor-state'
+import { dehydrateOperation } from './reconciliation'
 
 type Archive = Record[]
 
@@ -34,23 +35,29 @@ export const editorArchiveAtom = atomWithStorage(
   [] as Archive,
 )
 export const editorSaveAtom = atom(noop, (get, set) => {
-  // this will drop undefined properties but we don't care
-  const currentStringified = JSON.stringify(get(editorAtoms.editor))
+  const state = get(editorAtoms.editor)
+  const dehydratedState = {
+    ...state,
+    operation: dehydrateOperation(state.operation),
+  }
 
-  if (currentStringified === defaultEditorStateStringified) {
+  // this will drop undefined properties but we don't care
+  const stringifiedState = JSON.stringify(dehydratedState)
+
+  if (stringifiedState === defaultEditorStateStringified) {
     throw new NotChangedError()
   }
 
   const records = get(editorArchiveAtom)
   const latestRecord = first(records)
 
-  if (latestRecord && JSON.stringify(latestRecord.v) === currentStringified) {
+  if (latestRecord && JSON.stringify(latestRecord.v) === stringifiedState) {
     throw new NotChangedError()
   }
 
-  const current: EditorState = JSON.parse(currentStringified)
+  const finalState: EditorState = JSON.parse(stringifiedState)
   const record: Record = {
-    v: current,
+    v: finalState,
     t: Date.now(),
   }
   const newArchive = [record, ...records].slice(0, AUTO_SAVE_LIMIT)

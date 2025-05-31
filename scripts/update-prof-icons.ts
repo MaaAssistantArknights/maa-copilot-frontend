@@ -1,5 +1,4 @@
 import { mkdir, writeFile } from 'fs/promises'
-import fetch from 'node-fetch'
 
 import { fileExists, getOperators } from './shared'
 

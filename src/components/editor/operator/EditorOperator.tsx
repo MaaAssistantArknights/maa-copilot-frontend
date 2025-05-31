@@ -1,20 +1,16 @@
 import { Icon, IconSize, MenuItem } from '@blueprintjs/core'
 
-import clsx from 'clsx'
 import Fuse from 'fuse.js'
 import { useAtomValue } from 'jotai'
-import { ReactNode, useMemo } from 'react'
+import { useMemo } from 'react'
 import { FieldValues, useController } from 'react-hook-form'
 
 import { EditorFieldProps } from 'components/editor/EditorFieldProps'
 
 import { languageAtom, useTranslation } from '../../../i18n/i18n'
 import { CopilotDocV1 } from '../../../models/copilot.schema'
-import {
-  OPERATORS,
-  findOperatorById,
-  findOperatorByName,
-} from '../../../models/operator'
+import { OPERATORS } from '../../../models/operator'
+import { OperatorAvatar } from '../../OperatorAvatar'
 import { Suggest } from '../../Suggest'
 
 type OperatorInfo = (typeof OPERATORS)[number]
@@ -168,79 +164,5 @@ export const EditorOperatorName = <T extends FieldValues>({
         placement: 'bottom-start',
       }}
     />
-  )
-}
-
-export const OperatorAvatar = ({
-  id,
-  name,
-  rarity,
-  size,
-  fallback = '?',
-  className,
-}: {
-  id?: string
-  name?: string
-  rarity?: number
-  size?: 'small' | 'medium' | 'large'
-  fallback?: ReactNode
-  className?: string
-}) => {
-  let info: OperatorInfo | undefined
-  if (id) {
-    info = findOperatorById(id)
-  } else if (name) {
-    info = findOperatorByName(name)
-    id = info?.id
-  }
-  rarity ??= info?.rarity
-
-  const sizingClassName =
-    size &&
-    {
-      small: 'h-5 w-5',
-      medium: 'h-6 w-6',
-      large: 'h-8 w-8',
-    }[size]
-
-  const colorClassName =
-    rarity === 6
-      ? 'bg-orange-200 ring-orange-300'
-      : rarity === 5
-        ? 'bg-yellow-100 ring-yellow-200'
-        : rarity === 4
-          ? 'bg-purple-100 ring-purple-200'
-          : 'bg-slate-100 ring-slate-200'
-
-  const commonClassName =
-    'ring-inset ring-2 border-solid rounded-md object-cover'
-
-  return id ? (
-    <img
-      className={clsx(
-        sizingClassName,
-        colorClassName,
-        commonClassName,
-        className,
-      )}
-      src={'/assets/operator-avatars/' + id + '.png'}
-      alt={id}
-      // lazy 要配合 width和 height 使用，不然图片提前很多就加载了
-      loading="lazy"
-      width="180"
-      height="180"
-    />
-  ) : (
-    <div
-      className={clsx(
-        sizingClassName,
-        colorClassName,
-        commonClassName,
-        'flex items-center justify-center font-bold text-2xl text-slate-300 truncate select-none',
-        className,
-      )}
-    >
-      <div className="min-w-0">{fallback}</div>
-    </div>
   )
 }

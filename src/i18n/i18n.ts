@@ -3,8 +3,8 @@ import { atomWithStorage } from 'jotai/utils'
 import { get, isObject, isString } from 'lodash-es'
 import mitt from 'mitt'
 import { Fragment, ReactElement, ReactNode, createElement } from 'react'
-import { ValueOf } from 'type-fest'
 
+import { preserveLineBreaks } from '../utils/react'
 import ESSENTIALS from './generated/essentials'
 
 export const languages = ['cn', 'en'] as const
@@ -23,6 +23,26 @@ type I18NEssentials = MakeTranslations<(typeof ESSENTIALS)[Language]>
 
 type MakeTranslations<T> = MakeEndpoints<ParseValue<T>>
 
+// 1. First pass: Convert a tree of messages to a tree of strings and interpolation keys
+//
+// - If a value is a plain string, replace it with `string`
+// - If a value is an interpolation string, extract interpolation keys and replace it with the keys
+// - If a value is a plural object, replace it with object['other'] as an interpolation string with an additional `count` key
+//
+// During this pass, we preserve distributivity to properly handle cases where a message
+// is of different kinds in different languages. In the following example, the "cn"
+// message is a plain string, while the "en" message is a plural object:
+//
+// "error_count": {
+//   "cn": "{{count}} 个错误",
+//   "en": {
+//     "1": "{{count}} error",
+//     "other": "{{count}} errors"
+//   }
+// }
+//
+// Ref: https://www.typescriptlang.org/docs/handbook/2/conditional-types.html#distributive-conditional-types
+
 type ParseValue<T> = T extends string
   ? ParseMessage<T, []>
   : T extends PluralObject
@@ -31,41 +51,56 @@ type ParseValue<T> = T extends string
 
 type ParseMessage<
   T extends string,
-  InitialKeys extends unknown[],
+  InitialKeys extends string[],
   Keys = InterpolationKeys<T, InitialKeys>,
 > = Keys extends [] ? string : Keys
 
 type InterpolationKeys<
   Str,
-  Keys extends unknown[],
+  Keys extends string[],
 > = Str extends `${string}{{${infer Key}}}${infer End}`
-  ? InterpolationKeys<End, [...Keys, Key extends '' ? UnnamedKey : Key]>
+  ? InterpolationKeys<End, [...Keys, Key]>
   : Keys
 
 type PluralObject = Record<`${number}` | 'other', string>
 
+// 2. Second pass: Convert a tree of strings and interpolation keys to a tree of strings and functions (endpoints)
+//
+// - If a value is a string, do nothing
+// - If a value is interpolation keys, convert it to a function
+//
+// During this pass, we *prevent* distributivity and merge the unions to keep the endpoint function types
+// clean and human-readable.
+//
+// Tricks to prevent distributivity:
+// - For a conditional type, either invert the condition if possible, e.g. `string extends T`,
+//   or wrap the type parameter in an array, e.g. `[T] extends [string]`.
+// - For a mapped type, make it non-homomorphic[1] by extracting `keyof T` to a new type parameter `K`.
+//
+// [1]: https://stackoverflow.com/a/59791889/13237325
+
 type MakeEndpoints<T, K extends keyof T = keyof T> = string extends T
   ? T
-  : [T] extends [unknown[]]
-    ? Endpoint<T>
+  : [T] extends [string[]]
+    ? Interpolation<T> & {}
     : { [P in K]: MakeEndpoints<T[P]> }
 
-type Endpoint<Keys extends unknown[]> = Keys[number] extends UnnamedKey
-  ? UnnamedInterpolation<{ [K in keyof Keys]: ReactNode }>
-  : Interpolation<{ [K in Extract<Keys[number], string>]: ReactNode }>
+type Interpolation<
+  Keys extends string[],
+  KeyMapping = {
+    [K in Keys[number]]: K extends `${infer Name}(${string})` ? Name : K
+  },
+> = ((options: {
+  [K in keyof KeyMapping as K extends KeyMapping[K] ? K : never]: Primitive
+}) => string) & {
+  jsx: (options: {
+    [K in keyof KeyMapping as KeyMapping[K] & string]: KeyMapping[K] extends K
+      ? ReactNode
+      : (arg?: string) => ReactNode
+  }) => ReactElement
+}
 
-type Interpolation<Arg> = <T extends Arg>(
-  ...args: [T]
-) => InterpolationResult<ValueOf<T>>
-
-type UnnamedInterpolation<Arg extends unknown[]> = <T extends Arg>(
-  ...args: T
-) => InterpolationResult<T[number]>
-
-type InterpolationResult<T> = T extends string | number ? string : ReactElement
-
-declare const unnamedKey: unique symbol
-type UnnamedKey = typeof unnamedKey
+type Primitive = string | number | boolean | null | undefined
 
 export const allEssentials = Object.fromEntries(
   Object.entries(ESSENTIALS).map(([language, data]) => [
@@ -198,6 +233,7 @@ function setupTranslations({ language, data }: RawTranslations) {
   }
 
   const interpolationRegex = /{{([^}]*)}}/
+  const functionalInterpolationKeyRegex = /(.*?)\((.*?)\)/
 
   const convert = (path: string, value: unknown) => {
     const converted = doConvert(path, value)
@@ -229,15 +265,19 @@ function setupTranslations({ language, data }: RawTranslations) {
 
     // as of now, value is either an interpolatable string or a plural object
 
-    return (...args: unknown[]) => {
+    const interpolate = (
+      options: Record<
+        string,
+        Primitive | ReactNode | ((arg?: string) => ReactNode)
+      >,
+      jsx: boolean,
+    ) => {
       try {
         let message: string
 
         if (isPlural) {
           const pluralObject = value as PluralObject
-          const count = isObject(args[0])
-            ? (args[0] as Record<string, unknown>).count
-            : undefined
+          const count = options.count
           if (typeof count === 'number') {
             message = pluralObject[String(count)] ?? pluralObject.other
           } else {
@@ -251,41 +291,52 @@ function setupTranslations({ language, data }: RawTranslations) {
         if (segments.length === 1) {
           return message
         }
-        let hasJsx = false
-        const translated = segments.map((segment, index) => {
+
+        const interpolated = segments.map((segment, index) => {
           if (index % 2 === 0) {
+            if (segment && segment.includes('\n')) {
+              return preserveLineBreaks(segment)
+            }
             return segment
           }
-          if (!segment) {
-            const valueIndex = (index - 1) / 2
-            const value = args[valueIndex]
-            if (!value) {
-              return ''
-            }
-            if (typeof value !== 'string' && typeof value !== 'number') {
-              hasJsx = true
-            }
-            return value
+
+          if (Object.prototype.hasOwnProperty.call(options, segment)) {
+            return options[segment] as Primitive | ReactNode
           }
 
-          const value = args[0]?.[segment]
-          if (!value) {
-            return ''
+          const match = segment.match(functionalInterpolationKeyRegex)
+          if (match) {
+            const key = match[1]
+            const arg = match[2]
+            if (Object.prototype.hasOwnProperty.call(options, key)) {
+              if (typeof options[key] === 'function') {
+                return options[key](arg)
+              }
+              return options[key]
+            }
           }
-          if (typeof value !== 'string' && typeof value !== 'number') {
-            hasJsx = true
-          }
-          return value
+
+          return ''
         })
-        if (hasJsx) {
-          return createElement(Fragment, {}, ...translated)
+        if (jsx) {
+          return createElement(Fragment, {}, ...interpolated)
         }
-        return translated.join('')
+        return interpolated.join('')
       } catch (e) {
         console.error('Error in translation:', path, e)
         return path
       }
     }
+
+    const interpolationEndpoint = (
+      options: Record<string, Primitive>,
+    ): string => interpolate(options, false) as string
+
+    interpolationEndpoint.jsx = (
+      options: Record<string, ReactNode | ((arg?: string) => ReactNode)>,
+    ): ReactElement => interpolate(options, true) as ReactElement
+
+    return interpolationEndpoint
   }
 
   return convert('', data)

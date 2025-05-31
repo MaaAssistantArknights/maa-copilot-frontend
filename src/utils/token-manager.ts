@@ -1,7 +1,8 @@
 import { refreshAccessToken } from 'apis/auth'
+import { getDefaultStore } from 'jotai'
 import { noop } from 'lodash-es'
 
-import { AuthState, fromCredentials } from 'store/auth'
+import { authAtom, fromCredentials } from 'store/auth'
 import {
   InvalidTokenError,
   NetworkError,
@@ -9,27 +10,20 @@ import {
   UnauthorizedError,
 } from 'utils/error'
 
-export namespace TokenManager {
-  let getAuth: () => AuthState = () => ({})
-  let setAuth: (set: AuthState | ((auth: AuthState) => AuthState)) => void =
-    noop
+let store = getDefaultStore()
+let pendingGetToken: Promise<string> | undefined
 
-  export function setAuthGetter(get: typeof getAuth) {
-    getAuth = get
-  }
-  export function setAuthSetter(set: typeof setAuth) {
-    setAuth = set
-  }
-
-  let pendingGetToken: Promise<string> | undefined
-
-  export async function updateAndGetToken() {
+export const TokenManager = {
+  setStore(newStore: typeof store) {
+    store = newStore
+  },
+  updateAndGetToken() {
     if (pendingGetToken) {
       return pendingGetToken
     }
 
     const { token, validBefore, refreshToken, refreshTokenValidBefore } =
-      getAuth()
+      store.get(authAtom)
 
     const endTime = +new Date(validBefore || 0) || 0
     const refreshEndTime = +new Date(refreshTokenValidBefore || 0) || 0
@@ -46,7 +40,7 @@ export namespace TokenManager {
       }
 
       if (!refreshToken) {
-        setAuth({})
+        store.set(authAtom, {})
         throw new InvalidTokenError()
       }
 
@@ -54,7 +48,7 @@ export namespace TokenManager {
         try {
           const res = await refreshAccessToken({ refreshToken })
 
-          setAuth(fromCredentials(res))
+          store.set(authAtom, fromCredentials(res))
 
           return res.token
         } catch (e) {
@@ -64,7 +58,7 @@ export namespace TokenManager {
           throw new TokenExpiredError()
         }
       } else {
-        setAuth({})
+        store.set(authAtom, {})
         throw new InvalidTokenError()
       }
     })()
@@ -78,5 +72,5 @@ export namespace TokenManager {
       .catch(noop)
 
     return pendingGetToken
-  }
+  },
 }

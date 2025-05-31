@@ -4,7 +4,7 @@ import { FC } from 'react'
 
 import { useLocalizedOperatorName } from 'models/operator'
 
-import { OperatorAvatar } from '../../EditorOperator'
+import { OperatorAvatar } from '../../../../OperatorAvatar'
 import { Operator } from '../../EditorSheet'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
 

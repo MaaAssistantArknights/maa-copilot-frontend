@@ -13,7 +13,7 @@ import { ignoreKeyDic } from 'store/useFavGroups'
 import { favOperatorAtom } from 'store/useFavOperators'
 
 import { useTranslation } from '../../../../../i18n/i18n'
-import { OperatorAvatar } from '../../EditorOperator'
+import { OperatorAvatar } from '../../../../OperatorAvatar'
 import { SkillAboutTrigger } from '../SheetOperatorSkillAbout'
 import { useSheet } from '../SheetProvider'
 

@@ -18,10 +18,9 @@ export const authAtom = atomWithStorage<AuthState>('maa-copilot-auth', {})
 export function fromCredentials(credentials: MaaLoginRsp): AuthState {
   return {
     token: credentials.token,
-    validBefore: credentials.validBefore.toLocaleString(),
+    validBefore: credentials.validBefore.toISOString(),
     refreshToken: credentials.refreshToken,
-    refreshTokenValidBefore:
-      credentials.refreshTokenValidBefore.toLocaleString(),
+    refreshTokenValidBefore: credentials.refreshTokenValidBefore.toISOString(),
     activated: credentials.userInfo.activated,
     userId: credentials.userInfo.id,
     username: credentials.userInfo.userName,

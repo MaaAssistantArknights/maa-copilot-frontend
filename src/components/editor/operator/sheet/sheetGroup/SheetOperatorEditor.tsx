@@ -25,7 +25,7 @@ import {
 import { getLocalizedOperatorName } from 'models/operator'
 
 import { languageAtom, useTranslation } from '../../../../../i18n/i18n'
-import { OperatorAvatar } from '../../EditorOperator'
+import { OperatorAvatar } from '../../../../OperatorAvatar'
 import { Group } from '../../EditorSheet'
 import {
   SheetContainerSkeleton,

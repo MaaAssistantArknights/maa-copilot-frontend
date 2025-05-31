@@ -12,7 +12,12 @@ export const SheetList: FC<SheetListProps> = () => {
   const operatorScrollRef = useRef<HTMLDivElement>(null)
 
   const toTop = useCallback(
-    () => operatorScrollRef?.current?.scrollIntoView(),
+    () =>
+      operatorScrollRef?.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+        inline: 'nearest',
+      }),
     [operatorScrollRef],
   )
 
@@ -22,12 +27,13 @@ export const SheetList: FC<SheetListProps> = () => {
 
   return (
     <div className="flex h-full">
-      <div className="grow px-1 py-4 overflow-auto" ref={operatorScrollRef}>
+      <div className="grow px-1 py-4 overflow-auto">
         {operatorFilteredData.length ? (
           <>
             <div
               key="operatorContainer"
               className="flex flex-wrap items-start content-start overscroll-contain relative"
+              ref={operatorScrollRef}
             >
               {operatorFilteredData.map(({ name }, index) => (
                 <div className="flex items-center flex-0 w-32 h-32" key={index}>
