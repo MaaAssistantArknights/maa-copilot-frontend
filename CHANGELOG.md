@@ -2,8 +2,10 @@
 
 - 修复了编辑器v2中修改难度后不显示的问题 [@guansss](https://github.com/guansss)
 - 修复了编辑器v2中从自动保存恢复后显示不正常的问题 [@guansss](https://github.com/guansss)
+- 修复了编辑器v2中干员模组被错误赋值的问题 [@guansss](https://github.com/guansss)
+- 修复了编辑器v2中干员列表无法回到顶部的问题 [@czgaotian](https://github.com/czgaotian)
 - 在编辑器v2中选择关卡后自动填写标题 [@guansss](https://github.com/guansss)
-- 尝试修复登录状态丢失的问题 [@guansss](https://github.com/guansss)
+- 修复了登录状态丢失的问题 [@guansss](https://github.com/guansss)
 - 将干员头像换成 webp 格式 [@guansss](https://github.com/guansss)
 - 优化了部分 UI [@guansss](https://github.com/guansss)
 
