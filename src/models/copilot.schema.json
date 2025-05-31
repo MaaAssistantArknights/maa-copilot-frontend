@@ -127,10 +127,8 @@
         },
         "module": {
           "type": "integer",
-          "description": "Module requirement, optional, 0 by default",
-          "minimum": 0,
-          "maximum": 1,
-          "default": 0
+          "description": "Module requirement, optional, -1 by default",
+          "default": -1
         },
         "potentiality": {
           "type": "integer",

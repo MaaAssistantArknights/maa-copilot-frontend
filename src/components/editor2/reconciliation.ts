@@ -3,6 +3,7 @@ import { atom } from 'jotai'
 import { defaults, uniqueId } from 'lodash-es'
 import { PartialDeep, SetOptional, SetRequired } from 'type-fest'
 
+import { migrateOperation } from '../../models/converter'
 import { CopilotDocV1 } from '../../models/copilot.schema'
 import { FavGroup, favGroupAtom } from '../../store/useFavGroups'
 import { FavOperator, favOperatorAtom } from '../../store/useFavOperators'
@@ -218,7 +219,9 @@ export function toEditorOperation(
   source: CopilotOperationLoose,
 ): EditorOperation {
   const camelCased = camelcaseKeys(source, { deep: true })
-  const operation = JSON.parse(JSON.stringify(camelCased)) as typeof camelCased
+  const operation = JSON.parse(
+    JSON.stringify(migrateOperation(camelCased as CopilotDocV1.Operation)),
+  ) as typeof camelCased
   const converted = {
     ...operation,
     actions: operation.actions.map((action, index) => {
@@ -227,7 +230,7 @@ export function toEditorOperation(
         postDelay,
         rearDelay,
         ...newAction
-      }: WithoutIdDeep<EditorAction> & (typeof camelCased)['actions'][number] =
+      }: WithoutIdDeep<EditorAction> & (typeof operation)['actions'][number] =
         action
       // intermediatePostDelay 等于当前动作的 preDelay
       if (preDelay !== undefined) {
@@ -301,7 +304,7 @@ export function toMaaOperation(
         group.opers.some((operator) => operator.requirements),
       )
     ) {
-      converted.version = 2
+      converted.version = CopilotDocV1.VERSION
     }
   }
 

@@ -43,7 +43,7 @@ const operator_requirements = z.looseObject({
   elite: z.number().int().min(0).max(2).optional(),
   level: z.number().int().min(0).optional(),
   skill_level: z.number().int().min(0).max(10).optional(),
-  module: z.number().int().min(0).optional(),
+  module: z.number().int().optional(),
   potentiality: z.number().int().min(0).max(6).optional(),
 })
 

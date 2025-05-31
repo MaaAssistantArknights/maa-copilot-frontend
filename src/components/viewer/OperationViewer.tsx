@@ -54,6 +54,7 @@ import { Level } from '../../models/operation'
 import {
   OPERATORS,
   getEliteIconUrl,
+  getModuleName,
   getSkillCount,
   useLocalizedOperatorName,
   withDefaultRequirements,
@@ -359,12 +360,19 @@ const OperatorCard: FC<{
             fallback={displayName}
             sourceSize={96}
           />
-          {info?.modules && module !== 0 && (
+          {module !== CopilotDocV1.Module.Default && (
             <div
-              title={t.components.editor2.label.opers.requirements.module}
+              title={t.components.viewer.OperationViewer.module_title({
+                count: module,
+                name: getModuleName(module),
+              })}
               className="absolute -bottom-1 right-1 font-serif font-bold text-lg text-white [text-shadow:0_0_3px_#a855f7,0_0_5px_#a855f7]"
             >
-              {info.modules[module]}
+              {module === CopilotDocV1.Module.Original ? (
+                <Icon icon="small-square" />
+              ) : (
+                getModuleName(module)
+              )}
             </div>
           )}
         </div>

@@ -167,12 +167,13 @@ export async function getOperators() {
 
       if (['TRAP'].includes(op.profession)) return []
 
-      const modules = equipsByOperatorId[id]
-        ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
-        .map(({ typeName1, typeName2 }) => {
-          return typeName1 === 'ORIGINAL' ? '' : typeName2
-        })
-        .map((m) => (m === 'A' ? 'α' : m === 'D' ? 'Δ' : m))
+      const modules = uniq(
+        equipsByOperatorId[id]
+          ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
+          .map(({ typeName1, typeName2 }) => {
+            return typeName1 === 'ORIGINAL' ? '' : typeName2
+          }),
+      )
       return [
         {
           id: id,
@@ -185,7 +186,7 @@ export async function getOperators() {
               ? 0
               : Number(op.rarity?.split('TIER_').join('') || 0),
           alt_name: op.appellation,
-          modules,
+          modules: modules.length > 0 ? modules : undefined,
         },
       ]
     }),

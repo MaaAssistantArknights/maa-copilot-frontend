@@ -828,6 +828,18 @@
           "cn": "模组",
           "en": "Module"
         },
+        "module_title": {
+          "cn": {
+            "-1": "不改变",
+            "0": "切换到初始模组",
+            "other": "切换到{{name}}模组"
+          },
+          "en": {
+            "-1": "Don't Change",
+            "0": "Switch to Original Module",
+            "other": "Switch to {{name}} Module"
+          }
+        },
         "skill_not_available": {
           "cn": "当前等级未解锁该技能",
           "en": "This skill is not available at the current level"
@@ -3015,6 +3027,16 @@
         "no_operator": {
           "cn": "无干员",
           "en": "No Operator"
+        },
+        "module_title": {
+          "cn": {
+            "0": "初始模组",
+            "other": "{{name}}模组"
+          },
+          "en": {
+            "0": "Original Module",
+            "other": "{{name}} Module"
+          }
         },
         "action_sequence": {
           "cn": "动作序列",

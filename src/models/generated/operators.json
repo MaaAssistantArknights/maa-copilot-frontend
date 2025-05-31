@@ -122,7 +122,7 @@
       "alias": "amiya emiya amy emy 阿米婭",
       "rarity": 5,
       "alt_name": "Amiya",
-      "modules": ["", "", "", "X", "X", "Y"]
+      "modules": ["", "X", "Y"]
     },
     {
       "id": "char_4132_ascln",
@@ -155,7 +155,7 @@
       "alias": "aila yila al yl 艾拉",
       "rarity": 6,
       "alt_name": "Ela",
-      "modules": ["", "Δ"]
+      "modules": ["", "D"]
     },
     {
       "id": "char_4043_erato",
@@ -242,7 +242,7 @@
       "alias": "anjielina anjielinuo ajln 安潔莉娜",
       "rarity": 6,
       "alt_name": "Angelina",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_212_ansel",
@@ -1279,7 +1279,7 @@
       "alias": "heijian hj 黑鍵",
       "rarity": 6,
       "alt_name": "Ebenholz",
-      "modules": ["", "X", "Y", "Δ"]
+      "modules": ["", "X", "Y", "D"]
     },
     {
       "id": "char_500_noirc",
@@ -1528,7 +1528,7 @@
       "alias": "jici jc 棘刺",
       "rarity": 6,
       "alt_name": "Thorns",
-      "modules": ["", "X", "Δ"]
+      "modules": ["", "X", "D"]
     },
     {
       "id": "token_10032_jesca2_jckshd",
@@ -1797,7 +1797,7 @@
       "alias": "kaierxi kex 凱爾希",
       "rarity": 6,
       "alt_name": "Kal'tsit",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_4162_cathy",
@@ -1904,7 +1904,7 @@
       "alias": "kongxian kx 空弦",
       "rarity": 6,
       "alt_name": "Archetto",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_405_absin",
@@ -1936,7 +1936,7 @@
       "alias": "kuiying guiying ky gy 傀影",
       "rarity": 6,
       "alt_name": "Phantom",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_140_whitew",
@@ -2344,7 +2344,7 @@
       "alias": "luogesi lgs 邏各斯",
       "rarity": 6,
       "alt_name": "Logos",
-      "modules": ["", "Y", "Δ"]
+      "modules": ["", "Y", "D"]
     },
     {
       "id": "char_4040_rockr",
@@ -2464,7 +2464,7 @@
       "alias": "midiexiang mdx 迷迭香",
       "rarity": 6,
       "alt_name": "Rosmontis",
-      "modules": ["", "X", "α"]
+      "modules": ["", "X", "A"]
     },
     {
       "id": "char_122_beagle",
@@ -2988,7 +2988,7 @@
       "alias": "senran sr 森蚺",
       "rarity": 6,
       "alt_name": "Eunectes",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_4143_sensi",
@@ -3323,7 +3323,7 @@
       "alias": "shuiyue sy 水月",
       "rarity": 6,
       "alt_name": "Mizuki",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_263_skadi",
@@ -3719,7 +3719,7 @@
       "alias": "weiweianna weiweiannuo wwan 薇薇安娜",
       "rarity": 6,
       "alt_name": "Viviana",
-      "modules": ["", "Δ"]
+      "modules": ["", "D"]
     },
     {
       "id": "char_400_weedy",
@@ -3784,7 +3784,7 @@
       "alias": "xi x 夕",
       "rarity": 6,
       "alt_name": "Dusk",
-      "modules": ["", "X", "Y", "α"]
+      "modules": ["", "X", "Y", "A"]
     },
     {
       "id": "char_348_ceylon",
@@ -4249,7 +4249,7 @@
       "alias": "yifulite yflt 伊芙利特",
       "rarity": 6,
       "alt_name": "Ifrit",
-      "modules": ["", "X", "Δ"]
+      "modules": ["", "X", "D"]
     },
     {
       "id": "char_472_pasngr",
