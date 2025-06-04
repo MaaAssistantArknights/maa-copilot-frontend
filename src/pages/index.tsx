@@ -1,7 +1,9 @@
 import { Card } from '@blueprintjs/core'
 
+import dayjs from 'dayjs'
 import { useLinks } from 'hooks/useLinks'
 import { ComponentType } from 'react'
+import ReactGA from 'react-ga-neo'
 
 import { CardTitle } from 'components/CardTitle'
 import { withGlobalErrorBoundary } from 'components/GlobalErrorBoundary'
@@ -21,6 +23,7 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
   const { SOCIAL_LINKS } = useLinks()
   return (
     <div className="flex flex-col md:flex-row px-4 pb-16 mt-4 md:px-8 md:mt-8 max-w-[96rem] mx-auto">
+      {isMD && <Ad />}
       <div className="md:w-2/3 order-2 md:order-1 mr-0 md:mr-8 mt-4 md:mt-0">
         <Operations />
       </div>
@@ -59,6 +62,8 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
                 </>
               ))}
             </div>
+
+            <Ad />
           </div>
         </div>
       )}
@@ -67,3 +72,26 @@ export const IndexPage: ComponentType = withGlobalErrorBoundary(() => {
     </div>
   )
 })
+
+const Ad = dayjs().isBefore('2025-07-06 00:00:00+8')
+  ? () => {
+      const t = useTranslation()
+      const sendEvent = () => {
+        ReactGA.event('click_ad', { ad_type: 'ld' })
+      }
+      return (
+        // eslint-disable-next-line react/jsx-no-target-blank
+        <a
+          className="block relative dark:brightness-[85%]"
+          href="https://lddl01.ldmnq.com/downloader/ldplayerinst9.exe?n=LDplayer9_ld_406237_3586_ld.exe"
+          target="_blank"
+          onClick={sendEvent}
+        >
+          <img src="/ad_leidian.webp" alt="雷电模拟器" />
+          <div className="absolute bottom-2 right-2 border border-current rounded text-[10px] text-zinc-300 px-1 ">
+            {t.pages.index.advertisement}
+          </div>
+        </a>
+      )
+    }
+  : () => null
