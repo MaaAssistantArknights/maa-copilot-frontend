@@ -828,6 +828,18 @@
           "cn": "模组",
           "en": "Module"
         },
+        "module_title": {
+          "cn": {
+            "-1": "不改变",
+            "0": "切换到初始模组",
+            "other": "切换到{{name}}模组"
+          },
+          "en": {
+            "-1": "Don't Change",
+            "0": "Switch to Original Module",
+            "other": "Switch to {{name}} Module"
+          }
+        },
         "skill_not_available": {
           "cn": "当前等级未解锁该技能",
           "en": "This skill is not available at the current level"
@@ -2988,17 +3000,17 @@
           "cn": "评论区已关闭",
           "en": "Comment section is closed"
         },
-        "feel_the_silence": {
+        "comments_closed_note": {
           "cn": "感受…宁静……",
-          "en": "Feel... the silence..."
+          "en": "Experience tranquility..."
         },
         "operators_and_groups": {
           "cn": "干员与干员组",
           "en": "Operators and Operator Groups"
         },
-        "operator_group_tooltip": {
-          "cn": "干员组：组内干员可以任选其一，自动编队时按最高练度来选择",
-          "en": "Operator Group: Choose any operator in the group; auto-formation selects the highest level"
+        "operators_and_groups_note": {
+          "cn": "{{operators(干员)}}\n作业必需的干员。\n干员练度（等级、模组）仅供参考，MAA 的自动编队仅支持技能选择，其余信息暂未支持。\n\n{{groups(干员组)}}\n一系列可替换干员的编组。\n组内干员可以任选其一，MAA 自动编队时按最高练度来选择。",
+          "en": "{{operators(Operators)}}\nOperators required for this Job. \nThe requirements (level and module) are for reference only. MAA's auto-formation only supports skill selection, and other information is not yet supported.\n\n{{groups(Operator Groups)}}\nGroups of interchangeable operators. \nYou can choose any operator in a group. MAA's auto-formation selects the one with the highest level."
         },
         "no_operators": {
           "cn": "暂无干员",
@@ -3015,6 +3027,16 @@
         "no_operator": {
           "cn": "无干员",
           "en": "No Operator"
+        },
+        "module_title": {
+          "cn": {
+            "0": "初始模组",
+            "other": "{{name}}模组"
+          },
+          "en": {
+            "0": "Original Module",
+            "other": "{{name}} Module"
+          }
         },
         "action_sequence": {
           "cn": "动作序列",
@@ -3402,7 +3424,21 @@
         "en": "Failed to parse operation"
       }
     },
+    "level": {
+      "custom_level": {
+        "cn": "自定义关卡",
+        "en": "Custom Stage"
+      }
+    },
     "operator": {
+      "operator": {
+        "cn": "干员",
+        "en": "Operator"
+      },
+      "operator_group": {
+        "cn": "干员组",
+        "en": "Operator Group"
+      },
       "skill_number": {
         "cn": {
           "1": "一技能",

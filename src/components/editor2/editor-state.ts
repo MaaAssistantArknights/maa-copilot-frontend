@@ -26,7 +26,9 @@ export interface EditorState {
   metadata: EditorMetadata
 }
 
-const defaultOperation = operationLooseSchema.parse({ version: 2 })
+const defaultOperation = operationLooseSchema.parse({
+  version: CopilotDocV1.VERSION,
+})
 
 export const defaultEditorState: EditorState = {
   operation: toEditorOperation(defaultOperation),

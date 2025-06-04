@@ -27,7 +27,7 @@ interface LevelSelectProps {
   inputRef?: Ref<HTMLInputElement>
   disabled?: boolean
   value?: string
-  onChange: (level: string) => void
+  onChange: (stageId: string, level?: Level) => void
 }
 
 export const LevelSelect: FC<LevelSelectProps> = ({
@@ -203,7 +203,7 @@ export const LevelSelect: FC<LevelSelectProps> = ({
             // 重置 query 以显示同类关卡
             updateQuery('', true)
           }
-          onChange(level.stageId)
+          onChange(level.stageId, level)
         }}
         createNewItemFromQuery={(query) => createCustomLevel(query)}
         createNewItemRenderer={(query, active, handleClick) => (

@@ -8,6 +8,7 @@
  *
  * Only the first two kinds are supported in MAA Copilot.
  */
+import { i18n } from '../i18n/i18n'
 import { Level, OpDifficulty } from './operation'
 
 const HARD_MODE_SUFFIX = '#f#'
@@ -22,7 +23,7 @@ export function createCustomLevel(name: string): Level {
     name,
     stageId: name,
     levelId: '',
-    catOne: '自定义关卡',
+    catOne: i18n.models.level.custom_level,
     catTwo: '',
     catThree: name,
     width: 0,

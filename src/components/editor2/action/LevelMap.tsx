@@ -155,7 +155,7 @@ export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
       )}
       {(mapStatus === 'idle' || mapStatus === 'loading') && (
         <NonIdealState
-          className="absolute inset-0 bg-gray-900/50 [&_*]:!text-white"
+          className="absolute inset-0"
           icon={
             mapStatus === 'loading' ? (
               <Spinner className="[&_.bp4-spinner-head]:stroke-current" />
@@ -164,9 +164,9 @@ export const LevelMap: FC<LevelMapProps> = memo(({ className }) => {
             )
           }
           description={
-            mapStatus === 'loading'
-              ? t.common.loading
-              : t.components.editor2.LevelMap.select_level
+            mapStatus === 'idle'
+              ? t.components.editor2.LevelMap.select_level
+              : undefined
           }
         />
       )}

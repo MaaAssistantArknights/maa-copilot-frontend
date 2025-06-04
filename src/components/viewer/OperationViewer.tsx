@@ -1,6 +1,7 @@
 import {
   Button,
   ButtonGroup,
+  Callout,
   Card,
   Collapse,
   Elevation,
@@ -39,7 +40,6 @@ import { RelativeTime } from 'components/RelativeTime'
 import { withSuspensable } from 'components/Suspensable'
 import { AppToaster } from 'components/Toaster'
 import { DrawerLayout } from 'components/drawer/DrawerLayout'
-import { OperatorAvatar } from 'components/editor/operator/EditorOperator'
 import { EDifficultyLevel } from 'components/entity/ELevel'
 import { OperationRating } from 'components/viewer/OperationRating'
 import { OpRatingType, Operation } from 'models/operation'
@@ -54,6 +54,7 @@ import { Level } from '../../models/operation'
 import {
   OPERATORS,
   getEliteIconUrl,
+  getModuleName,
   getSkillCount,
   useLocalizedOperatorName,
   withDefaultRequirements,
@@ -62,7 +63,8 @@ import { formatError } from '../../utils/error'
 import { ActionCard } from '../ActionCard'
 import { Confirm } from '../Confirm'
 import { MasteryIcon } from '../MasteryIcon'
-import { ReLink } from '../ReLink'
+import { OperatorAvatar } from '../OperatorAvatar'
+import { ReLinkRenderer } from '../ReLink'
 import { UserName } from '../UserName'
 import { CommentArea } from './comment/CommentArea'
 
@@ -111,32 +113,30 @@ const ManageMenu: FC<{
   return (
     <>
       <Menu>
-        <li>
-          <ReLink
-            className="hover:text-inherit hover:no-underline"
-            to={`/create/${operation.id}`}
-            target="_blank"
-          >
+        <ReLinkRenderer
+          className="hover:text-inherit hover:no-underline"
+          to={`/create/${operation.id}`}
+          target="_blank"
+          render={({ className, ...props }) => (
             <MenuItem
-              tagName="div"
               icon="edit"
               text={t.components.viewer.OperationViewer.modify_task}
+              {...props}
             />
-          </ReLink>
-        </li>
-        <li>
-          <ReLink
-            className="hover:text-inherit hover:no-underline"
-            to={`/editor/${operation.id}`}
-            target="_blank"
-          >
+          )}
+        />
+        <ReLinkRenderer
+          className="hover:text-inherit hover:no-underline"
+          to={`/editor/${operation.id}`}
+          target="_blank"
+          render={({ className, ...props }) => (
             <MenuItem
-              tagName="div"
               icon="edit"
               text={t.components.viewer.OperationViewer.modify_task_v2}
+              {...props}
             />
-          </ReLink>
-        </li>
+          )}
+        />
         {operation.commentStatus === BanCommentsStatusEnum.Enabled && (
           <Confirm
             intent="danger"
@@ -358,13 +358,21 @@ const OperatorCard: FC<{
             rarity={info?.rarity}
             className="w-20 h-20"
             fallback={displayName}
+            sourceSize={96}
           />
-          {info?.modules && module !== 0 && (
+          {module !== CopilotDocV1.Module.Default && (
             <div
-              title={t.components.editor2.label.opers.requirements.module}
+              title={t.components.viewer.OperationViewer.module_title({
+                count: module,
+                name: getModuleName(module),
+              })}
               className="absolute -bottom-1 right-1 font-serif font-bold text-lg text-white [text-shadow:0_0_3px_#a855f7,0_0_5px_#a855f7]"
             >
-              {info.modules[module]}
+              {module === CopilotDocV1.Module.Original ? (
+                <Icon icon="small-square" />
+              ) : (
+                getModuleName(module)
+              )}
             </div>
           )}
         </div>
@@ -577,7 +585,9 @@ function OperationViewerInner({
           <NonIdealState
             icon="tree"
             title={t.components.viewer.OperationViewer.comments_closed}
-            description={t.components.viewer.OperationViewer.feel_the_silence}
+            description={
+              t.components.viewer.OperationViewer.comments_closed_note
+            }
           />
         ) : (
           <CommentArea operationId={operation.id} />
@@ -594,17 +604,10 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
   return (
     <div>
       <H4
-        className="inline-flex items-center cursor-pointer hover:text-violet-500"
+        className="inline-flex items-center cursor-pointer hover:opacity-80"
         onClick={() => setShowOperators((v) => !v)}
       >
         {t.components.viewer.OperationViewer.operators_and_groups}
-        <Tooltip2
-          className="!flex items-center"
-          placement="top"
-          content={t.components.viewer.OperationViewer.operator_group_tooltip}
-        >
-          <Icon icon="info-sign" size={12} className="text-zinc-500 ml-1" />
-        </Tooltip2>
         <Icon
           icon="chevron-down"
           className={clsx(
@@ -613,6 +616,19 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
           )}
         />
       </H4>
+      <details className="inline">
+        <summary className="inline cursor-pointer">
+          <Icon icon="help" size={14} className="ml-2 mb-1 opacity-50" />
+        </summary>
+        <Callout intent="primary" icon={null} className="mb-4">
+          <p>
+            {t.components.viewer.OperationViewer.operators_and_groups_note.jsx({
+              operators: (s) => <b>{s}</b>,
+              groups: (s) => <b>{s}</b>,
+            })}
+          </p>
+        </Callout>
+      </details>
       <Collapse isOpen={showOperators}>
         <div className="mt-2 flex flex-wrap gap-6">
           {!operation.parsedContent.opers?.length &&
@@ -666,7 +682,7 @@ function OperationViewerInnerDetails({ operation }: { operation: Operation }) {
       </Collapse>
 
       <H4
-        className="mt-6 inline-flex items-center cursor-pointer hover:text-violet-500"
+        className="mt-6 inline-flex items-center cursor-pointer hover:opacity-80"
         onClick={() => setShowActions((v) => !v)}
       >
         {t.components.viewer.OperationViewer.action_sequence}

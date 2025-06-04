@@ -1,6 +1,5 @@
 import { access } from 'fs/promises'
 import { capitalize, uniq, uniqBy } from 'lodash-es'
-import fetch from 'node-fetch'
 import { pinyin } from 'pinyin'
 import simplebig from 'simplebig'
 
@@ -62,15 +61,47 @@ const CHARACTER_BLOCKLIST = [
   'token_10012_rosmon_shield', // 迷迭香的战术装备：It's just not gonna be there.
 ]
 
-const PROFESSION_NAMES = {
-  MEDIC: '医疗',
-  WARRIOR: '近卫',
-  SPECIAL: '特种',
-  SNIPER: '狙击',
-  PIONEER: '先锋',
-  TANK: '重装',
-  CASTER: '术师',
-  SUPPORT: '辅助',
+const PROFESSIONS = {
+  PIONEER: {
+    name: '先锋',
+    name_en: 'Vanguard',
+    code: 512,
+  },
+  WARRIOR: {
+    name: '近卫',
+    name_en: 'Guard',
+    code: 1,
+  },
+  TANK: {
+    name: '重装',
+    name_en: 'Defender',
+    code: 4,
+  },
+  SNIPER: {
+    name: '狙击',
+    name_en: 'Sniper',
+    code: 2,
+  },
+  CASTER: {
+    name: '术师',
+    name_en: 'Caster',
+    code: 32,
+  },
+  MEDIC: {
+    name: '医疗',
+    name_en: 'Medic',
+    code: 8,
+  },
+  SUPPORT: {
+    name: '辅助',
+    name_en: 'Supporter',
+    code: 16,
+  },
+  SPECIAL: {
+    name: '特种',
+    name_en: 'Specialist',
+    code: 64,
+  },
 }
 
 async function json(url: string) {
@@ -86,7 +117,11 @@ export async function getOperators() {
       json(UNIEQUIP_TABLE_JSON_URL_EN),
     ])
 
-  const { subProfDict: subProfDictCN, equipDict } = uniequipTableCN
+  const {
+    subProfDict: subProfDictCN,
+    subProfToProfDict,
+    equipDict,
+  } = uniequipTableCN
   const { subProfDict: subProfDictEN } = uniequipTableEN
   const equipsByOperatorId = Object.values(equipDict).reduce(
     (acc: Record<string, any[]>, equip: any) => {
@@ -97,8 +132,34 @@ export async function getOperators() {
     {},
   )
 
+  const professions: Professions = Object.entries(PROFESSIONS).map(
+    ([id, { name, name_en, code }]) => {
+      const subProfessions = (
+        Object.values(subProfDictCN) as {
+          subProfessionId: string
+          subProfessionName: string
+          subProfessionCatagory: number
+        }[]
+      )
+        .filter((x) => subProfToProfDict[x.subProfessionId] === code)
+        .sort((a, b) => a.subProfessionCatagory - b.subProfessionCatagory)
+        .map(({ subProfessionId, subProfessionName }) => ({
+          id: subProfessionId,
+          name: subProfessionName,
+          name_en:
+            subProfDictEN[subProfessionId]?.subProfessionName ||
+            capitalize(subProfessionId),
+        }))
+      return {
+        id,
+        name,
+        name_en,
+        sub: subProfessions,
+      }
+    },
+  )
+
   const opIds = Object.keys(charTableCN)
-  const professions: Professions = []
   const result = uniqBy(
     opIds.flatMap((id) => {
       const op = charTableCN[id]
@@ -106,44 +167,13 @@ export async function getOperators() {
 
       if (['TRAP'].includes(op.profession)) return []
 
-      if (!['TOKEN'].includes(op.profession)) {
-        const prof = professions.find((p) => p.id === op.profession)
-        if (!prof) {
-          const enSubProfName =
-            subProfDictEN?.[op.subProfessionId]?.subProfessionName ||
-            capitalize(op.subProfessionId)
-
-          professions.push({
-            id: op.profession,
-            name: PROFESSION_NAMES[op.profession],
-            name_en:
-              op.profession.charAt(0) + op.profession.slice(1).toLowerCase(),
-            sub: [
-              {
-                id: op.subProfessionId,
-                name: subProfDictCN[op.subProfessionId].subProfessionName,
-                name_en: enSubProfName,
-              },
-            ],
-          })
-        } else if (!prof.sub.find((p) => p.id === op.subProfessionId)) {
-          const enSubProfName =
-            subProfDictEN?.[op.subProfessionId]?.subProfessionName ||
-            capitalize(op.subProfessionId)
-
-          prof.sub.push({
-            id: op.subProfessionId,
-            name: subProfDictCN[op.subProfessionId].subProfessionName,
-            name_en: enSubProfName,
-          })
-        }
-      }
-      const modules = equipsByOperatorId[id]
-        ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
-        .map(({ typeName1, typeName2 }) => {
-          return typeName1 === 'ORIGINAL' ? '' : typeName2
-        })
-        .map((m) => (m === 'A' ? 'α' : m === 'D' ? 'Δ' : m))
+      const modules = uniq(
+        equipsByOperatorId[id]
+          ?.sort((a, b) => a.charEquipOrder - b.charEquipOrder)
+          .map(({ typeName1, typeName2 }) => {
+            return typeName1 === 'ORIGINAL' ? '' : typeName2
+          }),
+      )
       return [
         {
           id: id,
@@ -156,7 +186,7 @@ export async function getOperators() {
               ? 0
               : Number(op.rarity?.split('TIER_').join('') || 0),
           alt_name: op.appellation,
-          modules,
+          modules: modules.length > 0 ? modules : undefined,
         },
       ]
     }),

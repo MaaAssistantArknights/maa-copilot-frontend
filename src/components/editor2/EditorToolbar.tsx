@@ -24,6 +24,7 @@ import { AppToaster } from '../Toaster'
 import { Settings } from './Settings'
 import { editorAtoms, historyAtom, useEdit } from './editor-state'
 import { useHistoryControls, useHistoryValue } from './history'
+import { hydrateOperation } from './reconciliation'
 import { SourceEditorButton } from './source/SourceEditor'
 import {
   AUTO_SAVE_INTERVAL,
@@ -191,7 +192,10 @@ const AutoSaveButton = (buttonProps: ButtonProps) => {
                   key={record.t}
                   onClick={() => {
                     edit(() => {
-                      setEditorState(record.v)
+                      setEditorState({
+                        ...record.v,
+                        operation: hydrateOperation(record.v.operation),
+                      })
                       return {
                         action: 'restore',
                         desc: i18n.actions.editor2.restore_from_autosave,
@@ -289,6 +293,7 @@ const HistoryButtons = (buttonProps: ButtonProps) => {
         <Button
           {...buttonProps}
           icon="history"
+          className={clsx('tabular-nums', buttonProps.className)}
           title={t.components.editor2.EditorToolbar.undo_history}
           text={history.index + 1 + '/' + history.stack.length}
         />
@@ -331,6 +336,7 @@ const ErrorButton = (buttonProps: ButtonProps) => {
     >
       <Button
         {...buttonProps}
+        className={clsx('tabular-nums', buttonProps.className)}
         icon={allErrors.length > 0 ? 'cross-circle' : 'tick-circle'}
         intent={allErrors.length > 0 ? 'danger' : 'success'}
         title={

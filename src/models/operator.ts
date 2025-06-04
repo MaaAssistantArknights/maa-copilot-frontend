@@ -1,7 +1,7 @@
 import { IconName } from '@blueprintjs/core'
 
 import { useAtomValue } from 'jotai'
-import { clamp, defaults } from 'lodash-es'
+import { clamp, defaults, mapValues } from 'lodash-es'
 
 import { CopilotDocV1 } from 'models/copilot.schema'
 
@@ -29,6 +29,17 @@ const OPERATORS_BY_NAME = Object.fromEntries(
 )
 export function findOperatorByName(name: string): OperatorInfo | undefined {
   return OPERATORS_BY_NAME[name]
+}
+
+export const MODULE_ALT_NAMES = {
+  A: 'α',
+  D: 'Δ',
+  [CopilotDocV1.Module.A]: 'α',
+  [CopilotDocV1.Module.D]: 'Δ',
+}
+
+export function getModuleName(module: CopilotDocV1.Module): string {
+  return MODULE_ALT_NAMES[module] ?? CopilotDocV1.Module[module] ?? '?'
 }
 
 const defaultSkillUsage = CopilotDocV1.SkillUsageType.None
@@ -82,15 +93,22 @@ export function getSkillCount({ id, rarity }: OperatorInfo): number {
 const defaultRequirementsByRarity: Record<
   number,
   Required<CopilotDocV1.Requirements>
-> = {
-  0: { potentiality: 1, module: 0, elite: 0, level: 1, skillLevel: 1 },
-  1: { potentiality: 1, module: 0, elite: 0, level: 30, skillLevel: 1 },
-  2: { potentiality: 1, module: 0, elite: 0, level: 30, skillLevel: 1 },
-  3: { potentiality: 1, module: 0, elite: 1, level: 55, skillLevel: 7 },
-  4: { potentiality: 1, module: 0, elite: 1, level: 60, skillLevel: 7 },
-  5: { potentiality: 1, module: 0, elite: 2, level: 40, skillLevel: 7 },
-  6: { potentiality: 1, module: 0, elite: 2, level: 60, skillLevel: 10 },
-}
+> = mapValues(
+  {
+    0: { elite: 0, level: 1, skillLevel: 1 },
+    1: { elite: 0, level: 30, skillLevel: 1 },
+    2: { elite: 0, level: 30, skillLevel: 1 },
+    3: { elite: 1, level: 55, skillLevel: 7 },
+    4: { elite: 1, level: 60, skillLevel: 7 },
+    5: { elite: 2, level: 40, skillLevel: 7 },
+    6: { elite: 2, level: 60, skillLevel: 10 },
+  },
+  (baseRequirements) => ({
+    ...baseRequirements,
+    potentiality: 1,
+    module: CopilotDocV1.Module.Default,
+  }),
+)
 
 export function getDefaultRequirements(rarity = 6) {
   return defaultRequirementsByRarity[rarity] ?? defaultRequirementsByRarity[6]
@@ -286,7 +304,6 @@ export function getSkillUsageAltTitle(
 ) {
   if (skillUsage === CopilotDocV1.SkillUsageType.ReadyToUseTimes) {
     return i18n.models.operator.skill_usage.ready_to_use_times.alt_format({
-      count: skillTimes ?? 1,
       times: skillTimes ?? 1,
     })
   }
