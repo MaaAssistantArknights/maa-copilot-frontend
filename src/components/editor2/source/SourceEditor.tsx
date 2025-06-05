@@ -11,7 +11,7 @@ import {
 
 import { useAtom } from 'jotai'
 import { debounce } from 'lodash-es'
-import { FC, memo, useMemo, useRef, useState } from 'react'
+import { FC, memo, useCallback, useMemo, useRef, useState } from 'react'
 import { ZodError } from 'zod'
 
 import { i18n, useTranslation } from '../../../i18n/i18n'
@@ -20,6 +20,7 @@ import { Confirm } from '../../Confirm'
 import { withSuspensable } from '../../Suspensable'
 import { DrawerLayout } from '../../drawer/DrawerLayout'
 import { SourceEditorHeader } from '../../editor/source/SourceEditorHeader'
+import { JsonEditor } from '../../json-editor'
 import { editorAtoms, useEdit } from '../editor-state'
 import { toEditorOperation, toMaaOperation } from '../reconciliation'
 import { ZodIssue, operationLooseSchema } from '../validation/schema'
@@ -84,19 +85,22 @@ const SourceEditor = withSuspensable(
       [edit, setOperation],
     )
 
-    const handleChange = (text: string) => {
-      setPending(true)
-      setText(text)
-      update(text)
-      setHasUnsavedChanges(true)
-      onUnsavedChanges?.(true)
-    }
+    const handleChange = useCallback(
+      (text: string) => {
+        setPending(true)
+        setText(text)
+        update(text)
+        setHasUnsavedChanges(true)
+        onUnsavedChanges?.(true)
+      },
+      [onUnsavedChanges, update],
+    )
 
     return (
       <DrawerLayout
         title={<SourceEditorHeader text={text} onChange={handleChange} />}
       >
-        <div className="px-8 py-4 flex-grow flex flex-col gap-2 bg-zinc-50 dark:bg-slate-900 dark:text-white">
+        <div className="px-8 py-4 flex-grow flex flex-col gap-2 bg-zinc-50 dark:bg-slate-900 dark:text-white min-h-0">
           <Callout
             title={t.components.editor2.SourceEditor.auto_sync_note}
             intent={hasUnsavedChanges ? 'primary' : 'success'}
@@ -145,11 +149,11 @@ const SourceEditor = withSuspensable(
               </details>
             ) : null}
           </Callout>
-          <textarea
-            className="p-1 flex-grow bg-white border text-xm font-mono resize-none focus:outline focus:outline-2 focus:outline-purple-300 dark:bg-slate-900 dark:text-white"
+          <JsonEditor
+            className="flex-grow overflow-auto"
             value={text}
-            onChange={(e) => handleChange(e.target.value)}
-            onBlur={() => update.flush()}
+            onChange={handleChange}
+            onBlur={update.flush}
           />
         </div>
       </DrawerLayout>
