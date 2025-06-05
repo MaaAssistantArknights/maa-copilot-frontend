@@ -107,7 +107,7 @@ export const ActionItem: FC<ActionItemProps> = memo(
             typeInfo.accentText,
           )}
         >
-          <div className="flex flex-wrap items-center">
+          <div className="flex flex-wrap items-center !text-inherit">
             <h4
               className={clsx(
                 'relative shrink-0 self-stretch w-[5em] text-2xl font-serif bg-gray-100 dark:bg-gray-700 cursor-move select-none touch-manipulation',

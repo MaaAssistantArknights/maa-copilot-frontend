@@ -152,7 +152,7 @@ export const OperationCard = ({ operation }: { operation: Operation }) => {
   const { data: levels } = useLevels()
 
   return (
-    <li className="mb-4 sm:mb-2 last:mb-0">
+    <li className="mb-4 sm:mb-2 last:mb-0 relative">
       <ReLinkRenderer
         search={{ op: operation.id }}
         render={({ onClick, onKeyDown }) => (

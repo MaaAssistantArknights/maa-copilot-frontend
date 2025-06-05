@@ -1,4 +1,11 @@
-## 2025-05-27
+## 2025-06-05
+
+- 优化了编辑器v2中的干员列表 [@Gemini2035](https://github.com/Gemini2035)
+- 修复了编辑器v2中部署方向在暗色模式下显示不正常的问题 [@czgaotian](https://github.com/czgaotian)
+- 修复了首页的作业列表未显示操作按钮的问题 [@guansss](https://github.com/guansss)
+- 广告更新
+
+## 2025-06-04
 
 - 修复了编辑器v2中修改难度后不显示的问题 [@guansss](https://github.com/guansss)
 - 修复了编辑器v2中从自动保存恢复后显示不正常的问题 [@guansss](https://github.com/guansss)

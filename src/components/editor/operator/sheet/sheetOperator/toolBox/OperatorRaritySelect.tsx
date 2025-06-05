@@ -10,6 +10,8 @@ import {
   useOperatorFilterProvider,
 } from '../SheetOperatorFilterProvider'
 
+const selectClass = 'scale-90'
+
 export interface OperatorRaritySelectProp {}
 
 export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
@@ -17,8 +19,6 @@ export const OperatorRaritySelect: FC<OperatorRaritySelectProp> = () => {
   const {
     useRarityFilterState: [{ selectedRarity, reverse }, setRarityFilter],
   } = useOperatorFilterProvider()
-
-  const selectClass = 'scale-90'
 
   return (
     <>
