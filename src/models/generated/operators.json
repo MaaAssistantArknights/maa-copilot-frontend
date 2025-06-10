@@ -4975,7 +4975,7 @@
         { "id": "chain", "name": "链术师", "name_en": "Chain Caster" },
         { "id": "blastcaster", "name": "轰击术师", "name_en": "Blast Caster" },
         { "id": "primcaster", "name": "本源术师", "name_en": "Primal Caster" },
-        { "id": "soulcaster", "name": "塑灵术师", "name_en": "Soulcaster" }
+        { "id": "soulcaster", "name": "塑灵术师", "name_en": "Shaper Caster" }
       ]
     },
     {
